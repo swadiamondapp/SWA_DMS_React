@@ -1,0 +1,22 @@
+.Sidebar_Parent {
+  background: #04344d;
+  border-radius: 10px;
+  padding: 20px 20px 20px 25px;
+  color: #ffffffc9;
+  font-family: "Gilroy medium";
+  font-weight: 400;
+  height: 100%;
+  position: fixed;
+}
+.Links {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 25px;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 40px;
+}
