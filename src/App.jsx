@@ -13,14 +13,12 @@ import Users from "./Pages/Users Page/Users";
 function App() {
   return (
     <>
-      <div>
-        <Router>
-          <Routes>
-            {/* <Route path="/" element={<Login />} /> */}
-            <Route path="/" element={<Users />} />
-          </Routes>
-        </Router>
-      </div>
+      <Router>
+        <Routes>
+          {/* <Route path="/" element={<Login />} /> */}
+          <Route path="/" element={<Users />} />
+        </Routes>
+      </Router>
     </>
   );
 }

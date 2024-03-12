@@ -1,10 +1,14 @@
 .Login_Parent {
   display: grid;
-  grid-template-columns: 1.5fr 1fr;
+  grid-template-columns: 1fr 1fr;
   padding: 10px;
 }
 .Right_Section {
   position: relative;
+}
+.Login_bg {
+  background-image: url(../../assets/dots.png);
+  background-repeat: no-repeat;
 }
 .Login_Form {
   margin: 0;
@@ -58,4 +62,10 @@
   cursor: pointer;
   font-size: 16px;
   font-family: "Gilroy medium";
+}
+.Left_Banner {
+  height: 621px;
+}
+.Left_Banner img {
+  height: 100%;
 }

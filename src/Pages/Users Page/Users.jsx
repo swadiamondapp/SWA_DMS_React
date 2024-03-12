@@ -2,10 +2,11 @@ import React from "react";
 import Sidebar from "../../Componets/Sidebar/Sidebar";
 import Header from "../../Componets/Header/Header";
 import UsersList from "../../Componets/Users/UsersList";
+import "./Users.css";
 
 const Users = () => {
   return (
-    <div style={{ padding: "10px" }}>
+    <div className="Parent_Userlist">
       <Sidebar />
       <Header />
       <UsersList />

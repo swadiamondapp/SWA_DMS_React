@@ -23,9 +23,9 @@ const Header = () => {
               <img src={profileimg} alt="" />
               <div className="Name_Sub">
                 <p>Nidhin PR</p>
-                <p>Admin</p>
+                <p className="Name_Sub_admin">Admin</p>
               </div>
-              <IoChevronDown />
+              <IoChevronDown style={{ color: "#1AA1A1" }} />
             </div>
           </div>
         </div>

@@ -5,7 +5,8 @@
   color: #ffffffc9;
   font-family: "Gilroy medium";
   font-weight: 400;
-  height: 100%;
+  /* height: 100%; */
+  height: 96.9%;
   position: fixed;
 }
 .Links {
@@ -14,9 +15,36 @@
   gap: 10px;
   margin-bottom: 25px;
 }
+.Links2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 25px;
+  justify-content: center;
+}
 .logo {
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 40px;
+}
+.Arrow {
+}
+.ArrowIcon1 {
+  background: #0b6483;
+  font-size: 27px;
+  border-radius: 32px;
+  cursor: pointer;
+  position: absolute;
+  bottom: 5%;
+  right: -5%;
+}
+.ArrowIcon2 {
+  background: #0b6483;
+  font-size: 27px;
+  border-radius: 32px;
+  cursor: pointer;
+  position: absolute;
+  bottom: 5%;
+  right: -10%;
 }

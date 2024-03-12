@@ -1,17 +1,61 @@
 .Parent_Section {
-  padding-left: 220px;
+  padding-left: 225px;
 }
 .Header_Section {
   box-shadow: 0px 4px 4px 0px #00000005;
   background: #fff;
   border-radius: 8px;
-  padding: 10px;
+  padding: 15px 15px;
   margin-top: 5px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 .Right_User_Section {
+  display: flex;
+  align-items: center;
+  gap: 100px;
+}
+.Profile_Admin {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 55px 90px 20px;
+  align-items: center;
+}
+.Search_User {
+  position: relative;
+  overflow: hidden;
+}
+.Search_User input {
+  border: 0.5px solid #f1efea;
+  background: #fbfaf8;
+  padding: 13px 20px;
+  outline: none;
+  width: 230px;
+  border-radius: 32px;
+  font-family: "Gilroy medium";
+  box-shadow: 0px 4px 4px 0px #dfddd740 inset;
+}
+.Search_User input::placeholder {
+  color: #c6bfae;
+  font-family: "Gilroy medium";
+  font-size: 14px;
+}
+.Search_User img {
+  position: absolute;
+  right: 0%;
+  bottom: 0%;
+}
+.Left_User_Section h3 {
+  color: #2e364c;
+  font-family: "Gilroy medium";
+  font-weight: 700;
+}
+.Name_Sub p {
+  font-family: "Gilroy medium";
+  color: #2a3144;
+}
+.Name_Sub_admin {
+  color: #2a3144b5 !important;
+  font-size: 15px;
+  margin-top: 5px;
 }
