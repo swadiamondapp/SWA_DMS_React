@@ -8,6 +8,13 @@ import assignmentimg from "../../assets/assignment.png";
 import chatboximg from "../../assets/chatbox.png";
 import loginzimg from "../../assets/loginz.png";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
+import AssignmentModal from "../AssignmentModal/AssignmentModal";
+import BasicDetailModal from "../BasicDetails/BasicDetailModal";
+import AssignToModal from "../AssignToModal/AssignToModal";
+import CreateCustomisation from "../CreateCustomisation/CreateCustomisation";
+import ProductCustomisation from '../ProductCustomisation/ProductCustomisation'
+import CentalHub from "../CentalHub/CentalHub";
+import UploadFile from "../UploadFile/UploadFile";
 
 const Sidebar = () => {
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
@@ -27,6 +34,14 @@ const Sidebar = () => {
         <div className="Sidebar_Links">
           {sidebarExpanded ? (
             <>
+              <AssignmentModal/>
+              <BasicDetailModal/>
+            <AssignToModal/>
+            <CreateCustomisation/>
+            <ProductCustomisation/>
+            <CentalHub/>
+            <UploadFile/>
+        
               <div className="Links">
                 <img src={userimg} alt="" />
                 <p>Users</p>
@@ -72,6 +87,7 @@ const Sidebar = () => {
               <div className="Links2">
                 <img src={loginzimg} alt="" />
               </div>
+             
             </>
           )}
         </div>

@@ -1,0 +1,109 @@
+.headerModal {
+    display: flex;
+    justify-content: space-between;
+}
+.assignTitle {
+    color:#000000;
+    font-family: "Gilroy medium";
+    font-weight: 500;
+    font-size: 20px;
+
+}
+.avatarContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.avatarImageContainer {
+    display: flex;
+    justify-content:center;
+    align-items: center;
+
+}
+.leftTo {
+    display: flex;
+    gap:15px;
+    align-items: center;
+    justify-content: center;
+    
+}
+.rightTo {
+    display: flex;
+    gap:20px;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.avataImage {
+
+}
+.detailsAvatar {
+    display: flex;
+    flex-direction: column;
+
+}
+.nameA {
+    font-family: "Gilroy medium";
+    font-size: 15px;
+    font-weight: 500;
+
+}
+.nameB {
+    opacity: 70%;
+    font-size: 14px;
+    font-family: "Gilroy medium";
+    font-weight: 400;
+
+
+}
+.tagged {
+    
+     
+}
+.taggedText {
+    color:#23A064;
+    font-size: 12px;
+    font-family: "Gilroy medium";
+
+
+}
+.avatarButton {
+    background: #0464D5;
+    border:none;
+    box-shadow: #0000000D;
+    color:#fff;
+    font-family: "Gilroy medium";
+    padding:8px 16px;
+    border-radius: 32px;
+    font-size: 14px;
+
+
+}
+.line {
+    border-bottom: 1px solid lightgray;
+    width: 100%;
+    margin: 2px 0px;
+
+}
+ ::-webkit-scrollbar {
+    width: 8px;
+    margin-left: 10px !important;
+ 
+
+     /* Set the width of the scrollbar */
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    margin: 10px; /* Color of the scrollbar track */
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #999; /* Color of the scrollbar handle on hover */
+  }
+ .main {
+ 
+
+ }

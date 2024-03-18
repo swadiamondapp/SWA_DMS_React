@@ -1,0 +1,91 @@
+.formContainer {
+}
+.inputFields {
+  border: 0.75px solid #e0e1e1;
+  width: 100%;
+  padding: 8px 6px;
+  border-radius: 4px;
+}
+.label-text {
+  font-size: 12px;
+  font-family: "Inter", sans-serif;
+  white-space: nowrap;
+  color: #19242d;
+}
+
+.gridfifty {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  width: 100%;
+  padding-bottom: 5px;
+}
+.gridThree {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+  width: 100%;
+  padding-bottom: 5px;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.next-button {
+  background-color: #2b2b2b;
+  font-family: "Gilroy medium";
+  font-weight: 400;
+  color: #fff;
+  border: none;
+  padding: 10px 0px;
+  border-radius: 8px;
+  width: 100%;
+}
+ :where(.css-dev-only-do-not-override-1ae8k9u).ant-select-outlined:not(
+    .ant-select-customize-input
+  )
+  .ant-select-selector {
+  padding: 16px 10px;
+  border-radius: 4px !important;
+  color:#006E7F1A !important;
+}
+
+.create_form_field {
+  padding: 0px 0px;
+}
+.select_field {
+  display: flex;
+  flex-direction: column;
+}
+.titleBasic {
+  font-family: "Gilroy medium";
+  font-size: 16px;
+  padding-bottom: 6px;
+}
+.textArea {
+  padding-bottom: 5px;
+}
+.inputTag {
+  height: 6px !important;
+  font-size: 12px;
+  --rti-s: 3px !important;
+}
+.rti--container {
+  --rti-s: 4px !important;
+  font-size: 12px !important;
+  padding: 6px 6px !important; /* spacing */
+  --rti-main: #000000;
+  --rti-radius: 4px !important;
+}
+.rti--container :focus-visible {
+  outline: none;
+}
+.approxMetel {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.tagsInputfeild {
+  padding-bottom: 6px;
+}

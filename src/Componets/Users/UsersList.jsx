@@ -3,10 +3,32 @@ import "./Userlist.css";
 import { IoEye } from "react-icons/io5";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { Modal, Select } from "antd";
+import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
+import { message, Upload } from "antd";
+import UserEm from "../../assets/userEmpty.png";
+
+const getBase64 = (img, callback) => {
+  const reader = new FileReader();
+  reader.addEventListener("load", () => callback(reader.result));
+  reader.readAsDataURL(img);
+};
+const beforeUpload = (file) => {
+  const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
+  if (!isJpgOrPng) {
+    message.error("You can only upload JPG/PNG file!");
+  }
+  const isLt2M = file.size / 1024 / 1024 < 2;
+  if (!isLt2M) {
+    message.error("Image must smaller than 2MB!");
+  }
+  return isJpgOrPng && isLt2M;
+};
 
 const UsersList = () => {
   // create modal
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [imageUrl, setImageUrl] = useState();
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -31,6 +53,39 @@ const UsersList = () => {
   // Filter `option.label` match the user type `input`
   const filterOption = (input, option) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
+
+  const handleChange = (info) => {
+    if (info.file.status === "uploading") {
+      setLoading(true);
+      return;
+    }
+    if (info.file.status === "done") {
+      // Get this url from response in real world.
+      getBase64(info.file.originFileObj, (url) => {
+        setLoading(false);
+        setImageUrl(url);
+      });
+    }
+  };
+  const uploadButton = (
+    <button
+      style={{
+        border: 0,
+        background: "none",
+      }}
+      type="button"
+    >
+      {/* {loading ? <LoadingOutlined /> : <PlusOutlined />} */}
+      <div
+        style={{
+          marginTop: 4,
+        }}
+      >
+        <img src={UserEm} style={{ maxWidth: "80px" }} />
+      </div>
+    </button>
+  );
+
   // select box
   const userlist = [
     {
@@ -97,12 +152,14 @@ const UsersList = () => {
       designation: "Votors",
     },
   ];
+
   return (
     <div>
       <div className="Parent_userList">
         <div className="Create_user">
           <button onClick={showModal}>Create user</button>
         </div>
+
         {/* create modal */}
         <div className="create_modal_parent">
           <Modal
@@ -110,21 +167,61 @@ const UsersList = () => {
             open={isModalOpen}
             onOk={handleOk}
             onCancel={handleCancel}
+            centered
+            width={380}
           >
             <div className="Create_user_modal">
-              <h3>Create user</h3>
+              <div className="title-Createuser">
+                <h3>Create user</h3>
+              </div>
+              <div className="dragAndDrop">
+                <div>
+                  <div>
+                    <Upload
+                      name="avatar"
+                      listType="picture-circle"
+                      className="avatar-uploader"
+                      showUploadList={false}
+                      action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
+                      beforeUpload={beforeUpload}
+                      onChange={handleChange}
+                    >
+                      {imageUrl ? (
+                        <img
+                          src={imageUrl}
+                          alt="avatar"
+                          style={{
+                            width: "100%",
+                          }}
+                        />
+                      ) : (
+                        uploadButton
+                      )}
+                    </Upload>
+                  </div>
+                </div>
+              </div>
+              <div style={{ textAlign: "center" }}>
+                <span className="uploadFile">
+                  Drag & Drop or{" "}
+                  <span style={{ color: "#0464D5" }}>choose file </span>to
+                  upload file
+                  <br />
+                  jpg, png
+                </span>
+              </div>
               <div className="Create_form">
                 <div className="create_form_field">
                   <label htmlFor="">Name</label>
-                  <input type="text" />
+                  <input type="text" className="inputFeild" />
                 </div>
                 <div className="create_form_field">
                   <label htmlFor="">Phone number</label>
-                  <input type="text" />
+                  <input type="text" className="inputFeild" />
                 </div>
                 <div className="create_form_field">
                   <label htmlFor="">Email</label>
-                  <input type="text" />
+                  <input type="text" className="inputFeild" />
                 </div>
                 <div className="create_form_field">
                   <label htmlFor="">Role</label>
@@ -135,10 +232,11 @@ const UsersList = () => {
                     onChange={onChange}
                     onSearch={onSearch}
                     filterOption={filterOption}
+                    style={{ width: "100%" }}
                     options={[
                       {
                         value: "jack",
-                        label: "Jack",
+                        label: "Designer",
                       },
                       {
                         value: "lucy",
@@ -151,8 +249,9 @@ const UsersList = () => {
                     ]}
                   />
                 </div>
+                
                 <div className="create_user_btn">
-                  <button>Create User</button>
+                  <button className="create-user-button">Create User</button>
                 </div>
               </div>
             </div>
@@ -173,8 +272,8 @@ const UsersList = () => {
               </tr>
             </thead>
             <tbody>
-              {userlist.map((item) => (
-                <tr style={{ color: "#2E364C" }}>
+              {userlist.map((item,index) => (
+                <tr key={index} style={{ color: "#2E364C" }}>
                   <td>{item.date}</td>
                   <td>{item.name}</td>
                   <td>{item.email}</td>
@@ -192,9 +291,9 @@ const UsersList = () => {
                     </div>
                   </td>
                   <td>
-                    <label class="switch">
+                    <label className="switch">
                       <input type="checkbox" />
-                      <span class="slider round"></span>
+                      <span className="slider round"></span>
                     </label>
                   </td>
                   <td>

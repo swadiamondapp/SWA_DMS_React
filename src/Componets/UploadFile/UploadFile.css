@@ -1,0 +1,14 @@
+.uploadPNG_Container {
+
+}
+.upload_DMFile {
+
+}
+.addButton_Container {
+    display: flex;
+}
+.dashedImage {
+    border:0.5px dashed #C2CCD3;
+    padding:30px 20px;
+
+}

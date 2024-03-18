@@ -1,7 +1,15 @@
+.inputFeild {
+  border:0.75px solid #E0E1E1;
+  width: 100%;
+  padding:10px 0px;
+  border-radius: 8px;
+
+}
 .Parent_userList {
   padding-left: 225px;
   padding-top: 20px;
 }
+
 .Create_user {
   text-align: end;
 }
@@ -134,4 +142,58 @@ input:checked + .slider:before {
 }
 :where(.css-dev-only-do-not-override-1ae8k9u).ant-modal .ant-modal-footer {
   display: none !important;
+}
+.create_modal_parent, :where(.css-dev-only-do-not-override-1ae8k9u).ant-select-outlined:not(.ant-select-customize-input) .ant-select-selector  {
+  border: 1px solid #d9d9d9;
+  background:rgba(0, 110, 127, 0.1)!important;
+  color:#006E7F !important;
+}
+.create-user-button {
+  background:#2B2B2B;
+  width: 100%;
+  padding:10px 0px;
+  color:#fff;
+  margin:15px 0px 0px 0px;
+  border:none;
+  border-radius: 8px;
+}
+.dragAndDrop {
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding-left: 10px;
+}
+
+.title-Createuser > h3 {
+  margin-bottom: 20px;
+  font-family: "Gilroy medium";
+  font-weight: 400;
+  text-align: center;
+  color: #000000;
+}
+:where(.css-dev-only-do-not-override-1ae8k9u).ant-upload-wrapper .ant-upload {
+  outline: 0;
+  max-width: 90px;
+  max-height: 90px;
+}
+.create_form_field>:where(.css-dev-only-do-not-override-1ae8k9u).ant-select-outlined:not(.ant-select-customize-input) .ant-select-selector {
+  padding: 19px 10px;
+  border-radius: 4px;
+}
+.create_form_field {
+  padding:5px 0px
+}
+.Create_form {
+  display: flex;
+  flex-direction: column;
+  gap:6px
+}
+.uploadFile {
+  font-family: "Inter", sans-serif;
+}
+.create_modal_parent, :where(.css-dev-only-do-not-override-1ae8k9u).ant-select-outlined:not(.ant-select-customize-input) .ant-select-selector {
+
+  color: #006E7F !important;
+  border: none !important;
 }

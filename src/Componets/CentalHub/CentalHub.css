@@ -1,0 +1,91 @@
+.uploadContiner {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap:12px
+}
+.uploadImageContainerr {
+    display: flex;
+    gap:10px
+}
+.inputContainer {
+    display: flex;
+    flex-direction: column;
+}
+.labelText {
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 5px;
+    color:lightgray
+
+}
+  .left {
+    display: flex;
+    flex-direction: column;
+    gap:2px;
+    justify-content: center;
+    border: 2px dashed #E0E1E1;
+    padding: 20px 10px;
+  }
+  .textA {
+    font-family: "Inter", sans-serif;
+    text-align: center;
+    font-weight: 500;
+    font-size: 14px;
+    color:#19242D
+    
+
+  }
+  .textB {
+    font-family: "Gilroy medium";
+    text-align: center;
+    font-size: 12px;
+    font-weight: 400;
+    color:#19242D99;
+    
+
+  }
+  
+  
+  .right {
+    display: flex;
+    flex-direction: column;
+    gap:2px;
+    justify-content: center;
+    border: 2px dashed #E0E1E1;
+    padding: 10px 10px;
+
+
+  }
+
+  .inputFeildUpload {
+    width: 100%;
+    padding: 10px 16px;
+    border-radius: 4px;
+    border: 0.75px solid #B4C3D0;
+
+
+  }
+  .buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap:10px
+  }
+  .cancerButton {
+    border:0.75px solid #E0E1E1;
+    font-family: "Gilroy medium";
+    background: transparent;
+    padding:10px 15px;
+    color:#999999;
+    border-radius: 8px;
+
+  }
+  .upButton {
+    background: #0464D5;
+    font-family: "Gilroy medium";
+    border-radius: 8px;
+    border: none;
+    color:#fff;
+    padding:10px 15px;
+  }
