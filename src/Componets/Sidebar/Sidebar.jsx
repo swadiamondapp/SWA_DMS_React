@@ -12,7 +12,7 @@ import AssignmentModal from "../AssignmentModal/AssignmentModal";
 import BasicDetailModal from "../BasicDetails/BasicDetailModal";
 import AssignToModal from "../AssignToModal/AssignToModal";
 import CreateCustomisation from "../CreateCustomisation/CreateCustomisation";
-import ProductCustomisation from '../ProductCustomisation/ProductCustomisation'
+import ProductCustomisation from "../ProductCustomisation/ProductCustomisation";
 import CentalHub from "../CentalHub/CentalHub";
 import UploadFile from "../UploadFile/UploadFile";
 
@@ -34,14 +34,14 @@ const Sidebar = () => {
         <div className="Sidebar_Links">
           {sidebarExpanded ? (
             <>
-              <AssignmentModal/>
+              {/* <AssignmentModal/>
               <BasicDetailModal/>
             <AssignToModal/>
             <CreateCustomisation/>
             <ProductCustomisation/>
             <CentalHub/>
-            <UploadFile/>
-        
+            <UploadFile/> */}
+
               <div className="Links">
                 <img src={userimg} alt="" />
                 <p>Users</p>
@@ -87,7 +87,6 @@ const Sidebar = () => {
               <div className="Links2">
                 <img src={loginzimg} alt="" />
               </div>
-             
             </>
           )}
         </div>

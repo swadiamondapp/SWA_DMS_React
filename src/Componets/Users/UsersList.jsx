@@ -29,6 +29,7 @@ const UsersList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState();
+  const [showEditDelete, setShowEditDelete] = useState(null);
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -249,7 +250,7 @@ const UsersList = () => {
                     ]}
                   />
                 </div>
-                
+
                 <div className="create_user_btn">
                   <button className="create-user-button">Create User</button>
                 </div>
@@ -272,7 +273,7 @@ const UsersList = () => {
               </tr>
             </thead>
             <tbody>
-              {userlist.map((item,index) => (
+              {userlist.map((item, index) => (
                 <tr key={index} style={{ color: "#2E364C" }}>
                   <td>{item.date}</td>
                   <td>{item.name}</td>
@@ -296,8 +297,21 @@ const UsersList = () => {
                       <span className="slider round"></span>
                     </label>
                   </td>
-                  <td>
-                    <BsThreeDotsVertical className="Action_dots" />
+                  <td style={{ position: "relative" }}>
+                    <BsThreeDotsVertical
+                      className="Action_dots"
+                      onClick={() =>
+                        setShowEditDelete(
+                          showEditDelete === index ? null : index
+                        )
+                      }
+                    />
+                    {showEditDelete === index && (
+                      <div className="Edit_delete_btn_user">
+                        <p className="Edit_btn_user">Edit</p>
+                        <p className="Delete_btn_user">Delete</p>
+                      </div>
+                    )}
                   </td>
                 </tr>
               ))}

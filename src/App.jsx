@@ -9,6 +9,9 @@ import {
 } from "react-router-dom";
 import Login from "./Componets/Login/Login";
 import Users from "./Pages/Users Page/Users";
+import OtherLoginPage from "./Pages/Other Login Page/OtherLoginPage";
+import AssignmentViewPage from "./Pages/Assignment Folder View/AssignmentViewPage";
+import DesignPoolView from "./Pages/Design Pool Page/DesignPoolView";
 
 function App() {
   return (
@@ -16,7 +19,10 @@ function App() {
       <Router>
         <Routes>
           {/* <Route path="/" element={<Login />} /> */}
-          <Route path="/" element={<Users />} />
+          {/* <Route path="/" element={<Users />} /> */}
+          {/* <Route path="/" element={<OtherLoginPage />} /> */}
+          {/* <Route path="/" element={<AssignmentViewPage />} /> */}
+          <Route path="/" element={<DesignPoolView />} />
         </Routes>
       </Router>
     </>
