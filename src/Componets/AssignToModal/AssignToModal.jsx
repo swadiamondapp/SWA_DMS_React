@@ -62,7 +62,13 @@ const AssignToModal = () => {
                   </span>
                   <button
                     onClick={handleClose}
-                    style={{ position: "absolute", top: 15, right: 15,background: 'none',border:"none" }}
+                    style={{
+                      position: "absolute",
+                      top: 15,
+                      right: 15,
+                      background: "none",
+                      border: "none",
+                    }}
                   >
                     <img src={closeButton} />
                   </button>
@@ -98,7 +104,6 @@ const AssignToModal = () => {
                     </div>
                     <div className="line"></div>
                   </div>
-
                   <div className="Avata">
                     <div className="avatarContainer">
                       <div className="leftTo">
@@ -125,7 +130,8 @@ const AssignToModal = () => {
                       </div>
                     </div>
                     <div className="line"></div>
-                  </div> <div className="Avata">
+                  </div>{" "}
+                  <div className="Avata">
                     <div className="avatarContainer">
                       <div className="leftTo">
                         <div className="avatarImageContainer">
@@ -151,7 +157,8 @@ const AssignToModal = () => {
                       </div>
                     </div>
                     <div className="line"></div>
-                  </div> <div className="Avata">
+                  </div>{" "}
+                  <div className="Avata">
                     <div className="avatarContainer">
                       <div className="leftTo">
                         <div className="avatarImageContainer">
@@ -177,7 +184,8 @@ const AssignToModal = () => {
                       </div>
                     </div>
                     <div className="line"></div>
-                  </div> <div className="Avata">
+                  </div>{" "}
+                  <div className="Avata">
                     <div className="avatarContainer">
                       <div className="leftTo">
                         <div className="avatarImageContainer">
@@ -203,7 +211,8 @@ const AssignToModal = () => {
                       </div>
                     </div>
                     <div className="line"></div>
-                  </div> <div className="Avata">
+                  </div>{" "}
+                  <div className="Avata">
                     <div className="avatarContainer">
                       <div className="leftTo">
                         <div className="avatarImageContainer">
@@ -229,7 +238,8 @@ const AssignToModal = () => {
                       </div>
                     </div>
                     <div className="line"></div>
-                  </div> <div className="Avata">
+                  </div>{" "}
+                  <div className="Avata">
                     <div className="avatarContainer">
                       <div className="leftTo">
                         <div className="avatarImageContainer">
@@ -255,7 +265,8 @@ const AssignToModal = () => {
                       </div>
                     </div>
                     <div className="line"></div>
-                  </div> <div className="Avata">
+                  </div>{" "}
+                  <div className="Avata">
                     <div className="avatarContainer">
                       <div className="leftTo">
                         <div className="avatarImageContainer">

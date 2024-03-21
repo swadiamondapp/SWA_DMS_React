@@ -34,13 +34,13 @@ const Sidebar = () => {
         <div className="Sidebar_Links">
           {sidebarExpanded ? (
             <>
-              {/* <AssignmentModal/>
-              <BasicDetailModal/>
-            <AssignToModal/>
-            <CreateCustomisation/>
-            <ProductCustomisation/>
-            <CentalHub/>
-            <UploadFile/> */}
+              {/* <AssignmentModal />
+              <BasicDetailModal />
+              <AssignToModal />
+              <CreateCustomisation />
+              <ProductCustomisation />
+              <CentalHub />
+              <UploadFile /> */}
 
               <div className="Links">
                 <img src={userimg} alt="" />

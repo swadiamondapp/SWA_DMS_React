@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { Select } from "antd";
 import { TagsInput } from "react-tag-input-component";
+import AssignmentModal from "../AssignmentModal/AssignmentModal";
 
 const style = {
   position: "absolute",
@@ -17,15 +18,16 @@ const style = {
   border: "none",
   boxShadow: 24,
   borderRadius: "8px 0 0 8px",
-  overflowY:'scroll',
+  overflowY: "scroll",
   p: 2,
 };
 
-const BasicDetailModal = () => {
+const BasicDetailModal = ({ open, onClose }) => {
   // create modal
 
-  const [open, setOpen] = React.useState(false);
+  // const [open, setOpen] = React.useState(false);
   const [selected, setSelected] = useState(["papaya"]);
+  const [showAssignmentModal, setShowAssignmentModal] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -37,18 +39,20 @@ const BasicDetailModal = () => {
   };
   const filterOption = (input, option) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
-    
 
+  const handleNextClick = () => {
+    onClose(); // Close the modal
+    // Show AssignmentModal when Next is clicked
+    setShowAssignmentModal(true);
+  };
   return (
     <div>
       <div className="">
-        <div className="">
-          <Button onClick={handleOpen}>BasicDetails modal</Button>
-        </div>
         <div className="modalContainer" style={{ position: "relative" }}>
           <Modal
             open={open}
-            onClose={handleClose}
+            // onClose={handleClose}
+            onClose={onClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
             style={{ position: "absolute", right: "0" }}
@@ -123,7 +127,7 @@ const BasicDetailModal = () => {
                         onChange={onChange}
                         onSearch={onSearch}
                         filterOption={filterOption}
-                        style={{ width: "100%", }}
+                        style={{ width: "100%" }}
                         options={[
                           {
                             value: "jack",
@@ -177,7 +181,7 @@ const BasicDetailModal = () => {
                         onChange={setSelected}
                         name="fruits"
                         placeHolder="enter fruits"
-                        classNames='inputTag'
+                        classNames="inputTag"
                       />
                     </div>
                   </div>
@@ -190,8 +194,10 @@ const BasicDetailModal = () => {
                       style={{ width: "100%", padding: "0px 6px" }}
                     ></textarea>
                   </div>
-                  <div >
-                    <button className="next-button">Next</button>
+                  <div>
+                    <button className="next-button" onClick={handleNextClick}>
+                      Next
+                    </button>
                   </div>
                 </div>
               </Typography>
@@ -199,6 +205,10 @@ const BasicDetailModal = () => {
           </Modal>
         </div>
       </div>
+      <AssignmentModal
+        open={showAssignmentModal}
+        onClose={() => setShowAssignmentModal(false)}
+      />
     </div>
   );
 };

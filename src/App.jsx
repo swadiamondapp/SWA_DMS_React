@@ -12,6 +12,8 @@ import Users from "./Pages/Users Page/Users";
 import OtherLoginPage from "./Pages/Other Login Page/OtherLoginPage";
 import AssignmentViewPage from "./Pages/Assignment Folder View/AssignmentViewPage";
 import DesignPoolView from "./Pages/Design Pool Page/DesignPoolView";
+import AssignmentPanalPage from "./Pages/Assignment Panel View/AssignmentPanalPage";
+import ChatPage from "./Pages/Chat Page/ChatPage";
 
 function App() {
   return (
@@ -21,8 +23,10 @@ function App() {
           {/* <Route path="/" element={<Login />} /> */}
           {/* <Route path="/" element={<Users />} /> */}
           {/* <Route path="/" element={<OtherLoginPage />} /> */}
-          {/* <Route path="/" element={<AssignmentViewPage />} /> */}
+          <Route path="/assignmentview" element={<AssignmentViewPage />} />
           <Route path="/" element={<DesignPoolView />} />
+          <Route path="/assignmentpanel" element={<AssignmentPanalPage />} />
+          <Route path="/chat" element={<ChatPage />} />
         </Routes>
       </Router>
     </>
