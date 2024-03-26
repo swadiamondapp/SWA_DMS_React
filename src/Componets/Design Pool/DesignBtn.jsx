@@ -20,36 +20,44 @@ const DesignBtn = ({
   return (
     <div>
       <div className="DesignPool_btns">
-        {location.pathname !== "/assignmentpanel" && (
-          <div className="Download_ParentD">
-            <button className="D_downlodBtn" onClick={toggleDownloadOptions}>
-              Download <TbDownload />
-            </button>
-            {showDownloadOptions && (
-              <div className="Download_Sub">
-                <p>All</p>
-                <p>Selected</p>
-              </div>
-            )}
-          </div>
+        {location.pathname !== "/assignmentpanel" &&
+          location.pathname !== "/designdashboard" && (
+            <div className="Download_ParentD">
+              <button className="D_downlodBtn" onClick={toggleDownloadOptions}>
+                Download <TbDownload />
+              </button>
+              {showDownloadOptions && (
+                <div className="Download_Sub">
+                  <p>All</p>
+                  <p>Selected</p>
+                </div>
+              )}
+            </div>
+          )}
+        {location.pathname !== "/designdashboard" && (
+          <button className="D_selectBtn" onClick={toggleRadioButtons}>
+            {selectButtonLabel}
+          </button>
         )}
-        <button className="D_selectBtn" onClick={toggleRadioButtons}>
-          {selectButtonLabel}
-        </button>
-        {location.pathname !== "/assignmentpanel" && (
-          <div className="Parent_MoveTo">
-            <button className="D_moveBtn" onClick={toggleMoveOptions}>
-              Move to <MdOutlineKeyboardArrowDown />
-            </button>
-            {showMoveOptions && (
-              <div className="Sub_AssignmentPanel">
-                <Link style={{ textDecoration: "none" }} to="/assignmentpanel">
-                  <p style={{ color: "#000" }}>Assignment panel</p>
-                </Link>
-              </div>
-            )}
-          </div>
-        )}
+
+        {location.pathname !== "/assignmentpanel" &&
+          location.pathname !== "/designdashboard" && (
+            <div className="Parent_MoveTo">
+              <button className="D_moveBtn" onClick={toggleMoveOptions}>
+                Move to <MdOutlineKeyboardArrowDown />
+              </button>
+              {showMoveOptions && (
+                <div className="Sub_AssignmentPanel">
+                  <Link
+                    style={{ textDecoration: "none" }}
+                    to="/assignmentpanel"
+                  >
+                    <p style={{ color: "#000" }}>Assignment panel</p>
+                  </Link>
+                </div>
+              )}
+            </div>
+          )}
         {location.pathname === "/assignmentpanel" && (
           <div className="Parent_MoveTo">
             <button className="D_moveBtn" onClick={() => setIsModalOpen(true)}>

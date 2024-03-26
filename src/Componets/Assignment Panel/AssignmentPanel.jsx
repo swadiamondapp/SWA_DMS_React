@@ -100,14 +100,7 @@ const AssignmentPanel = () => {
         {uploadedImage && ( // Check if an image is uploaded
           <img src={uploadedImage} alt="Uploaded" className="uploadedimg" />
         )}
-        {/* {!uploadedImage && uploadInstructionsVisible && (
-          <>
-            <p>Create new assignment</p>
-            <p>
-              Drag & Drop or choose file to upload file <br /> jpg, png
-            </p>
-          </>
-        )} */}
+
         <input
           id="fileInput"
           type="file"
