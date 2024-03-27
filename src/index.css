@@ -9,7 +9,9 @@ body {
   box-sizing: border-box;
   background: #f6f5f1;
 }
-
+a {
+  text-decoration: none;
+}
 @font-face {
   font-family: "Gilroy bold";
   src: url(./assets/Gilroy-Bold.ttf);
@@ -22,4 +24,3 @@ body {
   font-family: "Gilroy reguler";
   src: url(./assets/Gilroy-Regular.ttf);
 }
-

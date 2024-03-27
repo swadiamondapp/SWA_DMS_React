@@ -17,6 +17,7 @@ import ChatPage from "./Pages/Chat Page/ChatPage";
 import DesignerDashboardPage from "./Pages/DESIGNER PANEL/DesignerDashboad Page/DesignerDashboardPage";
 import DesignerAsignmentPanelPage from "./Pages/DESIGNER PANEL/Designer Assignment Panel Page/DesignerAsignmentPanelPage";
 import DesignerAssignViewPage from "./Pages/DESIGNER PANEL/Designer Assignview Page/DesignerAssignViewPage";
+import CustomizedOrderPage from "./Pages/DESIGNER PANEL/Customized Order Page/CustomizedOrderPage";
 
 function App() {
   return (
@@ -24,10 +25,10 @@ function App() {
       <Router>
         <Routes>
           {/* <Route path="/" element={<Login />} /> */}
-          {/* <Route path="/" element={<Users />} /> */}
-          {/* <Route path="/" element={<OtherLoginPage />} /> */}
+          <Route path="/users" element={<Users />} />
+          <Route path="/otherlogin" element={<OtherLoginPage />} />
           <Route path="/assignmentview" element={<AssignmentViewPage />} />
-          <Route path="/" element={<DesignPoolView />} />
+          <Route path="/designpool" element={<DesignPoolView />} />
           <Route path="/assignmentpanel" element={<AssignmentPanalPage />} />
           <Route path="/chat" element={<ChatPage />} />
           <Route path="/designdashboard" element={<DesignerDashboardPage />} />
@@ -39,6 +40,7 @@ function App() {
             path="/designerassignview"
             element={<DesignerAssignViewPage />}
           />
+          <Route path="/Customizedorder" element={<CustomizedOrderPage />} />
         </Routes>
       </Router>
     </>

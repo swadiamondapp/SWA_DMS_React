@@ -44,30 +44,40 @@ const Sidebar = () => {
               <CentalHub />
               <UploadFile /> */}
 
-              <div className="Links">
-                <img src={userimg} alt="" />
-                <p>Users</p>
-              </div>
-              <div className="Links">
-                <img src={designimg} alt="" />
-                <p>Design pool</p>
-              </div>
+              <Link to="/users">
+                <div className="Links">
+                  <img src={userimg} alt="" />
+                  <p>Users</p>
+                </div>
+              </Link>
+              <Link to="/designpool">
+                <div className="Links">
+                  <img src={designimg} alt="" />
+                  <p>Design pool</p>
+                </div>
+              </Link>
               <div className="Links">
                 <img src={mastersimg} alt="" />
                 <p>Masters</p>
               </div>
-              <div className="Links">
-                <img src={assignmentimg} alt="" />
-                <p>Assignment panel</p>
-              </div>
-              <div className="Links">
-                <img src={chatboximg} alt="" />
-                <p>Chat box</p>
-              </div>
-              <div className="Links">
-                <img src={loginzimg} alt="" />
-                <p>Other logins</p>
-              </div>
+              <Link to="/assignmentpanel">
+                <div className="Links">
+                  <img src={assignmentimg} alt="" />
+                  <p>Assignment panel</p>
+                </div>
+              </Link>
+              <Link to="/chat">
+                <div className="Links">
+                  <img src={chatboximg} alt="" />
+                  <p>Chat box</p>
+                </div>
+              </Link>
+              <Link to="/otherlogin">
+                <div className="Links">
+                  <img src={loginzimg} alt="" />
+                  <p>Other logins</p>
+                </div>
+              </Link>
             </>
           ) : (
             <>

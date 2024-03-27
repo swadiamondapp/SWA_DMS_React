@@ -6,6 +6,7 @@ import { RiFilter3Line } from "react-icons/ri";
 import "./DesignPool.css";
 import { Link, useLocation } from "react-router-dom";
 import BasicDetailModal from "../BasicDetails/BasicDetailModal";
+import AssignToModal from "../AssignToModal/AssignToModal";
 
 const DesignBtn = ({
   toggleDownloadOptions,
@@ -17,11 +18,13 @@ const DesignBtn = ({
 }) => {
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpenAssign, setIsModalOpenAssign] = useState(false);
   return (
     <div>
       <div className="DesignPool_btns">
         {location.pathname !== "/assignmentpanel" &&
-          location.pathname !== "/designdashboard" && (
+          location.pathname !== "/designdashboard" &&
+          location.pathname !== "/designerassignview" && (
             <div className="Download_ParentD">
               <button className="D_downlodBtn" onClick={toggleDownloadOptions}>
                 Download <TbDownload />
@@ -41,7 +44,8 @@ const DesignBtn = ({
         )}
 
         {location.pathname !== "/assignmentpanel" &&
-          location.pathname !== "/designdashboard" && (
+          location.pathname !== "/designdashboard" &&
+          location.pathname !== "/designerassignview" && (
             <div className="Parent_MoveTo">
               <button className="D_moveBtn" onClick={toggleMoveOptions}>
                 Move to <MdOutlineKeyboardArrowDown />
@@ -58,6 +62,17 @@ const DesignBtn = ({
               )}
             </div>
           )}
+        {location.pathname === "/designerassignview" && (
+          <div className="Parent_MoveTo">
+            <button
+              className="D_moveBtn"
+              onClick={() => setIsModalOpenAssign(true)}
+            >
+              Assign To
+            </button>
+          </div>
+        )}
+
         {location.pathname === "/assignmentpanel" && (
           <div className="Parent_MoveTo">
             <button className="D_moveBtn" onClick={() => setIsModalOpen(true)}>
@@ -79,6 +94,10 @@ const DesignBtn = ({
       <BasicDetailModal
         open={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+      />
+      <AssignToModal
+        open={isModalOpenAssign}
+        onClose={() => setIsModalOpenAssign(false)}
       />
     </div>
   );

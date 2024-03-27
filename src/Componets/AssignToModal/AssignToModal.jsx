@@ -21,10 +21,10 @@ const style = {
   overflowY: "auto",
   borderRadius: 2,
 };
-const AssignToModal = () => {
+const AssignToModal = ({ open, onClose }) => {
   // create modal
 
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
   const [AssinedButton, setAssignedButton] = useState("Assign");
   const [tagText, setTagText] = useState("");
 
@@ -39,13 +39,11 @@ const AssignToModal = () => {
   return (
     <div>
       <div className="">
-        <div className="">
-          <Button onClick={handleOpen}>Assign To modal</Button>
-        </div>
         <div className="modalContainer" style={{ position: "relative" }}>
           <Modal
             open={open}
-            onClose={handleClose}
+            // onClose={handleClose}
+            onClose={onClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
             style={{ position: "absolute", right: "0px" }}
@@ -61,7 +59,8 @@ const AssignToModal = () => {
                     Assign to
                   </span>
                   <button
-                    onClick={handleClose}
+                    // onClick={handleClose}
+                    onClose={onClose}
                     style={{
                       position: "absolute",
                       top: 15,
