@@ -6,6 +6,7 @@ import designimg from "../../assets/design.png";
 import mastersimg from "../../assets/masters.png";
 import assignmentimg from "../../assets/assignment.png";
 import chatboximg from "../../assets/chatbox.png";
+import customeimg from "../../assets/custome.png";
 import loginzimg from "../../assets/loginz.png";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import AssignmentModal from "../AssignmentModal/AssignmentModal";
@@ -16,6 +17,10 @@ import ProductCustomisation from "../ProductCustomisation/ProductCustomisation";
 import CentalHub from "../CentalHub/CentalHub";
 import UploadFile from "../UploadFile/UploadFile";
 import { useLocation, Link } from "react-router-dom";
+import SlotView from "../SlotVIew/SlotView";
+import SlotCreation from "../SlotCreation/SlotCreation";
+import CustomiseRequest from "../CustomiseRequest/CustomiseRequiest";
+import DesignPools from "../DesignPoolExtended/DesignPools";
 
 const Sidebar = () => {
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
@@ -44,7 +49,12 @@ const Sidebar = () => {
               <CentalHub />
               <UploadFile /> */}
 
-              <Link to="/users">
+              {/* <SlotView />
+              <SlotCreation />
+              <CustomiseRequest />
+              <DesignPools /> */}
+              {/* Admin Panel */}
+              {/* <Link to="/users">
                 <div className="Links">
                   <img src={userimg} alt="" />
                   <p>Users</p>
@@ -77,11 +87,39 @@ const Sidebar = () => {
                   <img src={loginzimg} alt="" />
                   <p>Other logins</p>
                 </div>
+              </Link> */}
+              {/* Admin Panel */}
+              {/* For Designer Module */}
+              <Link to="/designdashboard">
+                <div className="Links">
+                  <img src={userimg} alt="" />
+                  <p>Dashboard</p>
+                </div>
               </Link>
+              <Link to="/designerassign">
+                <div className="Links">
+                  <img src={assignmentimg} alt="" />
+                  <p>Assign</p>
+                </div>
+              </Link>
+              <Link to="/chat">
+                <div className="Links">
+                  <img src={chatboximg} alt="" />
+                  <p>Chat box</p>
+                </div>
+              </Link>
+              <Link to="/Customizedorder">
+                <div className="Links">
+                  <img src={customeimg} alt="" />
+                  <p>Customized Order</p>
+                </div>
+              </Link>
+              {/* For Designer Module */}
             </>
           ) : (
             <>
-              <div className="Links2">
+              {/* Admin Panel */}
+              {/* <div className="Links2">
                 <img src={userimg} alt="" />
               </div>
               <div className="Links2">
@@ -98,7 +136,23 @@ const Sidebar = () => {
               </div>
               <div className="Links2">
                 <img src={loginzimg} alt="" />
+              </div> */}
+              {/* Admin Panel */}
+              {/* For Designer Panel */}
+              <div className="Links2">
+                <img src={userimg} alt="" />
               </div>
+              <div className="Links2">
+                <img src={assignmentimg} alt="" />
+              </div>
+              <div className="Links2">
+                <img src={chatboximg} alt="" />
+              </div>
+              <div className="Links2">
+                <img src={customeimg} alt="" />
+              </div>
+
+              {/* For Designer Panel */}
             </>
           )}
         </div>

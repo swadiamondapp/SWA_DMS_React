@@ -1,0 +1,120 @@
+.subTitle {
+  display: flex;
+  gap: 40px;
+  justify-content: flex-start;
+  align-items: center;
+}
+.DiamondType {
+    display: flex;
+    gap: 25px;
+    justify-content: flex-start;
+    align-items: center;
+
+}
+.lineCR {
+    border-bottom: 0.5px solid #9DA2B2;
+    width: 100%;
+    padding-top: 5px;
+    margin-bottom: 5px;
+}
+.subTitle-metal {
+    display: flex;
+    gap: 40px;
+    justify-content: flex-start;
+    align-items: center
+    ;
+  }
+.headerTitle {
+  color: #2d364d;
+  font-family: "Gilroy medium";
+  font-weight: 600;
+  font-size: 15px;
+  padding-bottom: 5px;
+}
+.basic-Details-title {
+  font-family: "Gilroy medium";
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+.basicDetailsTitle {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.ProductInformation span:first-child {
+  font-family: "Gilroy medium";
+  font-weight: 600;
+  font-size: 10px;
+  color: #455173;
+}
+.ProductInformation {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.ProductInformation span:nth-child(2) {
+  font-family: "Gilroy medium";
+  font-weight: 400;
+  font-size: 10px;
+  color: #2e364c;
+  opacity: 70%;
+}
+.ringImages {
+    display: flex;
+    gap:10px
+}
+.CR_ButtonCommen {
+    border-radius: 32px;
+    padding:10px 16px;
+    box-shadow: 0px 2px 4px 0px #0000000D;
+    margin-top: 5px;
+    font-family: "Gilroy medium";
+    font-size: 14px;
+
+
+}
+.crButtonContainer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap:15px
+
+}
+.editButtonCR {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    gap:5px;
+    border:1px solid #0464D5;
+    background: transparent;
+    color:#0464D5;
+    font-weight: 500;
+}
+.rejectButtonCR {
+    font-weight: 400;
+    background: #FF2222;
+    color: #FFFFFF;
+    border:1px solid #FF2222; 
+
+}
+.confirmButtonCR {
+    font-weight: 400;
+    background: #126E72;
+    color: #FFFFFF;
+    border:1px solid #126E72;
+
+}
+.imgTitleCR {
+    font-family: "Gilroy medium";
+    font-weight: 600;
+    font-size: 11px;
+    color: #455173;
+    margin-bottom: 5px;
+}
+.imageContainer img {
+    max-height: 85px;
+    max-width: 85px;
+  
+}
+

@@ -24,7 +24,7 @@ function App() {
     <>
       <Router>
         <Routes>
-          {/* <Route path="/" element={<Login />} /> */}
+          <Route path="/" element={<Login />} />
           <Route path="/users" element={<Users />} />
           <Route path="/otherlogin" element={<OtherLoginPage />} />
           <Route path="/assignmentview" element={<AssignmentViewPage />} />

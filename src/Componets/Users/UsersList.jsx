@@ -6,11 +6,46 @@ import { Modal, Select } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { message, Upload } from "antd";
 import UserEm from "../../assets/userEmpty.png";
+import Joi from "joi";
 
 const getBase64 = (img, callback) => {
   const reader = new FileReader();
   reader.addEventListener("load", () => callback(reader.result));
   reader.readAsDataURL(img);
+};
+
+const schema = Joi.object({
+  name: Joi.string().required().messages({
+    "string.empty": `cannot be an empty feild`,
+  }),
+  email: Joi.string()
+    .email({ tlds: { allow: false } })
+    .required()
+    .messages({
+      "string.empty": `cannot be an empty feild`,
+    }),
+  phoneNumber: Joi.string()
+    .pattern(/^\d{10}$/)
+    .required()
+    .messages({
+      "string.empty": `cannot be an empty feild`,
+    }),
+  selectedRole: Joi.string().required().messages({
+    "string.empty": `cannot be an empty feild`,
+  }),
+});
+
+const validateForm = (data) => {
+  const { error } = schema.validate(data, { abortEarly: false });
+  if (!error) {
+    return {};
+  }
+
+  const errors = {};
+  error.details.forEach((err) => {
+    errors[err.context.key] = err.message;
+  });
+  return errors;
 };
 const beforeUpload = (file) => {
   const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
@@ -29,6 +64,57 @@ const UsersList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState();
+  const [errors, setErrors] = useState({});
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phoneNumber: "",
+    selectedRole: "",
+  });
+
+  const handleInput = (e) => {
+    const { name, value } = e.target;
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: "", // Clear the error message for this input field
+    }));
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const validationErrors = validateForm(formData);
+    if (Object.keys(validationErrors).length === 0) {
+      // Form is valid, proceed with submission
+      console.log("Form submitted:", formData);
+    } else {
+      // Form is invalid, display errors
+      setErrors(validationErrors);
+    }
+  };
+
+  // const validateForm = (data) => {
+  //   const errors = {};
+  //   if (!data.name.trim()) {
+  //     errors.name = "Name is required";
+  //   }
+  //   if (!data.email.trim()) {
+  //     errors.email = "Email is required";
+  //   } else if (!/\S+@\S+\.\S+/.test(data.email)) {
+  //     errors.email = "Email is invalid";
+  //   }
+  //   if (!data.phoneNumber.trim()) {
+  //     errors.phoneNumber = "Phone number is required";
+  //   } else if (!/^\d{10}$/.test(data.phoneNumber)) {
+  //     errors.phoneNumber = "Phone number must be 10 digits";
+  //   }
+
+  //   return errors;
+  // };
   const [showEditDelete, setShowEditDelete] = useState(null);
 
   const showModal = () => {
@@ -164,7 +250,6 @@ const UsersList = () => {
         {/* create modal */}
         <div className="create_modal_parent">
           <Modal
-            title=""
             open={isModalOpen}
             onOk={handleOk}
             onCancel={handleCancel}
@@ -212,48 +297,100 @@ const UsersList = () => {
                 </span>
               </div>
               <div className="Create_form">
-                <div className="create_form_field">
-                  <label htmlFor="">Name</label>
-                  <input type="text" className="inputFeild" />
-                </div>
-                <div className="create_form_field">
-                  <label htmlFor="">Phone number</label>
-                  <input type="text" className="inputFeild" />
-                </div>
-                <div className="create_form_field">
-                  <label htmlFor="">Email</label>
-                  <input type="text" className="inputFeild" />
-                </div>
-                <div className="create_form_field">
-                  <label htmlFor="">Role</label>
-                  <Select
-                    showSearch
-                    placeholder="Select a person"
-                    optionFilterProp="children"
-                    onChange={onChange}
-                    onSearch={onSearch}
-                    filterOption={filterOption}
-                    style={{ width: "100%" }}
-                    options={[
-                      {
-                        value: "jack",
-                        label: "Designer",
-                      },
-                      {
-                        value: "lucy",
-                        label: "Lucy",
-                      },
-                      {
-                        value: "tom",
-                        label: "Tom",
-                      },
-                    ]}
-                  />
-                </div>
+                <form
+                  onSubmit={handleSubmit}
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "10px",
+                  }}
+                >
+                  <div className="create_form_field">
+                    <label htmlFor="">Name</label>
+                    <input
+                      type="text"
+                      className="inputFeild"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInput}
+                    />
+                    {errors.name && (
+                      <span className="error">{errors.name}</span>
+                    )}
+                  </div>
+                  <div className="create_form_field">
+                    <label htmlFor="">Phone number</label>
+                    <input
+                      type="number"
+                      className="inputFeild"
+                      name="phoneNumber"
+                      value={formData.phoneNumber}
+                      onChange={handleInput}
+                    />
+                    {errors.phoneNumber && (
+                      <span className="error">{errors.phoneNumber}</span>
+                    )}
+                  </div>
+                  <div className="create_form_field">
+                    <label htmlFor="">Email</label>
+                    <input
+                      type="email"
+                      className="inputFeild"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInput}
+                    />
+                    {errors.email && (
+                      <span className="error">{errors.email}</span>
+                    )}
+                  </div>
+                  <div className="parant_relative">
+                    <label htmlFor="">Role</label>
+                    <Select
+                      showSearch
+                      placeholder="Select a person"
+                      optionFilterProp="children"
+                      onChange={(value) =>
+                        setFormData((prevState) => ({
+                          ...prevState,
+                          selectedRole: value,
+                        }))
+                      }
+                      onSearch={onSearch}
+                      filterOption={filterOption}
+                      style={{ width: "100%" }}
+                      options={[
+                        {
+                          value: "Designer",
+                          label: "Designer",
+                        },
+                        {
+                          value: "Ui/ux",
+                          label: "UI/UX",
+                        },
+                        {
+                          value: "tom",
+                          label: "Functional Analyst",
+                        },
+                        {
+                          value: "",
+                          label: "empty",
+                        },
+                      ]}
+                    />
+                    {errors.selectedRole && (
+                      <span className="error_selected_input">
+                        {errors.selectedRole}
+                      </span>
+                    )}
+                  </div>
 
-                <div className="create_user_btn">
-                  <button className="create-user-button">Create User</button>
-                </div>
+                  <div className="create_user_btn">
+                    <button className="create-user-button" type="submit">
+                      Create User
+                    </button>
+                  </div>
+                </form>
               </div>
             </div>
           </Modal>
