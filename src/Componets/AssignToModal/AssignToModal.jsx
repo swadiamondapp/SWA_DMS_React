@@ -20,6 +20,7 @@ const style = {
   p: 2,
   overflowY: "auto",
   borderRadius: 2,
+  outLine:'none'
 };
 const AssignToModal = () => {
   // create modal

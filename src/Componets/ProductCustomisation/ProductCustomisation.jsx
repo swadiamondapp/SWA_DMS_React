@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import closeButton from "../../assets/closeButton.svg";
 import { Select } from "antd";
-
+import Joi from "joi";
 
 const style = {
   position: "absolute",
@@ -23,21 +23,61 @@ const style = {
   borderRadius: 2,
 };
 
+const schema = Joi.object({
+  size: Joi.string().required().messages({
+    "string.empty": `cannot be an empty feild`,
+  }),
+  type: Joi.string().required().messages({
+    "string.empty": `cannot be an empty feild`,
+  }),
+  colour: Joi.string().required().messages({
+    "string.empty": `cannot be an empty feild`,
+  }),
+});
+
 const ProductCustomisation = () => {
   // create modal
 
   const [open, setOpen] = useState(false);
   const [AssinedButton, setAssignedButton] = useState("Assign");
   const [tagText, setTagText] = useState("");
+  const [errors, setErrors] = useState({});
+  const [selectedValues, setSelectedValues] = useState({
+    size: "",
+    type: "",
+    colour: "",
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const emptyFields = Object.entries(selectedValues)
+      .filter(([key, value]) => value === "")
+      .map(([key, value]) => key);
+
+    if (emptyFields.length > 0) {
+      console.log("Please fill in all required fields Product Customisation modal.");
+      console.log("Empty fields:", emptyFields);
+      return; // Prevent further execution of the function
+    }
+
+    const { error } = schema.validate(selectedValues, {
+      abortEarly: false,
+      allowUnknown: true,
+    });
+    if (error) {
+      const validationError = error.details.reduce((errors, err) => {
+        errors[err.path[0]] = err.message;
+        return errors;
+      }, {});
+      setErrors(validationError);
+    } else {
+      console.log("form submitted", selectedValues);
+      setErrors({ undefined });
+    }
+  };
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
-  const handleAssignButton = () => {
-    setAssignedButton((prevText) =>
-      prevText === "Assign" ? "Unasign" : "Assign"
-    );
-  };
 
   const onChange = (value) => {
     console.log(`selected ${value}`);
@@ -74,7 +114,13 @@ const ProductCustomisation = () => {
                   </span>
                   <button
                     onClick={handleClose}
-                    style={{ position: "absolute", top: 15, right: 15,background: 'none',border:"none" }}
+                    style={{
+                      position: "absolute",
+                      top: 15,
+                      right: 15,
+                      background: "none",
+                      border: "none",
+                    }}
                   >
                     <img src={closeButton} />
                   </button>
@@ -83,9 +129,9 @@ const ProductCustomisation = () => {
 
               <Typography id="modal-modal-description" sx={{ mt: 5 }}>
                 <div>
-                  <form>
+                  <form onSubmit={handleSubmit}>
                     <div className="container">
-                      <div className="">
+                      <div className="parant_relative">
                         <label htmlFor="" className="label_text">
                           Size
                         </label>
@@ -93,27 +139,27 @@ const ProductCustomisation = () => {
                           showSearch
                           placeholder="-Select-"
                           optionFilterProp="children"
-                          onChange={onChange}
+                          onChange={(value) =>
+                            setSelectedValues((prevState) => ({
+                              ...prevState,
+                              size: value,
+                            }))
+                          }
                           onSearch={onSearch}
                           filterOption={filterOption}
                           style={{ width: "100%" }}
                           options={[
-                            {
-                              value: "jack",
-                              label: "Designer",
-                            },
-                            {
-                              value: "lucy",
-                              label: "Lucy",
-                            },
-                            {
-                              value: "tom",
-                              label: "Tom",
-                            },
+                            { value: "small", label: "Small" },
+                            { value: "medium", label: "Medium" },
+                            { value: "large", label: "Large" },
+                            { value: "", label: "" },
                           ]}
                         />
+                        {errors.size && (
+                          <span className="error_input">{errors.size}</span>
+                        )}
                       </div>
-                      <div className="">
+                      <div className="parant_relative">
                         <label htmlFor="" className="label_text">
                           Type of Order
                         </label>
@@ -121,27 +167,25 @@ const ProductCustomisation = () => {
                           showSearch
                           placeholder="-Select-"
                           optionFilterProp="children"
-                          onChange={onChange}
+                          onChange={(value) =>
+                            setSelectedValues((prevState) => ({
+                              ...prevState,
+                              type: value,
+                            }))
+                          }
                           onSearch={onSearch}
                           filterOption={filterOption}
                           style={{ width: "100%" }}
                           options={[
-                            {
-                              value: "jack",
-                              label: "Designer",
-                            },
-                            {
-                              value: "lucy",
-                              label: "Lucy",
-                            },
-                            {
-                              value: "tom",
-                              label: "Tom",
-                            },
+                            { value: "online", label: "Online" },
+                            { value: "offline", label: "Offline" },
                           ]}
                         />
+                        {errors.type && (
+                          <span className="error_input">{errors.type}</span>
+                        )}
                       </div>
-                      <div>
+                      <div className="parant_relative">
                         <label htmlFor="" className="label_text">
                           Colour
                         </label>
@@ -149,28 +193,27 @@ const ProductCustomisation = () => {
                           showSearch
                           placeholder="-Select-"
                           optionFilterProp="children"
-                          onChange={onChange}
+                          onChange={(value) =>
+                            setSelectedValues((prevState) => ({
+                              ...prevState,
+                              colour: value,
+                            }))
+                          }
                           onSearch={onSearch}
                           filterOption={filterOption}
                           style={{ width: "100%" }}
                           options={[
-                            {
-                              value: "jack",
-                              label: "Designer",
-                            },
-                            {
-                              value: "lucy",
-                              label: "Lucy",
-                            },
-                            {
-                              value: "tom",
-                              label: "Tom",
-                            },
+                            { value: "red", label: "Red" },
+                            { value: "blue", label: "Blue" },
+                            { value: "green", label: "Green" },
                           ]}
                         />
+                        {errors.colour && (
+                          <span className="error_input">{errors.colour}</span>
+                        )}
                       </div>
                       <div>
-                        <button className="CreateOrderButton">
+                        <button type="submit" className="CreateOrderButton">
                           Create Order Button
                         </button>
                       </div>

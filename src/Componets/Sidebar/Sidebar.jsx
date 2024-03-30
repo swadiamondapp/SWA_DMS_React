@@ -15,6 +15,10 @@ import CreateCustomisation from "../CreateCustomisation/CreateCustomisation";
 import ProductCustomisation from '../ProductCustomisation/ProductCustomisation'
 import CentalHub from "../CentalHub/CentalHub";
 import UploadFile from "../UploadFile/UploadFile";
+import SlotView from "../SlotVIew/SlotView";
+import SlotCreation from '../SlotCreation/SlotCreation'
+import CustomiseRequest from "../CustomiseRequest/CustomiseRequiest";
+import DesignPools from "../DesignPoolExtended/DesignPools";
 
 const Sidebar = () => {
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
@@ -41,6 +45,10 @@ const Sidebar = () => {
             <ProductCustomisation/>
             <CentalHub/>
             <UploadFile/>
+            <SlotView/>
+            <SlotCreation/>
+            <CustomiseRequest/>
+            <DesignPools/>
         
               <div className="Links">
                 <img src={userimg} alt="" />
