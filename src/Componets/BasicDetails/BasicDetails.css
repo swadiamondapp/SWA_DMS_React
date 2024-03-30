@@ -6,8 +6,9 @@
 .inputFields {
   border: 0.75px solid #e0e1e1;
   width: 100%;
-  padding: 8px 6px;
+  padding: 8px 10px;
   border-radius: 4px;
+  outline: none;
 }
 .label-text {
   font-size: 12px;
@@ -126,4 +127,5 @@
 }
 .textArea_feild {
   outline: none;
+  padding:8px 10px;
 }
