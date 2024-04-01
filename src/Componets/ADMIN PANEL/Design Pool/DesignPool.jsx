@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import "./DesignPool.css";
-import like from "../../assets/like.png";
-import ring from "../../assets/ring.png";
-import DesignBtn from "../Design Pool/DesignBtn";
+import like from "../../../assets/like.png";
+import ring from "../../../assets/ring.png";
+import DesignBtn from "../../ADMIN PANEL/Design Pool/DesignBtn";
 
 const DesignPool = () => {
   const [showRadioButtons, setShowRadioButtons] = useState(false);

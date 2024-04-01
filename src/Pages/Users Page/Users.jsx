@@ -1,9 +1,8 @@
 import React from "react";
 import Sidebar from "../../Componets/Sidebar/Sidebar";
 import Header from "../../Componets/Header/Header";
-import UsersList from "../../Componets/Users/UsersList";
+import UsersList from "../../Componets/ADMIN PANEL/Users/UsersList";
 import "./Users.css";
-import { useLocation } from "react-router-dom";
 
 const Users = () => {
   return (

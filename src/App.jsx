@@ -18,6 +18,9 @@ import DesignerDashboardPage from "./Pages/DESIGNER PANEL/DesignerDashboad Page/
 import DesignerAsignmentPanelPage from "./Pages/DESIGNER PANEL/Designer Assignment Panel Page/DesignerAsignmentPanelPage";
 import DesignerAssignViewPage from "./Pages/DESIGNER PANEL/Designer Assignview Page/DesignerAssignViewPage";
 import CustomizedOrderPage from "./Pages/DESIGNER PANEL/Customized Order Page/CustomizedOrderPage";
+import VotorsPanalPage from "./Pages/VOTORS PANAL/Votors Panal Page/VotorsPanalPage";
+import VotorCustomization from "./Pages/VOTORS PANAL/Votors Customization Page/VotorCustomization";
+import GalleryPage from "./Pages/VOTORS PANAL/Gallery Page/GalleryPage";
 
 function App() {
   return (
@@ -41,6 +44,9 @@ function App() {
             element={<DesignerAssignViewPage />}
           />
           <Route path="/Customizedorder" element={<CustomizedOrderPage />} />
+          <Route path="/votorspanal" element={<VotorsPanalPage />} />
+          <Route path="/votorscustomization" element={<VotorCustomization />} />
+          <Route path="/gallery" element={<GalleryPage />} />
         </Routes>
       </Router>
     </>

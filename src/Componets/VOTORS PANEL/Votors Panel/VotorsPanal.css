@@ -1,0 +1,54 @@
+.ParentVotors {
+  padding-left: 225px;
+  padding-top: 20px;
+}
+.VotorsPanelsection {
+  margin-top: 25px;
+}
+.lastvoted {
+  margin-top: 25px;
+}
+.votors_btns {
+  margin-bottom: 15px;
+}
+.status_votors {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.requested_btn {
+  color: #0464d5;
+  border: 0.5px solid #0464d596;
+  background: #0464d51a;
+  padding: 8px 15px;
+  font-family: "Inter";
+  border-radius: 32px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.updated_btn {
+  color: #23a064;
+  border: 0.5px solid #23a06496;
+  background: #23a0642b;
+  padding: 8px 15px;
+  font-family: "Inter";
+  border-radius: 32px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.Card_Details_Inner_gallery {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.Card_Details_Inner_gallery button {
+  background: #04344d;
+  border: none;
+  color: #fff;
+  font-family: "Inter";
+  font-weight: 500;
+  padding: 12px 15px;
+  border-radius: 32px;
+  cursor: pointer;
+}

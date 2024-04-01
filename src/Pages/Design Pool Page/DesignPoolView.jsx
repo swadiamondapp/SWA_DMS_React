@@ -2,7 +2,7 @@ import React from "react";
 import "./DesignPoolView.css";
 import Sidebar from "../../Componets/Sidebar/Sidebar";
 import Header from "../../Componets/Header/Header";
-import DesignPool from "../../Componets/Design Pool/DesignPool";
+import DesignPool from "../../Componets/ADMIN PANEL/Design Pool/DesignPool";
 
 const DesignPoolView = () => {
   return (

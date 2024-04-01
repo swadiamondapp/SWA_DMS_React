@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./DesignerDashboard.css";
 import { LiaCloudUploadAltSolid } from "react-icons/lia";
-import DesignBtn from "../../Design Pool/DesignBtn";
+import DesignBtn from "../../ADMIN PANEL/Design Pool/DesignBtn";
 import ring from "../../../assets/ring.png";
 
 const DesignerDashboard = () => {

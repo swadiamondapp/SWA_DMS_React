@@ -5,7 +5,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { Modal, Select } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { message, Upload } from "antd";
-import UserEm from "../../assets/userEmpty.png";
+import UserEm from "../../../assets/userEmpty.png";
 import Joi from "joi";
 
 const getBase64 = (img, callback) => {

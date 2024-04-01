@@ -7,6 +7,7 @@ import mastersimg from "../../assets/masters.png";
 import assignmentimg from "../../assets/assignment.png";
 import chatboximg from "../../assets/chatbox.png";
 import customeimg from "../../assets/custome.png";
+import galleryimg from "../../assets/gallery.png";
 import loginzimg from "../../assets/loginz.png";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import AssignmentModal from "../AssignmentModal/AssignmentModal";
@@ -54,7 +55,7 @@ const Sidebar = () => {
               <CustomiseRequest />
               <DesignPools /> */}
               {/* Admin Panel */}
-              {/* <Link to="/users">
+              <Link to="/users">
                 <div className="Links">
                   <img src={userimg} alt="" />
                   <p>Users</p>
@@ -87,10 +88,10 @@ const Sidebar = () => {
                   <img src={loginzimg} alt="" />
                   <p>Other logins</p>
                 </div>
-              </Link> */}
+              </Link>
               {/* Admin Panel */}
               {/* For Designer Module */}
-              <Link to="/designdashboard">
+              {/* <Link to="/designdashboard">
                 <div className="Links">
                   <img src={userimg} alt="" />
                   <p>Dashboard</p>
@@ -113,8 +114,34 @@ const Sidebar = () => {
                   <img src={customeimg} alt="" />
                   <p>Customized Order</p>
                 </div>
-              </Link>
+              </Link> */}
               {/* For Designer Module */}
+              {/* For Votors Panel */}
+              <Link to="/votorspanal">
+                <div className="Links">
+                  <img src={userimg} alt="" />
+                  <p>votors panel</p>
+                </div>
+              </Link>
+              <Link to="/chat">
+                <div className="Links">
+                  <img src={chatboximg} alt="" />
+                  <p>Chat box</p>
+                </div>
+              </Link>
+              <Link to="/votorscustomization">
+                <div className="Links">
+                  <img src={customeimg} alt="" />
+                  <p>Customization</p>
+                </div>
+              </Link>
+              <Link to="/gallery">
+                <div className="Links">
+                  <img src={galleryimg} alt="" />
+                  <p>Gallery</p>
+                </div>
+              </Link>
+              {/* For Votors Panel */}
             </>
           ) : (
             <>

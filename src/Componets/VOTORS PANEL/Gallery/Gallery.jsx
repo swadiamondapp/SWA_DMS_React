@@ -1,0 +1,89 @@
+import React, { useState } from "react";
+import Box from "@mui/material/Box";
+import Tab from "@mui/material/Tab";
+import TabContext from "@mui/lab/TabContext";
+import TabList from "@mui/lab/TabList";
+import TabPanel from "@mui/lab/TabPanel";
+import ring from "../../../assets/ring.png";
+import ProductCustomisation from "../../ProductCustomisation/ProductCustomisation";
+
+const Gallery = () => {
+  const [value, setValue] = React.useState("1");
+  const [IsModalOpen, setIsModalOpen] = useState(false);
+  const card = [
+    {
+      product: "SWAD3456",
+      name: "Shivaprasad Yadav",
+      date: "12 june 2023",
+    },
+    {
+      product: "SWAD3456",
+      name: "Shivaprasad Yadav",
+      date: "12 june 2023",
+    },
+    {
+      product: "SWAD3456",
+      name: "Shivaprasad Yadav",
+      date: "12 june 2023",
+    },
+    {
+      product: "SWAD3456",
+      name: "Shivaprasad Yadav",
+      date: "12 june 2023",
+    },
+  ];
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+  return (
+    <div className="ParentVotors">
+      <div className="gallery__tab">
+        <Box sx={{ width: "100%", typography: "body1" }}>
+          <TabContext value={value}>
+            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+              <TabList
+                onChange={handleChange}
+                aria-label="lab API tabs example"
+              >
+                <Tab label="Stock Order" value="1" />
+                <Tab label="Customized Order" value="2" />
+              </TabList>
+            </Box>
+            <TabPanel value="1">
+              <div className="first_tab">
+                <div className="Card_Design_Parent">
+                  {card.map((item) => (
+                    <div className="New_Design_card">
+                      <div className="Card_Details">
+                        <div
+                          className="Card_img"
+                          style={{ borderBottom: "0px" }}
+                        >
+                          <img src={ring} alt="" />
+                        </div>
+                        <div className="Card_Details_Inner_gallery">
+                          <h3>ID : {item.product}</h3>
+
+                          <button onClick={() => setIsModalOpen(true)}>
+                            Make order
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </TabPanel>
+            <TabPanel value="2">Item Two</TabPanel>
+          </TabContext>
+        </Box>
+      </div>
+      <ProductCustomisation
+        open={IsModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
+    </div>
+  );
+};
+
+export default Gallery;

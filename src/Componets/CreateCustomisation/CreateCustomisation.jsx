@@ -43,8 +43,8 @@ const props = {
     }
   },
 };
-const CreateCustomisation = () => {
-  const [open, setOpen] = useState(false);
+const CreateCustomisation = ({ open, onClose }) => {
+  // const [open, setOpen] = useState(false);
 
   const [tagText, setTagText] = useState("");
   const [errors, setErrors] = useState({});
@@ -124,13 +124,13 @@ const CreateCustomisation = () => {
 
   const handleSubmitButton = (e) => {
     e.preventDefault();
-  
+
     // Validate form data using Joi schema
     const { error } = schema.validate(formData, {
       abortEarly: false,
       allowUnknown: true,
     });
-  
+
     if (error) {
       // Form is invalid, display validation errors
       const validationErrors = error.details.reduce((errors, err) => {
@@ -172,13 +172,10 @@ const CreateCustomisation = () => {
   return (
     <div>
       <div className="">
-        <div className="">
-          <Button onClick={handleOpen}>Create Customisation</Button>
-        </div>
         <div className="modalContainer" style={{ position: "relative" }}>
           <Modal
             open={open}
-            onClose={handleClose}
+            onClose={onClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
             style={{ position: "absolute", right: "0px" }}
@@ -195,7 +192,7 @@ const CreateCustomisation = () => {
                     <br /> Customization
                   </span>
                   <button
-                    onClick={handleClose}
+                    onClick={onClose}
                     style={{
                       position: "absolute",
                       top: 15,

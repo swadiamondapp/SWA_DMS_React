@@ -5,8 +5,9 @@ import { LuArrowUpDown } from "react-icons/lu";
 import { RiFilter3Line } from "react-icons/ri";
 import "./DesignPool.css";
 import { Link, useLocation } from "react-router-dom";
-import BasicDetailModal from "../BasicDetails/BasicDetailModal";
-import AssignToModal from "../AssignToModal/AssignToModal";
+import BasicDetailModal from "../../BasicDetails/BasicDetailModal";
+import AssignToModal from "../../AssignToModal/AssignToModal";
+import CreateCustomisation from "../../CreateCustomisation/CreateCustomisation";
 
 const DesignBtn = ({
   toggleDownloadOptions,
@@ -19,12 +20,15 @@ const DesignBtn = ({
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpenAssign, setIsModalOpenAssign] = useState(false);
+  const [isModalOpenCreateCutomize, setIsCreateCustomizeModalOpen] =
+    useState(false);
   return (
     <div>
       <div className="DesignPool_btns">
         {location.pathname !== "/assignmentpanel" &&
           location.pathname !== "/designdashboard" &&
-          location.pathname !== "/designerassignview" && (
+          location.pathname !== "/designerassignview" &&
+          location.pathname !== "/votorscustomization" && (
             <div className="Download_ParentD">
               <button className="D_downlodBtn" onClick={toggleDownloadOptions}>
                 Download <TbDownload />
@@ -37,15 +41,17 @@ const DesignBtn = ({
               )}
             </div>
           )}
-        {location.pathname !== "/designdashboard" && (
-          <button className="D_selectBtn" onClick={toggleRadioButtons}>
-            {selectButtonLabel}
-          </button>
-        )}
+        {location.pathname !== "/designdashboard" &&
+          location.pathname !== "/votorscustomization" && (
+            <button className="D_selectBtn" onClick={toggleRadioButtons}>
+              {selectButtonLabel}
+            </button>
+          )}
 
         {location.pathname !== "/assignmentpanel" &&
           location.pathname !== "/designdashboard" &&
-          location.pathname !== "/designerassignview" && (
+          location.pathname !== "/designerassignview" &&
+          location.pathname !== "/votorscustomization" && (
             <div className="Parent_MoveTo">
               <button className="D_moveBtn" onClick={toggleMoveOptions}>
                 Move to <MdOutlineKeyboardArrowDown />
@@ -81,15 +87,29 @@ const DesignBtn = ({
           </div>
         )}
 
-        <button className="D_View_Sort_Filter">
-          <MdViewModule /> View
-        </button>
-        <button className="D_View_Sort_Filter">
-          <LuArrowUpDown /> Sort
-        </button>
+        {location.pathname !== "/votorscustomization" && (
+          <button className="D_View_Sort_Filter">
+            <MdViewModule /> View
+          </button>
+        )}
+
+        {location.pathname !== "/votorscustomization" && (
+          <button className="D_View_Sort_Filter">
+            <LuArrowUpDown /> Sort
+          </button>
+        )}
+
         <button className="D_View_Sort_Filter">
           <RiFilter3Line /> Filter
         </button>
+        {location.pathname === "/votorscustomization" && (
+          <button
+            className="D_downlodBtn"
+            onClick={() => setIsCreateCustomizeModalOpen(true)}
+          >
+            Create Customization
+          </button>
+        )}
       </div>
       <BasicDetailModal
         open={isModalOpen}
@@ -98,6 +118,10 @@ const DesignBtn = ({
       <AssignToModal
         open={isModalOpenAssign}
         onClose={() => setIsModalOpenAssign(false)}
+      />
+      <CreateCustomisation
+        open={isModalOpenCreateCutomize}
+        onClose={() => setIsCreateCustomizeModalOpen(false)}
       />
     </div>
   );

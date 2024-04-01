@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./DesignerDetailView.css";
-import DesignBtn from "../../Design Pool/DesignBtn";
+import DesignBtn from "../../ADMIN PANEL/Design Pool/DesignBtn";
 import ring from "../../../assets/ring.png";
 
 const DesignerDetailView = () => {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
-import "../Design Pool/DesignPool.css";
+import "../ADMIN PANEL/Design Pool/DesignPool.css";
 import "./AssignmentPanel.css";
-import DesignBtn from "../Design Pool/DesignBtn";
+import DesignBtn from "../ADMIN PANEL/Design Pool/DesignBtn";
 import ring from "../../assets/gold.png";
 import like from "../../assets/like.png";
 import { BsThreeDotsVertical } from "react-icons/bs";
