@@ -117,7 +117,7 @@ const Sidebar = () => {
               </Link> */}
               {/* For Designer Module */}
               {/* For Votors Panel */}
-              <Link to="/votorspanal">
+              {/* <Link to="/votorspanal">
                 <div className="Links">
                   <img src={userimg} alt="" />
                   <p>votors panel</p>
@@ -140,8 +140,28 @@ const Sidebar = () => {
                   <img src={galleryimg} alt="" />
                   <p>Gallery</p>
                 </div>
-              </Link>
+              </Link> */}
               {/* For Votors Panel */}
+              {/* CAD PANEL SIDEBAR */}
+              <Link to="/CadAssignment">
+                <div className="Links">
+                  <img src={userimg} alt="" />
+                  <p>Assignments</p>
+                </div>
+              </Link>
+              <Link to="/chat">
+                <div className="Links">
+                  <img src={chatboximg} alt="" />
+                  <p>Chat box</p>
+                </div>
+              </Link>
+              <Link to="/">
+                <div className="Links">
+                  <img src={customeimg} alt="" />
+                  <p>Finished project</p>
+                </div>
+              </Link>
+              {/* CAD PANEL SIDEBAR */}
             </>
           ) : (
             <>

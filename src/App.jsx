@@ -21,6 +21,8 @@ import CustomizedOrderPage from "./Pages/DESIGNER PANEL/Customized Order Page/Cu
 import VotorsPanalPage from "./Pages/VOTORS PANAL/Votors Panal Page/VotorsPanalPage";
 import VotorCustomization from "./Pages/VOTORS PANAL/Votors Customization Page/VotorCustomization";
 import GalleryPage from "./Pages/VOTORS PANAL/Gallery Page/GalleryPage";
+import CadAssignmentPage from "./Pages/CAD PANAL/Cad Assignment Page/CadAssignmentPage";
+import CadAssignmentCardPage from "./Pages/CAD PANAL/Cad AssignmentCard Page/CadAssignmentCardPage";
 
 function App() {
   return (
@@ -47,6 +49,11 @@ function App() {
           <Route path="/votorspanal" element={<VotorsPanalPage />} />
           <Route path="/votorscustomization" element={<VotorCustomization />} />
           <Route path="/gallery" element={<GalleryPage />} />
+          <Route path="/CadAssignment" element={<CadAssignmentPage />} />
+          <Route
+            path="/CadAssignmentcard"
+            element={<CadAssignmentCardPage />}
+          />
         </Routes>
       </Router>
     </>
