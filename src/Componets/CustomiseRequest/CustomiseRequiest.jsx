@@ -9,7 +9,7 @@ import searchIcon from "../../assets/searchIcon.svg";
 import RingA from "../../assets/ringa.png";
 import RingB from "../../assets/ringb.png";
 import RingC from "../../assets/ringc.png";
-import editIcon from '../../assets/editIcon.svg'
+import editIcon from "../../assets/editIcon.svg";
 
 const style = {
   position: "absolute",
@@ -24,13 +24,12 @@ const style = {
   p: 1,
   overflowY: "scroll",
   borderRadius: 1,
-  
 };
 
-const CustomiseRequest = () => {
+const CustomiseRequest = ({ open, onClose }) => {
   // create modal
 
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
   const [AssinedButton, setAssignedButton] = useState("Assign");
   const [tagText, setTagText] = useState("");
 
@@ -58,13 +57,11 @@ const CustomiseRequest = () => {
   return (
     <div>
       <div className="">
-        <div className="">
-          <Button onClick={handleOpen}>CustomiseRequest</Button>
-        </div>
         <div className="modalContainer" style={{ position: "relative" }}>
           <Modal
             open={open}
-            onClose={handleClose}
+            // onClose={handleClose}
+            onClose={onClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
             style={{ position: "absolute", right: "0px" }}
@@ -76,10 +73,9 @@ const CustomiseRequest = () => {
                   <span className="headerTitle">
                     Customization ID : SWA3DR56
                   </span>
-                  <div  className="lineCR"></div>
-                  <div style={{marginBottom:'5px'}}>
-
-                  <span className="basic-Details-title">Basic Details</span>
+                  <div className="lineCR"></div>
+                  <div style={{ marginBottom: "5px" }}>
+                    <span className="basic-Details-title">Basic Details</span>
                   </div>
                   <div className="subTitle">
                     <div className="ProductInformation">
@@ -95,12 +91,11 @@ const CustomiseRequest = () => {
                       <span>Malabar jewllery kozhikode</span>
                     </div>
                   </div>
-                  <div   className="lineCR"></div>
-                  <div style={{marginBottom:'5px'}}>
-
-                  <span className="basic-Details-title">
-                    Product Information
-                  </span>
+                  <div className="lineCR"></div>
+                  <div style={{ marginBottom: "5px" }}>
+                    <span className="basic-Details-title">
+                      Product Information
+                    </span>
                   </div>
                   <div className="subTitle">
                     <div className="ProductInformation">
@@ -117,9 +112,9 @@ const CustomiseRequest = () => {
                     </div>
                   </div>
                   <div>
-                  <div style={{margin:'5px 0px'}}>
-                    <span className="imgTitleCR">Images</span>
-                  </div>
+                    <div style={{ margin: "5px 0px" }}>
+                      <span className="imgTitleCR">Images</span>
+                    </div>
                     <div className="ringImages">
                       <div className="imageContainer">
                         <img className="" src={RingA} alt="" />
@@ -132,13 +127,10 @@ const CustomiseRequest = () => {
                       </div>
                     </div>
                   </div>
-                  <div
-                     className="lineCR"
-                  ></div>
-                     <div style={{marginBottom:'5px'}}>
-
-                  <span className="basic-Details-title">Metel Details</span>
-                     </div>
+                  <div className="lineCR"></div>
+                  <div style={{ marginBottom: "5px" }}>
+                    <span className="basic-Details-title">Metel Details</span>
+                  </div>
                   <div className="subTitle-metal">
                     <div className="ProductInformation">
                       <span>Metel type</span>
@@ -153,13 +145,10 @@ const CustomiseRequest = () => {
                       <span>5</span>
                     </div>
                   </div>
-                  <div
-                    className="lineCR"
-                  ></div>
-                     <div style={{marginBottom:'5px'}}>
-
-                  <span className="basic-Details-title">Diamond Details</span>
-                     </div>
+                  <div className="lineCR"></div>
+                  <div style={{ marginBottom: "5px" }}>
+                    <span className="basic-Details-title">Diamond Details</span>
+                  </div>
                   <div className="DiamondType">
                     <div className="ProductInformation">
                       <span>Diamond Weight</span>
@@ -178,13 +167,10 @@ const CustomiseRequest = () => {
                       <span>EF</span>
                     </div>
                   </div>
-                  <div
-                  className="lineCR"
-                  ></div>
-                     <div style={{marginBottom:'5px'}}>
-
-                  <span className="basic-Details-title">Other details</span>
-                     </div>
+                  <div className="lineCR"></div>
+                  <div style={{ marginBottom: "5px" }}>
+                    <span className="basic-Details-title">Other details</span>
+                  </div>
                   <div className="subTitle-metal">
                     <div className="ProductInformation">
                       <span>Budget</span>
@@ -197,18 +183,24 @@ const CustomiseRequest = () => {
                     <div className="ProductInformation">
                       <span>Note</span>
                       <span>
-                        Make the design as same as<br/> the referance image
+                        Make the design as same as
+                        <br /> the referance image
                       </span>
                     </div>
                   </div>
                   <div className="lineCR"></div>
-                  
-                    <div className="crButtonContainer">
-                      <button className="CR_ButtonCommen confirmButtonCR">confirm</button>
-                      <button className="CR_ButtonCommen rejectButtonCR">Rejet</button>
-                      <button className="CR_ButtonCommen editButtonCR">edit <img src={editIcon} alt="" /></button>
-                    </div>
-            
+
+                  <div className="crButtonContainer">
+                    {/* <button className="CR_ButtonCommen confirmButtonCR">
+                      confirm
+                    </button>
+                    <button className="CR_ButtonCommen rejectButtonCR">
+                      Rejet
+                    </button> */}
+                    <button className="CR_ButtonCommen editButtonCR">
+                      edit <img src={editIcon} alt="" />
+                    </button>
+                  </div>
                 </div>
               </Typography>
             </Box>

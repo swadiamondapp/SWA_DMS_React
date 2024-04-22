@@ -1,0 +1,16 @@
+.ParentCad {
+  padding-left: 225px;
+  padding-top: 20px;
+}
+.Finished_Items {
+  margin-top: 10px;
+}
+.CadAssignmentCard {
+  margin-top: 25px;
+}
+.Card_Details_Inner_cad h3 {
+  color: #191d29;
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 10px;
+}

@@ -7,6 +7,7 @@ import Modal from "@mui/material/Modal";
 import { Select } from "antd";
 import { TagsInput } from "react-tag-input-component";
 import Joi from "joi";
+import AssignmentModal from "../AssignmentModal/AssignmentModal";
 
 const style = {
   position: "absolute",
@@ -22,10 +23,10 @@ const style = {
   p: 2,
 };
 
-const BasicDetailModal = () => {
+const BasicDetailModal = ({ open, onClose }) => {
   // create modal
 
-  const [open, setOpen] = React.useState(false);
+  // const [open, setOpen] = React.useState(false);
   const [selected, setSelected] = useState(["papaya"]);
   const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
@@ -120,6 +121,7 @@ const BasicDetailModal = () => {
     }
   };
 
+  const [showAssignmentModal, setShowAssignmentModal] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -132,16 +134,19 @@ const BasicDetailModal = () => {
   const filterOption = (input, option) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
 
+  const handleNextClick = () => {
+    onClose(); // Close the modal
+    // Show AssignmentModal when Next is clicked
+    setShowAssignmentModal(true);
+  };
   return (
     <div>
       <div className="">
-        <div className="">
-          <Button onClick={handleOpen}>BasicDetails modal</Button>
-        </div>
         <div className="modalContainer" style={{ position: "relative" }}>
           <Modal
             open={open}
-            onClose={handleClose}
+            // onClose={handleClose}
+            onClose={onClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
             style={{ position: "absolute", right: "0" }}
@@ -436,7 +441,7 @@ const BasicDetailModal = () => {
                         )}
                       </div>
                     </div>
-                    <div style={{marginTop:'10px'}}>
+                    <div style={{ marginTop: "10px" }}>
                       <button className="next-button" type="submit">
                         Next
                       </button>
@@ -448,6 +453,10 @@ const BasicDetailModal = () => {
           </Modal>
         </div>
       </div>
+      <AssignmentModal
+        open={showAssignmentModal}
+        onClose={() => setShowAssignmentModal(false)}
+      />
     </div>
   );
 };

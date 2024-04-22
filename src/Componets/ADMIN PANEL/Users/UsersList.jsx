@@ -5,8 +5,8 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { Modal, Select } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { message, Upload } from "antd";
-import UserEm from "../../assets/userEmpty.png";
-import Joi from 'joi'
+import UserEm from "../../../assets/userEmpty.png";
+import Joi from "joi";
 
 const getBase64 = (img, callback) => {
   const reader = new FileReader();
@@ -16,16 +16,22 @@ const getBase64 = (img, callback) => {
 
 const schema = Joi.object({
   name: Joi.string().required().messages({
-    'string.empty': `cannot be an empty feild`,
+    "string.empty": `cannot be an empty feild`,
   }),
-  email: Joi.string().email({ tlds: { allow: false } }).required().messages({
-    'string.empty': `cannot be an empty feild`,
-  }),
-  phoneNumber: Joi.string().pattern(/^\d{10}$/).required().messages({
-    'string.empty': `cannot be an empty feild`,
-  }),
+  email: Joi.string()
+    .email({ tlds: { allow: false } })
+    .required()
+    .messages({
+      "string.empty": `cannot be an empty feild`,
+    }),
+  phoneNumber: Joi.string()
+    .pattern(/^\d{10}$/)
+    .required()
+    .messages({
+      "string.empty": `cannot be an empty feild`,
+    }),
   selectedRole: Joi.string().required().messages({
-    'string.empty': `cannot be an empty feild`,
+    "string.empty": `cannot be an empty feild`,
   }),
 });
 
@@ -63,14 +69,14 @@ const UsersList = () => {
     name: "",
     email: "",
     phoneNumber: "",
-    selectedRole:""
+    selectedRole: "",
   });
 
   const handleInput = (e) => {
     const { name, value } = e.target;
     setErrors((prevErrors) => ({
       ...prevErrors,
-      [name]: '', // Clear the error message for this input field
+      [name]: "", // Clear the error message for this input field
     }));
     setFormData((prevState) => ({
       ...prevState,
@@ -80,7 +86,7 @@ const UsersList = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-   
+
     const validationErrors = validateForm(formData);
     if (Object.keys(validationErrors).length === 0) {
       // Form is valid, proceed with submission
@@ -109,6 +115,8 @@ const UsersList = () => {
 
   //   return errors;
   // };
+  const [showEditDelete, setShowEditDelete] = useState(null);
+
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -124,7 +132,6 @@ const UsersList = () => {
   // select box
   const onChange = (value) => {
     console.log(`selected ${value}`);
-
   };
   const onSearch = (value) => {
     console.log("search:", value);
@@ -243,13 +250,11 @@ const UsersList = () => {
         {/* create modal */}
         <div className="create_modal_parent">
           <Modal
-            
             open={isModalOpen}
             onOk={handleOk}
             onCancel={handleCancel}
             centered
             width={380}
-        
           >
             <div className="Create_user_modal">
               <div className="title-Createuser">
@@ -292,7 +297,14 @@ const UsersList = () => {
                 </span>
               </div>
               <div className="Create_form">
-                <form onSubmit={handleSubmit} style={{display:'flex',flexDirection:'column',gap:'10px'}}>
+                <form
+                  onSubmit={handleSubmit}
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "10px",
+                  }}
+                >
                   <div className="create_form_field">
                     <label htmlFor="">Name</label>
                     <input
@@ -314,9 +326,10 @@ const UsersList = () => {
                       name="phoneNumber"
                       value={formData.phoneNumber}
                       onChange={handleInput}
-                      
                     />
-                     {errors.phoneNumber && <span className="error">{errors.phoneNumber}</span>}
+                    {errors.phoneNumber && (
+                      <span className="error">{errors.phoneNumber}</span>
+                    )}
                   </div>
                   <div className="create_form_field">
                     <label htmlFor="">Email</label>
@@ -366,7 +379,9 @@ const UsersList = () => {
                       ]}
                     />
                     {errors.selectedRole && (
-                      <span className="error_selected_input">{errors.selectedRole}</span>
+                      <span className="error_selected_input">
+                        {errors.selectedRole}
+                      </span>
                     )}
                   </div>
 
@@ -419,8 +434,21 @@ const UsersList = () => {
                       <span className="slider round"></span>
                     </label>
                   </td>
-                  <td>
-                    <BsThreeDotsVertical className="Action_dots" />
+                  <td style={{ position: "relative" }}>
+                    <BsThreeDotsVertical
+                      className="Action_dots"
+                      onClick={() =>
+                        setShowEditDelete(
+                          showEditDelete === index ? null : index
+                        )
+                      }
+                    />
+                    {showEditDelete === index && (
+                      <div className="Edit_delete_btn_user">
+                        <p className="Edit_btn_user">Edit</p>
+                        <p className="Delete_btn_user">Delete</p>
+                      </div>
+                    )}
                   </td>
                 </tr>
               ))}

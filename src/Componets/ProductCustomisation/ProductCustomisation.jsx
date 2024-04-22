@@ -35,10 +35,10 @@ const schema = Joi.object({
   }),
 });
 
-const ProductCustomisation = () => {
+const ProductCustomisation = ({ open, onClose }) => {
   // create modal
 
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
   const [AssinedButton, setAssignedButton] = useState("Assign");
   const [tagText, setTagText] = useState("");
   const [errors, setErrors] = useState({});
@@ -55,7 +55,9 @@ const ProductCustomisation = () => {
       .map(([key, value]) => key);
 
     if (emptyFields.length > 0) {
-      console.log("Please fill in all required fields Product Customisation modal.");
+      console.log(
+        "Please fill in all required fields Product Customisation modal."
+      );
       console.log("Empty fields:", emptyFields);
       return; // Prevent further execution of the function
     }
@@ -91,13 +93,10 @@ const ProductCustomisation = () => {
   return (
     <div>
       <div className="">
-        <div className="">
-          <Button onClick={handleOpen}>Product Customization</Button>
-        </div>
         <div className="modalContainer" style={{ position: "relative" }}>
           <Modal
             open={open}
-            onClose={handleClose}
+            onClose={onClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
             style={{ position: "absolute", right: "0px" }}
@@ -113,7 +112,7 @@ const ProductCustomisation = () => {
                     Product Customization
                   </span>
                   <button
-                    onClick={handleClose}
+                    onClick={onClose}
                     style={{
                       position: "absolute",
                       top: 15,
