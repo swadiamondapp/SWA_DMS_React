@@ -23,6 +23,7 @@ import VotorCustomization from "./Pages/VOTORS PANAL/Votors Customization Page/V
 import GalleryPage from "./Pages/VOTORS PANAL/Gallery Page/GalleryPage";
 import CadAssignmentPage from "./Pages/CAD PANAL/Cad Assignment Page/CadAssignmentPage";
 import CadAssignmentCardPage from "./Pages/CAD PANAL/Cad AssignmentCard Page/CadAssignmentCardPage";
+import FinishedProductsPage from "./Pages/CAD PANAL/Finished Products Page/FinishedProductsPage";
 
 function App() {
   return (
@@ -54,6 +55,7 @@ function App() {
             path="/CadAssignmentcard"
             element={<CadAssignmentCardPage />}
           />
+          <Route path="/FinishedProduct" element={<FinishedProductsPage />} />
         </Routes>
       </Router>
     </>

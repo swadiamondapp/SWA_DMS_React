@@ -22,10 +22,10 @@ const style = {
   borderRadius: 2,
 };
 
-const CentalHub= () => {
+const CentalHub = ({ open, onClose }) => {
   // create modal
 
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
   const [AssinedButton, setAssignedButton] = useState("Assign");
   const [tagText, setTagText] = useState("");
 
@@ -37,9 +37,9 @@ const CentalHub= () => {
       prevText === "Assign" ? "Unasign" : "Assign"
     );
   };
-  const handleCancelButton = ()=> {
-    setOpen(false)
-  }
+  const handleCancelButton = () => {
+    setOpen(false);
+  };
 
   const onChange = (value) => {
     console.log(`selected ${value}`);
@@ -53,13 +53,13 @@ const CentalHub= () => {
   return (
     <div>
       <div className="">
-        <div className="">
+        {/* <div className="">
           <Button onClick={handleOpen}>CentalHub UploadFile</Button>
-        </div>
+        </div> */}
         <div className="modalContainer" style={{ position: "relative" }}>
           <Modal
             open={open}
-            onClose={handleClose}
+            onClose={onClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
             style={{ position: "absolute", right: "0px" }}
@@ -75,8 +75,15 @@ const CentalHub= () => {
                     Upload file
                   </span>
                   <button
-                    onClick={handleClose}
-                    style={{ position: "absolute", top: 15, right: 15,background: 'none',border:"none" }}
+                    // onClick={handleClose}
+                    onClose={onClose}
+                    style={{
+                      position: "absolute",
+                      top: 15,
+                      right: 15,
+                      background: "none",
+                      border: "none",
+                    }}
                   >
                     <img src={closeButton} />
                   </button>
@@ -89,13 +96,17 @@ const CentalHub= () => {
                     <div className="left">
                       <span className="textA">PNG/JPG</span>
                       <span className="textB">
-                        Drag & Drop or <span style={{color:'#0464D5'}}>choose file</span> to upload
+                        Drag & Drop or{" "}
+                        <span style={{ color: "#0464D5" }}>choose file</span> to
+                        upload
                       </span>
                     </div>
                     <div className="right">
                       <span className="textA">3.DM</span>
                       <span className="textB">
-                        Drag & Drop or <span style={{color:'#0464D5'}}>choose file</span> to upload
+                        Drag & Drop or{" "}
+                        <span style={{ color: "#0464D5" }}>choose file</span> to
+                        upload
                       </span>
                     </div>
                   </div>
@@ -107,7 +118,12 @@ const CentalHub= () => {
                   </div>
 
                   <div className="buttons">
-                    <button className="cancerButton" onClick={handleCancelButton}>cancel</button>
+                    <button
+                      className="cancerButton"
+                      onClick={handleCancelButton}
+                    >
+                      cancel
+                    </button>
                     <button className="upButton">Upload</button>
                   </div>
                 </div>

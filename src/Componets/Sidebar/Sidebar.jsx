@@ -55,7 +55,7 @@ const Sidebar = () => {
               <CustomiseRequest />
               <DesignPools /> */}
               {/* Admin Panel */}
-              <Link to="/users">
+              {/* <Link to="/users">
                 <div className="Links">
                   <img src={userimg} alt="" />
                   <p>Users</p>
@@ -88,7 +88,7 @@ const Sidebar = () => {
                   <img src={loginzimg} alt="" />
                   <p>Other logins</p>
                 </div>
-              </Link>
+              </Link> */}
               {/* Admin Panel */}
               {/* For Designer Module */}
               {/* <Link to="/designdashboard">
@@ -155,7 +155,7 @@ const Sidebar = () => {
                   <p>Chat box</p>
                 </div>
               </Link>
-              <Link to="/">
+              <Link to="/FinishedProduct">
                 <div className="Links">
                   <img src={customeimg} alt="" />
                   <p>Finished project</p>
