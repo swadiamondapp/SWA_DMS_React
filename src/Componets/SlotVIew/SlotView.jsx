@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import closeButton from "../../assets/closeButton.svg";
-import roundedClose from '../../assets/roundedClose.png'
+import roundedClose from "../../assets/roundedClose.png";
 import { Select } from "antd";
 import plusICon from "../../assets/plusIcon.png";
 
@@ -24,10 +24,10 @@ const style = {
   borderRadius: 0,
 };
 
-const SlotView = () => {
+const SlotView = ({ open, onClose }) => {
   // create modal
 
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
   const [AssinedButton, setAssignedButton] = useState("Assign");
   const [tagText, setTagText] = useState("");
 
@@ -55,27 +55,22 @@ const SlotView = () => {
   return (
     <div>
       <div className="">
-        <div className="">
+        {/* <div className="">
           <Button onClick={handleOpen}>Slot View</Button>
-        </div>
+        </div> */}
         <div className="modalContainer" style={{ position: "relative" }}>
           <Modal
             open={open}
-            onClose={handleClose}
+            onClose={onClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
             style={{ position: "absolute", right: "0px" }}
             className="modal"
           >
             <div>
-              <button
-                onClick={handleClose}
-                className="overLayButton"
-            
-              >
-
+              <button onClick={handleClose} className="overLayButton">
                 <img src={roundedClose} />
-               CLOSE
+                CLOSE
               </button>
               <Box sx={style}>
                 <Typography id="modal-modal-title" variant="h6" component="h2">

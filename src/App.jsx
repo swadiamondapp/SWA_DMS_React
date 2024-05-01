@@ -24,6 +24,8 @@ import GalleryPage from "./Pages/VOTORS PANAL/Gallery Page/GalleryPage";
 import CadAssignmentPage from "./Pages/CAD PANAL/Cad Assignment Page/CadAssignmentPage";
 import CadAssignmentCardPage from "./Pages/CAD PANAL/Cad AssignmentCard Page/CadAssignmentCardPage";
 import FinishedProductsPage from "./Pages/CAD PANAL/Finished Products Page/FinishedProductsPage";
+import CentralHubDashboard from "./Pages/CENTRAL HUB/Central Hub dashboard Page/CentralHubDashboard";
+import HubSlot from "./Pages/CENTRAL HUB/Central Hub Slot/HubSlot";
 
 function App() {
   return (
@@ -56,6 +58,8 @@ function App() {
             element={<CadAssignmentCardPage />}
           />
           <Route path="/FinishedProduct" element={<FinishedProductsPage />} />
+          <Route path="/centralDashboard" element={<CentralHubDashboard />} />
+          <Route path="/slot" element={<HubSlot />} />
         </Routes>
       </Router>
     </>

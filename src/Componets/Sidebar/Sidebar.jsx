@@ -48,9 +48,9 @@ const Sidebar = () => {
               <CreateCustomisation />
               <ProductCustomisation />
               <CentalHub />
-              <UploadFile /> */}
+              <UploadFile />
 
-              {/* <SlotView />
+              <SlotView />
               <SlotCreation />
               <CustomiseRequest />
               <DesignPools /> */}
@@ -162,6 +162,27 @@ const Sidebar = () => {
                 </div>
               </Link>
               {/* CAD PANEL SIDEBAR */}
+              {/* CENTRAL HUB SIDEBAR */}
+              <Link to="/centralDashboard">
+                <div className="Links">
+                  <img src={userimg} alt="" />
+                  <p>Dashboard</p>
+                </div>
+              </Link>
+              <Link to="/chat">
+                <div className="Links">
+                  <img src={chatboximg} alt="" />
+                  <p>Chat box</p>
+                </div>
+              </Link>
+              <Link to="/slot">
+                <div className="Links">
+                  <img src={customeimg} alt="" />
+                  <p>Slot</p>
+                </div>
+              </Link>
+
+              {/* CENTRAL HUB SIDEBAR */}
             </>
           ) : (
             <>

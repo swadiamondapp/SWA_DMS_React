@@ -110,10 +110,10 @@ const data = [
   },
 ];
 
-const SlotCreation = () => {
+const SlotCreation = ({ open, onClose }) => {
   // create modal
 
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
   const [AssinedButton, setAssignedButton] = useState("Assign");
   const [tagText, setTagText] = useState("");
 
@@ -141,13 +141,14 @@ const SlotCreation = () => {
   return (
     <div>
       <div className="">
-        <div className="">
+        {/* <div className="">
           <Button onClick={handleOpen}>Slot Creation</Button>
-        </div>
+        </div> */}
         <div className="modalContainer" style={{ position: "relative" }}>
           <Modal
             open={open}
-            onClose={handleClose}
+            // onClose={handleClose}
+            onClose={onClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
             style={{ position: "absolute", right: "0px" }}
@@ -159,133 +160,126 @@ const SlotCreation = () => {
                 CLOSE
               </button>
               <Box sx={style}>
-               
-                  <div className="wrapper">
-                    <div className="leftTable">
-                      <div className="header_slotCreation_left">
-                        <div>
-                          <span className="left_header_title_sc">
-                            Create Slot
-                          </span>
-                        </div>
-                        <div className="searchContiainer">
-                          <div className="Search_Userr">
-                            <input type="text" placeholder="Search User" />
-                            <div className="iconBack">
-                              <img src={searchIcon} alt="" />
-                            </div>
+                <div className="wrapper">
+                  <div className="leftTable">
+                    <div className="header_slotCreation_left">
+                      <div>
+                        <span className="left_header_title_sc">
+                          Create Slot
+                        </span>
+                      </div>
+                      <div className="searchContiainer">
+                        <div className="Search_Userr">
+                          <input type="text" placeholder="Search User" />
+                          <div className="iconBack">
+                            <img src={searchIcon} alt="" />
                           </div>
                         </div>
                       </div>
-                      <div className="table_left_data_container">
-                        <div className="table-container-left">
-                          <table className="supermarket-table">
-                            <thead>
-                              <tr>
-                                <th className="table-header">
-                                  <div className="checkbox_container">
-
+                    </div>
+                    <div className="table_left_data_container">
+                      <div className="table-container-left">
+                        <table className="supermarket-table">
+                          <thead>
+                            <tr>
+                              <th className="table-header">
+                                <div className="checkbox_container">
                                   <input
                                     type="checkbox"
                                     className="center-input"
-                                    />
+                                  />
                                   <span>Product ID</span>
-                                    </div>
-                                </th>
-                                <th className="table-header">Created Date</th>
-                                <th className="table-header">
-                                  Product Category
-                                </th>
-                                <th className="table-header weight_header-left">
-                                  Weight
-                                </th>
+                                </div>
+                              </th>
+                              <th className="table-header">Created Date</th>
+                              <th className="table-header">Product Category</th>
+                              <th className="table-header weight_header-left">
+                                Weight
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {data.map((item) => (
+                              <tr key={item.id}>
+                                <td className="table-data">{item.id}</td>
+                                <td className="table-data">
+                                  {item.createdDate}
+                                </td>
+                                <td className="table-data">
+                                  {item.productCategory}
+                                </td>
+                                <td className="table-data">
+                                  <div className="right-data-and-button-c">
+                                    <span>{item.weight}</span>
+                                    <button className="add_button_sc">
+                                      ADD TO SLOT
+                                    </button>
+                                  </div>
+                                </td>
                               </tr>
-                            </thead>
-                            <tbody>
-                              {data.map((item) => (
-                                <tr key={item.id}>
-                                  <td className="table-data">{item.id}</td>
-                                  <td className="table-data">
-                                    {item.createdDate}
-                                  </td>
-                                  <td className="table-data">
-                                    {item.productCategory}
-                                  </td>
-                                  <td className="table-data">
-                                    <div className="right-data-and-button-c">
-                                      <span>{item.weight}</span>
-                                      <button className="add_button_sc">
-                                        ADD TO SLOT
-                                      </button>
-                                    </div>
-                                  </td>
-                                </tr>
-                              ))}
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="rightTable">
-                      <div className="right-header-sc">
-                        <div className="headers-left-content">
-                          <span className="left_header_title_sc">Slot</span>
-                          <span className="right-span-text">
-                            slot Number :{" "}
-                            <span className="right-span-number-text">
-                              5646DE4
-                            </span>
-                          </span>
-                        </div>
-                        <div className="header-right-side-button">
-                          <button className="create_bag_button">
-                            Create Bag
-                          </button>
-                        </div>
-                      </div>
-                      <div className="table-righ-container-sc">
-                        <div className="table-container-right">
-                          <table className="supermarket-table">
-                            <thead>
-                              <tr>
-                                <th className="table-header">Product ID</th>
-                                <th className="table-header">Created Date</th>
-                                <th className="table-header">
-                                  Product Category
-                                </th>
-                                <th className="table-header weight_header-right">
-                                  Weight
-                                </th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {data.map((item) => (
-                                <tr key={item.id}>
-                                  <td className="table-data">{item.id}</td>
-                                  <td className="table-data">
-                                    {item.createdDate}
-                                  </td>
-                                  <td className="table-data">
-                                    {item.productCategory}
-                                  </td>
-                                  <td className="table-data">
-                                    <div className="right-data-and-button-c">
-                                      <span>{item.weight}</span>
-                                      <button className="Delete_button_sc">
-                                        <img src={delteIcon} alt="" />
-                                      </button>
-                                    </div>
-                                  </td>
-                                </tr>
-                              ))}
-                            </tbody>
-                          </table>
-                        </div>
+                            ))}
+                          </tbody>
+                        </table>
                       </div>
                     </div>
                   </div>
-               
+
+                  <div className="rightTable">
+                    <div className="right-header-sc">
+                      <div className="headers-left-content">
+                        <span className="left_header_title_sc">Slot</span>
+                        <span className="right-span-text">
+                          slot Number :{" "}
+                          <span className="right-span-number-text">
+                            5646DE4
+                          </span>
+                        </span>
+                      </div>
+                      <div className="header-right-side-button">
+                        <button className="create_bag_button">
+                          Create Bag
+                        </button>
+                      </div>
+                    </div>
+                    <div className="table-righ-container-sc">
+                      <div className="table-container-right">
+                        <table className="supermarket-table">
+                          <thead>
+                            <tr>
+                              <th className="table-header">Product ID</th>
+                              <th className="table-header">Created Date</th>
+                              <th className="table-header">Product Category</th>
+                              <th className="table-header weight_header-right">
+                                Weight
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {data.map((item) => (
+                              <tr key={item.id}>
+                                <td className="table-data">{item.id}</td>
+                                <td className="table-data">
+                                  {item.createdDate}
+                                </td>
+                                <td className="table-data">
+                                  {item.productCategory}
+                                </td>
+                                <td className="table-data">
+                                  <div className="right-data-and-button-c">
+                                    <span>{item.weight}</span>
+                                    <button className="Delete_button_sc">
+                                      <img src={delteIcon} alt="" />
+                                    </button>
+                                  </div>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </Box>
             </div>
           </Modal>
