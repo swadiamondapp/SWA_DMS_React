@@ -14,6 +14,14 @@ const Header = () => {
           <div className="Left_User_Section">
             {location.pathname === "/users" && <h3>Users</h3>}
             {location.pathname === "/designpool" && <h3>Design pool</h3>}
+            {location.pathname === "/customRequestTable" && <h3>Customize Request</h3>}
+            {location.pathname === "/wareHouse" && <h3>Votors panel</h3>}
+            {location.pathname === "/finishedProject" && <h3>Finished project</h3>}
+            {location.pathname === "/renderCard" && <h3>SWAD3456</h3>}
+            {location.pathname === "/wareHouseDetails" && <h3> ID : SWAD3456</h3>}
+            {location.pathname === "/finished" && <h3>SWAD3456</h3>}
+
+
             {location.pathname === "/assignmentpanel" && (
               <h3>Assignment Panel</h3>
             )}
