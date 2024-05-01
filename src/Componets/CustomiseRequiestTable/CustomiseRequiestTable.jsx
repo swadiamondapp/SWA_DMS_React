@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import "../../Componets/CustomiseRequiestTable/CustomiseRequiestTable.css";
 import PrintIcon from "../../assets/printIcon.png";
 import EyeIcon from "../../assets/eyeIcon.png";
 import ThreeDot from "../../assets/threeDots.png";
+import CustomiseRequest from "../../Componets/CustomiseRequest/CustomiseRequiest";
 
 const data = [
   {
@@ -50,6 +51,7 @@ const data = [
 ];
 
 const CustomizationTable = () => {
+  const [openCRModal, setOpenCRModal] = useState(false);
   return (
     <div className="Parant_CustomTable">
       <div className="TableContainer">
@@ -92,9 +94,11 @@ const CustomizationTable = () => {
                     Print <img src={PrintIcon} />
                   </button>
                 </td>
-                <td>
+
+                <td onClick={()=> setOpenCRModal(true)}>
                   <img src={EyeIcon} />
                 </td>
+
                 <td>
                   <img src={ThreeDot} />
                 </td>
@@ -103,6 +107,7 @@ const CustomizationTable = () => {
           </tbody>
         </table>
       </div>
+      <CustomiseRequest open={openCRModal} onClose={()=> setOpenCRModal(false)} />
     </div>
   );
 };

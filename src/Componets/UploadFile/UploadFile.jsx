@@ -23,10 +23,10 @@ const style = {
   borderRadius: 2,
 };
 
-const UploadFile = () => {
+const UploadFile = ({open,onClose}) => {
   // create modal
 
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
   const [AssinedButton, setAssignedButton] = useState("Assign");
   const [tagText, setTagText] = useState("");
 
@@ -54,13 +54,13 @@ const UploadFile = () => {
   return (
     <div>
       <div className="">
-        <div className="">
+        {/* <div className="">
           <Button onClick={handleOpen}> UploadFile</Button>
-        </div>
+        </div> */}
         <div className="modalContainer" style={{ position: "relative" }}>
           <Modal
             open={open}
-            onClose={handleClose}
+            onClose={onClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
             style={{ position: "absolute", right: "0px" }}
@@ -79,7 +79,7 @@ const UploadFile = () => {
                     Upload file
                   </span>
                   <button
-                    onClick={handleClose}
+                    // onClick={handleClose}
                     style={{ background: "#FAFAFA", border: "none" }}
                   >
                     <img src={closeButton} />
@@ -151,7 +151,7 @@ const UploadFile = () => {
                   <div className="buttons">
                     <button
                       className="cancerButton"
-                      onClick={handleCancelButton}
+                      onClick={onClose}
                     >
                       cancel
                     </button>

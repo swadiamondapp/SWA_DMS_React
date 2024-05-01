@@ -24,6 +24,7 @@ const style = {
   p: 1,
   overflowY: "scroll",
   borderRadius: 1,
+  outline:'none'
 };
 
 const CustomiseRequest = ({ open, onClose }) => {

@@ -1,30 +1,30 @@
-import React, { useState,useRef } from "react";
+import React, { useState, useRef } from "react";
 import "../RenderCard/RenderCard.css";
 import p from "../../assets/p1.png";
 import { useLocation, Link } from "react-router-dom";
 import { LiaCloudUploadAltSolid } from "react-icons/lia";
 import UpIcon from "../../assets/uPicon.png";
-
-
+import UploadFile from "../../Componets/UploadFile/UploadFile";
 
 const RenderCard = () => {
-    const [uploadInstructionsVisible, setUploadInstructionsVisible] =
+  const [uploadInstructionsVisible, setUploadInstructionsVisible] =
     useState(true);
-    const [uploadedImage, setUploadedImage] = useState(null);
-    const location = useLocation();
+  const [uploadedImage, setUploadedImage] = useState(null);
+  const [uploadModalOpen, setUploadModalOpen] = useState(false);
+  const location = useLocation();
   const dotsRef = useRef(null);
 
-    const handleFileUpload = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-          const reader = new FileReader();
-          reader.onload = () => {
-            setUploadedImage(reader.result);
-            setUploadInstructionsVisible(false);
-          };
-          reader.readAsDataURL(file);
-        }
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setUploadedImage(reader.result);
+        setUploadInstructionsVisible(false);
       };
+      reader.readAsDataURL(file);
+    }
+  };
   const card = [
     {
       id: "SWAD3456",
@@ -50,9 +50,10 @@ const RenderCard = () => {
 
   return (
     <div className="MainContainer">
-        <div
+      <div
         className="Design_FileUpload"
-        onClick={() => document.getElementById("fileInput").click()}
+        // onClick={() => document.getElementById("fileInput").click()}
+        onClick={() => setUploadModalOpen(true)}
       >
         {uploadInstructionsVisible ? (
           <>
@@ -72,9 +73,12 @@ const RenderCard = () => {
         ) : (
           <div className="De__file">
             <p>File uploaded successfully!</p>
-            <div className="File____uploadbtn">
-              <button>
-                Upload File{" "}
+            <div
+              className="File____uploadbtn"
+              
+            >
+              <button >
+                Upload File
                 <LiaCloudUploadAltSolid style={{ fontSize: "22px" }} />
               </button>
             </div>
@@ -103,6 +107,11 @@ const RenderCard = () => {
           </div>
         );
       })}
+       <UploadFile
+        open={uploadModalOpen}
+        onClose={() => setUploadModalOpen(false)}
+      />
+     
     </div>
   );
 };

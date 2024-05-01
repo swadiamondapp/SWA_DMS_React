@@ -48,9 +48,9 @@ const Sidebar = () => {
               <CreateCustomisation />
               <ProductCustomisation />
               <CentalHub />
-              <UploadFile /> */}
+              <UploadFile />
 
-              {/* <SlotView />
+              <SlotView />
               <SlotCreation />
               <CustomiseRequest />
               <DesignPools /> */}
