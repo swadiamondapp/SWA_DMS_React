@@ -1,0 +1,63 @@
+.Parant_CustomTable {
+    padding-left: 225px;
+    padding-top: 20px;
+}
+.TableContainer table{
+    width:100%;
+    border-collapse: collapse;
+    color:#455173
+}
+
+.TableContainer table thead tr th {
+    padding:8px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    text-align: left;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.TableContainer table tbody tr td {
+    padding:8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+thead th {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+tbody tr {
+    background-color: #fff;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tbody td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+button {
+    background-color: #126e72;
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 32px;
+    cursor: pointer;
+}
+.PrintButton_CT {
+    background: #126E72;
+    color:#fff;
+    padding:6px 12px;
+    border:none;
+    border-radius: 32px;
+    cursor: pointer;
+}

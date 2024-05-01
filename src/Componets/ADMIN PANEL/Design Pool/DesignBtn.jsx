@@ -28,7 +28,8 @@ const DesignBtn = ({
         {location.pathname !== "/assignmentpanel" &&
           location.pathname !== "/designdashboard" &&
           location.pathname !== "/designerassignview" &&
-          location.pathname !== "/votorscustomization" && (
+          location.pathname !== "/votorscustomization" && 
+          location.pathname !== "/finishedProject" && (
             <div className="Download_ParentD">
               <button className="D_downlodBtn" onClick={toggleDownloadOptions}>
                 Download <TbDownload />
@@ -42,7 +43,8 @@ const DesignBtn = ({
             </div>
           )}
         {location.pathname !== "/designdashboard" &&
-          location.pathname !== "/votorscustomization" && (
+          location.pathname !== "/votorscustomization"  && 
+          location.pathname !== "/finishedProject" && (
             <button className="D_selectBtn" onClick={toggleRadioButtons}>
               {selectButtonLabel}
             </button>
@@ -51,7 +53,8 @@ const DesignBtn = ({
         {location.pathname !== "/assignmentpanel" &&
           location.pathname !== "/designdashboard" &&
           location.pathname !== "/designerassignview" &&
-          location.pathname !== "/votorscustomization" && (
+          location.pathname !== "/votorscustomization" &&
+          location.pathname !== "/finishedProject" && (
             <div className="Parent_MoveTo">
               <button className="D_moveBtn" onClick={toggleMoveOptions}>
                 Move to <MdOutlineKeyboardArrowDown />

@@ -23,6 +23,13 @@ import VotorCustomization from "./Pages/VOTORS PANAL/Votors Customization Page/V
 import GalleryPage from "./Pages/VOTORS PANAL/Gallery Page/GalleryPage";
 import CadAssignmentPage from "./Pages/CAD PANAL/Cad Assignment Page/CadAssignmentPage";
 import CadAssignmentCardPage from "./Pages/CAD PANAL/Cad AssignmentCard Page/CadAssignmentCardPage";
+import RendersPage from "./Pages/Renders/FinishedProjectInner/RendersPage";
+import FinishedProjectPage from "./Pages/Renders/FinishedProject/FinishedProjectPage";
+import RenderCardPage from "../src/Pages/Renders/RendersCardPage/RendersCardPage";
+import WareHousePage from "./Pages/WareHousePageView/WareHouse/WareHousePage";
+import WareHouseTablePage from "./Pages/WareHousePageView/WareHouseTable/WareHouseTablePage";
+
+import WareHouseDetailsPage from "./Pages/WareHousePageView/WareHouseDetailPage/WareHouseDetailsPage";
 import FinishedProductsPage from "./Pages/CAD PANAL/Finished Products Page/FinishedProductsPage";
 import CentralHubDashboard from "./Pages/CENTRAL HUB/Central Hub dashboard Page/CentralHubDashboard";
 import HubSlot from "./Pages/CENTRAL HUB/Central Hub Slot/HubSlot";
@@ -53,6 +60,12 @@ function App() {
           <Route path="/votorscustomization" element={<VotorCustomization />} />
           <Route path="/gallery" element={<GalleryPage />} />
           <Route path="/CadAssignment" element={<CadAssignmentPage />} />
+          <Route path="/finished" element={<RendersPage />} />
+          <Route path="/finishedProject" element={<FinishedProjectPage />} />
+          <Route path="/renderCard" element={<RenderCardPage />} />
+          <Route path="/wareHouse" element={<WareHousePage />} />
+          <Route path="/customRequestTable" element={<WareHouseTablePage />} />
+          <Route path="/wareHouseDetails" element={<WareHouseDetailsPage />} />
           <Route
             path="/CadAssignmentcard"
             element={<CadAssignmentCardPage />}

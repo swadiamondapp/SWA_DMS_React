@@ -55,7 +55,7 @@ const Sidebar = () => {
               <CustomiseRequest />
               <DesignPools /> */}
               {/* Admin Panel */}
-              {/* <Link to="/users">
+              <Link to="/users">
                 <div className="Links">
                   <img src={userimg} alt="" />
                   <p>Users</p>
@@ -88,7 +88,7 @@ const Sidebar = () => {
                   <img src={loginzimg} alt="" />
                   <p>Other logins</p>
                 </div>
-              </Link> */}
+              </Link>
               {/* Admin Panel */}
               {/* For Designer Module */}
               {/* <Link to="/designdashboard">
@@ -143,7 +143,7 @@ const Sidebar = () => {
               </Link> */}
               {/* For Votors Panel */}
               {/* CAD PANEL SIDEBAR */}
-              <Link to="/CadAssignment">
+              {/* <Link to="/CadAssignment">
                 <div className="Links">
                   <img src={userimg} alt="" />
                   <p>Assignments</p>
@@ -160,10 +160,25 @@ const Sidebar = () => {
                   <img src={customeimg} alt="" />
                   <p>Finished project</p>
                 </div>
-              </Link>
+              </Link> */}
               {/* CAD PANEL SIDEBAR */}
+              {/* RENDERS PANEL SIDEVAR */}
+              {/* <Link to="/renderCard">
+                <div className="Links">
+                  <img src={userimg} alt="" />
+                  <p>Render</p>
+                </div>
+              </Link>
+              <Link to="/chat">
+                <div className="Links">
+                  <img src={chatboximg} alt="" />
+                  <p>Chat box</p>
+                </div>
+              </Link> */}
+
+              {/* RENDERS PANEL SIDEVAR */}
               {/* CENTRAL HUB SIDEBAR */}
-              <Link to="/centralDashboard">
+              {/* <Link to="/centralDashboard">
                 <div className="Links">
                   <img src={userimg} alt="" />
                   <p>Dashboard</p>
@@ -180,9 +195,36 @@ const Sidebar = () => {
                   <img src={customeimg} alt="" />
                   <p>Slot</p>
                 </div>
-              </Link>
+              </Link> */}
 
               {/* CENTRAL HUB SIDEBAR */}
+              {/* WAREHOUSE PANEL SIDEBAR */}
+              {/* <Link to="/wareHouse">
+                <div className="Links">
+                  <img src={userimg} alt="" />
+                  <p>votors panel</p>
+                </div>
+              </Link>
+              <Link to="/chat">
+                <div className="Links">
+                  <img src={chatboximg} alt="" />
+                  <p>Chat box</p>
+                </div>
+              </Link>
+              <Link to="/customRequestTable">
+                <div className="Links">
+                  <img src={customeimg} alt="" />
+                  <p>Customize Request </p>
+                </div>
+              </Link>
+              <Link to="/wareHouseDetails">
+                <div className="Links">
+                  <img src={customeimg} alt="" />
+                  <p>Confirmed orders</p>
+                </div>
+              </Link> */}
+
+              {/* WAREHOUSE PANEL SIDEBAR */}
             </>
           ) : (
             <>
