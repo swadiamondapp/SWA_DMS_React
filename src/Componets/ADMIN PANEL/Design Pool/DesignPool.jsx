@@ -1,14 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./DesignPool.css";
 import like from "../../../assets/like.png";
 import ring from "../../../assets/ring.png";
 import DesignBtn from "../../ADMIN PANEL/Design Pool/DesignBtn";
+import { all_Designs } from "./Api";
 
 const DesignPool = () => {
   const [showRadioButtons, setShowRadioButtons] = useState(false);
   const [selectButtonLabel, setSelectButtonLabel] = useState("Select");
   const [showDownloadOptions, setShowDownloadOptions] = useState(false);
   const [showMoveOptions, setShowMoveOptions] = useState(false);
+  const [Data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const card = [
     {
@@ -33,6 +36,8 @@ const DesignPool = () => {
     },
   ];
 
+  console.log("Data?designpool", Data);
+
   const toggleRadioButtons = () => {
     setShowRadioButtons(!showRadioButtons);
     setSelectButtonLabel(showRadioButtons ? "Select" : "Unselect");
@@ -43,6 +48,10 @@ const DesignPool = () => {
   const toggleMoveOptions = () => {
     setShowMoveOptions(!showMoveOptions);
   };
+
+  useEffect(() => {
+    all_Designs(setIsLoading, setData);
+  }, []);
 
   return (
     <div>
@@ -96,21 +105,21 @@ const DesignPool = () => {
         <div className="Parent_NewDesign">
           <h3 className="HeadNewdesign">New design</h3>
           <div className="Card_Design_Parent">
-            {card.map((item) => (
+            {Data.map((item) => (
               <div className="New_Design_card">
                 <div className="Card_img">
-                  <img src={ring} alt="" />
+                  <img src={item.image} alt="" />
                 </div>
                 <div className="Card_Details">
-                  <h3>ID : {item.product}</h3>
+                  <h3>ID : {item.designcode}</h3>
                   <div className="Card_Details_Inner">
                     <div className="Inner_Left">
-                      <p>{item.name}</p>
-                      <p>{item.date}</p>
+                      <p>{item.user_name}</p>
+                      <p>{item.created_at}</p>
                     </div>
                     <div className="Inner_Right">
                       <p>
-                        12 <img src={like} alt="" />
+                        {item.likes_count} <img src={like} alt="" />
                       </p>
                     </div>
                   </div>
