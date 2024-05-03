@@ -1,8 +1,51 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Login.css";
 import LoginBnner from "../../assets/login.png";
+import { useNavigate } from "react-router-dom";
+import Joi from "joi";
+import { userLogin } from "./Api";
 
 const Login = () => {
+  const schema = Joi.object({
+    email: Joi.string().email({ tlds: false }),
+    password: Joi.string().required(),
+  });
+  // validation
+  const [validationErrors, setValidationErrors] = useState({});
+  const validateForm = () => {
+    const validation = schema.validate(userCredentials, { abortEarly: false });
+
+    if (validation.error) {
+      const errors = {};
+      validation.error.details.forEach((error) => {
+        errors[error.path[0]] = error.message;
+      });
+      setValidationErrors(errors);
+      return false;
+    }
+
+    setValidationErrors({});
+    return true;
+  };
+  // validation
+
+  const navigate = useNavigate();
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [userCredentials, setUserCredentials] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const isValid = validateForm();
+    if (isValid) {
+      userLogin(userCredentials, setData, setIsLoading);
+    }
+  };
+  console.log("userCredentials../", userCredentials);
+  console.log("data../", data);
   return (
     <div>
       <div className="Login_bg">
@@ -11,23 +54,51 @@ const Login = () => {
             <img src={LoginBnner} />
           </div>
           <div className="Right_Section">
-            <div className="Login_Form">
-              <h3>Login</h3>
-              <div className="Login_Inp">
-                <label htmlFor="User name">User name</label>
-                <input type="text" />
+            <form action="" onSubmit={handleSubmit}>
+              <div className="Login_Form">
+                <h3>Login</h3>
+                <div className="Login_Inp">
+                  <label htmlFor="User name">User name</label>
+                  <input
+                    type="text"
+                    required
+                    value={userCredentials.email}
+                    onChange={(e) =>
+                      setUserCredentials({
+                        ...userCredentials,
+                        email: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+                {validationErrors.email && (
+                  <p className="errorlogins">{validationErrors.email}</p>
+                )}
+                <div className="Login_Inp">
+                  <label htmlFor="Password">Password</label>
+                  <input
+                    type="text"
+                    required
+                    value={userCredentials.password}
+                    onChange={(e) =>
+                      setUserCredentials({
+                        ...userCredentials,
+                        password: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+                {validationErrors.password && (
+                  <p className="errorlogins">{validationErrors.password}</p>
+                )}
+                <div className="Forgot_password">
+                  <p>Forgot password?</p>
+                </div>
+                <div className="Submit_btn">
+                  <button>Login</button>
+                </div>
               </div>
-              <div className="Login_Inp">
-                <label htmlFor="Password">Password</label>
-                <input type="text" />
-              </div>
-              <div className="Forgot_password">
-                <p>Forgot password?</p>
-              </div>
-              <div className="Submit_btn">
-                <button>Login</button>
-              </div>
-            </div>
+            </form>
           </div>
         </div>
       </div>

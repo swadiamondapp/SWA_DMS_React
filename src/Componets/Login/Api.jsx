@@ -1,0 +1,23 @@
+import { apiService, checkApiStatus } from "../../Pages/Services/ApiInstants";
+import { setToLocalstorage } from "../../Pages/Utils/Common";
+import { LOGIN } from "../../Pages/Services/EndPoints";
+
+export const userLogin = async (userCredentials, setData, setIsLoading) => {
+  try {
+    setIsLoading(true);
+    const response = await apiService.post(LOGIN, {
+      username: userCredentials.email,
+      password: userCredentials.password,
+    });
+    console.log("abcd", response?.data?.results?.token);
+    if (checkApiStatus(response)) {
+      setToLocalstorage(response?.data?.results?.token);
+
+      setData(response?.data?.results);
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setIsLoading(false);
+  }
+};
