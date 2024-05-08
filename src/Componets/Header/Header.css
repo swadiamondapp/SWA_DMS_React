@@ -16,10 +16,32 @@
   align-items: center;
   gap: 100px;
 }
+.log_out__btns {
+  width: 140px;
+  position: absolute;
+  top: 48px;
+  right: 0%;
+}
+.log_out__btns button {
+  background: #fff;
+  border: none;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  padding: 12px;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  font-family: "Gilroy medium";
+  cursor: pointer;
+  font-size: 16px;
+}
 .Profile_Admin {
   display: grid;
   grid-template-columns: 55px 90px 20px;
   align-items: center;
+  position: relative;
+  cursor: pointer;
 }
 .Search_User {
   position: relative;

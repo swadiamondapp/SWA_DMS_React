@@ -38,6 +38,7 @@
   border: 0.5px solid #04344d;
   padding: 10px 15px;
   border-radius: 32px;
+  background: transparent;
   display: flex;
   align-items: center;
   gap: 7px;

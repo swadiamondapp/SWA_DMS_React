@@ -186,6 +186,7 @@ input:checked + .slider:before {
 .Delete_btn_user {
   padding: 15px;
   padding-top: 0px;
+  cursor: pointer;
 }
 .title-Createuser > h3 {
   margin-bottom: 20px;

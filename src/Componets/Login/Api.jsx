@@ -12,6 +12,7 @@ export const userLogin = async (userCredentials, setData, setIsLoading) => {
     console.log("abcd", response?.data?.results?.token);
     if (checkApiStatus(response)) {
       setToLocalstorage(response?.data?.results?.token);
+      localStorage.setItem("Usertype", response?.data?.results?.data?.Usertype);
 
       setData(response?.data?.results);
     }

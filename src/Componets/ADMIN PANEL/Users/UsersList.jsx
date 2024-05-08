@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Userlist.css";
 import { IoEye } from "react-icons/io5";
 import { BsThreeDotsVertical } from "react-icons/bs";
@@ -7,6 +7,7 @@ import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { message, Upload } from "antd";
 import UserEm from "../../../assets/userEmpty.png";
 import Joi from "joi";
+import { list_all_users, user_create, user_delete } from "./Api";
 
 const getBase64 = (img, callback) => {
   const reader = new FileReader();
@@ -65,12 +66,17 @@ const UsersList = () => {
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState();
   const [errors, setErrors] = useState({});
+  const [userList, setUserList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [deleteuser, setDeleteuser] = useState([]);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phoneNumber: "",
     selectedRole: "",
   });
+
+  console.log("userList", userList);
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -84,11 +90,37 @@ const UsersList = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const validationErrors = validateForm(formData);
     if (Object.keys(validationErrors).length === 0) {
+      const data = new FormData();
+      // Append form data fields
+      data.append("name", formData.name);
+      data.append("email", formData.email);
+      data.append("phone_code", "+91");
+      data.append("phone_number", formData.phoneNumber);
+      data.append("usertype", formData.selectedRole);
+      data.append("status", "ACTIVE");
+      // If there's an uploaded image, append it to the FormData
+      if (imageUrl) {
+        const file = document.querySelector(
+          '.avatar-uploader input[type="file"]'
+        ).files[0];
+        if (file) {
+          data.append("image", file);
+        }
+      }
+      await user_create(setIsLoading, data, setUserList);
+      setIsModalOpen(false);
+      // Reset form data after successful submission
+      setFormData({
+        name: "",
+        email: "",
+        phoneNumber: "",
+        selectedRole: "",
+      });
       // Form is valid, proceed with submission
       console.log("Form submitted:", formData);
     } else {
@@ -174,71 +206,15 @@ const UsersList = () => {
   );
 
   // select box
-  const userlist = [
-    {
-      date: "11/2/2023",
-      name: "Mohammed sabeel",
-      email: "sampletext@gmail.com",
-      password: "1231231",
-      designation: "Votors",
-    },
-    {
-      date: "11/2/2023",
-      name: "Mohammed sabeel",
-      email: "sampletext@gmail.com",
-      password: "1231231",
-      designation: "Votors",
-    },
-    {
-      date: "11/2/2023",
-      name: "Mohammed sabeel",
-      email: "sampletext@gmail.com",
-      password: "1231231",
-      designation: "Votors",
-    },
-    {
-      date: "11/2/2023",
-      name: "Mohammed sabeel",
-      email: "sampletext@gmail.com",
-      password: "1231231",
-      designation: "Votors",
-    },
-    {
-      date: "11/2/2023",
-      name: "Mohammed sabeel",
-      email: "sampletext@gmail.com",
-      password: "1231231",
-      designation: "Votors",
-    },
-    {
-      date: "11/2/2023",
-      name: "Mohammed sabeel",
-      email: "sampletext@gmail.com",
-      password: "1231231",
-      designation: "Votors",
-    },
-    {
-      date: "11/2/2023",
-      name: "Mohammed sabeel",
-      email: "sampletext@gmail.com",
-      password: "1231231",
-      designation: "Votors",
-    },
-    {
-      date: "11/2/2023",
-      name: "Mohammed sabeel",
-      email: "sampletext@gmail.com",
-      password: "1231231",
-      designation: "Votors",
-    },
-    {
-      date: "11/2/2023",
-      name: "Mohammed sabeel",
-      email: "sampletext@gmail.com",
-      password: "1231231",
-      designation: "Votors",
-    },
-  ];
+
+  useEffect(() => {
+    list_all_users(setIsLoading, setUserList);
+  }, []);
+
+  const handleDelete = (userId) => {
+    console.log("item.id", userId);
+    user_delete(setIsLoading, setUserList, userId);
+  };
 
   return (
     <div>
@@ -361,20 +337,28 @@ const UsersList = () => {
                       style={{ width: "100%" }}
                       options={[
                         {
-                          value: "Designer",
-                          label: "Designer",
+                          value: "2",
+                          label: "DESIGNER",
                         },
                         {
-                          value: "Ui/ux",
-                          label: "UI/UX",
+                          value: "3",
+                          label: "CAD",
                         },
                         {
-                          value: "tom",
-                          label: "Functional Analyst",
+                          value: "4",
+                          label: "VOTERS",
                         },
                         {
-                          value: "",
-                          label: "empty",
+                          value: "5",
+                          label: "RENDERS",
+                        },
+                        {
+                          value: "6",
+                          label: "WAREHOUSE",
+                        },
+                        {
+                          value: "7",
+                          label: "CENTRAL HUB",
                         },
                       ]}
                     />
@@ -410,21 +394,21 @@ const UsersList = () => {
               </tr>
             </thead>
             <tbody>
-              {userlist.map((item, index) => (
+              {userList?.map((item, index) => (
                 <tr key={index} style={{ color: "#2E364C" }}>
-                  <td>{item.date}</td>
+                  <td>{item.created_at}</td>
                   <td>{item.name}</td>
                   <td>{item.email}</td>
                   <td>
                     <div className="view_password">
-                      {item.password}
+                      123123123
                       <IoEye style={{ color: "#455173" }} />
                     </div>
                   </td>
-                  <td>{item.designation}</td>
+                  <td>{item.Usertype}</td>
                   <td>
                     <div className="active_sendmail">
-                      <button className="active_btn">Active</button>
+                      <button className="active_btn">{item.status}</button>
                       <button className="sendmail_btn">Send Mail</button>
                     </div>
                   </td>
@@ -446,7 +430,12 @@ const UsersList = () => {
                     {showEditDelete === index && (
                       <div className="Edit_delete_btn_user">
                         <p className="Edit_btn_user">Edit</p>
-                        <p className="Delete_btn_user">Delete</p>
+                        <p
+                          className="Delete_btn_user"
+                          onClick={() => handleDelete(item.id)}
+                        >
+                          Delete
+                        </p>
                       </div>
                     )}
                   </td>

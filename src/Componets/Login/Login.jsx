@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Login.css";
 import LoginBnner from "../../assets/login.png";
 import { useNavigate } from "react-router-dom";
@@ -6,6 +6,7 @@ import Joi from "joi";
 import { userLogin } from "./Api";
 
 const Login = () => {
+  const usertype = localStorage.getItem("Usertype");
   const schema = Joi.object({
     email: Joi.string().email({ tlds: false }),
     password: Joi.string().required(),
@@ -44,8 +45,27 @@ const Login = () => {
       userLogin(userCredentials, setData, setIsLoading);
     }
   };
+  useEffect(() => {
+    if (usertype === "ADMIN") {
+      navigate("/");
+    } else if (usertype === "DESIGNER") {
+      navigate("/designdashboard");
+    } else if (usertype === "VOTERS") {
+      navigate("/votorspanal");
+    } else if (usertype === "CAD") {
+      navigate("/CadAssignment");
+    } else if (usertype === "CENTRAL HUB") {
+      navigate("/centralDashboard");
+    } else if (usertype === "RENDERS") {
+      navigate("/renderCard");
+    } else if (usertype === "WAREHOUSE") {
+      navigate("/wareHouse");
+    }
+  }, [navigate, usertype]);
+
   console.log("userCredentials../", userCredentials);
   console.log("data../", data);
+  console.log("usertype", usertype);
   return (
     <div>
       <div className="Login_bg">
