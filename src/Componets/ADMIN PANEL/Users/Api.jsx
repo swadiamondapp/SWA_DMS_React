@@ -4,6 +4,7 @@ import {
 } from "../../../Pages/Services/ApiInstants";
 import { setToLocalstorage } from "../../../Pages/Utils/Common";
 import {
+  EDIT_USER,
   LIST_ALL_USER,
   USER_CREATE,
   USER_DELETE,
@@ -51,6 +52,34 @@ export const user_delete = async (setIsLoading, setData, userId) => {
     }
     if (checkApiStatus(response)) {
       setData(response.data.results.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const update_user = async (
+  setIsLoading,
+  formData,
+  setUserList,
+  userId
+) => {
+  try {
+    const response = await apiService.put(`${EDIT_USER}${userId}/`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data", // Ensure the content type is correct
+      },
+    });
+    console.log("responces", response.data.results.status_code);
+    if (response?.data?.results?.status_code === 200) {
+      list_all_users(setIsLoading, setUserList);
+    }
+    if (checkApiStatus(response)) {
+      //   setData(response.data.results.data);
+      message.success("User created successfully!");
+    } else {
+      // Handle failure based on your API structure
+      message.error("Failed to create user. Please try again.");
     }
   } catch (error) {
     console.log(error);

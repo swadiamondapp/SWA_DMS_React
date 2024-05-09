@@ -33,46 +33,61 @@ import WareHouseDetailsPage from "./Pages/WareHousePageView/WareHouseDetailPage/
 import FinishedProductsPage from "./Pages/CAD PANAL/Finished Products Page/FinishedProductsPage";
 import CentralHubDashboard from "./Pages/CENTRAL HUB/Central Hub dashboard Page/CentralHubDashboard";
 import HubSlot from "./Pages/CENTRAL HUB/Central Hub Slot/HubSlot";
+import PrivateRoute from "./Pages/Utils/PrivateRoute";
 
 function App() {
   return (
     <>
       <Router>
         <Routes>
+          <Route element={<PrivateRoute />}>
+            <Route path="/" element={<Users />} />
+            <Route path="/otherlogin" element={<OtherLoginPage />} />
+            <Route path="/assignmentview" element={<AssignmentViewPage />} />
+            <Route path="/designpool" element={<DesignPoolView />} />
+            <Route path="/assignmentpanel" element={<AssignmentPanalPage />} />
+            <Route path="/chat" element={<ChatPage />} />
+            <Route
+              path="/designdashboard"
+              element={<DesignerDashboardPage />}
+            />
+            <Route
+              path="/designerassign"
+              element={<DesignerAsignmentPanelPage />}
+            />
+            <Route
+              path="/designerassignview"
+              element={<DesignerAssignViewPage />}
+            />
+            <Route path="/Customizedorder" element={<CustomizedOrderPage />} />
+            <Route path="/votorspanal" element={<VotorsPanalPage />} />
+            <Route
+              path="/votorscustomization"
+              element={<VotorCustomization />}
+            />
+            <Route path="/gallery" element={<GalleryPage />} />
+            <Route path="/CadAssignment" element={<CadAssignmentPage />} />
+            <Route path="/finished" element={<RendersPage />} />
+            <Route path="/finishedProject" element={<FinishedProjectPage />} />
+            <Route path="/renderCard" element={<RenderCardPage />} />
+            <Route path="/wareHouse" element={<WareHousePage />} />
+            <Route
+              path="/customRequestTable"
+              element={<WareHouseTablePage />}
+            />
+            <Route
+              path="/wareHouseDetails"
+              element={<WareHouseDetailsPage />}
+            />
+            <Route
+              path="/CadAssignmentcard"
+              element={<CadAssignmentCardPage />}
+            />
+            <Route path="/FinishedProduct" element={<FinishedProductsPage />} />
+            <Route path="/centralDashboard" element={<CentralHubDashboard />} />
+            <Route path="/slot" element={<HubSlot />} />
+          </Route>
           <Route path="/login" element={<Login />} />
-          <Route path="/" element={<Users />} />
-          <Route path="/otherlogin" element={<OtherLoginPage />} />
-          <Route path="/assignmentview" element={<AssignmentViewPage />} />
-          <Route path="/designpool" element={<DesignPoolView />} />
-          <Route path="/assignmentpanel" element={<AssignmentPanalPage />} />
-          <Route path="/chat" element={<ChatPage />} />
-          <Route path="/designdashboard" element={<DesignerDashboardPage />} />
-          <Route
-            path="/designerassign"
-            element={<DesignerAsignmentPanelPage />}
-          />
-          <Route
-            path="/designerassignview"
-            element={<DesignerAssignViewPage />}
-          />
-          <Route path="/Customizedorder" element={<CustomizedOrderPage />} />
-          <Route path="/votorspanal" element={<VotorsPanalPage />} />
-          <Route path="/votorscustomization" element={<VotorCustomization />} />
-          <Route path="/gallery" element={<GalleryPage />} />
-          <Route path="/CadAssignment" element={<CadAssignmentPage />} />
-          <Route path="/finished" element={<RendersPage />} />
-          <Route path="/finishedProject" element={<FinishedProjectPage />} />
-          <Route path="/renderCard" element={<RenderCardPage />} />
-          <Route path="/wareHouse" element={<WareHousePage />} />
-          <Route path="/customRequestTable" element={<WareHouseTablePage />} />
-          <Route path="/wareHouseDetails" element={<WareHouseDetailsPage />} />
-          <Route
-            path="/CadAssignmentcard"
-            element={<CadAssignmentCardPage />}
-          />
-          <Route path="/FinishedProduct" element={<FinishedProductsPage />} />
-          <Route path="/centralDashboard" element={<CentralHubDashboard />} />
-          <Route path="/slot" element={<HubSlot />} />
         </Routes>
       </Router>
     </>
