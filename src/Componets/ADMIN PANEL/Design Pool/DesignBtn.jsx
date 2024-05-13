@@ -17,7 +17,7 @@ const DesignBtn = ({
   showDownloadOptions,
   showMoveOptions,
   moveSelectedDesign,
-  getSelectedDesign
+  getSelectedDesign,
 }) => {
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -30,7 +30,7 @@ const DesignBtn = ({
         {location.pathname !== "/assignmentpanel" &&
           location.pathname !== "/designdashboard" &&
           location.pathname !== "/designerassignview" &&
-          location.pathname !== "/votorscustomization" && 
+          location.pathname !== "/votorscustomization" &&
           location.pathname !== "/finishedProject" && (
             <div className="Download_ParentD">
               <button className="D_downlodBtn" onClick={toggleDownloadOptions}>
@@ -45,7 +45,7 @@ const DesignBtn = ({
             </div>
           )}
         {location.pathname !== "/designdashboard" &&
-          location.pathname !== "/votorscustomization"  && 
+          location.pathname !== "/votorscustomization" &&
           location.pathname !== "/finishedProject" && (
             <button className="D_selectBtn" onClick={toggleRadioButtons}>
               {selectButtonLabel}
@@ -65,10 +65,14 @@ const DesignBtn = ({
                 <div className="Sub_AssignmentPanel">
                   <Link
                     style={{ textDecoration: "none" }}
-                    // to="/assignmentpanel"
-                  
+                    to="/assignmentpanel"
                   >
-                    <p style={{ color: "#000" }}   onClick={() => moveSelectedDesign( getSelectedDesign)}>Assignment panel</p>
+                    <p
+                      style={{ color: "#000" }}
+                      onClick={() => moveSelectedDesign(getSelectedDesign)}
+                    >
+                      Assignment panel
+                    </p>
                   </Link>
                 </div>
               )}

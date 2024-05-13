@@ -3,9 +3,12 @@ import {
   checkApiStatus,
 } from "../../../Pages/Services/ApiInstants";
 import { setToLocalstorage } from "../../../Pages/Utils/Common";
-import { ALL_DESIGNS, MOVE_TO_ASSIGNMENT, UNVOTED_DESIGN,LIST_ASSIGNMENT_FOLDER } from "../../../Pages/Services/EndPoints";
-import { useNavigate } from "react-router-dom";
-
+import {
+  ALL_DESIGNS,
+  MOVE_TO_ASSIGNMENT,
+  UNVOTED_DESIGN,
+  LIST_ASSIGNMENT_FOLDER,
+} from "../../../Pages/Services/EndPoints";
 
 export const all_Designs = async (setIsLoading, setData) => {
   try {
@@ -29,32 +32,30 @@ export const unvoted_design = async (setIsLoading, setUnvotedData) => {
   }
 };
 
-export const moveSelectedDesign = async (setIsLoading,selectedDesigns) => {
+export const moveSelectedDesign = async (setIsLoading, selectedDesigns) => {
   try {
     const body = {
-      design_code: 'SWAD0021',
+      design_code: "SWAD0021",
     };
     const response = await apiService.post(MOVE_TO_ASSIGNMENT, body);
-    console.log('RequestBody', body);
-    console.log(response.data.results,"resppp===>")
+    console.log("RequestBody", body);
+    console.log(response.data.results, "resppp===>");
 
     if (response.data.results.status_code === 200) {
-      console.log('Designs moved successfully');
-
+      console.log("Designs moved successfully");
     }
   } catch (error) {
-    console.error('Error moving designs:', error);
+    console.error("Error moving designs:", error);
   }
 };
 
-export const list_assignment_folder = async (setIsLoading,setData) => {
+export const list_assignment_folder = async (setIsLoading, setData) => {
   try {
-   const response = await apiService.get( LIST_ASSIGNMENT_FOLDER);
+    const response = await apiService.get(LIST_ASSIGNMENT_FOLDER);
     if (checkApiStatus(response)) {
-      setData(response.data.results.data)
-    } 
-  } catch(error) {
-    console.log(error)
+      setData(response.data.results.data);
+    }
+  } catch (error) {
+    console.log(error);
   }
-
-}
+};

@@ -43,7 +43,10 @@ function App() {
           <Route element={<PrivateRoute />}>
             <Route path="/" element={<Users />} />
             <Route path="/otherlogin" element={<OtherLoginPage />} />
-            <Route path="/assignmentview" element={<AssignmentViewPage />} />
+            <Route
+              path="/assignmentview/:id"
+              element={<AssignmentViewPage />}
+            />
             <Route path="/designpool" element={<DesignPoolView />} />
             <Route path="/assignmentpanel" element={<AssignmentPanalPage />} />
             <Route path="/chat" element={<ChatPage />} />
@@ -56,7 +59,7 @@ function App() {
               element={<DesignerAsignmentPanelPage />}
             />
             <Route
-              path="/designerassignview"
+              path="/designerassignview/:id"
               element={<DesignerAssignViewPage />}
             />
             <Route path="/Customizedorder" element={<CustomizedOrderPage />} />

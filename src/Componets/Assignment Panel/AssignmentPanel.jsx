@@ -5,12 +5,11 @@ import DesignBtn from "../ADMIN PANEL/Design Pool/DesignBtn";
 import ring from "../../assets/gold.png";
 import like from "../../assets/like.png";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { useLocation, Link,useNavigate } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import folderimg from "../../assets/folder.png";
 import { list_assignment_panel, list_folderDetails } from "./Api";
 import { list_assignment_folder } from "../ADMIN PANEL/Design Pool/Api";
 // import { useLocation, useNavigate } from "react-router-dom";
-
 
 const AssignmentPanel = () => {
   const [showRadioButtons, setShowRadioButtons] = useState(false);
@@ -23,13 +22,12 @@ const AssignmentPanel = () => {
   const [uploadedImage, setUploadedImage] = useState(null);
   const [Data, setData] = useState([]);
   const [assignmentFolder, setAssignmentFolder] = useState([]);
-  const [folderId,setFolderId] = useState([])
+  const [folderId, setFolderId] = useState([]);
   const [uploadInstructionsVisible, setUploadInstructionsVisible] =
     useState(true);
   const location = useLocation();
   const dotsRef = useRef(null);
   const navigate = useNavigate();
-
 
   const toggleRadioButtons = () => {
     setShowRadioButtons(!showRadioButtons);
@@ -71,20 +69,15 @@ const AssignmentPanel = () => {
   useEffect(() => {
     list_assignment_panel(setIsLoading, setData);
     list_assignment_folder(setIsLoading, setAssignmentFolder);
-    list_folderDetails()
+    list_folderDetails();
   }, []);
 
-  const handleFolderClick = (id ) => {
-    console.log("id.....>",id)
+  const handleFolderClick = (id) => {
+    console.log("id.....>", id);
     if (location.pathname === "/assignmentview") {
-      navigate(
-        `assignmentview${id}`
-      );
+      navigate(`assignmentview${id}`);
     }
-    
-  }
-
-
+  };
 
   console.log(Data, "assignmentDatatat");
 
@@ -208,10 +201,9 @@ const AssignmentPanel = () => {
         <div className="Parent_Folder_section">
           <h3 className="HeadNewdesign">Folders</h3>
           <div className="folderCard_parent">
-            {console.log("assignment",assignmentFolder)}
             {assignmentFolder.map((item) => (
               <div className="folder__card">
-                <Link to={`/assignmentview/${item.id}`} >
+                <Link to={`/assignmentview/${item.id}`}>
                   <img src={folderimg} alt="" />
                 </Link>
 
