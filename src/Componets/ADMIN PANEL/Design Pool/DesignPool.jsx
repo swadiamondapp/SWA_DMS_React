@@ -3,7 +3,9 @@ import "./DesignPool.css";
 import like from "../../../assets/like.png";
 import ring from "../../../assets/ring.png";
 import DesignBtn from "../../ADMIN PANEL/Design Pool/DesignBtn";
-import { all_Designs, unvoted_design } from "./Api";
+import { all_Designs, unvoted_design,moveSelectedDesign } from "./Api";
+import { MOVE_TO_ASSIGNMENT } from "../../../Pages/Services/EndPoints";
+import { apiService } from "../../../Pages/Services/ApiInstants";
 
 const DesignPool = () => {
   const [showRadioButtons, setShowRadioButtons] = useState(false);
@@ -11,6 +13,7 @@ const DesignPool = () => {
   const [showDownloadOptions, setShowDownloadOptions] = useState(false);
   const [showMoveOptions, setShowMoveOptions] = useState(false);
   const [Data, setData] = useState([]);
+  const [selectedDesigns, setSelectedDesigns] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [unvotedData, setUnvotedData] = useState([]);
 
@@ -28,8 +31,35 @@ const DesignPool = () => {
   useEffect(() => {
     all_Designs(setIsLoading, setData);
     unvoted_design(setIsLoading, setUnvotedData);
+    // moveSelectedDesign(setIsLoading,setSelectedDesigns)
   }, []);
+  console.log(Data, "datat");
+  console.log(selectedDesigns, "selectedDesigns");
 
+  const handleCheckboxChange = (designcode) => {
+    if (selectedDesigns.includes(designcode)) {
+      setSelectedDesigns(selectedDesigns.filter((item) => item !== designcode));
+    } else {
+      setSelectedDesigns([...selectedDesigns, designcode]);
+    }
+  };
+  // const handleCheckboxChange = (designcode) => {
+  //   setSelectedDesigns(prevState => ({
+  //     ...prevState,
+  //     [designcode]: !prevState[designcode] // Toggle the value of the selected design
+  //   }));
+  // };
+  const moveSelectedDesigns = async () => {
+    try {
+      await moveSelectedDesign(setIsLoading, selectedDesigns);
+    
+        console.log('Selected designs moved successfully');
+  
+    } catch (error) {
+      console.error('Error moving selected designs:', error);
+    }
+
+  };
   return (
     <div>
       <div className="Parent_DesignView">
@@ -76,14 +106,16 @@ const DesignPool = () => {
           toggleMoveOptions={toggleMoveOptions}
           showDownloadOptions={showDownloadOptions}
           showMoveOptions={showMoveOptions}
+          moveSelectedDesign={moveSelectedDesigns}
+          getSelectedDesign={selectedDesigns}
         />
         {/* new design section */}
         {/* new design section */}
         <div className="Parent_NewDesign">
           <h3 className="HeadNewdesign">New design</h3>
           <div className="Card_Design_Parent">
-            {Data.map((item) => (
-              <div className="New_Design_card">
+            {Data.map((item, index) => (
+              <div className="New_Design_card" key={item.id}>
                 <div className="Card_img">
                   <img src={item.image} alt="image" />
                 </div>
@@ -105,10 +137,13 @@ const DesignPool = () => {
                 {showRadioButtons && (
                   <input
                     className="Radio_select"
-                    type="radio"
-                    id="html"
+                    type="checkbox"
+                    id={item.designcode}
                     name="fav_language"
-                    value="HTML"
+                    value={item.designcode}
+                    onChange={() => handleCheckboxChange(item.designcode)}
+                    // checked={selectedDesigns[item.designcode]}
+                    checked={selectedDesigns.includes(item.designcode)}
                   ></input>
                 )}
                 {/* radio btn */}

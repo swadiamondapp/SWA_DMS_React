@@ -16,6 +16,8 @@ const DesignBtn = ({
   toggleMoveOptions,
   showDownloadOptions,
   showMoveOptions,
+  moveSelectedDesign,
+  getSelectedDesign
 }) => {
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -63,9 +65,10 @@ const DesignBtn = ({
                 <div className="Sub_AssignmentPanel">
                   <Link
                     style={{ textDecoration: "none" }}
-                    to="/assignmentpanel"
+                    // to="/assignmentpanel"
+                  
                   >
-                    <p style={{ color: "#000" }}>Assignment panel</p>
+                    <p style={{ color: "#000" }}   onClick={() => moveSelectedDesign( getSelectedDesign)}>Assignment panel</p>
                   </Link>
                 </div>
               )}

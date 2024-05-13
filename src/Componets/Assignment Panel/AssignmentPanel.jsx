@@ -5,8 +5,12 @@ import DesignBtn from "../ADMIN PANEL/Design Pool/DesignBtn";
 import ring from "../../assets/gold.png";
 import like from "../../assets/like.png";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link,useNavigate } from "react-router-dom";
 import folderimg from "../../assets/folder.png";
+import { list_assignment_panel, list_folderDetails } from "./Api";
+import { list_assignment_folder } from "../ADMIN PANEL/Design Pool/Api";
+// import { useLocation, useNavigate } from "react-router-dom";
+
 
 const AssignmentPanel = () => {
   const [showRadioButtons, setShowRadioButtons] = useState(false);
@@ -15,11 +19,17 @@ const AssignmentPanel = () => {
   const [showMoveOptions, setShowMoveOptions] = useState(false);
   const [showDeleteMoveButtons, setShowDeleteMoveButtons] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [uploadedImage, setUploadedImage] = useState(null);
+  const [Data, setData] = useState([]);
+  const [assignmentFolder, setAssignmentFolder] = useState([]);
+  const [folderId,setFolderId] = useState([])
   const [uploadInstructionsVisible, setUploadInstructionsVisible] =
     useState(true);
   const location = useLocation();
   const dotsRef = useRef(null);
+  const navigate = useNavigate();
+
 
   const toggleRadioButtons = () => {
     setShowRadioButtons(!showRadioButtons);
@@ -52,12 +62,31 @@ const AssignmentPanel = () => {
       reader.readAsDataURL(file);
     }
   };
-  React.useEffect(() => {
+  useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+  useEffect(() => {
+    list_assignment_panel(setIsLoading, setData);
+    list_assignment_folder(setIsLoading, setAssignmentFolder);
+    list_folderDetails()
+  }, []);
+
+  const handleFolderClick = (id ) => {
+    console.log("id.....>",id)
+    if (location.pathname === "/assignmentview") {
+      navigate(
+        `assignmentview${id}`
+      );
+    }
+    
+  }
+
+
+
+  console.log(Data, "assignmentDatatat");
 
   const card = [
     {
@@ -122,22 +151,27 @@ const AssignmentPanel = () => {
         <div className="Assignment_panel_section">
           <h3 className="HeadNewdesign">Selected</h3>
           <div className="Card_Design_Parent">
-            {card.map((item) => (
+            {Data.map((item) => (
               <div className="New_Design_card">
                 <div className="Card_img">
-                  <img src={ring} alt="" />
+                  {console.log(
+                    "images...?",
+                    item && item.items[0].paper_design
+                  )}
+                  <img src={item && item.items[0].paper_design.image} alt="" />
                   {showDeleteMoveButtons && <div className="Overlay" />}
                 </div>
                 <div className="Card_Details">
-                  <h3>ID : {item.product}</h3>
+                  <h3>ID : {item && item.items[0].paper_design.designcode}</h3>
                   <div className="Card_Details_Inner">
                     <div className="Inner_Left">
                       <p>{item.name}</p>
-                      <p>{item.date}</p>
+                      <p>{item && item.items[0].paper_design.created_at}</p>
                     </div>
                     <div className="Inner_Right">
                       <p>
-                        12 <img src={like} alt="" />
+                        {item && item.items[0].paper_design.likes_count}
+                        <img src={like} alt="" />
                       </p>
                     </div>
                   </div>
@@ -174,14 +208,17 @@ const AssignmentPanel = () => {
         <div className="Parent_Folder_section">
           <h3 className="HeadNewdesign">Folders</h3>
           <div className="folderCard_parent">
-            <div className="folder__card">
-              <Link to="/assignmentview">
-                <img src={folderimg} alt="" />
-              </Link>
+            {console.log("assignment",assignmentFolder)}
+            {assignmentFolder.map((item) => (
+              <div className="folder__card">
+                <Link to={`/assignmentview/${item.id}`} >
+                  <img src={folderimg} alt="" />
+                </Link>
 
-              <p>Akshayathithiya</p>
-            </div>
-            <div className="folder__card">
+                <p>{item.name}</p>
+              </div>
+            ))}
+            {/* <div className="folder__card">
               <Link to="/assignmentview">
                 <img src={folderimg} alt="" />
               </Link>
@@ -198,7 +235,7 @@ const AssignmentPanel = () => {
                 <img src={folderimg} alt="" />
               </Link>
               <p>Akshayathithiya</p>
-            </div>
+            </div> */}
           </div>
         </div>
         {/* Folders */}

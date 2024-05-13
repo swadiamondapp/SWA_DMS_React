@@ -42,7 +42,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<Users />} />
           <Route path="/otherlogin" element={<OtherLoginPage />} />
-          <Route path="/assignmentview" element={<AssignmentViewPage />} />
+          <Route path="/assignmentview/:id" element={<AssignmentViewPage />} />
           <Route path="/designpool" element={<DesignPoolView />} />
           <Route path="/assignmentpanel" element={<AssignmentPanalPage />} />
           <Route path="/chat" element={<ChatPage />} />
