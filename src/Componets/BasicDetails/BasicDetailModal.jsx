@@ -91,15 +91,6 @@ const BasicDetailModal = ({ open, onClose }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // const emptyFields = Object.some(formData)
-
-    // if (emptyFields.length > 0) {
-    //   console.log(
-    //     "Please fill in all required fields===> Create Customisation modal <====."
-    //   );
-    //   console.log("Empty fields:", emptyFields);
-    //   return; // Prevent further execution of the function
-    // }
     // Validate form data using Joi schema
     const { error } = schema.validate(formData, {
       abortEarly: false,
@@ -442,7 +433,11 @@ const BasicDetailModal = ({ open, onClose }) => {
                       </div>
                     </div>
                     <div style={{ marginTop: "10px" }}>
-                      <button className="next-button" type="submit">
+                      <button
+                        className="next-button"
+                        type="submit"
+                        onClick={handleNextClick}
+                      >
                         Next
                       </button>
                     </div>

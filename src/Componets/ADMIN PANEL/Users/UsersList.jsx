@@ -7,13 +7,7 @@ import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { message, Upload } from "antd";
 import UserEm from "../../../assets/userEmpty.png";
 import Joi from "joi";
-import { list_all_users, user_create, user_delete } from "./Api";
-
-const getBase64 = (img, callback) => {
-  const reader = new FileReader();
-  reader.addEventListener("load", () => callback(reader.result));
-  reader.readAsDataURL(img);
-};
+import { list_all_users, update_user, user_create, user_delete } from "./Api";
 
 const schema = Joi.object({
   name: Joi.string().required().messages({
@@ -31,7 +25,7 @@ const schema = Joi.object({
     .messages({
       "string.empty": `cannot be an empty feild`,
     }),
-  selectedRole: Joi.string().required().messages({
+  selectedRole: Joi.number().required().messages({
     "string.empty": `cannot be an empty feild`,
   }),
 });
@@ -48,23 +42,12 @@ const validateForm = (data) => {
   });
   return errors;
 };
-const beforeUpload = (file) => {
-  const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
-  if (!isJpgOrPng) {
-    message.error("You can only upload JPG/PNG file!");
-  }
-  const isLt2M = file.size / 1024 / 1024 < 2;
-  if (!isLt2M) {
-    message.error("Image must smaller than 2MB!");
-  }
-  return isJpgOrPng && isLt2M;
-};
 
 const UsersList = () => {
   // create modal
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState();
+  const [imageUrl, setImageUrl] = useState(null);
   const [errors, setErrors] = useState({});
   const [userList, setUserList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -76,7 +59,7 @@ const UsersList = () => {
     selectedRole: "",
   });
 
-  console.log("userList", userList);
+  console.log("imageUrl", imageUrl);
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -88,6 +71,20 @@ const UsersList = () => {
       ...prevState,
       [name]: value,
     }));
+  };
+
+  // Handle file change for image upload
+  const handleFileChange = (info) => {
+    if (info.file.status === "uploading") {
+      return;
+    }
+    if (info.file.status === "done") {
+      const fileReader = new FileReader();
+      fileReader.onload = (e) => {
+        setImageUrl(e.target.result); // Set the base64 URL to `imageUrl`
+      };
+      fileReader.readAsDataURL(info.file.originFileObj); // Convert file to base64
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -104,16 +101,21 @@ const UsersList = () => {
       data.append("usertype", formData.selectedRole);
       data.append("status", "ACTIVE");
       // If there's an uploaded image, append it to the FormData
-      if (imageUrl) {
-        const file = document.querySelector(
-          '.avatar-uploader input[type="file"]'
-        ).files[0];
-        if (file) {
-          data.append("image", file);
-        }
+      // Append image if it exists
+      const file = document.querySelector('.avatar-uploader input[type="file"]')
+        .files[0];
+      if (file) {
+        data.append("image", file);
       }
-      await user_create(setIsLoading, data, setUserList);
+
+      if (userIdToEdit) {
+        update_user(setIsLoading, data, setUserList, userIdToEdit);
+      } else {
+        await user_create(setIsLoading, data, setUserList);
+      }
+
       setIsModalOpen(false);
+
       // Reset form data after successful submission
       setFormData({
         name: "",
@@ -121,6 +123,7 @@ const UsersList = () => {
         phoneNumber: "",
         selectedRole: "",
       });
+
       // Form is valid, proceed with submission
       console.log("Form submitted:", formData);
     } else {
@@ -149,8 +152,23 @@ const UsersList = () => {
   // };
   const [showEditDelete, setShowEditDelete] = useState(null);
 
+  const [modalTitle, setModalTitle] = useState("Create user");
+  const [submitBtn, setSubmitBtn] = useState("Create user");
+  const [userIdToEdit, setUserIdToEdit] = useState(null);
+
+  console.log("userIdToEdit", userIdToEdit);
+
   const showModal = () => {
     setIsModalOpen(true);
+    setModalTitle("Create user");
+    setSubmitBtn("Create user");
+    setImageUrl(null);
+    setFormData({
+      name: "",
+      email: "",
+      phoneNumber: "",
+      selectedRole: "",
+    });
   };
 
   const handleOk = () => {
@@ -173,19 +191,6 @@ const UsersList = () => {
   const filterOption = (input, option) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
 
-  const handleChange = (info) => {
-    if (info.file.status === "uploading") {
-      setLoading(true);
-      return;
-    }
-    if (info.file.status === "done") {
-      // Get this url from response in real world.
-      getBase64(info.file.originFileObj, (url) => {
-        setLoading(false);
-        setImageUrl(url);
-      });
-    }
-  };
   const uploadButton = (
     <button
       style={{
@@ -213,9 +218,32 @@ const UsersList = () => {
 
   const handleDelete = (userId) => {
     console.log("item.id", userId);
+    setShowEditDelete(null);
     user_delete(setIsLoading, setUserList, userId);
   };
 
+  const hendleEdit = (user) => {
+    console.log("usereditid", user);
+    if (user) {
+      setIsModalOpen(true);
+      setShowEditDelete(null);
+      setErrors({});
+
+      setModalTitle("Edit User");
+      setSubmitBtn("Update User");
+      setFormData({
+        name: user.name,
+        email: user.email,
+        phoneNumber: user.phone_number,
+        selectedRole: parseInt(user.usertype),
+      });
+      console.log("mm????", user.usertype);
+      setImageUrl(user.image);
+    }
+    setUserIdToEdit(user.id);
+  };
+
+  // update_user(setIsLoading, data, setUserList ,"70");
   return (
     <div>
       <div className="Parent_userList">
@@ -234,7 +262,7 @@ const UsersList = () => {
           >
             <div className="Create_user_modal">
               <div className="title-Createuser">
-                <h3>Create user</h3>
+                <h3>{modalTitle}</h3>
               </div>
               <div className="dragAndDrop">
                 <div>
@@ -244,9 +272,8 @@ const UsersList = () => {
                       listType="picture-circle"
                       className="avatar-uploader"
                       showUploadList={false}
-                      action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
-                      beforeUpload={beforeUpload}
-                      onChange={handleChange}
+                      beforeUpload={() => false} // Prevent auto-upload, we handle it manually
+                      onChange={handleFileChange}
                     >
                       {imageUrl ? (
                         <img
@@ -324,6 +351,7 @@ const UsersList = () => {
                     <label htmlFor="">Role</label>
                     <Select
                       showSearch
+                      value={formData.selectedRole}
                       placeholder="Select a person"
                       optionFilterProp="children"
                       onChange={(value) =>
@@ -337,27 +365,27 @@ const UsersList = () => {
                       style={{ width: "100%" }}
                       options={[
                         {
-                          value: "2",
+                          value: 2,
                           label: "DESIGNER",
                         },
                         {
-                          value: "3",
+                          value: 3,
                           label: "CAD",
                         },
                         {
-                          value: "4",
+                          value: 4,
                           label: "VOTERS",
                         },
                         {
-                          value: "5",
+                          value: 5,
                           label: "RENDERS",
                         },
                         {
-                          value: "6",
+                          value: 6,
                           label: "WAREHOUSE",
                         },
                         {
-                          value: "7",
+                          value: 7,
                           label: "CENTRAL HUB",
                         },
                       ]}
@@ -371,7 +399,7 @@ const UsersList = () => {
 
                   <div className="create_user_btn">
                     <button className="create-user-button" type="submit">
-                      Create User
+                      {submitBtn}
                     </button>
                   </div>
                 </form>
@@ -429,7 +457,12 @@ const UsersList = () => {
                     />
                     {showEditDelete === index && (
                       <div className="Edit_delete_btn_user">
-                        <p className="Edit_btn_user">Edit</p>
+                        <p
+                          className="Edit_btn_user"
+                          onClick={() => hendleEdit(item)}
+                        >
+                          Edit
+                        </p>
                         <p
                           className="Delete_btn_user"
                           onClick={() => handleDelete(item.id)}

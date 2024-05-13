@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./DesignerDashboard.css";
 import { LiaCloudUploadAltSolid } from "react-icons/lia";
 import DesignBtn from "../../ADMIN PANEL/Design Pool/DesignBtn";
 import ring from "../../../assets/ring.png";
+import { list_uploaded_designs } from "./Api";
 
 const DesignerDashboard = () => {
   const [uploadInstructionsVisible, setUploadInstructionsVisible] =
@@ -10,6 +11,8 @@ const DesignerDashboard = () => {
   const [showDownloadOptions, setShowDownloadOptions] = useState(false);
   const [showMoveOptions, setShowMoveOptions] = useState(false);
   const [selectButtonLabel, setSelectButtonLabel] = useState("Select");
+  const [uploadedDesigns, setUploadedDesigns] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const card = [
     {
@@ -54,6 +57,11 @@ const DesignerDashboard = () => {
       reader.readAsDataURL(file);
     }
   };
+
+  useEffect(() => {
+    list_uploaded_designs(setIsLoading, setUploadedDesigns);
+  }, []);
+
   return (
     <div>
       <div className="DesignerDashboard">
@@ -109,17 +117,17 @@ const DesignerDashboard = () => {
           <div className="DesignerDashboardcard">
             <h3 className="HeadNewdesign">Uploaded</h3>
             <div className="Card_Design_Parent">
-              {card.map((item) => (
+              {uploadedDesigns.map((item) => (
                 <div className="New_Design_card">
                   <div className="Card_img">
-                    <img src={ring} alt="" />
+                    <img src={item.image} alt="" />
                   </div>
                   <div className="Card_Details">
-                    <h3>ID : {item.product}</h3>
+                    <h3>ID : {item.designcode}</h3>
                     <div className="Card_Details_Inner">
                       <div className="Inner_Left">
-                        <p>{item.name}</p>
-                        <p>{item.date}</p>
+                        <p>Name ....</p>
+                        <p>{item.created_at}</p>
                       </div>
                     </div>
                   </div>

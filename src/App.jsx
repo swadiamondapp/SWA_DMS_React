@@ -33,6 +33,7 @@ import WareHouseDetailsPage from "./Pages/WareHousePageView/WareHouseDetailPage/
 import FinishedProductsPage from "./Pages/CAD PANAL/Finished Products Page/FinishedProductsPage";
 import CentralHubDashboard from "./Pages/CENTRAL HUB/Central Hub dashboard Page/CentralHubDashboard";
 import HubSlot from "./Pages/CENTRAL HUB/Central Hub Slot/HubSlot";
+import PrivateRoute from "./Pages/Utils/PrivateRoute";
 
 function App() {
   return (
