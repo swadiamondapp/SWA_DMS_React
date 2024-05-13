@@ -10,7 +10,7 @@ const DesignerAssignmentPanel = () => {
         <h3 className="HeadNewdesign">Folders</h3>
         <div className="folderCard_parent">
           <div className="folder__card">
-            <Link to="">
+            <Link to="/designerassignview">
               <img src={folderimg} alt="" />
             </Link>
 
