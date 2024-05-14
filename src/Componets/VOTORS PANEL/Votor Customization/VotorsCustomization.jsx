@@ -1,12 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DesignBtn from "../../ADMIN PANEL/Design Pool/DesignBtn";
 import { IoEye } from "react-icons/io5";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import CustomiseRequest from "../../CustomiseRequest/CustomiseRequiest";
+import { voters_customization_list } from "../Api";
 
 const VotorsCustomization = () => {
   const [showEditDelete, setShowEditDelete] = useState(null);
   const [IsModalOpen, setIsModalOpen] = useState(false);
+  const [Data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    voters_customization_list(setIsLoading, setData);
+  }, []);
+  console.log(Data, "voters");
   const userlist = [
     {
       date: "11/2/2023",
@@ -68,18 +76,19 @@ const VotorsCustomization = () => {
                   Product type
                 </th>
                 <th>Status</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
-              {userlist.map((item, index) => (
+              {Data.map((item, index) => (
                 <tr key={index} style={{ color: "#2E364C" }}>
-                  <td>{item.date}</td>
-                  <td>{item.id}</td>
+                  <td>{item.created_at}</td>
+                  <td>{item.customizationcode}</td>
                   <td>{item.outlet}</td>
                   <td>
-                    <div className="view_password">{item.phone}</div>
+                    <div className="view_password">{item.mobile_number}</div>
                   </td>
-                  <td>{item.type}</td>
+                  <td>{item.product_type}</td>
                   {/* <td>
                     <div className="active_sendmail">
                       <button className="sendmail_btn">Send Mail</button>
@@ -89,7 +98,7 @@ const VotorsCustomization = () => {
                   <td style={{ position: "relative" }}>
                     <div className="status_votors">
                       {/* <button className="requested_btn">Requested</button> */}
-                      <button className="updated_btn">Updated</button>
+                      <button className="updated_btn">{item.status}</button>
                       <IoEye
                         style={{
                           color: "#A7BED7",
@@ -123,6 +132,7 @@ const VotorsCustomization = () => {
       <CustomiseRequest
         open={IsModalOpen}
         onClose={() => setIsModalOpen(false)}
+        
       />
     </div>
   );

@@ -1,8 +1,18 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./VotorsPanal.css";
 import ring from "../../../assets/ring.png";
+// import { voters_customization_list } from "./Api";
+import { all_Designs } from "../../ADMIN PANEL/Design Pool/Api";
 
 const VotorsPanal = () => {
+  const [Data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState([]);
+
+  useEffect(() => {
+    all_Designs(setIsLoading, setData);
+  }, []);
+  console.log(Data, "voterssss");
+
   const card = [
     {
       product: "SWAD3456",
@@ -31,17 +41,17 @@ const VotorsPanal = () => {
         <div className="Parent_NewDesign">
           <h3 className="HeadNewdesign">Newly added</h3>
           <div className="Card_Design_Parent">
-            {card.map((item) => (
+            {Data.map((item) => (
               <div className="New_Design_card">
                 <div className="Card_img">
-                  <img src={ring} alt="" />
+                  <img src={item.image} alt="" />
                 </div>
                 <div className="Card_Details">
-                  <h3>ID : {item.product}</h3>
+                  <h3>ID : {item.designcode}</h3>
                   <div className="Card_Details_Inner">
                     <div className="Inner_Left">
-                      <p>{item.name}</p>
-                      <p>{item.date}</p>
+                      <p>{item.user_name}</p>
+                      <p>{item.created_at}</p>
                     </div>
                     <div
                       className="Inner_Right"

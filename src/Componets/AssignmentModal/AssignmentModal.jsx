@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./AssignmentModal.css";
-
+import { move_to_folder } from "../Assignment Panel/Api";
 import { Modal, Select } from "antd";
 
-const AssignmentModal = ({ open, onClose }) => {
+const AssignmentModal = ({ open, onClose, formData }) => {
   // create modal
   // const [isModalOpen, setIsModalOpen] = useState(false);
   const [AssinedButton, setAssignedButton] = useState("Assign");
+  const [isLoading, setIsLoading] = useState(false);
+  const [folderName, setFolderName] = useState("");
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -15,6 +17,14 @@ const AssignmentModal = ({ open, onClose }) => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+  const handleCreateButton = () => {
+    move_to_folder(setIsLoading, formData,folderName);
+  };
+  const handleChange = (event) => {
+    setFolderName(event.target.value);
+
+  };
+  console.log(folderName,'folder')
 
   return (
     <div>
@@ -34,8 +44,15 @@ const AssignmentModal = ({ open, onClose }) => {
                   className="inputFeildt"
                   type="text"
                   placeholder="june 24 2023"
+                  value={folderName}
+                  onChange={handleChange}
                 />
-                <button className="button-create">Create</button>
+                <button
+                  className="button-create"
+                  onClick={() => handleCreateButton()}
+                >
+                  Create
+                </button>
               </div>
             </div>
           </Modal>

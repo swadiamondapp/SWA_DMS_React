@@ -68,7 +68,7 @@ const DesignBtn = ({
                     // to="/assignmentpanel"
                   
                   >
-                    <p style={{ color: "#000" }}   onClick={() => moveSelectedDesign( getSelectedDesign)}>Assignment panel</p>
+                    <p style={{ color: "#000" }}   onClick={() => moveSelectedDesign()}>Assignment panel</p>
                   </Link>
                 </div>
               )}

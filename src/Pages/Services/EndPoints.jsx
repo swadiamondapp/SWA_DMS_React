@@ -7,7 +7,9 @@ export const USER_DELETE = "delete-users/";
 export const EDIT_USER = "edit-users/";
 export const LIST_UPLOAD_DESIGN = "upload-design/";
 
-export const MOVE_TO_ASSIGNMENT = '/move-design/'
+export const MOVE_TO_ASSIGNMENT = 'move-design/'
 export const LIST_ASSIGNMENT_PANEL = "assigned-design/"
 export const LIST_ASSIGNMENT_FOLDER = "getlist-folder/"
 export const FOLDER_DETAIL_API = "folder-detail/"
+export const VOTERS_CUSTOMIZATION_LIST = "list-all-customization/"
+export const MOVE_TO_FOLDER = "moveto-folder/"

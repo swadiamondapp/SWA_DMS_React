@@ -8,6 +8,7 @@ import { Select } from "antd";
 import { TagsInput } from "react-tag-input-component";
 import Joi from "joi";
 import AssignmentModal from "../AssignmentModal/AssignmentModal";
+import { move_to_folder } from "../Assignment Panel/Api";
 
 const style = {
   position: "absolute",
@@ -43,6 +44,7 @@ const BasicDetailModal = ({ open, onClose }) => {
     tags: "",
     notes: "",
   });
+  console.log(formData,"basicFormdData")
 
   const schema = Joi.object({
     SKU: Joi.string().required().messages({
@@ -96,6 +98,7 @@ const BasicDetailModal = ({ open, onClose }) => {
       abortEarly: false,
       allowUnknown: true,
     });
+  
 
     if (error) {
       // Form is invalid, display validation errors
@@ -450,6 +453,7 @@ const BasicDetailModal = ({ open, onClose }) => {
       </div>
       <AssignmentModal
         open={showAssignmentModal}
+        formData={formData}
         onClose={() => setShowAssignmentModal(false)}
       />
     </div>

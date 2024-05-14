@@ -3,9 +3,10 @@ import "./DesignPool.css";
 import like from "../../../assets/like.png";
 import ring from "../../../assets/ring.png";
 import DesignBtn from "../../ADMIN PANEL/Design Pool/DesignBtn";
-import { all_Designs, unvoted_design,moveSelectedDesign } from "./Api";
+import { all_Designs, unvoted_design, moveSelectedDesign } from "./Api";
 import { MOVE_TO_ASSIGNMENT } from "../../../Pages/Services/EndPoints";
 import { apiService } from "../../../Pages/Services/ApiInstants";
+import {useNavigate } from "react-router-dom";
 
 const DesignPool = () => {
   const [showRadioButtons, setShowRadioButtons] = useState(false);
@@ -16,6 +17,8 @@ const DesignPool = () => {
   const [selectedDesigns, setSelectedDesigns] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [unvotedData, setUnvotedData] = useState([]);
+
+  const navigate = useNavigate();
 
   const toggleRadioButtons = () => {
     setShowRadioButtons(!showRadioButtons);
@@ -51,14 +54,14 @@ const DesignPool = () => {
   // };
   const moveSelectedDesigns = async () => {
     try {
-      await moveSelectedDesign(setIsLoading, selectedDesigns);
-    
-        console.log('Selected designs moved successfully');
-  
+     const res =  await moveSelectedDesign(setIsLoading,selectedDesigns);
+     console.log("ressssssss-->",res)
+     if (res) {
+      navigate('/assignmentpanel');
+     }
     } catch (error) {
-      console.error('Error moving selected designs:', error);
+      console.error("Error moving selected designs:", error);
     }
-
   };
   return (
     <div>
