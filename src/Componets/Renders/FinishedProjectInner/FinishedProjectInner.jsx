@@ -4,7 +4,7 @@ import ShareIcon from "../../../assets/shareIcon.png";
 import RingFin from "../../../assets/ring_fin.png";
 import RingSilver from "../../../assets/ring_fin1.png";
 
-const FinishedProjectInner = () => {
+const FinishedProjectInner = (props) => {
   const card = [
     {
       product: RingFin,
@@ -23,6 +23,8 @@ const FinishedProjectInner = () => {
       date: "12TH JAN 2024",
     },
   ];
+
+  console.log(props?.folderItem);
 
   return (
     <div className="MainContainer">

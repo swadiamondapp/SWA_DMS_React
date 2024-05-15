@@ -7,14 +7,17 @@ export const USER_DELETE = "delete-users/";
 export const EDIT_USER = "edit-users/";
 export const LIST_UPLOAD_DESIGN = "upload-design/";
 
-export const MOVE_TO_ASSIGNMENT = 'move-design/'
-export const LIST_ASSIGNMENT_PANEL = "assigned-design/"
-export const LIST_ASSIGNMENT_FOLDER = "getlist-folder/"
-export const FOLDER_DETAIL_API = "folder-detail/"
-export const VOTERS_CUSTOMIZATION_LIST = "list-all-customization/"
+export const MOVE_TO_ASSIGNMENT = "move-design/";
+export const LIST_ASSIGNMENT_PANEL = "assigned-design/";
+export const LIST_ASSIGNMENT_FOLDER = "getlist-folder/";
+export const FOLDER_DETAIL_API = "folder-detail/";
+export const VOTERS_CUSTOMIZATION_LIST = "list-all-customization/";
 export const MOVE_TO_FOLDER = "moveto-folder/"
 export const VOTED_DESIGN_LIST="design-list/?likes_count_min=1"
 export const DELETE_CUSTOMIZATION = "delete-customizations/"
 export const EDIT_CUTOMIZATION = "edit-customizations/"
 export const LIST_ASSIGNED_CAD_DESIGN = "list/myassigned-data/"
-export const CUSTOMIZATION_DETAILS ="customization-detail/"
+export const CUSTOMIZATION_DETAILS ="customization-detail/";
+export const DESIGN_LIST_CAD = "all-designlistof-cad/";
+export const FINISHED_PROJECTS = "list/finished/projects/";
+export const FOLDER_ITEM = "innerproject/detail/";

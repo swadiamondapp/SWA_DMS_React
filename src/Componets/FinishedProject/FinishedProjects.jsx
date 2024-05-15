@@ -4,7 +4,7 @@ import "../FinishedProject/FinishedProject.css";
 import folderimg from "../../assets/folder.png";
 import DesignBtn from "../ADMIN PANEL/Design Pool/DesignBtn";
 
-const FinishedProjects = () => {
+const FinishedProjects = (props) => {
   const [showRadioButtons, setShowRadioButtons] = useState(false);
   const [selectButtonLabel, setSelectButtonLabel] = useState("Select");
   const [showDownloadOptions, setShowDownloadOptions] = useState(false);
@@ -33,43 +33,15 @@ const FinishedProjects = () => {
         />
       </div>
       <div className="folderCard_parent">
-        <div className="folder__card">
-          <Link to="/assignmentview">
-            <img src={folderimg} alt="" />
-          </Link>
+        {props?.finishedProjectData?.map((item, index) => (
+          <div className="folder__card">
+            <Link to={`/finished/${item.id}`}>
+              <img src={folderimg} alt="" />
+            </Link>
 
-          <p>Akshayathithiya</p>
-        </div>
-        <div className="folder__card">
-          <Link to="/assignmentview">
-            <img src={folderimg} alt="" />
-          </Link>
-          <p>Akshayathithiya</p>
-        </div>
-        <div className="folder__card">
-          <Link to="/assignmentview">
-            <img src={folderimg} alt="" />
-          </Link>
-          <p>Akshayathithiya</p>
-        </div>
-        <div className="folder__card">
-          <Link to="/assignmentview">
-            <img src={folderimg} alt="" />
-          </Link>
-          <p>Akshayathithiya</p>
-        </div>
-        <div className="folder__card">
-          <Link to="/assignmentview">
-            <img src={folderimg} alt="" />
-          </Link>
-          <p>Akshayathithiya</p>
-        </div>
-        <div className="folder__card">
-          <Link to="/assignmentview">
-            <img src={folderimg} alt="" />
-          </Link>
-          <p>Akshayathithiya</p>
-        </div>
+            <p>{item.name}</p>
+          </div>
+        ))}
       </div>
     </div>
   );

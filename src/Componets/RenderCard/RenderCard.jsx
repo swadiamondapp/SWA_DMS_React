@@ -6,13 +6,11 @@ import { LiaCloudUploadAltSolid } from "react-icons/lia";
 import UpIcon from "../../assets/uPicon.png";
 import UploadFile from "../../Componets/UploadFile/UploadFile";
 
-const RenderCard = () => {
+const RenderCard = (props) => {
   const [uploadInstructionsVisible, setUploadInstructionsVisible] =
     useState(true);
   const [uploadedImage, setUploadedImage] = useState(null);
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
-  const location = useLocation();
-  const dotsRef = useRef(null);
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
@@ -25,34 +23,11 @@ const RenderCard = () => {
       reader.readAsDataURL(file);
     }
   };
-  const card = [
-    {
-      id: "SWAD3456",
-      product: p,
-      date: "12TH JAN 2024",
-    },
-    {
-      id: "SWAD3456",
-      product: p,
-      date: "12TH JAN 2024",
-    },
-    {
-      id: "SWAD3456",
-      product: p,
-      date: "12TH JAN 2024",
-    },
-    {
-      id: "SWAD3456",
-      product: p,
-      date: "12TH JAN 2024",
-    },
-  ];
 
   return (
     <div className="MainContainer">
       <div
         className="Design_FileUpload"
-        // onClick={() => document.getElementById("fileInput").click()}
         onClick={() => setUploadModalOpen(true)}
       >
         {uploadInstructionsVisible ? (
@@ -91,13 +66,14 @@ const RenderCard = () => {
         />
       </div>
       <div className="parentRendercard">
-        {card.map((item, index) => {
+        {props?.designListData?.map((item, index) => {
           return (
             <div className="renderCardImage">
-              <img src={item.product} alt="card_image" />
-              <span className="idText">ID : {item.id}</span>
+              <img src={item.file1} alt="card_image" />
+              <span className="idText">ID : {item.designcode}</span>
               <span className="posted">
-                POSTED ON: <span className="postedOn_dataa">{item.date}</span>
+                POSTED ON:{" "}
+                <span className="postedOn_dataa">{item.created_at}</span>
               </span>
               <div>
                 <button className="Counter_button">0:05:00</button>
