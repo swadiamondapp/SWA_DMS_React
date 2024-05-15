@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./CadAssignment.css";
 import { LiaCloudUploadAltSolid } from "react-icons/lia";
 import { useLocation, Link } from "react-router-dom";
 import folderimg from "../../../assets/folder.png";
-
+import { list_assigned_cad_design } from "../Api";
 const CadAssignment = () => {
-  const [uploadInstructionsVisible, setUploadInstructionsVisible] =
-    useState(true);
+  const [uploadInstructionsVisible, setUploadInstructionsVisible] = useState(true);
+  const [assignedCadDesign,setAssignedCadDesign] = useState([])
+  const [isLoading,setIsLoading] = useState(false)
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
@@ -18,6 +19,13 @@ const CadAssignment = () => {
       reader.readAsDataURL(file);
     }
   };
+
+  useEffect(() => {
+    list_assigned_cad_design(setIsLoading,setAssignedCadDesign);
+  },[]);
+
+
+  console.log(assignedCadDesign,"assssssss==-->")
   return (
     <div className="ParentCad">
       <div
@@ -71,7 +79,7 @@ const CadAssignment = () => {
 
               <p>Akshayathithiya</p>
             </div>
-            <div className="folder__card">
+            {/* <div className="folder__card">
               <Link to="">
                 <img src={folderimg} alt="" />
               </Link>
@@ -88,7 +96,7 @@ const CadAssignment = () => {
                 <img src={folderimg} alt="" />
               </Link>
               <p>Akshayathithiya</p>
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="Finished_Items">

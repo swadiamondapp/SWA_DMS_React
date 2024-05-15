@@ -2,16 +2,19 @@ import React, { useState, useEffect } from "react";
 import "./VotorsPanal.css";
 import ring from "../../../assets/ring.png";
 // import { voters_customization_list } from "./Api";
-import { all_Designs } from "../../ADMIN PANEL/Design Pool/Api";
+import { all_Designs_items, voted_design_list } from "../Api";
 
 const VotorsPanal = () => {
   const [Data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState([]);
+  const [votedList, setVotedList] = useState([]);
 
   useEffect(() => {
-    all_Designs(setIsLoading, setData);
+    all_Designs_items(setIsLoading, setData);
+    voted_design_list(setIsLoading, setVotedList);
   }, []);
   console.log(Data, "voterssss");
+  console.log(votedList, "votedList");
 
   const card = [
     {
@@ -69,23 +72,23 @@ const VotorsPanal = () => {
             <div className="Parent_unvoted">
               <h3 className="HeadNewdesign">Last voted</h3>
               <div className="Card_Design_Parent">
-                {card.map((item) => (
+                {votedList.map((item) => (
                   <div className="New_Design_card">
                     <div className="Card_img">
-                      <img src={ring} alt="" />
+                      <img src={item.image} alt="" />
                     </div>
                     <div className="Card_Details">
-                      <h3>ID : {item.product}</h3>
+                      <h3>ID : {item.designcode}</h3>
                       <div className="Card_Details_Inner">
                         <div className="Inner_Left">
-                          <p>{item.name}</p>
-                          <p>{item.date}</p>
+                          <p>{item.user_name}</p>
+                          <p>{item.created_at}</p>
                         </div>
                         <div
                           className="Inner_Right"
                           style={{ borderRadius: "4px" }}
                         >
-                          <p style={{ padding: "8px 18px" }}>0</p>
+                          <p style={{ padding: "8px 18px" }}>{item.likes_count}</p>
                         </div>
                       </div>
                     </div>

@@ -3,7 +3,7 @@ import "./AssignmentModal.css";
 import { move_to_folder } from "../Assignment Panel/Api";
 import { Modal, Select } from "antd";
 
-const AssignmentModal = ({ open, onClose, formData }) => {
+const AssignmentModal = ({ open, onClose, formData,selectedAssignment }) => {
   // create modal
   // const [isModalOpen, setIsModalOpen] = useState(false);
   const [AssinedButton, setAssignedButton] = useState("Assign");
@@ -18,7 +18,7 @@ const AssignmentModal = ({ open, onClose, formData }) => {
     setIsModalOpen(false);
   };
   const handleCreateButton = () => {
-    move_to_folder(setIsLoading, formData,folderName);
+    move_to_folder(setIsLoading, formData,folderName,selectedAssignment);
   };
   const handleChange = (event) => {
     setFolderName(event.target.value);

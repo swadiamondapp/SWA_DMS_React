@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./CustomiseRequiest.css";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -10,7 +10,7 @@ import RingA from "../../assets/ringa.png";
 import RingB from "../../assets/ringb.png";
 import RingC from "../../assets/ringc.png";
 import editIcon from "../../assets/editIcon.svg";
-
+import { customization_details } from "../VOTORS PANEL/Api";
 const style = {
   position: "absolute",
   top: "50%",
@@ -24,15 +24,18 @@ const style = {
   p: 1,
   overflowY: "scroll",
   borderRadius: 1,
-  outline:'none'
+  outline: "none",
 };
 
-const CustomiseRequest = ({ open, onClose }) => {
+const CustomiseRequest = ({ open, onClose, userId }) => {
+  // const [customization, setCustomization] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   // create modal
 
   // const [open, setOpen] = useState(false);
   const [AssinedButton, setAssignedButton] = useState("Assign");
   const [tagText, setTagText] = useState("");
+  const [customization, setCustomization] = useState([]);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -55,6 +58,13 @@ const CustomiseRequest = ({ open, onClose }) => {
   const filterOption = (input, option) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
 
+  useEffect(() => {
+    customization_details(setIsLoading, setCustomization, userId);
+  }, []);
+
+  console.log(customization, "custoooo>>");
+  console.log(userId, "userId================>");
+
   return (
     <div>
       <div className="">
@@ -71,136 +81,140 @@ const CustomiseRequest = ({ open, onClose }) => {
             <Box sx={style}>
               <Typography id="modal-modal-description" sx={{ mx: 1, pb: 1 }}>
                 <div>
-                  <span className="headerTitle">
-                    Customization ID : SWA3DR56
-                  </span>
-                  <div className="lineCR"></div>
-                  <div style={{ marginBottom: "5px" }}>
-                    <span className="basic-Details-title">Basic Details</span>
-                  </div>
-                  <div className="subTitle">
-                    <div className="ProductInformation">
-                      <span>Sales man</span>
-                      <span>Muhammed Ajmel</span>
-                    </div>
-                    <div className="ProductInformation">
-                      <span>Phone Number</span>
-                      <span>+91 9996567656</span>
-                    </div>
-                    <div className="ProductInformation">
-                      <span>Outlet</span>
-                      <span>Malabar jewllery kozhikode</span>
-                    </div>
-                  </div>
-                  <div className="lineCR"></div>
-                  <div style={{ marginBottom: "5px" }}>
-                    <span className="basic-Details-title">
-                      Product Information
-                    </span>
-                  </div>
-                  <div className="subTitle">
-                    <div className="ProductInformation">
-                      <span>Sales man</span>
-                      <span>Muhammed Ajmel</span>
-                    </div>
-                    <div className="ProductInformation">
-                      <span>Phone Number</span>
-                      <span>+91 9996567656</span>
-                    </div>
-                    <div className="ProductInformation">
-                      <span>Outlet</span>
-                      <span>Malabar jewllery kozhikode</span>
-                    </div>
-                  </div>
                   <div>
-                    <div style={{ margin: "5px 0px" }}>
-                      <span className="imgTitleCR">Images</span>
+                    <span className="headerTitle">
+                      Customization ID :{customization.customizationcode}
+                    </span>
+                    <div className="lineCR"></div>
+                    <div style={{ marginBottom: "5px" }}>
+                      <span className="basic-Details-title">Basic Details</span>
                     </div>
-                    <div className="ringImages">
-                      <div className="imageContainer">
-                        <img className="" src={RingA} alt="" />
+                    <div className="subTitle">
+                      <div className="ProductInformation">
+                        <span>Sales man</span>
+                        <span>{customization.salesman}</span>
                       </div>
-                      <div className="imageContainer">
-                        <img src={RingB} alt="" />
+                      <div className="ProductInformation">
+                        <span>Phone Number</span>
+                        <span>{customization.mobile_number}</span>
                       </div>
-                      <div className="imageContainer">
-                        <img src={RingC} alt="" />
+                      <div className="ProductInformation">
+                        <span>Outlet</span>
+                        <span>{customization.outlet}</span>
                       </div>
                     </div>
-                  </div>
-                  <div className="lineCR"></div>
-                  <div style={{ marginBottom: "5px" }}>
-                    <span className="basic-Details-title">Metel Details</span>
-                  </div>
-                  <div className="subTitle-metal">
-                    <div className="ProductInformation">
-                      <span>Metel type</span>
-                      <span>Yellow Gold 18 K</span>
-                    </div>
-                    <div className="ProductInformation">
-                      <span>Weight</span>
-                      <span>56.00 GM</span>
-                    </div>
-                    <div className="ProductInformation">
-                      <span>Size</span>
-                      <span>5</span>
-                    </div>
-                  </div>
-                  <div className="lineCR"></div>
-                  <div style={{ marginBottom: "5px" }}>
-                    <span className="basic-Details-title">Diamond Details</span>
-                  </div>
-                  <div className="DiamondType">
-                    <div className="ProductInformation">
-                      <span>Diamond Weight</span>
-                      <span>56.00 CT</span>
-                    </div>
-                    <div className="ProductInformation">
-                      <span>Number of Diamonds</span>
-                      <span>10</span>
-                    </div>
-                    <div className="ProductInformation">
-                      <span>Diamond Clarity</span>
-                      <span>Vvs</span>
-                    </div>
-                    <div className="ProductInformation">
-                      <span>Diamond colour</span>
-                      <span>EF</span>
-                    </div>
-                  </div>
-                  <div className="lineCR"></div>
-                  <div style={{ marginBottom: "5px" }}>
-                    <span className="basic-Details-title">Other details</span>
-                  </div>
-                  <div className="subTitle-metal">
-                    <div className="ProductInformation">
-                      <span>Budget</span>
-                      <span>24000</span>
-                    </div>
-                    <div className="ProductInformation">
-                      <span>SWA Product SKU</span>
-                      <span>Nill</span>
-                    </div>
-                    <div className="ProductInformation">
-                      <span>Note</span>
-                      <span>
-                        Make the design as same as
-                        <br /> the referance image
+                    <div className="lineCR"></div>
+                    <div style={{ marginBottom: "5px" }}>
+                      <span className="basic-Details-title">
+                        Product Information
                       </span>
                     </div>
-                  </div>
-                  <div className="lineCR"></div>
+                    <div className="subTitle">
+                      <div className="ProductInformation">
+                        <span>Sales man</span>
+                        <span>Muhammed Ajmel</span>
+                      </div>
+                      <div className="ProductInformation">
+                        <span>Phone Number</span>
+                        <span>+91 9996567656</span>
+                      </div>
+                      <div className="ProductInformation">
+                        <span>Outlet</span>
+                        <span>Malabar jewllery kozhikode</span>
+                      </div>
+                    </div>
+                    <div>
+                      <div style={{ margin: "5px 0px" }}>
+                        <span className="imgTitleCR">Images</span>
+                      </div>
+                      <div className="ringImages">
+                        <div className="imageContainer">
+                          <img className="" src={RingA} alt="" />
+                        </div>
+                        <div className="imageContainer">
+                          <img src={RingB} alt="" />
+                        </div>
+                        <div className="imageContainer">
+                          <img src={RingC} alt="" />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="lineCR"></div>
+                    <div style={{ marginBottom: "5px" }}>
+                      <span className="basic-Details-title">Metel Details</span>
+                    </div>
+                    <div className="subTitle-metal">
+                      <div className="ProductInformation">
+                        <span>Metel type</span>
+                        <span>Yellow Gold 18 K</span>
+                      </div>
+                      <div className="ProductInformation">
+                        <span>Weight</span>
+                        <span>56.00 GM</span>
+                      </div>
+                      <div className="ProductInformation">
+                        <span>Size</span>
+                        <span>5</span>
+                      </div>
+                    </div>
+                    <div className="lineCR"></div>
+                    <div style={{ marginBottom: "5px" }}>
+                      <span className="basic-Details-title">
+                        Diamond Details
+                      </span>
+                    </div>
+                    <div className="DiamondType">
+                      <div className="ProductInformation">
+                        <span>Diamond Weight</span>
+                        <span>56.00 CT</span>
+                      </div>
+                      <div className="ProductInformation">
+                        <span>Number of Diamonds</span>
+                        <span>10</span>
+                      </div>
+                      <div className="ProductInformation">
+                        <span>Diamond Clarity</span>
+                        <span>Vvs</span>
+                      </div>
+                      <div className="ProductInformation">
+                        <span>Diamond colour</span>
+                        <span>EF</span>
+                      </div>
+                    </div>
+                    <div className="lineCR"></div>
+                    <div style={{ marginBottom: "5px" }}>
+                      <span className="basic-Details-title">Other details</span>
+                    </div>
+                    <div className="subTitle-metal">
+                      <div className="ProductInformation">
+                        <span>Budget</span>
+                        <span>24000</span>
+                      </div>
+                      <div className="ProductInformation">
+                        <span>SWA Product SKU</span>
+                        <span>Nill</span>
+                      </div>
+                      <div className="ProductInformation">
+                        <span>Note</span>
+                        <span>
+                          Make the design as same as
+                          <br /> the referance image
+                        </span>
+                      </div>
+                    </div>
+                    <div className="lineCR"></div>
 
-                  <div className="crButtonContainer">
-                    {/* <button className="CR_ButtonCommen confirmButtonCR">
-                      confirm
-                    </button>
-                    <button className="CR_ButtonCommen rejectButtonCR">
-                      Rejet
-                    </button> */}
-                    <button className="CR_ButtonCommen editButtonCR">
-                      edit <img src={editIcon} alt="" />
-                    </button>
+                    <div className="crButtonContainer">
+                      {/* <button className="CR_ButtonCommen confirmButtonCR">
+                          confirm
+                        </button>
+                        <button className="CR_ButtonCommen rejectButtonCR">
+                          Rejet
+                        </button> */}
+                      <button className="CR_ButtonCommen editButtonCR">
+                        edit <img src={editIcon} alt="" />
+                      </button>
+                    </div>
                   </div>
                 </div>
               </Typography>

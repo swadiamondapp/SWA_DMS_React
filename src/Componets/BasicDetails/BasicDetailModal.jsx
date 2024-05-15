@@ -24,11 +24,11 @@ const style = {
   p: 2,
 };
 
-const BasicDetailModal = ({ open, onClose }) => {
+const BasicDetailModal = ({ open, onClose,selectedAssignment }) => {
   // create modal
 
   // const [open, setOpen] = React.useState(false);
-  const [selected, setSelected] = useState(["papaya"]);
+  const [selected, setSelected] = useState([]);
   const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
     SKU: "",
@@ -45,6 +45,7 @@ const BasicDetailModal = ({ open, onClose }) => {
     notes: "",
   });
   console.log(formData,"basicFormdData")
+  console.log(selectedAssignment,"basic=====>")
 
   const schema = Joi.object({
     SKU: Joi.string().required().messages({
@@ -129,6 +130,7 @@ const BasicDetailModal = ({ open, onClose }) => {
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
 
   const handleNextClick = () => {
+    handleSubmit()
     onClose(); // Close the modal
     // Show AssignmentModal when Next is clicked
     setShowAssignmentModal(true);
@@ -455,6 +457,7 @@ const BasicDetailModal = ({ open, onClose }) => {
         open={showAssignmentModal}
         formData={formData}
         onClose={() => setShowAssignmentModal(false)}
+        selectedAssignment={selectedAssignment}
       />
     </div>
   );

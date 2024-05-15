@@ -8,6 +8,7 @@ import { Link, useLocation } from "react-router-dom";
 import BasicDetailModal from "../../BasicDetails/BasicDetailModal";
 import AssignToModal from "../../AssignToModal/AssignToModal";
 import CreateCustomisation from "../../CreateCustomisation/CreateCustomisation";
+import { move_to_folder } from "../../Assignment Panel/Api";
 
 const DesignBtn = ({
   toggleDownloadOptions,
@@ -18,12 +19,19 @@ const DesignBtn = ({
   showMoveOptions,
   moveSelectedDesign,
   getSelectedDesign,
+  selectedAssignment
 }) => {
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpenAssign, setIsModalOpenAssign] = useState(false);
   const [isModalOpenCreateCutomize, setIsCreateCustomizeModalOpen] =
     useState(false);
+
+    const  handleCreatedFolder = ()=> {
+      setIsModalOpen(true)
+
+    }
+    console.log(selectedAssignment,"selectedAssignment?==>")
   return (
     <div>
       <div className="DesignPool_btns">
@@ -87,7 +95,7 @@ const DesignBtn = ({
 
         {location.pathname === "/assignmentpanel" && (
           <div className="Parent_MoveTo">
-            <button className="D_moveBtn" onClick={() => setIsModalOpen(true)}>
+            <button className="D_moveBtn" onClick={() => handleCreatedFolder()}>
               Create folder
             </button>
           </div>
@@ -120,6 +128,7 @@ const DesignBtn = ({
       <BasicDetailModal
         open={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+        selectedAssignment={selectedAssignment}
       />
       <AssignToModal
         open={isModalOpenAssign}

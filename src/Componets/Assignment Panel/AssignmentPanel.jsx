@@ -93,6 +93,7 @@ const AssignmentPanel = () => {
 
 
   console.log(Data, "assignmentDatatat");
+  console.log(selectedAssignment,"selecte==================>")
 
   const card = [
     {
@@ -153,6 +154,7 @@ const AssignmentPanel = () => {
           toggleMoveOptions={toggleMoveOptions}
           showDownloadOptions={showDownloadOptions}
           showMoveOptions={showMoveOptions}
+          selectedAssignment={selectedAssignment}
         />
         <div className="Assignment_panel_section">
           <h3 className="HeadNewdesign">Selected</h3>
@@ -187,16 +189,16 @@ const AssignmentPanel = () => {
                   <input
                     className="Radio_select"
                     type="checkbox"
-                    id={item && item.items[0].paper_design.designcode}
+                    id={item && item.items[0].paper_design.id}
                     name="fav_language"
-                    value={item && item.items[0].paper_design.designcode}
+                    value={item && item.items[0].paper_design.id}
                     onChange={() =>
                       handleCheckboxChange(
-                        item && item.items[0].paper_design.designcode
+                        item && item.items[0].paper_design.id
                       )
                     }
                     checked={selectedAssignment.includes(
-                      item && item.items[0].paper_design.designcode
+                      item && item.items[0].paper_design.id
                     )}
                   ></input>
                 )}

@@ -3,18 +3,36 @@ import DesignBtn from "../../ADMIN PANEL/Design Pool/DesignBtn";
 import { IoEye } from "react-icons/io5";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import CustomiseRequest from "../../CustomiseRequest/CustomiseRequiest";
-import { voters_customization_list } from "../Api";
+import {
+  voters_customization_list,
+  delete_customization,
+} from "../Api";
 
 const VotorsCustomization = () => {
   const [showEditDelete, setShowEditDelete] = useState(null);
   const [IsModalOpen, setIsModalOpen] = useState(false);
   const [Data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [userId,setUserId] = useState([])
+  const [customization,setCustomization] = useState([])
 
   useEffect(() => {
     voters_customization_list(setIsLoading, setData);
   }, []);
-  console.log(Data, "voters");
+
+  const handleDeleteCustomization = (cuzId) => {
+    delete_customization(setIsLoading, setData, cuzId);
+  };
+  const handleEditCustomization = () => {
+    // edit_customization(setIsLoading, formData, setCutomizationList, userId);
+  };
+  const handleEyeClick = (id) => {
+    setIsModalOpen(true)
+    setUserId(id)
+    // customization_details(setIsLoading, setCustomization, userId);
+    
+  }
+  console.log(Data, "votersCuz");
   const userlist = [
     {
       date: "11/2/2023",
@@ -105,7 +123,7 @@ const VotorsCustomization = () => {
                           fontSize: "18px",
                           cursor: "pointer",
                         }}
-                        onClick={() => setIsModalOpen(true)}
+                        onClick={() => handleEyeClick(item.id)}
                       />
                       <BsThreeDotsVertical
                         className="Action_dots"
@@ -118,8 +136,18 @@ const VotorsCustomization = () => {
                     </div>
                     {showEditDelete === index && (
                       <div className="Edit_delete_btn_user">
-                        <p className="Edit_btn_user">Edit</p>
-                        <p className="Delete_btn_user">Delete</p>
+                        <p
+                          className="Edit_btn_user"
+                          onClick={() => handleEditCustomization(item.id)}
+                        >
+                          Edit
+                        </p>
+                        <p
+                          className="Delete_btn_user"
+                          onClick={() => handleDeleteCustomization(item.id)}
+                        >
+                          Delete
+                        </p>
                       </div>
                     )}
                   </td>
@@ -132,7 +160,8 @@ const VotorsCustomization = () => {
       <CustomiseRequest
         open={IsModalOpen}
         onClose={() => setIsModalOpen(false)}
-        
+        userId={userId}
+       
       />
     </div>
   );

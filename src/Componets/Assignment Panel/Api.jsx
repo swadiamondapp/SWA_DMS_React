@@ -37,7 +37,7 @@ export const list_folderDetails = async (
   }
 };
 
-export const move_to_folder = async (setIsLoading, formData, folderName,selectedId) => {
+export const move_to_folder = async (setIsLoading, formData, folderName,selectedAssignment) => {
   try {
     const body = {
       folder_data: {
@@ -55,7 +55,7 @@ export const move_to_folder = async (setIsLoading, formData, folderName,selected
         tags: "Tag1, Tag2",
         note: formData.notes,
       },
-      items: [{ id: 3 }],
+      items:selectedAssignment,
     };
     console.log(body, "bodyAssi");
     const response = await apiService.post(MOVE_TO_FOLDER, body);
