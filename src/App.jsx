@@ -70,7 +70,7 @@ function App() {
             />
             <Route path="/gallery" element={<GalleryPage />} />
             <Route path="/CadAssignment" element={<CadAssignmentPage />} />
-            <Route path="/finished" element={<RendersPage />} />
+            <Route path="/finished/:id" element={<RendersPage />} />
             <Route path="/finishedProject" element={<FinishedProjectPage />} />
             <Route path="/renderCard" element={<RenderCardPage />} />
             <Route path="/wareHouse" element={<WareHousePage />} />
