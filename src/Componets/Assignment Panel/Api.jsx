@@ -5,6 +5,7 @@ import {
   LIST_ASSIGNMENT_PANEL,
   MOVE_TO_FOLDER,
 } from "../../Pages/Services/EndPoints";
+import { list_assignment_folder } from "../ADMIN PANEL/Design Pool/Api";
 
 export const list_assignment_panel = async (
   setIsLoading,
@@ -37,7 +38,7 @@ export const list_folderDetails = async (
   }
 };
 
-export const move_to_folder = async (setIsLoading, formData, folderName,selectedAssignment) => {
+export const move_to_folder = async (setIsLoading, formData, folderName,selectedAssignment, setAssignmentFolder,onClose) => {
   try {
     const body = {
       folder_data: {
@@ -52,7 +53,7 @@ export const move_to_folder = async (setIsLoading, formData, folderName,selected
         findings: formData.findings,
         approx_weight: formData.approxMetalWeights,
         approx_price: formData.approxMRP,
-        tags: "Tag1, Tag2",
+        tags: formData.tags,
         note: formData.notes,
       },
       items:selectedAssignment,
@@ -60,7 +61,9 @@ export const move_to_folder = async (setIsLoading, formData, folderName,selected
     console.log(body, "bodyAssi");
     const response = await apiService.post(MOVE_TO_FOLDER, body);
     if (response.data.results.status_code === 200) {
-      console.log(response.data.results.message, "success");
+      list_assignment_folder(setIsLoading,  setAssignmentFolder);
+      onClose()
+
     }
   } catch (error) {
     console.error("Error moving designs:", error);

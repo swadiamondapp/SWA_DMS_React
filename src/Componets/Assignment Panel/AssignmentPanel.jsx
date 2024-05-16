@@ -155,6 +155,7 @@ const AssignmentPanel = () => {
           showDownloadOptions={showDownloadOptions}
           showMoveOptions={showMoveOptions}
           selectedAssignment={selectedAssignment}
+          setAssignmentFolder={setAssignmentFolder}
         />
         <div className="Assignment_panel_section">
           <h3 className="HeadNewdesign">Selected</h3>

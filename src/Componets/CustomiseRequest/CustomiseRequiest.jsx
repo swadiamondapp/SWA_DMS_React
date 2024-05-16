@@ -60,7 +60,7 @@ const CustomiseRequest = ({ open, onClose, userId }) => {
 
   useEffect(() => {
     customization_details(setIsLoading, setCustomization, userId);
-  }, []);
+  }, [userId]);
 
   console.log(customization, "custoooo>>");
   console.log(userId, "userId================>");
@@ -111,16 +111,16 @@ const CustomiseRequest = ({ open, onClose, userId }) => {
                     </div>
                     <div className="subTitle">
                       <div className="ProductInformation">
-                        <span>Sales man</span>
-                        <span>Muhammed Ajmel</span>
+                        <span>Product type</span>
+                        <span>{customization.product_type}</span>
                       </div>
                       <div className="ProductInformation">
-                        <span>Phone Number</span>
-                        <span>+91 9996567656</span>
+                        <span>Model Previously Made</span>
+                        <span>{customization.previously_made}</span>
                       </div>
                       <div className="ProductInformation">
-                        <span>Outlet</span>
-                        <span>Malabar jewllery kozhikode</span>
+                        <span>If previously made</span>
+                        <span>{customization.outlet}</span>
                       </div>
                     </div>
                     <div>
@@ -129,13 +129,13 @@ const CustomiseRequest = ({ open, onClose, userId }) => {
                       </div>
                       <div className="ringImages">
                         <div className="imageContainer">
-                          <img className="" src={RingA} alt="" />
+                          <img className="" src={customization.image} alt="" />
                         </div>
                         <div className="imageContainer">
-                          <img src={RingB} alt="" />
+                          <img src={customization.image2} alt="" />
                         </div>
                         <div className="imageContainer">
-                          <img src={RingC} alt="" />
+                          <img src={customization.image3} alt="" />
                         </div>
                       </div>
                     </div>
@@ -146,15 +146,15 @@ const CustomiseRequest = ({ open, onClose, userId }) => {
                     <div className="subTitle-metal">
                       <div className="ProductInformation">
                         <span>Metel type</span>
-                        <span>Yellow Gold 18 K</span>
+                        <span>{customization.metal_type}</span>
                       </div>
                       <div className="ProductInformation">
                         <span>Weight</span>
-                        <span>56.00 GM</span>
+                        <span>{customization.weight}</span>
                       </div>
                       <div className="ProductInformation">
                         <span>Size</span>
-                        <span>5</span>
+                        <span>{customization.size}</span>
                       </div>
                     </div>
                     <div className="lineCR"></div>
@@ -166,19 +166,19 @@ const CustomiseRequest = ({ open, onClose, userId }) => {
                     <div className="DiamondType">
                       <div className="ProductInformation">
                         <span>Diamond Weight</span>
-                        <span>56.00 CT</span>
+                        <span>{customization.diamond_weight}</span>
                       </div>
                       <div className="ProductInformation">
                         <span>Number of Diamonds</span>
-                        <span>10</span>
+                        <span>{customization.no_of_diamond}</span>
                       </div>
                       <div className="ProductInformation">
                         <span>Diamond Clarity</span>
-                        <span>Vvs</span>
+                        <span>{customization.diamond_clarity}</span>
                       </div>
                       <div className="ProductInformation">
                         <span>Diamond colour</span>
-                        <span>EF</span>
+                        <span>{customization.diamond_colour}</span>
                       </div>
                     </div>
                     <div className="lineCR"></div>
@@ -188,18 +188,15 @@ const CustomiseRequest = ({ open, onClose, userId }) => {
                     <div className="subTitle-metal">
                       <div className="ProductInformation">
                         <span>Budget</span>
-                        <span>24000</span>
+                        <span>{customization.budget}</span>
                       </div>
                       <div className="ProductInformation">
                         <span>SWA Product SKU</span>
-                        <span>Nill</span>
+                        <span>{customization.sku_of_swa_product}</span>
                       </div>
                       <div className="ProductInformation">
                         <span>Note</span>
-                        <span>
-                          Make the design as same as
-                          <br /> the referance image
-                        </span>
+                        <span>{customization.notes}</span>
                       </div>
                     </div>
                     <div className="lineCR"></div>

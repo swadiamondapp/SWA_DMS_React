@@ -7,6 +7,7 @@ import { all_Designs, unvoted_design, moveSelectedDesign } from "./Api";
 import { MOVE_TO_ASSIGNMENT } from "../../../Pages/Services/EndPoints";
 import { apiService } from "../../../Pages/Services/ApiInstants";
 import {useNavigate } from "react-router-dom";
+import LottieAnimation from "../../../LottiAnimation";
 
 const DesignPool = () => {
   const [showRadioButtons, setShowRadioButtons] = useState(false);
@@ -36,7 +37,9 @@ const DesignPool = () => {
     unvoted_design(setIsLoading, setUnvotedData);
     // moveSelectedDesign(setIsLoading,setSelectedDesigns)
   }, []);
-  console.log(Data, "datat");
+
+
+  console.log(Data, "datat========d==>");
   console.log(selectedDesigns, "selectedDesigns");
 
   const handleCheckboxChange = (designcode) => {
@@ -116,11 +119,13 @@ const DesignPool = () => {
         {/* new design section */}
         <div className="Parent_NewDesign">
           <h3 className="HeadNewdesign">New design</h3>
+          {Data?( <LottieAnimation/>):(<></>)}
           <div className="Card_Design_Parent">
             {Data.map((item, index) => (
               <div className="New_Design_card" key={item.id}>
                 <div className="Card_img">
                   <img src={item.image} alt="image" />
+
                 </div>
                 <div className="Card_Details">
                   <h3>ID : {item.designcode}</h3>

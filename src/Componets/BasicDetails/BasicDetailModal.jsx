@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./BasicDetails.css";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -24,7 +24,12 @@ const style = {
   p: 2,
 };
 
-const BasicDetailModal = ({ open, onClose,selectedAssignment }) => {
+const BasicDetailModal = ({
+  open,
+  onClose,
+  selectedAssignment,
+  setAssignmentFolder,
+}) => {
   // create modal
 
   // const [open, setOpen] = React.useState(false);
@@ -44,8 +49,9 @@ const BasicDetailModal = ({ open, onClose,selectedAssignment }) => {
     tags: "",
     notes: "",
   });
-  console.log(formData,"basicFormdData")
-  console.log(selectedAssignment,"basic=====>")
+  console.log(formData, "basicFormdData");
+  console.log(selectedAssignment, "basic=====>");
+  console.log(formData.tags, "taaggss");
 
   const schema = Joi.object({
     SKU: Joi.string().required().messages({
@@ -76,7 +82,7 @@ const BasicDetailModal = ({ open, onClose,selectedAssignment }) => {
     approxMRP: Joi.string().required().messages({
       "string.empty": `cannot be empty`,
     }),
-    tags: Joi.string().required().messages({
+    tags: Joi.required().messages({
       "string.empty": `cannot be empty`,
     }),
     notes: Joi.string().required().messages({
@@ -99,7 +105,6 @@ const BasicDetailModal = ({ open, onClose,selectedAssignment }) => {
       abortEarly: false,
       allowUnknown: true,
     });
-  
 
     if (error) {
       // Form is invalid, display validation errors
@@ -130,11 +135,29 @@ const BasicDetailModal = ({ open, onClose,selectedAssignment }) => {
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
 
   const handleNextClick = () => {
-    handleSubmit()
-    onClose(); // Close the modal
-    // Show AssignmentModal when Next is clicked
-    setShowAssignmentModal(true);
+    const { error } = schema.validate(formData, {
+      abortEarly: false,
+      allowUnknown: true,
+    });
+
+    if (error) {
+      // Form is invalid, display validation errors
+      const validationErrors = error.details.reduce((errors, err) => {
+        errors[err.path[0]] = err.message;
+        return errors;
+      }, {});
+      setErrors(validationErrors);
+    } else {
+      // Form is valid, proceed with submission
+      console.log("Form submitted:", formData);
+      onClose();
+      setShowAssignmentModal(true);
+      // Clear errors
+      setErrors({ undefined });
+
+    }
   };
+  console.log(errors,"eeeeeeeee==>")
   return (
     <div>
       <div className="">
@@ -441,7 +464,7 @@ const BasicDetailModal = ({ open, onClose,selectedAssignment }) => {
                       <button
                         className="next-button"
                         type="submit"
-                        onClick={handleNextClick}
+                        onClick={() => handleNextClick()}
                       >
                         Next
                       </button>
@@ -458,6 +481,7 @@ const BasicDetailModal = ({ open, onClose,selectedAssignment }) => {
         formData={formData}
         onClose={() => setShowAssignmentModal(false)}
         selectedAssignment={selectedAssignment}
+        setAssignmentFolder={setAssignmentFolder}
       />
     </div>
   );

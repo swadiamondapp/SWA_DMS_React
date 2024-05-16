@@ -41,6 +41,8 @@ const Header = () => {
               <h3>Assignment Panel</h3>
             )}
             {location.pathname === "/otherlogin" && <h3>Other Login</h3>}
+            {location.pathname === "/votorscustomization" && <h3>Customization</h3>}
+
           </div>
           <div className="Right_User_Section">
             <div className="Search_Admin">

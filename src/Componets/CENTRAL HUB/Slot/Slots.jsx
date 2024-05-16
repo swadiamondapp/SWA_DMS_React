@@ -1,14 +1,18 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import "./Slot.css";
 import { IoEye } from "react-icons/io5";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import SlotCreation from "../../SlotCreation/SlotCreation";
 import SlotView from "../../SlotVIew/SlotView";
+import { list_slot_central_hub } from "../../../Pages/CENTRAL HUB/Api";
 
 const Slots = () => {
   const [showEditDelete, setShowEditDelete] = useState(null);
   const [isModalOpenslot, setIsModalOpenslot] = useState(false);
   const [isModalOpenslotview, setIsModalOpenslotview] = useState(false);
+
+  const [Data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const userlist = [
     {
       slino: "1",
@@ -36,6 +40,11 @@ const Slots = () => {
       slotid: "SWA245967",
     },
   ];
+
+  useEffect(() => {
+    list_slot_central_hub(setIsLoading, setData);
+  }, []);
+  console.log(Data,'center==============>')
   return (
     <div className="parentCentral">
       <div className="slot_create">
@@ -56,11 +65,11 @@ const Slots = () => {
             </tr>
           </thead>
           <tbody>
-            {userlist.map((item, index) => (
+            {Data.map((item, index) => (
               <tr key={index} style={{ color: "#2E364C" }}>
-                <td>{item.slino}</td>
-                <td>{item.date}</td>
-                <td>{item.slotid}</td>
+                <td>{item.id}</td>
+                <td>{item.created_at}</td>
+                <td>{item.slotnumber}</td>
                 <td>
                   <div className="parentSlotS">
                     <div className="EYEBTN">

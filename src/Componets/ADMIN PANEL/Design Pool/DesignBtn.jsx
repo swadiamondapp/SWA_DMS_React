@@ -19,7 +19,8 @@ const DesignBtn = ({
   showMoveOptions,
   moveSelectedDesign,
   getSelectedDesign,
-  selectedAssignment
+  selectedAssignment,
+  setAssignmentFolder
 }) => {
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -129,10 +130,12 @@ const DesignBtn = ({
         open={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         selectedAssignment={selectedAssignment}
+        setAssignmentFolder={setAssignmentFolder}
       />
       <AssignToModal
         open={isModalOpenAssign}
         onClose={() => setIsModalOpenAssign(false)}
+       
       />
       <CreateCustomisation
         open={isModalOpenCreateCutomize}

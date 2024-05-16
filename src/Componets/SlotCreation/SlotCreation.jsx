@@ -118,7 +118,7 @@ const SlotCreation = ({ open, onClose }) => {
   const [tagText, setTagText] = useState("");
 
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => onClose();
 
   const handleAssignButton = () => {
     setAssignedButton((prevText) =>
@@ -155,7 +155,7 @@ const SlotCreation = ({ open, onClose }) => {
             className="modal"
           >
             <div>
-              <button onClick={handleClose} className="overLayButton_sc">
+              <button onClick={()=>handleClose()} className="overLayButton_sc">
                 <img src={roundedClose} />
                 CLOSE
               </button>
