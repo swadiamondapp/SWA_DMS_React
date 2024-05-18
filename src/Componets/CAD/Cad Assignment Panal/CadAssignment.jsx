@@ -72,13 +72,16 @@ const CadAssignment = () => {
         <div className="Parent_Folder_section_Designer">
           <h3 className="HeadNewdesign">Folders</h3>
           <div className="folderCard_parent">
+              {assignedCadDesign.map((item,index)=> (
             <div className="folder__card">
-              <Link to="/CadAssignmentcard">
+
+                <Link to={`/CadAssignmentcard?id=${item.id}`}>
                 <img src={folderimg} alt="" />
               </Link>
 
-              <p>Akshayathithiya</p>
+              <p>{item.folder_name}</p>
             </div>
+              ))}
             {/* <div className="folder__card">
               <Link to="">
                 <img src={folderimg} alt="" />

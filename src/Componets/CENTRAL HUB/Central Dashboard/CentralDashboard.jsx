@@ -16,6 +16,7 @@ const CentralDashboard = () => {
       product: "ID : SWAD3456",
     },
   ];
+  
  
 useEffect(()=> {
   list_all_designs_from_cad(setIsLoading, setData)

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./SlotView.css";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -8,6 +8,7 @@ import closeButton from "../../assets/closeButton.svg";
 import roundedClose from "../../assets/roundedClose.png";
 import { Select } from "antd";
 import plusICon from "../../assets/plusIcon.png";
+import { slot_view_by_id } from "../../Pages/CENTRAL HUB/Api";
 
 const style = {
   position: "absolute",
@@ -24,12 +25,14 @@ const style = {
   borderRadius: 0,
 };
 
-const SlotView = ({ open, onClose }) => {
+const SlotView = ({ open, onClose,slotView }) => {
+  // const [slotView,setSloteView] = useState([])
   // create modal
 
   // const [open, setOpen] = useState(false);
   const [AssinedButton, setAssignedButton] = useState("Assign");
   const [tagText, setTagText] = useState("");
+  const [isLoading,setIsLoading] = useState(false)
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => onClose();
@@ -51,6 +54,10 @@ const SlotView = ({ open, onClose }) => {
   };
   const filterOption = (input, option) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
+
+
+  console.log(slotView,"uuuuuiiioo")
+
 
   return (
     <div>
@@ -100,7 +107,7 @@ const SlotView = ({ open, onClose }) => {
                           <td class="table-cell">Bangles</td>
                           <td class="table-cell">16 Gram</td>
                         </tr>
-                        <tr>
+                        {/* <tr>
                           <td class="table-cell">SWA34R56</td>
                           <td class="table-cell">12-02-23</td>
                           <td class="table-cell">Bangles</td>
@@ -129,7 +136,7 @@ const SlotView = ({ open, onClose }) => {
                           <td class="table-cell">12-02-23</td>
                           <td class="table-cell">Bangles</td>
                           <td class="table-cell">16 Gram</td>
-                        </tr>
+                        </tr> */}
                       </tbody>
                     </table>
                   </div>

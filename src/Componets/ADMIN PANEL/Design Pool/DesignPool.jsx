@@ -120,6 +120,7 @@ const DesignPool = () => {
         <div className="Parent_NewDesign">
           <h3 className="HeadNewdesign">New design</h3>
           {Data?( <LottieAnimation/>):(<></>)}
+          
           <div className="Card_Design_Parent">
             {Data.map((item, index) => (
               <div className="New_Design_card" key={item.id}>

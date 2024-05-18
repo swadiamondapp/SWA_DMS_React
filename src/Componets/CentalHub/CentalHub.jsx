@@ -28,6 +28,8 @@ const CentalHub = ({ open, onClose }) => {
   // const [open, setOpen] = useState(false);
   const [AssinedButton, setAssignedButton] = useState("Assign");
   const [tagText, setTagText] = useState("");
+  const [uploadInstructionsVisible, setUploadInstructionsVisible] = useState(true);
+  const [uploadInstructionsVisibleRender, setUploadInstructionsVisibleRender] = useState(true);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -49,6 +51,28 @@ const CentalHub = ({ open, onClose }) => {
   };
   const filterOption = (input, option) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
+
+    
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setUploadInstructionsVisible(false);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+  const handleFileUploadRender = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setUploadInstructionsVisibleRender(false);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   return (
     <div>
@@ -93,21 +117,50 @@ const CentalHub = ({ open, onClose }) => {
               <Typography id="modal-modal-description" sx={{ mt: 5 }}>
                 <div className="uploadContiner">
                   <div className="uploadImageContainerr">
-                    <div className="left">
+                    <div
+                      className="left"
+                      onClick={() =>
+                        document.getElementById("fileInputt").click()
+                      }
+                    >
+                     {uploadInstructionsVisible? (<>
                       <span className="textA">PNG/JPG</span>
                       <span className="textB">
                         Drag & Drop or{" "}
                         <span style={{ color: "#0464D5" }}>choose file</span> to
                         upload
                       </span>
+                    
+                     </>):(<>PNG/JPG File uploaded successfully!</>)}
+                       <input
+                        id="fileInputt"
+                        type="file"
+                        accept="image/*"
+                        style={{ display: "none" }}
+                        onChange={handleFileUpload}
+                      />
+                      
                     </div>
-                    <div className="right">
-                      <span className="textA">3.DM</span>
+                    <div className="right"  onClick={() =>
+                        document.getElementById("fileInputtT").click()
+                      }>
+                        {uploadInstructionsVisibleRender? (<>
+                          <span className="textA">3.DM</span>
                       <span className="textB">
                         Drag & Drop or{" "}
                         <span style={{ color: "#0464D5" }}>choose file</span> to
                         upload
                       </span>
+                        </>):(<>
+                          3D File uploaded successfully!</>)}
+                    
+                      <input
+                        id="fileInputtT"
+                        type="file"
+                        accept="image/*"
+                        style={{ display: "none" }}
+                        onChange={handleFileUploadRender}
+                      />
                     </div>
                   </div>
                   <div className="inputContainer">

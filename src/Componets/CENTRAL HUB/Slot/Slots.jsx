@@ -4,7 +4,7 @@ import { IoEye } from "react-icons/io5";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import SlotCreation from "../../SlotCreation/SlotCreation";
 import SlotView from "../../SlotVIew/SlotView";
-import { list_slot_central_hub } from "../../../Pages/CENTRAL HUB/Api";
+import { list_slot_central_hub ,slot_view_by_id} from "../../../Pages/CENTRAL HUB/Api";
 
 const Slots = () => {
   const [showEditDelete, setShowEditDelete] = useState(null);
@@ -13,6 +13,8 @@ const Slots = () => {
 
   const [Data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [userId,setUserId] = useState([])
+  const [slotView,setSloteView] = useState([])
   const userlist = [
     {
       slino: "1",
@@ -41,6 +43,11 @@ const Slots = () => {
     },
   ];
 
+  const handleEyeButton = (userId)=> {
+    setIsModalOpenslotview(true)
+    setUserId(userId)
+    slot_view_by_id(setIsLoading,setSloteView,userId)
+  }
   useEffect(() => {
     list_slot_central_hub(setIsLoading, setData);
   }, []);
@@ -74,7 +81,7 @@ const Slots = () => {
                   <div className="parentSlotS">
                     <div className="EYEBTN">
                       <IoEye
-                        onClick={() => setIsModalOpenslotview(true)}
+                        onClick={() => handleEyeButton(item.id)}
                         style={{ color: "#455173", cursor: "pointer" }}
                       />
                     </div>
@@ -109,6 +116,8 @@ const Slots = () => {
       <SlotView
         open={isModalOpenslotview}
         onClose={() => setIsModalOpenslotview(false)}
+        userId={userId}
+        slotView={slotView}
       />
     </div>
   );

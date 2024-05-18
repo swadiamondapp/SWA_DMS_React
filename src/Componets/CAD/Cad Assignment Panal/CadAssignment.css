@@ -44,6 +44,7 @@
   background: #2b2b2b;
   color: #fff;
   font-family: "Gilroy medium";
+  justify-content: center;
   padding: 12px 45px;
   border: none;
   border-radius: 4px;
@@ -52,6 +53,18 @@
 }
 .Download_btn_hub svg {
   font-size: 20px;
+}
+.Download_btn_hub:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+
+}
+.timerFeild {
+  display: inline-block;
+  font-family: monospace;
+  text-align: center;
+  white-space: nowrap;
+  font-size: 12px;
 }
 .Prinit_btn_hub {
   display: flex;
