@@ -20,6 +20,11 @@
     align-items: center;
 
 }
+.avatarImageContainer img {
+    border-radius: 32px;
+    width:30px;
+    height: 30px;
+}
 .leftTo {
     display: flex;
     gap:15px;

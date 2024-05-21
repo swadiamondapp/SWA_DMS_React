@@ -3,7 +3,7 @@ import "./DesignerDashboard.css";
 import { LiaCloudUploadAltSolid } from "react-icons/lia";
 import DesignBtn from "../../ADMIN PANEL/Design Pool/DesignBtn";
 import ring from "../../../assets/ring.png";
-import { list_uploaded_designs } from "./Api";
+import { list_uploaded_designs, upload_designs_items } from "./Api";
 
 const DesignerDashboard = () => {
   const [uploadInstructionsVisible, setUploadInstructionsVisible] =
@@ -13,6 +13,7 @@ const DesignerDashboard = () => {
   const [selectButtonLabel, setSelectButtonLabel] = useState("Select");
   const [uploadedDesigns, setUploadedDesigns] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [ uploadImage ,setUploadImage] = useState([])
 
   const card = [
     {
@@ -47,27 +48,26 @@ const DesignerDashboard = () => {
     setShowMoveOptions(!showMoveOptions);
   };
 
+  const formData = new FormData();
+    formData.append('image', uploadImage);
+
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setUploadInstructionsVisible(false);
-      };
-      reader.readAsDataURL(file);
-    }
+    upload_designs_items(setIsLoading, file,setUploadedDesigns)
   };
 
   useEffect(() => {
     list_uploaded_designs(setIsLoading, setUploadedDesigns);
   }, []);
 
+  console.log("uploadImage-->", uploadImage)
+
   return (
     <div>
       <div className="DesignerDashboard">
         <div
           className="Design_FileUpload"
-          onClick={() => document.getElementById("fileInput").click()}
+          
         >
           {uploadInstructionsVisible ? (
             <>
@@ -78,7 +78,7 @@ const DesignerDashboard = () => {
                 </p>
               </div>
               <div className="File____uploadbtn">
-                <button>
+                <button onClick={() => document.getElementById("fileInput").click()}>
                   Upload File{" "}
                   <LiaCloudUploadAltSolid style={{ fontSize: "22px" }} />
                 </button>
@@ -89,7 +89,7 @@ const DesignerDashboard = () => {
               <p>File uploaded successfully!</p>
               <div className="File____uploadbtn">
                 <button>
-                  Upload File{" "}
+                  Upload Image
                   <LiaCloudUploadAltSolid style={{ fontSize: "22px" }} />
                 </button>
               </div>

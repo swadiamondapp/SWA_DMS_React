@@ -25,3 +25,5 @@ export const LIST_SLOT_HUB = "slot/list/";
 export const LIST_FROM_DESIGN_CAD = "all-designlistof-cad/"
 export const SLOT_VIEW_BY_ID = "slot/"
 export const ASSIGNED_DATA_BY_ID =  "list/myassigned-data/"
+export const ASSIGN_TO_CAD = "assign-to-cad/"
+export const LIST_ALL_CAD_DESIGNERS = "list-user-cad/"

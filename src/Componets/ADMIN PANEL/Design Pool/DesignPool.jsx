@@ -119,7 +119,7 @@ const DesignPool = () => {
         {/* new design section */}
         <div className="Parent_NewDesign">
           <h3 className="HeadNewdesign">New design</h3>
-          {Data?( <LottieAnimation/>):(<></>)}
+          {Data.length === 0 && <LottieAnimation/>}
           
           <div className="Card_Design_Parent">
             {Data.map((item, index) => (

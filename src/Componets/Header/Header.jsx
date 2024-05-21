@@ -7,6 +7,7 @@ import { Link, useLocation } from "react-router-dom";
 import { MdOutlineLogout } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { removeLocalstorage } from "../../Pages/Utils/Common";
+import { useParams } from "react-router-dom";
 
 const Header = () => {
   const location = useLocation();
@@ -16,6 +17,8 @@ const Header = () => {
   const handleLogout = () => {
     setIsLogoutDropdown(!isLogoutDropdown);
   };
+  const { id } = useParams();
+  const folderName = location.state?.name || "Unknown Folder";
 
   return (
     <div>
@@ -42,6 +45,9 @@ const Header = () => {
             )}
             {location.pathname === "/otherlogin" && <h3>Other Login</h3>}
             {location.pathname === "/votorscustomization" && <h3>Customization</h3>}
+            {location.pathname === `/designerassignview/${id}` && <h3>{folderName}</h3>}
+            {location.pathname === "/designerassign" && <h3>Assignment Panel</h3>}
+
 
           </div>
           <div className="Right_User_Section">

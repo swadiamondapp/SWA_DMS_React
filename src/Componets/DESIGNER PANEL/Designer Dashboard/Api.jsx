@@ -3,11 +3,40 @@ import {
   checkApiStatus,
 } from "../../../Pages/Services/ApiInstants";
 import { setToLocalstorage } from "../../../Pages/Utils/Common";
-import { LIST_UPLOAD_DESIGN } from "../../../Pages/Services/EndPoints";
+import { LIST_ALL_CAD_DESIGNERS, LIST_ALL_USER, LIST_UPLOAD_DESIGN } from "../../../Pages/Services/EndPoints";
 
 export const list_uploaded_designs = async (setIsLoading, setData) => {
   try {
     const response = await apiService.get(LIST_UPLOAD_DESIGN);
+    if (checkApiStatus(response)) {
+      setData(response.data.results.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const upload_designs_items = async (setIsLoading, uploadImage,setData) => {
+  try {
+    const formData = new FormData();
+    formData.append('image', uploadImage);
+    const body = formData
+    const response = await apiService.post(LIST_UPLOAD_DESIGN, body);
+    const res = response.data.results.status_code === 200
+    if (response.data.results.status_code === 200) {
+      console.log(response.data.results.message,"success")
+      list_uploaded_designs(setIsLoading, setData)
+    }
+    return res
+  } catch (error) {
+    console.error("Error moving designs:", error);
+  }
+};
+
+
+export const list_all_cad_users = async (setIsLoading, setData) => {
+  try {
+    const response = await apiService.get(LIST_ALL_CAD_DESIGNERS);
     if (checkApiStatus(response)) {
       setData(response.data.results.data);
     }

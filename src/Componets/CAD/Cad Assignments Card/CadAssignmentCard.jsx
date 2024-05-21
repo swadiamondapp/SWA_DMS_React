@@ -6,6 +6,7 @@ import CentalHub from "../../CentalHub/CentalHub";
 import { useLocation } from "react-router-dom";
 import { assigned_data_by_id } from "../Api";
 import { saveAs } from "file-saver"; 
+import axios from 'axios';
 
 const CadAssignmentCard = () => {
   const location = useLocation();
@@ -144,10 +145,27 @@ const CadAssignmentCard = () => {
       console.error("Error downloading the image:", error);
     }
 
- 
- 
-   
+    // try {
+    //   const response = await axios.get(imageUrl, {
+    //     responseType: 'blob', // Ensure response type is blob
+    //   });
   
+    //   // Create a temporary anchor element
+    //   const link = document.createElement('a');
+    //   link.href = window.URL.createObjectURL(new Blob([response.data]));
+    //   link.download = imageUrl.split('/').pop(); // Set the filename for download
+  
+    //   // Append the anchor element to the document body
+    //   document.body.appendChild(link);
+  
+    //   // Simulate a click on the anchor element to trigger download
+    //   link.click();
+  
+    //   // Remove the anchor element from the document body
+    //   document.body.removeChild(link);
+    // } catch (error) {
+    //   console.error("Error downloading the image:", error);
+    // }
     
   };
 

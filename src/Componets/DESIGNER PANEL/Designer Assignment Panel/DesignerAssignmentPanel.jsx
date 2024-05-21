@@ -19,7 +19,10 @@ const DesignerAssignmentPanel = () => {
         <div className="folderCard_parent">
           {designerFolder.map((item) => (
             <div className="folder__card">
-              <Link to={`/designerassignview/${item.id}`}>
+              <Link  to={{
+                  pathname: `/designerassignview/${item.id}`,
+                  state: { name: item.name, id: item.id },
+                }} >
                 <img src={folderimg} alt="" />
               </Link>
 

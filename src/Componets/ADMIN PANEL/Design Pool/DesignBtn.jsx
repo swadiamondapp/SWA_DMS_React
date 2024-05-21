@@ -9,6 +9,7 @@ import BasicDetailModal from "../../BasicDetails/BasicDetailModal";
 import AssignToModal from "../../AssignToModal/AssignToModal";
 import CreateCustomisation from "../../CreateCustomisation/CreateCustomisation";
 import { move_to_folder } from "../../Assignment Panel/Api";
+import { useParams } from "react-router-dom";
 
 const DesignBtn = ({
   toggleDownloadOptions,
@@ -20,7 +21,10 @@ const DesignBtn = ({
   moveSelectedDesign,
   getSelectedDesign,
   selectedAssignment,
-  setAssignmentFolder
+  setAssignmentFolder,
+  userId,
+  selectedDesign,
+  folderId
 }) => {
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -32,6 +36,11 @@ const DesignBtn = ({
       setIsModalOpen(true)
 
     }
+const handleAssignment = () => {
+  setIsModalOpenAssign(false)
+
+}
+    const { id } = useParams();
     console.log(selectedAssignment,"selectedAssignment?==>")
   return (
     <div>
@@ -65,6 +74,7 @@ const DesignBtn = ({
           location.pathname !== "/designdashboard" &&
           location.pathname !== "/designerassignview" &&
           location.pathname !== "/votorscustomization" &&
+          !location.pathname === `/designerassignview/${id}` &&
           location.pathname !== "/finishedProject" && (
             <div className="Parent_MoveTo">
               <button className="D_moveBtn" onClick={toggleMoveOptions}>
@@ -83,7 +93,7 @@ const DesignBtn = ({
               )}
             </div>
           )}
-        {location.pathname === "/designerassignview" && (
+        {location.pathname === `/designerassignview/${id}` && (
           <div className="Parent_MoveTo">
             <button
               className="D_moveBtn"
@@ -134,12 +144,14 @@ const DesignBtn = ({
       />
       <AssignToModal
         open={isModalOpenAssign}
-        onClose={() => setIsModalOpenAssign(false)}
+        onClose={() => handleAssignment()}
+       
        
       />
       <CreateCustomisation
         open={isModalOpenCreateCutomize}
         onClose={() => setIsCreateCustomizeModalOpen(false)}
+
       />
     </div>
   );

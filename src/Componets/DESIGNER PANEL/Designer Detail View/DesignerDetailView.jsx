@@ -12,6 +12,8 @@ const DesignerDetailView = () => {
   const [showMoveOptions, setShowMoveOptions] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [folderDetails, setFolderDetails] = useState([]);
+  const [selectedAssignment, setSelectedAssignment] = useState([]);
+
   const { id } = useParams();
 
   const card = [
@@ -52,6 +54,18 @@ const DesignerDetailView = () => {
     list_designer_folderDetails(setIsLoading, setFolderDetails, id);
   }, []);
 
+  const handleCheckboxChange = (designcode) => {
+    if (selectedAssignment.includes(designcode)) {
+      setSelectedAssignment(
+        selectedAssignment.filter((item) => item !== designcode)
+      );
+    } else {
+      setSelectedAssignment([...selectedAssignment, designcode]);
+    }
+  };
+  const handleAssignmentCad = () => {}
+  console.log(folderDetails?.assignment_items,"itmesssss======>")
+  console.log(selectedAssignment,"selecteedddal;dskjf")
   return (
     <div className="DesignerAssignmentPanel">
       <DesignBtn
@@ -61,12 +75,15 @@ const DesignerDetailView = () => {
         toggleMoveOptions={toggleMoveOptions}
         showDownloadOptions={showDownloadOptions}
         showMoveOptions={showMoveOptions}
+        folderName={folderDetails.name}
+        assignToCadId={id}
       />
       <div className="DesignerAssignment___panel_Cards">
         <div className="Parent_NewDesign">
           <div className="Card_Design_Parent">
             {folderDetails &&
               folderDetails?.assignment_items?.map((item) => (
+              
                 <div className="New_Design_card">
                   {console.log("folderDetails?", item.paper_design.image)}
                   <div className="Card_img">
@@ -82,13 +99,15 @@ const DesignerDetailView = () => {
                     </div>
                   </div>
                   {/* radio btn */}
+                  
                   {showRadioButtons && (
                     <input
                       className="Radio_select"
-                      type="radio"
+                      type="checkbox"
                       id="html"
                       name="fav_language"
-                      value="HTML"
+                      value=""
+                      onChange={()=>handleCheckboxChange(item.paper_design.id)}
                     ></input>
                   )}
                   {/* radio btn */}

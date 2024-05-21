@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./AssignToModal.css";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -6,6 +6,9 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import closeButton from "../../assets/closeButton.svg";
 import avatar from "../../assets/avataprofile.png";
+import { assign_to_cad } from "../DESIGNER PANEL/Designer Detail View/Api";
+import { list_all_cad_users } from "../DESIGNER PANEL/Designer Dashboard/Api";
+import { useParams, useLocation } from "react-router-dom";
 
 const style = {
   position: "absolute",
@@ -20,9 +23,14 @@ const style = {
   p: 2,
   overflowY: "auto",
   borderRadius: 2,
-  outLine:'none'
+  outLine: "none",
 };
-const AssignToModal = ({ open, onClose }) => {
+const AssignToModal = ({ open, onClose,}) => {
+
+  // const [isLoading,setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
+  const [Data, setData] = useState([]);
+
   // create modal
 
   // const [open, setOpen] = useState(false);
@@ -31,11 +39,12 @@ const AssignToModal = ({ open, onClose }) => {
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const handleAssignButton = () => {
-    setAssignedButton((prevText) =>
-      prevText === "Assign" ? "Unasign" : "Assign"
-    );
+  const handleAssignButton = (userId) => {
   };
+  useEffect(() => {
+    list_all_cad_users(setIsLoading, setData);
+  }, []);
+  console.log(Data, "cad");
 
   return (
     <div>
@@ -77,222 +86,39 @@ const AssignToModal = ({ open, onClose }) => {
 
               <Typography id="modal-modal-description" sx={{ mt: 5 }}>
                 <div className="main">
-                  <div className="Avata">
-                    <div className="avatarContainer">
-                      <div className="leftTo">
-                        <div className="avatarImageContainer">
-                          <img src={avatar} alt="" className="avataImage" />
+                  {Data.map((item, index) => (
+                    <div className="Avata">
+                      <div className="avatarContainer">
+                        <div className="leftTo">
+                          <div className="avatarImageContainer">
+                            <img
+                              src={item.image}
+                              alt=""
+                              className="avataImage"
+                            />
+                          </div>
+                          <div className="detailsAvatar">
+                            <span className="nameA">{item.name}</span>
+                            <span className="nameB">{item.Usertype}</span>
+                          </div>
                         </div>
-                        <div className="detailsAvatar">
-                          <span className="nameA">Vipin Vinod</span>
-                          <span className="nameB">cad</span>
+                        <div className="rightTo">
+                          <div className="tagged">
+                            <span className="taggedText">{item.status}</span>
+                          </div>
+                          <div>
+                            <button
+                              onClick={handleAssignButton(item.id)}
+                              className="avatarButton"
+                            >
+                            Assigned
+                            </button>
+                          </div>
                         </div>
                       </div>
-                      <div className="rightTo">
-                        <div className="tagged">
-                          <span className="taggedText">Assigned</span>
-                        </div>
-                        <div>
-                          <button
-                            onClick={handleAssignButton}
-                            className="avatarButton"
-                          >
-                            {AssinedButton}
-                          </button>
-                        </div>
-                      </div>
+                      <div className="line"></div>
                     </div>
-                    <div className="line"></div>
-                  </div>
-                  <div className="Avata">
-                    <div className="avatarContainer">
-                      <div className="leftTo">
-                        <div className="avatarImageContainer">
-                          <img src={avatar} alt="" className="avataImage" />
-                        </div>
-                        <div className="detailsAvatar">
-                          <span className="nameA">Vipin Vinod</span>
-                          <span className="nameB">cad</span>
-                        </div>
-                      </div>
-                      <div className="rightTo">
-                        <div className="tagged">
-                          <span className="taggedText">Assigned</span>
-                        </div>
-                        <div>
-                          <button
-                            onClick={handleAssignButton}
-                            className="avatarButton"
-                          >
-                            {AssinedButton}
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="line"></div>
-                  </div>{" "}
-                  <div className="Avata">
-                    <div className="avatarContainer">
-                      <div className="leftTo">
-                        <div className="avatarImageContainer">
-                          <img src={avatar} alt="" className="avataImage" />
-                        </div>
-                        <div className="detailsAvatar">
-                          <span className="nameA">Vipin Vinod</span>
-                          <span className="nameB">cad</span>
-                        </div>
-                      </div>
-                      <div className="rightTo">
-                        <div className="tagged">
-                          <span className="taggedText">Assigned</span>
-                        </div>
-                        <div>
-                          <button
-                            onClick={handleAssignButton}
-                            className="avatarButton"
-                          >
-                            {AssinedButton}
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="line"></div>
-                  </div>{" "}
-                  <div className="Avata">
-                    <div className="avatarContainer">
-                      <div className="leftTo">
-                        <div className="avatarImageContainer">
-                          <img src={avatar} alt="" className="avataImage" />
-                        </div>
-                        <div className="detailsAvatar">
-                          <span className="nameA">Vipin Vinod</span>
-                          <span className="nameB">cad</span>
-                        </div>
-                      </div>
-                      <div className="rightTo">
-                        <div className="tagged">
-                          <span className="taggedText">Assigned</span>
-                        </div>
-                        <div>
-                          <button
-                            onClick={handleAssignButton}
-                            className="avatarButton"
-                          >
-                            {AssinedButton}
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="line"></div>
-                  </div>{" "}
-                  <div className="Avata">
-                    <div className="avatarContainer">
-                      <div className="leftTo">
-                        <div className="avatarImageContainer">
-                          <img src={avatar} alt="" className="avataImage" />
-                        </div>
-                        <div className="detailsAvatar">
-                          <span className="nameA">Vipin Vinod</span>
-                          <span className="nameB">cad</span>
-                        </div>
-                      </div>
-                      <div className="rightTo">
-                        <div className="tagged">
-                          <span className="taggedText">Assigned</span>
-                        </div>
-                        <div>
-                          <button
-                            onClick={handleAssignButton}
-                            className="avatarButton"
-                          >
-                            {AssinedButton}
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="line"></div>
-                  </div>{" "}
-                  <div className="Avata">
-                    <div className="avatarContainer">
-                      <div className="leftTo">
-                        <div className="avatarImageContainer">
-                          <img src={avatar} alt="" className="avataImage" />
-                        </div>
-                        <div className="detailsAvatar">
-                          <span className="nameA">Vipin Vinod</span>
-                          <span className="nameB">cad</span>
-                        </div>
-                      </div>
-                      <div className="rightTo">
-                        <div className="tagged">
-                          <span className="taggedText">Assigned</span>
-                        </div>
-                        <div>
-                          <button
-                            onClick={handleAssignButton}
-                            className="avatarButton"
-                          >
-                            {AssinedButton}
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="line"></div>
-                  </div>{" "}
-                  <div className="Avata">
-                    <div className="avatarContainer">
-                      <div className="leftTo">
-                        <div className="avatarImageContainer">
-                          <img src={avatar} alt="" className="avataImage" />
-                        </div>
-                        <div className="detailsAvatar">
-                          <span className="nameA">Vipin Vinod</span>
-                          <span className="nameB">cad</span>
-                        </div>
-                      </div>
-                      <div className="rightTo">
-                        <div className="tagged">
-                          <span className="taggedText">Assigned</span>
-                        </div>
-                        <div>
-                          <button
-                            onClick={handleAssignButton}
-                            className="avatarButton"
-                          >
-                            {AssinedButton}
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="line"></div>
-                  </div>{" "}
-                  <div className="Avata">
-                    <div className="avatarContainer">
-                      <div className="leftTo">
-                        <div className="avatarImageContainer">
-                          <img src={avatar} alt="" className="avataImage" />
-                        </div>
-                        <div className="detailsAvatar">
-                          <span className="nameA">Vipin Vinod</span>
-                          <span className="nameB">cad</span>
-                        </div>
-                      </div>
-                      <div className="rightTo">
-                        <div className="tagged">
-                          <span className="taggedText">Assigned</span>
-                        </div>
-                        <div>
-                          <button
-                            onClick={handleAssignButton}
-                            className="avatarButton"
-                          >
-                            {AssinedButton}
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="line"></div>
-                  </div>
+                  ))}
                 </div>
               </Typography>
             </Box>
