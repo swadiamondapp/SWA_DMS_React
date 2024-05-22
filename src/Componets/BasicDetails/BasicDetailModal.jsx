@@ -260,6 +260,7 @@ const BasicDetailModal = ({
                           showSearch
                           placeholder="Gold"
                           optionFilterProp="children"
+                          // value={formData.typeOfMetal}
                           onChange={(value) =>
                             setFormData((prevState) => ({
                               ...prevState,
@@ -268,23 +269,23 @@ const BasicDetailModal = ({
                           }
                           onSearch={onSearch}
                           filterOption={filterOption}
-                          // style={{ width: "100%" }}
+                          style={{ width: "100%" }}
                           options={[
                             {
-                              value: "jack",
-                              label: "Designer",
+                              value: "Gold",
+                              label: "Gold",
                             },
                             {
-                              value: "lucy",
-                              label: "Lucy",
+                              value: "Rose Gold",
+                              label: "Rose Gold",
                             },
                             {
-                              value: "tom",
-                              label: "Tom",
+                              value: "Silver",
+                              label: "Silver",
                             },
                             {
-                              value: "",
-                              label: "Tom",
+                              value: "Platinum",
+                              label: "Platinum",
                             },
                           ]}
                         />
@@ -315,16 +316,16 @@ const BasicDetailModal = ({
                           style={{ width: "100%" }}
                           options={[
                             {
-                              value: "jack",
-                              label: "Designer",
+                              value: "Natuaral Diamond",
+                              label: "Natuaral Diamond",
                             },
                             {
-                              value: "lucy",
-                              label: "Lucy",
+                              value: "Treated Diamond",
+                              label: "Treated Diamond",
                             },
                             {
-                              value: "tom",
-                              label: "Tom",
+                              value: "Pink Diomond",
+                              label: "Pink Diomond",
                             },
                           ]}
                         />

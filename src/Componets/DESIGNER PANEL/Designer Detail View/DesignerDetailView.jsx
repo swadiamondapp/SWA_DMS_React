@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./DesignerDetailView.css";
 import DesignBtn from "../../ADMIN PANEL/Design Pool/DesignBtn";
 import ring from "../../../assets/ring.png";
-import { useParams } from "react-router-dom";
+import { useParams,useLocation } from "react-router-dom";
 import { list_designer_folderDetails } from "./Api";
 
 const DesignerDetailView = () => {
@@ -15,6 +15,11 @@ const DesignerDetailView = () => {
   const [selectedAssignment, setSelectedAssignment] = useState([]);
 
   const { id } = useParams();
+  const location = useLocation();
+  const query = new URLSearchParams(location.search);
+  const folderName = query.get('name');
+  console.log(folderName,"folderName====>")
+  
 
   const card = [
     {
@@ -63,9 +68,12 @@ const DesignerDetailView = () => {
       setSelectedAssignment([...selectedAssignment, designcode]);
     }
   };
-  const handleAssignmentCad = () => {}
+  // const handleAssignmentCad = () => {
+  //   assign_to_cad(setIsLoading,folderId,userId,selectedDesigns)
+  // }
   console.log(folderDetails?.assignment_items,"itmesssss======>")
-  console.log(selectedAssignment,"selecteedddal;dskjf")
+  console.log(folderDetails?.assignment_items,"itmesssss======>")
+  console.log(selectedAssignment,"selectedDesdingsssss==>")
   return (
     <div className="DesignerAssignmentPanel">
       <DesignBtn
@@ -75,8 +83,8 @@ const DesignerDetailView = () => {
         toggleMoveOptions={toggleMoveOptions}
         showDownloadOptions={showDownloadOptions}
         showMoveOptions={showMoveOptions}
-        folderName={folderDetails.name}
-        assignToCadId={id}
+        assignToCadId={id}  
+        selectedDesign={selectedAssignment}
       />
       <div className="DesignerAssignment___panel_Cards">
         <div className="Parent_NewDesign">

@@ -24,7 +24,8 @@ const DesignBtn = ({
   setAssignmentFolder,
   userId,
   selectedDesign,
-  folderId
+  folderId,
+  assignToCadId
 }) => {
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -145,6 +146,9 @@ const handleAssignment = () => {
       <AssignToModal
         open={isModalOpenAssign}
         onClose={() => handleAssignment()}
+        assignToCadId={assignToCadId}
+        selectedDesign={selectedDesign}
+
        
        
       />

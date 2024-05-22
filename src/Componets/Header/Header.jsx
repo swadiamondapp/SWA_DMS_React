@@ -11,6 +11,9 @@ import { useParams } from "react-router-dom";
 
 const Header = () => {
   const location = useLocation();
+  const query = new URLSearchParams(location.search);
+  const folderName = query.get('name');
+  console.log("header===>FolderName", folderName)
   const [isLogoutDropdown, setIsLogoutDropdown] = useState(false);
   const navigate = useNavigate();
 
@@ -18,7 +21,11 @@ const Header = () => {
     setIsLogoutDropdown(!isLogoutDropdown);
   };
   const { id } = useParams();
-  const folderName = location.state?.name || "Unknown Folder";
+  // const folderName = location.state?.name || "Unknown Folder";
+  // console.log(folderName,'folderName in Header==>')
+  console.log(id,'folderId in Header==>')
+
+  
 
   return (
     <div>

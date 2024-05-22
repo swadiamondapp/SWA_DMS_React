@@ -3,7 +3,10 @@ import {
   checkApiStatus,
 } from "../../../Pages/Services/ApiInstants";
 import { setToLocalstorage } from "../../../Pages/Utils/Common";
-import { FOLDER_DETAIL_API } from "../../../Pages/Services/EndPoints";
+import {
+  FOLDER_DETAIL_API,
+  ASSIGN_TO_CAD,
+} from "../../../Pages/Services/EndPoints";
 
 export const list_designer_folderDetails = async (
   setIsLoading,
@@ -11,9 +14,7 @@ export const list_designer_folderDetails = async (
   id
 ) => {
   try {
-    const response = await apiService.get(
-      `${FOLDER_DETAIL_API}/${id}/`
-    );
+    const response = await apiService.get(`${FOLDER_DETAIL_API}/${id}/`);
     if (checkApiStatus(response)) {
       setFolderDetails(response.data.results.data);
     }
@@ -22,19 +23,23 @@ export const list_designer_folderDetails = async (
   }
 };
 
-export const assign_to_cad = async (setIsLoading, formData, folderName,selectedAssignment, setAssignmentFolder,onClose) => {
+export const assign_to_cad = async (
+  setIsLoading,
+  assignToCadId,
+  userId,
+  selectedDesign,
+  setAssignedData
+) => {
   try {
     const body = {
-      folder: folderId,
+      folder: assignToCadId,
       user: userId,
-      assignment_items: seletectDesigns
-  }
-    console.log(body, "bodyAssi");
-    const response = await apiService.post(MOVE_TO_FOLDER, body);
+      assignment_items: selectedDesign,
+    };
+    console.log(body, "body====>");
+    const response = await apiService.post(ASSIGN_TO_CAD, body);
     if (response.data.results.status_code === 200) {
-      list_assignment_folder(setIsLoading,  setAssignmentFolder);
-      onClose()
-
+      setAssignedData(response.data.results.data)
     }
   } catch (error) {
     console.error("Error moving designs:", error);

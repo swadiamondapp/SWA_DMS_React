@@ -25,11 +25,12 @@ const style = {
   borderRadius: 2,
   outLine: "none",
 };
-const AssignToModal = ({ open, onClose,}) => {
+const AssignToModal = ({ open, onClose, assignToCadId,selectedDesign}) => {
 
   // const [isLoading,setIsLoading] = useState(false)
   const [isLoading, setIsLoading] = useState(false);
   const [Data, setData] = useState([]);
+  const [AssignedData, setAssignedData] = useState([])
 
   // create modal
 
@@ -39,12 +40,18 @@ const AssignToModal = ({ open, onClose,}) => {
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const handleAssignButton = (userId) => {
+  const handleAssignButton = (userIdString) => {
+    const userId = String(userIdString);
+    assign_to_cad(setIsLoading,  assignToCadId,userId,selectedDesign, setAssignedData)
+    console.log(userId,"assignToCadUserId====>")
   };
   useEffect(() => {
     list_all_cad_users(setIsLoading, setData);
   }, []);
   console.log(Data, "cad");
+  console.log(assignToCadId,"assignToCadId====>")
+  console.log(selectedDesign,"selectedDesign====>Modal")
+  console.log(AssignedData,"resp_assignedData==>")
 
   return (
     <div>
@@ -87,7 +94,7 @@ const AssignToModal = ({ open, onClose,}) => {
               <Typography id="modal-modal-description" sx={{ mt: 5 }}>
                 <div className="main">
                   {Data.map((item, index) => (
-                    <div className="Avata">
+                    <div className="Avata" key={index}>
                       <div className="avatarContainer">
                         <div className="leftTo">
                           <div className="avatarImageContainer">
@@ -108,7 +115,7 @@ const AssignToModal = ({ open, onClose,}) => {
                           </div>
                           <div>
                             <button
-                              onClick={handleAssignButton(item.id)}
+                              onClick={()=>handleAssignButton(item.id)}
                               className="avatarButton"
                             >
                             Assigned
