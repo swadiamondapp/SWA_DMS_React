@@ -190,16 +190,16 @@ const AssignmentPanel = () => {
                   <input
                     className="Radio_select"
                     type="checkbox"
-                    id={item && item.items[0].paper_design.id}
+                    id={item && item.items[0].id}
                     name="fav_language"
-                    value={item && item.items[0].paper_design.id}
+                    value={item && item.items[0].id}
                     onChange={() =>
                       handleCheckboxChange(
-                        item && item.items[0].paper_design.id
+                        item && item.items[0].id
                       )
                     }
                     checked={selectedAssignment.includes(
-                      item && item.items[0].paper_design.id
+                      item && item.items[0].id
                     )}
                   ></input>
                 )}
@@ -225,7 +225,7 @@ const AssignmentPanel = () => {
         <div className="Parent_Folder_section">
           <h3 className="HeadNewdesign">Folders</h3>
           <div className="folderCard_parent">
-            {console.log("assignment", assignmentFolder)}
+            {console.log("assignment--===>", assignmentFolder)}
             {assignmentFolder.map((item) => (
               <div className="folder__card">
                 <Link to={`/assignmentview/${item.id}`}>

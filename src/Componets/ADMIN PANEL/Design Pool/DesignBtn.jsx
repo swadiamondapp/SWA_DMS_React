@@ -25,7 +25,10 @@ const DesignBtn = ({
   userId,
   selectedDesign,
   folderId,
-  assignToCadId
+  assignToCadId,
+  list_id,
+  setFolderDetails,
+  list_designer_folderDetails
 }) => {
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -75,7 +78,7 @@ const handleAssignment = () => {
           location.pathname !== "/designdashboard" &&
           location.pathname !== "/designerassignview" &&
           location.pathname !== "/votorscustomization" &&
-          !location.pathname === `/designerassignview/${id}` &&
+          location.pathname !== `/designerassignview/${id}` &&
           location.pathname !== "/finishedProject" && (
             <div className="Parent_MoveTo">
               <button className="D_moveBtn" onClick={toggleMoveOptions}>
@@ -148,9 +151,8 @@ const handleAssignment = () => {
         onClose={() => handleAssignment()}
         assignToCadId={assignToCadId}
         selectedDesign={selectedDesign}
-
-       
-       
+        list_id={list_id}
+        list_designer_folderDetails={list_designer_folderDetails}
       />
       <CreateCustomisation
         open={isModalOpenCreateCutomize}

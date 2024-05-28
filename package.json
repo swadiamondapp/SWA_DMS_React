@@ -17,6 +17,7 @@
     "@mui/lab": "^5.0.0-alpha.169",
     "@mui/material": "^5.15.13",
     "antd": "^5.15.2",
+    "antd-img-crop": "^4.22.0",
     "axios": "^1.6.8",
     "file-saver": "^2.0.5",
     "joi": "^17.13.1",

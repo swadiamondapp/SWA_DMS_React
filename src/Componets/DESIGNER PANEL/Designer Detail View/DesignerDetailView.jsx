@@ -5,16 +5,13 @@ import ring from "../../../assets/ring.png";
 import { useParams,useLocation } from "react-router-dom";
 import { list_designer_folderDetails } from "./Api";
 
-const DesignerDetailView = () => {
+const DesignerDetailView = (props) => {
   const [showRadioButtons, setShowRadioButtons] = useState(false);
   const [selectButtonLabel, setSelectButtonLabel] = useState("Select");
   const [showDownloadOptions, setShowDownloadOptions] = useState(false);
   const [showMoveOptions, setShowMoveOptions] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [folderDetails, setFolderDetails] = useState([]);
   const [selectedAssignment, setSelectedAssignment] = useState([]);
-
-  const { id } = useParams();
   const location = useLocation();
   const query = new URLSearchParams(location.search);
   const folderName = query.get('name');
@@ -55,10 +52,6 @@ const DesignerDetailView = () => {
     setShowMoveOptions(!showMoveOptions);
   };
 
-  useEffect(() => {
-    list_designer_folderDetails(setIsLoading, setFolderDetails, id);
-  }, []);
-
   const handleCheckboxChange = (designcode) => {
     if (selectedAssignment.includes(designcode)) {
       setSelectedAssignment(
@@ -71,9 +64,7 @@ const DesignerDetailView = () => {
   // const handleAssignmentCad = () => {
   //   assign_to_cad(setIsLoading,folderId,userId,selectedDesigns)
   // }
-  console.log(folderDetails?.assignment_items,"itmesssss======>")
-  console.log(folderDetails?.assignment_items,"itmesssss======>")
-  console.log(selectedAssignment,"selectedDesdingsssss==>")
+
   return (
     <div className="DesignerAssignmentPanel">
       <DesignBtn
@@ -83,19 +74,21 @@ const DesignerDetailView = () => {
         toggleMoveOptions={toggleMoveOptions}
         showDownloadOptions={showDownloadOptions}
         showMoveOptions={showMoveOptions}
-        assignToCadId={id}  
+        assignToCadId={props.id}
         selectedDesign={selectedAssignment}
+        list_id={props.id}
+        list_designer_folderDetails={props.list_designer_folderDetails}
       />
       <div className="DesignerAssignment___panel_Cards">
         <div className="Parent_NewDesign">
           <div className="Card_Design_Parent">
-            {folderDetails &&
-              folderDetails?.assignment_items?.map((item) => (
+            {props.folderDetails &&
+              props.folderDetails?.assignment_items?.map((item) => (
               
                 <div className="New_Design_card">
                   {console.log("folderDetails?", item.paper_design.image)}
                   <div className="Card_img">
-                    <img src={item.paper_design.image} alt="" />
+                    <img src={item.paper_design.image} style={{ opacity:item.items_status === 'ALLOCATED' ? 0.5 : 1 }} alt="" />
                   </div>
                   <div className="Card_Details">
                     <h3>ID : {item.paper_design.designcode}</h3>
@@ -115,7 +108,8 @@ const DesignerDetailView = () => {
                       id="html"
                       name="fav_language"
                       value=""
-                      onChange={()=>handleCheckboxChange(item.paper_design.id)}
+                      onChange={()=>handleCheckboxChange(item.item_id)}
+                      disabled={item.items_status === 'ALLOCATED'}
                     ></input>
                   )}
                   {/* radio btn */}

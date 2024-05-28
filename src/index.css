@@ -24,3 +24,13 @@ a {
   font-family: "Gilroy reguler";
   src: url(./assets/Gilroy-Regular.ttf);
 }
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.ant-select-dropdown {
+  z-index: 1700 !important;
+}

@@ -6,6 +6,7 @@ import { setToLocalstorage } from "../../../Pages/Utils/Common";
 import {
   FOLDER_DETAIL_API,
   ASSIGN_TO_CAD,
+  LIST_ALL_CUSTOMIZATION_DESIGNS,
 } from "../../../Pages/Services/EndPoints";
 
 export const list_designer_folderDetails = async (
@@ -28,7 +29,9 @@ export const assign_to_cad = async (
   assignToCadId,
   userId,
   selectedDesign,
-  setAssignedData
+  list_id,
+  onClose,
+  list_designer_folderDetails
 ) => {
   try {
     const body = {
@@ -38,10 +41,25 @@ export const assign_to_cad = async (
     };
     console.log(body, "body====>");
     const response = await apiService.post(ASSIGN_TO_CAD, body);
-    if (response.data.results.status_code === 200) {
-      setAssignedData(response.data.results.data)
+    if (response.data.status_code === 200) {
+      onClose()
+      list_designer_folderDetails()
     }
   } catch (error) {
     console.error("Error moving designs:", error);
+  }
+};
+
+export const list_all_cutomization_paper_design= async (
+  setIsLoading,
+  setCustomizationDesign,
+) => {
+  try {
+    const response = await apiService.get(LIST_ALL_CUSTOMIZATION_DESIGNS);
+    if (checkApiStatus(response)) {
+      setCustomizationDesign(response.data.results.data);
+    }
+  } catch (error) {
+    console.log(error);
   }
 };

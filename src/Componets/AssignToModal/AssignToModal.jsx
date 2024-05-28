@@ -25,7 +25,7 @@ const style = {
   borderRadius: 2,
   outLine: "none",
 };
-const AssignToModal = ({ open, onClose, assignToCadId,selectedDesign}) => {
+const AssignToModal = ({ open, onClose, assignToCadId,selectedDesign,setFolderDetails,list_id, list_designer_folderDetails}) => {
 
   // const [isLoading,setIsLoading] = useState(false)
   const [isLoading, setIsLoading] = useState(false);
@@ -38,17 +38,18 @@ const AssignToModal = ({ open, onClose, assignToCadId,selectedDesign}) => {
   const [AssinedButton, setAssignedButton] = useState("Assign");
   const [tagText, setTagText] = useState("");
 
+  useEffect(() => {
+    list_all_cad_users(setIsLoading, setData);
+  }, []);
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleAssignButton = (userIdString) => {
     const userId = String(userIdString);
-    assign_to_cad(setIsLoading,  assignToCadId,userId,selectedDesign, setAssignedData)
-    console.log(userId,"assignToCadUserId====>")
+    assign_to_cad(setIsLoading,assignToCadId,userId,selectedDesign,list_id,onClose, list_designer_folderDetails)
   };
-  useEffect(() => {
-    list_all_cad_users(setIsLoading, setData);
-  }, []);
   console.log(Data, "cad");
+  console.log(setFolderDetails,"ssAAss")
   console.log(assignToCadId,"assignToCadId====>")
   console.log(selectedDesign,"selectedDesign====>Modal")
   console.log(AssignedData,"resp_assignedData==>")
@@ -76,8 +77,7 @@ const AssignToModal = ({ open, onClose, assignToCadId,selectedDesign}) => {
                     Assign to
                   </span>
                   <button
-                    // onClick={handleClose}
-                    onClose={onClose}
+                    onClick={onClose}
                     style={{
                       position: "absolute",
                       top: 15,
@@ -118,7 +118,7 @@ const AssignToModal = ({ open, onClose, assignToCadId,selectedDesign}) => {
                               onClick={()=>handleAssignButton(item.id)}
                               className="avatarButton"
                             >
-                            Assigned
+                            Assign
                             </button>
                           </div>
                         </div>

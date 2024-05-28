@@ -5,9 +5,20 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { Modal, Select } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { message, Upload } from "antd";
+import ImgCrop from "antd-img-crop";
 import UserEm from "../../../assets/userEmpty.png";
 import Joi from "joi";
-import { list_all_users, update_user, user_create, user_delete } from "./Api";
+import {
+  list_all_users,
+  update_user,
+  user_create,
+  user_delete,
+  send_mail,
+} from "./Api";
+import UlaodImag from "../../../assets/upi.png";
+import SuccessModal from "../../SuccessModal/SuccessModal";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
 
 const schema = Joi.object({
   name: Joi.string().required().messages({
@@ -17,16 +28,24 @@ const schema = Joi.object({
     .email({ tlds: { allow: false } })
     .required()
     .messages({
-      "string.empty": `cannot be an empty feild`,
+      "string.empty": "Email cannot be an empty field",
+      "string.email": "Please provide a valid email address",
+      "any.required": "Email is a required field",
     }),
   phoneNumber: Joi.string()
-    .pattern(/^\d{10}$/)
+    .pattern(/^\d+$/)
+    .min(10)
+    .max(10)
     .required()
     .messages({
-      "string.empty": `cannot be an empty feild`,
+      "string.empty": `cannot be an empty field`,
+      "string.pattern.base": `must only contain digits`,
+      "string.min": `must be 10 digits`,
+      "string.max": `must be 10 digits`,
     }),
   selectedRole: Joi.number().required().messages({
-    "string.empty": `cannot be an empty feild`,
+    "any.required": "You should select a role",
+    "number.base": "You should select a role", // Additional message for non-number values
   }),
 });
 
@@ -47,11 +66,14 @@ const UsersList = () => {
   // create modal
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState(null);
+  const [imageUrl, setImageUrl] = useState([]);
   const [errors, setErrors] = useState({});
   const [userList, setUserList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [deleteuser, setDeleteuser] = useState([]);
+  const [successModalOpen, setSuccessModalOpen] = useState(false);
+  const [loadingStates, setLoadingStates] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -59,7 +81,7 @@ const UsersList = () => {
     selectedRole: "",
   });
 
-  console.log("imageUrl", imageUrl);
+  console.log("imageUrl", userList);
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -74,16 +96,43 @@ const UsersList = () => {
   };
 
   // Handle file change for image upload
-  const handleFileChange = (info) => {
-    if (info.file.status === "uploading") {
-      return;
-    }
-    if (info.file.status === "done") {
-      const fileReader = new FileReader();
-      fileReader.onload = (e) => {
-        setImageUrl(e.target.result); // Set the base64 URL to `imageUrl`
-      };
-      fileReader.readAsDataURL(info.file.originFileObj); // Convert file to base64
+  // const handleFileChange = (info) => {
+  //   if (info.file.status === "uploading") {
+  //     return;
+  //   }
+  //   if (info.file.status === "done") {
+  //     const fileReader = new FileReader();
+  //     fileReader.onload = (e) => {
+  //       setImageUrl(e.target.result); // Set the base64 URL to `imageUrl`
+  //       console.log("Image URLSET", e.target.result); // Debug statement
+  //     };
+  //     fileReader.readAsDataURL(info.file.originFileObj); // Convert file to base64
+  //   }
+  // };
+  // const handleFileChange = (e) => {
+  //   const file = e.target.files[0];
+  //   if (file) {
+  //     const fileReader = new FileReader();
+  //     fileReader.onload = (e) => {
+  //       setImageUrl(e.target.result); // Set the base64 URL to `imageUrl`
+  //     };
+  //     fileReader.readAsDataURL(file); // Convert file to base64
+  //   }
+  // };
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Check if the selected file is an image
+      if (file.type.startsWith("image")) {
+        const fileReader = new FileReader();
+        fileReader.onload = (e) => {
+          setImageUrl(e.target.result); // Set the base64 URL to `imageUrl`
+        };
+        fileReader.readAsDataURL(file); // Convert file to base64
+      } else {
+        // Handle non-image files (e.g., display an error message)
+        console.error("Please select an image file (JPG or PNG).");
+      }
     }
   };
 
@@ -102,11 +151,13 @@ const UsersList = () => {
       data.append("status", "ACTIVE");
       // If there's an uploaded image, append it to the FormData
       // Append image if it exists
-      const file = document.querySelector('.avatar-uploader input[type="file"]')
-        .files[0];
+      const fileInput = document.querySelector(".avatar-uploader");
+      const file = fileInput ? fileInput.files[0] : null;
+
       if (file) {
         data.append("image", file);
       }
+      console.log(file, "file");
 
       if (userIdToEdit) {
         update_user(setIsLoading, data, setUserList, userIdToEdit);
@@ -242,6 +293,37 @@ const UsersList = () => {
     }
     setUserIdToEdit(user.id);
   };
+  const handleAvatarClick = () => {
+    // Trigger click event of file input when avatar is clicked
+    document.getElementById("fileInput").click();
+  };
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImageUrl(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
+  const handleSendMail = (usersId) => {
+    send_mail(setLoadingStates, usersId, setSuccessModalOpen);
+  };
+  const handleOpen = () => {
+    setSuccessModalOpen(true);
+  };
+  const handleClose = () => {
+    setSuccessModalOpen(false);
+  };
+  const handleTogglePassword = () => {
+    setShowPassword((prev) => !prev); // Toggle the state
+  };
 
   // update_user(setIsLoading, data, setUserList ,"70");
   return (
@@ -267,7 +349,7 @@ const UsersList = () => {
               <div className="dragAndDrop">
                 <div>
                   <div>
-                    <Upload
+                    {/* <Upload
                       name="avatar"
                       listType="picture-circle"
                       className="avatar-uploader"
@@ -286,7 +368,43 @@ const UsersList = () => {
                       ) : (
                         uploadButton
                       )}
-                    </Upload>
+                    </Upload> */}
+                    <div>
+                      <input
+                        id="fileInput"
+                        type="file"
+                        className="avatar-uploader"
+                        style={{ display: "none" }}
+                        onChange={handleFileChange}
+                      />
+                      <div
+                        id="avatar_upload_icon"
+                        onClick={handleAvatarClick}
+                        onDrop={handleDrop}
+                        onDragOver={handleDragOver}
+                        style={{
+                          width: imageUrl ? "80px" : "auto",
+                          height: imageUrl ? "80px" : "auto",
+                        }}
+                      >
+                        {imageUrl ? (
+                          <div className="uploaded_image_container">
+                            <img
+                              src={imageUrl}
+                              alt="avatar"
+                              style={{
+                                width: "100%",
+                                height: "100%",
+                                borderRadius: "50%", // Make the image circular
+                                objectFit: "cover", // Ensure the image covers the entire space
+                              }}
+                            />
+                          </div>
+                        ) : (
+                          <img src={UlaodImag} alt="upload icon" />
+                        )}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -429,15 +547,46 @@ const UsersList = () => {
                   <td>{item.email}</td>
                   <td>
                     <div className="view_password">
-                      123123123
-                      <IoEye style={{ color: "#455173" }} />
+                      <span className="passwordEncy">
+
+                    {showPassword ? item.password :  "******"}
+                      </span>
+                      {showPassword ? (
+                        <IoEye
+                          style={{
+                            color: "#455173",
+                            cursor: "pointer",
+                            opacity: showPassword ? 0.5 : 1,
+                          }}
+                          onClick={handleTogglePassword}
+                        />
+                      ) : (
+                        <IoEye
+                          style={{ color: "#455173", cursor: "pointer" }}
+                          onClick={handleTogglePassword}
+                        />
+                      )}
                     </div>
                   </td>
                   <td>{item.Usertype}</td>
                   <td>
                     <div className="active_sendmail">
                       <button className="active_btn">{item.status}</button>
-                      <button className="sendmail_btn">Send Mail</button>
+                      <button
+                        className="sendmail_btn"
+                        onClick={() => handleSendMail(item.id)}
+                      >
+                        {loadingStates[item.id] ? (
+                          <Box sx={{ display: "flex" }}>
+                            <CircularProgress
+                              size={12} // Set the desired size
+                              sx={{ color: "#fff" }}
+                            />
+                          </Box>
+                        ) : (
+                          <>Send Mail</>
+                        )}
+                      </button>
                     </div>
                   </td>
                   <td>
@@ -477,6 +626,11 @@ const UsersList = () => {
             </tbody>
           </table>
         </div>
+        <SuccessModal
+          successModalOpen={successModalOpen}
+          handleOpen={handleOpen}
+          handleClose={handleClose}
+        />
       </div>
     </div>
   );

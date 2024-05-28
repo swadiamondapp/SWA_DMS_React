@@ -117,8 +117,8 @@ const DesignerDashboard = () => {
           <div className="DesignerDashboardcard">
             <h3 className="HeadNewdesign">Uploaded</h3>
             <div className="Card_Design_Parent">
-              {uploadedDesigns.map((item) => (
-                <div className="New_Design_card">
+              {uploadedDesigns.map((item,index) => (
+                <div className="New_Design_card" key={index}>
                   <div className="Card_img">
                     <img src={item.image} alt="" />
                   </div>

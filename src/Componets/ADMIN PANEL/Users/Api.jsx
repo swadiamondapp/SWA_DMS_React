@@ -6,6 +6,7 @@ import { setToLocalstorage } from "../../../Pages/Utils/Common";
 import {
   EDIT_USER,
   LIST_ALL_USER,
+  SEND_MAIL,
   USER_CREATE,
   USER_DELETE,
 } from "../../../Pages/Services/EndPoints";
@@ -83,5 +84,25 @@ export const update_user = async (
     }
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const send_mail = async (setLoadingStates,usersId,setSuccessModalOpen) => {
+  setLoadingStates((prev) => ({ ...prev, [usersId]: true }));
+  try {
+    const body = { user_id: usersId };
+    console.log(body, "bodyAssi");
+    const response = await apiService.post(SEND_MAIL, body);
+    if (response.data.results.status_code === 200) {
+      setLoadingStates((prev) => ({ ...prev, [usersId]: false }));
+      // Open modal and close it after 1.5 seconds
+      setSuccessModalOpen(true);
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1500);
+    }
+  } catch (error) {
+    console.error("Error moving designs:", error);
+    setLoadingStates((prev) => ({ ...prev, [usersId]: false }));
   }
 };
