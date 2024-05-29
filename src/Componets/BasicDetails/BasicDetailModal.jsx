@@ -269,7 +269,7 @@ const BasicDetailModal = ({
                           }
                           onSearch={onSearch}
                           filterOption={filterOption}
-                          style={{ width: "100%" }}
+                          style={{ width: "100%",zIndex:"9999999" }}
                           options={[
                             {
                               value: "Gold",
@@ -313,7 +313,7 @@ const BasicDetailModal = ({
                           }
                           onSearch={onSearch}
                           filterOption={filterOption}
-                          style={{ width: "100%" }}
+                          style={{ width: "100%",zIndex:999999999 }}
                           options={[
                             {
                               value: "Natuaral Diamond",

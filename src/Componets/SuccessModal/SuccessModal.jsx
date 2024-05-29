@@ -50,7 +50,7 @@ const SuccessModal = ({successModalOpen,handleClose,handleOpen}) => {
             </div>
             <div style={{ textAlign: "center", margin: "12px 0px" }}>
               <span className="titlesuccesModal">
-                Mail Sended Successfully <br />
+              Mail sent successfully!
               </span>
             </div>
           </Typography>
