@@ -9,10 +9,11 @@ export const userLogin = async (userCredentials, setData, setIsLoading) => {
       username: userCredentials.email,
       password: userCredentials.password,
     });
-    console.log("abcd", response?.data?.results?.token);
+    console.log("abcd", response?.data?.results?.data[0]?.Usertype);
+
     if (checkApiStatus(response)) {
       setToLocalstorage(response?.data?.results?.token);
-      localStorage.setItem("Usertype", response?.data?.results?.data?.Usertype);
+      localStorage.setItem("Usertype", response?.data?.results?.data[0]?.Usertype);
 
       setData(response?.data?.results);
     }

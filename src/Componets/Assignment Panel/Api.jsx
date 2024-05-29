@@ -58,7 +58,7 @@ export const move_to_folder = async (setIsLoading, formData, folderName,selected
       },
       items:selectedAssignment,
     };
-    console.log(body, "bodyAssi");
+    console.log(body, "bodyAssijj");
     const response = await apiService.post(MOVE_TO_FOLDER, body);
     if (response.data.results.status_code === 200) {
       list_assignment_folder(setIsLoading,  setAssignmentFolder);

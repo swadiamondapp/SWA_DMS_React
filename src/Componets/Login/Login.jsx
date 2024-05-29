@@ -45,6 +45,7 @@ const Login = () => {
       userLogin(userCredentials, setData, setIsLoading);
     }
   };
+  console.log(usertype,"userType")
   useEffect(() => {
     if (usertype === "ADMIN") {
       navigate("/");
