@@ -228,7 +228,7 @@ const AssignmentPanel = () => {
             {console.log("assignment--===>", assignmentFolder)}
             {assignmentFolder.map((item) => (
               <div className="folder__card">
-                <Link to={`/assignmentview/${item.id}`}>
+                <Link to={`/assignmentpaneldetailsview/${item.id}?name=${encodeURIComponent(item.name)}`}>
                   <img src={folderimg} alt="" />
                 </Link>
 

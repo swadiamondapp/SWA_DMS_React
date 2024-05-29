@@ -24,6 +24,12 @@ const Header = () => {
   // const folderName = location.state?.name || "Unknown Folder";
   // console.log(folderName,'folderName in Header==>')
   console.log(id, "folderId in Header==>");
+  console.log(folderName, "folderName====oii>");
+  const userType = localStorage.getItem("Usertype");
+  const userName = localStorage.getItem("name");
+  const userEmail = localStorage.getItem("email");
+  const userPhoneNumber = localStorage.getItem("phone_number");
+  const userImage = localStorage.getItem("image");
 
   return (
     <div>
@@ -56,9 +62,16 @@ const Header = () => {
               <h3>{folderName}</h3>
             )}
             {location.pathname === "/designerassign" && (
-              <h3>Assignment Panel</h3>
+              <h3>Assignment panel</h3>
             )}
+            {location.pathname === "/designdashboard" && <h3>Dashboard</h3>}
+            {location.pathname === "/Customizedorder" && (
+              <h3>Customized Order</h3>
+            )}
+            {location.pathname === "/chat" && <h3>Chat</h3>}
             {location.pathname === "/" && <h3>Design Pool</h3>}
+            {location.pathname === `/assignmentpaneldetailsview/${id}` && <h3>{folderName}</h3>}
+            
           </div>
           <div className="Right_User_Section">
             <div className="Search_Admin">
@@ -68,25 +81,10 @@ const Header = () => {
               </div>
             </div>
             <div className="Profile_Admin" onClick={handleLogout}>
-              <img src={profileimg} alt="" />
+              <img src={userImage} alt="" />
               <div className="Name_Sub">
-                {(location.pathname === "/" ||
-                  location.pathname === "/designpool" ||
-                  location.pathname === "/assignmentpanel") && (
-                  <>
-                    <p>Nidhin PR</p>
-                    <p className="Name_Sub_admin">Admin</p>
-                  </>
-                )}
-                  {(location.pathname === "/designdashboard" ||
-                  location.pathname === "/designerassign" ||
-                  location.pathname === "/Customizedorder") && (
-                  <>
-                    <p>Sandra</p>
-                    <p className="Name_Sub_admin">Paper Design</p>
-                  </>
-                )}
-              
+                <p>{userName}</p>
+                <p className="Name_Sub_admin">{userType}</p>
               </div>
               <IoChevronDown style={{ color: "#1AA1A1" }} />
               {isLogoutDropdown && (

@@ -34,6 +34,8 @@ import FinishedProductsPage from "./Pages/CAD PANAL/Finished Products Page/Finis
 import CentralHubDashboard from "./Pages/CENTRAL HUB/Central Hub dashboard Page/CentralHubDashboard";
 import HubSlot from "./Pages/CENTRAL HUB/Central Hub Slot/HubSlot";
 import PrivateRoute from "./Pages/Utils/PrivateRoute";
+import AssignmentPanelFolderCards from "./Componets/Assignment Panel/AssignmentPanelFolderCards";
+import AssignmentPanelFolderCardPage from "./Pages/AssignmentPanelFolderDetailsCardsPage/AssignmentPanelFolderCardPage"
 
 function App() {
   return (
@@ -61,6 +63,10 @@ function App() {
             <Route
               path="/designerassignview/:id"
               element={<DesignerAssignViewPage />}
+            />
+             <Route
+              path="/assignmentpaneldetailsview/:id"
+              element={<AssignmentPanelFolderCardPage />}
             />
             <Route path="/Customizedorder" element={<CustomizedOrderPage />} />
             <Route path="/votorspanal" element={<VotorsPanalPage />} />
