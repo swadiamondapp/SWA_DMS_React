@@ -1,0 +1,29 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap:12px
+
+}
+.inputFields {
+  outline: none;
+
+}
+
+.label_text {
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 5px;
+  }
+  .CreateOrderButton {
+    background:#04344D;
+    color:#fff;
+    border:none;
+    padding:10px 0px;
+    border-radius: 4px;
+    font-size: 15px;
+    font-family: "Gilroy medium";
+    font-weight: 500;
+    width: 100%;
+    margin-top: 10px;
+  }

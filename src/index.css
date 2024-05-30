@@ -9,7 +9,9 @@ body {
   box-sizing: border-box;
   background: #f6f5f1;
 }
-
+a {
+  text-decoration: none;
+}
 @font-face {
   font-family: "Gilroy bold";
   src: url(./assets/Gilroy-Bold.ttf);
@@ -21,4 +23,14 @@ body {
 @font-face {
   font-family: "Gilroy reguler";
   src: url(./assets/Gilroy-Regular.ttf);
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.ant-select-dropdown {
+  z-index: 1700 !important;
 }

@@ -1,16 +1,77 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Header.css";
 import searchimg from "../../assets/search.png";
 import profileimg from "../../assets/profile.png";
 import { IoChevronDown } from "react-icons/io5";
+import { Link, useLocation } from "react-router-dom";
+import { MdOutlineLogout } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
+import { removeLocalstorage } from "../../Pages/Utils/Common";
+import { useParams } from "react-router-dom";
 
 const Header = () => {
+  const location = useLocation();
+  const query = new URLSearchParams(location.search);
+  const folderName = query.get("name");
+  console.log("header===>FolderName", folderName);
+  const [isLogoutDropdown, setIsLogoutDropdown] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    setIsLogoutDropdown(!isLogoutDropdown);
+  };
+  const { id } = useParams();
+  // const folderName = location.state?.name || "Unknown Folder";
+  // console.log(folderName,'folderName in Header==>')
+  console.log(id, "folderId in Header==>");
+  console.log(folderName, "folderName====oii>");
+  const userType = localStorage.getItem("Usertype");
+  const userName = localStorage.getItem("name");
+  const userEmail = localStorage.getItem("email");
+  const userPhoneNumber = localStorage.getItem("phone_number");
+  const userImage = localStorage.getItem("image");
+
   return (
     <div>
       <div className="Parent_Section">
         <div className="Header_Section">
           <div className="Left_User_Section">
-            <h3>Users</h3>
+            {location.pathname === "/users" && <h3>Users</h3>}
+            {location.pathname === "/designpool" && <h3>Design pool</h3>}
+            {location.pathname === "/customRequestTable" && (
+              <h3>Customize Request</h3>
+            )}
+            {location.pathname === "/wareHouse" && <h3>Votors panel</h3>}
+            {location.pathname === "/finishedProject" && (
+              <h3>Finished project</h3>
+            )}
+            {location.pathname === "/renderCard" && <h3>SWAD3456</h3>}
+            {location.pathname === "/wareHouseDetails" && (
+              <h3> ID : SWAD3456</h3>
+            )}
+            {location.pathname === "/finished" && <h3>SWAD3456</h3>}
+
+            {location.pathname === "/assignmentpanel" && (
+              <h3>Assignment Panel</h3>
+            )}
+            {location.pathname === "/otherlogin" && <h3>Other Login</h3>}
+            {location.pathname === "/votorscustomization" && (
+              <h3>Customization</h3>
+            )}
+            {location.pathname === `/designerassignview/${id}` && (
+              <h3>{folderName}</h3>
+            )}
+            {location.pathname === "/designerassign" && (
+              <h3>Assignment panel</h3>
+            )}
+            {location.pathname === "/designdashboard" && <h3>Dashboard</h3>}
+            {location.pathname === "/Customizedorder" && (
+              <h3>Customized Order</h3>
+            )}
+            {location.pathname === "/chat" && <h3>Chat</h3>}
+            {location.pathname === "/" && <h3>Design Pool</h3>}
+            {location.pathname === `/assignmentpaneldetailsview/${id}` && <h3>{folderName}</h3>}
+            
           </div>
           <div className="Right_User_Section">
             <div className="Search_Admin">
@@ -19,13 +80,25 @@ const Header = () => {
                 <img src={searchimg} alt="" />
               </div>
             </div>
-            <div className="Profile_Admin">
-              <img src={profileimg} alt="" />
+            <div className="Profile_Admin" onClick={handleLogout}>
+              <img src={userImage} alt="" />
               <div className="Name_Sub">
-                <p>Nidhin PR</p>
-                <p className="Name_Sub_admin">Admin</p>
+                <p>{userName}</p>
+                <p className="Name_Sub_admin">{userType}</p>
               </div>
               <IoChevronDown style={{ color: "#1AA1A1" }} />
+              {isLogoutDropdown && (
+                <div
+                  className="log_out__btns"
+                  onClick={() => {
+                    removeLocalstorage(navigate);
+                  }}
+                >
+                  <button>
+                    <MdOutlineLogout /> Log Out
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
