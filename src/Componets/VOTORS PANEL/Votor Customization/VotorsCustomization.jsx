@@ -33,43 +33,6 @@ const VotorsCustomization = () => {
     
   }
   console.log(Data, "votersCuz");
-  const userlist = [
-    {
-      date: "11/2/2023",
-      id: "SWACO4535",
-      outlet: "Swa diamonds valanchery",
-      phone: "+ 91 9995674444",
-      type: "Bangles",
-    },
-    {
-      date: "11/2/2023",
-      id: "SWACO4535",
-      outlet: "Swa diamonds valanchery",
-      phone: "+ 91 9995674444",
-      type: "Bangles",
-    },
-    {
-      date: "11/2/2023",
-      id: "SWACO4535",
-      outlet: "Swa diamonds valanchery",
-      phone: "+ 91 9995674444",
-      type: "Bangles",
-    },
-    {
-      date: "11/2/2023",
-      id: "SWACO4535",
-      outlet: "Swa diamonds valanchery",
-      phone: "+ 91 9995674444",
-      type: "Bangles",
-    },
-    {
-      date: "11/2/2023",
-      id: "SWACO4535",
-      outlet: "Swa diamonds valanchery",
-      phone: "+ 91 9995674444",
-      type: "Bangles",
-    },
-  ];
   return (
     <div className="ParentVotors">
       <div className="votors_btns">

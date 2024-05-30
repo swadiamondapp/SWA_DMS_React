@@ -1,9 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../../Componets/CustomiseRequiestTable/CustomiseRequiestTable.css";
 import PrintIcon from "../../assets/printIcon.png";
 import EyeIcon from "../../assets/eyeIcon.png";
 import ThreeDot from "../../assets/threeDots.png";
 import CustomiseRequest from "../../Componets/CustomiseRequest/CustomiseRequiest";
+import {
+  customization_details_view_warehouse,
+  customizaztion_list_wareHouse,
+  delete_customization_warehouse,
+} from "../../Pages/WareHousePageView/Api";
+import { delete_customization } from "../VOTORS PANEL/Api";
 
 const data = [
   {
@@ -50,8 +56,36 @@ const data = [
   },
 ];
 
-const CustomizationTable = () => {
+const CustomizationTable = (props) => {
   const [openCRModal, setOpenCRModal] = useState(false);
+  const [wareHouseuserId, setWareHouseUserId] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showEditDelete, setShowEditDelete] = useState(null);
+  const [Data, setData] = useState([]);
+  const [CustomizationWareHouseData, setCustomizationWareHouseData] = useState(
+    []
+  );
+  const [CustomizationListData, setCustomizationListData] = useState([]);
+  useEffect(() => {
+    customizaztion_list_wareHouse(setIsLoading, setCustomizationListData);
+  }, []);
+  console.log(props.CustomizationListData, "CustomizationListData");
+  const handleEyeClick = (wareHouseId) => {
+    setOpenCRModal(true);
+    setWareHouseUserId(wareHouseId);
+    customization_details_view_warehouse(
+      setIsLoading,
+      setCustomizationWareHouseData,
+      wareHouseId
+    );
+  };
+  const handleDeleteCustomization = (userId) => {
+    delete_customization_warehouse(
+      setIsLoading,
+      userId,
+      setCustomizationListData
+    );
+  };
   return (
     <div className="Parant_CustomTable">
       <div className="TableContainer">
@@ -77,37 +111,63 @@ const CustomizationTable = () => {
             </tr>
           </thead>
           <tbody>
-            {data.map((item, index) => (
+            {CustomizationListData.map((item, index) => (
               <tr
                 key={index}
                 style={{
                   backgroundColor: index % 2 === 0 ? "#fff" : "#f2f2f2",
                 }}
               >
-                <td>{item.date}</td>
-                <td>{item.customizationId}</td>
+                <td>{item.created_at}</td>
+                <td>{item.customizationcode}</td>
                 <td>{item.outlet}</td>
-                <td>{item.mobileNumber}</td>
-                <td>{item.productType}</td>
+                <td>{item.mobile_number}</td>
+                <td>{item.product_type}</td>
                 <td>
                   <button className="PrintButton_CT">
                     Print <img src={PrintIcon} />
                   </button>
                 </td>
 
-                <td onClick={()=> setOpenCRModal(true)}>
+                <td onClick={() => handleEyeClick(item.id)}>
                   <img src={EyeIcon} />
                 </td>
 
-                <td>
+                <td
+                  onClick={() =>
+                    setShowEditDelete(showEditDelete === index ? null : index)
+                  }
+                >
                   <img src={ThreeDot} />
+                  {showEditDelete === index && (
+                    <div className="Edit_delete_btn_user_warehouse" styl={{right:"1"}}>
+                      {/* <p
+                        className="Edit_btn_user"
+                        onClick={() => handleEditCustomization(item.id)}
+                      >
+                        Edit
+                      </p> */}
+                      <p
+                        className="Delete_btn_user"
+                        style={{padding:'10px'}}
+                        onClick={() => handleDeleteCustomization(item.id)}
+                      >
+                        Delete
+                      </p>
+                    </div>
+                  )}
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-      <CustomiseRequest open={openCRModal} onClose={()=> setOpenCRModal(false)} />
+      <CustomiseRequest
+        open={openCRModal}
+        onClose={() => setOpenCRModal(false)}
+        wareHouseuserId={wareHouseuserId}
+        CustomizationWareHouseData={CustomizationWareHouseData}
+      />
     </div>
   );
 };
