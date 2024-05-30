@@ -11,23 +11,15 @@ import RingB from "../../assets/ringb.png";
 import RingC from "../../assets/ringc.png";
 import editIcon from "../../assets/editIcon.svg";
 import { customization_details } from "../VOTORS PANEL/Api";
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 480,
-  height: "98%",
-  bgcolor: "background.paper",
-  border: "none",
-  boxShadow: 24,
-  p: 1,
-  overflowY: "scroll",
-  borderRadius: 1,
-  outline: "none",
-};
 
-const CustomiseRequest = ({ open, onClose, userId }) => {
+
+const CustomiseRequest = ({
+  open,
+  onClose,
+  userId,
+  wareHouseuserId,
+  CustomizationWareHouseData,
+}) => {
   // const [customization, setCustomization] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   // create modal
@@ -64,6 +56,26 @@ const CustomiseRequest = ({ open, onClose, userId }) => {
 
   console.log(customization, "custoooo>>");
   console.log(userId, "userId================>");
+  console.log(wareHouseuserId, "wareHouseIDD");
+  console.log(CustomizationWareHouseData, "CustomizationWareHouseData");
+
+  const dataToDisplay = CustomizationWareHouseData || customization;
+
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 480,
+    height: wareHouseuserId ? "95%" : "96%",
+    bgcolor: "background.paper",
+    border: "none",
+    boxShadow: 24,
+    p: 1,
+    overflowY: "scroll",
+    borderRadius: 1,
+    outline: "none",
+  };
 
   return (
     <div>
@@ -83,7 +95,7 @@ const CustomiseRequest = ({ open, onClose, userId }) => {
                 <div>
                   <div>
                     <span className="headerTitle">
-                      Customization ID :{customization.customizationcode}
+                      Customization ID :{dataToDisplay.customizationcode}
                     </span>
                     <div className="lineCR"></div>
                     <div style={{ marginBottom: "5px" }}>
@@ -92,15 +104,15 @@ const CustomiseRequest = ({ open, onClose, userId }) => {
                     <div className="subTitle">
                       <div className="ProductInformation">
                         <span>Sales man</span>
-                        <span>{customization.salesman}</span>
+                        <span>{dataToDisplay.salesman}</span>
                       </div>
                       <div className="ProductInformation">
                         <span>Phone Number</span>
-                        <span>{customization.mobile_number}</span>
+                        <span>{dataToDisplay.mobile_number}</span>
                       </div>
                       <div className="ProductInformation">
                         <span>Outlet</span>
-                        <span>{customization.outlet}</span>
+                        <span>{dataToDisplay.outlet}</span>
                       </div>
                     </div>
                     <div className="lineCR"></div>
@@ -112,15 +124,15 @@ const CustomiseRequest = ({ open, onClose, userId }) => {
                     <div className="subTitle">
                       <div className="ProductInformation">
                         <span>Product type</span>
-                        <span>{customization.product_type}</span>
+                        <span>{dataToDisplay.product_type}</span>
                       </div>
                       <div className="ProductInformation">
                         <span>Model Previously Made</span>
-                        <span>{customization.previously_made}</span>
+                        <span>{dataToDisplay.previously_made}</span>
                       </div>
                       <div className="ProductInformation">
                         <span>If previously made</span>
-                        <span>{customization.outlet}</span>
+                        <span>{dataToDisplay.outlet}</span>
                       </div>
                     </div>
                     <div>
@@ -129,13 +141,13 @@ const CustomiseRequest = ({ open, onClose, userId }) => {
                       </div>
                       <div className="ringImages">
                         <div className="imageContainer">
-                          <img className="" src={customization.image} alt="" />
+                          <img className="" src={dataToDisplay.image} alt="" />
                         </div>
                         <div className="imageContainer">
-                          <img src={customization.image2} alt="" />
+                          <img src={dataToDisplay.image2} alt="" />
                         </div>
                         <div className="imageContainer">
-                          <img src={customization.image3} alt="" />
+                          <img src={dataToDisplay.image3} alt="" />
                         </div>
                       </div>
                     </div>
@@ -146,15 +158,15 @@ const CustomiseRequest = ({ open, onClose, userId }) => {
                     <div className="subTitle-metal">
                       <div className="ProductInformation">
                         <span>Metel type</span>
-                        <span>{customization.metal_type}</span>
+                        <span>{dataToDisplay.metal_type}</span>
                       </div>
                       <div className="ProductInformation">
                         <span>Weight</span>
-                        <span>{customization.weight}</span>
+                        <span>{dataToDisplay.weight}</span>
                       </div>
                       <div className="ProductInformation">
                         <span>Size</span>
-                        <span>{customization.size}</span>
+                        <span>{dataToDisplay.size}</span>
                       </div>
                     </div>
                     <div className="lineCR"></div>
@@ -166,19 +178,19 @@ const CustomiseRequest = ({ open, onClose, userId }) => {
                     <div className="DiamondType">
                       <div className="ProductInformation">
                         <span>Diamond Weight</span>
-                        <span>{customization.diamond_weight}</span>
+                        <span>{dataToDisplay.diamond_weight}</span>
                       </div>
                       <div className="ProductInformation">
                         <span>Number of Diamonds</span>
-                        <span>{customization.no_of_diamond}</span>
+                        <span>{dataToDisplay.no_of_diamond}</span>
                       </div>
                       <div className="ProductInformation">
                         <span>Diamond Clarity</span>
-                        <span>{customization.diamond_clarity}</span>
+                        <span>{dataToDisplay.diamond_clarity}</span>
                       </div>
                       <div className="ProductInformation">
                         <span>Diamond colour</span>
-                        <span>{customization.diamond_colour}</span>
+                        <span>{dataToDisplay.diamond_colour}</span>
                       </div>
                     </div>
                     <div className="lineCR"></div>
@@ -188,26 +200,30 @@ const CustomiseRequest = ({ open, onClose, userId }) => {
                     <div className="subTitle-metal">
                       <div className="ProductInformation">
                         <span>Budget</span>
-                        <span>{customization.budget}</span>
+                        <span>{dataToDisplay.budget}</span>
                       </div>
                       <div className="ProductInformation">
                         <span>SWA Product SKU</span>
-                        <span>{customization.sku_of_swa_product}</span>
+                        <span>{dataToDisplay.sku_of_swa_product}</span>
                       </div>
                       <div className="ProductInformation">
                         <span>Note</span>
-                        <span>{customization.notes}</span>
+                        <span>{dataToDisplay.notes}</span>
                       </div>
                     </div>
                     <div className="lineCR"></div>
 
                     <div className="crButtonContainer">
-                      {/* <button className="CR_ButtonCommen confirmButtonCR">
-                          confirm
-                        </button>
-                        <button className="CR_ButtonCommen rejectButtonCR">
-                          Rejet
-                        </button> */}
+                      {CustomizationWareHouseData && (
+                        <>
+                          <button className="CR_ButtonCommen confirmButtonCR">
+                            confirm
+                          </button>
+                          <button className="CR_ButtonCommen rejectButtonCR">
+                            Reject
+                          </button>
+                        </>
+                      )}
                       <button className="CR_ButtonCommen editButtonCR">
                         edit <img src={editIcon} alt="" />
                       </button>

@@ -8,8 +8,15 @@ import { userLogin } from "./Api";
 const Login = () => {
   const usertype = localStorage.getItem("Usertype");
   const schema = Joi.object({
-    email: Joi.string().email({ tlds: false }),
-    password: Joi.string().required(),
+    email: Joi.string().email({ tlds: false }).messages({
+      'string.empty': `Email cannot be empty`,
+      'string.email': `Please enter a valid email address`,
+      'any.required': `Email is required`,
+    }),
+    password: Joi.string().required().messages({
+      'string.empty': `Password cannot be empty`,
+      'any.required': `Password is required`,
+    }),
   });
   // validation
   const [validationErrors, setValidationErrors] = useState({});
@@ -33,16 +40,16 @@ const Login = () => {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage,setErrorMessage] = useState([])
   const [userCredentials, setUserCredentials] = useState({
     email: "",
     password: "",
   });
-
   const handleSubmit = (e) => {
     e.preventDefault();
     const isValid = validateForm();
     if (isValid) {
-      userLogin(userCredentials, setData, setIsLoading);
+      userLogin(userCredentials, setData, setIsLoading,setErrorMessage);
     }
   };
   console.log(usertype,"userType")
@@ -109,6 +116,7 @@ const Login = () => {
                     }
                   />
                 </div>
+                {errorMessage && <p style={{marginLeft:"8px"}}>{errorMessage}</p>}
                 {validationErrors.password && (
                   <p className="errorlogins">{validationErrors.password}</p>
                 )}

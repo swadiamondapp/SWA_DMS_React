@@ -30,7 +30,7 @@ const CadAssignment = () => {
     <div className="ParentCad">
       <div
         className="Design_FileUpload"
-        onClick={() => document.getElementById("fileInput").click()}
+        // onClick={() => document.getElementById("fileInput").click()}
       >
         {uploadInstructionsVisible ? (
           <>
@@ -40,22 +40,22 @@ const CadAssignment = () => {
                 Upload your finished file as png and 3.dm file format
               </p>
             </div>
-            <div className="File____uploadbtn">
+            {/* <div className="File____uploadbtn">
               <button>
                 Upload File{" "}
                 <LiaCloudUploadAltSolid style={{ fontSize: "22px" }} />
               </button>
-            </div>
+            </div> */}
           </>
         ) : (
           <div className="De__file">
             <p>File uploaded successfully!</p>
-            <div className="File____uploadbtn">
+            {/* <div className="File____uploadbtn">
               <button>
                 Upload File{" "}
                 <LiaCloudUploadAltSolid style={{ fontSize: "22px" }} />
               </button>
-            </div>
+            </div> */}
           </div>
         )}
 

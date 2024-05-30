@@ -4,7 +4,7 @@ import like from "../../assets/like.png";
 import ring from "../../assets/ring.png";
 // import DesignBtn from "../../ADMIN PANEL/Design Pool/DesignBtn";
 
-const WareHouse = () => {
+const WareHouse = (props) => {
   const [showRadioButtons, setShowRadioButtons] = useState(false);
   const [selectButtonLabel, setSelectButtonLabel] = useState("Select");
   const [showDownloadOptions, setShowDownloadOptions] = useState(false);
@@ -43,7 +43,7 @@ const WareHouse = () => {
   const toggleMoveOptions = () => {
     setShowMoveOptions(!showMoveOptions);
   };
-
+  console.log(props.LastVotedDesign, "wareHouse===>");
   return (
     <div>
       <div className="Parent_DesignView">
@@ -83,28 +83,26 @@ const WareHouse = () => {
           </button>
         </div> */}
         {/* Use the DesignButtons component */}
-      
+
         {/* new design section */}
         {/* new design section */}
         <div className="Parent_NewDesign">
           <h3 className="HeadNewdesign">Newly added</h3>
           <div className="Card_Design_Parent">
-            {card.map((item) => (
+            {props.DesignWareHouse.map((item) => (
               <div className="New_Design_card">
                 <div className="Card_img">
-                  <img src={ring} alt="" />
+                  <img src={item.image} alt="" />
                 </div>
                 <div className="Card_Details">
-                  <h3>ID : {item.product}</h3>
+                  <h3>ID : {item.designcode}</h3>
                   <div className="Card_Details_Inner">
                     <div className="Inner_Left">
-                      <p>{item.name}</p>
-                      <p>{item.date}</p>
+                      <p>{item.user_name}</p>
+                      <p>{item.created_at}</p>
                     </div>
                     <div className="Inner_Right">
-                      <p>
-                        0
-                      </p>
+                      <p>{item.likes_count}</p>
                     </div>
                   </div>
                 </div>
@@ -126,22 +124,20 @@ const WareHouse = () => {
           <div className="Parent_unvoted">
             <h3 className="HeadNewdesign">Last Voted</h3>
             <div className="Card_Design_Parent">
-              {card.map((item) => (
+              {props.LastVotedDesign.map((item) => (
                 <div className="New_Design_card">
                   <div className="Card_img">
-                    <img src={ring} alt="" />
+                    <img src={item.image} alt="" />
                   </div>
                   <div className="Card_Details">
-                    <h3>ID : {item.product}</h3>
+                    <h3>ID : {item.designcode}</h3>
                     <div className="Card_Details_Inner">
                       <div className="Inner_Left">
-                        <p>{item.name}</p>
-                        <p>{item.date}</p>
+                        <p>{item.user_name}</p>
+                        <p>{item.created_at}</p>
                       </div>
                       <div className="Inner_Right">
-                        <p>
-                          0 
-                        </p>
+                        <p>0</p>
                       </div>
                     </div>
                   </div>
