@@ -1,10 +1,13 @@
 import { apiService, checkApiStatus } from "../../Pages/Services/ApiInstants";
 import { setToLocalstorage } from "../../Pages/Utils/Common";
 import {
+    CONFIRM_WAREHOUSE,
   CUSTOMIZATION_LIST_BY_ID_WAREHOUSE,
   DELETE_CUSTOMIZATION,
+  EDIT_CUTOMIZATIONS_WAREHOUSE,
   LIST_LAST_VOTED_DESIGN,
   LIST_WAREHOUSE_DESIGNS,
+  REJECT_WAREHOUSE,
   VOTERS_CUSTOMIZATION_LIST,
 } from "../../Pages/Services/EndPoints";
 
@@ -78,5 +81,105 @@ export const delete_customization_warehouse = async (
     }
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const edit_customizaion_warehouse = async (
+  setIsLoading,
+  formData,
+  displayEditDetailsById,
+  onClose,
+  setSuccessMessage,
+  setSuccessModalOpen
+) => {
+  try {
+    setIsLoading(true);
+    const body = {
+      salesman: formData.sallerName,
+      mobile_number: formData.mobileNumber,
+      outlet: formData.chooseOutlet,
+      productType: formData.productType,
+      previously_made: formData.modelPrevioslyMade,
+      sku:formData.prevMadeSKU,
+      metal_type: formData.metalType,
+      weight: formData.weight,
+      size: formData.size,
+      diamond_weight: formData.diamondWeight,
+      no_of_diamond: formData.numberOfDiamonds,
+      diamond_clarity: formData.diamondClarity,
+      diamond_colour: formData.diamondColor,
+      budget: formData.Budget,
+      sku_of_swa_product: formData.swaProductSKU,
+      notes: formData.notes,
+    };
+    console.log(body, "bodyAssijjmm");
+    const response = await apiService.patch(
+      `${EDIT_CUTOMIZATIONS_WAREHOUSE}/${displayEditDetailsById}/`,
+      body
+    );
+    if (response.data.results.status_code === 200) {
+      onClose();
+      setSuccessMessage("Your form has been successfully updated.");
+      setSuccessModalOpen(true);
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1500);
+    }
+  } catch (error) {
+    console.error("Error moving designs:", error);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+export const reject_customization = async (
+  setIsLoading,
+  dataById,
+  onClose,
+  setSuccessModalOpen,
+  setSuccessMessage
+) => {
+  try {
+    setIsLoading(true);
+    const response = await apiService.patch(`${REJECT_WAREHOUSE}/${dataById}/`);
+    if (response.data.results.status_code === 200) {
+      onClose();
+      setSuccessMessage("Rejected successfully");
+      setSuccessModalOpen(true);
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1500);
+    }
+  } catch (error) {
+    console.error("Error moving designs:", error);
+  } finally {
+    setIsLoading(false);
+    // setSuccessMessage("null")
+  }
+};
+
+export const confirm_customization = async (
+  setIsLoading,
+  dataById,
+  onClose,
+  setSuccessModalOpen,
+  setSuccessMessage
+) => {
+  try {
+    setIsLoading(true);
+
+    const response = await apiService.patch(`${CONFIRM_WAREHOUSE}/${dataById}/`);
+    if (response.data.results.status_code === 200) {
+      onClose();
+      setSuccessMessage("Confirmed successfully")
+      setSuccessModalOpen(true);
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1500);
+    }
+  } catch (error) {
+    console.error("Error moving designs:", error);
+  } finally {
+    setIsLoading(false);
   }
 };

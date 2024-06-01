@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useRef } from "react";
 import "../../Componets/CustomiseRequiestTable/CustomiseRequiestTable.css";
 import PrintIcon from "../../assets/printIcon.png";
 import EyeIcon from "../../assets/eyeIcon.png";
@@ -66,10 +66,13 @@ const CustomizationTable = (props) => {
     []
   );
   const [CustomizationListData, setCustomizationListData] = useState([]);
+  const dropdownRef = useRef(null);
+
+
   useEffect(() => {
     customizaztion_list_wareHouse(setIsLoading, setCustomizationListData);
   }, []);
-  console.log(props.CustomizationListData, "CustomizationListData");
+  console.log(CustomizationListData, "CustomizationListData");
   const handleEyeClick = (wareHouseId) => {
     setOpenCRModal(true);
     setWareHouseUserId(wareHouseId);
@@ -86,6 +89,22 @@ const CustomizationTable = (props) => {
       setCustomizationListData
     );
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        // Click occurred outside the dropdown, so close it
+        setShowEditDelete(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <div className="Parant_CustomTable">
       <div className="TableContainer">
@@ -140,7 +159,7 @@ const CustomizationTable = (props) => {
                 >
                   <img src={ThreeDot} />
                   {showEditDelete === index && (
-                    <div className="Edit_delete_btn_user_warehouse" styl={{right:"1"}}>
+                    <div ref={dropdownRef}  className="Edit_delete_btn_user_warehouse">
                       {/* <p
                         className="Edit_btn_user"
                         onClick={() => handleEditCustomization(item.id)}

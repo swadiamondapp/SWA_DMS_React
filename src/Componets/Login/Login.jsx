@@ -100,7 +100,7 @@ const Login = () => {
                   />
                 </div>
                 {validationErrors.email && (
-                  <p className="errorlogins">{validationErrors.email}</p>
+                  <p className="errorlogins" style={{color:'red',marginLeft:"8px"}}>{validationErrors.email}</p>
                 )}
                 <div className="Login_Inp">
                   <label htmlFor="Password">Password</label>
@@ -116,9 +116,9 @@ const Login = () => {
                     }
                   />
                 </div>
-                {errorMessage && <p style={{marginLeft:"8px"}}>{errorMessage}</p>}
+                {errorMessage && <p style={{marginLeft:"8px",color:'red'}}>{errorMessage}</p>}
                 {validationErrors.password && (
-                  <p className="errorlogins">{validationErrors.password}</p>
+                  <p className="errorlogins" style={{color:'red'}}>{validationErrors.password}</p>
                 )}
                 <div className="Forgot_password">
                   <p>Forgot password?</p>

@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import InvertedTick from "../../assets/sucesLarge.png";
-import "./SuccessModal.css"
+import "./SuccessModal.css";
 
 const successM = {
   position: "absolute",
@@ -18,7 +18,12 @@ const successM = {
   p: 4,
 };
 
-const SuccessModal = ({successModalOpen,handleClose,handleOpen}) => {
+const SuccessModal = ({
+  successModalOpen,
+  handleClose,
+  handleOpen,
+  successMessage
+}) => {
   const [isMobileView, setIsMobileView] = useState(
     window.innerWidth >= 300 && window.innerWidth <= 575
   );
@@ -46,12 +51,23 @@ const SuccessModal = ({successModalOpen,handleClose,handleOpen}) => {
         >
           <Typography className="successModalContainer">
             <div className="imageContianer">
-              <img className='tick' src={InvertedTick} />
+              <img className="tick" src={InvertedTick} />
             </div>
             <div style={{ textAlign: "center", margin: "12px 0px" }}>
-              <span className="titlesuccesModal">
+              {successMessage ? (
+                <>
+                
+                  <span className="titlesuccesModal">
+                    {successMessage}
+                  </span>
+                </>
+              ) : (
+                <>
+                 <span className="titlesuccesModal">
               Mail sent successfully!
               </span>
+                </>
+              )}
             </div>
           </Typography>
         </Box>

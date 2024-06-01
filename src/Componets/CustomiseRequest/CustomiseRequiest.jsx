@@ -11,7 +11,12 @@ import RingB from "../../assets/ringb.png";
 import RingC from "../../assets/ringc.png";
 import editIcon from "../../assets/editIcon.svg";
 import { customization_details } from "../VOTORS PANEL/Api";
-
+import CreateCustomisation from "../CreateCustomisation/CreateCustomisation";
+import {
+  confirm_customization,
+  reject_customization,
+} from "../../Pages/WareHousePageView/Api";
+import SuccessModal from "../SuccessModal/SuccessModal";
 
 const CustomiseRequest = ({
   open,
@@ -28,6 +33,12 @@ const CustomiseRequest = ({
   const [AssinedButton, setAssignedButton] = useState("Assign");
   const [tagText, setTagText] = useState("");
   const [customization, setCustomization] = useState([]);
+  const [successModalOpen, setSuccessModalOpen] = useState(false);
+  const [successMessage, setSuccessMessage] = useState(
+    "Mail Send Success Fully"
+  );
+  const [isModalOpenCreateCutomize, setIsCreateCustomizeModalOpen] =
+    useState(false);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -59,7 +70,13 @@ const CustomiseRequest = ({
   console.log(wareHouseuserId, "wareHouseIDD");
   console.log(CustomizationWareHouseData, "CustomizationWareHouseData");
 
+  const handleEditWareHouseDetails = () => {
+    onClose();
+    setIsCreateCustomizeModalOpen(true);
+  };
+
   const dataToDisplay = CustomizationWareHouseData || customization;
+  const dataById = wareHouseuserId || CustomizationWareHouseData;
 
   const style = {
     position: "absolute",
@@ -75,6 +92,25 @@ const CustomiseRequest = ({
     overflowY: "scroll",
     borderRadius: 1,
     outline: "none",
+  };
+
+  const handleReject = () => {
+    reject_customization(
+      setIsLoading,
+      dataById,
+      onClose,
+      setSuccessModalOpen,
+      setSuccessMessage
+    );
+  };
+  const handleConfirm = () => {
+    confirm_customization(
+      setIsLoading,
+      dataById,
+      onClose,
+      setSuccessModalOpen,
+      setSuccessMessage
+    );
   };
 
   return (
@@ -216,15 +252,38 @@ const CustomiseRequest = ({
                     <div className="crButtonContainer">
                       {CustomizationWareHouseData && (
                         <>
-                          <button className="CR_ButtonCommen confirmButtonCR">
+                          <button
+                            onClick={() => handleConfirm()}
+                            className="CR_ButtonCommen confirmButtonCR"
+                            style={{
+                              display:
+                                CustomizationWareHouseData.status ===
+                                "Confirmed"
+                                  ? "none"
+                                  : "block",
+                            }}
+                          >
                             confirm
                           </button>
-                          <button className="CR_ButtonCommen rejectButtonCR">
+                          <button
+                            onClick={() => handleReject()}
+                            className="CR_ButtonCommen rejectButtonCR"
+                            style={{
+                              display:
+                                CustomizationWareHouseData.status ===
+                                "Rejected"
+                                  ? "none"
+                                  : "block",
+                            }}
+                          >
                             Reject
                           </button>
                         </>
                       )}
-                      <button className="CR_ButtonCommen editButtonCR">
+                      <button
+                        onClick={() => handleEditWareHouseDetails()}
+                        className="CR_ButtonCommen editButtonCR"
+                      >
                         edit <img src={editIcon} alt="" />
                       </button>
                     </div>
@@ -235,6 +294,19 @@ const CustomiseRequest = ({
           </Modal>
         </div>
       </div>
+      <CreateCustomisation
+        open={isModalOpenCreateCutomize}
+        onClose={() => setIsCreateCustomizeModalOpen(false)}
+        dataToDisplaytomodal={dataToDisplay}
+        userId={userId}
+        wareHouseuserId={wareHouseuserId}
+      />
+      <SuccessModal
+        successModalOpen={successModalOpen}
+        handleOpen={handleOpen}
+        handleClose={handleClose}
+        successMessage={successMessage}
+      />
     </div>
   );
 };

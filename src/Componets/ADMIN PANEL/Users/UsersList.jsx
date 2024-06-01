@@ -73,7 +73,7 @@ const UsersList = () => {
   const [deleteuser, setDeleteuser] = useState([]);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
   const [loadingStates, setLoadingStates] = useState({});
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState({});
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -81,7 +81,7 @@ const UsersList = () => {
     selectedRole: "",
   });
 
-  console.log("imageUrl", userList);
+  console.log("imageUrl===>", userList);
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -321,8 +321,11 @@ const UsersList = () => {
   const handleClose = () => {
     setSuccessModalOpen(false);
   };
-  const handleTogglePassword = () => {
-    setShowPassword((prev) => !prev); // Toggle the state
+  const handleTogglePassword = (userId) => {
+    setShowPassword((prevState) => ({
+      ...prevState,
+      [userId]: !prevState[userId],
+    }));
   };
 
   // update_user(setIsLoading, data, setUserList ,"70");
@@ -548,8 +551,7 @@ const UsersList = () => {
                   <td>
                     <div className="view_password">
                       <span className="passwordEncy">
-
-                    {showPassword ? item.password :  "******"}
+                        {showPassword[item.id] ? item.Password : "******"}
                       </span>
                       {showPassword ? (
                         <IoEye
@@ -558,12 +560,12 @@ const UsersList = () => {
                             cursor: "pointer",
                             opacity: showPassword ? 0.5 : 1,
                           }}
-                          onClick={handleTogglePassword}
+                          onClick={() => handleTogglePassword(item.id)}
                         />
                       ) : (
                         <IoEye
                           style={{ color: "#455173", cursor: "pointer" }}
-                          onClick={handleTogglePassword}
+                          onClick={() => handleTogglePassword(item.id)}
                         />
                       )}
                     </div>

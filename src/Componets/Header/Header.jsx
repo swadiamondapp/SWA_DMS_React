@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect,useRef } from "react";
 import "./Header.css";
 import searchimg from "../../assets/search.png";
 import profileimg from "../../assets/profile.png";
@@ -16,7 +16,7 @@ const Header = () => {
   console.log("header===>FolderName", folderName);
   const [isLogoutDropdown, setIsLogoutDropdown] = useState(false);
   const navigate = useNavigate();
-
+  
   const handleLogout = () => {
     setIsLogoutDropdown(!isLogoutDropdown);
   };
@@ -30,7 +30,23 @@ const Header = () => {
   const userEmail = localStorage.getItem("email");
   const userPhoneNumber = localStorage.getItem("phone_number");
   const userImage = localStorage.getItem("image");
+  const dropdownRef = useRef(null);
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        // Click occurred outside the dropdown, so close it
+        setIsLogoutDropdown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+  
   return (
     <div>
       <div className="Parent_Section">
@@ -90,6 +106,7 @@ const Header = () => {
               {isLogoutDropdown && (
                 <div
                   className="log_out__btns"
+                  ref={dropdownRef} 
                   onClick={() => {
                     removeLocalstorage(navigate);
                   }}

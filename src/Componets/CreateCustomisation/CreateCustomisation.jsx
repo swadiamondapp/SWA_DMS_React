@@ -9,6 +9,10 @@ import avatar from "../../assets/avataprofile.png";
 import { message, Upload, Select } from "antd";
 import { BsCloudUpload } from "react-icons/bs";
 import Joi from "joi";
+import { edit_customizaion_warehouse } from "../../Pages/WareHousePageView/Api";
+import CircularProgress from "@mui/material/CircularProgress";
+import SuccessModal from "../SuccessModal/SuccessModal";
+import { choose_outlet_drop_down, metal_type_drop_down, product_type_drop_down } from "../ADMIN PANEL/Api_dropDown";
 
 const style = {
   position: "absolute",
@@ -43,11 +47,22 @@ const props = {
     }
   },
 };
-const CreateCustomisation = ({ open, onClose }) => {
+const CreateCustomisation = ({
+  open,
+  onClose,
+  dataToDisplaytomodal,
+  userId,
+  wareHouseuserId,
+}) => {
   // const [open, setOpen] = useState(false);
-
   const [tagText, setTagText] = useState("");
   const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [successModalOpen,setSuccessModalOpen] = useState(false)
+  const [MetalTypeDropDown,setMetalTypeDropDown]= useState([])
+  const [productTypeDropDown,setProductTypeDropDown] = useState([]) 
+  const [outLetDropDown, setOutLetDropDown] = useState([]) 
+  const [successMessage,setSuccessMessage] =useState("Mail Send Success Fully")
   const [formData, setFormData] = useState({
     sallerName: "",
     mobileNumber: "",
@@ -66,6 +81,39 @@ const CreateCustomisation = ({ open, onClose }) => {
     swaProductSKU: "",
     notes: "",
   });
+
+  useEffect(()=> {
+    metal_type_drop_down(setMetalTypeDropDown)
+    product_type_drop_down(setProductTypeDropDown)
+    choose_outlet_drop_down(setOutLetDropDown)
+  },[])
+  console.log(MetalTypeDropDown,"MetalTypeDropDown")
+
+  useEffect(() => {
+
+    if (dataToDisplaytomodal) {
+      setFormData({
+        sallerName: dataToDisplaytomodal.salesman || "",
+        mobileNumber: dataToDisplaytomodal.mobile_number || "",
+        chooseOutlet: dataToDisplaytomodal.outlet || "",
+        productType: dataToDisplaytomodal.product_type || "",
+        modelPrevioslyMade: dataToDisplaytomodal.previously_made || "",
+        prevMadeSKU: dataToDisplaytomodal.outlet || "",
+        metalType: dataToDisplaytomodal.metal_type || "",
+        weight: dataToDisplaytomodal.weight || "",
+        size: dataToDisplaytomodal.size || "",
+        diamondWeight: dataToDisplaytomodal.diamond_weight || "",
+        numberOfDiamonds: dataToDisplaytomodal.no_of_diamond || "",
+        diamondClarity: dataToDisplaytomodal.diamond_clarity || "",
+        diamondColor: dataToDisplaytomodal.diamond_colour || "",
+        Budget: dataToDisplaytomodal.budget || "",
+        swaProductSKU: dataToDisplaytomodal.sku_of_swa_product || "",
+        notes: dataToDisplaytomodal.notes || "",
+      });
+    }
+  }, [dataToDisplaytomodal]);
+
+  // console.log(dataToDisplaytomodal, "editCus");
 
   const schema = Joi.object({
     sallerName: Joi.string().required().messages({
@@ -102,7 +150,7 @@ const CreateCustomisation = ({ open, onClose }) => {
     diamondWeight: Joi.string().required().messages({
       "string.empty": `cannot be an empty feild`,
     }),
-    numberOfDiamonds: Joi.string().required().messages({
+    numberOfDiamonds: Joi.required().messages({
       "string.empty": `cannot be an empty feild`,
     }),
     diamondClarity: Joi.string().required().messages({
@@ -169,6 +217,15 @@ const CreateCustomisation = ({ open, onClose }) => {
   const filterOption = (input, option) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
 
+  const displayEditDetailsById = userId || wareHouseuserId;
+
+  // const handleUpdateCustomization = (id) => {
+  //   handleSubmitButton();
+  //   edit_customizaion_warehouse(setIsLoading, formData,id);
+  // };
+  const handleUpdateCustomization = () => {
+    edit_customizaion_warehouse(setIsLoading,formData,displayEditDetailsById,onClose,setSuccessMessage,setSuccessModalOpen)
+  };
   return (
     <div>
       <div className="">
@@ -259,24 +316,8 @@ const CreateCustomisation = ({ open, onClose }) => {
                           onSearch={onSearch}
                           filterOption={filterOption}
                           style={{ width: "100%" }}
-                          options={[
-                            {
-                              value: "jack",
-                              label: "Designer",
-                            },
-                            {
-                              value: "",
-                              label: "empty",
-                            },
-                            {
-                              value: "lucy",
-                              label: "Lucy",
-                            },
-                            {
-                              value: "tom",
-                              label: "Tom",
-                            },
-                          ]}
+                          options={outLetDropDown}
+                          value={formData.chooseOutlet}
                         />
                         {errors.chooseOutlet && (
                           <span className="error_select">
@@ -304,24 +345,8 @@ const CreateCustomisation = ({ open, onClose }) => {
                           onSearch={onSearch}
                           filterOption={filterOption}
                           style={{ width: "100%" }}
-                          options={[
-                            {
-                              value: "",
-                              label: "empty",
-                            },
-                            {
-                              value: "jack",
-                              label: "Designer",
-                            },
-                            {
-                              value: "lucy",
-                              label: "Lucy",
-                            },
-                            {
-                              value: "tom",
-                              label: "Tom",
-                            },
-                          ]}
+                          options={productTypeDropDown}
+                          value={formData.productType}
                         />
                         <div style={{ marginTop: "2px" }}>
                           {errors.productType && (
@@ -353,18 +378,15 @@ const CreateCustomisation = ({ open, onClose }) => {
                           style={{ width: "100%" }}
                           options={[
                             {
-                              value: "jack",
-                              label: "Designer",
+                              value: "yes",
+                              label: "Yes",
                             },
                             {
-                              value: "lucy",
-                              label: "Lucy",
-                            },
-                            {
-                              value: "tom",
-                              label: "Tom",
+                              value: "no",
+                              label: "No",
                             },
                           ]}
+                          value={formData.modelPrevioslyMade}
                         />
                         {errors.modelPrevioslyMade && (
                           <span className="error_select">
@@ -419,20 +441,8 @@ const CreateCustomisation = ({ open, onClose }) => {
                           onSearch={onSearch}
                           filterOption={filterOption}
                           style={{ width: "100%" }}
-                          options={[
-                            {
-                              value: "jack",
-                              label: "Designer",
-                            },
-                            {
-                              value: "lucy",
-                              label: "Lucy",
-                            },
-                            {
-                              value: "tom",
-                              label: "Tom",
-                            },
-                          ]}
+                          options={MetalTypeDropDown}
+                          value={formData.metalType}
                         />
                         {errors.metalType && (
                           <span className="error_select">
@@ -460,7 +470,7 @@ const CreateCustomisation = ({ open, onClose }) => {
                           Size
                         </label>
                         <input
-                          type="number"
+                          type="text"
                           className="input_feild"
                           name="size"
                           value={formData.size}
@@ -495,6 +505,7 @@ const CreateCustomisation = ({ open, onClose }) => {
                           type="number"
                           className="input_feild"
                           name="numberOfDiamonds"
+                          value={formData.numberOfDiamonds}
                           onChange={handleInput}
                         />
                         {errors.numberOfDiamonds && (
@@ -534,6 +545,7 @@ const CreateCustomisation = ({ open, onClose }) => {
                               label: "Tom",
                             },
                           ]}
+                          value={formData.diamondClarity}
                         />
                         {errors.diamondClarity && (
                           <span className="error_select">
@@ -572,6 +584,7 @@ const CreateCustomisation = ({ open, onClose }) => {
                               label: "Red",
                             },
                           ]}
+                          value={formData.diamondColor}
                         />
                         {errors.diamondColor && (
                           <span className="error_select">
@@ -628,9 +641,25 @@ const CreateCustomisation = ({ open, onClose }) => {
                           <span className="error_input">{errors.notes}</span>
                         )}
                       </div>
-                      <button type="submit" className="submitButton">
-                        SUBMIT
-                      </button>
+                      {dataToDisplaytomodal ? (
+                        <button
+                          onClick={() => handleUpdateCustomization()}
+                          className="submitButton"
+                          type="submit"
+                        >
+                          {isLoading ? (
+                            <CircularProgress size={15} sx={{ color: "#fff" }} />
+                          ) : (
+                            "Update"
+                          )}
+                        </button>
+                      ) : (
+                        <>
+                          <button type="submit" className="submitButton">
+                            SUBMIT
+                          </button>
+                        </>
+                      )}
                     </div>
                   </form>
                 </div>
@@ -639,6 +668,12 @@ const CreateCustomisation = ({ open, onClose }) => {
           </Modal>
         </div>
       </div>
+      <SuccessModal
+      successModalOpen={successModalOpen}
+      handleOpen={handleOpen}
+      handleClose={handleClose}
+      successMessage={successMessage}
+      />
     </div>
   );
 };

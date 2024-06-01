@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import DesignBtn from "../../ADMIN PANEL/Design Pool/DesignBtn";
 import { IoEye } from "react-icons/io5";
 import { BsThreeDotsVertical } from "react-icons/bs";
@@ -15,6 +15,7 @@ const VotorsCustomization = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [userId,setUserId] = useState([])
   const [customization,setCustomization] = useState([])
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     voters_customization_list(setIsLoading, setData);
@@ -32,7 +33,26 @@ const VotorsCustomization = () => {
     // customization_details(setIsLoading, setCustomization, userId);
     
   }
+
+
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        // Click occurred outside the dropdown, so close it
+        setShowEditDelete(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   console.log(Data, "votersCuz");
+
   return (
     <div className="ParentVotors">
       <div className="votors_btns">
@@ -98,7 +118,7 @@ const VotorsCustomization = () => {
                       />
                     </div>
                     {showEditDelete === index && (
-                      <div className="Edit_delete_btn_user">
+                      <div ref={dropdownRef}  className="Edit_delete_btn_user">
                         <p
                           className="Edit_btn_user"
                           onClick={() => handleEditCustomization(item.id)}
