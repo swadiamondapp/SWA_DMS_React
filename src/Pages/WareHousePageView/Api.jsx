@@ -1,7 +1,8 @@
 import { apiService, checkApiStatus } from "../../Pages/Services/ApiInstants";
 import { setToLocalstorage } from "../../Pages/Utils/Common";
 import {
-    CONFIRM_WAREHOUSE,
+  CONFIRM_WAREHOUSE,
+  CREATE_CUSTOMIZATION,
   CUSTOMIZATION_LIST_BY_ID_WAREHOUSE,
   DELETE_CUSTOMIZATION,
   EDIT_CUTOMIZATIONS_WAREHOUSE,
@@ -100,7 +101,7 @@ export const edit_customizaion_warehouse = async (
       outlet: formData.chooseOutlet,
       productType: formData.productType,
       previously_made: formData.modelPrevioslyMade,
-      sku:formData.prevMadeSKU,
+      sku: formData.prevMadeSKU,
       metal_type: formData.metalType,
       weight: formData.weight,
       size: formData.size,
@@ -168,10 +169,12 @@ export const confirm_customization = async (
   try {
     setIsLoading(true);
 
-    const response = await apiService.patch(`${CONFIRM_WAREHOUSE}/${dataById}/`);
+    const response = await apiService.patch(
+      `${CONFIRM_WAREHOUSE}/${dataById}/`
+    );
     if (response.data.results.status_code === 200) {
       onClose();
-      setSuccessMessage("Confirmed successfully")
+      setSuccessMessage("Confirmed successfully");
       setSuccessModalOpen(true);
       setTimeout(() => {
         setSuccessModalOpen(false);
@@ -181,5 +184,60 @@ export const confirm_customization = async (
     console.error("Error moving designs:", error);
   } finally {
     setIsLoading(false);
+  }
+};
+
+export const create_customizaion_warehouse = async (
+  setIsLoading,
+  formData,
+  displayEditDetailsById,
+  onClose,
+  setSuccessMessage,
+  setSuccessModalOpen,
+  setErrorMessage
+) => {
+  try {
+    setIsLoading(true);
+    const body = {
+      salesman: formData.sallerName,
+      mobile_number: formData.mobileNumber,
+      outlet: formData.chooseOutlet,
+      product_type: formData.productType,
+      previously_made: formData.modelPrevioslyMade,
+      sku: formData.prevMadeSKU,
+      metal_type: formData.metalType,
+      weight: formData.weight,
+      size: formData.size,
+      diamond_weight: formData.diamondWeight,
+      no_of_diamond: formData.numberOfDiamonds,
+      diamond_clarity: formData.diamondClarity,
+      diamond_colour: formData.diamondColor,
+      budget: formData.Budget,
+      sku_of_swa_product: formData.swaProductSKU,
+      notes: formData.notes,
+    };
+    console.log(body, "bodyCreation");
+    const response = await apiService.post(CREATE_CUSTOMIZATION, body);
+    if (response.data.results.status_code === 200) {
+      onClose();
+      setSuccessMessage("Customization Created Successfully");
+      setSuccessModalOpen(true);
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1500);
+      setErrorMessage(null)
+    }
+  } catch (error) {
+    console.error("Error moving designs:", error);
+    const errorReason =
+    error?.response?.data?.mobile_number;
+    const errorReasonString = errorReason
+    ? Object.values(errorReason).flat().join(", ")
+    : "";
+    console.log(errorReasonString, "errrstring");
+    setErrorMessage(errorReason)
+  } finally {
+    setIsLoading(false);
+
   }
 };

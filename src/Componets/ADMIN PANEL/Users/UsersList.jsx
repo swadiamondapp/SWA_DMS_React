@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import "./Userlist.css";
 import { IoEye } from "react-icons/io5";
 import { BsThreeDotsVertical } from "react-icons/bs";
@@ -76,12 +76,28 @@ const UsersList = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [loadingStates, setLoadingStates] = useState({});
   const [showPassword, setShowPassword] = useState({});
+  const dropdownRef = useRef(null);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phoneNumber: "",
     selectedRole: "",
   });
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        // Click occurred outside the dropdown, so close it
+        setShowEditDelete(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   console.log("imageUrl===>", userList);
 
@@ -624,7 +640,7 @@ const UsersList = () => {
                       }
                     />
                     {showEditDelete === index && (
-                      <div className="Edit_delete_btn_user">
+                      <div ref={dropdownRef}  className="Edit_delete_btn_user">
                         <p
                           className="Edit_btn_user"
                           onClick={() => hendleEdit(item)}

@@ -9,10 +9,19 @@ import avatar from "../../assets/avataprofile.png";
 import { message, Upload, Select } from "antd";
 import { BsCloudUpload } from "react-icons/bs";
 import Joi from "joi";
-import { edit_customizaion_warehouse } from "../../Pages/WareHousePageView/Api";
+import {
+  create_customizaion_warehouse,
+  edit_customizaion_warehouse,
+} from "../../Pages/WareHousePageView/Api";
 import CircularProgress from "@mui/material/CircularProgress";
 import SuccessModal from "../SuccessModal/SuccessModal";
-import { choose_outlet_drop_down, metal_type_drop_down, product_type_drop_down } from "../ADMIN PANEL/Api_dropDown";
+import {
+  choose_outlet_drop_down,
+  diamond_clarity_choice,
+  diamond_colours,
+  metal_type_drop_down,
+  product_type_drop_down,
+} from "../ADMIN PANEL/Api_dropDown";
 
 const style = {
   position: "absolute",
@@ -58,11 +67,16 @@ const CreateCustomisation = ({
   const [tagText, setTagText] = useState("");
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const [successModalOpen,setSuccessModalOpen] = useState(false)
-  const [MetalTypeDropDown,setMetalTypeDropDown]= useState([])
-  const [productTypeDropDown,setProductTypeDropDown] = useState([]) 
-  const [outLetDropDown, setOutLetDropDown] = useState([]) 
-  const [successMessage,setSuccessMessage] =useState("Mail Send Success Fully")
+  const [successModalOpen, setSuccessModalOpen] = useState(false);
+  const [MetalTypeDropDown, setMetalTypeDropDown] = useState([]);
+  const [productTypeDropDown, setProductTypeDropDown] = useState([]);
+  const [SelectDiamondColours, setSelectDiamondColor] = useState([]);
+  const [SelectDiamondClarity, setSelectDiamondClarity] = useState([]);
+  const [outLetDropDown, setOutLetDropDown] = useState([]);
+  const [ErrorMessage,setErrorMessage] = useState([])
+  const [successMessage, setSuccessMessage] = useState(
+    "Mail Send Success Fully"
+  );
   const [formData, setFormData] = useState({
     sallerName: "",
     mobileNumber: "",
@@ -82,15 +96,16 @@ const CreateCustomisation = ({
     notes: "",
   });
 
-  useEffect(()=> {
-    metal_type_drop_down(setMetalTypeDropDown)
-    product_type_drop_down(setProductTypeDropDown)
-    choose_outlet_drop_down(setOutLetDropDown)
-  },[])
-  console.log(MetalTypeDropDown,"MetalTypeDropDown")
+  useEffect(() => {
+    metal_type_drop_down(setMetalTypeDropDown);
+    product_type_drop_down(setProductTypeDropDown);
+    choose_outlet_drop_down(setOutLetDropDown);
+    diamond_colours(setSelectDiamondColor);
+    diamond_clarity_choice(setSelectDiamondClarity);
+  }, []);
+  console.log(MetalTypeDropDown, "MetalTypeDropDown");
 
   useEffect(() => {
-
     if (dataToDisplaytomodal) {
       setFormData({
         sallerName: dataToDisplaytomodal.salesman || "",
@@ -135,7 +150,7 @@ const CreateCustomisation = ({
     modelPrevioslyMade: Joi.string().required().messages({
       "string.empty": `cannot be an empty feild`,
     }),
-    prevMadeSKU: Joi.string().required().messages({
+    prevMadeSKU: Joi.string().messages({
       "string.empty": `cannot be an empty feild`,
     }),
     metalType: Joi.string().required().messages({
@@ -224,8 +239,29 @@ const CreateCustomisation = ({
   //   edit_customizaion_warehouse(setIsLoading, formData,id);
   // };
   const handleUpdateCustomization = () => {
-    edit_customizaion_warehouse(setIsLoading,formData,displayEditDetailsById,onClose,setSuccessMessage,setSuccessModalOpen)
+    edit_customizaion_warehouse(
+      setIsLoading,
+      formData,
+      displayEditDetailsById,
+      onClose,
+      setSuccessMessage,
+      setSuccessModalOpen,
+
+    );
   };
+console.log(ErrorMessage,"asdfkd")
+  const handleCreateSubmitCustomization = () => {
+    create_customizaion_warehouse(
+      setIsLoading,
+      formData,
+      displayEditDetailsById,
+      onClose,
+      setSuccessMessage,
+      setSuccessModalOpen,
+      setErrorMessage
+    );
+  };
+
   return (
     <div>
       <div className="">
@@ -531,20 +567,7 @@ const CreateCustomisation = ({
                           onSearch={onSearch}
                           filterOption={filterOption}
                           style={{ width: "100%" }}
-                          options={[
-                            {
-                              value: "jack",
-                              label: "Designer",
-                            },
-                            {
-                              value: "lucy",
-                              label: "Lucy",
-                            },
-                            {
-                              value: "tom",
-                              label: "Tom",
-                            },
-                          ]}
+                          options={SelectDiamondClarity}
                           value={formData.diamondClarity}
                         />
                         {errors.diamondClarity && (
@@ -570,20 +593,7 @@ const CreateCustomisation = ({
                           onSearch={onSearch}
                           filterOption={filterOption}
                           style={{ width: "100%" }}
-                          options={[
-                            {
-                              value: "Pink",
-                              label: "Pink",
-                            },
-                            {
-                              value: "Blue",
-                              label: "Blue",
-                            },
-                            {
-                              value: "red",
-                              label: "Red",
-                            },
-                          ]}
+                          options={SelectDiamondColours}
                           value={formData.diamondColor}
                         />
                         {errors.diamondColor && (
@@ -640,6 +650,11 @@ const CreateCustomisation = ({
                         {errors.notes && (
                           <span className="error_input">{errors.notes}</span>
                         )}
+                           {ErrorMessage?(
+                      <span className="error_Custom">
+                        {ErrorMessage}
+                      </span>
+                    ):null}
                       </div>
                       {dataToDisplaytomodal ? (
                         <button
@@ -648,19 +663,28 @@ const CreateCustomisation = ({
                           type="submit"
                         >
                           {isLoading ? (
-                            <CircularProgress size={15} sx={{ color: "#fff" }} />
+                            <CircularProgress
+                              size={15}
+                              sx={{ color: "#fff" }}
+                            />
                           ) : (
                             "Update"
                           )}
                         </button>
                       ) : (
                         <>
-                          <button type="submit" className="submitButton">
+                          <button
+                            onClick={() => handleCreateSubmitCustomization()}
+                            type="submit"
+                            className="submitButton"
+                          >
                             SUBMIT
                           </button>
+                     
                         </>
                       )}
                     </div>
+                 
                   </form>
                 </div>
               </Typography>
@@ -669,10 +693,10 @@ const CreateCustomisation = ({
         </div>
       </div>
       <SuccessModal
-      successModalOpen={successModalOpen}
-      handleOpen={handleOpen}
-      handleClose={handleClose}
-      successMessage={successMessage}
+        successModalOpen={successModalOpen}
+        handleOpen={handleOpen}
+        handleClose={handleClose}
+        successMessage={successMessage}
       />
     </div>
   );

@@ -66,7 +66,7 @@ const CustomizationTable = (props) => {
     []
   );
   const [CustomizationListData, setCustomizationListData] = useState([]);
-  const dropdownRef = useRef(null);
+  const dropdownRefs = useRef([]);
 
 
   useEffect(() => {
@@ -92,9 +92,16 @@ const CustomizationTable = (props) => {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      if (
+        dropdownRefs.current.every(
+          (ref) => ref && !ref.contains(event.target)
+        )
+      ) {
         // Click occurred outside the dropdown, so close it
         setShowEditDelete(null);
+      } else {
+        // Click occurred inside the dropdown, track it
+        clickedInsideRef.current = true;
       }
     };
 
@@ -159,7 +166,7 @@ const CustomizationTable = (props) => {
                 >
                   <img src={ThreeDot} />
                   {showEditDelete === index && (
-                    <div ref={dropdownRef}  className="Edit_delete_btn_user_warehouse">
+                    <div ref={(el) => (dropdownRefs.current[index] = el)}  className="Edit_delete_btn_user_warehouse">
                       {/* <p
                         className="Edit_btn_user"
                         onClick={() => handleEditCustomization(item.id)}
