@@ -72,6 +72,8 @@ const UsersList = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [deleteuser, setDeleteuser] = useState([]);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
+  const [ErrorMessages, setErrorMessages] = useState([]);
+  const [successMessage, setSuccessMessage] = useState("");
   const [loadingStates, setLoadingStates] = useState({});
   const [showPassword, setShowPassword] = useState({});
   const [formData, setFormData] = useState({
@@ -119,6 +121,7 @@ const UsersList = () => {
   //     fileReader.readAsDataURL(file); // Convert file to base64
   //   }
   // };
+  console.log(ErrorMessages, "errrormesfg");
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -162,18 +165,22 @@ const UsersList = () => {
       if (userIdToEdit) {
         update_user(setIsLoading, data, setUserList, userIdToEdit);
       } else {
-        await user_create(setIsLoading, data, setUserList);
+        await user_create(
+          setIsLoading,
+          data,
+          setUserList,
+          setIsModalOpen,
+          setSuccessModalOpen,
+          setSuccessMessage,
+          setErrorMessages,
+          setFormData
+        );
       }
 
-      setIsModalOpen(false);
+      // setIsModalOpen(false);
 
       // Reset form data after successful submission
-      setFormData({
-        name: "",
-        email: "",
-        phoneNumber: "",
-        selectedRole: "",
-      });
+   
 
       // Form is valid, proceed with submission
       console.log("Form submitted:", formData);
@@ -228,6 +235,7 @@ const UsersList = () => {
 
   const handleCancel = () => {
     setIsModalOpen(false);
+    setErrorMessages(null)
   };
   // create modal
   // select box
@@ -340,7 +348,7 @@ const UsersList = () => {
         <div className="create_modal_parent">
           <Modal
             open={isModalOpen}
-            onOk={handleOk}
+            // onOk={handleOk}
             onCancel={handleCancel}
             centered
             width={380}
@@ -451,9 +459,15 @@ const UsersList = () => {
                       value={formData.phoneNumber}
                       onChange={handleInput}
                     />
+                    {ErrorMessages?.reason?.phone_number && (
+                      <span className="error">
+                        {ErrorMessages?.reason?.phone_number}
+                      </span>
+                    )}
                     {errors.phoneNumber && (
                       <span className="error">{errors.phoneNumber}</span>
                     )}
+                    
                   </div>
                   <div className="create_form_field">
                     <label htmlFor="">Email</label>
@@ -464,6 +478,9 @@ const UsersList = () => {
                       value={formData.email}
                       onChange={handleInput}
                     />
+                     {ErrorMessages?.reason?.phone_number && (
+                        <span className="error">{ErrorMessages?.reason?.email}</span>
+                      )}
                     {errors.email && (
                       <span className="error">{errors.email}</span>
                     )}
@@ -632,6 +649,7 @@ const UsersList = () => {
           successModalOpen={successModalOpen}
           handleOpen={handleOpen}
           handleClose={handleClose}
+          successMessage={successMessage}
         />
       </div>
     </div>
