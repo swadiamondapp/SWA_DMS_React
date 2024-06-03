@@ -22,7 +22,16 @@ export const list_all_users = async (setIsLoading, setData) => {
   }
 };
 
-export const user_create = async (setIsLoading, formData, setUserList) => {
+export const user_create = async (
+  setIsLoading,
+  formData,
+  setUserList,
+  setIsModalOpen,
+  setSuccessModalOpen,
+  setSuccessMessage,
+  setErrorMessages,
+  setFormData
+) => {
   try {
     const response = await apiService.post(USER_CREATE, formData, {
       headers: {
@@ -34,14 +43,38 @@ export const user_create = async (setIsLoading, formData, setUserList) => {
       list_all_users(setIsLoading, setUserList);
     }
     if (checkApiStatus(response)) {
+      setFormData({
+        name: "",
+        email: "",
+        phoneNumber: "",
+        selectedRole: "",
+      });
+      setIsModalOpen(false);
+      setSuccessMessage("User Created successfully");
       //   setData(response.data.results.data);
+      setSuccessModalOpen(true);
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1600);
       message.success("User created successfully!");
     } else {
-      // Handle failure based on your API structure
       message.error("Failed to create user. Please try again.");
     }
   } catch (error) {
-    console.log(error);
+    console.log(error, "erreree");
+    const errorReason =
+      error?.response?.data?.results ||
+      error?.response?.data?.results;
+    const errorReasonString = errorReason
+      ? Object.values(errorReason).flat().join(", ")
+      : "";
+    console.log(errorReasonString, "errrstring");
+    setErrorMessages(
+      // error?.response?.data?.results?.reason?.email ||
+      //   error?.response?.data?.results?.reason?.phone_number
+      // errorReasonString
+      errorReason
+    );
   }
 };
 
@@ -87,7 +120,11 @@ export const update_user = async (
   }
 };
 
-export const send_mail = async (setLoadingStates,usersId,setSuccessModalOpen) => {
+export const send_mail = async (
+  setLoadingStates,
+  usersId,
+  setSuccessModalOpen
+) => {
   setLoadingStates((prev) => ({ ...prev, [usersId]: true }));
   try {
     const body = { user_id: usersId };
