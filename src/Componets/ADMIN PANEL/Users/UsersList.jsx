@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./Userlist.css";
 import { IoEye } from "react-icons/io5";
 import { BsThreeDotsVertical } from "react-icons/bs";
@@ -19,6 +19,7 @@ import UlaodImag from "../../../assets/upi.png";
 import SuccessModal from "../../SuccessModal/SuccessModal";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
+import DeleteConfirmationModal from "../../ConfirmationModal/DeleteConfirmationModal";
 
 const schema = Joi.object({
   name: Joi.string().required().messages({
@@ -76,6 +77,8 @@ const UsersList = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [loadingStates, setLoadingStates] = useState({});
   const [showPassword, setShowPassword] = useState({});
+  const [successDeleteMessage, setSuccessDeleteMessage] = useState("");
+  const [DeleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
   const dropdownRef = useRef(null);
   const [formData, setFormData] = useState({
     name: "",
@@ -196,7 +199,6 @@ const UsersList = () => {
       // setIsModalOpen(false);
 
       // Reset form data after successful submission
-   
 
       // Form is valid, proceed with submission
       console.log("Form submitted:", formData);
@@ -228,6 +230,7 @@ const UsersList = () => {
 
   const [modalTitle, setModalTitle] = useState("Create user");
   const [submitBtn, setSubmitBtn] = useState("Create user");
+  const [deleteId,setDeleteId] = useState([])
   const [userIdToEdit, setUserIdToEdit] = useState(null);
 
   console.log("userIdToEdit", userIdToEdit);
@@ -251,7 +254,7 @@ const UsersList = () => {
 
   const handleCancel = () => {
     setIsModalOpen(false);
-    setErrorMessages(null)
+    setErrorMessages(null);
   };
   // create modal
   // select box
@@ -292,9 +295,10 @@ const UsersList = () => {
   }, []);
 
   const handleDelete = (userId) => {
+    setDeleteConfirmationOpen(true);
     console.log("item.id", userId);
+    setDeleteId(userId)
     setShowEditDelete(null);
-    user_delete(setIsLoading, setUserList, userId);
   };
 
   const hendleEdit = (user) => {
@@ -342,14 +346,35 @@ const UsersList = () => {
   const handleOpen = () => {
     setSuccessModalOpen(true);
   };
+  const handleDeleteOpen = () => {
+    setDeleteConfirmationOpen(true);
+  };
   const handleClose = () => {
     setSuccessModalOpen(false);
+  };
+  const handleDeleteClose = () => {
+    setDeleteConfirmationOpen(false);
   };
   const handleTogglePassword = (userId) => {
     setShowPassword((prevState) => ({
       ...prevState,
       [userId]: !prevState[userId],
     }));
+  };
+
+  const formatDate = (isoString) => {
+    const date = new Date(isoString);
+    const options = {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      // second: 'numeric',
+      // timeZoneName: 'short',
+    };
+    return date.toLocaleString("en-US", options);
   };
 
   // update_user(setIsLoading, data, setUserList ,"70");
@@ -438,8 +463,13 @@ const UsersList = () => {
               <div style={{ textAlign: "center" }}>
                 <span className="uploadFile">
                   Drag & Drop or{" "}
-                  <span style={{ color: "#0464D5" }}>choose file </span>to
-                  upload file
+                  <span
+                    style={{ color: "#0464D5" }}
+                    onClick={handleAvatarClick}
+                  >
+                    choose file{" "}
+                  </span>
+                  to upload file
                   <br />
                   jpg, png
                 </span>
@@ -483,7 +513,6 @@ const UsersList = () => {
                     {errors.phoneNumber && (
                       <span className="error">{errors.phoneNumber}</span>
                     )}
-                    
                   </div>
                   <div className="create_form_field">
                     <label htmlFor="">Email</label>
@@ -494,9 +523,11 @@ const UsersList = () => {
                       value={formData.email}
                       onChange={handleInput}
                     />
-                     {ErrorMessages?.reason?.phone_number && (
-                        <span className="error">{ErrorMessages?.reason?.email}</span>
-                      )}
+                    {ErrorMessages?.reason?.phone_number && (
+                      <span className="error">
+                        {ErrorMessages?.reason?.email}
+                      </span>
+                    )}
                     {errors.email && (
                       <span className="error">{errors.email}</span>
                     )}
@@ -578,7 +609,8 @@ const UsersList = () => {
             <tbody>
               {userList?.map((item, index) => (
                 <tr key={index} style={{ color: "#2E364C" }}>
-                  <td>{item.created_at}</td>
+                  <td>{formatDate(item.created_at)}</td>
+                  {console.log(item.created_at, "createdTime")}
                   <td>{item.name}</td>
                   <td>{item.email}</td>
                   <td>
@@ -640,7 +672,7 @@ const UsersList = () => {
                       }
                     />
                     {showEditDelete === index && (
-                      <div ref={dropdownRef}  className="Edit_delete_btn_user">
+                      <div ref={dropdownRef} className="Edit_delete_btn_user">
                         <p
                           className="Edit_btn_user"
                           onClick={() => hendleEdit(item)}
@@ -667,6 +699,12 @@ const UsersList = () => {
           handleClose={handleClose}
           successMessage={successMessage}
         />
+        <DeleteConfirmationModal
+          DeleteConfirmationOpen={DeleteConfirmationOpen}
+          handleDeleteClose={handleDeleteClose}
+          handleDeleteOpen={handleDeleteOpen}
+          successMessage={successDeleteMessage}
+          deleteFunction={()=>{user_delete(setIsLoading, setUserList, deleteId,setDeleteConfirmationOpen)}} />
       </div>
     </div>
   );

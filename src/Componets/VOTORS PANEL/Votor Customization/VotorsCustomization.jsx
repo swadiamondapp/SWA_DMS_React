@@ -1,20 +1,21 @@
-import React, { useState, useEffect,useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import DesignBtn from "../../ADMIN PANEL/Design Pool/DesignBtn";
 import { IoEye } from "react-icons/io5";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import CustomiseRequest from "../../CustomiseRequest/CustomiseRequiest";
-import {
-  voters_customization_list,
-  delete_customization,
-} from "../Api";
+import { voters_customization_list, delete_customization } from "../Api";
+import DeleteConfirmationModal from "../../ConfirmationModal/DeleteConfirmationModal";
 
 const VotorsCustomization = () => {
   const [showEditDelete, setShowEditDelete] = useState(null);
   const [IsModalOpen, setIsModalOpen] = useState(false);
   const [Data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [userId,setUserId] = useState([])
-  const [customization,setCustomization] = useState([])
+  const [userId, setUserId] = useState([]);
+  const [customization, setCustomization] = useState([]);
+  const [successDeleteMessage, setSuccessDeleteMessage] = useState("");
+  const [DeleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
+  const [DeleteID, setDeleteId] = useState("");
   const dropdownRef = useRef(null);
 
   useEffect(() => {
@@ -22,19 +23,26 @@ const VotorsCustomization = () => {
   }, []);
 
   const handleDeleteCustomization = (cuzId) => {
-    delete_customization(setIsLoading, setData, cuzId);
+    setDeleteId(cuzId);
+    setDeleteConfirmationOpen(true);
+    // delete_customization(setIsLoading, setData, cuzId);
   };
   const handleEditCustomization = () => {
     // edit_customization(setIsLoading, formData, setCutomizationList, userId);
   };
   const handleEyeClick = (id) => {
-    setIsModalOpen(true)
-    setUserId(id)
+    setIsModalOpen(true);
+    setUserId(id);
     // customization_details(setIsLoading, setCustomization, userId);
-    
-  }
+  };
 
+  const handleDeleteClose = () => {
+    setDeleteConfirmationOpen(false);
+  };
 
+  const handleDeleteOpen = () => {
+    setDeleteConfirmationOpen(true);
+  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -118,7 +126,7 @@ const VotorsCustomization = () => {
                       />
                     </div>
                     {showEditDelete === index && (
-                      <div ref={dropdownRef}  className="Edit_delete_btn_user">
+                      <div ref={dropdownRef} className="Edit_delete_btn_user">
                         <p
                           className="Edit_btn_user"
                           onClick={() => handleEditCustomization(item.id)}
@@ -144,7 +152,21 @@ const VotorsCustomization = () => {
         open={IsModalOpen}
         onClose={() => setIsModalOpen(false)}
         userId={userId}
-       
+        setData={setData}
+      />
+      <DeleteConfirmationModal
+        DeleteConfirmationOpen={DeleteConfirmationOpen}
+        handleDeleteClose={handleDeleteClose}
+        setDeleteConfirmationOpen={setDeleteConfirmationOpen}
+        handleDeleteOpen={handleDeleteOpen}
+        deleteFunction={() => {
+          delete_customization(
+            setIsLoading,
+            setData,
+            DeleteID,
+            setDeleteConfirmationOpen
+          );
+        }}
       />
     </div>
   );

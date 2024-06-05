@@ -85,7 +85,7 @@ const DesignerDetailView = (props) => {
             {props.folderDetails &&
               props.folderDetails?.assignment_items?.map((item) => (
               
-                <div className="New_Design_card">
+                <div className="New_Design_card" style={{display:item.items_status === 'ALLOCATED' ? "none" : "block"}}>
                   {console.log("folderDetails?", item.paper_design.image)}
                   <div className="Card_img">
                     <img src={item.paper_design.image} style={{ opacity:item.items_status === 'ALLOCATED' ? 0.5 : 1 }} alt="" />
