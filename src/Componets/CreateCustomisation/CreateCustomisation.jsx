@@ -22,6 +22,7 @@ import {
   metal_type_drop_down,
   product_type_drop_down,
 } from "../ADMIN PANEL/Api_dropDown";
+import DeleteConfirmationModal from "../ConfirmationModal/DeleteConfirmationModal";
 
 const style = {
   position: "absolute",
@@ -39,29 +40,31 @@ const style = {
   outline: "none",
 };
 
-const props = {
-  name: "file",
-  action: "https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188",
-  headers: {
-    authorization: "authorization-text",
-  },
-  onChange(info) {
-    if (info.file.status !== "uploading") {
-      console.log(info.file, info.fileList);
-    }
-    if (info.file.status === "done") {
-      message.success(`${info.file.name} file uploaded successfully`);
-    } else if (info.file.status === "error") {
-      message.error(`${info.file.name} file upload failed.`);
-    }
-  },
-};
+// const props = {
+//   name: "file",
+//   action: "https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188",
+//   headers: {
+//     authorization: "authorization-text",
+//   },
+//   onChange(info) {
+//     if (info.file.status !== "uploading") {
+//       console.log(info.file, info.fileList);
+//     }
+//     if (info.file.status === "done") {
+//       message.success(`${info.file.name} file uploaded successfully`);
+//     } else if (info.file.status === "error") {
+//       message.error(`${info.file.name} file upload failed.`);
+//     }
+//   },
+// };
 const CreateCustomisation = ({
   open,
   onClose,
   dataToDisplaytomodal,
   userId,
   wareHouseuserId,
+  setData,
+  setCustomization,
 }) => {
   // const [open, setOpen] = useState(false);
   const [tagText, setTagText] = useState("");
@@ -73,7 +76,10 @@ const CreateCustomisation = ({
   const [SelectDiamondColours, setSelectDiamondColor] = useState([]);
   const [SelectDiamondClarity, setSelectDiamondClarity] = useState([]);
   const [outLetDropDown, setOutLetDropDown] = useState([]);
-  const [ErrorMessage,setErrorMessage] = useState([])
+  const [ErrorMessage, setErrorMessage] = useState([]);
+  const [imageFiles, setImageFiles] = useState([]);
+  const [uploadInstructionsVisible, setUploadInstructionsVisible] =
+    useState(true);
   const [successMessage, setSuccessMessage] = useState(
     "Mail Send Success Fully"
   );
@@ -124,11 +130,14 @@ const CreateCustomisation = ({
         Budget: dataToDisplaytomodal.budget || "",
         swaProductSKU: dataToDisplaytomodal.sku_of_swa_product || "",
         notes: dataToDisplaytomodal.notes || "",
+        image: dataToDisplaytomodal.image || "",
+        image2: dataToDisplaytomodal.image2 || "",
+        image3: dataToDisplaytomodal.image3 || "",
       });
     }
   }, [dataToDisplaytomodal]);
 
-  // console.log(dataToDisplaytomodal, "editCus");
+  console.log(dataToDisplaytomodal, "editCus");
 
   const schema = Joi.object({
     sallerName: Joi.string().required().messages({
@@ -246,10 +255,14 @@ const CreateCustomisation = ({
       onClose,
       setSuccessMessage,
       setSuccessModalOpen,
-
+      imageFiles,
+      setData,
+      setImageFiles,
+      setCustomization,
+      userId
     );
   };
-console.log(ErrorMessage,"asdfkd")
+  console.log(ErrorMessage, "asdfkd");
   const handleCreateSubmitCustomization = () => {
     create_customizaion_warehouse(
       setIsLoading,
@@ -258,8 +271,22 @@ console.log(ErrorMessage,"asdfkd")
       onClose,
       setSuccessMessage,
       setSuccessModalOpen,
-      setErrorMessage
+      setErrorMessage,
+      imageFiles,
+      setImageFiles,
+      userId,
+      setData,
+      setCustomization
     );
+  };
+  const handleFileUpload = (event) => {
+    const selectedFiles = Array.from(event.target.files);
+    if (selectedFiles.length + imageFiles.length > 3) {
+      message.error("You can only upload up to 3 images in total");
+    } else {
+      setImageFiles((prevFiles) => [...prevFiles, ...selectedFiles]);
+      setUploadInstructionsVisible(false);
+    }
   };
 
   return (
@@ -448,16 +475,85 @@ console.log(ErrorMessage,"asdfkd")
                         )}
                       </div>
                       <div className="uploadImageContainer">
-                        <div className="leftI">
-                          <span className="imgUpText">Image Upload</span>
-                          <span className="imgDText">
-                            you can upload 3 files max
-                          </span>
-                        </div>
+                        {imageFiles.length > 0 ? (
+                          <>
+                            {imageFiles.map((item, index) => (
+                              <img
+                                key={index}
+                                src={URL.createObjectURL(item)}
+                                alt={`Uploaded ${index + 1}`}
+                                style={{
+                                  width: "50px",
+                                  height: "50px",
+                                  borderRadius: "4px",
+                                }}
+                              />
+                            ))}
+                          </>
+                        ) : (
+                          <div className="leftI">
+                            {dataToDisplaytomodal ? (
+                              <div  style={{display:'flex',gap:'10px'}}>
+                                <img
+                                  // key={index}
+                                  src={dataToDisplaytomodal.image}
+                                  // alt={`Uploaded ${index + 1}`}
+                                  style={{
+                                    width: "50px",
+                                    height: "50px",
+                                    borderRadius: "4px",
+                                  }}
+                                />
+                                <img
+                                  // key={index}
+                                  src={dataToDisplaytomodal.image2}
+                                  // alt={`Uploaded ${index + 1}`}
+                                  style={{
+                                    width: "50px",
+                                    height: "50px",
+                                    borderRadius: "4px",
+                                  }}
+                                />{" "}
+                                <img
+                                  // key={index}
+                                  src={dataToDisplaytomodal.image3}
+                                  
+                                  style={{
+                                    width: "50px",
+                                    height: "50px",
+                                    borderRadius: "4px",
+                                  }}
+                                />
+                              </div>
+                            ) : (
+                              <>
+                                <span className="imgUpText">Image Upload</span>
+                                <span className="imgDText">
+                                  You can upload 3 files max
+                                </span>
+                              </>
+                            )}
+                          </div>
+                        )}
                         <div className="rightw">
-                          <button className="uploadButton">
-                            Upload <BsCloudUpload />{" "}
-                          </button>
+                          <div
+                            id="fileUpload"
+                            className="uploadButton"
+                            onClick={() =>
+                              document.getElementById("fileUploadImage").click()
+                            }
+                          >
+                            {console.log(imageFiles, "images#")}
+                            <input
+                              type="file"
+                              id="fileUploadImage"
+                              style={{ display: "none" }}
+                              multiple
+                              accept="image/*"
+                              onChange={handleFileUpload}
+                            />
+                            Upload <BsCloudUpload />
+                          </div>
                         </div>
                       </div>
                       <div className="parant_relative">
@@ -650,11 +746,11 @@ console.log(ErrorMessage,"asdfkd")
                         {errors.notes && (
                           <span className="error_input">{errors.notes}</span>
                         )}
-                           {ErrorMessage?(
+                        {/* {ErrorMessage?(
                       <span className="error_Custom">
                         {ErrorMessage}
                       </span>
-                    ):null}
+                    ):null} */}
                       </div>
                       {dataToDisplaytomodal ? (
                         <button
@@ -680,11 +776,9 @@ console.log(ErrorMessage,"asdfkd")
                           >
                             SUBMIT
                           </button>
-                     
                         </>
                       )}
                     </div>
-                 
                   </form>
                 </div>
               </Typography>
@@ -698,6 +792,7 @@ console.log(ErrorMessage,"asdfkd")
         handleClose={handleClose}
         successMessage={successMessage}
       />
+      
     </div>
   );
 };

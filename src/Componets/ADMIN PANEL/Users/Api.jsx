@@ -78,11 +78,12 @@ export const user_create = async (
   }
 };
 
-export const user_delete = async (setIsLoading, setData, userId) => {
+export const user_delete = async (setIsLoading, setData, userId,setDeleteConfirmationOpen) => {
   try {
     const response = await apiService.delete(`${USER_DELETE}${userId}/`);
     if (response?.data?.results?.status_code === 200) {
       list_all_users(setIsLoading, setData);
+      setDeleteConfirmationOpen(false)
     }
     if (checkApiStatus(response)) {
       setData(response.data.results.data);

@@ -85,9 +85,9 @@ const BasicDetailModal = ({
     tags: Joi.required().messages({
       "string.empty": `cannot be empty`,
     }),
-    notes: Joi.string().required().messages({
-      "string.empty": `cannot be empty`,
-    }),
+    // notes: Joi.string().required().messages({
+    //   "string.empty": `cannot be empty`,
+    // }),
   });
 
   const handleInput = (e) => {
@@ -254,7 +254,7 @@ const BasicDetailModal = ({
                     <div className="gridfifty">
                       <div className="select_field">
                         <label htmlFor="" className="label-text">
-                          Type of metel
+                          Type of metal
                         </label>
                         <Select
                           showSearch
@@ -351,9 +351,9 @@ const BasicDetailModal = ({
                           onChange={handleInput}
                         />
                         <div>
-                          {errors.height && (
+                          {errors.approxDiamondWeight && (
                             <span className="error_input_p">
-                              {errors.height}
+                              {errors.approxDiamondWeight}
                             </span>
                           )}
                         </div>
@@ -370,9 +370,9 @@ const BasicDetailModal = ({
                           onChange={handleInput}
                         />
                         <div>
-                          {errors.height && (
+                          {errors.findings && (
                             <span className="error_input_p">
-                              {errors.height}
+                              {errors.findings}
                             </span>
                           )}
                         </div>
@@ -391,9 +391,9 @@ const BasicDetailModal = ({
                           onChange={handleInput}
                         />
                         <div>
-                          {errors.height && (
+                          {errors.approxMetalWeights && (
                             <span className="error_input_p">
-                              {errors.height}
+                              {errors.approxMetalWeights}
                             </span>
                           )}
                         </div>
@@ -410,9 +410,9 @@ const BasicDetailModal = ({
                           onChange={handleInput}
                         />
                         <div>
-                          {errors.height && (
+                          {errors.approxMRP && (
                             <span className="error_input_p">
-                              {errors.height}
+                              {errors.approxMRP}
                             </span>
                           )}
                         </div>
@@ -431,13 +431,13 @@ const BasicDetailModal = ({
                             }))
                           }
                           name="fruits"
-                          placeHolder="enter fruits"
+                          placeHolder="Tags"
                           classNames="inputTag"
                         />
                         <div>
-                          {errors.height && (
+                          {errors.tags && (
                             <span className="error_input_p">
-                              {errors.height}
+                              {errors.tags}
                             </span>
                           )}
                         </div>
@@ -456,8 +456,8 @@ const BasicDetailModal = ({
                         style={{ width: "100%" }}
                       />
                       <div style={{ marginBottom: "20px" }}>
-                        {errors.height && (
-                          <span className="error_input_p">{errors.height}</span>
+                        {errors.notes && (
+                          <span className="error_input_p">{errors.notes}</span>
                         )}
                       </div>
                     </div>

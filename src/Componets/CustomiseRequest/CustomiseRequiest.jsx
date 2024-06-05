@@ -24,6 +24,8 @@ const CustomiseRequest = ({
   userId,
   wareHouseuserId,
   CustomizationWareHouseData,
+  setData
+
 }) => {
   // const [customization, setCustomization] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -300,6 +302,9 @@ const CustomiseRequest = ({
         dataToDisplaytomodal={dataToDisplay}
         userId={userId}
         wareHouseuserId={wareHouseuserId}
+        setData={setData}
+        setCustomization={setCustomization}
+
       />
       <SuccessModal
         successModalOpen={successModalOpen}

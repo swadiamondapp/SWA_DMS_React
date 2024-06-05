@@ -6,6 +6,8 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import closeButton from "../../assets/closeButton.svg";
 import { Select } from "antd";
+import { upload_cad_design } from "../CAD/Api";
+import SuccessModal from "../SuccessModal/SuccessModal";
 
 const style = {
   position: "absolute",
@@ -28,8 +30,16 @@ const CentalHub = ({ open, onClose }) => {
   // const [open, setOpen] = useState(false);
   const [AssinedButton, setAssignedButton] = useState("Assign");
   const [tagText, setTagText] = useState("");
-  const [uploadInstructionsVisible, setUploadInstructionsVisible] = useState(true);
-  const [uploadInstructionsVisibleRender, setUploadInstructionsVisibleRender] = useState(true);
+  const [imageFile, setImageFile] = useState(null);
+  const [threeDFile, setThreeDFile] = useState(null);
+  const [designCode, setDesignCode] = useState("");
+  const [isLoading,setIsLoading] = useState(false)
+  const [successModalOpen,setSuccessModalOpen] = useState(false)
+  const [successMessage,setSuccessMessage] = useState("")
+  const [uploadInstructionsVisible, setUploadInstructionsVisible] =
+    useState(true);
+  const [uploadInstructionsVisibleRender, setUploadInstructionsVisibleRender] =
+    useState(true);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -40,7 +50,11 @@ const CentalHub = ({ open, onClose }) => {
     );
   };
   const handleCancelButton = () => {
-    setOpen(false);
+    setImageFile(null);
+    setThreeDFile(null);
+    setUploadInstructionsVisible(true);
+    setUploadInstructionsVisibleRender(true);
+    onClose();
   };
 
   const onChange = (value) => {
@@ -52,26 +66,40 @@ const CentalHub = ({ open, onClose }) => {
   const filterOption = (input, option) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
 
-    
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setUploadInstructionsVisible(false);
-      };
-      reader.readAsDataURL(file);
+      setImageFile(file);
+      setUploadInstructionsVisible(false);
     }
   };
+  // const handleFileUploadRender = (event) => {
+  //   const file = event.target.files[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onload = () => {
+  //       setUploadInstructionsVisibleRender(false);
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
   const handleFileUploadRender = (event) => {
     const file = event.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setUploadInstructionsVisibleRender(false);
-      };
-      reader.readAsDataURL(file);
+      setThreeDFile(file);
+      setUploadInstructionsVisibleRender(false);
     }
+  };
+
+  const handleUploadFile = () => {
+    upload_cad_design(setIsLoading,designCode,imageFile,threeDFile,onClose,setSuccessModalOpen,setSuccessMessage)
+    console.log("Image file:", imageFile);
+    console.log("3D file:", threeDFile);
+    console.log("Design code:", designCode);
+  };
+
+  const handleDesignCodeChange = (event) => {
+    setDesignCode(event.target.value.toUpperCase());
   };
 
   return (
@@ -120,44 +148,56 @@ const CentalHub = ({ open, onClose }) => {
                     <div
                       className="left"
                       onClick={() =>
-                        document.getElementById("fileInputt").click()
+                        document.getElementById("fileInputImage").click()
                       }
                     >
-                     {uploadInstructionsVisible? (<>
-                      <span className="textA">PNG/JPG</span>
-                      <span className="textB">
-                        Drag & Drop or{" "}
-                        <span style={{ color: "#0464D5" }}>choose file</span> to
-                        upload
-                      </span>
-                    
-                     </>):(<>PNG/JPG File uploaded successfully!</>)}
-                       <input
-                        id="fileInputt"
+                      {uploadInstructionsVisible ? (
+                        <>
+                          <span className="textA">PNG/JPG</span>
+                          <span className="textB">
+                            Drag & Drop or{" "}
+                            <span style={{ color: "#0464D5" }}>
+                              choose file
+                            </span>{" "}
+                            to upload
+                          </span>
+                        </>
+                      ) : (
+                        <span style={{fontSize:"10px"}}>PNG/JPG File uploaded successfully!</span>
+                      )}
+                      <input
+                        id="fileInputImage"
                         type="file"
                         accept="image/*"
                         style={{ display: "none" }}
                         onChange={handleFileUpload}
                       />
-                      
                     </div>
-                    <div className="right"  onClick={() =>
-                        document.getElementById("fileInputtT").click()
-                      }>
-                        {uploadInstructionsVisibleRender? (<>
+                    <div
+                      className="right"
+                      onClick={() =>
+                        document.getElementById("fileInput3D").click()
+                      }
+                    >
+                      {uploadInstructionsVisibleRender ? (
+                        <>
                           <span className="textA">3.DM</span>
-                      <span className="textB">
-                        Drag & Drop or{" "}
-                        <span style={{ color: "#0464D5" }}>choose file</span> to
-                        upload
-                      </span>
-                        </>):(<>
-                          3D File uploaded successfully!</>)}
-                    
+                          <span className="textB">
+                            Drag & Drop or{" "}
+                            <span style={{ color: "#0464D5" }}>
+                              choose file
+                            </span>{" "}
+                            to upload
+                          </span>
+                        </>
+                      ) : (
+                        <span style={{fontSize:"10px",width:"100%"}}>3D File uploaded successfully!</span>
+                      )}
+
                       <input
-                        id="fileInputtT"
+                        id="fileInput3D"
                         type="file"
-                        accept="image/*"
+                        accept=".3dm"
                         style={{ display: "none" }}
                         onChange={handleFileUploadRender}
                       />
@@ -167,7 +207,12 @@ const CentalHub = ({ open, onClose }) => {
                     <label htmlFor="" className="labelText">
                       ID
                     </label>
-                    <input type="text" className="inputFeildUpload" />
+                    <input
+                      type="text"
+                      value={designCode}
+                      onChange={handleDesignCodeChange}
+                      className="inputFeildUpload"
+                    />
                   </div>
 
                   <div className="buttons">
@@ -177,13 +222,21 @@ const CentalHub = ({ open, onClose }) => {
                     >
                       cancel
                     </button>
-                    <button className="upButton">Upload</button>
+                    <button onClick={handleUploadFile} className="upButton">
+                      Upload
+                    </button>
                   </div>
                 </div>
               </Typography>
             </Box>
           </Modal>
         </div>
+        <SuccessModal
+          successModalOpen={successModalOpen}
+          handleOpen={handleOpen}
+          handleClose={handleClose}
+          successMessage={successMessage}
+        />
       </div>
     </div>
   );

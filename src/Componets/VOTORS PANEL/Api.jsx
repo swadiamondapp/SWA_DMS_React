@@ -62,11 +62,12 @@ import {
     }
   };
 
-  export const delete_customization = async (setIsLoading, setData, userId) => {
+  export const delete_customization = async (setIsLoading, setData, userId,setDeleteConfirmationOpen) => {
     try {
       const response = await apiService.delete(`${DELETE_CUSTOMIZATION}${userId}/`);
       if (response?.data?.results?.status_code === 200) {
         voters_customization_list(setIsLoading, setData);
+        setDeleteConfirmationOpen(false)
       }
     } catch (error) {
       console.log(error);
