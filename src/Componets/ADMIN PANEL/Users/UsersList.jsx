@@ -183,7 +183,13 @@ const UsersList = () => {
       console.log(file, "file");
 
       if (userIdToEdit) {
-        update_user(setIsLoading, data, setUserList, userIdToEdit,setIsModalOpen);
+        update_user(
+          setIsLoading,
+          data,
+          setUserList,
+          userIdToEdit,
+          setIsModalOpen
+        );
       } else {
         await user_create(
           setIsLoading,
@@ -193,8 +199,7 @@ const UsersList = () => {
           setSuccessModalOpen,
           setSuccessMessage,
           setErrorMessages,
-          setFormData,
-          
+          setFormData
         );
       }
 
@@ -374,7 +379,7 @@ const UsersList = () => {
   };
 
   const toggleStatus = (user) => {
-    const newStatus = user.status === "ACTIVE" ? "INACTIVE" : "ACTIVE";
+    const newStatus = user.status === "ACTIVE" ? "IN-ACTIVE" : "ACTIVE";
     const statusPayload = newStatus === "ACTIVE" ? "true" : "false";
     setUserList((prevState) =>
       prevState.map((item) =>
@@ -384,7 +389,7 @@ const UsersList = () => {
     user_activating(setIsLoading, user.id, statusPayload, setUserList);
   };
 
-  console.log(toggleStates,"toggleState")
+  console.log(toggleStates, "toggleState");
 
   // update_user(setIsLoading, data, setUserList ,"70");
   return (
@@ -649,7 +654,11 @@ const UsersList = () => {
                   <td>{item.Usertype}</td>
                   <td>
                     <div className="active_sendmail">
-                      <button className="active_btn">{item.status}</button>
+                      <button
+                        className={item.status === "ACTIVE" ?"active_btn" :"inactive_btn" }
+                      >
+                        {item.status}
+                      </button>
                       <button
                         className="sendmail_btn"
                         onClick={() => handleSendMail(item.id)}

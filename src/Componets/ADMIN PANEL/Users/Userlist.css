@@ -38,6 +38,12 @@ td {
   border-radius: 4px;
   text-align: left;
   font-family: "Gilroy medium";
+
+
+
+/* font-size: 14px; */
+font-weight: 600;
+
 }
 .Users_Table_List tr {
   border-bottom: 0.5px solid #e7edf4;
@@ -46,9 +52,20 @@ td {
   color: #23a064;
   border: 1px solid #23a06496;
   background: #23a0642b;
-  padding: 10px 20px;
+  padding: 8px 20px;
   border-radius: 32px;
   font-family: "Inter", sans-serif;
+}
+.inactive_btn {
+  color: #94A3B8;
+  border: 1px solid #94A3B896;
+  /* background: #23a0642b; */
+  padding: 8px 20px;
+  border-radius: 32px;
+  font-family: "Inter", sans-serif;
+  background: #94A3B82B;
+
+
 }
 .Users_Table_List {
   margin-top: 15px;
@@ -106,6 +123,9 @@ td {
   background-color: #14c16e;
   -webkit-transition: 0.4s;
   transition: 0.4s;
+}
+.inactive {
+  background-color: #ccc; /* Inactive color */
 }
 
 input:checked + .slider {
