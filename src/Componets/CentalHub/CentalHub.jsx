@@ -33,9 +33,9 @@ const CentalHub = ({ open, onClose }) => {
   const [imageFile, setImageFile] = useState(null);
   const [threeDFile, setThreeDFile] = useState(null);
   const [designCode, setDesignCode] = useState("");
-  const [isLoading,setIsLoading] = useState(false)
-  const [successModalOpen,setSuccessModalOpen] = useState(false)
-  const [successMessage,setSuccessMessage] = useState("")
+  const [isLoading, setIsLoading] = useState(false);
+  const [successModalOpen, setSuccessModalOpen] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
   const [uploadInstructionsVisible, setUploadInstructionsVisible] =
     useState(true);
   const [uploadInstructionsVisibleRender, setUploadInstructionsVisibleRender] =
@@ -50,11 +50,13 @@ const CentalHub = ({ open, onClose }) => {
     );
   };
   const handleCancelButton = () => {
+
     setImageFile(null);
     setThreeDFile(null);
     setUploadInstructionsVisible(true);
     setUploadInstructionsVisibleRender(true);
-    onClose();
+    onClose(); 
+
   };
 
   const onChange = (value) => {
@@ -92,7 +94,15 @@ const CentalHub = ({ open, onClose }) => {
   };
 
   const handleUploadFile = () => {
-    upload_cad_design(setIsLoading,designCode,imageFile,threeDFile,onClose,setSuccessModalOpen,setSuccessMessage)
+    upload_cad_design(
+      setIsLoading,
+      designCode,
+      imageFile,
+      threeDFile,
+      onClose,
+      setSuccessModalOpen,
+      setSuccessMessage
+    );
     console.log("Image file:", imageFile);
     console.log("3D file:", threeDFile);
     console.log("Design code:", designCode);
@@ -127,8 +137,8 @@ const CentalHub = ({ open, onClose }) => {
                     Upload file
                   </span>
                   <button
-                    // onClick={handleClose}
-                    onClose={onClose}
+                    onClick={()=> onClose()}
+                    // onClose={onClose}
                     style={{
                       position: "absolute",
                       top: 15,
@@ -163,7 +173,9 @@ const CentalHub = ({ open, onClose }) => {
                           </span>
                         </>
                       ) : (
-                        <span style={{fontSize:"10px"}}>PNG/JPG File uploaded successfully!</span>
+                        <span style={{ fontSize: "10px" }}>
+                          PNG/JPG File uploaded successfully!
+                        </span>
                       )}
                       <input
                         id="fileInputImage"
@@ -191,7 +203,9 @@ const CentalHub = ({ open, onClose }) => {
                           </span>
                         </>
                       ) : (
-                        <span style={{fontSize:"10px",width:"100%"}}>3D File uploaded successfully!</span>
+                        <span style={{ fontSize: "10px", width: "100%" }}>
+                          3D File uploaded successfully!
+                        </span>
                       )}
 
                       <input
@@ -218,7 +232,7 @@ const CentalHub = ({ open, onClose }) => {
                   <div className="buttons">
                     <button
                       className="cancerButton"
-                      onClick={handleCancelButton}
+                      onClick={() => handleCancelButton()}
                     >
                       cancel
                     </button>

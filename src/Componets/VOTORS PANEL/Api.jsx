@@ -64,10 +64,12 @@ import {
 
   export const delete_customization = async (setIsLoading, setData, userId,setDeleteConfirmationOpen) => {
     try {
+      setIsLoading(true)
       const response = await apiService.delete(`${DELETE_CUSTOMIZATION}${userId}/`);
       if (response?.data?.results?.status_code === 200) {
         voters_customization_list(setIsLoading, setData);
         setDeleteConfirmationOpen(false)
+        setIsLoading(false)
       }
     } catch (error) {
       console.log(error);
