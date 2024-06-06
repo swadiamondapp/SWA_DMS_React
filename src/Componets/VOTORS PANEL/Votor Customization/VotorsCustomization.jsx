@@ -159,6 +159,7 @@ const VotorsCustomization = () => {
         handleDeleteClose={handleDeleteClose}
         setDeleteConfirmationOpen={setDeleteConfirmationOpen}
         handleDeleteOpen={handleDeleteOpen}
+        isLoading={isLoading}
         deleteFunction={() => {
           delete_customization(
             setIsLoading,

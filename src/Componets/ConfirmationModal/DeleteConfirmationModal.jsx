@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import "./DeleteConfirmationModal.css";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const successM = {
   position: "absolute",
@@ -21,7 +22,8 @@ const DeleteConfirmationModal = ({
   DeleteConfirmationOpen,
   handleDeleteClose,
   deleteFunction,
-  setDeleteConfirmationOpen
+  setDeleteConfirmationOpen,
+  isLoading,
 }) => {
   const [isMobileView, setIsMobileView] = useState(
     window.innerWidth >= 300 && window.innerWidth <= 575
@@ -41,10 +43,10 @@ const DeleteConfirmationModal = ({
 
   const handleDeleteModalButton = () => {
     deleteFunction();
-    votersDeleteFunction()
+    votersDeleteFunction();
   };
   const handlCancelButton = () => {
-    setDeleteConfirmationOpen(false)
+    setDeleteConfirmationOpen(false);
   };
 
   return (
@@ -67,7 +69,20 @@ const DeleteConfirmationModal = ({
                   onClick={() => handleDeleteModalButton()}
                   className="delete_button_modal"
                 >
-                  delete
+                  {/* {isLoading ? (
+                    <>
+                      <Box sx={{ display: "flex" }}>
+                        <CircularProgress
+                          size={12} // Set the desired size
+                          sx={{ color: "#fff",padding:"8px 10px", width:"35px" }}
+                        />
+                      </Box>
+                    </>
+                  ) : (
+                    <> */}
+                    delete
+                    {/* </>
+                  )} */}
                 </button>
               </div>
             </div>
