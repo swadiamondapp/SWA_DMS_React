@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./DesignerDetailView.css";
 import DesignBtn from "../../ADMIN PANEL/Design Pool/DesignBtn";
 import ring from "../../../assets/ring.png";
-import { useParams,useLocation } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { list_designer_folderDetails } from "./Api";
 
 const DesignerDetailView = (props) => {
@@ -14,9 +14,8 @@ const DesignerDetailView = (props) => {
   const [selectedAssignment, setSelectedAssignment] = useState([]);
   const location = useLocation();
   const query = new URLSearchParams(location.search);
-  const folderName = query.get('name');
-  console.log(folderName,"folderName=12===>")
-  
+  const folderName = query.get("name");
+  console.log(folderName, "folderName=12===>");
 
   const card = [
     {
@@ -64,7 +63,7 @@ const DesignerDetailView = (props) => {
   // const handleAssignmentCad = () => {
   //   assign_to_cad(setIsLoading,folderId,userId,selectedDesigns)
   // }
-
+  console.log(props.folderDetails, "dataP");
   return (
     <div className="DesignerAssignmentPanel">
       <DesignBtn
@@ -76,6 +75,7 @@ const DesignerDetailView = (props) => {
         showMoveOptions={showMoveOptions}
         assignToCadId={props.id}
         selectedDesign={selectedAssignment}
+        setSelectedAssignment={setSelectedAssignment}
         list_id={props.id}
         list_designer_folderDetails={props.list_designer_folderDetails}
       />
@@ -84,23 +84,34 @@ const DesignerDetailView = (props) => {
           <div className="Card_Design_Parent">
             {props.folderDetails &&
               props.folderDetails?.assignment_items?.map((item) => (
-              
-                <div className="New_Design_card" style={{display:item.items_status === 'ALLOCATED' ? "none" : "block"}}>
+                <div
+                  className="New_Design_card"
+                  style={{
+                    display:
+                      item.items_status === "ALLOCATED" ? "none" : "block",
+                  }}
+                >
                   {console.log("folderDetails?", item.paper_design.image)}
                   <div className="Card_img">
-                    <img src={item.paper_design.image} style={{ opacity:item.items_status === 'ALLOCATED' ? 0.5 : 1 }} alt="" />
+                    <img
+                      src={item.paper_design.image}
+                      style={{
+                        opacity: item.items_status === "ALLOCATED" ? 0.5 : 1,
+                      }}
+                      alt=""
+                    />
                   </div>
                   <div className="Card_Details">
                     <h3>ID : {item.paper_design.designcode}</h3>
                     <div className="Card_Details_Inner">
                       <div className="Inner_Left">
                         <p>{item.paper_design.designer_name}</p>
-                        <p>date pending</p>
+                        <p>date panding</p>
                       </div>
                     </div>
                   </div>
                   {/* radio btn */}
-                  
+
                   {showRadioButtons && (
                     <input
                       className="Radio_select"
@@ -108,8 +119,8 @@ const DesignerDetailView = (props) => {
                       id="html"
                       name="fav_language"
                       value=""
-                      onChange={()=>handleCheckboxChange(item.item_id)}
-                      disabled={item.items_status === 'ALLOCATED'}
+                      onChange={() => handleCheckboxChange(item.item_id)}
+                      disabled={item.items_status === "ALLOCATED"}
                     ></input>
                   )}
                   {/* radio btn */}

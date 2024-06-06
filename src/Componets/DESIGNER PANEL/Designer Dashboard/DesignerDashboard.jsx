@@ -100,6 +100,7 @@ const DesignerDashboard = () => {
             id="fileInput"
             type="file"
             accept="image/*"
+            multiple
             style={{ display: "none" }}
             onChange={handleFileUpload}
           />

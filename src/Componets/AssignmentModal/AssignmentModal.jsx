@@ -2,25 +2,28 @@ import React, { useState, useEffect } from "react";
 import "./AssignmentModal.css";
 import { move_to_folder } from "../Assignment Panel/Api";
 import { Modal, Select } from "antd";
+import SuccessModal from "../SuccessModal/SuccessModal";
 
-const AssignmentModal = ({ open, onClose, formData,selectedAssignment, setAssignmentFolder }) => {
+const AssignmentModal = ({ open, onClose, formData,selectedAssignment, setAssignmentFolder,setSelectedAssignment }) => {
   // create modal
   // const [isModalOpen, setIsModalOpen] = useState(false);
   const [AssinedButton, setAssignedButton] = useState("Assign");
   const [isLoading, setIsLoading] = useState(false);
+  const [successModalOpen,setSuccessModalOpen] =useState(false)
   const [folderName, setFolderName] = useState("");
+  const [successMessage,setSuccessMessage] = useState("")
   const [error,setError] = useState([])
 
-  const showModal = () => {
+  const handleOpen = () => {
     setIsModalOpen(true);
   };
 
-  const handleCancel = () => {
+  const handleClose = () => {
     setIsModalOpen(false);
   };
   const handleCreateButton = () => {
    
-    move_to_folder(setIsLoading, formData,folderName,selectedAssignment, setAssignmentFolder,onClose);
+    move_to_folder(setIsLoading, formData,folderName,selectedAssignment, setAssignmentFolder,onClose,setSuccessMessage,setSuccessModalOpen,setSelectedAssignment);
   };
   const handleChange = (event) => {
     setFolderName(event.target.value);
@@ -46,7 +49,7 @@ const AssignmentModal = ({ open, onClose, formData,selectedAssignment, setAssign
                 <input
                   className="inputFeildt"
                   type="text"
-                  placeholder="june 24 2023"
+                  placeholder=""
                   value={folderName}
                   onChange={handleChange}
                 />
@@ -60,6 +63,12 @@ const AssignmentModal = ({ open, onClose, formData,selectedAssignment, setAssign
             </div>
           </Modal>
         </div>
+        <SuccessModal
+          successModalOpen={successModalOpen}
+          handleOpen={handleOpen}
+          handleClose={handleClose}
+          successMessage={successMessage}
+        />
       </div>
     </div>
   );

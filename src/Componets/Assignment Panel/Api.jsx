@@ -38,7 +38,17 @@ export const list_folderDetails = async (
   }
 };
 
-export const move_to_folder = async (setIsLoading, formData, folderName,selectedAssignment, setAssignmentFolder,onClose) => {
+export const move_to_folder = async (
+  setIsLoading,
+  formData,
+  folderName,
+  selectedAssignment,
+  setAssignmentFolder,
+  onClose,
+  setSuccessMessage,
+  setSuccessModalOpen,
+  setSelectedAssignment
+) => {
   try {
     const body = {
       folder_data: {
@@ -56,17 +66,21 @@ export const move_to_folder = async (setIsLoading, formData, folderName,selected
         tags: formData.tags,
         note: formData.notes,
       },
-      items:selectedAssignment,
+      items: selectedAssignment,
     };
     console.log(body, "bodyAssijj");
     const response = await apiService.post(MOVE_TO_FOLDER, body);
     if (response.data.results.status_code === 200) {
-      list_assignment_folder(setIsLoading,  setAssignmentFolder);
-      onClose()
-
+      list_assignment_folder(setIsLoading, setAssignmentFolder);
+      onClose();
+      setSuccessMessage("Assignment Folder Created SuccessFully")
+      setSuccessModalOpen(true);
+      setSelectedAssignment([])
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1600);
     }
   } catch (error) {
     console.error("Error moving designs:", error);
   }
 };
-

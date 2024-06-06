@@ -29,6 +29,8 @@ const BasicDetailModal = ({
   onClose,
   selectedAssignment,
   setAssignmentFolder,
+  setSelectedAssignment
+
 }) => {
   // create modal
 
@@ -85,9 +87,12 @@ const BasicDetailModal = ({
     tags: Joi.required().messages({
       "string.empty": `cannot be empty`,
     }),
-    // notes: Joi.string().required().messages({
-    //   "string.empty": `cannot be empty`,
-    // }),
+    findings: Joi.string().required().messages({
+      "string.empty": `cannot be empty`,
+    }),
+    notes: Joi.string().required().messages({
+      "string.empty": `cannot be empty`,
+    }),
   });
 
   const handleInput = (e) => {
@@ -258,7 +263,7 @@ const BasicDetailModal = ({
                         </label>
                         <Select
                           showSearch
-                          placeholder="Gold"
+                          placeholder=""
                           optionFilterProp="children"
                           // value={formData.typeOfMetal}
                           onChange={(value) =>
@@ -303,7 +308,7 @@ const BasicDetailModal = ({
                         </label>
                         <Select
                           showSearch
-                          placeholder="Diamond Type"
+                          placeholder=""
                           optionFilterProp="children"
                           onChange={(value) =>
                             setFormData((prevState) => ({
@@ -483,6 +488,8 @@ const BasicDetailModal = ({
         onClose={() => setShowAssignmentModal(false)}
         selectedAssignment={selectedAssignment}
         setAssignmentFolder={setAssignmentFolder}
+        setSelectedAssignment={setSelectedAssignment}
+
       />
     </div>
   );
