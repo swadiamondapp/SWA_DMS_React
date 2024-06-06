@@ -261,5 +261,5 @@ input:checked + .slider:before {
   height: 100%;
 }
 .passwordEncy {
-  width:100%
+  min-width:150x
 }

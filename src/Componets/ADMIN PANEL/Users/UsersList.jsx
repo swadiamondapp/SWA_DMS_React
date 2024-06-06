@@ -14,6 +14,7 @@ import {
   user_create,
   user_delete,
   send_mail,
+  user_activating,
 } from "./Api";
 import UlaodImag from "../../../assets/upi.png";
 import SuccessModal from "../../SuccessModal/SuccessModal";
@@ -182,7 +183,7 @@ const UsersList = () => {
       console.log(file, "file");
 
       if (userIdToEdit) {
-        update_user(setIsLoading, data, setUserList, userIdToEdit);
+        update_user(setIsLoading, data, setUserList, userIdToEdit,setIsModalOpen);
       } else {
         await user_create(
           setIsLoading,
@@ -192,7 +193,8 @@ const UsersList = () => {
           setSuccessModalOpen,
           setSuccessMessage,
           setErrorMessages,
-          setFormData
+          setFormData,
+          
         );
       }
 
@@ -230,7 +232,8 @@ const UsersList = () => {
 
   const [modalTitle, setModalTitle] = useState("Create user");
   const [submitBtn, setSubmitBtn] = useState("Create user");
-  const [deleteId,setDeleteId] = useState([])
+  const [deleteId, setDeleteId] = useState([]);
+  const [toggleStates, setToggleStates] = useState({});
   const [userIdToEdit, setUserIdToEdit] = useState(null);
 
   console.log("userIdToEdit", userIdToEdit);
@@ -297,7 +300,7 @@ const UsersList = () => {
   const handleDelete = (userId) => {
     setDeleteConfirmationOpen(true);
     console.log("item.id", userId);
-    setDeleteId(userId)
+    setDeleteId(userId);
     setShowEditDelete(null);
   };
 
@@ -364,11 +367,24 @@ const UsersList = () => {
 
   const formatDate = (isoString) => {
     const date = new Date(isoString);
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
     const year = date.getFullYear();
     return `${month}/${day}/${year}`;
   };
+
+  const toggleStatus = (user) => {
+    const newStatus = user.status === "ACTIVE" ? "INACTIVE" : "ACTIVE";
+    const statusPayload = newStatus === "ACTIVE" ? "true" : "false";
+    setUserList((prevState) =>
+      prevState.map((item) =>
+        item.id === user.id ? { ...item, status: newStatus } : item
+      )
+    );
+    user_activating(setIsLoading, user.id, statusPayload, setUserList);
+  };
+
+  console.log(toggleStates,"toggleState")
 
   // update_user(setIsLoading, data, setUserList ,"70");
   return (
@@ -609,7 +625,9 @@ const UsersList = () => {
                   <td>
                     <div className="view_password">
                       <span className="passwordEncy">
-                        {showPassword[item.id] ? item.Password : "******"}
+                        {showPassword[item.id]
+                          ? item.Password
+                          : "*********************"}
                       </span>
                       {showPassword ? (
                         <IoEye
@@ -651,7 +669,11 @@ const UsersList = () => {
                   </td>
                   <td>
                     <label className="switch">
-                      <input type="checkbox" />
+                      <input
+                        type="checkbox"
+                        checked={item.status === "ACTIVE"}
+                        onChange={() => toggleStatus(item)}
+                      />
                       <span className="slider round"></span>
                     </label>
                   </td>
@@ -697,7 +719,15 @@ const UsersList = () => {
           handleDeleteClose={handleDeleteClose}
           handleDeleteOpen={handleDeleteOpen}
           successMessage={successDeleteMessage}
-          deleteFunction={()=>{user_delete(setIsLoading, setUserList, deleteId,setDeleteConfirmationOpen)}} />
+          deleteFunction={() => {
+            user_delete(
+              setIsLoading,
+              setUserList,
+              deleteId,
+              setDeleteConfirmationOpen
+            );
+          }}
+        />
       </div>
     </div>
   );

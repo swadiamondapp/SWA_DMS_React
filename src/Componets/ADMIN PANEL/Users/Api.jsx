@@ -7,6 +7,7 @@ import {
   EDIT_USER,
   LIST_ALL_USER,
   SEND_MAIL,
+  USER_ACTIVATING,
   USER_CREATE,
   USER_DELETE,
 } from "../../../Pages/Services/EndPoints";
@@ -63,8 +64,7 @@ export const user_create = async (
   } catch (error) {
     console.log(error, "erreree");
     const errorReason =
-      error?.response?.data?.results ||
-      error?.response?.data?.results;
+      error?.response?.data?.results || error?.response?.data?.results;
     const errorReasonString = errorReason
       ? Object.values(errorReason).flat().join(", ")
       : "";
@@ -78,12 +78,17 @@ export const user_create = async (
   }
 };
 
-export const user_delete = async (setIsLoading, setData, userId,setDeleteConfirmationOpen) => {
+export const user_delete = async (
+  setIsLoading,
+  setData,
+  userId,
+  setDeleteConfirmationOpen
+) => {
   try {
     const response = await apiService.delete(`${USER_DELETE}${userId}/`);
     if (response?.data?.results?.status_code === 200) {
       list_all_users(setIsLoading, setData);
-      setDeleteConfirmationOpen(false)
+      setDeleteConfirmationOpen(false);
     }
     if (checkApiStatus(response)) {
       setData(response.data.results.data);
@@ -97,7 +102,8 @@ export const update_user = async (
   setIsLoading,
   formData,
   setUserList,
-  userId
+  userId,
+  setIsModalOpen
 ) => {
   try {
     const response = await apiService.put(`${EDIT_USER}${userId}/`, formData, {
@@ -107,6 +113,7 @@ export const update_user = async (
     });
     console.log("responces", response.data.results.status_code);
     if (response?.data?.results?.status_code === 200) {
+      setIsModalOpen(false);
       list_all_users(setIsLoading, setUserList);
     }
     if (checkApiStatus(response)) {
@@ -142,5 +149,23 @@ export const send_mail = async (
   } catch (error) {
     console.error("Error moving designs:", error);
     setLoadingStates((prev) => ({ ...prev, [usersId]: false }));
+  }
+};
+
+export const user_activating = async (setIsLoading, usersId, statusPayload,setUserList) => {
+  try {
+    const body = { status: statusPayload };
+    console.log(body, "userActi");
+    const response = await apiService.put(
+      `${USER_ACTIVATING}/${usersId}/status/`,
+      body
+    );
+    if (response.data.results.status_code === 200) {
+      console.log(response,"respposUserA")
+      list_all_users(setIsLoading, setUserList);
+      
+    }
+  } catch (error) {
+    console.error("Error moving designs:", error);
   }
 };

@@ -31,7 +31,11 @@ export const assign_to_cad = async (
   selectedDesign,
   list_id,
   onClose,
-  list_designer_folderDetails
+  list_designer_folderDetails,
+  setSuccessModalOpen,
+  setSuccessMessage,
+  setSelectedAssignment
+
 ) => {
   try {
     const body = {
@@ -40,13 +44,23 @@ export const assign_to_cad = async (
       assignment_items: selectedDesign,
     };
     console.log(body, "body====>");
+    console.log( selectedDesign," selectedDesign")
     const response = await apiService.post(ASSIGN_TO_CAD, body);
     if (response.data.status_code === 200) {
       onClose()
       list_designer_folderDetails()
+      setSuccessMessage("Item Assigned SuccessFully")
+      setSuccessModalOpen(true)
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1600);
+      setSelectedAssignment([])
+      
     }
   } catch (error) {
     console.error("Error moving designs:", error);
+    alert(error?.response?.data?.assignment_items
+    )
   }
 };
 

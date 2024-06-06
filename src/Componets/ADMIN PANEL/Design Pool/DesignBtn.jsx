@@ -28,7 +28,8 @@ const DesignBtn = ({
   assignToCadId,
   list_id,
   setFolderDetails,
-  list_designer_folderDetails
+  list_designer_folderDetails,
+  setSelectedAssignment
 }) => {
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -145,6 +146,7 @@ const handleAssignment = () => {
         onClose={() => setIsModalOpen(false)}
         selectedAssignment={selectedAssignment}
         setAssignmentFolder={setAssignmentFolder}
+        setSelectedAssignment={setSelectedAssignment}
       />
       <AssignToModal
         open={isModalOpenAssign}
@@ -153,6 +155,8 @@ const handleAssignment = () => {
         selectedDesign={selectedDesign}
         list_id={list_id}
         list_designer_folderDetails={list_designer_folderDetails}
+        setSelectedAssignment={setSelectedAssignment}
+      
       />
       <CreateCustomisation
         open={isModalOpenCreateCutomize}

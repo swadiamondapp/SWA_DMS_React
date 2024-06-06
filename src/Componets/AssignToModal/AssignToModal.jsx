@@ -9,6 +9,7 @@ import avatar from "../../assets/avataprofile.png";
 import { assign_to_cad } from "../DESIGNER PANEL/Designer Detail View/Api";
 import { list_all_cad_users } from "../DESIGNER PANEL/Designer Dashboard/Api";
 import { useParams, useLocation } from "react-router-dom";
+import SuccessModal from "../SuccessModal/SuccessModal";
 
 const style = {
   position: "absolute",
@@ -25,12 +26,14 @@ const style = {
   borderRadius: 2,
   outLine: "none",
 };
-const AssignToModal = ({ open, onClose, assignToCadId,selectedDesign,setFolderDetails,list_id, list_designer_folderDetails}) => {
+const AssignToModal = ({ open, onClose, assignToCadId,selectedDesign,setFolderDetails,list_id, list_designer_folderDetails,setSelectedAssignment}) => {
 
   // const [isLoading,setIsLoading] = useState(false)
   const [isLoading, setIsLoading] = useState(false);
   const [Data, setData] = useState([]);
   const [AssignedData, setAssignedData] = useState([])
+  const [successModalOpen, setSuccessModalOpen] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
   // create modal
 
@@ -42,11 +45,15 @@ const AssignToModal = ({ open, onClose, assignToCadId,selectedDesign,setFolderDe
     list_all_cad_users(setIsLoading, setData);
   }, []);
 
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  // const handleOpen = () => setOpen(true);
+
+  // const handleOpen = () => setOpen(true);
+
+  const handleOpenSuccess = () => setSuccessModalOpen(true);
+  const handleCloseSuccess = () => setSuccessModalOpen(false);
   const handleAssignButton = (userIdString) => {
     const userId = String(userIdString);
-    assign_to_cad(setIsLoading,assignToCadId,userId,selectedDesign,list_id,onClose, list_designer_folderDetails)
+    assign_to_cad(setIsLoading,assignToCadId,userId,selectedDesign,list_id,onClose, list_designer_folderDetails,setSuccessModalOpen,setSuccessMessage,setSelectedAssignment)
   };
   console.log(Data, "cad");
   console.log(setFolderDetails,"ssAAss")
@@ -131,6 +138,12 @@ const AssignToModal = ({ open, onClose, assignToCadId,selectedDesign,setFolderDe
             </Box>
           </Modal>
         </div>
+        <SuccessModal
+        successModalOpen={successModalOpen}
+        handleOpen={handleOpenSuccess}
+        handleClose={handleCloseSuccess}
+        successMessage={successMessage}
+      />
       </div>
     </div>
   );
