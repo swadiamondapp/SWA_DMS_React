@@ -64,6 +64,40 @@ const DesignerDetailView = (props) => {
   //   assign_to_cad(setIsLoading,folderId,userId,selectedDesigns)
   // }
   console.log(props.folderDetails, "dataP");
+
+  const formatDate = (isoString) => {
+    const date = new Date(isoString);
+
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+
+    // Extract year, month, and day from the Date object
+    const year = date.getFullYear();
+    const monthIndex = date.getMonth();
+    const monthName = months[monthIndex];
+    const month = String(monthIndex + 1).padStart(2, "0"); // Months are 0-indexed
+    const day = String(date.getDate()).padStart(2, "0");
+
+    // Extract hours, minutes, and seconds from the Date object
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const seconds = String(date.getSeconds()).padStart(2, "0");
+
+    // Return the formatted date in the format "YYYY-MM-DD HH:MM:SS"
+    return `${day}-${monthName}-${year} ${hours}:${minutes}`;
+  };
   return (
     <div className="DesignerAssignmentPanel">
       <DesignBtn
@@ -106,7 +140,7 @@ const DesignerDetailView = (props) => {
                     <div className="Card_Details_Inner">
                       <div className="Inner_Left">
                         <p>{item.paper_design.designer_name}</p>
-                        <p>date panding</p>
+                        <p>{formatDate(item.paper_design.created_at)}</p>
                       </div>
                     </div>
                   </div>

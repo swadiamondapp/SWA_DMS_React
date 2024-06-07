@@ -44,3 +44,4 @@ export const DIAMOND_CLARITY = "diamondclarity-choices/";
 export const CREATE_CUSTOMIZATION = "customizations/create/";
 export const UPLOAD_CAD_DESIGN = "upload-cad-designs/";
 export const USER_ACTIVATING = "users";
+export const LIKE_DESIGN = "designs"

@@ -110,6 +110,11 @@
   display: flex;
   flex-direction: column;
 }
+.parant_relative_hide {
+  position: relative;
+  display: none;
+  flex-direction: column;
+}
 .error_select {
   position: absolute;
   color:rgb(218, 39, 39);
