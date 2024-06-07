@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./CreateCustomisation.css";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -119,7 +119,7 @@ const CreateCustomisation = ({
         chooseOutlet: dataToDisplaytomodal.outlet || "",
         productType: dataToDisplaytomodal.product_type || "",
         modelPrevioslyMade: dataToDisplaytomodal.previously_made || "",
-        prevMadeSKU: dataToDisplaytomodal.outlet || "",
+        prevMadeSKU: dataToDisplaytomodal.sku_of_swa_product || "",
         metalType: dataToDisplaytomodal.metal_type || "",
         weight: dataToDisplaytomodal.weight || "",
         size: dataToDisplaytomodal.size || "",
@@ -146,9 +146,13 @@ const CreateCustomisation = ({
     }),
     mobileNumber: Joi.string()
       .pattern(/^\d{10}$/)
+      .min(10)
+      .max(10)
       .required()
       .messages({
         "string.empty": `Mobile number required`,
+        "string.min": `Mobile number must be exactly 10 digits`,
+        "string.max": `Mobile number must be exactly 10 digits`,
       }),
     chooseOutlet: Joi.string().required().messages({
       "string.empty": `choose Outlet cannot be an empty feild`,
@@ -159,8 +163,13 @@ const CreateCustomisation = ({
     modelPrevioslyMade: Joi.string().required().messages({
       "string.empty": `cannot be an empty feild`,
     }),
-    prevMadeSKU: Joi.string().messages({
-      "string.empty": `cannot be an empty feild`,
+    prevMadeSKU: Joi.when("modelPrevioslyMade", {
+      is: Joi.string().valid("yes"), // When modelPrevioslyMade is "yes"
+      then: Joi.string().required().messages({
+        "any.required": `Previous Made SKU is required when Model previously made is yes`,
+        "string.empty": `Previous Made SKU cannot be empty when Model previously made is yes`,
+      }),
+      // Otherwise, it's optional
     }),
     metalType: Joi.string().required().messages({
       "string.empty": `Metal Type cannot be an empty feild`,
@@ -248,36 +257,75 @@ const CreateCustomisation = ({
   //   edit_customizaion_warehouse(setIsLoading, formData,id);
   // };
   const handleUpdateCustomization = () => {
-    edit_customizaion_warehouse(
-      setIsLoading,
-      formData,
-      displayEditDetailsById,
-      onClose,
-      setSuccessMessage,
-      setSuccessModalOpen,
-      imageFiles,
-      setData,
-      setImageFiles,
-      setCustomization,
-      userId
-    );
+    // Call schema validation first
+    const { error } = schema.validate(formData, {
+      abortEarly: false,
+      allowUnknown: true,
+    });
+  
+    if (error) {
+      // Form is invalid, display validation errors
+      const validationErrors = error.details.reduce((errors, err) => {
+        errors[err.path[0]] = err.message;
+        return errors;
+      }, {});
+      setErrors(validationErrors);
+    } else {
+      // Clear validation errors when the form is valid
+      setErrors({});
+      // Proceed with update logic here
+      edit_customizaion_warehouse(
+        setIsLoading,
+        formData,
+        displayEditDetailsById,
+        onClose,
+        setSuccessMessage,
+        setSuccessModalOpen,
+        imageFiles,
+        setData,
+        setImageFiles,
+        setCustomization,
+        userId
+      );
+    }
   };
   console.log(ErrorMessage, "asdfkd");
   const handleCreateSubmitCustomization = () => {
-    create_customizaion_warehouse(
-      setIsLoading,
-      formData,
-      displayEditDetailsById,
-      onClose,
-      setSuccessMessage,
-      setSuccessModalOpen,
-      setErrorMessage,
-      imageFiles,
-      setImageFiles,
-      userId,
-      setData,
-      setCustomization
-    );
+    // Call handleSubmitButton first
+    const { error } = schema.validate(formData, {
+      abortEarly: false,
+      allowUnknown: true,
+    });
+
+    if (error) {
+      // Form is invalid, display validation errors
+      const validationErrors = error.details.reduce((errors, err) => {
+        errors[err.path[0]] = err.message;
+        return errors;
+      }, {});
+      setErrors(validationErrors);
+    } else {
+      // Clear validation errors when the form is valid
+      setErrors({});
+      // Proceed with form submission logic here
+      console.log("Form submitted:", formData);
+
+      // Then proceed with handleCreateSubmitCustomization logic
+      create_customizaion_warehouse(
+        setIsLoading,
+        formData,
+        displayEditDetailsById,
+        onClose,
+        setSuccessMessage,
+        setSuccessModalOpen,
+        setErrorMessage,
+        imageFiles,
+        setImageFiles,
+        userId,
+        setData,
+        setCustomization
+      );
+    }
   };
   const handleFileUpload = (event) => {
     const selectedFiles = Array.from(event.target.files);
@@ -457,12 +505,24 @@ const CreateCustomisation = ({
                           </span>
                         )}
                       </div>
-                      <div className="parant_relative">
+                      <div
+                        className={
+                          formData.modelPrevioslyMade === "yes"
+                            ? "parant_relative"
+                            : "parant_relative_hide"
+                        }
+                        // style={{
+                        //   display:
+                        //     formData.modelPrevioslyMade === "no"
+                        //       ? "none"
+                        //       : "block",
+                        // }}
+                      >
                         <label htmlFor="" className="label_text">
                           If previously made please enter the SKU
                         </label>
                         <input
-                          type="text"
+                          type="number"
                           className="input_feild"
                           name="prevMadeSKU"
                           value={formData.prevMadeSKU}
@@ -493,7 +553,7 @@ const CreateCustomisation = ({
                         ) : (
                           <div className="leftI">
                             {dataToDisplaytomodal ? (
-                              <div  style={{display:'flex',gap:'10px'}}>
+                              <div style={{ display: "flex", gap: "10px" }}>
                                 <img
                                   // key={index}
                                   src={dataToDisplaytomodal.image}
@@ -517,7 +577,6 @@ const CreateCustomisation = ({
                                 <img
                                   // key={index}
                                   src={dataToDisplaytomodal.image3}
-                                  
                                   style={{
                                     width: "50px",
                                     height: "50px",
@@ -792,7 +851,6 @@ const CreateCustomisation = ({
         handleClose={handleClose}
         successMessage={successMessage}
       />
-      
     </div>
   );
 };

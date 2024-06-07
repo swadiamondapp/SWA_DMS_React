@@ -89,6 +89,8 @@ const Login = () => {
                   <label htmlFor="User name">User name</label>
                   <input
                     type="text"
+                    placeholder="User name"
+                    className="loginCred"
                     required
                     value={userCredentials.email}
                     onChange={(e) =>
@@ -106,6 +108,8 @@ const Login = () => {
                   <label htmlFor="Password">Password</label>
                   <input
                     type="text"
+                    className="loginCred"
+                    placeholder="Password"
                     required
                     value={userCredentials.password}
                     onChange={(e) =>

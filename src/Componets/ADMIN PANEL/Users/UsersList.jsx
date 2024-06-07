@@ -188,7 +188,9 @@ const UsersList = () => {
           data,
           setUserList,
           userIdToEdit,
-          setIsModalOpen
+          setIsModalOpen,
+          setSuccessModalOpen,
+          setSuccessMessage,
         );
       } else {
         await user_create(
@@ -208,12 +210,14 @@ const UsersList = () => {
       // Reset form data after successful submission
 
       // Form is valid, proceed with submission
+     
       console.log("Form submitted:", formData);
     } else {
       // Form is invalid, display errors
       setErrors(validationErrors);
     }
   };
+  console.log(ErrorMessages,"errorrrssd")
 
   // const validateForm = (data) => {
   //   const errors = {};
@@ -537,7 +541,7 @@ const UsersList = () => {
                       value={formData.email}
                       onChange={handleInput}
                     />
-                    {ErrorMessages?.reason?.phone_number && (
+                    {ErrorMessages?.reason?.email && (
                       <span className="error">
                         {ErrorMessages?.reason?.email}
                       </span>
@@ -657,16 +661,16 @@ const UsersList = () => {
                       <button
                         className={item.status === "ACTIVE" ?"active_btn" :"inactive_btn" }
                       >
-                        {item.status}
+                        {item.status === "ACTIVE" ? "Active":"Inactive"}
                       </button>
                       <button
                         className="sendmail_btn"
                         onClick={() => handleSendMail(item.id)}
                       >
                         {loadingStates[item.id] ? (
-                          <Box sx={{ display: "flex" }}>
+                          <Box sx={{ display: "flex",justifyContent:'center',alignItems:"center" }}>
                             <CircularProgress
-                              size={12} // Set the desired size
+                              size={16} // Set the desired size
                               sx={{ color: "#fff" }}
                             />
                           </Box>
@@ -683,7 +687,7 @@ const UsersList = () => {
                         checked={item.status === "ACTIVE"}
                         onChange={() => toggleStatus(item)}
                       />
-                      <span className="slider round"></span>
+                       <span className={`slider round ${item.status === "ACTIVE" ? "active" : "inactive"}`}></span>
                     </label>
                   </td>
                   <td style={{ position: "relative" }}>

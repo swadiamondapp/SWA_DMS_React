@@ -69,3 +69,7 @@
 .Left_Banner img {
   height: 100%;
 }
+.loginCred::placeholder {
+  opacity: 60% !important;
+  font-size: 12px;
+}

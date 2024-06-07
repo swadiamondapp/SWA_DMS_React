@@ -60,7 +60,7 @@ const AssignToModal = ({ open, onClose, assignToCadId,selectedDesign,setFolderDe
   console.log(assignToCadId,"assignToCadId====>")
   console.log(selectedDesign,"selectedDesign====>Modal")
   console.log(AssignedData,"resp_assignedData==>")
-
+  const activeCadrs = Data.filter(user => user.status === "ACTIVE")
   return (
     <div>
       <div className="">
@@ -100,7 +100,7 @@ const AssignToModal = ({ open, onClose, assignToCadId,selectedDesign,setFolderDe
 
               <Typography id="modal-modal-description" sx={{ mt: 5 }}>
                 <div className="main">
-                  {Data.map((item, index) => (
+                  {activeCadrs.map((item, index) => (
                     <div className="Avata" key={index}>
                       <div className="avatarContainer">
                         <div className="leftTo">

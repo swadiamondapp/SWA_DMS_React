@@ -3,7 +3,7 @@ import {
     checkApiStatus,
   } from "../../Pages/Services/ApiInstants";
   import { setToLocalstorage } from "../../Pages/Utils/Common";
-  import {CUSTOMIZATION_DETAILS, DELETE_CUSTOMIZATION, VOTERS_CUSTOMIZATION_LIST } from "../../Pages/Services/EndPoints";
+  import {CUSTOMIZATION_DETAILS, DELETE_CUSTOMIZATION, LIKE_DESIGN, VOTERS_CUSTOMIZATION_LIST } from "../../Pages/Services/EndPoints";
   import { ALL_DESIGNS,VOTED_DESIGN_LIST } from "../../Pages/Services/EndPoints";
 
   export const voters_customization_list = async (setIsLoading, setData) => {
@@ -81,6 +81,23 @@ import {
       const response = await apiService.get(`${CUSTOMIZATION_DETAILS}${userId}/`);
       if (response?.data?.results?.status_code === 200) {
         setCustomization(response.data.results.data)
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  export const like_design = async (setIsLoading,id,setData) => {
+    try {
+      const response = await apiService.post(`${LIKE_DESIGN}/${id}/like/`);
+      console.log("responces", response.data.results.status_code);
+      if (response?.data?.results?.status_code === 200) {
+      }
+      if (checkApiStatus(response)) {
+        all_Designs_items(setIsLoading,setData)
+        message.success("User created successfully!");
+      } else {
+        message.error("Failed to create user. Please try again.");
       }
     } catch (error) {
       console.log(error);

@@ -103,7 +103,9 @@ export const update_user = async (
   formData,
   setUserList,
   userId,
-  setIsModalOpen
+  setIsModalOpen,
+  setSuccessModalOpen,
+  setSuccessMessage,
 ) => {
   try {
     const response = await apiService.put(`${EDIT_USER}${userId}/`, formData, {
@@ -115,6 +117,13 @@ export const update_user = async (
     if (response?.data?.results?.status_code === 200) {
       setIsModalOpen(false);
       list_all_users(setIsLoading, setUserList);
+      setSuccessModalOpen(true)
+      setSuccessMessage("updated Successfully")
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1600);
+
+
     }
     if (checkApiStatus(response)) {
       //   setData(response.data.results.data);
@@ -163,7 +172,7 @@ export const user_activating = async (setIsLoading, usersId, statusPayload,setUs
     if (response.data.results.status_code === 200) {
       console.log(response,"respposUserA")
       list_all_users(setIsLoading, setUserList);
-      
+
     }
   } catch (error) {
     console.error("Error moving designs:", error);

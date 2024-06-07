@@ -2,17 +2,26 @@ import React, { useState, useEffect } from "react";
 import "./VotorsPanal.css";
 import ring from "../../../assets/ring.png";
 // import { voters_customization_list } from "./Api";
-import { all_Designs_items, voted_design_list } from "../Api";
+import { all_Designs_items, like_design, voted_design_list } from "../Api";
 
 const VotorsPanal = () => {
   const [Data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState([]);
   const [votedList, setVotedList] = useState([]);
+  const [animate, setAnimate] = useState({});
 
   useEffect(() => {
     all_Designs_items(setIsLoading, setData);
     voted_design_list(setIsLoading, setVotedList);
   }, []);
+
+  const handleLikeClicks = (id) => {
+    setAnimate((prev) => ({ ...prev, [id]: true }));
+    like_design(setIsLoading,id,setData)
+    setTimeout(() => {
+      setAnimate((prev) => ({ ...prev, [id]: false })); // Reset the animation state after it completes
+    }, 800); // Duration of the animation
+  };
   console.log(Data, "voterssss");
   console.log(votedList, "votedList");
 
@@ -57,10 +66,12 @@ const VotorsPanal = () => {
                       <p>{item.created_at}</p>
                     </div>
                     <div
-                      className="Inner_Right"
+                      // className="Inner_Right"
+                      className={`Inner_Right ${animate[item.id] ? "bounce" : ""}`}
                       style={{ borderRadius: "4px" }}
+                      onClick={()=>handleLikeClicks(item.id)}
                     >
-                      <p style={{ padding: "8px 18px" }}>0</p>
+                      <p style={{ padding: "8px 18px" }}>{item.likes_count}</p>
                     </div>
                   </div>
                 </div>
@@ -88,7 +99,9 @@ const VotorsPanal = () => {
                           className="Inner_Right"
                           style={{ borderRadius: "4px" }}
                         >
-                          <p style={{ padding: "8px 18px" }}>{item.likes_count}</p>
+                          <p className="jello" style={{ padding: "8px 18px" }}>
+                            {item.likes_count}
+                          </p>
                         </div>
                       </div>
                     </div>
