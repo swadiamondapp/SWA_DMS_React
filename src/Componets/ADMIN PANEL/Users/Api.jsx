@@ -63,18 +63,12 @@ export const user_create = async (
     }
   } catch (error) {
     console.log(error, "erreree");
-    const errorReason =
-      error?.response?.data?.results || error?.response?.data?.results;
+    const errorReason = error?.response?.data?.results;
     const errorReasonString = errorReason
       ? Object.values(errorReason).flat().join(", ")
       : "";
     console.log(errorReasonString, "errrstring");
-    setErrorMessages(
-      // error?.response?.data?.results?.reason?.email ||
-      //   error?.response?.data?.results?.reason?.phone_number
-      // errorReasonString
-      errorReason
-    );
+    setErrorMessages(errorReason);
   }
 };
 
@@ -105,7 +99,7 @@ export const update_user = async (
   userId,
   setIsModalOpen,
   setSuccessModalOpen,
-  setSuccessMessage,
+  setSuccessMessage
 ) => {
   try {
     const response = await apiService.put(`${EDIT_USER}${userId}/`, formData, {
@@ -117,13 +111,11 @@ export const update_user = async (
     if (response?.data?.results?.status_code === 200) {
       setIsModalOpen(false);
       list_all_users(setIsLoading, setUserList);
-      setSuccessModalOpen(true)
-      setSuccessMessage("updated Successfully")
+      setSuccessModalOpen(true);
+      setSuccessMessage("updated Successfully");
       setTimeout(() => {
         setSuccessModalOpen(false);
       }, 1600);
-
-
     }
     if (checkApiStatus(response)) {
       //   setData(response.data.results.data);
@@ -161,7 +153,12 @@ export const send_mail = async (
   }
 };
 
-export const user_activating = async (setIsLoading, usersId, statusPayload,setUserList) => {
+export const user_activating = async (
+  setIsLoading,
+  usersId,
+  statusPayload,
+  setUserList
+) => {
   try {
     const body = { status: statusPayload };
     console.log(body, "userActi");
@@ -170,9 +167,8 @@ export const user_activating = async (setIsLoading, usersId, statusPayload,setUs
       body
     );
     if (response.data.results.status_code === 200) {
-      console.log(response,"respposUserA")
+      console.log(response, "respposUserA");
       list_all_users(setIsLoading, setUserList);
-
     }
   } catch (error) {
     console.error("Error moving designs:", error);

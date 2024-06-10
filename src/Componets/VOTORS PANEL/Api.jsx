@@ -3,7 +3,7 @@ import {
     checkApiStatus,
   } from "../../Pages/Services/ApiInstants";
   import { setToLocalstorage } from "../../Pages/Utils/Common";
-  import {CUSTOMIZATION_DETAILS, DELETE_CUSTOMIZATION, LIKE_DESIGN, VOTERS_CUSTOMIZATION_LIST } from "../../Pages/Services/EndPoints";
+  import {CREATE_CUSTOMIZATION, CUSTOMIZATION_DETAILS, DELETE_CUSTOMIZATION, LIKE_DESIGN, VOTERS_CUSTOMIZATION_LIST } from "../../Pages/Services/EndPoints";
   import { ALL_DESIGNS,VOTED_DESIGN_LIST } from "../../Pages/Services/EndPoints";
 
   export const voters_customization_list = async (setIsLoading, setData) => {
@@ -103,6 +103,46 @@ import {
       console.log(error);
     }
   };
+
+  export const order_customization = async (setIsLoading,Data) => {
+    try {
+      const body = { 
+        salesman:"",
+        mobile_number:"",
+        outlet:"",
+        product_type:"",
+        previously_made:"",
+        metal_type:"",
+        sku:"",
+        image:"",
+        weight:"",
+        size:"",
+        diamond_weight:"",
+        no_of_diamond:"",
+        diamond_clarity:"",
+        diamond_colour:"",
+        budget:"",
+        sku_of_swa_product:"",
+        notes:"",
+        image2:"",
+        image3:"",
+      };
+      const response = await apiService.post(CREATE_CUSTOMIZATION,body);
+      console.log("responces", response.data.results.status_code);
+      if (response?.data?.results?.status_code === 200) {
+      }
+      if (checkApiStatus(response)) {
+        all_Designs_items(setIsLoading,setData)
+        message.success("User created successfully!");
+      } else {
+        message.error("Failed to create user. Please try again.");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
   
 
 

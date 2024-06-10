@@ -29,8 +29,9 @@ const Header = () => {
   const userName = localStorage.getItem("name");
   const userEmail = localStorage.getItem("email");
   const userPhoneNumber = localStorage.getItem("phone_number");
-  const userImage = localStorage.getItem("image");
+  const userImage = localStorage.getItem("Loginimage");
   const dropdownRef = useRef(null);
+  console.log(userImage,"userImage")
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -58,6 +59,8 @@ const Header = () => {
               <h3>Customize Request</h3>
             )}
             {location.pathname === "/wareHouse" && <h3>Votors panel</h3>}
+            {location.pathname === "/votorspanal" && <h3>Votors panel</h3>}
+            {location.pathname === "/gallery" && <h3>Gallery</h3>}
             {location.pathname === "/finishedProject" && (
               <h3>Finished project</h3>
             )}
@@ -97,7 +100,9 @@ const Header = () => {
               </div>
             </div>
             <div className="Profile_Admin" onClick={handleLogout}>
-              <img src={userImage} alt="" />
+              {userImage === 'http://dmstestapi.zinfog.in/media/default.png' ? (<><img src={profileimg}/></>):(<><img src={userImage}/></>)}
+
+              
               <div className="Name_Sub">
                 <p>{userName}</p>
                 <p className="Name_Sub_admin">{userType}</p>

@@ -22,6 +22,7 @@
     "file-saver": "^2.0.5",
     "joi": "^17.13.1",
     "lottie-web": "^5.12.2",
+    "otp-input-react": "^0.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.0.1",

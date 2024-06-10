@@ -16,8 +16,8 @@ const VotorsPanal = () => {
   }, []);
 
   const handleLikeClicks = (id) => {
-    setAnimate((prev) => ({ ...prev, [id]: true }));
     like_design(setIsLoading,id,setData)
+    setAnimate((prev) => ({ ...prev, [id]: true }));
     setTimeout(() => {
       setAnimate((prev) => ({ ...prev, [id]: false })); // Reset the animation state after it completes
     }, 800); // Duration of the animation
@@ -67,7 +67,7 @@ const VotorsPanal = () => {
                     </div>
                     <div
                       // className="Inner_Right"
-                      className={`Inner_Right ${animate[item.id] ? "bounce" : ""}`}
+                      className={`Inner_Right ${animate[item.id] ? "wobble" : ""}`}
                       style={{ borderRadius: "4px" }}
                       onClick={()=>handleLikeClicks(item.id)}
                     >
