@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Login.css";
 import LoginBnner from "../../assets/login.png";
-import { useNavigate } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import Joi from "joi";
 import { userLogin } from "./Api";
 
@@ -125,7 +125,9 @@ const Login = () => {
                   <p className="errorlogins" style={{color:'red'}}>{validationErrors.password}</p>
                 )}
                 <div className="Forgot_password">
+                  <Link to="/forgotpassword">
                   <p>Forgot password?</p>
+                  </Link>
                 </div>
                 <div className="Submit_btn">
                   <button>Login</button>

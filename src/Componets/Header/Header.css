@@ -43,6 +43,11 @@
   position: relative;
   cursor: pointer;
 }
+.Profile_Admin img {
+  border-radius: 32px;
+  width:40px;
+  height: 40px;
+}
 .Search_User {
   position: relative;
   overflow: hidden;
