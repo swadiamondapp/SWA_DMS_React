@@ -9,6 +9,7 @@ import { useLocation, Link, useNavigate } from "react-router-dom";
 import folderimg from "../../assets/folder.png";
 import { list_assignment_panel, list_folderDetails } from "./Api";
 import { list_assignment_folder } from "../ADMIN PANEL/Design Pool/Api";
+import DesignPools from "../DesignPoolExtended/DesignPools";
 // import { useLocation, useNavigate } from "react-router-dom";
 
 const AssignmentPanel = () => {
@@ -24,6 +25,8 @@ const AssignmentPanel = () => {
   const [assignmentFolder, setAssignmentFolder] = useState([]);
   const [folderId, setFolderId] = useState([]);
   const [selectedAssignment, setSelectedAssignment] = useState([]);
+  const [openDesignPool,setOpenDesignPool] = useState(false)
+  const [modalDetails,setModalDetails] = useState([])
   const [uploadInstructionsVisible, setUploadInstructionsVisible] =
     useState(true);
   const location = useLocation();
@@ -90,7 +93,12 @@ const AssignmentPanel = () => {
     }
   };
 
-
+const handleOpenDesignPool = () => {
+  setOpenDesignPool(true)
+}
+const hadnleCloseDesignPool = ()=> {
+  setOpenDesignPool(false)
+}
 
   console.log(Data, "assignmentDatatat");
   console.log(selectedAssignment,"selecte==================>")
@@ -117,6 +125,11 @@ const AssignmentPanel = () => {
       date: "12 june 2023",
     },
   ];
+
+  const handleDrawModal = (item)=> {
+    setOpenDesignPool(true)
+    setModalDetails(item)
+  }
   return (
     <div className="Parent_AssignmentView">
       <div
@@ -162,7 +175,7 @@ const AssignmentPanel = () => {
           <h3 className="HeadNewdesign">Selected</h3>
           <div className="Card_Design_Parent">
             {Data.map((item) => (
-              <div className="New_Design_card">
+              <div className="New_Design_card" onClick={()=> handleDrawModal(item && item.items[0].paper_design.image)}>
                 <div className="Card_img">
                   {console.log(
                     "images...?",
@@ -258,6 +271,13 @@ const AssignmentPanel = () => {
         </div>
         {/* Folders */}
       </div>
+      <DesignPools 
+       handleOpenDesignPool={ handleOpenDesignPool}
+       hadnleCloseDesignPool={hadnleCloseDesignPool}
+       openDesignPool={openDesignPool}
+       modalDetails={modalDetails}
+
+      />
     </div>
   );
 };
