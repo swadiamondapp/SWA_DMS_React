@@ -109,7 +109,7 @@ const handleAssignment = () => {
           </div>
         )}
 
-        {location.pathname === "/assignmentpanel" && (
+        {location.pathname === "/assignmentpanel" && selectButtonLabel === "Unselect" &&  (
           <div className="Parent_MoveTo">
             <button className="D_moveBtn" onClick={() => handleCreatedFolder()}>
               Create folder

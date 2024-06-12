@@ -25,8 +25,8 @@ const AssignmentPanel = () => {
   const [assignmentFolder, setAssignmentFolder] = useState([]);
   const [folderId, setFolderId] = useState([]);
   const [selectedAssignment, setSelectedAssignment] = useState([]);
-  const [openDesignPool,setOpenDesignPool] = useState(false)
-  const [modalDetails,setModalDetails] = useState([])
+  const [openDesignPool, setOpenDesignPool] = useState(false);
+  const [modalDetails, setModalDetails] = useState([]);
   const [uploadInstructionsVisible, setUploadInstructionsVisible] =
     useState(true);
   const location = useLocation();
@@ -93,15 +93,15 @@ const AssignmentPanel = () => {
     }
   };
 
-const handleOpenDesignPool = () => {
-  setOpenDesignPool(true)
-}
-const hadnleCloseDesignPool = ()=> {
-  setOpenDesignPool(false)
-}
+  const handleOpenDesignPool = () => {
+    setOpenDesignPool(true);
+  };
+  const hadnleCloseDesignPool = () => {
+    setOpenDesignPool(false);
+  };
 
   console.log(Data, "assignmentDatatat");
-  console.log(selectedAssignment,"selecte==================>")
+  console.log(selectedAssignment, "selecte==================>");
 
   const card = [
     {
@@ -126,10 +126,10 @@ const hadnleCloseDesignPool = ()=> {
     },
   ];
 
-  const handleDrawModal = (item)=> {
-    setOpenDesignPool(true)
-    setModalDetails(item)
-  }
+  const handleDrawModal = (item) => {
+    setOpenDesignPool(true);
+    setModalDetails(item);
+  };
   return (
     <div className="Parent_AssignmentView">
       <div
@@ -175,21 +175,27 @@ const hadnleCloseDesignPool = ()=> {
           <h3 className="HeadNewdesign">Selected</h3>
           <div className="Card_Design_Parent">
             {Data.map((item) => (
-              <div className="New_Design_card" onClick={()=> handleDrawModal(item && item.items[0].paper_design.image)}>
+              <div className="New_Design_card">
                 <div className="Card_img">
                   {console.log(
                     "images...?",
                     item && item.items[0].paper_design
                   )}
-                  <img src={item && item.items[0].paper_design.image} alt="" />
+                  <img
+                    src={item && item.items[0].paper_design.image}
+                    alt=""
+                    onClick={() =>
+                      handleDrawModal(item && item.items[0].paper_design.image)
+                    }
+                  />
                   {showDeleteMoveButtons && <div className="Overlay" />}
                 </div>
                 <div className="Card_Details">
                   <h3>ID : {item && item.items[0].paper_design.designcode}</h3>
                   <div className="Card_Details_Inner">
                     <div className="Inner_Left">
-                      <p>{item.name}</p>
-                      <p>{item && item.items[0].paper_design.created_at}</p>
+                      <p>{item && item.items[0].paper_design.designer}</p>
+                      <p>{item && item.created_at}</p>
                     </div>
                     <div className="Inner_Right">
                       <p>
@@ -208,9 +214,7 @@ const hadnleCloseDesignPool = ()=> {
                     name="fav_language"
                     value={item && item.items[0].id}
                     onChange={() =>
-                      handleCheckboxChange(
-                        item && item.items[0].id
-                      )
+                      handleCheckboxChange(item && item.items[0].id)
                     }
                     checked={selectedAssignment.includes(
                       item && item.items[0].id
@@ -221,7 +225,10 @@ const hadnleCloseDesignPool = ()=> {
                 {!showRadioButtons &&
                   location.pathname === "/assignmentpanel" && (
                     <div onClick={toggleDeleteMoveButtons} ref={dotsRef}>
-                      <BsThreeDotsVertical className="A_dots" />
+                      <BsThreeDotsVertical
+                        className="A_dots"
+                        style={{ fontSize: "20px" }}
+                      />
                     </div>
                   )}
                 {showDeleteMoveButtons && (
@@ -242,7 +249,11 @@ const hadnleCloseDesignPool = ()=> {
             {console.log("assignment--===>", assignmentFolder)}
             {assignmentFolder.map((item) => (
               <div className="folder__card">
-                <Link to={`/assignmentpaneldetailsview/${item.id}?name=${encodeURIComponent(item.name)}`}>
+                <Link
+                  to={`/assignmentpaneldetailsview/${
+                    item.id
+                  }?name=${encodeURIComponent(item.name)}`}
+                >
                   <img src={folderimg} alt="" />
                 </Link>
 
@@ -271,12 +282,11 @@ const hadnleCloseDesignPool = ()=> {
         </div>
         {/* Folders */}
       </div>
-      <DesignPools 
-       handleOpenDesignPool={ handleOpenDesignPool}
-       hadnleCloseDesignPool={hadnleCloseDesignPool}
-       openDesignPool={openDesignPool}
-       modalDetails={modalDetails}
-
+      <DesignPools
+        handleOpenDesignPool={handleOpenDesignPool}
+        hadnleCloseDesignPool={hadnleCloseDesignPool}
+        openDesignPool={openDesignPool}
+        modalDetails={modalDetails}
       />
     </div>
   );

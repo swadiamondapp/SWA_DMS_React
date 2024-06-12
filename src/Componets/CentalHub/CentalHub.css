@@ -11,6 +11,7 @@
 .inputContainer {
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 .labelText {
     font-family: "Inter", sans-serif;

@@ -8,6 +8,7 @@ import closeButton from "../../assets/closeButton.svg";
 import { Select } from "antd";
 import { upload_cad_design } from "../CAD/Api";
 import SuccessModal from "../SuccessModal/SuccessModal";
+import Joi from "joi";
 
 const style = {
   position: "absolute",
@@ -40,6 +41,8 @@ const CentalHub = ({ open, onClose }) => {
     useState(true);
   const [uploadInstructionsVisibleRender, setUploadInstructionsVisibleRender] =
     useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
+  console.log(errorMessage, "designCodeEe");
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -50,13 +53,11 @@ const CentalHub = ({ open, onClose }) => {
     );
   };
   const handleCancelButton = () => {
-
     setImageFile(null);
     setThreeDFile(null);
     setUploadInstructionsVisible(true);
     setUploadInstructionsVisibleRender(true);
-    onClose(); 
-
+    onClose();
   };
 
   const onChange = (value) => {
@@ -93,7 +94,64 @@ const CentalHub = ({ open, onClose }) => {
     }
   };
 
+  // const handleUploadFile = () => {
+  //   if (errorMessage) {
+  //     alert("Please correct the errors before uploading.");
+  //     return;
+  //   }
+  //   upload_cad_design(
+  //     setIsLoading,
+  //     designCode,
+  //     imageFile,
+  //     threeDFile,
+  //     onClose,
+  //     setSuccessModalOpen,
+  //     setSuccessMessage
+  //   );
+  //   console.log("Image file:", imageFile);
+  //   console.log("3D file:", threeDFile);
+  //   console.log("Design code:", designCode);
+  // };
+
+  
+
+  const designCodeSchema = Joi.string()
+  .regex(/^SWACAD0\d*$/i)
+  .required()
+  .empty('')
+  .messages({
+    "string.pattern.base": "Design code must start with SWACAD0 followed by digits",
+    "string.empty": "Design code cannot be an empty field",
+    "any.required": "Design code is required",
+  });
+
+  
+  const handleDesignCodeChange = (event) => {
+    const value = event.target.value.toUpperCase();
+    const { error } = designCodeSchema.validate(value);
+    if (error) {
+      setErrorMessage(error.message);
+    } else {
+      setErrorMessage("");
+    }
+    setDesignCode(value);
+    console.log("Design code:", value);
+    console.log("Error message:", error?.message);
+  };
   const handleUploadFile = () => {
+    const { error } = designCodeSchema.validate(designCode);
+    if (error) {
+      setErrorMessage(error.message);
+      return;
+    } else {
+      setErrorMessage("");
+    }
+
+    if (!imageFile || !threeDFile) {
+      alert("Please upload both image and 3D files.");
+      return;
+    }
+
     upload_cad_design(
       setIsLoading,
       designCode,
@@ -108,9 +166,6 @@ const CentalHub = ({ open, onClose }) => {
     console.log("Design code:", designCode);
   };
 
-  const handleDesignCodeChange = (event) => {
-    setDesignCode(event.target.value.toUpperCase());
-  };
 
   return (
     <div>
@@ -137,7 +192,7 @@ const CentalHub = ({ open, onClose }) => {
                     Upload file
                   </span>
                   <button
-                    onClick={()=> onClose()}
+                    onClick={() => onClose()}
                     // onClose={onClose}
                     style={{
                       position: "absolute",
@@ -217,17 +272,21 @@ const CentalHub = ({ open, onClose }) => {
                       />
                     </div>
                   </div>
-                  <div className="inputContainer">
+                  <div className="inputContainer" >
                     <label htmlFor="" className="labelText">
                       ID
                     </label>
+                    {errorMessage && <div className="error">{errorMessage}</div>}
                     <input
                       type="text"
+                      placeholder="SWACAD0--"
                       value={designCode}
                       onChange={handleDesignCodeChange}
                       className="inputFeildUpload"
-                    />
+                      />
                   </div>
+              
+                
 
                   <div className="buttons">
                     <button
@@ -236,7 +295,10 @@ const CentalHub = ({ open, onClose }) => {
                     >
                       cancel
                     </button>
-                    <button onClick={handleUploadFile} className="upButton">
+                    <button
+                      onClick={() => handleUploadFile()}
+                      className="upButton"
+                    >
                       Upload
                     </button>
                   </div>

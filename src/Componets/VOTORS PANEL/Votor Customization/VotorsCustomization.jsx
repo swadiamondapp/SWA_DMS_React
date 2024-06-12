@@ -5,6 +5,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import CustomiseRequest from "../../CustomiseRequest/CustomiseRequiest";
 import { voters_customization_list, delete_customization } from "../Api";
 import DeleteConfirmationModal from "../../ConfirmationModal/DeleteConfirmationModal";
+import SuccessModal from "../../SuccessModal/SuccessModal";
 
 const VotorsCustomization = () => {
   const [showEditDelete, setShowEditDelete] = useState(null);
@@ -15,12 +16,15 @@ const VotorsCustomization = () => {
   const [customization, setCustomization] = useState([]);
   const [successDeleteMessage, setSuccessDeleteMessage] = useState("");
   const [DeleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
+  const [successModalOpen, setSuccessModalOpen] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
   const [DeleteID, setDeleteId] = useState("");
+  const [refresh, setRefresh] = useState(false);
   const dropdownRef = useRef(null);
 
   useEffect(() => {
-    voters_customization_list(setIsLoading, setData);
-  }, []);
+    voters_customization_list(setIsLoading, setData,setRefresh );
+  }, [refresh]);
 
   const handleDeleteCustomization = (cuzId) => {
     setDeleteId(cuzId);
@@ -58,6 +62,13 @@ const VotorsCustomization = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  const handleClose = () => {
+    setSuccessModalOpen(false);
+  };
+  const handleOpen = () => {
+    setSuccessModalOpen(true);
+  };
 
   console.log(Data, "votersCuz");
 
@@ -165,9 +176,17 @@ const VotorsCustomization = () => {
             setIsLoading,
             setData,
             DeleteID,
-            setDeleteConfirmationOpen
+            setDeleteConfirmationOpen,
+            setSuccessMessage,
+            setSuccessModalOpen
           );
         }}
+      />
+      <SuccessModal
+        successModalOpen={successModalOpen}
+        handleOpen={handleOpen}
+        handleClose={handleClose}
+        successMessage={successMessage}
       />
     </div>
   );

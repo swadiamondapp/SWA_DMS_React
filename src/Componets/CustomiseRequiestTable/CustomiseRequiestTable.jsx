@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "../../Componets/CustomiseRequiestTable/CustomiseRequiestTable.css";
 import PrintIcon from "../../assets/printIcon.png";
 import EyeIcon from "../../assets/eyeIcon.png";
@@ -10,6 +10,8 @@ import {
   delete_customization_warehouse,
 } from "../../Pages/WareHousePageView/Api";
 import { delete_customization } from "../VOTORS PANEL/Api";
+import DeleteConfirmationModal from "../ConfirmationModal/DeleteConfirmationModal";
+import SuccessModal from "../SuccessModal/SuccessModal";
 
 const data = [
   {
@@ -61,13 +63,17 @@ const CustomizationTable = (props) => {
   const [wareHouseuserId, setWareHouseUserId] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showEditDelete, setShowEditDelete] = useState(null);
+  const [successModalOpen, setSuccessModalOpen] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [DeleteConfirmationOpen,setDeleteConfirmationOpen] = useState(false)
+  const [userId,setUserId] =useState([])
+
   const [Data, setData] = useState([]);
   const [CustomizationWareHouseData, setCustomizationWareHouseData] = useState(
     []
   );
   const [CustomizationListData, setCustomizationListData] = useState([]);
   const dropdownRefs = useRef([]);
-
 
   useEffect(() => {
     customizaztion_list_wareHouse(setIsLoading, setCustomizationListData);
@@ -83,19 +89,35 @@ const CustomizationTable = (props) => {
     );
   };
   const handleDeleteCustomization = (userId) => {
-    delete_customization_warehouse(
-      setIsLoading,
-      userId,
-      setCustomizationListData
-    );
+    setUserId(userId)
+    setDeleteConfirmationOpen(true)
+    // delete_customization_warehouse(
+    //   setIsLoading,
+    //   userId,
+    //   setCustomizationListData,
+    //   setDeleteConfirmationOpen,
+    //   setSuccessModalOpen,
+    //   setSuccessMessage
+    // );
   };
+
+  const handleOpen = () => {
+    setSuccessModalOpen(true);
+  };
+  const handleClose = () => {
+    setSuccessModalOpen(false);
+  };
+  const handleDeleteClose = ()=> {
+    setDeleteConfirmationOpen(false)
+  }
+  const handleDeleteOpen = ()=> {
+    setDeleteConfirmationOpen(true)
+  }
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
-        dropdownRefs.current.every(
-          (ref) => ref && !ref.contains(event.target)
-        )
+        dropdownRefs.current.every((ref) => ref && !ref.contains(event.target))
       ) {
         // Click occurred outside the dropdown, so close it
         setShowEditDelete(null);
@@ -166,7 +188,10 @@ const CustomizationTable = (props) => {
                 >
                   <img src={ThreeDot} />
                   {showEditDelete === index && (
-                    <div ref={(el) => (dropdownRefs.current[index] = el)}  className="Edit_delete_btn_user_warehouse">
+                    <div
+                      ref={(el) => (dropdownRefs.current[index] = el)}
+                      className="Edit_delete_btn_user_warehouse"
+                    >
                       {/* <p
                         className="Edit_btn_user"
                         onClick={() => handleEditCustomization(item.id)}
@@ -175,7 +200,7 @@ const CustomizationTable = (props) => {
                       </p> */}
                       <p
                         className="Delete_btn_user"
-                        style={{padding:'10px'}}
+                        style={{ padding: "10px" }}
                         onClick={() => handleDeleteCustomization(item.id)}
                       >
                         Delete
@@ -193,6 +218,30 @@ const CustomizationTable = (props) => {
         onClose={() => setOpenCRModal(false)}
         wareHouseuserId={wareHouseuserId}
         CustomizationWareHouseData={CustomizationWareHouseData}
+      />
+       <DeleteConfirmationModal
+        DeleteConfirmationOpen={DeleteConfirmationOpen}
+        handleDeleteClose={handleDeleteClose}
+        setDeleteConfirmationOpen={setDeleteConfirmationOpen}
+        handleDeleteOpen={handleDeleteOpen}
+        isLoading={isLoading}
+        deleteFunction={() => {
+          delete_customization_warehouse(
+            setIsLoading,
+            userId,
+            setCustomizationListData,
+            setDeleteConfirmationOpen,
+            setSuccessModalOpen,
+            setSuccessMessage
+
+          )
+        }}
+      />
+      <SuccessModal
+        successModalOpen={successModalOpen}
+        handleOpen={handleOpen}
+        handleClose={handleClose}
+        successMessage={successMessage}
       />
     </div>
   );
