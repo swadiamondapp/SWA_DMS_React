@@ -27,7 +27,7 @@ const schema = Joi.object({
     "string.empty": `cannot be an empty feild`,
   }),
   email: Joi.string()
-    .email({ tlds: { allow: false } })
+    .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
     .required()
     .messages({
       "string.empty": "Email cannot be an empty field",
@@ -190,7 +190,7 @@ const UsersList = () => {
           userIdToEdit,
           setIsModalOpen,
           setSuccessModalOpen,
-          setSuccessMessage,
+          setSuccessMessage
         );
       } else {
         await user_create(
@@ -210,14 +210,14 @@ const UsersList = () => {
       // Reset form data after successful submission
 
       // Form is valid, proceed with submission
-     
+
       console.log("Form submitted:", formData);
     } else {
       // Form is invalid, display errors
       setErrors(validationErrors);
     }
   };
-  console.log(ErrorMessages,"errorrrssd")
+  console.log(ErrorMessages, "errorrrssd");
 
   // const validateForm = (data) => {
   //   const errors = {};
@@ -569,27 +569,27 @@ const UsersList = () => {
                       options={[
                         {
                           value: 2,
-                          label: "DESIGNER",
+                          label: "Designer",
                         },
                         {
                           value: 3,
-                          label: "CAD",
+                          label: "Cad",
                         },
                         {
                           value: 4,
-                          label: "VOTERS",
+                          label: "Voters",
                         },
                         {
                           value: 5,
-                          label: "RENDERS",
+                          label: "Renders",
                         },
                         {
                           value: 6,
-                          label: "WAREHOUSE",
+                          label: "Warehouse",
                         },
                         {
                           value: 7,
-                          label: "CENTRAL HUB",
+                          label: "Central Hub",
                         },
                       ]}
                     />
@@ -633,17 +633,18 @@ const UsersList = () => {
                   <td>{item.email}</td>
                   <td>
                     <div className="view_password">
-                      <span className="passwordEncy">
-                        {showPassword[item.id]
-                          ? item.Password
-                          : "*********************"}
-                      </span>
+                      {showPassword[item.id] ? (
+                        <span className="passwordEncy">{item.Password}</span>
+                      ) : (
+                        <span className="passwordEncy_star">*************</span>
+                      )}
                       {showPassword ? (
                         <IoEye
                           style={{
                             color: "#455173",
                             cursor: "pointer",
                             opacity: showPassword ? 0.5 : 1,
+                            marginRight: "25px",
                           }}
                           onClick={() => handleTogglePassword(item.id)}
                         />
@@ -659,16 +660,26 @@ const UsersList = () => {
                   <td>
                     <div className="active_sendmail">
                       <button
-                        className={item.status === "ACTIVE" ?"active_btn" :"inactive_btn" }
+                        className={
+                          item.status === "ACTIVE"
+                            ? "active_btn"
+                            : "inactive_btn"
+                        }
                       >
-                        {item.status === "ACTIVE" ? "Active":"Inactive"}
+                        {item.status === "ACTIVE" ? "Active" : "Inactive"}
                       </button>
                       <button
                         className="sendmail_btn"
                         onClick={() => handleSendMail(item.id)}
                       >
                         {loadingStates[item.id] ? (
-                          <Box sx={{ display: "flex",justifyContent:'center',alignItems:"center" }}>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                            }}
+                          >
                             <CircularProgress
                               size={16} // Set the desired size
                               sx={{ color: "#fff" }}
@@ -687,7 +698,11 @@ const UsersList = () => {
                         checked={item.status === "ACTIVE"}
                         onChange={() => toggleStatus(item)}
                       />
-                       <span className={`slider round ${item.status === "ACTIVE" ? "active" : "inactive"}`}></span>
+                      <span
+                        className={`slider round ${
+                          item.status === "ACTIVE" ? "active" : "inactive"
+                        }`}
+                      ></span>
                     </label>
                   </td>
                   <td style={{ position: "relative" }}>
@@ -731,13 +746,16 @@ const UsersList = () => {
           DeleteConfirmationOpen={DeleteConfirmationOpen}
           handleDeleteClose={handleDeleteClose}
           handleDeleteOpen={handleDeleteOpen}
+          setDeleteConfirmationOpen={setDeleteConfirmationOpen}
           successMessage={successDeleteMessage}
           deleteFunction={() => {
             user_delete(
               setIsLoading,
               setUserList,
               deleteId,
-              setDeleteConfirmationOpen
+              setDeleteConfirmationOpen,
+              setSuccessMessage,
+              setSuccessModalOpen
             );
           }}
         />

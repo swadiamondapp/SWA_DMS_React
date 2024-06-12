@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import "./DeleteConfirmationModal.css";
 import CircularProgress from "@mui/material/CircularProgress";
+import SuccessModal from "../SuccessModal/SuccessModal";
 
 const successM = {
   position: "absolute",
@@ -32,7 +33,6 @@ const DeleteConfirmationModal = ({
     const handleResize = () => {
       setIsMobileView(window.innerWidth >= 300 && window.innerWidth <= 575);
     };
-
     window.addEventListener("resize", handleResize);
 
     // Cleanup function to remove event listener when component unmounts
@@ -41,9 +41,10 @@ const DeleteConfirmationModal = ({
     };
   }, []);
 
+
+
   const handleDeleteModalButton = () => {
-    deleteFunction();
-    votersDeleteFunction();
+    deleteFunction()
   };
   const handlCancelButton = () => {
     setDeleteConfirmationOpen(false);

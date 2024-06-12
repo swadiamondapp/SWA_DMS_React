@@ -13,10 +13,10 @@ const PasswordResetComplete = () => {
       <div className="Login_bg">
         <div className="Right_Section_forgot">
           <div className="resetPass">
-            <div style={{margin:'10px 0px'}} >
+            <div style={{marginTop:'10px'}} >
               <img src={SuccessIcon} alt="" />
             </div>
-            <p className="forgotTitle" style={{ textAlign: "center", margin:'10px 0px'}}>
+            <p className="forgotTitle" style={{ textAlign: "center", margin:'20px 0px'}}>
               Password reset completed
             </p>
             <span className="forgotSub">
@@ -26,7 +26,7 @@ const PasswordResetComplete = () => {
             <span className="forgotSub">
               proceed to login in to your account
             </span>
-            <Link to="/" style={{ margin: "15px 0px" ,width:"100%"}}>
+            <Link to="/" style={{ margin: "20px 0px 10px 0px" ,width:"100%"}}>
               <button  className="button_Send">
                 Go to Login
               </button>

@@ -5,13 +5,21 @@ import "./forgotPassword.css";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import eyeIcon from "../../assets/passEyeICon.png";
 import Joi from "joi";
+import { useParams } from "react-router-dom";
+import { reset_password } from "./Api";
 
 const CreateNewPassword = () => {
+  const storedEmail = localStorage.getItem("emailforgot");
+  const storedotp = localStorage.getItem("otpforgot");
+  const navigate = useNavigate();
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [errorMessageBack, setErrorMessageBack] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const { emailId, otp } = useParams();
 
   const handleNewPasswordVisibility = () => {
     setShowNewPassword(!showNewPassword);
@@ -51,6 +59,18 @@ const CreateNewPassword = () => {
     setError(""); // Clear any existing errors
     // Redirect or show a success message
   };
+
+  const handleResetPass = () => {
+    reset_password(
+      setIsLoading,
+      newPassword,
+      confirmPassword,
+      navigate,
+      setErrorMessageBack,
+      storedotp,
+      storedEmail
+    );
+  };
   return (
     <div>
       <div className="Login_bg">
@@ -62,7 +82,6 @@ const CreateNewPassword = () => {
               Your new password must be different from the
               <br /> previous password you used
             </span>
-            {error && <div className="error">{error}</div>}
             <form action="" onSubmit={handleSubmit}>
               <div className="input_forgot_feid">
                 <div className="relativeParant">
@@ -98,13 +117,21 @@ const CreateNewPassword = () => {
                     className="eye_icon"
                     onClick={handleConfirmPasswordVisibility}
                   />
-                {error && <div className="error">{error}</div>}
+                  {error && <div className="error">{error}</div>}
+                  {errorMessageBack && (
+                    <div className="error">{errorMessageBack}</div>
+                  )}
                 </div>
-                <Link to="/resetcomplete">
-                <button style={{marginTop:"25px"}} type="submit" className="button_Send">
+                {/* <Link to="/resetcomplete"> */}
+                <button
+                  style={{ marginTop: "25px" }}
+                  type="submit"
+                  className="button_Send"
+                  onClick={() => handleResetPass()}
+                >
                   Send
                 </button>
-                </Link>
+                {/* </Link> */}
               </div>
             </form>
           </div>

@@ -1,4 +1,4 @@
-import React, { useState,useEffect,useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./Header.css";
 import searchimg from "../../assets/search.png";
 import profileimg from "../../assets/profile.png";
@@ -16,7 +16,7 @@ const Header = () => {
   console.log("header===>FolderName", folderName);
   const [isLogoutDropdown, setIsLogoutDropdown] = useState(false);
   const navigate = useNavigate();
-  
+
   const handleLogout = () => {
     setIsLogoutDropdown(!isLogoutDropdown);
   };
@@ -31,7 +31,7 @@ const Header = () => {
   const userPhoneNumber = localStorage.getItem("phone_number");
   const userImage = localStorage.getItem("Loginimage");
   const dropdownRef = useRef(null);
-  console.log(userImage,"userImage")
+  console.log(userImage, "userImage");
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -47,7 +47,7 @@ const Header = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-  
+
   return (
     <div>
       <div className="Parent_Section">
@@ -88,30 +88,44 @@ const Header = () => {
               <h3>Customized Order</h3>
             )}
             {location.pathname === "/chat" && <h3>Chat</h3>}
-            {location.pathname === "/" && <h3>Design Pool</h3>}
-            {location.pathname === `/assignmentpaneldetailsview/${id}` && <h3>{folderName}</h3>}
-            
+            {location.pathname === "/" && <h3>Users</h3>}
+            {location.pathname === `/assignmentpaneldetailsview/${id}` && (
+              <h3>{folderName}</h3>
+            )}
           </div>
           <div className="Right_User_Section">
-            <div className="Search_Admin">
-              <div className="Search_User">
-                <input type="text" placeholder="Search Users" />
-                <img src={searchimg} alt="" />
+            {location.pathname !== "/assignmentpanel" && location.pathname !== "/designdashboard" &&(
+              <div className="Search_Admin">
+                <div className="Search_User">
+                  <input type="text" placeholder="Search Users" />
+                  <img src={searchimg} alt="" />
+                </div>
               </div>
-            </div>
-            <div className="Profile_Admin" onClick={handleLogout}>
-              {userImage === 'http://dmstestapi.zinfog.in/media/default.png' ? (<><img src={profileimg}/></>):(<><img src={userImage}/></>)}
+            )}
 
-              
+            <div className="Profile_Admin" onClick={handleLogout}>
+              {userImage === "http://dmstestapi.zinfog.in/media/default.png" ? (
+                <>
+                  <img src={profileimg} />
+                </>
+              ) : (
+                <>
+                  <img src={userImage} />
+                </>
+              )}
+
               <div className="Name_Sub">
-                <p>{userName}</p>
-                <p className="Name_Sub_admin">{userType}</p>
+                <p style={{ fontSize: "15px" }}>{userName}</p>
+                <p className="Name_Sub_admin">
+                  {userType.charAt(0).toUpperCase() +
+                    userType.slice(1).toLowerCase()}
+                </p>
               </div>
               <IoChevronDown style={{ color: "#1AA1A1" }} />
               {isLogoutDropdown && (
                 <div
                   className="log_out__btns"
-                  ref={dropdownRef} 
+                  ref={dropdownRef}
                   onClick={() => {
                     removeLocalstorage(navigate);
                   }}

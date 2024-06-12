@@ -74,8 +74,9 @@
 }
 .Left_User_Section h3 {
   color: #2e364c;
-  font-family: "Gilroy medium";
+  font-family: "Gilroy bold";
   font-weight: 700;
+  font-size: 20px;
 }
 .Name_Sub p {
   font-family: "Gilroy medium";
@@ -83,6 +84,6 @@
 }
 .Name_Sub_admin {
   color: #2a3144b5 !important;
-  font-size: 15px;
+  font-size: 12px;
   margin-top: 5px;
 }

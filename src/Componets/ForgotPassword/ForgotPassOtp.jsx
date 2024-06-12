@@ -1,12 +1,16 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import LoginBnner from "../../assets/login.png";
 import OtpIcon from "../../assets/otpIcon.png";
 import "./forgotPassword.css";
 import OTPInput, { ResendOTP } from "otp-input-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 const ForgotPassOtp = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [OTP, setOTP] = useState("");
+  const [email, setEmail] = useState("");
+
 
   const renderButton = (buttonProps) => {
     return (
@@ -20,10 +24,10 @@ const ForgotPassOtp = () => {
   //   };
 
   const inputStyle = {
-    width: "50px",
-    height: "50px",
+    width: "30px",
+    height: "30px",
     borderRadius: "4px",
-    border: '1px solid #DFE5EC'
+    border: "1px solid #DFE5EC",
   };
 
   const focusStyle = {
@@ -31,6 +35,16 @@ const ForgotPassOtp = () => {
     outline: "none",
   };
 
+  const handleOtpPin = () => {
+    if (OTP.length !== 6) {
+      alert("Please enter a 6-digit OTP code.");
+      return;
+    }
+    localStorage.setItem("otpforgot",OTP)
+    navigate(`/createnewpassword`);
+  };
+
+  console.log(email, "em");
   return (
     <div>
       <div className="Login_bg">
@@ -50,16 +64,19 @@ const ForgotPassOtp = () => {
                     value={OTP}
                     onChange={setOTP}
                     autoFocus
-                    OTPLength={4}
+                    OTPLength={6}
                     otpType="number"
                     disabled={false}
                     inputClassName="otp-input" // Apply input class
                     focusClassName="otp-input:focus" // Apply focus class
                   />
                 </div>
-                <Link to="/createnewpassword">
-                <button className="button_Send">Verify</button>
-                </Link>
+
+                {/* <Link to=""> */}
+                <button onClick={() => handleOtpPin()} className="button_Send">
+                  Verify
+                </button>
+                {/* </Link> */}
                 <div className="resentOtpButton" style={{ display: "flex" }}>
                   <span className="forgotSub">if code not recived, Click</span>
                   <ResendOTP

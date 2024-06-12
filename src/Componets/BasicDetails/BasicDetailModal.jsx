@@ -57,7 +57,7 @@ const BasicDetailModal = ({
 
   const schema = Joi.object({
     SKU: Joi.string().required().messages({
-      "string.empty": `SKU feild cannot be an empty`,
+      "string.empty": `SKU field cannot be empty`,
       "string.pattern.base": "Sales Man Name cannot contain numbers.",
     }),
     length: Joi.string().required().messages({
@@ -90,7 +90,7 @@ const BasicDetailModal = ({
     findings: Joi.string().required().messages({
       "string.empty": `cannot be empty`,
     }),
-    notes: Joi.string().required().messages({
+    notes: Joi.string().messages({
       "string.empty": `cannot be empty`,
     }),
   });

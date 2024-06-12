@@ -170,9 +170,22 @@ const CadAssignmentCard = () => {
   };
 
   const handleStatusChange = (id, status) => {
-    setStatuses((prevStatuses) => ({ ...prevStatuses, [id]: status }));
-    if (status === "transfer" || status === "finished") {
-      clearInterval(intervalRef.current); // Clear interval when status changes
+    // If the status is "Notstarted", stop the timer
+    if (status === "Notstarted") {
+      clearInterval(intervalRef.current); // Clear interval
+      setIsAnyTimerRunning(false);
+      setCurrentRunningTimerId(null);
+      setTimers((prevTimers) => {
+        const newTimers = { ...prevTimers };
+        if (newTimers[id]) {
+          newTimers[id].running = false;
+          newTimers[id].time = 0;
+        }
+        return newTimers;
+      });
+    } else if (status === "transfer" || status === "finished") {
+      // If the status is "transfer" or "finished", stop the timer as well
+      clearInterval(intervalRef.current); // Clear interval
       setIsAnyTimerRunning(false);
       setCurrentRunningTimerId(null);
       setTimers((prevTimers) => {
@@ -188,24 +201,33 @@ const CadAssignmentCard = () => {
         }
         return newTimers;
       });
+    } else {
+      // If the status is "Ongoing", start the timer
+      setTimers((prevTimers) => {
+        const newTimers = { ...prevTimers };
+  
+        for (const timerId in newTimers) {
+          if (newTimers[timerId].running && timerId !== id.toString()) {
+            newTimers[timerId].running = false;
+          }
+        }
+  
+        if (!newTimers[id] || !newTimers[id].running) {
+          newTimers[id] = { running: true, time: newTimers[id]?.time || 0 };
+          setCurrentRunningTimerId(id); // Set the currently running timer ID
+        }
+  
+        return newTimers;
+      });
+  
+      setIsAnyTimerRunning(true);
     }
-    // if (status === "finished") {
-    //   clearInterval(intervalRef.current); // Clear interval when status changes
-
-    //   setTimers((prevTimers) => {
-    //     const currentTime = timers[id]?.time || 0;
-    //     setFinishedTimes((prevFinishedTimes) => ({
-    //       ...prevFinishedTimes,
-    //       [id]: currentTime,
-    //     }));
-    //     const newTimers = { ...prevTimers };
-    //     if (newTimers[id]) {
-    //       newTimers[id].running = false;
-    //       newTimers[id].time = 0;
-    //     }
-    //     return newTimers;
-    //   });
-    // }
+  
+    // Update the status
+    setStatuses((prevStatuses) => ({
+      ...prevStatuses,
+      [id]: status,
+    }));
   };
 let cadDesign = folderDetailsById[0]?.assignment_items;
 console.log(cadDesign,'cadd')
@@ -267,6 +289,7 @@ console.log(cadDesign,'cadd')
                     <option value="Ongoing">Ongoing</option>
                     <option value="finished">Finished</option>
                     <option value="transfer">Transfer</option>
+                    <option value="Notstarted">Not Started</option>
                   </select>
 
                   <button

@@ -262,7 +262,7 @@ const CreateCustomisation = ({
       abortEarly: false,
       allowUnknown: true,
     });
-  
+
     if (error) {
       // Form is invalid, display validation errors
       const validationErrors = error.details.reduce((errors, err) => {
@@ -323,10 +323,11 @@ const CreateCustomisation = ({
         setImageFiles,
         userId,
         setData,
-        setCustomization
+        setCustomization,
       );
     }
   };
+
   const handleFileUpload = (event) => {
     const selectedFiles = Array.from(event.target.files);
     if (selectedFiles.length + imageFiles.length > 3) {
