@@ -55,9 +55,11 @@ const CentalHub = ({ open, onClose }) => {
   const handleCancelButton = () => {
     setImageFile(null);
     setThreeDFile(null);
+    setDesignCode("")
     setUploadInstructionsVisible(true);
     setUploadInstructionsVisibleRender(true);
     onClose();
+    setErrorMessage("")
   };
 
   const onChange = (value) => {
@@ -113,19 +115,17 @@ const CentalHub = ({ open, onClose }) => {
   //   console.log("Design code:", designCode);
   // };
 
-  
-
   const designCodeSchema = Joi.string()
-  .regex(/^SWACAD0\d*$/i)
-  .required()
-  .empty('')
-  .messages({
-    "string.pattern.base": "Design code must start with SWACAD0 followed by digits",
-    "string.empty": "Design code cannot be an empty field",
-    "any.required": "Design code is required",
-  });
+    .regex(/^SWACAD0\d*$/i)
+    .required()
+    .empty("")
+    .messages({
+      "string.pattern.base":
+        "Design code must start with SWACAD0 followed by digits",
+      "string.empty": "Design code cannot be an empty field",
+      "any.required": "Design code is required",
+    });
 
-  
   const handleDesignCodeChange = (event) => {
     const value = event.target.value.toUpperCase();
     const { error } = designCodeSchema.validate(value);
@@ -159,13 +159,26 @@ const CentalHub = ({ open, onClose }) => {
       threeDFile,
       onClose,
       setSuccessModalOpen,
-      setSuccessMessage
+      setSuccessMessage,
+      handleSuccessUpload 
     );
     console.log("Image file:", imageFile);
     console.log("3D file:", threeDFile);
     console.log("Design code:", designCode);
   };
 
+  const handleSuccessUpload = (message) => {
+    setSuccessModalOpen(true);
+    setSuccessMessage(message);
+
+    // Clear all state variables
+    setImageFile(null);
+    setThreeDFile(null);
+    setDesignCode("");
+    setUploadInstructionsVisible(true);
+    setUploadInstructionsVisibleRender(true);
+    setErrorMessage("");
+  };
 
   return (
     <div>
@@ -218,7 +231,7 @@ const CentalHub = ({ open, onClose }) => {
                     >
                       {uploadInstructionsVisible ? (
                         <>
-                          <span className="textA">PNG/JPG</span>
+                          <span className="textA">PNG/JPEG</span>
                           <span className="textB">
                             Drag & Drop or{" "}
                             <span style={{ color: "#0464D5" }}>
@@ -229,7 +242,7 @@ const CentalHub = ({ open, onClose }) => {
                         </>
                       ) : (
                         <span style={{ fontSize: "10px" }}>
-                          PNG/JPG File uploaded successfully!
+                          PNG/JPEG File uploaded successfully!
                         </span>
                       )}
                       <input
@@ -272,21 +285,21 @@ const CentalHub = ({ open, onClose }) => {
                       />
                     </div>
                   </div>
-                  <div className="inputContainer" >
+                  <div className="inputContainer">
                     <label htmlFor="" className="labelText">
                       ID
                     </label>
-                    {errorMessage && <div className="error">{errorMessage}</div>}
+                    {errorMessage && (
+                      <div className="error">{errorMessage}</div>
+                    )}
                     <input
                       type="text"
                       placeholder="SWACAD0--"
                       value={designCode}
                       onChange={handleDesignCodeChange}
                       className="inputFeildUpload"
-                      />
+                    />
                   </div>
-              
-                
 
                   <div className="buttons">
                     <button

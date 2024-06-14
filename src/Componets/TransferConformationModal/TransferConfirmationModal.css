@@ -1,0 +1,49 @@
+.transfer_modal_contianer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.transfer_modal_title {
+  font-family: "Gilroy bold";
+  font-size: 20px;
+  padding-bottom: 25px;
+}
+.transfer_modal_content_details {
+  font-family: "Gilroy reguler";
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  padding-bottom: 20px;
+  color:#000000
+}
+.transferModal_buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 16px;
+  padding-bottom: 10px;
+}
+.transfer_modal_cancel_button {
+  border: 1px solid #e0e1e1;
+  border-radius: 4px;
+  width: 100%;
+  padding: 16px 10px;
+  color: #999999;
+  background: transparent;
+}
+.transfer_modal_confirm_button {
+  border: 1px solid #0464d5;
+  border-radius: 4px;
+  width: 100%;
+  padding: 16px 10px;
+  background: #0464d5;
+  color: #ffffff;
+}
+.content_transferModal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

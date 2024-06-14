@@ -461,7 +461,7 @@ const UsersList = () => {
                           <div className="uploaded_image_container">
                             <img
                               src={imageUrl}
-                              alt="avatar"
+                              alt=""
                               style={{
                                 width: "100%",
                                 height: "100%",

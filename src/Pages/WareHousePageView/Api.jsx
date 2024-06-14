@@ -351,14 +351,11 @@ export const create_customizaion_warehouse = async (
   setCustomization,
   setData,
   userId,
-
 ) => {
   try {
     setIsLoading(true);
 
-    // Create a new FormData object
     const body = new FormData();
-
     // Append form data fields to FormData
     body.append("salesman", formData.sallerName);
     body.append("mobile_number", formData.mobileNumber);
@@ -378,29 +375,18 @@ export const create_customizaion_warehouse = async (
     body.append("notes", formData.notes);
 
     // Append images to FormData
-    if (imageFiles.length > 0) {
-      body.append("image", imageFiles[0]);
-    }
-    if (imageFiles.length > 1) {
-      body.append("image2", imageFiles[1]);
-    }
-    if (imageFiles.length > 2) {
-      body.append("image3", imageFiles[2]);
-    }
+    if (imageFiles.length > 0) body.append("image", imageFiles[0]);
+    if (imageFiles.length > 1) body.append("image2", imageFiles[1]);
+    if (imageFiles.length > 2) body.append("image3", imageFiles[2]);
 
-    console.log(body, "bodyCreation");
-
-    // Sending the request with FormData
     const response = await apiService.post(CREATE_CUSTOMIZATION, body, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
+      headers: { "Content-Type": "multipart/form-data" },
     });
 
     if (response.data.results.status_code === 200) {
+      // Update states upon successful response
       await customization_details(setIsLoading, setCustomization, userId);
-      await voters_customization_list(setIsLoading, setData );
-    
+      await voters_customization_list(setIsLoading, setData);
       onClose();
       setSuccessMessage("Customization Created Successfully");
       setSuccessModalOpen(true);
@@ -409,16 +395,18 @@ export const create_customizaion_warehouse = async (
       }, 1500);
       setErrorMessage("");
       setImageFiles([]);
-      setRefresh(prev => !prev);
+      // Ensure refresh state update if needed
+      // setRefresh((prev) => !prev);
+    } else {
+      throw new Error("Failed to create customization"); // Optional: handle specific error cases
     }
-
   } catch (error) {
-    console.error("Error moving designs:", error);
+    console.error("Error creating customization:", error);
     const errorReason = error?.response?.data?.mobile_number;
     const errorReasonString = errorReason
       ? Object.values(errorReason).flat().join(", ")
       : "";
-    console.log(errorReasonString, "errrstring");
+    console.log(errorReasonString, "errorReasonString");
     setErrorMessage(errorReasonString);
   } finally {
     setIsLoading(false);

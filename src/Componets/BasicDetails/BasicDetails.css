@@ -126,5 +126,6 @@
   margin-top: 2px;
 }
 .textArea_feild {
-  outline: none;
+  border-radius: 4px;
+
 }

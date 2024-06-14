@@ -81,7 +81,7 @@ const CreateCustomisation = ({
   const [uploadInstructionsVisible, setUploadInstructionsVisible] =
     useState(true);
   const [successMessage, setSuccessMessage] = useState(
-    "Mail Send Success Fully"
+    "Mail Send Successfully"
   );
   const [formData, setFormData] = useState({
     sallerName: "",
@@ -141,8 +141,8 @@ const CreateCustomisation = ({
 
   const schema = Joi.object({
     sallerName: Joi.string().required().messages({
-      "string.empty": `salesMan feild cannot be an empty field`,
-      "string.pattern.base": "Sales Man Name cannot contain numbers.",
+      "string.empty": `salesMan feild cannot be empty`,
+      "string.pattern.base": "SalesMan Name cannot contain numbers.",
     }),
     mobileNumber: Joi.string()
       .pattern(/^\d{10}$/)
@@ -161,7 +161,7 @@ const CreateCustomisation = ({
       "string.empty": `Product Type cannot be an empty feild`,
     }),
     modelPrevioslyMade: Joi.string().required().messages({
-      "string.empty": `cannot be an empty feild`,
+      "string.empty": `cannot be empty`,
     }),
     prevMadeSKU: Joi.when("modelPrevioslyMade", {
       is: Joi.string().valid("yes"), // When modelPrevioslyMade is "yes"
@@ -172,34 +172,34 @@ const CreateCustomisation = ({
       // Otherwise, it's optional
     }),
     metalType: Joi.string().required().messages({
-      "string.empty": `Metal Type cannot be an empty feild`,
+      "string.empty": `Metal Type cannot be empty`,
     }),
     weight: Joi.string().required().messages({
-      "string.empty": `cannot be an empty feild`,
+      "string.empty": `cannot be  empty`,
     }),
     size: Joi.string().required().messages({
-      "string.empty": `cannot be an empty feild`,
+      "string.empty": `cannot be  empty`,
     }),
     diamondWeight: Joi.string().required().messages({
-      "string.empty": `cannot be an empty feild`,
+      "string.empty": `cannot be  empty `,
     }),
     numberOfDiamonds: Joi.required().messages({
-      "string.empty": `cannot be an empty feild`,
+      "string.empty": `cannot be  empty`,
     }),
     diamondClarity: Joi.string().required().messages({
-      "string.empty": `cannot be an empty feild`,
+      "string.empty": `cannot be  empty`,
     }),
     diamondColor: Joi.string().required().messages({
-      "string.empty": `cannot be an empty feild`,
+      "string.empty": `cannot be  empty`,
     }),
     Budget: Joi.string().required().messages({
-      "string.empty": `cannot be an empty feild`,
+      "string.empty": `cannot be  empty`,
     }),
     swaProductSKU: Joi.string().required().messages({
-      "string.empty": `cannot be an empty feild`,
+      "string.empty": `cannot be  empty`,
     }),
     notes: Joi.string().required().messages({
-      "string.empty": `cannot be an empty feild`,
+      "string.empty": `cannot be empty`,
     }),
   });
 
@@ -429,7 +429,7 @@ const CreateCustomisation = ({
                           filterOption={filterOption}
                           style={{ width: "100%" }}
                           options={outLetDropDown}
-                          value={formData.chooseOutlet}
+                          value={formData.chooseOutlet || undefined}
                         />
                         {errors.chooseOutlet && (
                           <span className="error_select">
@@ -458,7 +458,7 @@ const CreateCustomisation = ({
                           filterOption={filterOption}
                           style={{ width: "100%" }}
                           options={productTypeDropDown}
-                          value={formData.productType}
+                          value={formData.productType || undefined}
                         />
                         <div style={{ marginTop: "2px" }}>
                           {errors.productType && (
@@ -498,7 +498,7 @@ const CreateCustomisation = ({
                               label: "No",
                             },
                           ]}
-                          value={formData.modelPrevioslyMade}
+                          value={formData.modelPrevioslyMade || undefined}
                         />
                         {errors.modelPrevioslyMade && (
                           <span className="error_select">
@@ -634,7 +634,7 @@ const CreateCustomisation = ({
                           filterOption={filterOption}
                           style={{ width: "100%" }}
                           options={MetalTypeDropDown}
-                          value={formData.metalType}
+                          value={formData.metalType || undefined}
                         />
                         {errors.metalType && (
                           <span className="error_select">
@@ -724,7 +724,7 @@ const CreateCustomisation = ({
                           filterOption={filterOption}
                           style={{ width: "100%" }}
                           options={SelectDiamondClarity}
-                          value={formData.diamondClarity}
+                          value={formData.diamondClarity || undefined}
                         />
                         {errors.diamondClarity && (
                           <span className="error_select">
@@ -750,7 +750,7 @@ const CreateCustomisation = ({
                           filterOption={filterOption}
                           style={{ width: "100%" }}
                           options={SelectDiamondColours}
-                          value={formData.diamondColor}
+                          value={formData.diamondColor || undefined}
                         />
                         {errors.diamondColor && (
                           <span className="error_select">
@@ -799,7 +799,7 @@ const CreateCustomisation = ({
                           onChange={handleInput}
                           id=""
                           cols="40"
-                          rows="10"
+                          rows="7"
                         >
                           {" "}
                         </textarea>
