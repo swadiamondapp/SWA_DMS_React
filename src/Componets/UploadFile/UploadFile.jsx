@@ -151,7 +151,7 @@ const UploadFile = ({open,onClose}) => {
                   <div className="buttons">
                     <button
                       className="cancerButton"
-                      onClick={onClose}
+                      onClick={()=>onClose()}
                     >
                       cancel
                     </button>

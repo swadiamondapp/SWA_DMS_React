@@ -45,8 +45,8 @@ const Gallery = () => {
                 onChange={handleChange}
                 aria-label="lab API tabs example"
               >
-                <Tab label="Stock Order" value="1" />
-                <Tab label="Customized Order" value="2" />
+                <Tab label="Stock Order" value="1" style={{textTransform:"capitalize"}}/>
+                <Tab label="Customized Order" value="2"  style={{textTransform:"capitalize"}}/>
               </TabList>
             </Box>
             <TabPanel value="1">
@@ -62,7 +62,7 @@ const Gallery = () => {
                           <img src={ring} alt="" />
                         </div>
                         <div className="Card_Details_Inner_gallery">
-                          <h3>ID : {item.product}</h3>
+                          <h3 className="galleryId">ID : {item.product}</h3>
 
                           <button onClick={() => setIsModalOpen(true)}>
                             Make order

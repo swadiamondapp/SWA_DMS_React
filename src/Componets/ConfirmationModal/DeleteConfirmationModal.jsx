@@ -16,7 +16,8 @@ const successM = {
   border: "none",
   boxShadow: 24,
   borderRadius: "4px",
-  p: 4,
+  px: 1,
+  py:4
 };
 
 const DeleteConfirmationModal = ({

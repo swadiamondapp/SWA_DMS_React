@@ -226,7 +226,7 @@ input:checked + .slider:before {
 }
 .Delete_btn_user {
   padding: 15px;
-  padding-top: 0px;
+  padding-top: 15px;
   cursor: pointer;
 }
 .title-Createuser > h3 {

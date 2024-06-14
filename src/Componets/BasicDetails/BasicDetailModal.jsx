@@ -263,7 +263,7 @@ const BasicDetailModal = ({
                         </label>
                         <Select
                           showSearch
-                          placeholder=""
+                          placeholder="-Select-"
                           optionFilterProp="children"
                           // value={formData.typeOfMetal}
                           onChange={(value) =>
@@ -308,7 +308,7 @@ const BasicDetailModal = ({
                         </label>
                         <Select
                           showSearch
-                          placeholder=""
+                          placeholder="-Select-"
                           optionFilterProp="children"
                           onChange={(value) =>
                             setFormData((prevState) => ({

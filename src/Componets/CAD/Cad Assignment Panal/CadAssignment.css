@@ -37,6 +37,16 @@
   color: #23a064;
   outline: none;
 }
+.transferedSelect{
+  padding: 10px 15px;
+  border-radius: 32px;
+  background: #0464D52B;
+  border: none;
+  margin-bottom: 12px;
+  color: #0464D5;
+  outline: none;
+  font-family: "Gilroy medium";
+}
 .Download_btn_hub {
   display: flex;
   align-items: center;
@@ -81,4 +91,14 @@
 }
 .Prinit_btn_hub svg {
   font-size: 20px;
+}
+.transferedText {
+  font-family: "Gilroy reguler";
+  font-size: 14px;
+}
+.transferedTextCong {
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
 }

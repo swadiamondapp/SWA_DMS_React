@@ -98,7 +98,8 @@
 .Card_Details h3 {
   color: #191d29;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 14px;
+  font-family: "Gilroy medium";
   margin-bottom: 15px;
 }
 .Inner_Left p:nth-child(1) {

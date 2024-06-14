@@ -23,8 +23,8 @@ const VotorsCustomization = () => {
   const dropdownRef = useRef(null);
 
   useEffect(() => {
-    voters_customization_list(setIsLoading, setData,setRefresh );
-  }, [refresh]);
+    voters_customization_list(setIsLoading, setData, );
+  }, []);
 
   const handleDeleteCustomization = (cuzId) => {
     setDeleteId(cuzId);
@@ -138,12 +138,12 @@ const VotorsCustomization = () => {
                     </div>
                     {showEditDelete === index && (
                       <div ref={dropdownRef} className="Edit_delete_btn_user">
-                        <p
+                        {/* <p
                           className="Edit_btn_user"
                           onClick={() => handleEditCustomization(item.id)}
                         >
                           Edit
-                        </p>
+                        </p> */}
                         <p
                           className="Delete_btn_user"
                           onClick={() => handleDeleteCustomization(item.id)}

@@ -13,6 +13,7 @@ const Header = () => {
   const location = useLocation();
   const query = new URLSearchParams(location.search);
   const folderName = query.get("name");
+  const folderNamec = query.get("folderNamec");
   console.log("header===>FolderName", folderName);
   const [isLogoutDropdown, setIsLogoutDropdown] = useState(false);
   const navigate = useNavigate();
@@ -80,6 +81,7 @@ const Header = () => {
             {location.pathname === `/designerassignview/${id}` && (
               <h3>{folderName}</h3>
             )}
+            {location.pathname === `/CadAssignment` && <h3>Assigments</h3>}
             {location.pathname === "/designerassign" && (
               <h3>Assignment panel</h3>
             )}
@@ -94,14 +96,22 @@ const Header = () => {
             )}
           </div>
           <div className="Right_User_Section">
-            {location.pathname !== "/assignmentpanel" && location.pathname !== "/designdashboard" &&(
-              <div className="Search_Admin">
-                <div className="Search_User">
-                  <input type="text" placeholder="Search Users" />
-                  <img src={searchimg} alt="" />
+            {location.pathname !== "/assignmentpanel" &&
+              location.pathname !== "/designdashboard" &&
+              location.pathname !== "/votorscustomization" &&
+              location.pathname !== "/gallery" &&
+              location.pathname !== "/CadAssignment" &&
+              location.pathname !== "/renderCard" &&
+              location.pathname !== "/votorspanal" &&
+              
+              (
+                <div className="Search_Admin">
+                  <div className="Search_User">
+                    <input type="text" placeholder="Search Users" />
+                    <img src={searchimg} alt="" />
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
             <div className="Profile_Admin" onClick={handleLogout}>
               {userImage === "http://dmstestapi.zinfog.in/media/default.png" ? (
