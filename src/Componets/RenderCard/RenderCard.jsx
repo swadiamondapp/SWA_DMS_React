@@ -5,6 +5,8 @@ import { useLocation, Link } from "react-router-dom";
 import { LiaCloudUploadAltSolid } from "react-icons/lia";
 import UpIcon from "../../assets/uPicon.png";
 import UploadFile from "../../Componets/UploadFile/UploadFile";
+import SuccessModal from "../SuccessModal/SuccessModal";
+import { createFinsishedProjects } from "../../Pages/Renders/Apis";
 
 const RenderCard = (props) => {
   const [uploadInstructionsVisible, setUploadInstructionsVisible] =
@@ -12,26 +14,27 @@ const RenderCard = (props) => {
   const [uploadedImage, setUploadedImage] = useState(null);
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
   const [activeDesignCode, setActiveDesignCode] = useState(null);
-  const [countdown, setCountdown] = useState(0);
+  const [elapsedTime, setElapsedTime] = useState(0);
 
   useEffect(() => {
-    let timer;
-    if (activeDesignCode && countdown > 0) {
-      timer = setInterval(() => {
-        setCountdown((prev) => prev - 1);
+    let timerInterval;
+    if (activeDesignCode) {
+      timerInterval = setInterval(() => {
+        setElapsedTime((prev) => prev + 1);
       }, 1000);
     }
 
-    if (countdown === 0) {
-      setActiveDesignCode(null);
-    }
+    return () => clearInterval(timerInterval);
+  }, [activeDesignCode]);
 
-    return () => clearInterval(timer);
-  }, [activeDesignCode, countdown]);
+  useEffect(() => {
+    if (!activeDesignCode) {
+      setElapsedTime(0);
+    }
+  }, [activeDesignCode]);
 
   const handleCardClick = (designCode) => {
     setActiveDesignCode(designCode);
-    setCountdown(300); // 5 minutes countdown
   };
 
   const handleFileUpload = (event) => {
@@ -44,6 +47,14 @@ const RenderCard = (props) => {
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  const formatElapsedTime = (seconds) => {
+    const days = Math.floor(seconds / (3600 * 24));
+    const hours = Math.floor((seconds % (3600 * 24)) / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+    return `${days}d ${hours}h ${minutes}m ${secs}s`;
   };
 
   return (
@@ -96,13 +107,31 @@ const RenderCard = (props) => {
               POSTED ON:{" "}
               <span className="postedOn_dataa">{item.created_at}</span>
             </span>
-            <div>
+            {/* <div>
               {activeDesignCode === item.designcode ? (
                 <button className="Counter_button">
                   {`${Math.floor(countdown / 60)}:${String(countdown % 60).padStart(2, "0")}`}
                 </button>
               ) : (
                 <button className="Counter_button" onClick={() => !activeDesignCode && handleCardClick(item.designcode)} disabled={!!activeDesignCode}>
+                  DOWNLOAD
+                </button>
+              )}
+            </div> */}
+            <div>
+              {activeDesignCode === item.designcode ? (
+                <button className="Counter_button">
+                  {formatElapsedTime(elapsedTime)}
+                </button>
+              ) : (
+                <button
+                  className={
+                    activeDesignCode && activeDesignCode != item.designcode
+                      ? "blur-Counter_button"
+                      : "Counter_button"
+                  }
+                  onClick={() => handleCardClick(item.designcode)}
+                >
                   DOWNLOAD
                 </button>
               )}
@@ -113,6 +142,12 @@ const RenderCard = (props) => {
       <UploadFile
         open={uploadModalOpen}
         onClose={() => setUploadModalOpen(false)}
+        createFinsishedProjects={createFinsishedProjects}
+      />
+      <SuccessModal
+        // successModalOpen={}
+        // handleClose={}
+        successMessage={"Files uploaded succesfully"}
       />
     </div>
   );

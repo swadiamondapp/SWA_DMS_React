@@ -196,6 +196,12 @@ const Sidebar = () => {
               {sidebarExpanded && <p>Render</p>}
             </div>
           </Link>
+          <Link to="/finishedProject">
+            <div className="Links">
+              <img src={customeimg} alt="" />
+              {sidebarExpanded && <p>Finished project</p>}
+            </div>
+          </Link>
           <Link to="/chat">
             <div className="Links">
               <img src={chatboximg} alt="" />
