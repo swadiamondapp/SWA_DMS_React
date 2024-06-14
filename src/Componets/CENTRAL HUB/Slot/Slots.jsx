@@ -52,6 +52,7 @@ const Slots = () => {
     list_slot_central_hub(setIsLoading, setData);
   }, []);
   console.log(Data,'center==============>')
+  const sortedData = Data.sort((a, b) => a.id - b.id);
   return (
     <div className="parentCentral">
       <div className="slot_create">
@@ -72,7 +73,7 @@ const Slots = () => {
             </tr>
           </thead>
           <tbody>
-            {Data.map((item, index) => (
+            {sortedData.map((item, index) => (
               <tr key={index} style={{ color: "#2E364C" }}>
                 <td>{item.id}</td>
                 <td>{item.created_at}</td>

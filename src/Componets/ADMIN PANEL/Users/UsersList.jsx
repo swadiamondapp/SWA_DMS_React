@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./Userlist.css";
 import { IoEye } from "react-icons/io5";
 import { BsThreeDotsVertical } from "react-icons/bs";
@@ -14,18 +14,20 @@ import {
   user_create,
   user_delete,
   send_mail,
+  user_activating,
 } from "./Api";
 import UlaodImag from "../../../assets/upi.png";
 import SuccessModal from "../../SuccessModal/SuccessModal";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
+import DeleteConfirmationModal from "../../ConfirmationModal/DeleteConfirmationModal";
 
 const schema = Joi.object({
   name: Joi.string().required().messages({
     "string.empty": `cannot be an empty feild`,
   }),
   email: Joi.string()
-    .email({ tlds: { allow: false } })
+    .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
     .required()
     .messages({
       "string.empty": "Email cannot be an empty field",
@@ -76,12 +78,30 @@ const UsersList = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [loadingStates, setLoadingStates] = useState({});
   const [showPassword, setShowPassword] = useState({});
+  const [successDeleteMessage, setSuccessDeleteMessage] = useState("");
+  const [DeleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
+  const dropdownRef = useRef(null);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phoneNumber: "",
     selectedRole: "",
   });
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        // Click occurred outside the dropdown, so close it
+        setShowEditDelete(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   console.log("imageUrl===>", userList);
 
@@ -163,7 +183,15 @@ const UsersList = () => {
       console.log(file, "file");
 
       if (userIdToEdit) {
-        update_user(setIsLoading, data, setUserList, userIdToEdit);
+        update_user(
+          setIsLoading,
+          data,
+          setUserList,
+          userIdToEdit,
+          setIsModalOpen,
+          setSuccessModalOpen,
+          setSuccessMessage
+        );
       } else {
         await user_create(
           setIsLoading,
@@ -180,15 +208,16 @@ const UsersList = () => {
       // setIsModalOpen(false);
 
       // Reset form data after successful submission
-   
 
       // Form is valid, proceed with submission
+
       console.log("Form submitted:", formData);
     } else {
       // Form is invalid, display errors
       setErrors(validationErrors);
     }
   };
+  console.log(ErrorMessages, "errorrrssd");
 
   // const validateForm = (data) => {
   //   const errors = {};
@@ -212,6 +241,8 @@ const UsersList = () => {
 
   const [modalTitle, setModalTitle] = useState("Create user");
   const [submitBtn, setSubmitBtn] = useState("Create user");
+  const [deleteId, setDeleteId] = useState([]);
+  const [toggleStates, setToggleStates] = useState({});
   const [userIdToEdit, setUserIdToEdit] = useState(null);
 
   console.log("userIdToEdit", userIdToEdit);
@@ -235,7 +266,7 @@ const UsersList = () => {
 
   const handleCancel = () => {
     setIsModalOpen(false);
-    setErrorMessages(null)
+    setErrorMessages(null);
   };
   // create modal
   // select box
@@ -276,9 +307,10 @@ const UsersList = () => {
   }, []);
 
   const handleDelete = (userId) => {
+    setDeleteConfirmationOpen(true);
     console.log("item.id", userId);
+    setDeleteId(userId);
     setShowEditDelete(null);
-    user_delete(setIsLoading, setUserList, userId);
   };
 
   const hendleEdit = (user) => {
@@ -326,8 +358,14 @@ const UsersList = () => {
   const handleOpen = () => {
     setSuccessModalOpen(true);
   };
+  const handleDeleteOpen = () => {
+    setDeleteConfirmationOpen(true);
+  };
   const handleClose = () => {
     setSuccessModalOpen(false);
+  };
+  const handleDeleteClose = () => {
+    setDeleteConfirmationOpen(false);
   };
   const handleTogglePassword = (userId) => {
     setShowPassword((prevState) => ({
@@ -335,6 +373,27 @@ const UsersList = () => {
       [userId]: !prevState[userId],
     }));
   };
+
+  const formatDate = (isoString) => {
+    const date = new Date(isoString);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+    const year = date.getFullYear();
+    return `${month}/${day}/${year}`;
+  };
+
+  const toggleStatus = (user) => {
+    const newStatus = user.status === "ACTIVE" ? "IN-ACTIVE" : "ACTIVE";
+    const statusPayload = newStatus === "ACTIVE" ? "true" : "false";
+    setUserList((prevState) =>
+      prevState.map((item) =>
+        item.id === user.id ? { ...item, status: newStatus } : item
+      )
+    );
+    user_activating(setIsLoading, user.id, statusPayload, setUserList);
+  };
+
+  console.log(toggleStates, "toggleState");
 
   // update_user(setIsLoading, data, setUserList ,"70");
   return (
@@ -402,7 +461,7 @@ const UsersList = () => {
                           <div className="uploaded_image_container">
                             <img
                               src={imageUrl}
-                              alt="avatar"
+                              alt=""
                               style={{
                                 width: "100%",
                                 height: "100%",
@@ -422,8 +481,13 @@ const UsersList = () => {
               <div style={{ textAlign: "center" }}>
                 <span className="uploadFile">
                   Drag & Drop or{" "}
-                  <span style={{ color: "#0464D5" }}>choose file </span>to
-                  upload file
+                  <span
+                    style={{ color: "#0464D5" }}
+                    onClick={handleAvatarClick}
+                  >
+                    choose file{" "}
+                  </span>
+                  to upload file
                   <br />
                   jpg, png
                 </span>
@@ -467,7 +531,6 @@ const UsersList = () => {
                     {errors.phoneNumber && (
                       <span className="error">{errors.phoneNumber}</span>
                     )}
-                    
                   </div>
                   <div className="create_form_field">
                     <label htmlFor="">Email</label>
@@ -478,9 +541,11 @@ const UsersList = () => {
                       value={formData.email}
                       onChange={handleInput}
                     />
-                     {ErrorMessages?.reason?.phone_number && (
-                        <span className="error">{ErrorMessages?.reason?.email}</span>
-                      )}
+                    {ErrorMessages?.reason?.email && (
+                      <span className="error">
+                        {ErrorMessages?.reason?.email}
+                      </span>
+                    )}
                     {errors.email && (
                       <span className="error">{errors.email}</span>
                     )}
@@ -504,27 +569,27 @@ const UsersList = () => {
                       options={[
                         {
                           value: 2,
-                          label: "DESIGNER",
+                          label: "Designer",
                         },
                         {
                           value: 3,
-                          label: "CAD",
+                          label: "Cad",
                         },
                         {
                           value: 4,
-                          label: "VOTERS",
+                          label: "Voters",
                         },
                         {
                           value: 5,
-                          label: "RENDERS",
+                          label: "Renders",
                         },
                         {
                           value: 6,
-                          label: "WAREHOUSE",
+                          label: "Warehouse",
                         },
                         {
                           value: 7,
-                          label: "CENTRAL HUB",
+                          label: "Central Hub",
                         },
                       ]}
                     />
@@ -562,20 +627,24 @@ const UsersList = () => {
             <tbody>
               {userList?.map((item, index) => (
                 <tr key={index} style={{ color: "#2E364C" }}>
-                  <td>{item.created_at}</td>
+                  <td>{formatDate(item.created_at)}</td>
+                  {console.log(item.created_at, "createdTime")}
                   <td>{item.name}</td>
                   <td>{item.email}</td>
                   <td>
                     <div className="view_password">
-                      <span className="passwordEncy">
-                        {showPassword[item.id] ? item.Password : "******"}
-                      </span>
+                      {showPassword[item.id] ? (
+                        <span className="passwordEncy">{item.Password}</span>
+                      ) : (
+                        <span className="passwordEncy_star">*************</span>
+                      )}
                       {showPassword ? (
                         <IoEye
                           style={{
                             color: "#455173",
                             cursor: "pointer",
                             opacity: showPassword ? 0.5 : 1,
+                            marginRight: "25px",
                           }}
                           onClick={() => handleTogglePassword(item.id)}
                         />
@@ -590,15 +659,29 @@ const UsersList = () => {
                   <td>{item.Usertype}</td>
                   <td>
                     <div className="active_sendmail">
-                      <button className="active_btn">{item.status}</button>
+                      <button
+                        className={
+                          item.status === "ACTIVE"
+                            ? "active_btn"
+                            : "inactive_btn"
+                        }
+                      >
+                        {item.status === "ACTIVE" ? "Active" : "Inactive"}
+                      </button>
                       <button
                         className="sendmail_btn"
                         onClick={() => handleSendMail(item.id)}
                       >
                         {loadingStates[item.id] ? (
-                          <Box sx={{ display: "flex" }}>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                            }}
+                          >
                             <CircularProgress
-                              size={12} // Set the desired size
+                              size={16} // Set the desired size
                               sx={{ color: "#fff" }}
                             />
                           </Box>
@@ -610,8 +693,16 @@ const UsersList = () => {
                   </td>
                   <td>
                     <label className="switch">
-                      <input type="checkbox" />
-                      <span className="slider round"></span>
+                      <input
+                        type="checkbox"
+                        checked={item.status === "ACTIVE"}
+                        onChange={() => toggleStatus(item)}
+                      />
+                      <span
+                        className={`slider round ${
+                          item.status === "ACTIVE" ? "active" : "inactive"
+                        }`}
+                      ></span>
                     </label>
                   </td>
                   <td style={{ position: "relative" }}>
@@ -624,7 +715,7 @@ const UsersList = () => {
                       }
                     />
                     {showEditDelete === index && (
-                      <div className="Edit_delete_btn_user">
+                      <div ref={dropdownRef} className="Edit_delete_btn_user">
                         <p
                           className="Edit_btn_user"
                           onClick={() => hendleEdit(item)}
@@ -650,6 +741,23 @@ const UsersList = () => {
           handleOpen={handleOpen}
           handleClose={handleClose}
           successMessage={successMessage}
+        />
+        <DeleteConfirmationModal
+          DeleteConfirmationOpen={DeleteConfirmationOpen}
+          handleDeleteClose={handleDeleteClose}
+          handleDeleteOpen={handleDeleteOpen}
+          setDeleteConfirmationOpen={setDeleteConfirmationOpen}
+          successMessage={successDeleteMessage}
+          deleteFunction={() => {
+            user_delete(
+              setIsLoading,
+              setUserList,
+              deleteId,
+              setDeleteConfirmationOpen,
+              setSuccessMessage,
+              setSuccessModalOpen
+            );
+          }}
         />
       </div>
     </div>

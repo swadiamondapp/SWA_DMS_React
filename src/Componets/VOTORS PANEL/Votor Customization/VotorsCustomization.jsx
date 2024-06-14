@@ -1,40 +1,52 @@
-import React, { useState, useEffect,useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import DesignBtn from "../../ADMIN PANEL/Design Pool/DesignBtn";
 import { IoEye } from "react-icons/io5";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import CustomiseRequest from "../../CustomiseRequest/CustomiseRequiest";
-import {
-  voters_customization_list,
-  delete_customization,
-} from "../Api";
+import { voters_customization_list, delete_customization } from "../Api";
+import DeleteConfirmationModal from "../../ConfirmationModal/DeleteConfirmationModal";
+import SuccessModal from "../../SuccessModal/SuccessModal";
 
 const VotorsCustomization = () => {
   const [showEditDelete, setShowEditDelete] = useState(null);
   const [IsModalOpen, setIsModalOpen] = useState(false);
   const [Data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [userId,setUserId] = useState([])
-  const [customization,setCustomization] = useState([])
+  const [userId, setUserId] = useState([]);
+  const [customization, setCustomization] = useState([]);
+  const [successDeleteMessage, setSuccessDeleteMessage] = useState("");
+  const [DeleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
+  const [successModalOpen, setSuccessModalOpen] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [DeleteID, setDeleteId] = useState("");
+  const [refresh, setRefresh] = useState(false);
   const dropdownRef = useRef(null);
 
   useEffect(() => {
-    voters_customization_list(setIsLoading, setData);
+    voters_customization_list(setIsLoading, setData, );
   }, []);
 
   const handleDeleteCustomization = (cuzId) => {
-    delete_customization(setIsLoading, setData, cuzId);
+    setDeleteId(cuzId);
+    setDeleteConfirmationOpen(true);
+    // delete_customization(setIsLoading, setData, cuzId);
   };
   const handleEditCustomization = () => {
     // edit_customization(setIsLoading, formData, setCutomizationList, userId);
   };
   const handleEyeClick = (id) => {
-    setIsModalOpen(true)
-    setUserId(id)
+    setIsModalOpen(true);
+    setUserId(id);
     // customization_details(setIsLoading, setCustomization, userId);
-    
-  }
+  };
 
+  const handleDeleteClose = () => {
+    setDeleteConfirmationOpen(false);
+  };
 
+  const handleDeleteOpen = () => {
+    setDeleteConfirmationOpen(true);
+  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -50,6 +62,13 @@ const VotorsCustomization = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  const handleClose = () => {
+    setSuccessModalOpen(false);
+  };
+  const handleOpen = () => {
+    setSuccessModalOpen(true);
+  };
 
   console.log(Data, "votersCuz");
 
@@ -118,13 +137,13 @@ const VotorsCustomization = () => {
                       />
                     </div>
                     {showEditDelete === index && (
-                      <div ref={dropdownRef}  className="Edit_delete_btn_user">
-                        <p
+                      <div ref={dropdownRef} className="Edit_delete_btn_user">
+                        {/* <p
                           className="Edit_btn_user"
                           onClick={() => handleEditCustomization(item.id)}
                         >
                           Edit
-                        </p>
+                        </p> */}
                         <p
                           className="Delete_btn_user"
                           onClick={() => handleDeleteCustomization(item.id)}
@@ -144,7 +163,30 @@ const VotorsCustomization = () => {
         open={IsModalOpen}
         onClose={() => setIsModalOpen(false)}
         userId={userId}
-       
+        setData={setData}
+      />
+      <DeleteConfirmationModal
+        DeleteConfirmationOpen={DeleteConfirmationOpen}
+        handleDeleteClose={handleDeleteClose}
+        setDeleteConfirmationOpen={setDeleteConfirmationOpen}
+        handleDeleteOpen={handleDeleteOpen}
+        isLoading={isLoading}
+        deleteFunction={() => {
+          delete_customization(
+            setIsLoading,
+            setData,
+            DeleteID,
+            setDeleteConfirmationOpen,
+            setSuccessMessage,
+            setSuccessModalOpen
+          );
+        }}
+      />
+      <SuccessModal
+        successModalOpen={successModalOpen}
+        handleOpen={handleOpen}
+        handleClose={handleClose}
+        successMessage={successMessage}
       />
     </div>
   );

@@ -9,6 +9,7 @@ import { useLocation, Link, useNavigate } from "react-router-dom";
 import folderimg from "../../assets/folder.png";
 import { list_assignment_panel, list_folderDetails } from "./Api";
 import { list_assignment_folder } from "../ADMIN PANEL/Design Pool/Api";
+import DesignPools from "../DesignPoolExtended/DesignPools";
 // import { useLocation, useNavigate } from "react-router-dom";
 
 const AssignmentPanel = () => {
@@ -24,6 +25,8 @@ const AssignmentPanel = () => {
   const [assignmentFolder, setAssignmentFolder] = useState([]);
   const [folderId, setFolderId] = useState([]);
   const [selectedAssignment, setSelectedAssignment] = useState([]);
+  const [openDesignPool, setOpenDesignPool] = useState(false);
+  const [modalDetails, setModalDetails] = useState([]);
   const [uploadInstructionsVisible, setUploadInstructionsVisible] =
     useState(true);
   const location = useLocation();
@@ -90,10 +93,15 @@ const AssignmentPanel = () => {
     }
   };
 
-
+  const handleOpenDesignPool = () => {
+    setOpenDesignPool(true);
+  };
+  const hadnleCloseDesignPool = () => {
+    setOpenDesignPool(false);
+  };
 
   console.log(Data, "assignmentDatatat");
-  console.log(selectedAssignment,"selecte==================>")
+  console.log(selectedAssignment, "selecte==================>");
 
   const card = [
     {
@@ -117,6 +125,11 @@ const AssignmentPanel = () => {
       date: "12 june 2023",
     },
   ];
+
+  const handleDrawModal = (item) => {
+    setOpenDesignPool(true);
+    setModalDetails(item);
+  };
   return (
     <div className="Parent_AssignmentView">
       <div
@@ -155,6 +168,7 @@ const AssignmentPanel = () => {
           showDownloadOptions={showDownloadOptions}
           showMoveOptions={showMoveOptions}
           selectedAssignment={selectedAssignment}
+          setSelectedAssignment={setSelectedAssignment}
           setAssignmentFolder={setAssignmentFolder}
         />
         <div className="Assignment_panel_section">
@@ -167,15 +181,21 @@ const AssignmentPanel = () => {
                     "images...?",
                     item && item.items[0].paper_design
                   )}
-                  <img src={item && item.items[0].paper_design.image} alt="" />
+                  <img
+                    src={item && item.items[0].paper_design.image}
+                    alt=""
+                    onClick={() =>
+                      handleDrawModal(item && item.items[0].paper_design.image)
+                    }
+                  />
                   {showDeleteMoveButtons && <div className="Overlay" />}
                 </div>
                 <div className="Card_Details">
                   <h3>ID : {item && item.items[0].paper_design.designcode}</h3>
                   <div className="Card_Details_Inner">
                     <div className="Inner_Left">
-                      <p>{item.name}</p>
-                      <p>{item && item.items[0].paper_design.created_at}</p>
+                      <p>{item && item.items[0].paper_design.designer}</p>
+                      <p>{item && item.created_at}</p>
                     </div>
                     <div className="Inner_Right">
                       <p>
@@ -194,9 +214,7 @@ const AssignmentPanel = () => {
                     name="fav_language"
                     value={item && item.items[0].id}
                     onChange={() =>
-                      handleCheckboxChange(
-                        item && item.items[0].id
-                      )
+                      handleCheckboxChange(item && item.items[0].id)
                     }
                     checked={selectedAssignment.includes(
                       item && item.items[0].id
@@ -207,7 +225,10 @@ const AssignmentPanel = () => {
                 {!showRadioButtons &&
                   location.pathname === "/assignmentpanel" && (
                     <div onClick={toggleDeleteMoveButtons} ref={dotsRef}>
-                      <BsThreeDotsVertical className="A_dots" />
+                      <BsThreeDotsVertical
+                        className="A_dots"
+                        style={{ fontSize: "20px" }}
+                      />
                     </div>
                   )}
                 {showDeleteMoveButtons && (
@@ -228,7 +249,11 @@ const AssignmentPanel = () => {
             {console.log("assignment--===>", assignmentFolder)}
             {assignmentFolder.map((item) => (
               <div className="folder__card">
-                <Link to={`/assignmentpaneldetailsview/${item.id}?name=${encodeURIComponent(item.name)}`}>
+                <Link
+                  to={`/assignmentpaneldetailsview/${
+                    item.id
+                  }?name=${encodeURIComponent(item.name)}`}
+                >
                   <img src={folderimg} alt="" />
                 </Link>
 
@@ -257,6 +282,12 @@ const AssignmentPanel = () => {
         </div>
         {/* Folders */}
       </div>
+      <DesignPools
+        handleOpenDesignPool={handleOpenDesignPool}
+        hadnleCloseDesignPool={hadnleCloseDesignPool}
+        openDesignPool={openDesignPool}
+        modalDetails={modalDetails}
+      />
     </div>
   );
 };

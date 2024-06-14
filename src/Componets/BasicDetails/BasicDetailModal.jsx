@@ -29,6 +29,8 @@ const BasicDetailModal = ({
   onClose,
   selectedAssignment,
   setAssignmentFolder,
+  setSelectedAssignment
+
 }) => {
   // create modal
 
@@ -55,7 +57,7 @@ const BasicDetailModal = ({
 
   const schema = Joi.object({
     SKU: Joi.string().required().messages({
-      "string.empty": `SKU feild cannot be an empty`,
+      "string.empty": `SKU field cannot be empty`,
       "string.pattern.base": "Sales Man Name cannot contain numbers.",
     }),
     length: Joi.string().required().messages({
@@ -85,7 +87,10 @@ const BasicDetailModal = ({
     tags: Joi.required().messages({
       "string.empty": `cannot be empty`,
     }),
-    notes: Joi.string().required().messages({
+    findings: Joi.string().required().messages({
+      "string.empty": `cannot be empty`,
+    }),
+    notes: Joi.string().messages({
       "string.empty": `cannot be empty`,
     }),
   });
@@ -254,11 +259,11 @@ const BasicDetailModal = ({
                     <div className="gridfifty">
                       <div className="select_field">
                         <label htmlFor="" className="label-text">
-                          Type of metel
+                          Type of metal
                         </label>
                         <Select
                           showSearch
-                          placeholder="Gold"
+                          placeholder="-Select-"
                           optionFilterProp="children"
                           // value={formData.typeOfMetal}
                           onChange={(value) =>
@@ -303,7 +308,7 @@ const BasicDetailModal = ({
                         </label>
                         <Select
                           showSearch
-                          placeholder="Diamond Type"
+                          placeholder="-Select-"
                           optionFilterProp="children"
                           onChange={(value) =>
                             setFormData((prevState) => ({
@@ -351,9 +356,9 @@ const BasicDetailModal = ({
                           onChange={handleInput}
                         />
                         <div>
-                          {errors.height && (
+                          {errors.approxDiamondWeight && (
                             <span className="error_input_p">
-                              {errors.height}
+                              {errors.approxDiamondWeight}
                             </span>
                           )}
                         </div>
@@ -370,9 +375,9 @@ const BasicDetailModal = ({
                           onChange={handleInput}
                         />
                         <div>
-                          {errors.height && (
+                          {errors.findings && (
                             <span className="error_input_p">
-                              {errors.height}
+                              {errors.findings}
                             </span>
                           )}
                         </div>
@@ -391,9 +396,9 @@ const BasicDetailModal = ({
                           onChange={handleInput}
                         />
                         <div>
-                          {errors.height && (
+                          {errors.approxMetalWeights && (
                             <span className="error_input_p">
-                              {errors.height}
+                              {errors.approxMetalWeights}
                             </span>
                           )}
                         </div>
@@ -410,9 +415,9 @@ const BasicDetailModal = ({
                           onChange={handleInput}
                         />
                         <div>
-                          {errors.height && (
+                          {errors.approxMRP && (
                             <span className="error_input_p">
-                              {errors.height}
+                              {errors.approxMRP}
                             </span>
                           )}
                         </div>
@@ -431,13 +436,13 @@ const BasicDetailModal = ({
                             }))
                           }
                           name="fruits"
-                          placeHolder="enter fruits"
+                          placeHolder="Tags"
                           classNames="inputTag"
                         />
                         <div>
-                          {errors.height && (
+                          {errors.tags && (
                             <span className="error_input_p">
-                              {errors.height}
+                              {errors.tags}
                             </span>
                           )}
                         </div>
@@ -456,8 +461,8 @@ const BasicDetailModal = ({
                         style={{ width: "100%" }}
                       />
                       <div style={{ marginBottom: "20px" }}>
-                        {errors.height && (
-                          <span className="error_input_p">{errors.height}</span>
+                        {errors.notes && (
+                          <span className="error_input_p">{errors.notes}</span>
                         )}
                       </div>
                     </div>
@@ -483,6 +488,8 @@ const BasicDetailModal = ({
         onClose={() => setShowAssignmentModal(false)}
         selectedAssignment={selectedAssignment}
         setAssignmentFolder={setAssignmentFolder}
+        setSelectedAssignment={setSelectedAssignment}
+
       />
     </div>
   );

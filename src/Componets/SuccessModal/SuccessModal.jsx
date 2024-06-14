@@ -15,6 +15,8 @@ const successM = {
   border: "none",
   boxShadow: 24,
   borderRadius: "4px",
+  width:300,
+  height:"auto",
   p: 4,
 };
 

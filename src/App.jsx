@@ -35,7 +35,11 @@ import CentralHubDashboard from "./Pages/CENTRAL HUB/Central Hub dashboard Page/
 import HubSlot from "./Pages/CENTRAL HUB/Central Hub Slot/HubSlot";
 import PrivateRoute from "./Pages/Utils/PrivateRoute";
 import AssignmentPanelFolderCards from "./Componets/Assignment Panel/AssignmentPanelFolderCards";
-import AssignmentPanelFolderCardPage from "./Pages/AssignmentPanelFolderDetailsCardsPage/AssignmentPanelFolderCardPage"
+import AssignmentPanelFolderCardPage from "./Pages/AssignmentPanelFolderDetailsCardsPage/AssignmentPanelFolderCardPage";
+import ForgotPassword from "./Componets/ForgotPassword/ForgetPassword";
+import ForgotPassOtp from "./Componets/ForgotPassword/ForgotPassOtp";
+import CreateNewPassword from "./Componets/ForgotPassword/CreateNewPassword";
+import PasswordResetComplete from "./Componets/ForgotPassword/PasswordResetComplete";
 
 function App() {
   return (
@@ -64,7 +68,7 @@ function App() {
               path="/designerassignview/:id"
               element={<DesignerAssignViewPage />}
             />
-             <Route
+            <Route
               path="/assignmentpaneldetailsview/:id"
               element={<AssignmentPanelFolderCardPage />}
             />
@@ -97,6 +101,10 @@ function App() {
             <Route path="/slot" element={<HubSlot />} />
           </Route>
           <Route path="/login" element={<Login />} />
+          <Route path="/forgotpassword" element={<ForgotPassword />} />
+          <Route path="/verifyotp" element={<ForgotPassOtp/>} />
+          <Route path="/createnewpassword" element={<CreateNewPassword/>} />
+          <Route path="/resetcomplete" element={<PasswordResetComplete/>} />
         </Routes>
       </Router>
     </>

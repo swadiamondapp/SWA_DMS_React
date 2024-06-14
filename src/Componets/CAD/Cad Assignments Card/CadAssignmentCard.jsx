@@ -4,9 +4,10 @@ import ring from "../../../assets/ring.png";
 import { GoDownload } from "react-icons/go";
 import CentalHub from "../../CentalHub/CentalHub";
 import { useLocation } from "react-router-dom";
-import { assigned_data_by_id } from "../Api";
-import { saveAs } from "file-saver"; 
-import axios from 'axios';
+import { assigned_data_by_id, transfer_work } from "../Api";
+import { saveAs } from "file-saver";
+import axios from "axios";
+import TransferConfirmationModal from "../../TransferConformationModal/TransferConfirmationModal";
 
 const CadAssignmentCard = () => {
   const location = useLocation();
@@ -15,14 +16,15 @@ const CadAssignmentCard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [timers, setTimers] = useState({});
   const [statuses, setStatuses] = useState({});
-  const [isLoading,setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const [isAnyTimerRunning, setIsAnyTimerRunning] = useState(false);
   const [finishedTimes, setFinishedTimes] = useState({});
   const [currentRunningTimerId, setCurrentRunningTimerId] = useState(null);
-  const [folderDetailsById,setFolderDetailsById] = useState([])
+  const [folderDetailsById, setFolderDetailsById] = useState([]);
+  const [TransferModalOpen, setTransferModalOpen] = useState(false);
+  const [StatusToModal, setStatusToModal] = useState([]);
+  const [CardId, setCardId] = useState([]);
   const intervalRef = useRef(null);
-
-
 
   const card = [
     {
@@ -54,8 +56,8 @@ const CadAssignmentCard = () => {
     assigned_data_by_id(setIsLoading, setFolderDetailsById, paramId);
   }, [paramId]);
 
-  console.log(folderDetailsById,"folderDetalsbyid")
-  console.log(folderDetailsById[0]?.assignment_items,"paramId")
+  console.log(folderDetailsById, "folderDetalsbyid");
+  console.log(folderDetailsById[0]?.assignment_items, "paramId");
 
   useEffect(() => {
     const initialStatuses = {};
@@ -66,8 +68,6 @@ const CadAssignmentCard = () => {
 
     return () => clearInterval(intervalRef.current); // Clear interval on component unmount
   }, []);
-
-
 
   // useEffect(() => {
   //   const initialStatuses = {};
@@ -89,7 +89,7 @@ const CadAssignmentCard = () => {
     return `${days} d: ${hours} h: ${minutes} m: ${seconds} s`;
   };
 
-  const handleDownloadClick = async (id,imageUrl) => {
+  const handleDownloadClick = async (id, imageUrl) => {
     clearInterval(intervalRef.current);
     intervalRef.current = setInterval(() => {
       setTimers((prevTimers) => {
@@ -116,8 +116,6 @@ const CadAssignmentCard = () => {
       }
 
       return newTimers;
-
-      
     });
 
     setIsAnyTimerRunning(true);
@@ -128,17 +126,17 @@ const CadAssignmentCard = () => {
 
     try {
       // Create a temporary anchor element
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = imageUrl;
-      link.download = imageUrl.split('/').pop(); // Set the filename for download
-      link.target = '_blank';
-  
+      link.download = imageUrl.split("/").pop(); // Set the filename for download
+      link.target = "_blank";
+
       // Append the anchor element to the document body
       document.body.appendChild(link);
-  
+
       // Simulate a click on the anchor element to trigger download
       link.click();
-  
+
       // Remove the anchor element from the document body
       document.body.removeChild(link);
     } catch (error) {
@@ -149,30 +147,42 @@ const CadAssignmentCard = () => {
     //   const response = await axios.get(imageUrl, {
     //     responseType: 'blob', // Ensure response type is blob
     //   });
-  
+
     //   // Create a temporary anchor element
     //   const link = document.createElement('a');
     //   link.href = window.URL.createObjectURL(new Blob([response.data]));
     //   link.download = imageUrl.split('/').pop(); // Set the filename for download
-  
+
     //   // Append the anchor element to the document body
     //   document.body.appendChild(link);
-  
+
     //   // Simulate a click on the anchor element to trigger download
     //   link.click();
-  
+
     //   // Remove the anchor element from the document body
     //   document.body.removeChild(link);
     // } catch (error) {
     //   console.error("Error downloading the image:", error);
     // }
-    
   };
 
-  const handleStatusChange = (id, status) => {
-    setStatuses((prevStatuses) => ({ ...prevStatuses, [id]: status }));
-    if (status === "transfer" || status === "finished") {
-      clearInterval(intervalRef.current); // Clear interval when status changes
+  const handleStatusChange = (id, status, designCode) => {
+    // If the status is "Notstarted", stop the timer
+    if (status === "Notstarted") {
+      clearInterval(intervalRef.current); // Clear interval
+      setIsAnyTimerRunning(false);
+      setCurrentRunningTimerId(null);
+      setTimers((prevTimers) => {
+        const newTimers = { ...prevTimers };
+        if (newTimers[id]) {
+          newTimers[id].running = false;
+          newTimers[id].time = 0;
+        }
+        return newTimers;
+      });
+    } else if (status === "Transfer" || status === "Finished") {
+      // If the status is "transfer" or "finished", stop the timer as well
+      clearInterval(intervalRef.current); // Clear interval
       setIsAnyTimerRunning(false);
       setCurrentRunningTimerId(null);
       setTimers((prevTimers) => {
@@ -188,27 +198,50 @@ const CadAssignmentCard = () => {
         }
         return newTimers;
       });
-    }
-    // if (status === "finished") {
-    //   clearInterval(intervalRef.current); // Clear interval when status changes
 
-    //   setTimers((prevTimers) => {
-    //     const currentTime = timers[id]?.time || 0;
-    //     setFinishedTimes((prevFinishedTimes) => ({
-    //       ...prevFinishedTimes,
-    //       [id]: currentTime,
-    //     }));
-    //     const newTimers = { ...prevTimers };
-    //     if (newTimers[id]) {
-    //       newTimers[id].running = false;
-    //       newTimers[id].time = 0;
-    //     }
-    //     return newTimers;
-    //   });
-    // }
+      if (status === "Transfer") {
+        // transfer_work(status, id); // Call transfer_work when status is "transfer"
+        setTransferModalOpen(true);
+        setStatusToModal(status);
+        setCardId(id);
+      }
+    } else {
+      // If the status is "Ongoing", start the timer
+      setTimers((prevTimers) => {
+        const newTimers = { ...prevTimers };
+
+        for (const timerId in newTimers) {
+          if (newTimers[timerId].running && timerId !== id.toString()) {
+            newTimers[timerId].running = false;
+          }
+        }
+
+        if (!newTimers[id] || !newTimers[id].running) {
+          newTimers[id] = { running: true, time: newTimers[id]?.time || 0 };
+          setCurrentRunningTimerId(id); // Set the currently running timer ID
+        }
+
+        return newTimers;
+      });
+
+      setIsAnyTimerRunning(true);
+    }
+
+    // Update the status
+    setStatuses((prevStatuses) => ({
+      ...prevStatuses,
+      [id]: status,
+    }));
   };
-let cadDesign = folderDetailsById[0]?.assignment_items;
-console.log(cadDesign,'cadd')
+
+  const handleOpenTransfer = () => {
+    setTransferModalOpen(true);
+  };
+  const handleCloseTransfer = () => {
+    setTransferModalOpen(false);
+  };
+  let cadDesign = folderDetailsById[0]?.assignment_items;
+  console.log(cadDesign, "cadd");
   return (
     <div className="ParentCad">
       <div className="Design_FileUpload" onClick={() => setIsModalOpen(true)}>
@@ -243,35 +276,48 @@ console.log(cadDesign,'cadd')
                   <h3>ID : {item.design_code}</h3>
                   <p>POSTED ON:</p>
 
-                  <select
-                    style={{ padding: "5px 10px", margin: "10px 10px" }}
-                    name="status"
-                    id="status"
-                    value={statuses[item.id] || "Notstarted"}
-                    onChange={(e) =>
-                      handleStatusChange(item.id, e.target.value)
-                    }
-                    disabled={
-                      (isAnyTimerRunning && !timers[item.id]?.running) ||
-                      (currentRunningTimerId !== null &&
-                        currentRunningTimerId !== item.id)
-                    }
-                  >
-                    {isAnyTimerRunning ? (
-                      <></>
-                    ) : (
-                      <>
+                  {item.work_status === "Transfer" ? (
+                    <>
+                      <span className="transferedSelect">Transfered</span>
+                    </>
+                  ) : (
+                    <>
+                      <select
+                        style={{ padding: "5px 10px", margin: "10px 10px" }}
+                        name="status"
+                        id="status"
+                        value={statuses[item.id] || "Notstarted"}
+                        onChange={(e) =>
+                          handleStatusChange(item.id, e.target.value)
+                        }
+                        disabled={
+                          (isAnyTimerRunning && !timers[item.id]?.running) ||
+                          (currentRunningTimerId !== null &&
+                            currentRunningTimerId !== item.id)
+                        }
+                      >
+                        {isAnyTimerRunning ? (
+                          <></>
+                        ) : (
+                          <>
+                            <option value="Notstarted">Not Started</option>
+                          </>
+                        )}
+                        <option value="Ongoing">Ongoing</option>
+                        <option value="Finished">Finished</option>
+                        <option value="Transfer">Transfer</option>
                         <option value="Notstarted">Not Started</option>
-                      </>
-                    )}
-                    <option value="Ongoing">Ongoing</option>
-                    <option value="finished">Finished</option>
-                    <option value="transfer">Transfer</option>
-                  </select>
+                      </select>
+                    </>
+                  )}
 
                   <button
                     className="Download_btn_hub"
-                    onClick={() => handleDownloadClick(item.id,item.image)}
+                    style={{
+                      display:
+                        item.work_status === "Transfer" ? "none" : "block",
+                    }}
+                    onClick={() => handleDownloadClick(item.id, item.image)}
                     disabled={
                       (isAnyTimerRunning && !timers[item.id]?.running) ||
                       (currentRunningTimerId !== null &&
@@ -288,9 +334,16 @@ console.log(cadDesign,'cadd')
                         <GoDownload />
                       </>
                     )}
-              
                   </button>
-                 
+                  {item.work_status === "Transfer" && (
+                    <div className="transferedTextCong">
+                      <span className="transferedText">
+                        Your file has been transfered
+                        <br />
+                        to other designer
+                      </span>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -298,6 +351,17 @@ console.log(cadDesign,'cadd')
         </div>
       </div>
       <CentalHub open={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <TransferConfirmationModal
+        TransferModalOpen={TransferModalOpen}
+        setTransferModalOpen={setTransferModalOpen}
+        handleCloseTransfer={handleCloseTransfer}
+        handleOpenTransfer={handleOpenTransfer}
+        StatusToModal={StatusToModal}
+        CardId={CardId}
+        setFolderDetailsById={setFolderDetailsById}
+        paramId={paramId}
+        setIsLoading={setIsLoading}
+      />
     </div>
   );
 };
