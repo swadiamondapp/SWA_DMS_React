@@ -48,14 +48,19 @@ export const folderItemList = async (setIsLoading, setData, id) => {
   }
 };
 
-export const createFinsishedProjects = async (setIsLoading, data) => {
+export const createFinsishedProjects = async (
+  setIsLoading,
+  data,
+  setSuccess
+) => {
   try {
     setIsLoading(true);
     const response = await apiService.post(CREATE_FINISHED_PROJECTS, data);
     if (checkApiStatus(response)) {
-      console.log(response);
-      console.log("response----------123456", response);
-      //  setData(response?.data?.results?.data);
+      setSuccess(true);
+      setTimeout(() => {
+        setSuccess(false);
+      }, 3000);
     }
   } catch (error) {
     console.log(error);
