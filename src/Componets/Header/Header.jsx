@@ -21,6 +21,9 @@ const Header = () => {
   const handleLogout = () => {
     setIsLogoutDropdown(!isLogoutDropdown);
   };
+
+
+
   const { id } = useParams();
   // const folderName = location.state?.name || "Unknown Folder";
   // console.log(folderName,'folderName in Header==>')
@@ -94,6 +97,16 @@ const Header = () => {
             {location.pathname === `/assignmentpaneldetailsview/${id}` && (
               <h3>{folderName}</h3>
             )}
+             {/* {location.pathname === `/CadAssignmentcard/${id}` && (
+              <h3>{folderName}</h3>
+            )} */}
+             {location.pathname === "/centralDashboard" && (
+              <h3>Dashboard</h3>
+            )}
+              {location.pathname === "/slot" && (
+              <h3>Slot</h3>
+            )}
+
           </div>
           <div className="Right_User_Section">
             {location.pathname !== "/assignmentpanel" &&
@@ -103,6 +116,10 @@ const Header = () => {
               location.pathname !== "/CadAssignment" &&
               location.pathname !== "/renderCard" &&
               location.pathname !== "/votorspanal" &&
+              location.pathname !== "/centralDashboard" &&
+              location.pathname !== "/slot" &&
+              location.pathname !== `/designerassignview/${id}` &&
+              location.pathname !== "/designerassign" &&
               
               (
                 <div className="Search_Admin">

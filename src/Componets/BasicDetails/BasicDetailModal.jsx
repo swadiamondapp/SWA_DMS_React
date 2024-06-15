@@ -321,7 +321,7 @@ const BasicDetailModal = ({
                           style={{ width: "100%",zIndex:999999999,background:'#006E7F1A' }}
                           options={[
                             {
-                              value: "Natuaral Diamond",
+                              value: "Natural Diamond",
                               label: "Natuaral Diamond",
                             },
                             {
@@ -489,6 +489,7 @@ const BasicDetailModal = ({
         selectedAssignment={selectedAssignment}
         setAssignmentFolder={setAssignmentFolder}
         setSelectedAssignment={setSelectedAssignment}
+        setFormData={setFormData}
 
       />
     </div>

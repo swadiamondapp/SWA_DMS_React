@@ -282,7 +282,7 @@ input:checked + .slider:before {
 .error_selected_input {
   position: absolute;
   color: rgb(218, 39, 39);
-  bottom: -27px;
+  bottom: -26px;
   left: 0;
   background: #e7edf4;
   padding: 2px 10px;

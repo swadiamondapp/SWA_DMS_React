@@ -4,7 +4,7 @@ import { move_to_folder } from "../Assignment Panel/Api";
 import { Modal, Select } from "antd";
 import SuccessModal from "../SuccessModal/SuccessModal";
 
-const AssignmentModal = ({ open, onClose, formData,selectedAssignment, setAssignmentFolder,setSelectedAssignment }) => {
+const AssignmentModal = ({ open, onClose, formData,selectedAssignment, setAssignmentFolder,setSelectedAssignment,setFormData }) => {
   // create modal
   // const [isModalOpen, setIsModalOpen] = useState(false);
   const [AssinedButton, setAssignedButton] = useState("Assign");
@@ -23,7 +23,7 @@ const AssignmentModal = ({ open, onClose, formData,selectedAssignment, setAssign
   };
   const handleCreateButton = () => {
    
-    move_to_folder(setIsLoading, formData,folderName,selectedAssignment, setAssignmentFolder,onClose,setSuccessMessage,setSuccessModalOpen,setSelectedAssignment);
+    move_to_folder(setIsLoading, formData,folderName,selectedAssignment, setAssignmentFolder,onClose,setSuccessMessage,setSuccessModalOpen,setSelectedAssignment,setFormData);
   };
   const handleChange = (event) => {
     setFolderName(event.target.value);

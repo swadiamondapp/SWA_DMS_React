@@ -5,9 +5,10 @@ import { useLocation, Link } from "react-router-dom";
 import folderimg from "../../../assets/folder.png";
 import { list_assigned_cad_design } from "../Api";
 const CadAssignment = () => {
-  const [uploadInstructionsVisible, setUploadInstructionsVisible] = useState(true);
-  const [assignedCadDesign,setAssignedCadDesign] = useState([])
-  const [isLoading,setIsLoading] = useState(false)
+  const [uploadInstructionsVisible, setUploadInstructionsVisible] =
+    useState(true);
+  const [assignedCadDesign, setAssignedCadDesign] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
@@ -21,11 +22,10 @@ const CadAssignment = () => {
   };
 
   useEffect(() => {
-    list_assigned_cad_design(setIsLoading,setAssignedCadDesign);
-  },[]);
+    list_assigned_cad_design(setIsLoading, setAssignedCadDesign);
+  }, []);
 
-
-  console.log(assignedCadDesign,"assssssss==-->")
+  console.log(assignedCadDesign, "assssssss==-->");
   return (
     <div className="ParentCad">
       <div
@@ -72,16 +72,25 @@ const CadAssignment = () => {
         <div className="Parent_Folder_section_Designer">
           <h3 className="HeadNewdesign">Folders</h3>
           <div className="folderCard_parent">
-              {assignedCadDesign.map((item,index)=> (
-            <div className="folder__card">
+            {assignedCadDesign.map((item, index) => (
+              <div className="folder__card">
+                <Link
+                  to={`/CadAssignmentcard?id=${item.id}`}
+                >
+                  <img src={folderimg} alt="" />
+                </Link>
+                {/* <Link
+                  to={{
+                    pathname: `/CadAssignmentcard`,
+                    state: { id: item.id, folderName: item.folder_name },
+                  }}
+                >
+                  <img src={folderimg} alt="" />
+                </Link> */}
 
-                <Link to={`/CadAssignmentcard?id=${item.id}`}>
-                <img src={folderimg} alt="" />
-              </Link>
-
-              <p>{item.folder_name}</p>
-            </div>
-              ))}
+                <p>{item.folder_name}</p>
+              </div>
+            ))}
             {/* <div className="folder__card">
               <Link to="">
                 <img src={folderimg} alt="" />

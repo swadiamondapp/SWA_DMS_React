@@ -4,7 +4,7 @@ import { IoEye } from "react-icons/io5";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import SlotCreation from "../../SlotCreation/SlotCreation";
 import SlotView from "../../SlotVIew/SlotView";
-import { list_slot_central_hub ,slot_view_by_id} from "../../../Pages/CENTRAL HUB/Api";
+import { list_slot_central_hub, slot_view_by_id } from "../../../Pages/CENTRAL HUB/Api";
 
 const Slots = () => {
   const [showEditDelete, setShowEditDelete] = useState(null);
@@ -43,14 +43,29 @@ const Slots = () => {
     },
   ];
 
-  const handleEyeButton = (userId)=> {
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (showEditDelete !== null && !event.target.closest('.parentSlotS')) {
+        setShowEditDelete(null);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [showEditDelete]);
+
+  const handleEyeButton = (Id)=> {
     setIsModalOpenslotview(true)
-    setUserId(userId)
-    slot_view_by_id(setIsLoading,setSloteView,userId)
+    setUserId(Id)
+    slot_view_by_id(Id, setSloteView);
   }
   useEffect(() => {
     list_slot_central_hub(setIsLoading, setData);
   }, []);
+  console.log(slotView,"slotView")
+  console.log(userId,"slotView")
   console.log(Data,'center==============>')
   const sortedData = Data.sort((a, b) => a.id - b.id);
   return (
@@ -119,6 +134,7 @@ const Slots = () => {
         onClose={() => setIsModalOpenslotview(false)}
         userId={userId}
         slotView={slotView}
+        
       />
     </div>
   );

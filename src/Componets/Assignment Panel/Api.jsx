@@ -47,7 +47,8 @@ export const move_to_folder = async (
   onClose,
   setSuccessMessage,
   setSuccessModalOpen,
-  setSelectedAssignment
+  setSelectedAssignment,
+  setFormData
 ) => {
   try {
     const body = {
@@ -79,6 +80,20 @@ export const move_to_folder = async (
       setTimeout(() => {
         setSuccessModalOpen(false);
       }, 1600);
+      setFormData({
+        SKU: "",
+        length: "",
+        width: "",
+        height: "",
+        typeOfMetal: "",
+        diamondType: "",
+        approxDiamondWeight: "",
+        findings: "",
+        approxMetalWeights: "",
+        approxMRP: "",
+        tags: "",
+        notes: "",
+      })
     }
   } catch (error) {
     console.error("Error moving designs:", error);

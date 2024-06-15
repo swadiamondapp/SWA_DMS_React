@@ -127,5 +127,10 @@
 }
 .textArea_feild {
   border-radius: 4px;
+  width:100%;
+  outline: none;
+  border-radius: 4px;
+  resize: none;
+  border:0.75px solid #B4C3D0;
 
 }
