@@ -16,6 +16,7 @@
     "@mui/icons-material": "^5.15.13",
     "@mui/lab": "^5.0.0-alpha.169",
     "@mui/material": "^5.15.13",
+    "@pqina/react-pintura": "^9.0.3",
     "antd": "^5.15.2",
     "antd-img-crop": "^4.22.0",
     "axios": "^1.6.8",
