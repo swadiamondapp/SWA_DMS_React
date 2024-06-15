@@ -25,14 +25,15 @@ const style = {
   borderRadius: 0,
 };
 
-const SlotView = ({ open, onClose,slotView }) => {
+const SlotView = ({ open, onClose, userId, slotView }) => {
   // const [slotView,setSloteView] = useState([])
   // create modal
 
   // const [open, setOpen] = useState(false);
   const [AssinedButton, setAssignedButton] = useState("Assign");
   const [tagText, setTagText] = useState("");
-  const [isLoading,setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
+  // const [slotDetailsById,setSlotDetialsById] = useState([])
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => onClose();
@@ -55,9 +56,11 @@ const SlotView = ({ open, onClose,slotView }) => {
   const filterOption = (input, option) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
 
+  console.log(slotView, "slot");
 
-  console.log(slotView,"uuuuuiiioo")
-
+  // useEffect(()=> {
+  //   slot_view_by_id(setIsLoading,userId,setSloteView)
+  // },[])
 
   return (
     <div>
@@ -75,7 +78,7 @@ const SlotView = ({ open, onClose,slotView }) => {
             className="modal"
           >
             <div>
-              <button onClick={()=>handleClose()} className="overLayButton">
+              <button onClick={() => handleClose()} className="overLayButton">
                 <img src={roundedClose} />
                 CLOSE
               </button>
@@ -101,12 +104,14 @@ const SlotView = ({ open, onClose,slotView }) => {
                         </tr>
                       </thead>
                       <tbody className="tbodyy">
-                        <tr>
-                          <td class="table-cell">SWA34R56</td>
-                          <td class="table-cell">12-02-23</td>
-                          <td class="table-cell">Bangles</td>
-                          <td class="table-cell">16 Gram</td>
-                        </tr>
+                        {slotView.map((item, index) => (
+                          <tr key={index}>
+                            <td class="table-cell">{item.slotnumber}</td>
+                            <td class="table-cell">{item.created_at}</td>
+                            <td class="table-cell">Bangles</td>
+                            <td class="table-cell">16 Gram</td>
+                          </tr>
+                        ))}
                         {/* <tr>
                           <td class="table-cell">SWA34R56</td>
                           <td class="table-cell">12-02-23</td>

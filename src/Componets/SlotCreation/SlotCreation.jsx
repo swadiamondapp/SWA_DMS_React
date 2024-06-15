@@ -266,7 +266,7 @@ const SlotCreation = ({ open, onClose }) => {
                                 </td>
                                 <td className="table-data">
                                   <div className="right-data-and-button-c">
-                                    <span>{item.weight}</span>
+                                    <span>{item.weight}Gram</span>
                                     <button className="Delete_button_sc">
                                       <img src={delteIcon} alt="" />
                                     </button>

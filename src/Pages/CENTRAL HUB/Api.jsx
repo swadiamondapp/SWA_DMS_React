@@ -2,8 +2,8 @@ import {
     apiService,
     checkApiStatus,
   } from "../../Pages/Services/ApiInstants";
-  import { setToLocalstorage } from "../../Pages/Utils/Common";
-  import { LIST_FROM_DESIGN_CAD, LIST_SLOT_HUB, SLOT_VIEW_BY_ID, } from "../../Pages/Services/EndPoints";
+import { LIST_FROM_DESIGN_CAD, LIST_SLOT_HUB, SLOT_VIEW_BY_ID } from "../Services/EndPoints";
+  // import { LIST_FROM_DESIGN_CAD, LIST_SLOT_HUB, SLOT_VIEW_BY_ID, } from "../../Pages/Services/EndPoints";
 
   
 export const list_slot_central_hub = async (setIsLoading, setData) => {
@@ -29,12 +29,11 @@ export const list_slot_central_hub = async (setIsLoading, setData) => {
   };
 
 
-  export const slot_view_by_id = async (setIsLoading,setSloteView,userId) => {
+  export const slot_view_by_id = async (Id, setSloteView) => {
     try {
-      const response = await apiService.get(`${SLOT_VIEW_BY_ID}${userId}/`);
-      if (response?.data?.results?.status_code === 200) {
-        // list_slot_central_hub(setIsLoading, setData)
-        setSloteView(response.data.results.data)
+      const response = await apiService.get(`${SLOT_VIEW_BY_ID}${Id}/`);
+      if (checkApiStatus(response)) {
+        setSloteView(response.data.results.data);
       }
     } catch (error) {
       console.log(error);

@@ -29,7 +29,7 @@ const DesignBtn = ({
   list_id,
   setFolderDetails,
   list_designer_folderDetails,
-  setSelectedAssignment
+  setSelectedAssignment,
 }) => {
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -37,16 +37,14 @@ const DesignBtn = ({
   const [isModalOpenCreateCutomize, setIsCreateCustomizeModalOpen] =
     useState(false);
 
-    const  handleCreatedFolder = ()=> {
-      setIsModalOpen(true)
-
-    }
-const handleAssignment = () => {
-  setIsModalOpenAssign(false)
-
-}
-    const { id } = useParams();
-    console.log(selectedAssignment,"selectedAssignment?==>")
+  const handleCreatedFolder = () => {
+    setIsModalOpen(true);
+  };
+  const handleAssignment = () => {
+    setIsModalOpenAssign(false);
+  };
+  const { id } = useParams();
+  console.log(selectedAssignment, "selectedAssignment?==>");
   return (
     <div>
       <div className="DesignPool_btns">
@@ -54,7 +52,8 @@ const handleAssignment = () => {
           location.pathname !== "/designdashboard" &&
           location.pathname !== "/designerassignview" &&
           location.pathname !== "/votorscustomization" &&
-          location.pathname !== "/finishedProject" && (
+          location.pathname !== "/finishedProject" &&
+          location.pathname !== `/designerassignview/${id}` && (
             <div className="Download_ParentD">
               <button className="D_downlodBtn" onClick={toggleDownloadOptions}>
                 Download <TbDownload />
@@ -90,32 +89,41 @@ const handleAssignment = () => {
                   <Link
                     style={{ textDecoration: "none" }}
                     // to="/assignmentpanel"
-                  
                   >
-                    <p style={{ color: "#000" }}   onClick={() => moveSelectedDesign()}>Assignment panel</p>
+                    <p
+                      style={{ color: "#000" }}
+                      onClick={() => moveSelectedDesign()}
+                    >
+                      Assignment panel
+                    </p>
                   </Link>
                 </div>
               )}
             </div>
           )}
-        {location.pathname === `/designerassignview/${id}` && (
-          <div className="Parent_MoveTo">
-            <button
-              className="D_moveBtn"
-              onClick={() => setIsModalOpenAssign(true)}
-            >
-              Assign To
-            </button>
-          </div>
-        )}
+        {location.pathname === `/designerassignview/${id}` &&
+          selectButtonLabel === "Unselect" && (
+            <div className="Parent_MoveTo">
+              <button
+                className="D_moveBtn"
+                onClick={() => setIsModalOpenAssign(true)}
+              >
+                Assign To
+              </button>
+            </div>
+          )}
 
-        {location.pathname === "/assignmentpanel" && selectButtonLabel === "Unselect" &&  (
-          <div className="Parent_MoveTo">
-            <button className="D_moveBtn" onClick={() => handleCreatedFolder()}>
-              Create folder
-            </button>
-          </div>
-        )}
+        {location.pathname === "/assignmentpanel" &&
+          selectButtonLabel === "Unselect" && (
+            <div className="Parent_MoveTo">
+              <button
+                className="D_moveBtn"
+                onClick={() => handleCreatedFolder()}
+              >
+                Create folder
+              </button>
+            </div>
+          )}
 
         {location.pathname !== "/votorscustomization" && (
           <button className="D_View_Sort_Filter">
@@ -156,12 +164,10 @@ const handleAssignment = () => {
         list_id={list_id}
         list_designer_folderDetails={list_designer_folderDetails}
         setSelectedAssignment={setSelectedAssignment}
-      
       />
       <CreateCustomisation
         open={isModalOpenCreateCutomize}
         onClose={() => setIsCreateCustomizeModalOpen(false)}
-
       />
     </div>
   );
