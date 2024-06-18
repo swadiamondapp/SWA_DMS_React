@@ -12,6 +12,7 @@ import RingC from "../../assets/ringc.png";
 import editIcon from "../../assets/editIcon.svg";
 import { customization_details } from "../VOTORS PANEL/Api";
 import CreateCustomisation from "../CreateCustomisation/CreateCustomisation";
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
   confirm_customization,
   reject_customization,
@@ -27,6 +28,8 @@ const CustomiseRequest = ({
   setData
 
 }) => {
+  const location = useLocation();
+  const navigate = useNavigate();
   // const [customization, setCustomization] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   // create modal
@@ -72,10 +75,22 @@ const CustomiseRequest = ({
   console.log(wareHouseuserId, "wareHouseIDD");
   console.log(CustomizationWareHouseData, "CustomizationWareHouseData");
 
-  const handleEditWareHouseDetails = () => {
-    onClose();
-    setIsCreateCustomizeModalOpen(true);
-  };
+  // const handleEditWareHouseDetails = () => {
+  //   onClose();
+  //   setIsCreateCustomizeModalOpen(true);
+  // };
+  const handleEditWareHouseDetails = (dataToDisplay) => {
+   const customizationsku= dataToDisplay.customizationcode
+
+     onClose();
+   
+     if (location.pathname === '/votorscustomization') {
+       setIsCreateCustomizeModalOpen(true);
+     } else {
+      navigate('/warehouseDetails', { state: {wareHouseuserId: wareHouseuserId, customizationsku:customizationsku} });
+
+     }
+   };
 
   const dataToDisplay = CustomizationWareHouseData || customization;
   const dataById = wareHouseuserId || CustomizationWareHouseData;
@@ -283,7 +298,7 @@ const CustomiseRequest = ({
                         </>
                       )}
                       <button
-                        onClick={() => handleEditWareHouseDetails()}
+                        onClick={() => handleEditWareHouseDetails(dataToDisplay)}
                         className="CR_ButtonCommen editButtonCR"
                       >
                         edit <img src={editIcon} alt="" />

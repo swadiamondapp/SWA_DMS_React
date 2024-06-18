@@ -76,13 +76,14 @@ const CadAssignment = () => {
               <div className="folder__card">
                 <Link
                   to={`/CadAssignmentcard?id=${item.id}`}
+                  state={{ cadId: item.id, cadFolderName: item.folder_name }}
                 >
                   <img src={folderimg} alt="" />
                 </Link>
                 {/* <Link
                   to={{
                     pathname: `/CadAssignmentcard`,
-                    state: { id: item.id, folderName: item.folder_name },
+                    state: { cadId: item.id, cadFolderName: item.folder_name },
                   }}
                 >
                   <img src={folderimg} alt="" />
