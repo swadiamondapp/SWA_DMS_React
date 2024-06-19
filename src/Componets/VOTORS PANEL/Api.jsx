@@ -2,9 +2,11 @@ import { apiService, checkApiStatus } from "../../Pages/Services/ApiInstants";
 import { setToLocalstorage } from "../../Pages/Utils/Common";
 import {
   CREATE_CUSTOMIZATION,
+  CREATE_ORDER_GALLARY,
   CUSTOMIZATION_DETAILS,
   DELETE_CUSTOMIZATION,
   LIKE_DESIGN,
+  STOCK_ORDER,
   VOTERS_CUSTOMIZATION_LIST,
 } from "../../Pages/Services/EndPoints";
 import { ALL_DESIGNS, VOTED_DESIGN_LIST } from "../../Pages/Services/EndPoints";
@@ -101,10 +103,12 @@ export const delete_customization = async (
 export const customization_details = async (
   setIsLoading,
   setCustomization,
-  userId
+  dataByid
 ) => {
   try {
-    const response = await apiService.get(`${CUSTOMIZATION_DETAILS}${userId}/`);
+    const response = await apiService.get(
+      `${CUSTOMIZATION_DETAILS}${dataByid}/`
+    );
     if (response?.data?.results?.status_code === 200) {
       setCustomization(response.data.results.data);
     }
@@ -195,3 +199,35 @@ export const order_customization = async (setIsLoading, Data) => {
 //     console.log(error);
 //   }
 // };
+
+export const stock_order_gallary = async (setStockOrder) => {
+  try {
+    const response = await apiService.get(STOCK_ORDER);
+    if (response?.data?.results?.status_code === 200) {
+      setStockOrder(response.data.results.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const create_stock_order_gallary = async (setIsLoading) => {
+  try {
+    const body = {
+      customization: 2, // ID of the Customization or  ID of the stock order (Assignment id:"assignment")
+      order_code: "SWACO002",
+      status: "Processed",
+      type_of_order: "Custom",
+      colour: "Blue",
+    };
+    const response = await apiService.post(CREATE_ORDER_GALLARY, body);
+    console.log("responces", response.data.results.status_code);
+    if (response?.data?.results?.status_code === 200) {
+    }
+    if (checkApiStatus(response)) {
+    } else {
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};

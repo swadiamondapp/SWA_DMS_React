@@ -4,6 +4,7 @@ import LoginBnner from "../../assets/login.png";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import Joi from "joi";
 import { userLogin } from "./Api";
+import EyeIcons from  "../../assets/eyeIcon.png"
 
 const Login = () => {
   const usertype = localStorage.getItem("Usertype");
@@ -20,6 +21,7 @@ const Login = () => {
   });
   // validation
   const [validationErrors, setValidationErrors] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
   const validateForm = () => {
     const validation = schema.validate(userCredentials, { abortEarly: false });
 
@@ -71,6 +73,10 @@ const Login = () => {
     }
   }, [navigate, usertype]);
 
+  const handleTogglePassword = () => {
+    setShowPassword(!showPassword);
+  };
+
   console.log("userCredentials../", userCredentials);
   console.log("data../", data);
   console.log("usertype", usertype);
@@ -107,7 +113,7 @@ const Login = () => {
                 <div className="Login_Inp">
                   <label htmlFor="Password">Password</label>
                   <input
-                    type="text"
+                    type={showPassword ? "text" : "password"}
                     className="loginCred"
                     placeholder="Password"
                     required
@@ -115,11 +121,13 @@ const Login = () => {
                     onChange={(e) =>
                       setUserCredentials({
                         ...userCredentials,
-                        password: e.target.value,
+                        password: e.target.value.trim(),
                       })
                     }
                   />
+                <div className="login_eyeIcon" onClick={()=> handleTogglePassword()}><img src={EyeIcons} alt="" /></div>
                 </div>
+
                 {errorMessage && <p style={{marginLeft:"8px",color:'red'}}>{errorMessage}</p>}
                 {validationErrors.password && (
                   <p className="errorlogins" style={{color:'red'}}>{validationErrors.password}</p>

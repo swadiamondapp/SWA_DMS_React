@@ -7,6 +7,7 @@ import Modal from "@mui/material/Modal";
 import closeButton from "../../assets/closeButton.svg";
 import { Select } from "antd";
 import Joi from "joi";
+import { create_stock_order_gallary } from "../VOTORS PANEL/Api";
 
 const style = {
   position: "absolute",
@@ -35,7 +36,7 @@ const schema = Joi.object({
   }),
 });
 
-const ProductCustomisation = ({ open, onClose }) => {
+const ProductCustomisation = ({ open, onClose,orderCode }) => {
   // create modal
 
   // const [open, setOpen] = useState(false);
@@ -50,31 +51,20 @@ const ProductCustomisation = ({ open, onClose }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const emptyFields = Object.entries(selectedValues)
-      .filter(([key, value]) => value === "")
-      .map(([key, value]) => key);
-
-    if (emptyFields.length > 0) {
-      console.log(
-        "Please fill in all required fields Product Customisation modal."
-      );
-      console.log("Empty fields:", emptyFields);
-      return; // Prevent further execution of the function
-    }
-
     const { error } = schema.validate(selectedValues, {
       abortEarly: false,
       allowUnknown: true,
     });
     if (error) {
-      const validationError = error.details.reduce((errors, err) => {
+      const validationErrors = error.details.reduce((errors, err) => {
         errors[err.path[0]] = err.message;
         return errors;
       }, {});
-      setErrors(validationError);
+      setErrors(validationErrors);
     } else {
-      console.log("form submitted", selectedValues);
-      setErrors({ undefined });
+      create_stock_order_gallary(orderCode,customization,selectedValues)
+      setErrors({});
+      onValidSubmit();
     }
   };
 
@@ -138,6 +128,7 @@ const ProductCustomisation = ({ open, onClose }) => {
                           showSearch
                           placeholder="-Select-"
                           optionFilterProp="children"
+                          
                           onChange={(value) =>
                             setSelectedValues((prevState) => ({
                               ...prevState,
@@ -146,7 +137,7 @@ const ProductCustomisation = ({ open, onClose }) => {
                           }
                           onSearch={onSearch}
                           filterOption={filterOption}
-                          style={{ width: "100%" }}
+                          style={{ width: "100%",marginBottom:'6px'}}
                           options={[
                             { value: "small", label: "Small" },
                             { value: "medium", label: "Medium" },
@@ -174,7 +165,7 @@ const ProductCustomisation = ({ open, onClose }) => {
                           }
                           onSearch={onSearch}
                           filterOption={filterOption}
-                          style={{ width: "100%" }}
+                          style={{ width: "100%" ,marginBottom:'6px'}}
                           options={[
                             { value: "online", label: "Online" },
                             { value: "offline", label: "Offline" },
@@ -200,7 +191,7 @@ const ProductCustomisation = ({ open, onClose }) => {
                           }
                           onSearch={onSearch}
                           filterOption={filterOption}
-                          style={{ width: "100%" }}
+                          style={{ width: "100%" ,marginBottom:'6px'}}
                           options={[
                             { value: "red", label: "Red" },
                             { value: "blue", label: "Blue" },

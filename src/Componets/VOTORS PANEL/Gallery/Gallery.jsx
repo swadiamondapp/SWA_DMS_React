@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
@@ -6,10 +6,17 @@ import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import ring from "../../../assets/ring.png";
 import ProductCustomisation from "../../ProductCustomisation/ProductCustomisation";
+import { stock_order_gallary } from "../Api";
 
 const Gallery = () => {
   const [value, setValue] = React.useState("1");
   const [IsModalOpen, setIsModalOpen] = useState(false);
+  const [stockOrder,setStockOrder] = useState([])
+  const [orderCode,setOrderCode] = useState([])
+
+  useEffect(()=> {
+    stock_order_gallary(setStockOrder)
+  },[])
   const card = [
     {
       product: "SWAD3456",
@@ -35,6 +42,12 @@ const Gallery = () => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  const handleStockOrder = (id) => {
+    setIsModalOpen(true)
+    setOrderCode(id)
+
+  }
+  console.log(stockOrder,"stockOrder")
   return (
     <div className="ParentVotors">
       <div className="gallery__tab">
@@ -52,19 +65,19 @@ const Gallery = () => {
             <TabPanel value="1">
               <div className="first_tab">
                 <div className="Card_Design_Parent">
-                  {card.map((item) => (
+                  {stockOrder.map((item) => (
                     <div className="New_Design_card">
                       <div className="Card_Details">
                         <div
                           className="Card_img"
                           style={{ borderBottom: "0px" }}
                         >
-                          <img src={ring} alt="" />
+                          <img src={item.items[0].paper_design.image} alt="" />
                         </div>
                         <div className="Card_Details_Inner_gallery">
-                          <h3 className="galleryId">ID : {item.product}</h3>
+                          <h3 className="galleryId">ID : {item.items[0].paper_design.designcode}</h3>
 
-                          <button onClick={() => setIsModalOpen(true)}>
+                          <button onClick={() => handleStockOrder(item.items[0].paper_design.designcode)}>
                             Make order
                           </button>
                         </div>
@@ -81,6 +94,8 @@ const Gallery = () => {
       <ProductCustomisation
         open={IsModalOpen}
         onClose={() => setIsModalOpen(false)}
+        orderCode={orderCode}
+
       />
     </div>
   );

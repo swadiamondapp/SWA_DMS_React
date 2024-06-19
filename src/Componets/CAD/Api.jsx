@@ -2,6 +2,7 @@ import { apiService, checkApiStatus } from "../../Pages/Services/ApiInstants";
 import { setToLocalstorage } from "../../Pages/Utils/Common";
 import {
   ASSIGNED_DATA_BY_ID,
+  FINISHED_PROJECT_CAD,
   LIST_ASSIGNED_CAD_DESIGN,
   TRANSFER_CAD,
   UPLOAD_CAD_DESIGN,
@@ -49,13 +50,13 @@ export const upload_cad_design = async (
     const response = await apiService.post(UPLOAD_CAD_DESIGN, body, config);
     if (response.data.results.status_code === 201) {
       // list_assignment_folder(setIsLoading, setAssignmentFolder);
+      handleSuccessUpload();
       setSuccessModalOpen(true);
       setSuccessMessage("File Uploaded Successfully");
       onClose();
       setTimeout(() => {
         setSuccessModalOpen(false);
       }, 1500);
-      handleSuccessUpload();
     }
   } catch (error) {
     console.error("Error moving designs:", error);
@@ -108,3 +109,23 @@ export const transfer_work = async (
     console.log(error);
   }
 };
+
+
+export const finished_product_list_cad = async (
+  setIsLoading,
+  setFinishedProduct,
+
+) => {
+  try {
+    const response = await apiService.get(FINISHED_PROJECT_CAD);
+    if (checkApiStatus(response)) {
+      setFinishedProduct(response.data.results.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+
+

@@ -130,6 +130,7 @@ const Header = () => {
               location.pathname !== "/designerassign" &&
               location.pathname !== "/warehouseDetails" &&
               location.pathname !== `/CadAssignmentcard` &&
+              location.pathname !== "/customRequestTable" &&
 
               
               (

@@ -12,11 +12,11 @@ import {
   USER_DELETE,
 } from "../../../Pages/Services/EndPoints";
 
-export const list_all_users = async (setIsLoading, setData) => {
+export const list_all_users = async (setIsLoading, setUserList) => {
   try {
     const response = await apiService.get(LIST_ALL_USER);
     if (checkApiStatus(response)) {
-      setData(response.data.results.data);
+      setUserList(response.data.results.data);
     }
   } catch (error) {
     console.log(error);
@@ -74,7 +74,7 @@ export const user_create = async (
 
 export const user_delete = async (
   setIsLoading,
-  setData,
+  setUserList,
   userId,
   setDeleteConfirmationOpen,
   setSuccessMessage,
@@ -82,8 +82,8 @@ export const user_delete = async (
 ) => {
   try {
     const response = await apiService.delete(`${USER_DELETE}${userId}/`);
-    if (response?.data?.results?.status_code === 200) {
-      list_all_users(setIsLoading, setData);
+    if (response?.data?.status_code === 200) {
+      list_all_users(setIsLoading, setUserList);
       setDeleteConfirmationOpen(false);
       setSuccessMessage("Deleted Successfully"),
       setSuccessModalOpen(true)
