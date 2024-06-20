@@ -96,7 +96,7 @@ const CustomiseRequest = ({
   };
 
   const dataToDisplay = CustomizationWareHouseData || customization;
-  const dataById = wareHouseuserId || CustomizationWareHouseData;
+  const dataById = wareHouseuserId || userId;
 
   const style = {
     position: "absolute",
