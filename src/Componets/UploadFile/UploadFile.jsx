@@ -13,7 +13,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 'auto',
+  width: "auto",
   height: "auto",
   bgcolor: "background.paper",
   border: "none",
@@ -23,7 +23,11 @@ const style = {
   borderRadius: 2,
 };
 
-const UploadFile = ({open,onClose}) => {
+const UploadFile = ({ open, onClose, createFinsishedProjects }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [images, setImages] = useState(Array(6).fill(null));
+  const [file, setFile] = useState(null);
+  const [id, setId] = useState("");
   // create modal
 
   // const [open, setOpen] = useState(false);
@@ -50,6 +54,49 @@ const UploadFile = ({open,onClose}) => {
   };
   const filterOption = (input, option) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
+
+  const handleImageUpload = (index, event) => {
+    const newImages = [...images];
+    newImages[index] = event.target.files[0];
+    setImages(newImages);
+  };
+
+  const handleFileUpload = (event) => {
+    setFile(event.target.files[0]);
+  };
+
+  const handleUpload = () => {
+    const formData = new FormData();
+    formData.append("designcode", id);
+    formData.append("name", id);
+    images.forEach((image, index) => {
+      if (image) {
+        formData.append(`img${index + 1}`, image);
+      }
+    });
+    if (file) {
+      formData.append("file1", file);
+    }
+    console.log("formData-->", formData);
+    createFinsishedProjects(setIsLoading, formData);
+
+    // for (let pair of formData.entries()) {
+    //   console.log(pair[0] + ": " + pair[1]);
+    // }
+
+    // Example API call
+    // fetch("/api/upload", {
+    //   method: "POST",
+    //   body: formData,
+    // })
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     console.log("Success:", data);
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error:", error);
+    //   });
+  };
 
   return (
     <div>
@@ -94,68 +141,72 @@ const UploadFile = ({open,onClose}) => {
                     <label htmlFor="" className="labelText">
                       ID
                     </label>
-                    <input type="text" className="inputFeildUpload" />
+                    <input
+                      type="text"
+                      className="inputFeildUpload"
+                      value={id}
+                      onChange={(e) => setId(e.target.value)}
+                    />
                   </div>
                   <div className="uploadPNG_Container">
-                 
-                      <div className="addButton_Container">
-                        <span className="title_1">Upload PNG / JPEG file </span>
-                        <div className="dashed_imageContainer">
-                          <div className="dashedImage">
-                            <img src={plusICon} alt="" />
+                    <div className="addButton_Container">
+                      <span className="title_1">Upload PNG / JPEG file </span>
+                      <div className="dashed_imageContainer">
+                        {images.map((image, index) => (
+                          <div key={index} className="dashedImage">
+                            {image && (
+                              <img
+                                src={URL.createObjectURL(image)}
+                                alt=""
+                                style={{ height: "64px", width: "64px" }}
+                              />
+                            )}
+                            <div style={{ position: "absolute" }}>
+                              <label>
+                                <img src={plusICon} alt="" />
+                                <input
+                                  type="file"
+                                  accept="image/png, image/jpeg"
+                                  style={{ display: "none" }}
+                                  onChange={(e) => handleImageUpload(index, e)}
+                                />
+                              </label>
+                            </div>
                           </div>
-                          <div className="dashedImage">
-                            <img src={plusICon} alt="" />
-                          </div>{" "}
-                          <div className="dashedImage">
-                            <img src={plusICon} alt="" />
-                          </div>{" "}
-                          <div className="dashedImage">
-                            <img src={plusICon} alt="" />
-                          </div>{" "}
-                          <div className="dashedImage">
-                            <img src={plusICon} alt="" />
-                          </div>
-                          <div className="dashedImage">
-                            <img src={plusICon} alt="" />
-                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="addButton_Container">
+                      <span className="title_1">Upload 3.DM File </span>
+                      <div className="dashed_imageContainer">
+                        <div className="dashedImage">
+                          {file ? (
+                            <span>{file.name}</span>
+                          ) : (
+                            <label>
+                              <img src={plusICon} alt="" />
+                              <input
+                                type="file"
+                                // accept=".3dm"
+                                accept="image/png, image/jpeg"
+                                style={{ display: "none" }}
+                                onChange={handleFileUpload}
+                              />
+                            </label>
+                          )}
                         </div>
                       </div>
-                      <div className="addButton_Container">
-                        <span className="title_1">Upload 3.DM File </span>
-                        <div className="dashed_imageContainer">
-                          <div className="dashedImage">
-                            <img src={plusICon} alt="" />
-                          </div>
-                          <div className="dashedImage">
-                            <img src={plusICon} alt="" />
-                          </div>{" "}
-                          <div className="dashedImage">
-                            <img src={plusICon} alt="" />
-                          </div>{" "}
-                          <div className="dashedImage">
-                            <img src={plusICon} alt="" />
-                          </div>{" "}
-                          <div className="dashedImage">
-                            <img src={plusICon} alt="" />
-                          </div>
-                          <div className="dashedImage">
-                            <img src={plusICon} alt="" />
-                          </div>
-                        </div>
-                      </div>
-                   
+                    </div>
                   </div>
                   <div className="upload_DMFile"></div>
 
                   <div className="buttons">
-                    <button
-                      className="cancerButton"
-                      onClick={()=>onClose()}
-                    >
+                    <button className="cancerButton" onClick={() => onClose()}>
                       cancel
                     </button>
-                    <button className="upButton">Upload</button>
+                    <button className="upButton" onClick={handleUpload}>
+                      Upload
+                    </button>
                   </div>
                 </div>
               </Typography>

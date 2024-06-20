@@ -13,7 +13,8 @@ const RendersPage = () => {
 
   useEffect(() => {
     folderItemList(setIsLoadig, setFolderItem, id);
-  }, []);
+  }, [id]);
+
   return (
     <div className="Parent_RendersPage">
       <Sidebar />

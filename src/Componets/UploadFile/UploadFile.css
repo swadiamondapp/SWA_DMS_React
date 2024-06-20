@@ -1,28 +1,29 @@
 .uploadPNG_Container {
-    display: flex;
-    flex-direction: column;
-    gap:10px;
-
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 .upload_DMFile {
-
 }
 .addButton_Container {
 }
 .dashedImage {
-    
-    border:0.5px dashed #C2CCD3;
-    padding:15px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 64px;
+  width: 64px;
+  border: 0.5px dashed #c2ccd3;
+  padding: 15px 20px;
+  position: relative;
 }
 .dashed_imageContainer {
-    display: flex;
-    gap:10px;
-
+  display: flex;
+  gap: 10px;
 }
 .title_1 {
-    font-family: "Inter", sans-serif;
-    color:#19242D;
-    font-size: 12px;
-    font-weight: 400;
+  font-family: "Inter", sans-serif;
+  color: #19242d;
+  font-size: 12px;
+  font-weight: 400;
 }
-

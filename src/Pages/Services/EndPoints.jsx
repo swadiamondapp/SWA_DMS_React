@@ -44,10 +44,12 @@ export const DIAMOND_CLARITY = "diamondclarity-choices/";
 export const CREATE_CUSTOMIZATION = "customizations/create/";
 export const UPLOAD_CAD_DESIGN = "upload-cad-designs/";
 export const USER_ACTIVATING = "users";
-export const LIKE_DESIGN = "designs"
-export const FORGOT_PASSWORD = "forgot-password/"
-export const RESET_PASSWORD = "reset-password/"
+export const LIKE_DESIGN = "designs";
+export const FORGOT_PASSWORD = "forgot-password/";
+export const RESET_PASSWORD = "reset-password/";
 export const TRANSFER_CAD = "update_cad_status"
 export const STOCK_ORDER = "list/gallery/stock/"
 export const CREATE_ORDER_GALLARY = "order/create/"
 export const FINISHED_PROJECT_CAD = "list-cad-designs/"
+;
+export const CREATE_FINISHED_PROJECTS = "create-finished-projects/";

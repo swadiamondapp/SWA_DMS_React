@@ -15,8 +15,8 @@ const successM = {
   border: "none",
   boxShadow: 24,
   borderRadius: "4px",
-  width:300,
-  height:"auto",
+  width: 300,
+  height: "auto",
   p: 4,
 };
 
@@ -24,7 +24,7 @@ const SuccessModal = ({
   successModalOpen,
   handleClose,
   handleOpen,
-  successMessage
+  successMessage,
 }) => {
   const [isMobileView, setIsMobileView] = useState(
     window.innerWidth >= 300 && window.innerWidth <= 575
@@ -58,16 +58,13 @@ const SuccessModal = ({
             <div style={{ textAlign: "center", margin: "12px 0px" }}>
               {successMessage ? (
                 <>
-                
-                  <span className="titlesuccesModal">
-                    {successMessage}
-                  </span>
+                  <span className="titlesuccesModal">{successMessage}</span>
                 </>
               ) : (
                 <>
-                 <span className="titlesuccesModal">
-              Mail sent successfully!
-              </span>
+                  <span className="titlesuccesModal">
+                    Mail sent successfully!
+                  </span>
                 </>
               )}
             </div>
