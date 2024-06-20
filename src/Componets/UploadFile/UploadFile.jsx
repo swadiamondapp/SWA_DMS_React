@@ -77,7 +77,7 @@ const UploadFile = ({ open, onClose, createFinsishedProjects, setSuccess }) => {
     if (file) {
       formData.append("file1", file);
     }
-    createFinsishedProjects(setIsLoading, formData, setSuccess);
+    createFinsishedProjects(setIsLoading, formData, setSuccess,onClose);
   };
 
   return (

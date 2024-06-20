@@ -270,26 +270,27 @@ const CustomiseRequest = ({
                     <div className="lineCR"></div>
 
                     <div className="crButtonContainer">
-                    {CustomizationWareHouseData && (
-  <>
-    {CustomizationWareHouseData.status === "Requested" && (
-      <>
-        <button
-          onClick={() => handleConfirm()}
-          className="CR_ButtonCommen confirmButtonCR"
-        >
-          Confirm
-        </button>
-        <button
-          onClick={() => handleReject()}
-          className="CR_ButtonCommen rejectButtonCR"
-        >
-          Reject
-        </button>
-      </>
-    )}
-  </>
-)}
+                      {CustomizationWareHouseData && (
+                        <>
+                          {CustomizationWareHouseData.status ===
+                            "Requested" && (
+                            <>
+                              <button
+                                onClick={() => handleConfirm()}
+                                className="CR_ButtonCommen confirmButtonCR"
+                              >
+                                Confirm
+                              </button>
+                              <button
+                                onClick={() => handleReject()}
+                                className="CR_ButtonCommen rejectButtonCR"
+                              >
+                                Reject
+                              </button>
+                            </>
+                          )}
+                        </>
+                      )}
                       <button
                         onClick={() =>
                           handleEditWareHouseDetails(dataToDisplay)
