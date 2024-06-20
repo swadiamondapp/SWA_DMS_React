@@ -74,8 +74,7 @@ const DesignerDashboard = () => {
               <div>
                 <p className="D__fileUpload">Upload file</p>
                 <p className="D__fileUpload2">
-                  you can upload file as single or bulk file
-                </p>
+                  you can upload file here                </p>
               </div>
               <div className="File____uploadbtn">
                 <button onClick={() => document.getElementById("fileInput").click()}>
