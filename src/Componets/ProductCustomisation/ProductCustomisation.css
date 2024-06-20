@@ -1,7 +1,7 @@
 .container {
     display: flex;
     flex-direction: column;
-    gap:12px
+    gap:25px
 
 }
 .inputFields {
@@ -27,3 +27,5 @@
     width: 100%;
     margin-top: 10px;
   }
+  
+  

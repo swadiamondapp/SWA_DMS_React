@@ -3,6 +3,7 @@ import Sidebar from "../../../Componets/Sidebar/Sidebar";
 import Header from "../../../Componets/Header/Header";
 import RenderCard from "../../../Componets/RenderCard/RenderCard";
 import { cadDesignList } from "../Apis";
+import AnnotationCanvas from "../../../Componets/AnnotationCanvas/AnnotationCanvas";
 
 const RendersPage = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -16,6 +17,7 @@ const RendersPage = () => {
       <Sidebar />
       <Header />
       <RenderCard designListData={designListData} />
+      <AnnotationCanvas />
     </div>
   );
 };

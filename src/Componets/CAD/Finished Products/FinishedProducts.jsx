@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ring from "../../../assets/ring.png";
 import { GoDownload } from "react-icons/go";
 import { IoPrintOutline } from "react-icons/io5";
+import { finished_product_list_cad } from "../Api";
 
 const FinishedProducts = () => {
+  const [isLoading,setIsLoading] = useState(false)
+  const [finishedProduct,setFinishedProduct] = useState([])
   const card = [
     {
       product: "SWAD3456",
@@ -16,6 +19,11 @@ const FinishedProducts = () => {
       date: "12 june 2023",
     },
   ];
+
+  useEffect(()=> {
+    finished_product_list_cad( setIsLoading,setFinishedProduct )
+  },[])
+  console.log(finishedProduct,"finishedProduct")
   return (
     <div className="ParentCad">
       <div className="CadAssignmentCard">

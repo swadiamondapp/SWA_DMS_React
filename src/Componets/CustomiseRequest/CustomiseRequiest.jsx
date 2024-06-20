@@ -12,6 +12,7 @@ import RingC from "../../assets/ringc.png";
 import editIcon from "../../assets/editIcon.svg";
 import { customization_details } from "../VOTORS PANEL/Api";
 import CreateCustomisation from "../CreateCustomisation/CreateCustomisation";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   confirm_customization,
   reject_customization,
@@ -24,9 +25,10 @@ const CustomiseRequest = ({
   userId,
   wareHouseuserId,
   CustomizationWareHouseData,
-  setData
-
+  setData,
 }) => {
+  const location = useLocation();
+  const navigate = useNavigate();
   // const [customization, setCustomization] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   // create modal
@@ -72,9 +74,25 @@ const CustomiseRequest = ({
   console.log(wareHouseuserId, "wareHouseIDD");
   console.log(CustomizationWareHouseData, "CustomizationWareHouseData");
 
-  const handleEditWareHouseDetails = () => {
+  // const handleEditWareHouseDetails = () => {
+  //   onClose();
+  //   setIsCreateCustomizeModalOpen(true);
+  // };
+  const handleEditWareHouseDetails = (dataToDisplay) => {
+    const customizationsku = dataToDisplay.customizationcode;
+
     onClose();
-    setIsCreateCustomizeModalOpen(true);
+
+    if (location.pathname === "/votorscustomization") {
+      setIsCreateCustomizeModalOpen(true);
+    } else {
+      navigate("/warehouseDetails", {
+        state: {
+          warehouseID: wareHouseuserId,
+          customizationsku: customizationsku,
+        },
+      });
+    }
   };
 
   const dataToDisplay = CustomizationWareHouseData || customization;
@@ -252,38 +270,30 @@ const CustomiseRequest = ({
                     <div className="lineCR"></div>
 
                     <div className="crButtonContainer">
-                      {CustomizationWareHouseData && (
-                        <>
-                          <button
-                            onClick={() => handleConfirm()}
-                            className="CR_ButtonCommen confirmButtonCR"
-                            style={{
-                              display:
-                                CustomizationWareHouseData.status ===
-                                "Confirmed"
-                                  ? "none"
-                                  : "block",
-                            }}
-                          >
-                            confirm
-                          </button>
-                          <button
-                            onClick={() => handleReject()}
-                            className="CR_ButtonCommen rejectButtonCR"
-                            style={{
-                              display:
-                                CustomizationWareHouseData.status ===
-                                "Rejected"
-                                  ? "none"
-                                  : "block",
-                            }}
-                          >
-                            Reject
-                          </button>
-                        </>
-                      )}
+                    {CustomizationWareHouseData && (
+  <>
+    {CustomizationWareHouseData.status === "Requested" && (
+      <>
+        <button
+          onClick={() => handleConfirm()}
+          className="CR_ButtonCommen confirmButtonCR"
+        >
+          Confirm
+        </button>
+        <button
+          onClick={() => handleReject()}
+          className="CR_ButtonCommen rejectButtonCR"
+        >
+          Reject
+        </button>
+      </>
+    )}
+  </>
+)}
                       <button
-                        onClick={() => handleEditWareHouseDetails()}
+                        onClick={() =>
+                          handleEditWareHouseDetails(dataToDisplay)
+                        }
                         className="CR_ButtonCommen editButtonCR"
                       >
                         edit <img src={editIcon} alt="" />
@@ -304,7 +314,6 @@ const CustomiseRequest = ({
         wareHouseuserId={wareHouseuserId}
         setData={setData}
         setCustomization={setCustomization}
-
       />
       <SuccessModal
         successModalOpen={successModalOpen}

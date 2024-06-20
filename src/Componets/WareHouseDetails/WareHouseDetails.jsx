@@ -1,10 +1,49 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../../Componets/WareHouseDetails/WareHouseDetails.css";
 import { LiaRupeeSignSolid } from "react-icons/lia";
 import image1 from "../../assets/wh_img.png";
 import image12 from "../../assets/ring_Wh.png";
+import { useLocation } from "react-router-dom";
+import { customization_details_view_warehouse } from "../../Pages/WareHousePageView/Api";
 
 const WareHouseDetails = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [actualFormData, setActualFormData] = useState({
+    length: "",
+    width: "",
+    height: "",
+    weight: "",
+    Budget: "",
+    notes: "",
+    findings:'',
+  });
+  const [customizationwarehouseData, setCustomizationWareHouseData] = useState(
+    []
+  );
+  const location = useLocation();
+  const { wareHouseuserId, customizationsku } = location.state || {};
+  console.log(customizationwarehouseData, "wss");
+
+  useEffect(() => {
+    customization_details_view_warehouse(
+      setIsLoading,
+      setCustomizationWareHouseData,
+      wareHouseuserId
+    );
+  }, []);
+
+  const handleInput = (e) => {
+    const { name, value } = e.target;
+    setActualFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: "", // Clear the error for the current input field
+    }));
+  };
   return (
     <div className="Parant_WareHouseDetails">
       <div className="wareHouseImageConatainer">
@@ -12,7 +51,6 @@ const WareHouseDetails = () => {
           <img src={image1} />
           <img src={image12} />
         </div>
-     
       </div>
       <div className="wareHouse_basicDetails">
         <div className="right_Assignment_View">
@@ -21,7 +59,7 @@ const WareHouseDetails = () => {
             <div className="Assignment_Details">
               <div className="A1_text">
                 <p>SKU</p>
-                <p>SWA12356</p>
+                <p>{customizationwarehouseData.sku}</p>
               </div>
               <div className="A1_text">
                 <p>Length</p>
@@ -83,29 +121,53 @@ const WareHouseDetails = () => {
         </div>
       </div>
       <div className="wareHouse_actualDetails">
-      <div className="right_Assignment_View">
+        <div className="right_Assignment_View">
           <div className="Assignment_contents">
             <h3>Actual details</h3>
             <div className="Assignment_Details">
               <div className="A1_text">
                 <p>SKU</p>
-                <p></p>
+                <p>{customizationsku}</p>
               </div>
               <div className="A1_text">
                 <p>Length</p>
-                <p></p>
+                <input
+                  type="number"
+                  className="actualDetails_input"
+                  name="length"
+                  value={actualFormData.length}
+                  onChange={handleInput}
+                />
               </div>
               <div className="A1_text">
                 <p>Width</p>
-                <p></p>
+                <input
+                  type="number"
+                  className="actualDetails_input"
+                  name="width"
+                  value={actualFormData.width}
+                  onChange={handleInput}
+                />
               </div>
               <div className="A1_text">
                 <p>Height</p>
-                <p></p>
+                <input
+                  type="number"
+                  className="actualDetails_input"
+                  name="height"
+                  value={actualFormData.height}
+                  onChange={handleInput}
+                />
               </div>
               <div className="A1_text">
                 <p>Type of metal</p>
-                <p></p>
+                {/* <input
+                  type="number"
+                  className="actualDetails_input"
+                  name="width"
+                  value={actualFormData.height}
+                  onChange={handleInput}
+                /> */}
               </div>
               <div className="A1_text">
                 <p>Dimond Type</p>
@@ -117,7 +179,13 @@ const WareHouseDetails = () => {
               </div>
               <div className="A1_text">
                 <p>Findings</p>
-                <p></p>
+                <input
+                  type="text"
+                  className="actualDetails_input"
+                  name="findings"
+                  value={actualFormData.findings}
+                  onChange={handleInput}
+                />
               </div>
               <div className="A1_text">
                 <p>Approx weight</p>
@@ -132,18 +200,27 @@ const WareHouseDetails = () => {
               </div>
               <div className="A1_text">
                 <p>Tags</p>
-                <p>
-                  <span></span>
-                  <span></span>
-                </p>
+                <input
+                  type="text"
+                  className="actualDetails_input"
+                  name="tags"
+                  value={actualFormData.tags}
+                  onChange={handleInput}
+                />
               </div>
               <div className="A1_text" style={{ borderBottom: "0px" }}>
                 <p>Note</p>
-                <p>
-                 
-                </p>
+                <input
+                  type="text"
+                  className="actualDetails_input"
+                  name="note"
+                  value={actualFormData.note}
+                  onChange={handleInput}
+                />
               </div>
-              <div className="actualDetailsButtonContiner"><button>Update</button></div>
+              <div className="actualDetailsButtonContiner">
+                <button>Update</button>
+              </div>
             </div>
           </div>
         </div>

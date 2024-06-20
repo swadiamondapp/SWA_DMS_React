@@ -182,7 +182,7 @@ const BasicDetailModal = ({
                   <form onSubmit={handleSubmit}>
                     <div className="formContainer">
                       <label htmlFor="" className="label-text">
-                        SKU
+                        Product Id
                       </label>
                       <input
                         type="text"

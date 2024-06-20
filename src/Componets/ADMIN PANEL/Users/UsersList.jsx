@@ -669,7 +669,7 @@ const UsersList = () => {
                       >
                         {item.status === "ACTIVE" ? "Active" : "Inactive"}
                       </button>
-                      <button
+                      {/* <button
                         className="sendmail_btn"
                         onClick={() => handleSendMail(item.id)}
                       >
@@ -689,7 +689,7 @@ const UsersList = () => {
                         ) : (
                           <>Send Mail</>
                         )}
-                      </button>
+                      </button> */}
                     </div>
                   </td>
                   <td>

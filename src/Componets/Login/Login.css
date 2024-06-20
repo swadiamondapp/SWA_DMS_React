@@ -29,6 +29,7 @@
 .Login_Inp {
   display: grid;
   margin-bottom: 15px;
+  position: relative;
 }
 .Login_Inp label {
   margin-bottom: 8px;
@@ -72,4 +73,12 @@
 .loginCred::placeholder {
   opacity: 60% !important;
   font-size: 12px;
+}
+.login_eyeIcon img {
+  width: 14px;
+}
+.login_eyeIcon  {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
 }

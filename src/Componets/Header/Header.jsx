@@ -11,6 +11,8 @@ import { useParams } from "react-router-dom";
 
 const Header = () => {
   const location = useLocation();
+  const { wareHouseuserId, customizationsku } = location.state || {};
+  const {cadFolderName,cadId } = location.state || {};
   const query = new URLSearchParams(location.search);
   const folderName = query.get("name");
   const folderNamec = query.get("folderNamec");
@@ -97,9 +99,15 @@ const Header = () => {
             {location.pathname === `/assignmentpaneldetailsview/${id}` && (
               <h3>{folderName}</h3>
             )}
-             {/* {location.pathname === `/CadAssignmentcard/${id}` && (
-              <h3>{folderName}</h3>
-            )} */}
+              {location.pathname === `/warehouseDetails` && (
+              <h3>ID : { customizationsku }</h3>
+            )}
+             {location.pathname === `/CadAssignmentcard` && (
+              <h3>{cadFolderName}</h3>
+            )}
+             {location.pathname === `/FinishedProduct` && (
+              <h3>Finished Project</h3>
+            )}
              {location.pathname === "/centralDashboard" && (
               <h3>Dashboard</h3>
             )}
@@ -120,6 +128,10 @@ const Header = () => {
               location.pathname !== "/slot" &&
               location.pathname !== `/designerassignview/${id}` &&
               location.pathname !== "/designerassign" &&
+              location.pathname !== "/warehouseDetails" &&
+              location.pathname !== `/CadAssignmentcard` &&
+              location.pathname !== "/customRequestTable" &&
+
               
               (
                 <div className="Search_Admin">

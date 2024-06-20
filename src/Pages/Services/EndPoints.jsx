@@ -47,5 +47,9 @@ export const USER_ACTIVATING = "users";
 export const LIKE_DESIGN = "designs";
 export const FORGOT_PASSWORD = "forgot-password/";
 export const RESET_PASSWORD = "reset-password/";
-export const TRANSFER_CAD = "update_cad_status";
+export const TRANSFER_CAD = "update_cad_status"
+export const STOCK_ORDER = "list/gallery/stock/"
+export const CREATE_ORDER_GALLARY = "order/create/"
+export const FINISHED_PROJECT_CAD = "list-cad-designs/"
+;
 export const CREATE_FINISHED_PROJECTS = "create-finished-projects/";
