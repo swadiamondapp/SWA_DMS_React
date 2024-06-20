@@ -16,6 +16,7 @@
     "@mui/icons-material": "^5.15.13",
     "@mui/lab": "^5.0.0-alpha.169",
     "@mui/material": "^5.15.13",
+    "@pqina/react-pintura": "^9.0.3",
     "antd": "^5.15.2",
     "antd-img-crop": "^4.22.0",
     "axios": "^1.6.8",
@@ -23,16 +24,19 @@
     "html2canvas": "^1.4.1",
     "joi": "^17.13.1",
     "jspdf": "^2.5.1",
+    "konva": "^9.3.11",
     "lottie-web": "^5.12.2",
     "otp-input-react": "^0.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.0.1",
+    "react-konva": "^18.2.10",
     "react-lottie": "^1.2.4",
     "react-router-dom": "^6.22.3",
     "react-tag-input-component": "^2.0.2",
     "react-to-print": "^2.15.1",
-    "roughjs": "^4.6.6"
+    "roughjs": "^4.6.6",
+    "use-image": "^1.1.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.56",

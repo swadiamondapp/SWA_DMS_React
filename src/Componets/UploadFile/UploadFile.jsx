@@ -23,7 +23,7 @@ const style = {
   borderRadius: 2,
 };
 
-const UploadFile = ({ open, onClose, createFinsishedProjects }) => {
+const UploadFile = ({ open, onClose, createFinsishedProjects, setSuccess }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [images, setImages] = useState(Array(6).fill(null));
   const [file, setFile] = useState(null);
@@ -77,25 +77,7 @@ const UploadFile = ({ open, onClose, createFinsishedProjects }) => {
     if (file) {
       formData.append("file1", file);
     }
-    console.log("formData-->", formData);
-    createFinsishedProjects(setIsLoading, formData);
-
-    // for (let pair of formData.entries()) {
-    //   console.log(pair[0] + ": " + pair[1]);
-    // }
-
-    // Example API call
-    // fetch("/api/upload", {
-    //   method: "POST",
-    //   body: formData,
-    // })
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     console.log("Success:", data);
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error:", error);
-    //   });
+    createFinsishedProjects(setIsLoading, formData, setSuccess);
   };
 
   return (

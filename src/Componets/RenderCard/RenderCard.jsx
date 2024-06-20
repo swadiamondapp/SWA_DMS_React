@@ -15,6 +15,7 @@ const RenderCard = (props) => {
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
   const [activeDesignCode, setActiveDesignCode] = useState(null);
   const [elapsedTime, setElapsedTime] = useState(0);
+  const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     let timerInterval;
@@ -143,10 +144,11 @@ const RenderCard = (props) => {
         open={uploadModalOpen}
         onClose={() => setUploadModalOpen(false)}
         createFinsishedProjects={createFinsishedProjects}
+        setSuccess={setSuccess}
       />
       <SuccessModal
-        // successModalOpen={}
-        // handleClose={}
+        successModalOpen={success}
+        handleClose={() => setSuccess(false)}
         successMessage={"Files uploaded succesfully"}
       />
     </div>
