@@ -267,7 +267,7 @@ const UsersList = () => {
   const handleCancel = () => {
     setIsModalOpen(false);
     setErrorMessages(null);
-    setErrors({})
+    setErrors({});
   };
   // create modal
   // select box
@@ -520,6 +520,8 @@ const UsersList = () => {
                     <input
                       type="number"
                       className="inputFeild"
+                      pattern="[0-9]*"
+                      inputMode="numeric"
                       name="phoneNumber"
                       value={formData.phoneNumber}
                       onChange={handleInput}

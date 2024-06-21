@@ -28,15 +28,15 @@ const FinishedProducts = () => {
     <div className="ParentCad">
       <div className="CadAssignmentCard">
         <div className="Card_Design_Parent">
-          {card.map((item) => (
+          {finishedProduct.map((item) => (
             <div className="New_Design_card">
               <div className="Card_Details">
                 <div className="Card_img" style={{ borderBottom: "0px" }}>
-                  <img src={ring} alt="" />
+                  <img src={item.file1} alt="" />
                 </div>
                 <div className="Card_Details_Inner_cad_Hub">
                   <p>
-                    POSTED ON:{" "}
+                    POSTED ON:{item.created_at}
                     <span style={{ color: "#455173", fontWeight: "600" }}>
                       {item.date}
                     </span>

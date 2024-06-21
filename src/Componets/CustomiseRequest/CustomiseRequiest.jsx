@@ -205,6 +205,12 @@ const CustomiseRequest = ({
                         <div className="imageContainer">
                           <img src={dataToDisplay.image3} alt="" />
                         </div>
+                        <div className="imageContainer">
+                          <img src={dataToDisplay.image4} alt="" />
+                        </div>
+                        <div className="imageContainer">
+                          <img src={dataToDisplay.image5} alt="" />
+                        </div>
                       </div>
                     </div>
                     <div className="lineCR"></div>

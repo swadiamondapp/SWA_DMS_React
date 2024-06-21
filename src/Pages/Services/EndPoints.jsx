@@ -54,3 +54,4 @@ export const FINISHED_PROJECT_CAD = "list-cad-designs/"
 ;
 export const CREATE_FINISHED_PROJECTS = "create-finished-projects/";
 export const CUSTOMIZED_ORDER = "list-all-customization/?orderstatus=true"
+export const GET_LIST_FOLDER_BY_ID = "getlist-folder/?designer_id="
