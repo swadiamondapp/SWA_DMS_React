@@ -277,21 +277,18 @@ const BasicDetailModal = ({
                           style={{ width: "100%",zIndex:"9999999",background:'#006E7F1A', }}
                           options={[
                             {
-                              value: "Gold",
-                              label: "Gold",
+                              value: "18k GOLD",
+                              label: "18k GOLD",
                             },
                             {
-                              value: "Rose Gold",
-                              label: "Rose Gold",
+                              value: "22k GOLD",
+                              label: "22k GOLD",
                             },
                             {
-                              value: "Silver",
-                              label: "Silver",
+                              value: "PLATINUM 950",
+                              label: "PLATINUM 950",
                             },
-                            {
-                              value: "Platinum",
-                              label: "Platinum",
-                            },
+                           
                           ]}
                         />
                         <div>
@@ -321,17 +318,14 @@ const BasicDetailModal = ({
                           style={{ width: "100%",zIndex:999999999,background:'#006E7F1A' }}
                           options={[
                             {
-                              value: "Natural Diamond",
-                              label: "Natuaral Diamond",
+                              value: "VVS1 E 2/0",
+                              label: "VVS1 E 2/0",
                             },
                             {
-                              value: "Treated Diamond",
-                              label: "Treated Diamond",
+                              value: "VVS1 F 3/0",
+                              label: "VVS1 F 3/0",
                             },
-                            {
-                              value: "Pink Diomond",
-                              label: "Pink Diomond",
-                            },
+                            
                           ]}
                         />
                         <div>
