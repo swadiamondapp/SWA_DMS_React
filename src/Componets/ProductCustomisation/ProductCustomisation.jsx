@@ -8,6 +8,7 @@ import closeButton from "../../assets/closeButton.svg";
 import { Select } from "antd";
 import Joi from "joi";
 import { create_stock_order_gallary } from "../VOTORS PANEL/Api";
+import SuccessModal from "../SuccessModal/SuccessModal";
 
 const style = {
   position: "absolute",
@@ -36,19 +37,40 @@ const schema = Joi.object({
   }),
 });
 
-const ProductCustomisation = ({ open, onClose,orderCode }) => {
+const ProductCustomisation = ({
+  open,
+  onClose,
+  orderAssignMentCode,
+  orderDesignCode,
+  value,
+  CustomizedCod,
+  CustomizedId
+}) => {
   // create modal
 
   // const [open, setOpen] = useState(false);
   const [AssinedButton, setAssignedButton] = useState("Assign");
   const [tagText, setTagText] = useState("");
   const [errors, setErrors] = useState({});
+  const [successModalOpen, setSuccessModalOpen] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
   const [selectedValues, setSelectedValues] = useState({
     size: "",
     type: "",
     colour: "",
+    notes:""
   });
-
+  console.log(
+    orderAssignMentCode,
+    orderDesignCode,
+    selectedValues.size,
+    selectedValues.colour,
+    selectedValues.type,
+    selectedValues.notes,
+    CustomizedCod,
+  CustomizedId,
+    "proudcd"
+  );
   const handleSubmit = (e) => {
     e.preventDefault();
     const { error } = schema.validate(selectedValues, {
@@ -62,9 +84,20 @@ const ProductCustomisation = ({ open, onClose,orderCode }) => {
       }, {});
       setErrors(validationErrors);
     } else {
-      create_stock_order_gallary(orderCode,customization,selectedValues)
+      create_stock_order_gallary(
+        orderDesignCode,
+        orderAssignMentCode,
+        selectedValues,
+        value,
+        CustomizedCod,
+        CustomizedId,
+        onClose,
+        setSuccessMessage,
+        setSuccessModalOpen,
+        setSelectedValues
+      );
       setErrors({});
-      onValidSubmit();
+      // onValidSubmit();
     }
   };
 
@@ -128,7 +161,6 @@ const ProductCustomisation = ({ open, onClose,orderCode }) => {
                           showSearch
                           placeholder="-Select-"
                           optionFilterProp="children"
-                          
                           onChange={(value) =>
                             setSelectedValues((prevState) => ({
                               ...prevState,
@@ -137,7 +169,7 @@ const ProductCustomisation = ({ open, onClose,orderCode }) => {
                           }
                           onSearch={onSearch}
                           filterOption={filterOption}
-                          style={{ width: "100%",marginBottom:'6px'}}
+                          style={{ width: "100%", marginBottom: "6px" }}
                           options={[
                             { value: "small", label: "Small" },
                             { value: "medium", label: "Medium" },
@@ -165,7 +197,7 @@ const ProductCustomisation = ({ open, onClose,orderCode }) => {
                           }
                           onSearch={onSearch}
                           filterOption={filterOption}
-                          style={{ width: "100%" ,marginBottom:'6px'}}
+                          style={{ width: "100%", marginBottom: "6px" }}
                           options={[
                             { value: "online", label: "Online" },
                             { value: "offline", label: "Offline" },
@@ -191,7 +223,7 @@ const ProductCustomisation = ({ open, onClose,orderCode }) => {
                           }
                           onSearch={onSearch}
                           filterOption={filterOption}
-                          style={{ width: "100%" ,marginBottom:'6px'}}
+                          style={{ width: "100%", marginBottom: "6px" }}
                           options={[
                             { value: "red", label: "Red" },
                             { value: "blue", label: "Blue" },
@@ -202,6 +234,30 @@ const ProductCustomisation = ({ open, onClose,orderCode }) => {
                           <span className="error_input">{errors.colour}</span>
                         )}
                       </div>
+                      {/* <div className="parant_relative">
+                        <label htmlFor="" className="label_text">
+                          Notes
+                        </label>
+                        <textarea
+                          type="text"
+                          name="notes"
+                          className="textArea_feild"
+                          value={selectedValues.notes}
+                          onChange={(event) =>
+                            setSelectedValues((prevState) => ({
+                              ...prevState,
+                              notes: event.target.value,
+                            }))
+                          }
+                          id=""
+                          cols="30"
+                          rows="6"
+                          style={{ width: "100%" }}
+                        />
+                        {errors.notes && (
+                          <span className="error_input">{errors.notes}</span>
+                        )}
+                      </div> */}
                       <div>
                         <button type="submit" className="CreateOrderButton">
                           Create Order Button
@@ -214,6 +270,10 @@ const ProductCustomisation = ({ open, onClose,orderCode }) => {
             </Box>
           </Modal>
         </div>
+        <SuccessModal
+        successModalOpen={successModalOpen}
+        successMessage={successMessage}
+      />
       </div>
     </div>
   );

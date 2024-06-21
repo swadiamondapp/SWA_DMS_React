@@ -102,7 +102,7 @@ const Login = () => {
                     onChange={(e) =>
                       setUserCredentials({
                         ...userCredentials,
-                        email: e.target.value,
+                        email: e.target.value.trim(),
                       })
                     }
                   />

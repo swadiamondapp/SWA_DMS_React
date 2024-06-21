@@ -96,7 +96,7 @@ const CustomiseRequest = ({
   };
 
   const dataToDisplay = CustomizationWareHouseData || customization;
-  const dataById = wareHouseuserId || CustomizationWareHouseData;
+  const dataById = wareHouseuserId || userId;
 
   const style = {
     position: "absolute",
@@ -205,6 +205,12 @@ const CustomiseRequest = ({
                         <div className="imageContainer">
                           <img src={dataToDisplay.image3} alt="" />
                         </div>
+                        <div className="imageContainer">
+                          <img src={dataToDisplay.image4} alt="" />
+                        </div>
+                        <div className="imageContainer">
+                          <img src={dataToDisplay.image5} alt="" />
+                        </div>
                       </div>
                     </div>
                     <div className="lineCR"></div>
@@ -270,26 +276,27 @@ const CustomiseRequest = ({
                     <div className="lineCR"></div>
 
                     <div className="crButtonContainer">
-                    {CustomizationWareHouseData && (
-  <>
-    {CustomizationWareHouseData.status === "Requested" && (
-      <>
-        <button
-          onClick={() => handleConfirm()}
-          className="CR_ButtonCommen confirmButtonCR"
-        >
-          Confirm
-        </button>
-        <button
-          onClick={() => handleReject()}
-          className="CR_ButtonCommen rejectButtonCR"
-        >
-          Reject
-        </button>
-      </>
-    )}
-  </>
-)}
+                      {CustomizationWareHouseData && (
+                        <>
+                          {CustomizationWareHouseData.status ===
+                            "Requested" && (
+                            <>
+                              <button
+                                onClick={() => handleConfirm()}
+                                className="CR_ButtonCommen confirmButtonCR"
+                              >
+                                Confirm
+                              </button>
+                              <button
+                                onClick={() => handleReject()}
+                                className="CR_ButtonCommen rejectButtonCR"
+                              >
+                                Reject
+                              </button>
+                            </>
+                          )}
+                        </>
+                      )}
                       <button
                         onClick={() =>
                           handleEditWareHouseDetails(dataToDisplay)

@@ -27,6 +27,7 @@ const AssignmentPanel = () => {
   const [selectedAssignment, setSelectedAssignment] = useState([]);
   const [openDesignPool, setOpenDesignPool] = useState(false);
   const [modalDetails, setModalDetails] = useState([]);
+  const [activeCardId, setActiveCardId] = useState(null);
   const [uploadInstructionsVisible, setUploadInstructionsVisible] =
     useState(true);
   const location = useLocation();
@@ -43,16 +44,31 @@ const AssignmentPanel = () => {
   const toggleMoveOptions = () => {
     setShowMoveOptions(!showMoveOptions);
   };
-  const toggleDeleteMoveButtons = () => {
-    setShowDeleteMoveButtons(!showDeleteMoveButtons);
-    setShowOverlay(!showOverlay);
+  // const toggleDeleteMoveButtons = () => {
+  //   setShowDeleteMoveButtons(!showDeleteMoveButtons);
+  //   setShowOverlay(!showOverlay);
+  // };
+  const toggleDeleteMoveButtons = (id) => {
+    if (activeCardId === id) {
+      setActiveCardId(null);
+      setShowOverlay(false);
+    } else {
+      setActiveCardId(id);
+      setShowOverlay(true);
+    }
   };
   const handleClickOutside = (event) => {
     if (dotsRef.current && !dotsRef.current.contains(event.target)) {
-      setShowDeleteMoveButtons(false);
+      setActiveCardId(null);
       setShowOverlay(false);
     }
   };
+  // const handleClickOutside = (event) => {
+  //   if (dotsRef.current && !dotsRef.current.contains(event.target)) {
+  //     setShowDeleteMoveButtons(false);
+  //     setShowOverlay(false);
+  //   }
+  // };
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -224,14 +240,19 @@ const AssignmentPanel = () => {
                 {/* radio btn */}
                 {!showRadioButtons &&
                   location.pathname === "/assignmentpanel" && (
-                    <div onClick={toggleDeleteMoveButtons} ref={dotsRef}>
+                    <div
+                      onClick={() =>
+                        toggleDeleteMoveButtons(item && item.items[0].id)
+                      }
+                      ref={dotsRef}
+                    >
                       <BsThreeDotsVertical
                         className="A_dots"
                         style={{ fontSize: "20px" }}
                       />
                     </div>
                   )}
-                {showDeleteMoveButtons && (
+                {activeCardId === (item && item.items[0].id) && (
                   <div className="Dots_Delete_DesignPool_btns">
                     <p>Delete</p>
                     <p>Move to Design pool</p>

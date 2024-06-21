@@ -4,6 +4,7 @@ import {
   CREATE_CUSTOMIZATION,
   CREATE_ORDER_GALLARY,
   CUSTOMIZATION_DETAILS,
+  CUSTOMIZED_ORDER,
   DELETE_CUSTOMIZATION,
   LIKE_DESIGN,
   STOCK_ORDER,
@@ -211,21 +212,70 @@ export const stock_order_gallary = async (setStockOrder) => {
   }
 };
 
-export const create_stock_order_gallary = async (setIsLoading) => {
+export const customized_order_gallary = async (setCustomizedOrder) => {
   try {
-    const body = {
-      customization: 2, // ID of the Customization or  ID of the stock order (Assignment id:"assignment")
-      order_code: "SWACO002",
-      status: "Processed",
-      type_of_order: "Custom",
-      colour: "Blue",
-    };
+    const response = await apiService.get(CUSTOMIZED_ORDER);
+    if (response?.data?.results?.status_code === 200) {
+      setCustomizedOrder(response.data.results.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const create_stock_order_gallary = async (
+  orderDesignCode,
+  orderAssignMentCode,
+  selectedValues,
+  value,
+  CustomizedCod,
+  CustomizedId,
+  onClose,
+  setSuccessMessage,
+  setSuccessModalOpen,
+  setSelectedValues
+) => {
+  try {
+    let body;
+    if (value === "1") {
+      body = {
+        assignment: orderAssignMentCode, // ID of the Customization or  ID of the stock order (Assignment id:"assignment")
+        design_code: orderDesignCode,
+        status: "Processed",
+        type_of_order: selectedValues.type,
+        colour: selectedValues.colour,
+        size: selectedValues.size,
+      };
+    } else {
+      body = {
+        customization: CustomizedId, // ID of the Customization or  ID of the stock order (Assignment id:"assignment")
+        design_code: CustomizedCod,
+        status: "Processed",
+        type_of_order: selectedValues.type,
+        colour: selectedValues.colour,
+        size: selectedValues.size,
+      };
+    }
+    console.log("Request body:", body);
     const response = await apiService.post(CREATE_ORDER_GALLARY, body);
     console.log("responces", response.data.results.status_code);
-    if (response?.data?.results?.status_code === 200) {
-    }
-    if (checkApiStatus(response)) {
-    } else {
+    if (response?.data?.results?.status_code === 201) {
+      if (value === "1") {
+        setSuccessMessage("Stock order Created Successfully ");
+      } else {
+        setSuccessMessage("Customized order Created Successfully");
+      }
+      onClose();
+      setSuccessModalOpen(true);
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1600);
+      setSelectedValues({
+        size: "",
+        type: "",
+        colour: "",
+        notes:""
+      })
     }
   } catch (error) {
     console.log(error);

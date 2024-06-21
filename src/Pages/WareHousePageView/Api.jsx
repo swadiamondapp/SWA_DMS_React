@@ -174,6 +174,10 @@ export const edit_customizaion_warehouse = async (
     formDataToSend.append("metal_type", formData.metalType);
     formDataToSend.append("weight", formData.weight);
     formDataToSend.append("size", formData.size);
+    formDataToSend.append("width", formData.width);
+    formDataToSend.append("height", formData.height);
+    formDataToSend.append("length_of_item", formData.length_of_item);
+    formDataToSend.append("diamond_type", formData.diamond_type);
     formDataToSend.append("diamond_weight", formData.diamondWeight);
     formDataToSend.append("no_of_diamond", formData.numberOfDiamonds);
     formDataToSend.append("diamond_clarity", formData.diamondClarity);
@@ -191,6 +195,12 @@ export const edit_customizaion_warehouse = async (
     }
     if (imageFiles.length > 2) {
       formDataToSend.append("image3", imageFiles[2]);
+    }
+    if (imageFiles.length > 3) {
+      formDataToSend.append("image4", imageFiles[3]);
+    }
+    if (imageFiles.length > 4) {
+      formDataToSend.append("image5", imageFiles[4]);
     }
 
     const response = await apiService.patch(
@@ -366,6 +376,10 @@ export const create_customizaion_warehouse = async (
     body.append("metal_type", formData.metalType);
     body.append("weight", formData.weight);
     body.append("size", formData.size);
+    body.append("width", formData.width);
+    body.append("length_of_item", formData.length_of_item);
+    body.append("height", formData.height);
+    body.append("diamond_type", formData.diamond_type);
     body.append("diamond_weight", formData.diamondWeight);
     body.append("no_of_diamond", formData.numberOfDiamonds);
     body.append("diamond_clarity", formData.diamondClarity);
@@ -378,6 +392,8 @@ export const create_customizaion_warehouse = async (
     if (imageFiles.length > 0) body.append("image", imageFiles[0]);
     if (imageFiles.length > 1) body.append("image2", imageFiles[1]);
     if (imageFiles.length > 2) body.append("image3", imageFiles[2]);
+    if (imageFiles.length > 3) body.append("image4", imageFiles[3]);
+    if (imageFiles.length > 4) body.append("image5", imageFiles[4]);
 
     const response = await apiService.post(CREATE_CUSTOMIZATION, body, {
       headers: { "Content-Type": "multipart/form-data" },

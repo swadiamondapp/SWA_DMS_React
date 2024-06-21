@@ -93,6 +93,10 @@ const CreateCustomisation = ({
     metalType: "",
     weight: "",
     size: "",
+    width:"",
+    height:"",
+    diamond_type:"",
+    length_of_item:"",
     diamondWeight: "",
     numberOfDiamonds: "",
     diamondClarity: "",
@@ -123,6 +127,10 @@ const CreateCustomisation = ({
         metalType: dataToDisplaytomodal.metal_type || "",
         weight: dataToDisplaytomodal.weight || "",
         size: dataToDisplaytomodal.size || "",
+        width:dataToDisplaytomodal.width || "",
+        height:dataToDisplaytomodal.height || "",
+        length_of_item:dataToDisplaytomodal.length_of_item || "",
+        diamond_type:dataToDisplaytomodal.diamond_type || "",
         diamondWeight: dataToDisplaytomodal.diamond_weight || "",
         numberOfDiamonds: dataToDisplaytomodal.no_of_diamond || "",
         diamondClarity: dataToDisplaytomodal.diamond_clarity || "",
@@ -201,6 +209,19 @@ const CreateCustomisation = ({
     notes: Joi.string().required().messages({
       "string.empty": `cannot be empty`,
     }),
+    width: Joi.string().required().messages({
+      "string.empty": `cannot be  empty`,
+    }),
+    height: Joi.string().required().messages({
+      "string.empty": `cannot be  empty`,
+    }),
+    diamond_type: Joi.string().required().messages({
+      "string.empty": `cannot be  empty`,
+    }),
+    length_of_item: Joi.string().required().messages({
+      "string.empty": `cannot be  empty`,
+    }),
+
   });
 
   const handleSubmitButton = (e) => {
@@ -330,8 +351,8 @@ const CreateCustomisation = ({
 
   const handleFileUpload = (event) => {
     const selectedFiles = Array.from(event.target.files);
-    if (selectedFiles.length + imageFiles.length > 3) {
-      message.error("You can only upload up to 3 images in total");
+    if (selectedFiles.length + imageFiles.length > 5) {
+      message.error("You can only upload up to 5 images in total");
     } else {
       setImageFiles((prevFiles) => [...prevFiles, ...selectedFiles]);
       setUploadInstructionsVisible(false);
@@ -584,6 +605,24 @@ const CreateCustomisation = ({
                                     borderRadius: "4px",
                                   }}
                                 />
+                                 <img
+                                  // key={index}
+                                  src={dataToDisplaytomodal.image4}
+                                  style={{
+                                    width: "50px",
+                                    height: "50px",
+                                    borderRadius: "4px",
+                                  }}
+                                />
+                                  <img
+                                  // key={index}
+                                  src={dataToDisplaytomodal.image5}
+                                  style={{
+                                    width: "50px",
+                                    height: "50px",
+                                    borderRadius: "4px",
+                                  }}
+                                />
                               </div>
                             ) : (
                               <>
@@ -602,6 +641,7 @@ const CreateCustomisation = ({
                             onClick={() =>
                               document.getElementById("fileUploadImage").click()
                             }
+                            style={{display:imageFiles.length === 5 || dataToDisplaytomodal ? "none":"block"}}
                           >
                             {console.log(imageFiles, "images#")}
                             <input
@@ -670,6 +710,77 @@ const CreateCustomisation = ({
                         />
                         {errors.size && (
                           <span className="error_select">{errors.size}</span>
+                        )}
+                      </div>
+                      <div className="parant_relative">
+                        <label htmlFor="" className="label_text">
+                          width
+                        </label>
+                        <input
+                          type="number"
+                          className="input_feild"
+                          name="width"
+                          value={formData.width}
+                          onChange={handleInput}
+                        />
+                        {errors.width && (
+                          <span className="error_select">{errors.width}</span>
+                        )}
+                      </div>
+                      <div className="parant_relative">
+                        <label htmlFor="" className="label_text">
+                          length
+                        </label>
+                        <input
+                          type="number"
+                          className="input_feild"
+                          name="length_of_item"
+                          value={formData.length_of_item}
+                          onChange={handleInput}
+                        />
+                        {errors.length_of_item && (
+                          <span className="error_select">{errors.length_of_item}</span>
+                        )}
+                      </div>
+                     <div className="parant_relative">
+                        <label htmlFor="" className="label_text">
+                        height
+                        </label>
+                        <input
+                          type="number"
+                          className="input_feild"
+                          name="height"
+                          value={formData.height}
+                          onChange={handleInput}
+                        />
+                        {errors.height && (
+                          <span className="error_select">{errors.height}</span>
+                        )}
+                      </div>
+                      <div className="parant_relative">
+                        <label htmlFor="" className="label_text">
+                          Diamon Type
+                        </label>
+                        <Select
+                          showSearch
+                          placeholder="-Select-"
+                          optionFilterProp="children"
+                          onChange={(value) =>
+                            setFormData((prevState) => ({
+                              ...prevState,
+                              diamond_type: value,
+                            }))
+                          }
+                          onSearch={onSearch}
+                          filterOption={filterOption}
+                          style={{ width: "100%" }}
+                          options={MetalTypeDropDown}
+                          value={formData.diamond_type || undefined}
+                        />
+                        {errors.metalType && (
+                          <span className="error_select">
+                            {errors.metalType}
+                          </span>
                         )}
                       </div>
                       <div className="parant_relative">

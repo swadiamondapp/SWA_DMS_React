@@ -14,7 +14,7 @@ export const userLogin = async (
       username: userCredentials.email,
       password: userCredentials.password,
     });
-    console.log("abcd", response?.data?.results?.data[0]?.Usertype);
+    console.log("abcd=admin_id", response?.data?.results?.data);
 
     if (checkApiStatus(response)) {
       setToLocalstorage(response?.data?.results?.token);
@@ -23,6 +23,7 @@ export const userLogin = async (
         response?.data?.results?.data[0]?.Usertype
       );
       localStorage.setItem("name", response?.data?.results?.data[0]?.name);
+      localStorage.setItem("loginId", response?.data?.results?.data[0]?.id);
       localStorage.setItem("email", response?.data?.results?.data[0]?.email);
       localStorage.setItem(
         "phone_number",
@@ -33,13 +34,10 @@ export const userLogin = async (
         response?.data?.results?.data[0]?.image
       );
       setData(response?.data?.results);
-
     }
   } catch (error) {
-    console.log(error,"loginError");
-    setErrorMessage(error.response.data.results.reason)
-
-   
+    console.log(error, "loginError");
+    setErrorMessage(error.response.data.results.reason);
   } finally {
     setIsLoading(false);
   }
