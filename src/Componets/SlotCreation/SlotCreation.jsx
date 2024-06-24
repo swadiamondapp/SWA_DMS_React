@@ -237,7 +237,7 @@ const SlotCreation = ({ open, onClose }) => {
                       </div>
                       <div className="header-right-side-button">
                         <button className="create_bag_button">
-                          Create Bag
+                          Create Slot
                         </button>
                       </div>
                     </div>

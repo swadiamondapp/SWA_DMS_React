@@ -30,6 +30,7 @@ const DesignBtn = ({
   setFolderDetails,
   list_designer_folderDetails,
   setSelectedAssignment,
+  selectedDesignCode,
 }) => {
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -155,6 +156,7 @@ const DesignBtn = ({
         selectedAssignment={selectedAssignment}
         setAssignmentFolder={setAssignmentFolder}
         setSelectedAssignment={setSelectedAssignment}
+        selectedDesignCode={selectedDesignCode}
       />
       <AssignToModal
         open={isModalOpenAssign}

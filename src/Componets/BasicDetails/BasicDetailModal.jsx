@@ -8,7 +8,14 @@ import { Select } from "antd";
 import { TagsInput } from "react-tag-input-component";
 import Joi from "joi";
 import AssignmentModal from "../AssignmentModal/AssignmentModal";
-import { move_to_folder } from "../Assignment Panel/Api";
+import EyeIcons from "../../assets/bmEye.png";
+import {
+  diamond_type_dropdown_basicDetails,
+  findings_List_basicDetails,
+  metal_type_dropdown_basicDetails,
+  move_to_folder,
+  tag_List_basicDetails,
+} from "../Assignment Panel/Api";
 
 const style = {
   position: "absolute",
@@ -23,22 +30,48 @@ const style = {
   overflowY: "scroll",
   p: 2,
 };
+const BasicEye= {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  bgcolor: "#fff",
+  outline: "none",
+  border: "none",
+  boxShadow: 24,
+  borderRadius: "4px",
+  width: 300,
+  height: "auto",
+  p: 4,
+};
 
 const BasicDetailModal = ({
   open,
   onClose,
   selectedAssignment,
   setAssignmentFolder,
-  setSelectedAssignment
-
+  setSelectedAssignment,
+  selectedDesignCode,
 }) => {
   // create modal
 
   // const [open, setOpen] = React.useState(false);
   const [selected, setSelected] = useState([]);
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [selectedFindings, setSelectedFindings] = useState([]);
+  const [selectedSKU, setSelectedSKU] = useState([]);
   const [errors, setErrors] = useState({});
+  const [metalTypeDropDown, setMetalTypeDropDown] = useState([]);
+  const [diamonType, setDiamondType] = useState([]);
+  const [FindingsList, setFindingsList] = useState([]);
+  const [selectedFechedTags, setSelectedFechedTags] = useState([]);
+  const [findingsNames, setFindingsNames] = useState([]);
+  const [BasicModalEyeOpen,setBasicModalEyeOpen] = useState(false)
+  const [selectedFechedTagsId, setSelectedFechedTagsId] = useState([])
+
   const [formData, setFormData] = useState({
     SKU: "",
+    productCategory: "",
     length: "",
     width: "",
     height: "",
@@ -48,17 +81,22 @@ const BasicDetailModal = ({
     findings: "",
     approxMetalWeights: "",
     approxMRP: "",
-    tags: "",
+    tag: "",
     notes: "",
   });
   console.log(formData, "basicFormdData");
   console.log(selectedAssignment, "basic=====>");
   console.log(formData.tags, "taaggss");
+  console.log(metalTypeDropDown, "metalTypeDropDown");
+  console.log(selectedTags, "taggggg");
 
   const schema = Joi.object({
-    SKU: Joi.string().required().messages({
-      "string.empty": `SKU field cannot be empty`,
-      "string.pattern.base": "Sales Man Name cannot contain numbers.",
+    SKU: Joi.required().messages({
+      "array.min": `SKU field must contain at least one item.`,
+      "any.required": `SKU field is required and cannot be empty.`,
+    }),
+    productCategory: Joi.string().required().messages({
+      "string.empty": `cannot be empty`,
     }),
     length: Joi.string().required().messages({
       "string.empty": ` cannot be empty`,
@@ -69,10 +107,10 @@ const BasicDetailModal = ({
     height: Joi.string().required().messages({
       "string.empty": `cannot be empty`,
     }),
-    typeOfMetal: Joi.string().required().messages({
+    typeOfMetal: Joi.required().messages({
       "string.empty": `cannot be empty`,
     }),
-    diamondType: Joi.string().required().messages({
+    diamondType: Joi.required().messages({
       "string.empty": `cannot be empty`,
     }),
     approxDiamondWeight: Joi.string().required().messages({
@@ -84,10 +122,11 @@ const BasicDetailModal = ({
     approxMRP: Joi.string().required().messages({
       "string.empty": `cannot be empty`,
     }),
-    tags: Joi.required().messages({
-      "string.empty": `cannot be empty`,
+    tag: Joi.required().messages({
+      "any.required": `Tags are required`,
+      "array.min": `At least one tag is required`,
     }),
-    findings: Joi.string().required().messages({
+    findings: Joi.required().messages({
       "string.empty": `cannot be empty`,
     }),
     notes: Joi.string().messages({
@@ -159,10 +198,51 @@ const BasicDetailModal = ({
       setShowAssignmentModal(true);
       // Clear errors
       setErrors({ undefined });
-
     }
   };
-  console.log(errors,"eeeeeeeee==>")
+  console.log(errors, "eeeeeeeee==>");
+
+  useEffect(() => {
+    metal_type_dropdown_basicDetails(setMetalTypeDropDown);
+    diamond_type_dropdown_basicDetails(setDiamondType);
+    tag_List_basicDetails(setSelectedTags);
+    findings_List_basicDetails(setFindingsList);
+  }, []);
+
+  // Use useEffect to initialize findingsNames from FindingsList on component mount
+  useEffect(() => {
+    if (FindingsList.length > 0) {
+      const names = FindingsList.map((findings) => findings.find_name);
+      setFindingsNames(names);
+      console.log('Findings names set:', names);
+    }
+  }, [FindingsList]);
+  
+  useEffect(() => {
+    if (selectedTags.length > 0) {
+      const tags = selectedTags.map((tag) => tag.name);
+      const tagsId = selectedTags.map((tag) => tag.id);
+      setSelectedFechedTags(tags);
+      setSelectedFechedTagsId(tagsId)
+      console.log('Fetched tags set:', tags);
+    }
+  }, [selectedTags,]);
+  // const findinsList = FindingsList.map((findings) => findings.find_name);
+  // const selectedNames = selectedTags.map((tag) => tag.name);
+  console.log(selectedFechedTags, "FindingsList");
+
+  const handleBasicModalEye = () => {
+    setBasicModalEyeOpen(true)
+  };
+  const handleBasicEyeOpen = () => {
+    setBasicModalEyeOpen(true)
+  }
+  const handleBasicEyeClose = () => {
+    setBasicModalEyeOpen(false)
+  }
+
+  console.log("selectedFechedTagsId-->", selectedFechedTags)
+
   return (
     <div>
       <div className="">
@@ -184,6 +264,19 @@ const BasicDetailModal = ({
                       <label htmlFor="" className="label-text">
                         Product Id
                       </label>
+                      {/* <TagsInput
+                        value={selectedDesignCode}
+                        onChange={(value) =>
+                          setFormData((prevState) => ({
+                            ...prevState,
+
+                            SKU: value,
+                          }))
+                        }
+                        name="SKU"
+                        // placeHolder="Findings"
+                        classNames="inputTag"
+                      /> */}
                       <input
                         type="text"
                         className="inputFields"
@@ -194,6 +287,55 @@ const BasicDetailModal = ({
                       <div>
                         {errors.SKU && (
                           <span className="error_input_p">{errors.SKU}</span>
+                        )}
+                      </div>
+                    </div>
+                    <div className="productCategory">
+                      <label htmlFor="" className="label-text">
+                        Product Category
+                      </label>
+                      <Select
+                        showSearch
+                        placeholder="-Select-"
+                        optionFilterProp="children"
+                        // value={formData.typeOfMetal}
+                        onChange={(value) =>
+                          setFormData((prevState) => ({
+                            ...prevState,
+                            productCategory: value,
+                          }))
+                        }
+                        onSearch={onSearch}
+                        filterOption={filterOption}
+                        style={{
+                          width: "100%",
+                          zIndex: "9999999",
+                          background: "#006E7F1A",
+                        }}
+                        options={[
+                          {
+                            value: "Gold",
+                            label: "Gold",
+                          },
+                          {
+                            value: "Rose Gold",
+                            label: "Rose Gold",
+                          },
+                          {
+                            value: "Silver",
+                            label: "Silver",
+                          },
+                          {
+                            value: "Platinum",
+                            label: "Platinum",
+                          },
+                        ]}
+                      />
+                      <div>
+                        {errors.productCategory && (
+                          <span className="error_input_p">
+                            {errors.productCategory}
+                          </span>
                         )}
                       </div>
                     </div>
@@ -269,30 +411,20 @@ const BasicDetailModal = ({
                           onChange={(value) =>
                             setFormData((prevState) => ({
                               ...prevState,
-                              typeOfMetal: value,
+                              typeOfMetal: [value],
                             }))
                           }
                           onSearch={onSearch}
                           filterOption={filterOption}
-                          style={{ width: "100%",zIndex:"9999999",background:'#006E7F1A', }}
-                          options={[
-                            {
-                              value: "Gold",
-                              label: "Gold",
-                            },
-                            {
-                              value: "Rose Gold",
-                              label: "Rose Gold",
-                            },
-                            {
-                              value: "Silver",
-                              label: "Silver",
-                            },
-                            {
-                              value: "Platinum",
-                              label: "Platinum",
-                            },
-                          ]}
+                          style={{
+                            width: "100%",
+                            zIndex: "9999999",
+                            background: "#006E7F1A",
+                          }}
+                          options={metalTypeDropDown.map((item) => ({
+                            value: item.id,
+                            label: item.metal_name,
+                          }))}
                         />
                         <div>
                           {errors.typeOfMetal && (
@@ -313,26 +445,20 @@ const BasicDetailModal = ({
                           onChange={(value) =>
                             setFormData((prevState) => ({
                               ...prevState,
-                              diamondType: value,
+                              diamondType: [value],
                             }))
                           }
                           onSearch={onSearch}
                           filterOption={filterOption}
-                          style={{ width: "100%",zIndex:999999999,background:'#006E7F1A' }}
-                          options={[
-                            {
-                              value: "Natural Diamond",
-                              label: "Natuaral Diamond",
-                            },
-                            {
-                              value: "Treated Diamond",
-                              label: "Treated Diamond",
-                            },
-                            {
-                              value: "Pink Diomond",
-                              label: "Pink Diomond",
-                            },
-                          ]}
+                          style={{
+                            width: "100%",
+                            zIndex: 999999999,
+                            background: "#006E7F1A",
+                          }}
+                          options={diamonType.map((item) => ({
+                            value: item.id,
+                            label: item.name,
+                          }))}
                         />
                         <div>
                           {errors.diamondType && (
@@ -343,7 +469,7 @@ const BasicDetailModal = ({
                         </div>
                       </div>
                     </div>
-                    <div className="gridfifty">
+                    <div className="">
                       <div>
                         <label htmlFor="" className="label-text">
                           Approx Diamond weight
@@ -359,25 +485,6 @@ const BasicDetailModal = ({
                           {errors.approxDiamondWeight && (
                             <span className="error_input_p">
                               {errors.approxDiamondWeight}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                      <div>
-                        <label htmlFor="" className="label-text">
-                          Findings
-                        </label>
-                        <input
-                          type="text"
-                          className="inputFields"
-                          name="findings"
-                          value={formData.findings}
-                          onChange={handleInput}
-                        />
-                        <div>
-                          {errors.findings && (
-                            <span className="error_input_p">
-                              {errors.findings}
                             </span>
                           )}
                         </div>
@@ -403,7 +510,7 @@ const BasicDetailModal = ({
                           )}
                         </div>
                       </div>
-                      <div>
+                      <div className="bm_eye_parant">
                         <label htmlFor="" className="label-text">
                           Approx MRP
                         </label>
@@ -414,10 +521,47 @@ const BasicDetailModal = ({
                           value={formData.approxMRP}
                           onChange={handleInput}
                         />
+                        <div
+                          className="basic_eye"
+                          onClick={handleBasicModalEye}
+                        >
+                          <img src={EyeIcons} alt="" />
+                        </div>
                         <div>
                           {errors.approxMRP && (
                             <span className="error_input_p">
                               {errors.approxMRP}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <div>
+                        <label htmlFor="" className="label-text">
+                          Findings
+                        </label>
+                        <TagsInput
+                          value={findingsNames}
+                          onChange={(value) =>
+                            setFormData((prevState) => ({
+                              ...prevState,
+                              findings: [value],
+                            }))
+                          }
+                          name="findings"
+                          // placeHolder="Findings"
+                          classNames="inputTag"
+                        />
+                        {/* <input
+                          type="text"
+                          className="inputFields"
+                          name="findings"
+                          value={formData.findings}
+                          onChange={handleInput}
+                        /> */}
+                        <div>
+                          {errors.findings && (
+                            <span className="error_input_p">
+                              {errors.findings}
                             </span>
                           )}
                         </div>
@@ -427,28 +571,29 @@ const BasicDetailModal = ({
                           Tags
                         </label>
                         <TagsInput
-                          value={selected}
+                          value={selectedFechedTags}
                           onChange={(value) =>
                             setFormData((prevState) => ({
                               ...prevState,
 
-                              tags: value,
+                              tag: value,
                             }))
                           }
-                          name="fruits"
-                          placeHolder="Tags"
+                          name="tags"
+                          // placeHolder="Tags"
                           classNames="inputTag"
                         />
                         <div>
                           {errors.tags && (
-                            <span className="error_input_p">
-                              {errors.tags}
-                            </span>
+                            <span className="error_input_p">{errors.tags}</span>
                           )}
                         </div>
                       </div>
                     </div>
                     <div className="textArea">
+                      <label htmlFor="" className="label-text">
+                        Notes
+                      </label>
                       <textarea
                         type="text"
                         name="notes"
@@ -481,6 +626,18 @@ const BasicDetailModal = ({
             </Box>
           </Modal>
         </div>
+        <Modal open={BasicModalEyeOpen} onClose={handleBasicEyeClose}>
+          <Box
+            sx={BasicEye}
+            // style={
+            //   isMobileView ? { width: "90%" } : { width: "30%", height: "auto" }
+            // }
+          >
+            <Typography className="">
+              <div></div>
+            </Typography>
+          </Box>
+        </Modal>
       </div>
       <AssignmentModal
         open={showAssignmentModal}
@@ -490,7 +647,8 @@ const BasicDetailModal = ({
         setAssignmentFolder={setAssignmentFolder}
         setSelectedAssignment={setSelectedAssignment}
         setFormData={setFormData}
-
+        findingsNames={findingsNames}
+        selectedFechedTagsId={selectedFechedTagsId}
       />
     </div>
   );

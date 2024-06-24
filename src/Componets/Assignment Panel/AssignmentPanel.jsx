@@ -98,8 +98,8 @@ const AssignmentPanel = () => {
       navigate(`assignmentview${id}`);
     }
   };
-
-  const handleCheckboxChange = (designcode) => {
+const [selectedDesignCode,setSelectedDesignCode] = useState([])
+  const handleCheckboxChange = (designcode,tickedDesings) => {
     if (selectedAssignment.includes(designcode)) {
       setSelectedAssignment(
         selectedAssignment.filter((item) => item !== designcode)
@@ -107,6 +107,15 @@ const AssignmentPanel = () => {
     } else {
       setSelectedAssignment([...selectedAssignment, designcode]);
     }
+
+    if (selectedDesignCode.includes(tickedDesings)) {
+      setSelectedDesignCode(
+        selectedDesignCode.filter((item) => item !== tickedDesings)
+      );
+    } else {
+      setSelectedDesignCode([...selectedDesignCode, tickedDesings]);
+    }
+  
   };
 
   const handleOpenDesignPool = () => {
@@ -146,6 +155,8 @@ const AssignmentPanel = () => {
     setOpenDesignPool(true);
     setModalDetails(item);
   };
+
+  console.log(selectedDesignCode,"selectedDesignCode")
   return (
     <div className="Parent_AssignmentView">
       <div
@@ -186,6 +197,7 @@ const AssignmentPanel = () => {
           selectedAssignment={selectedAssignment}
           setSelectedAssignment={setSelectedAssignment}
           setAssignmentFolder={setAssignmentFolder}
+          selectedDesignCode={selectedDesignCode}
         />
         <div className="Assignment_panel_section">
           <h3 className="HeadNewdesign">Selected</h3>
@@ -230,7 +242,7 @@ const AssignmentPanel = () => {
                     name="fav_language"
                     value={item && item.items[0].id}
                     onChange={() =>
-                      handleCheckboxChange(item && item.items[0].id)
+                      handleCheckboxChange(item && item.items[0].id,item && item.items[0].paper_design.designcode)
                     }
                     checked={selectedAssignment.includes(
                       item && item.items[0].id
