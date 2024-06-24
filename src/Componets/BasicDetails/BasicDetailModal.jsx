@@ -425,6 +425,7 @@ const BasicDetailModal = ({
                             value: item.id,
                             label: item.metal_name,
                           }))}
+
                         />
                         <div>
                           {errors.typeOfMetal && (
@@ -459,6 +460,7 @@ const BasicDetailModal = ({
                             value: item.id,
                             label: item.name,
                           }))}
+
                         />
                         <div>
                           {errors.diamondType && (
