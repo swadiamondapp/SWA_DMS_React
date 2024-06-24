@@ -174,7 +174,6 @@ const ProductCustomisation = ({
                             { value: "small", label: "Small" },
                             { value: "medium", label: "Medium" },
                             { value: "large", label: "Large" },
-                            { value: "", label: "" },
                           ]}
                         />
                         {errors.size && (
@@ -199,8 +198,8 @@ const ProductCustomisation = ({
                           filterOption={filterOption}
                           style={{ width: "100%", marginBottom: "6px" }}
                           options={[
-                            { value: "online", label: "Online" },
-                            { value: "offline", label: "Offline" },
+                            { value: "Stock Order", label: "Stock Order" },
+                            { value: "Customized Order", label: "Customized Order"},
                           ]}
                         />
                         {errors.type && (

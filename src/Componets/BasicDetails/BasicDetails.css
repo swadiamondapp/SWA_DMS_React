@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   position: relative;
- }
+}
 .inputFields {
   border: 0.75px solid #e0e1e1;
   width: 100%;
@@ -47,13 +47,13 @@
   border-radius: 8px;
   width: 100%;
 }
- :where(.css-dev-only-do-not-override-1ae8k9u).ant-select-outlined:not(
+:where(.css-dev-only-do-not-override-1ae8k9u).ant-select-outlined:not(
     .ant-select-customize-input
   )
   .ant-select-selector {
   padding: 16px 10px;
   border-radius: 4px !important;
-  color:#006E7F1A !important;
+  color: #006e7f1a !important;
 }
 
 .create_form_field {
@@ -91,7 +91,7 @@
   display: flex;
   flex-direction: column;
   margin: 10px 0px;
-  gap:15px
+  gap: 15px;
 }
 .tagsInputfeild {
   padding-bottom: 6px;
@@ -104,10 +104,10 @@
 }
 .error_select_p {
   position: absolute;
-  color:rgb(218, 39, 39);
+  color: rgb(218, 39, 39);
 
-  background: #E7EDF4;
-  padding:2px 10px ;
+  background: #e7edf4;
+  padding: 2px 10px;
   border-radius: 6px;
   font-size: 9px;
   z-index: 999999;
@@ -115,22 +115,48 @@
 }
 .error_input_p {
   position: absolute;
-  color:red;
+  color: red;
   font-size: 10px;
-  background: #E7EDF4;
-  padding:2px 10px ;
+  background: #e7edf4;
+  padding: 2px 10px;
   border-radius: 6px;
   font-size: 9px;
-  margin-left:0px;
+  margin-left: 0px;
   /* bottom: -20px; */
   margin-top: 2px;
 }
 .textArea_feild {
   border-radius: 4px;
-  width:100%;
+  width: 100%;
   outline: none;
   border-radius: 4px;
   resize: none;
-  border:0.75px solid #B4C3D0;
+  border: 0.75px solid #b4c3d0;
+}
+.rti--tag {
+  border-radius: 32px !important;
+}
+.inputTag {
+  width: 300px; /* Set your desired fixed width */
+  max-width: 300px;
+  overflow: hidden;
+}
 
+.inputTag input {
+  width: 100%;
+  box-sizing: border-box; /* Ensures the input box does not exceed the parent width */
+}
+.productCategory {
+  padding-top: 20px;
+}
+.bm_eye_parant {
+  position: relative;
+}
+.basic_eye {
+  position: absolute;
+  right: 10px;
+  top: 30px;
+}
+.basic_eye img {
+  width: 18px;
 }
