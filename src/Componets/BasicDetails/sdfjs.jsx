@@ -21,7 +21,6 @@ import {
   tag_List_basicDetails,
 } from "../Assignment Panel/Api";
 import SuccessModal from "../SuccessModal/SuccessModal";
-import CircularProgress from "@mui/material/CircularProgress";
 
 const style = {
   position: "absolute",
@@ -86,10 +85,6 @@ const BasicDetailModal = ({
   const [SelectedMetalId, setSelectedMetalId] = useState([]);
   const [SelectedDiamondId, setSelectedDiamondId] = useState([]);
   const [CalculationData, setCalculationData] = useState([]);
-  const [MovedItemsId, setMovedItemsId] = useState([]);
-  const [IsLoadingCalculation, setIsLoadingCalculation] = useState(false);
-
-  const [ItemMovedToAssignment, setItemMovedToAssignment] = useState([]);
 
   const [formData, setFormData] = useState({
     SKU: "",
@@ -143,7 +138,7 @@ const BasicDetailModal = ({
     approxMetalWeights: Joi.string().required().messages({
       "string.empty": `cannot be empty`,
     }),
-    approxMRP: Joi.number().required().messages({
+    approxMRP: Joi.string().required().messages({
       "string.empty": `cannot be empty`,
     }),
     tag: Joi.array().items(Joi.required()).min(1).required().messages({
@@ -165,7 +160,6 @@ const BasicDetailModal = ({
     setFormData((prevState) => ({
       ...prevState,
       [name]: value,
-      approxMRP: CalculationData?.calculated_mrp,
     }));
   };
   const handleSubmit = (e) => {
@@ -231,9 +225,7 @@ const BasicDetailModal = ({
         setSelectedDesigns,
         setData,
         setShowRadioButtons,
-        setSelectButtonLabel,
-        setShowAssignmentModal,
-        setMovedItemsId
+        setSelectButtonLabel
       );
       // setShowAssignmentModal(true);
       // Clear errors
@@ -290,20 +282,6 @@ const BasicDetailModal = ({
   };
   // console.log(selectedDesignCode)
 
-  const CalculateApproxAmount  = ( ) => {
-    if ( formData.approxMetalWeights &&
-      formData.approxDiamondWeight &&
-      SelectedDiamondId &&
-      SelectedMetalId) {
-        basic_calculation(
-          setIsLoadingCalculation,
-          formData,
-          SelectedDiamondId,
-          SelectedMetalId,
-          setCalculationData
-        );
-      }
-  }
   useEffect(() => {
     if (
       formData.approxMetalWeights &&
@@ -312,7 +290,6 @@ const BasicDetailModal = ({
       SelectedMetalId
     ) {
       basic_calculation(
-        setIsLoadingCalculation,
         formData,
         SelectedDiamondId,
         SelectedMetalId,
@@ -320,7 +297,6 @@ const BasicDetailModal = ({
       );
     }
   }, [
-    formData.approxMRP,
     formData.approxMetalWeights,
     formData.approxDiamondWeight,
     SelectedMetalId,
@@ -328,15 +304,6 @@ const BasicDetailModal = ({
   ]);
 
   console.log(CalculationData, "CalculationData");
-  // const ItemMovedToAssignment = MovedItemsId?.map((item)=> item.item_id)
-  // console.log(ItemMovedToAssignment,"MovedItemsId")
-  useEffect(() => {
-    if (MovedItemsId) {
-      const mappedItems = MovedItemsId.map((item) => item.item_id);
-      setItemMovedToAssignment(mappedItems);
-    }
-  }, [MovedItemsId]);
-
   return (
     <div>
       <div className="">
@@ -490,7 +457,7 @@ const BasicDetailModal = ({
                           onChange={(value) => {
                             setFormData((prevState) => ({
                               ...prevState,
-                              typeOfMetal: [value],
+                              typeOfMetal: value,
                             }));
                             setSelectedMetalId(value); // Update the state with the selected metal ID
                           }}
@@ -505,7 +472,6 @@ const BasicDetailModal = ({
                             value: item.id,
                             label: item.metal_name,
                           }))}
-
                         />
                         <div>
                           {errors.typeOfMetal && (
@@ -526,7 +492,7 @@ const BasicDetailModal = ({
                           onChange={(value) => {
                             setFormData((prevState) => ({
                               ...prevState,
-                              diamondType: [value],
+                              diamondType: value,
                             }));
                             setSelectedDiamondId(value); // Update the state with the selected diamond ID
                           }}
@@ -541,7 +507,6 @@ const BasicDetailModal = ({
                             value: item.id,
                             label: item.name,
                           }))}
-
                         />
                         <div>
                           {errors.diamondType && (
@@ -601,33 +566,16 @@ const BasicDetailModal = ({
                           type="number"
                           className="inputFields"
                           name="approxMRP"
-                          value={formData.approxMRP}
+                          value={CalculationData?.calculated_mrp}
                           onChange={handleInput}
                           readOnly
                         />
-                        {IsLoadingCalculation ? (
-                          <div
-                            className="basic_eye_cirCular"
-                            onClick={handleBasicModalEye}
-                          >
-                            <CircularProgress
-                              size={35} // Set the desired size
-                              sx={{
-                                color: "#000000",
-                                padding: "8px 10px",
-                                width: "35px",
-                              }}
-                            />
-                          </div>
-                        ) : (
-                          <div
-                            className="basic_eye"
-                            onClick={handleBasicModalEye}
-                          >
-                            <img src={EyeIcons} alt="" />
-                          </div>
-                        )}
-
+                        <div
+                          className="basic_eye"
+                          onClick={handleBasicModalEye}
+                        >
+                          <img src={EyeIcons} alt="" />
+                        </div>
                         <div>
                           {errors.approxMRP && (
                             <span className="error_input_p">
@@ -802,54 +750,55 @@ const BasicDetailModal = ({
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td className="calculationType">Net Weight</td>
-                      <td className="calculatedAmount">
-                        {CalculationData?.net_weight?.toFixed(2)}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="calculationType">Metal Cost</td>
-                      <td className="calculatedAmount">
-                        {CalculationData.metal_cost}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="calculationType">Diamond Cost</td>
-                      <td className="calculatedAmount">
-                        {CalculationData?.diamond_cost}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="calculationType">Manufacturing Cost</td>
-                      <td className="calculatedAmount">
-                        {CalculationData?.manufacturing_cost?.toFixed(2)}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="calculationType">GST</td>
-                      <td className="calculatedAmount">
-                        {CalculationData?.gst?.toFixed(2)}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="calculationType">Production Cost</td>
-                      <td className="calculatedAmount">
-                        {CalculationData?.production_cost?.toFixed(2)}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="calculationType">Value Add</td>
-                      <td className="calculatedAmount">
-                        {CalculationData?.value_additions?.toFixed(2)}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="calculationType">Calculated MRP</td>
-                      <td className="calculatedAmount">
-                        {CalculationData?.calculated_mrp?.toFixed(2)}
-                      </td>
-                    </tr>
+             
+                        <tr>
+                          <td className="calculationType">Net Weight</td>
+                          <td className="calculatedAmount">
+                            {CalculationData?.net_weight?.toFixed(2)}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="calculationType">Metal Cost</td>
+                          <td className="calculatedAmount">
+                            {CalculationData.metal_cost}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="calculationType">Diamond Cost</td>
+                          <td className="calculatedAmount">
+                            {CalculationData?.diamond_cost}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="calculationType">
+                            Manufacturing Cost
+                          </td>
+                          <td className="calculatedAmount">
+                            {CalculationData?.manufacturing_cost?.toFixed(2)}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="calculationType">GST</td>
+                          <td className="calculatedAmount">{CalculationData?.gst?.toFixed(2)}</td>
+                        </tr>
+                        <tr>
+                          <td className="calculationType">Production Cost</td>
+                          <td className="calculatedAmount">
+                            {CalculationData?.production_cost?.toFixed(2)}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="calculationType">Value Add</td>
+                          <td className="calculatedAmount">
+                            {CalculationData?.value_additions?.toFixed(2)}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="calculationType">Calculated MRP</td>
+                          <td className="calculatedAmount">
+                            {CalculationData?.calculated_mrp?.toFixed(2)}
+                          </td>
+                        </tr>
                   </tbody>
                 </table>
               </div>
@@ -867,7 +816,6 @@ const BasicDetailModal = ({
         setFormData={setFormData}
         findingsNames={findingsNames}
         selectedFechedTagsId={selectedFechedTagsId}
-        ItemMovedToAssignment={ItemMovedToAssignment}
       />
       <SuccessModal
         successModalOpen={successModalOpen}

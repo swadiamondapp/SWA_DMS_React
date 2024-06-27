@@ -30,7 +30,12 @@ const DesignBtn = ({
   setFolderDetails,
   list_designer_folderDetails,
   setSelectedAssignment,
-  selectedDesignCode,
+  setIsOpen,
+  open,
+  setData,
+  setSelectedDesigns,
+  setShowRadioButtons,
+  setSelectButtonLabel
 }) => {
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -151,12 +156,16 @@ const DesignBtn = ({
         )}
       </div>
       <BasicDetailModal
-        open={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        open={open}
+        onClose={() => setIsOpen(false)}
         selectedAssignment={selectedAssignment}
         setAssignmentFolder={setAssignmentFolder}
         setSelectedAssignment={setSelectedAssignment}
-        selectedDesignCode={selectedDesignCode}
+        getSelectedDesign={getSelectedDesign}
+        setData={ setData}
+        setSelectedDesigns={setSelectedDesigns}
+        setShowRadioButtons={setShowRadioButtons}
+        setSelectButtonLabel={setSelectButtonLabel}
       />
       <AssignToModal
         open={isModalOpenAssign}

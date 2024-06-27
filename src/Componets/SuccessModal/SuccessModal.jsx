@@ -53,7 +53,7 @@ const SuccessModal = ({
         >
           <Typography className="successModalContainer">
             <div className="imageContianer">
-              <img className="tick" src={InvertedTick} />
+              <img className="tick" src={InvertedTick}  onClose={handleClose} />
             </div>
             <div style={{ textAlign: "center", margin: "12px 0px" }}>
               {successMessage ? (
