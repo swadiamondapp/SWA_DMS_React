@@ -8,6 +8,7 @@ import { MOVE_TO_ASSIGNMENT } from "../../../Pages/Services/EndPoints";
 import { apiService } from "../../../Pages/Services/ApiInstants";
 import {useNavigate } from "react-router-dom";
 import LottieAnimation from "../../../LottiAnimation";
+import BasicDetailModal from "../../BasicDetails/BasicDetailModal";
 
 const DesignPool = () => {
   const [showRadioButtons, setShowRadioButtons] = useState(false);
@@ -18,7 +19,8 @@ const DesignPool = () => {
   const [selectedDesigns, setSelectedDesigns] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [unvotedData, setUnvotedData] = useState([]);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [open,setIsOpen] = useState(false)
   const navigate = useNavigate();
 
   const toggleRadioButtons = () => {
@@ -42,6 +44,7 @@ const DesignPool = () => {
   console.log(Data, "datat========d==>");
   console.log(selectedDesigns, "selectedDesigns");
 
+
   const handleCheckboxChange = (designcode) => {
     if (selectedDesigns.includes(designcode)) {
       setSelectedDesigns(selectedDesigns.filter((item) => item !== designcode));
@@ -49,6 +52,7 @@ const DesignPool = () => {
       setSelectedDesigns([...selectedDesigns, designcode]);
     }
   };
+  
   // const handleCheckboxChange = (designcode) => {
   //   setSelectedDesigns(prevState => ({
   //     ...prevState,
@@ -56,15 +60,18 @@ const DesignPool = () => {
   //   }));
   // };
   const moveSelectedDesigns = async () => {
-    try {
-     const res =  await moveSelectedDesign(setIsLoading,selectedDesigns);
-     console.log("ressssssss-->",res)
-     if (res) {
-      navigate('/assignmentpanel');
-     }
-    } catch (error) {
-      console.error("Error moving selected designs:", error);
-    }
+    setIsOpen(true)
+    setShowMoveOptions(false)
+
+    // try {
+    //  const res =  await moveSelectedDesign(setIsLoading,selectedDesigns);
+    //  console.log("ressssssss-->",res)
+    //  if (res) {
+    //   navigate('/assignmentpanel');
+    //  }
+    // } catch (error) {
+    //   console.error("Error moving selected designs:", error);
+    // }
   };
   return (
     <div>
@@ -108,12 +115,20 @@ const DesignPool = () => {
         <DesignBtn
           toggleDownloadOptions={toggleDownloadOptions}
           selectButtonLabel={selectButtonLabel}
+          setSelectButtonLabel={setSelectButtonLabel}
           toggleRadioButtons={toggleRadioButtons}
           toggleMoveOptions={toggleMoveOptions}
           showDownloadOptions={showDownloadOptions}
           showMoveOptions={showMoveOptions}
           moveSelectedDesign={moveSelectedDesigns}
           getSelectedDesign={selectedDesigns}
+          setSelectedDesigns={setSelectedDesigns}
+          setIsOpen={setIsOpen}
+          open={open}
+          setData={ setData}
+          setShowRadioButtons={setShowRadioButtons}
+          
+
         />
         {/* new design section */}
         {/* new design section */}
@@ -190,6 +205,7 @@ const DesignPool = () => {
         </div>
         {/* new design section */}
       </div>
+      <BasicDetailModal/>
     </div>
   );
 };

@@ -60,7 +60,7 @@ const DesignerDashboard = () => {
     list_uploaded_designs(setIsLoading, setUploadedDesigns);
   }, []);
 
-  console.log("uploadImage-->", uploadImage)
+  console.log("uploadImage-->",uploadedDesigns)
 
   return (
     <div>
@@ -126,7 +126,7 @@ const DesignerDashboard = () => {
                     <h3>ID : {item.designcode}</h3>
                     <div className="Card_Details_Inner">
                       <div className="Inner_Left">
-                        <p>Name ....</p>
+                        <p>{item.name}</p>
                         <p>{item.created_at}</p>
                       </div>
                     </div>
