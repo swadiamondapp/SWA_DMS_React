@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./AssignmentModal.css";
-import { move_to_folder } from "../Assignment Panel/Api";
+import { move_to_folder, move_to_folder_admin_user } from "../Assignment Panel/Api";
 import { Modal, Select } from "antd";
 import SuccessModal from "../SuccessModal/SuccessModal";
 
@@ -15,6 +15,8 @@ const AssignmentModal = ({
   findingsNames,
   selectedFechedTagsId,
   ItemMovedToAssignment,
+  setItemMovedToAssignment,
+  AdminUploadedIds
 }) => {
   // create modal
   // const [isModalOpen, setIsModalOpen] = useState(false);
@@ -33,18 +35,28 @@ const AssignmentModal = ({
     setSuccessModalOpen(false);
   };
   const handleCreateButton = () => {
-    // move_to_folder(setIsLoading, formData,folderName,selectedAssignment, setAssignmentFolder,onClose,setSuccessMessage,setSuccessModalOpen,setSelectedAssignment,setFormData,findingsNames, selectedFechedTagsId);
-    move_to_folder(
-      setIsLoading,
-      folderName,
-      setAssignmentFolder,
-      onClose,
-      setSuccessMessage,
-      setSuccessModalOpen,
-      setSelectedAssignment,
-      ItemMovedToAssignment,
-      handleClose
-    );
+    const isAssignmentPanel = window.location.pathname === '/assignmentpanel';
+    const adminUploadedIdsArray = Array.isArray(AdminUploadedIds) ? AdminUploadedIds : [AdminUploadedIds];
+    if (isAssignmentPanel) {
+      move_to_folder_admin_user(
+        adminUploadedIdsArray,
+        folderName
+      );
+    } else {
+      move_to_folder(
+        setIsLoading,
+        folderName,
+        setAssignmentFolder,
+        onClose,
+        setSuccessMessage,
+        setSuccessModalOpen,
+        setSelectedAssignment,
+        ItemMovedToAssignment,
+        handleClose,
+        setFolderName,
+        setItemMovedToAssignment
+      );
+    }
   };
   const handleChange = (event) => {
     setFolderName(event.target.value);

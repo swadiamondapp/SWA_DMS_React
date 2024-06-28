@@ -233,7 +233,8 @@ const BasicDetailModal = ({
         setShowRadioButtons,
         setSelectButtonLabel,
         setShowAssignmentModal,
-        setMovedItemsId
+        setMovedItemsId,
+        setFormData
       );
       // setShowAssignmentModal(true);
       // Clear errors
@@ -359,6 +360,7 @@ const BasicDetailModal = ({
                         Product Id
                       </label>
                       <TagsInput
+                      disabled
                         value={getSelectedDesign}
                         onChange={(value) =>
                           setFormData((prevState) => ({
@@ -868,6 +870,7 @@ const BasicDetailModal = ({
         findingsNames={findingsNames}
         selectedFechedTagsId={selectedFechedTagsId}
         ItemMovedToAssignment={ItemMovedToAssignment}
+        setItemMovedToAssignment={setItemMovedToAssignment}
       />
       <SuccessModal
         successModalOpen={successModalOpen}

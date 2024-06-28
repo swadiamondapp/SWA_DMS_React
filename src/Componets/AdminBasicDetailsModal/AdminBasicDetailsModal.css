@@ -35,38 +35,34 @@
 }
 
 .dragText {
-  color:gray;
+  color: gray;
   font-size: 12px;
 }
 .numberPro {
-  border: 1px solid #23A064;
+  border: 1px solid #23a064;
   border-radius: 32px;
   width: 25px;
   height: 25px;
   text-align: center;
-
 }
 .numberPro2 {
-  border: 1px solid #B4C3D0;
+  border: 1px solid #b4c3d0;
   border-radius: 32px;
   width: 25px;
   height: 25px;
   text-align: center;
-
 }
 .numberPro3 {
-  border: 1px solid #B4C3D0;
+  border: 1px solid #b4c3d0;
   border-radius: 32px;
   width: 25px;
   height: 25px;
   text-align: center;
-
 }
 
 .numbers_container {
   display: flex;
   justify-content: space-around;
-  
 }
 .parant1 {
   position: relative;
@@ -83,7 +79,7 @@
   top: 11px;
 }
 .line2 {
-  border-bottom: 1px solid #B4C3D0;
+  border-bottom: 1px solid #b4c3d0;
   width: 75px;
   position: absolute;
   left: 59px;
@@ -92,10 +88,9 @@
 
 .headerTExt {
   font-size: 11px;
-  color:gray;
+  color: gray;
   /* position: absolute; */
   white-space: nowrap;
-
 }
 .Container1 {
   margin: 15px 0px;
@@ -111,4 +106,40 @@
   margin: 15px 0px;
   text-align: center;
   position: relative;
+}
+
+.Assigner_Designer_Container {
+  display: flex;
+  flex-direction: column;
+}
+.AssignInput {
+  display: flex;
+  width: 100%;
+}
+.assigner_SearchBar {
+  width: 100%;
+}
+.assignDesignerSearchBar {
+  border: 1px solid #b4c3d0;
+  width: 100%;
+  padding: 8px 10px;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  border-right: none;
+}
+.assignSearchBar_button button {
+  background: #0464d5;
+  border: none;
+  color: #ffff;
+  padding: 8px 10px;
+}
+.avatarButton_designer {
+  background: #126E72;
+  border: none;
+  box-shadow: #0000000d;
+  color: #fff;
+  font-family: "Gilroy medium";
+  padding: 8px 16px;
+  border-radius: 32px;
+  font-size: 14px;
 }
