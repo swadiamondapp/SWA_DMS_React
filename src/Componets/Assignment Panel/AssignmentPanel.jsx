@@ -10,6 +10,7 @@ import folderimg from "../../assets/folder.png";
 import { list_assignment_panel, list_folderDetails } from "./Api";
 import { list_assignment_folder } from "../ADMIN PANEL/Design Pool/Api";
 import DesignPools from "../DesignPoolExtended/DesignPools";
+import AdminBasicDetailsModal from "../AdminBasicDetailsModal/AdminBasicDetailsModal";
 // import { useLocation, useNavigate } from "react-router-dom";
 
 const AssignmentPanel = () => {
@@ -28,6 +29,7 @@ const AssignmentPanel = () => {
   const [openDesignPool, setOpenDesignPool] = useState(false);
   const [modalDetails, setModalDetails] = useState([]);
   const [activeCardId, setActiveCardId] = useState(null);
+  const [ AdminBasicModalOpen,setAdminBasicModalOpen] = useState(false)
   const [uploadInstructionsVisible, setUploadInstructionsVisible] =
     useState(true);
   const location = useLocation();
@@ -69,17 +71,17 @@ const AssignmentPanel = () => {
   //     setShowOverlay(false);
   //   }
   // };
-  const handleFileUpload = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setUploadedImage(reader.result);
-        setUploadInstructionsVisible(false);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  // const handleFileUpload = (event) => {
+  //   const file = event.target.files[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onload = () => {
+  //       setUploadedImage(reader.result);
+  //       setUploadInstructionsVisible(false);
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
@@ -98,8 +100,8 @@ const AssignmentPanel = () => {
       navigate(`assignmentview${id}`);
     }
   };
-const [selectedDesignCode,setSelectedDesignCode] = useState([])
-  const handleCheckboxChange = (designcode,tickedDesings) => {
+  const [selectedDesignCode, setSelectedDesignCode] = useState([]);
+  const handleCheckboxChange = (designcode, tickedDesings) => {
     if (selectedAssignment.includes(designcode)) {
       setSelectedAssignment(
         selectedAssignment.filter((item) => item !== designcode)
@@ -115,7 +117,6 @@ const [selectedDesignCode,setSelectedDesignCode] = useState([])
     } else {
       setSelectedDesignCode([...selectedDesignCode, tickedDesings]);
     }
-  
   };
 
   const handleOpenDesignPool = () => {
@@ -155,34 +156,40 @@ const [selectedDesignCode,setSelectedDesignCode] = useState([])
     setOpenDesignPool(true);
     setModalDetails(item);
   };
+  const handleAdminBasicModal = () => {
+    setAdminBasicModalOpen(true)
+  }
 
-  console.log(selectedDesignCode,"selectedDesignCode")
+  const handleCloseAdminModal = ()=> {
+    setAdminBasicModalOpen(false)
+  }
+  console.log(selectedDesignCode, "selectedDesignCode");
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
   return (
     <div className="Parent_AssignmentView">
-      <div
-        className="AssignmentPanel_FileUpload"
-        onClick={() => document.getElementById("fileInput").click()}
-      >
+      <div className="AssignmentPanel_FileUpload" style={{ padding: '10px' }}>
         {uploadInstructionsVisible && !uploadedImage && (
           <>
             <p>Create new assignment</p>
-            <p>
-              Drag & Drop or{" "}
-              <span style={{ color: "#0464D5" }}>choose file</span> to upload
-              file <br /> jpg, png
-            </p>
+            <p>You can create Assignment directly</p>
+            <span className="assignmentPanal_upload_text" onClick={handleAdminBasicModal}>Create Assignment</span>
           </>
         )}
-        {uploadedImage && ( // Check if an image is uploaded
+        {uploadedImage && (
           <img src={uploadedImage} alt="Uploaded" className="uploadedimg" />
         )}
-
         <input
           id="fileInput"
           type="file"
           accept="image/*"
           style={{ display: "none" }}
-          onChange={handleFileUpload}
         />
       </div>
 
@@ -202,127 +209,99 @@ const [selectedDesignCode,setSelectedDesignCode] = useState([])
         <div className="Assignment_panel_section">
           <h3 className="HeadNewdesign">Selected</h3>
           <div className="Card_Design_Parent">
-            {Data.map((item) => (
-              <div className="New_Design_card">
-                <div className="Card_img">
-                  {console.log(
-                    "images...?",
-                    item && item.items[0].paper_design
-                  )}
-                  <img
-                    src={item && item.items[0].paper_design.image}
-                    alt=""
-                    onClick={() =>
-                      handleDrawModal(item && item.items[0].paper_design.image)
-                    }
-                  />
-                  {showDeleteMoveButtons && <div className="Overlay" />}
-                </div>
-                <div className="Card_Details">
-                  <h3>ID : {item && item.items[0].paper_design.designcode}</h3>
-                  <div className="Card_Details_Inner">
-                    <div className="Inner_Left">
-                      <p>{item && item.items[0].paper_design.designer}</p>
-                      <p>{item && item.created_at}</p>
-                    </div>
-                    <div className="Inner_Right">
-                      <p>
-                        {item && item.items[0].paper_design.likes_count}
-                        <img src={like} alt="" />
-                      </p>
+            {Data.map((item) => {
+              const paperDesign = item?.items?.[0]?.paper_design;
+              const itemId = item?.items?.[0]?.id;
+              const createdAt = item?.created_at;
+              const designer = paperDesign?.designer;
+              const designCode = paperDesign?.designcode;
+              const image = paperDesign?.image;
+              const likesCount = paperDesign?.likes_count;
+              
+
+              return (
+                <div className="New_Design_card" key={itemId}>
+                  <div className="Card_img">
+                    <img
+                      src={image}
+                      alt={`Design by ${designer}`}
+                      onClick={() => handleDrawModal(image)}
+                    />
+                    {showDeleteMoveButtons && <div className="Overlay" />}
+                  </div>
+                  <div className="Card_Details">
+                    <h3>ID : {designCode}</h3>
+                    <div className="Card_Details_Inner">
+                      <div className="Inner_Left">
+                        <p>{designer}</p>
+                        <p>{formatDate(createdAt)}</p>
+                      </div>
+                      <div className="Inner_Right">
+                        <p>
+                          {likesCount}
+                          <img src={like} alt="Likes" />
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-                {/* radio btn */}
-                {showRadioButtons && (
-                  <input
-                    className="Radio_select"
-                    type="checkbox"
-                    id={item && item.items[0].id}
-                    name="fav_language"
-                    value={item && item.items[0].id}
-                    onChange={() =>
-                      handleCheckboxChange(item && item.items[0].id,item && item.items[0].paper_design.designcode)
-                    }
-                    checked={selectedAssignment.includes(
-                      item && item.items[0].id
-                    )}
-                  ></input>
-                )}
-                {/* radio btn */}
-                {!showRadioButtons &&
-                  location.pathname === "/assignmentpanel" && (
-                    <div
-                      onClick={() =>
-                        toggleDeleteMoveButtons(item && item.items[0].id)
-                      }
-                      ref={dotsRef}
-                    >
-                      <BsThreeDotsVertical
-                        className="A_dots"
-                        style={{ fontSize: "20px" }}
-                      />
+                  {showRadioButtons && (
+                    <input
+                      className="Radio_select"
+                      type="checkbox"
+                      id={itemId}
+                      name="fav_language"
+                      value={itemId}
+                      onChange={() => handleCheckboxChange(itemId, designCode)}
+                      checked={selectedAssignment.includes(itemId)}
+                    />
+                  )}
+                  {!showRadioButtons && location.pathname === "/assignmentpanel" && (
+                    <div onClick={() => toggleDeleteMoveButtons(itemId)} ref={dotsRef}>
+                      <BsThreeDotsVertical className="A_dots" style={{ fontSize: "20px" }} />
                     </div>
                   )}
-                {activeCardId === (item && item.items[0].id) && (
-                  <div className="Dots_Delete_DesignPool_btns">
-                    <p>Delete</p>
-                    <p>Move to Design pool</p>
-                  </div>
-                )}
-              </div>
-            ))}
+                  {activeCardId === itemId && (
+                    <div className="Dots_Delete_DesignPool_btns">
+                      <p>Delete</p>
+                      <p>Move to Design pool</p>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
 
-        {/* Folders */}
         <div className="Parent_Folder_section">
           <h3 className="HeadNewdesign">Folders</h3>
           <div className="folderCard_parent">
-            {console.log("assignment--===>", assignmentFolder)}
             {assignmentFolder.map((item) => (
-              <div className="folder__card">
-                <Link
-                  to={`/assignmentpaneldetailsview/${
-                    item.id
-                  }?name=${encodeURIComponent(item.name)}`}
-                >
+              <div className="folder__card" key={item.id}>
+                <Link to={`/assignmentpaneldetailsview/${item.id}?name=${encodeURIComponent(item.name)}`}>
                   <img src={folderimg} alt="" />
                 </Link>
-
                 <p>{item.name}</p>
               </div>
             ))}
-            {/* <div className="folder__card">
-              <Link to="/assignmentview">
-                <img src={folderimg} alt="" />
-              </Link>
-              <p>Akshayathithiya</p>
-            </div>
-            <div className="folder__card">
-              <Link to="/assignmentview">
-                <img src={folderimg} alt="" />
-              </Link>
-              <p>Akshayathithiya</p>
-            </div>
-            <div className="folder__card">
-              <Link to="/assignmentview">
-                <img src={folderimg} alt="" />
-              </Link>
-              <p>Akshayathithiya</p>
-            </div> */}
           </div>
         </div>
-        {/* Folders */}
       </div>
       <DesignPools
         handleOpenDesignPool={handleOpenDesignPool}
         hadnleCloseDesignPool={hadnleCloseDesignPool}
         openDesignPool={openDesignPool}
         modalDetails={modalDetails}
+       
+      />
+      <AdminBasicDetailsModal 
+      AdminBasicModalOpen={AdminBasicModalOpen}
+      setAdminBasicModalOpen={setAdminBasicModalOpen}
+      onClose={handleCloseAdminModal}
+      selectedDesignCode={selectedDesignCode}
       />
     </div>
   );
 };
 
 export default AssignmentPanel;
+
