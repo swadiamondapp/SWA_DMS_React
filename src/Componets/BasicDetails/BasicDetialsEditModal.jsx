@@ -51,27 +51,18 @@ const BasicEye = {
   p: 4,
 };
 
-const BasicDetailModal = ({
+const BasicDetialsEditModal = ({
   open,
   onClose,
-  selectedAssignment,
-  setAssignmentFolder,
-  setSelectedAssignment,
-  selectedDesignCode,
-  getSelectedDesign,
-  setData,
-  setSelectedDesigns,
-  setShowRadioButtons,
-  setSelectButtonLabel,
-  name,
+
 }) => {
   // create modal
 
   // const [open, setOpen] = React.useState(false);
-  const [selected, setSelected] = useState([]);
+//   const [selected, setSelected] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
-  const [selectedFindings, setSelectedFindings] = useState([]);
-  const [selectedSKU, setSelectedSKU] = useState([]);
+//   const [selectedFindings, setSelectedFindings] = useState([]);
+//   const [selectedSKU, setSelectedSKU] = useState([]);
   const [errors, setErrors] = useState({});
   const [metalTypeDropDown, setMetalTypeDropDown] = useState([]);
   const [diamonType, setDiamondType] = useState([]);
@@ -79,18 +70,18 @@ const BasicDetailModal = ({
   const [selectedFechedTags, setSelectedFechedTags] = useState([]);
   const [findingsNames, setFindingsNames] = useState([]);
   const [BasicModalEyeOpen, setBasicModalEyeOpen] = useState(false);
-  const [selectedFechedTagsId, setSelectedFechedTagsId] = useState([]);
+//   const [selectedFechedTagsId, setSelectedFechedTagsId] = useState([]);
   const [ProudctCategory, setListProductCategory] = useState([""]);
-  const [successModalOpen, setSuccessModalOpen] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
+//   const [successModalOpen, setSuccessModalOpen] = useState(false);
+//   const [successMessage, setSuccessMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [SelectedMetalId, setSelectedMetalId] = useState([]);
   const [SelectedDiamondId, setSelectedDiamondId] = useState([]);
   const [CalculationData, setCalculationData] = useState([]);
-  const [MovedItemsId, setMovedItemsId] = useState([]);
+//   const [MovedItemsId, setMovedItemsId] = useState([]);
   const [IsLoadingCalculation, setIsLoadingCalculation] = useState(false);
 
-  const [ItemMovedToAssignment, setItemMovedToAssignment] = useState([]);
+//   const [ItemMovedToAssignment, setItemMovedToAssignment] = useState([]);
 
   const [formData, setFormData] = useState({
     SKU: "",
@@ -107,13 +98,7 @@ const BasicDetailModal = ({
     tag: "",
     notes: "",
   });
-  console.log(successMessage, "success");
-  console.log(formData, "basicFormdData");
-  console.log(selectedAssignment, "basic=====>");
-  console.log(formData.tag, "taaggss");
-  console.log(metalTypeDropDown, "metalTypeDropDown");
-  console.log(ProudctCategory, "taggggg");
-  console.log(CalculationData, "CalculationData");
+ 
 
   const schema = Joi.object({
     SKU: Joi.required().messages({
@@ -161,14 +146,40 @@ const BasicDetailModal = ({
     }),
   });
 
+  useEffect(() => {
+    metal_type_dropdown_basicDetails(setMetalTypeDropDown);
+    diamond_type_dropdown_basicDetails(setDiamondType);
+    tag_List_basicDetails(setSelectedTags);
+    findings_List_basicDetails(setFindingsList);
+    product_category_basicDetails(setListProductCategory);
+  }, []);
+  useEffect(() => {
+    if (selectedTags.length > 0) {
+      const tags = selectedTags.map((tag) => ({ id: tag.id, name: tag.name }));
+      setSelectedFechedTags(tags);
+      console.log("Fetched tags set:", tags);
+    }
+  }, [selectedTags]);
+
+  useEffect(() => {
+    if (FindingsList.length > 0) {
+      const names = FindingsList.map((findings) => ({
+        name: findings.find_name,
+        id: findings.id,
+      }));
+      setFindingsNames(names);
+      console.log("Findings names set:", names);
+    }
+  }, [FindingsList]);
+
   const handleInput = (e) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
       ...prevState,
       [name]: value,
-      approxMRP: CalculationData?.calculated_mrp,
     }));
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -192,11 +203,6 @@ const BasicDetailModal = ({
       setErrors({ undefined });
     }
   };
-
-  const [showAssignmentModal, setShowAssignmentModal] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
   const onChange = (value) => {
     console.log(`selected ${value}`);
   };
@@ -223,58 +229,12 @@ const BasicDetailModal = ({
       // Form is valid, proceed with submission
       console.log("Form submitted:", formData);
       // onClose();
-      move_to_assignment(
-        formData,
-        onClose,
-        setSuccessModalOpen,
-        setSuccessMessage,
-        setIsLoading,
-        setSelectedDesigns,
-        setData,
-        setShowRadioButtons,
-        setSelectButtonLabel,
-        setShowAssignmentModal,
-        setMovedItemsId,
-        setFormData
-      );
+
       // setShowAssignmentModal(true);
       // Clear errors
       setErrors({ undefined });
     }
   };
-  console.log(errors, "eeeeeeeee==>");
-
-  useEffect(() => {
-    metal_type_dropdown_basicDetails(setMetalTypeDropDown);
-    diamond_type_dropdown_basicDetails(setDiamondType);
-    tag_List_basicDetails(setSelectedTags);
-    findings_List_basicDetails(setFindingsList);
-    product_category_basicDetails(setListProductCategory);
-  }, []);
-
-  // Use useEffect to initialize findingsNames from FindingsList on component mount
-  useEffect(() => {
-    if (FindingsList.length > 0) {
-      const names = FindingsList.map((findings) => ({
-        name: findings.find_name,
-        id: findings.id,
-      }));
-      setFindingsNames(names);
-      console.log("Findings names set:", names);
-    }
-  }, [FindingsList]);
-  console.log(findingsNames, "FindingsList");
-
-  useEffect(() => {
-    if (selectedTags.length > 0) {
-      const tags = selectedTags.map((tag) => ({ id: tag.id, name: tag.name }));
-      setSelectedFechedTags(tags);
-      console.log("Fetched tags set:", tags);
-    }
-  }, [selectedTags]);
-  // const findinsList = FindingsList.map((findings) => findings.find_name);
-  // const selectedNames = selectedTags.map((tag) => tag.name);
-  console.log(selectedFechedTags, "FindingsList");
 
   const handleBasicModalEye = () => {
     setBasicModalEyeOpen(true);
@@ -286,62 +246,7 @@ const BasicDetailModal = ({
     setBasicModalEyeOpen(false);
   };
 
-  console.log("selectedFechedTagsId-->", selectedFechedTags);
-  const handleChange = (value) => {
-    console.log(`selected ${value}`);
-  };
-  // console.log(selectedDesignCode)
-
-  const CalculateApproxAmount = () => {
-    if (
-      formData.approxMetalWeights &&
-      formData.approxDiamondWeight &&
-      SelectedDiamondId &&
-      SelectedMetalId
-    ) {
-      basic_calculation(
-        setIsLoadingCalculation,
-        formData,
-        SelectedDiamondId,
-        SelectedMetalId,
-        setCalculationData
-      );
-    }
-  };
-  useEffect(() => {
-    if (
-      formData.approxMetalWeights &&
-      formData.approxDiamondWeight &&
-      SelectedDiamondId &&
-      SelectedMetalId
-    ) {
-      basic_calculation(
-        setIsLoadingCalculation,
-        formData,
-        SelectedDiamondId,
-        SelectedMetalId,
-        setCalculationData
-      );
-    }
-  }, [
-    formData.approxMRP,
-    formData.approxMetalWeights,
-    formData.approxDiamondWeight,
-    SelectedMetalId,
-    SelectedDiamondId,
-  ]);
-
-  console.log(CalculationData, "CalculationData");
-  // const ItemMovedToAssignment = MovedItemsId?.map((item)=> item.item_id)
-  // console.log(ItemMovedToAssignment,"MovedItemsId")
-  useEffect(() => {
-    if (MovedItemsId) {
-      const mappedItems = MovedItemsId.map((item) => item.item_id);
-      setItemMovedToAssignment(mappedItems);
-    }
-  }, [MovedItemsId]);
-
-  return (
+return (
     <div>
       <div className="">
         <div className="modalContainer" style={{ position: "relative" }}>
@@ -362,29 +267,26 @@ const BasicDetailModal = ({
                       <label htmlFor="" className="label-text">
                         Product Id
                       </label>
-                      {name === "editbasicDetails" ? (
-                        <input
-                          type="text"
-                          className="inputFields"
-                          name="SKU"
-                          value={formData.SKU || getSelectedDesign}
-                          onChange={handleInput}
-                        />
-                      ) : (
-                        <TagsInput
-                          disabled
-                          value={getSelectedDesign}
-                          onChange={(value) =>
-                            setFormData((prevState) => ({
-                              ...prevState,
-                              SKU: value,
-                            }))
-                          }
-                          name="SKU"
-                          // placeHolder="Findings"
-                          classNames="inputTag"
-                        />
-                      )}
+                      {/* <TagsInput
+                      disabled
+                        // value={getSelectedDesign}
+                        onChange={(value) =>
+                          setFormData((prevState) => ({
+                            ...prevState,
+                            SKU: value,
+                          }))
+                        }
+                        name="SKU"
+                        placeHolder="Findings"
+                        classNames="inputTag"
+                      /> */}
+                      <input
+                        type="text"
+                        className="inputFields"
+                        name="SKU"
+                        value={formData.SKU}
+                        onChange={handleInput}
+                      />
                       <div>
                         {errors.SKU && (
                           <span className="error_input_p">{errors.SKU}</span>
@@ -399,7 +301,7 @@ const BasicDetailModal = ({
                         showSearch
                         placeholder="-Select-"
                         optionFilterProp="children"
-                        // value={formData.typeOfMetal}
+                        value={formData.typeOfMetal}
                         onChange={(value) =>
                           setFormData((prevState) => ({
                             ...prevState,
@@ -435,15 +337,15 @@ const BasicDetailModal = ({
                           type="number"
                           className="inputFields"
                           name="length"
-                          value={formData.length}
-                          onChange={handleInput}
+                        //   value={formData.length}
+                        //   onChange={handleInput}
                         />
                         <div>
-                          {errors.length && (
+                          {/* {errors.length && (
                             <span className="error_input_p">
                               {errors.length}
                             </span>
-                          )}
+                          )} */}
                         </div>
                       </div>
                       <div>
@@ -454,15 +356,15 @@ const BasicDetailModal = ({
                           type="number"
                           className="inputFields"
                           name="width"
-                          value={formData.width}
-                          onChange={handleInput}
+                        //   value={formData.width}
+                        //   onChange={handleInput}
                         />
                         <div>
-                          {errors.width && (
+                          {/* {errors.width && (
                             <span className="error_input_p">
                               {errors.width}
                             </span>
-                          )}
+                          )} */}
                         </div>
                       </div>
                       <div>
@@ -473,15 +375,15 @@ const BasicDetailModal = ({
                           type="number"
                           className="inputFields"
                           name="height"
-                          value={formData.height}
-                          onChange={handleInput}
+                        //   value={formData.height}
+                        //   onChange={handleInput}
                         />
                         <div>
-                          {errors.height && (
+                          {/* {errors.height && (
                             <span className="error_input_p">
                               {errors.height}
                             </span>
-                          )}
+                          )} */}
                         </div>
                       </div>
                     </div>
@@ -490,11 +392,11 @@ const BasicDetailModal = ({
                         <label htmlFor="" className="label-text">
                           Type of metal
                         </label>
-                        <Select
+                        {/* <Select
                           showSearch
                           placeholder="-Select-"
                           optionFilterProp="children"
-                          // value={formData.typeOfMetal}
+                          value={formData.typeOfMetal}
                           onChange={(value) => {
                             setFormData((prevState) => ({
                               ...prevState,
@@ -513,20 +415,21 @@ const BasicDetailModal = ({
                             value: item.id,
                             label: item.metal_name,
                           }))}
-                        />
+
+                        /> */}
                         <div>
-                          {errors.typeOfMetal && (
+                          {/* {errors.typeOfMetal && (
                             <span className="error_select_p">
                               {errors.typeOfMetal}
                             </span>
-                          )}
+                          )} */}
                         </div>
                       </div>
                       <div className="select_field">
                         <label htmlFor="" className="label-text">
                           Diamond Type
                         </label>
-                        <Select
+                        {/* <Select
                           showSearch
                           placeholder="-Select-"
                           optionFilterProp="children"
@@ -548,13 +451,14 @@ const BasicDetailModal = ({
                             value: item.id,
                             label: item.name,
                           }))}
-                        />
+
+                        /> */}
                         <div>
-                          {errors.diamondType && (
+                          {/* {errors.diamondType && (
                             <span className="error_select_p">
                               {errors.diamondType}
                             </span>
-                          )}
+                          )} */}
                         </div>
                       </div>
                     </div>
@@ -567,15 +471,15 @@ const BasicDetailModal = ({
                           type="number"
                           className="inputFields"
                           name="approxDiamondWeight"
-                          value={formData.approxDiamondWeight}
-                          onChange={handleInput}
+                        //   value={formData.approxDiamondWeight}
+                        //   onChange={handleInput}
                         />
                         <div>
-                          {errors.approxDiamondWeight && (
+                          {/* {errors.approxDiamondWeight && (
                             <span className="error_input_p">
                               {errors.approxDiamondWeight}
                             </span>
-                          )}
+                          )} */}
                         </div>
                       </div>
                     </div>
@@ -588,15 +492,15 @@ const BasicDetailModal = ({
                           type="number"
                           className="inputFields"
                           name="approxMetalWeights"
-                          value={formData.approxMetalWeights}
-                          onChange={handleInput}
+                        //   value={formData.approxMetalWeights}
+                        //   onChange={handleInput}
                         />
                         <div>
-                          {errors.approxMetalWeights && (
+                          {/* {errors.approxMetalWeights && (
                             <span className="error_input_p">
                               {errors.approxMetalWeights}
                             </span>
-                          )}
+                          )} */}
                         </div>
                       </div>
                       <div className="bm_eye_parant">
@@ -607,11 +511,11 @@ const BasicDetailModal = ({
                           type="number"
                           className="inputFields"
                           name="approxMRP"
-                          value={formData.approxMRP}
-                          onChange={handleInput}
+                        //   value={formData.approxMRP}
+                        //   onChange={handleInput}
                           readOnly
                         />
-                        {IsLoadingCalculation ? (
+                        {/* {IsLoadingCalculation ? (
                           <div
                             className="basic_eye_cirCular"
                             onClick={handleBasicModalEye}
@@ -632,21 +536,21 @@ const BasicDetailModal = ({
                           >
                             <img src={EyeIcons} alt="" />
                           </div>
-                        )}
+                        )} */}
 
                         <div>
-                          {errors.approxMRP && (
+                          {/* {errors.approxMRP && (
                             <span className="error_input_p">
                               {errors.approxMRP}
                             </span>
-                          )}
+                          )} */}
                         </div>
                       </div>
                       <div>
                         <label htmlFor="" className="label-text">
                           Findings
                         </label>
-                        <Select
+                        {/* <Select
                           mode="multiple"
                           style={{
                             width: "100%",
@@ -665,7 +569,7 @@ const BasicDetailModal = ({
                             label: tag.name,
                             value: tag.id,
                           }))}
-                        />
+                        /> */}
                         {/* <TagsInput
                           value={findingsNames}
                           onChange={(value) =>
@@ -686,11 +590,11 @@ const BasicDetailModal = ({
                           onChange={handleInput}
                         /> */}
                         <div>
-                          {errors.findings && (
+                          {/* {errors.findings && (
                             <span className="error_input_p">
                               {errors.findings}
                             </span>
-                          )}
+                          )} */}
                         </div>
                       </div>
                       <div className="tagsInputfeild">
@@ -710,7 +614,7 @@ const BasicDetailModal = ({
                           // placeHolder="Tags"
                           classNames="inputTag"
                         /> */}
-                        <Select
+                        {/* <Select
                           mode="multiple"
                           style={{
                             width: "100%",
@@ -729,11 +633,11 @@ const BasicDetailModal = ({
                             label: tag.name,
                             value: tag.id,
                           }))}
-                        />
+                        /> */}
                         <div>
-                          {errors.tag && (
+                          {/* {errors.tag && (
                             <span className="error_input_p">{errors.tag}</span>
-                          )}
+                          )} */}
                         </div>
                       </div>
                     </div>
@@ -745,24 +649,24 @@ const BasicDetailModal = ({
                         type="text"
                         name="notes"
                         className="textArea_feild"
-                        value={formData.notes}
-                        onChange={handleInput}
+                        // value={formData.notes}
+                        // onChange={handleInput}
                         id=""
                         cols="30"
                         rows="6"
                         style={{ width: "100%" }}
                       />
                       <div style={{ marginBottom: "20px" }}>
-                        {errors.notes && (
+                        {/* {errors.notes && (
                           <span className="error_input_p">{errors.notes}</span>
-                        )}
+                        )} */}
                       </div>
                     </div>
                     <div style={{ marginTop: "10px" }}>
                       <button
                         className="next-button"
                         type="submit"
-                        onClick={() => handleNextClick()}
+                        // onClick={() => handleNextClick()}
                       >
                         Next
                       </button>
@@ -811,49 +715,49 @@ const BasicDetailModal = ({
                     <tr>
                       <td className="calculationType">Net Weight</td>
                       <td className="calculatedAmount">
-                        {CalculationData?.net_weight?.toFixed(2)}
+                        {/* {CalculationData?.net_weight?.toFixed(2)} */}
                       </td>
                     </tr>
                     <tr>
                       <td className="calculationType">Metal Cost</td>
                       <td className="calculatedAmount">
-                        {CalculationData.metal_cost}
+                        {/* {CalculationData.metal_cost} */}
                       </td>
                     </tr>
                     <tr>
                       <td className="calculationType">Diamond Cost</td>
                       <td className="calculatedAmount">
-                        {CalculationData?.diamond_cost}
+                        {/* {CalculationData?.diamond_cost} */}
                       </td>
                     </tr>
                     <tr>
                       <td className="calculationType">Manufacturing Cost</td>
                       <td className="calculatedAmount">
-                        {CalculationData?.manufacturing_cost?.toFixed(2)}
+                        {/* {CalculationData?.manufacturing_cost?.toFixed(2)} */}
                       </td>
                     </tr>
                     <tr>
                       <td className="calculationType">GST</td>
                       <td className="calculatedAmount">
-                        {CalculationData?.gst?.toFixed(2)}
+                        {/* {CalculationData?.gst?.toFixed(2)} */}
                       </td>
                     </tr>
                     <tr>
                       <td className="calculationType">Production Cost</td>
                       <td className="calculatedAmount">
-                        {CalculationData?.production_cost?.toFixed(2)}
+                        {/* {CalculationData?.production_cost?.toFixed(2)} */}
                       </td>
                     </tr>
                     <tr>
                       <td className="calculationType">Value Add</td>
                       <td className="calculatedAmount">
-                        {CalculationData?.value_additions?.toFixed(2)}
+                        {/* {CalculationData?.value_additions?.toFixed(2)} */}
                       </td>
                     </tr>
                     <tr>
                       <td className="calculationType">Calculated MRP</td>
                       <td className="calculatedAmount">
-                        {CalculationData?.calculated_mrp?.toFixed(2)}
+                        {/* {CalculationData?.calculated_mrp?.toFixed(2)} */}
                       </td>
                     </tr>
                   </tbody>
@@ -863,7 +767,7 @@ const BasicDetailModal = ({
           </Box>
         </Modal>
       </div>
-      <AssignmentModal
+      {/* <AssignmentModal
         open={showAssignmentModal}
         formData={formData}
         onClose={() => setShowAssignmentModal(false)}
@@ -881,9 +785,9 @@ const BasicDetailModal = ({
         handleOpen={handleOpen}
         handleClose={handleClose}
         successMessage={successMessage}
-      />
+      /> */}
     </div>
   );
 };
 
-export default BasicDetailModal;
+export default BasicDetialsEditModal;

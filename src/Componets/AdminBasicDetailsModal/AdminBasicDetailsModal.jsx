@@ -75,6 +75,7 @@ const AdminBasicDetailsModal = ({
   setSelectedAssignment,
   getSelectedDesign,
 }) => {
+  const [adminUploadedItemId,setAdminUploadedItemId] = useState([])
   const [uploadedImage, setUploadedImage] = useState(null);
   const [uploadedFileName, setUploadedFileName] = useState("");
   const [AdminUploadedImageFile, setAdminUploadedImageFile] = useState(false);
@@ -106,6 +107,7 @@ const AdminBasicDetailsModal = ({
   const [AdminUploadedIds, setAdminUploadedIds] = useState([]);
   const [assignedDesignerId, setAssignedDesignerId] = useState(null);
   const [openAdminFolder,setOpenAdminFolder] = useState(false)
+  const [AdminBasicItemId, setAdminBasicItemId] = useState(null);
 
   const [ItemMovedToAssignment, setItemMovedToAssignment] = useState([]);
   console.log(AssignDesignerModalOpen, "AssignDesignerModalOpen");
@@ -171,6 +173,9 @@ const AdminBasicDetailsModal = ({
     }),
   });
 
+  console.log(assignedDesignerId,"assignedDesignerId")
+  console.log(AdminBasicDetailsOpen,"AdminBasicDetailsOpen")
+
   const handleNextClick = () => {
     const { error } = schema.validate(formData, {
       abortEarly: false,
@@ -190,21 +195,14 @@ const AdminBasicDetailsModal = ({
       // onClose();
       move_to_assignment_from_admin(
         formData,
-        onClose,
         setSuccessModalOpen,
         setAssignDesignerModalOpen,
-        setSuccessMessage
-        // setIsLoading,
-        // setSelectedDesigns,
-        // setData,
-        // setShowRadioButtons,
-        // setSelectButtonLabel,
-        // setShowAssignmentModal,
-        // setMovedItemsId,
-        // setFormData
-      );
-      // setShowAssignmentModal(true);
-      // Clear errors
+        setSuccessMessage,
+        setAdminBasicDetailsOpen,
+        setAdminBasicItemId,
+        setFormData
+
+      );;
       setErrors({ undefined });
     }
   };
@@ -241,7 +239,7 @@ const AdminBasicDetailsModal = ({
       ...prevState,
       [name]: value,
       approxMRP: CalculationData?.calculated_mrp,
-      SKU: AdminUploadedImageIds?.designcode,
+      SKU: [AdminUploadedImageIds?.designcode],
     }));
   };
   const handleSubmit = (e) => {
@@ -344,7 +342,7 @@ const AdminBasicDetailsModal = ({
     SelectedDiamondId,
   ]);
 
-  console.log(AdminUploadedIds, "AdminUploadedImageIds");
+  console.log(AdminBasicItemId, "AdminUploadedImageIds");
   console.log(AdminUploadedImageIds);
 
   // const handleAssignButton = (userIdString) => {
@@ -526,6 +524,11 @@ const AdminBasicDetailsModal = ({
                                           onClick={() =>
                                             handleAssignClick(item.id)
                                           }
+                                          style={{
+                                            background: assignedDesignerId === item.id && "#fff",
+                                            color:assignedDesignerId === item.id && "#126E72",
+                                            border:assignedDesignerId === item.id && "1px solid #126E72"
+                                          }}
                                           className={`avatarButton_designer ${
                                             assignedDesignerId === item.id
                                               ? "assigned"
@@ -585,7 +588,7 @@ const AdminBasicDetailsModal = ({
                                   type="text"
                                   className="inputFields"
                                   name="SKU"
-                                  value={AdminUploadedImageIds?.designcode}
+                                  value={AdminUploadedImageIds?.designcode || getSelectedDesign}
                                   onChange={handleInput}
                                 />
                                 <div>
@@ -1047,7 +1050,7 @@ const AdminBasicDetailsModal = ({
                   {!AdminBasicDetailsOpen && (
                     <div
                       style={{
-                        // position: "absolute",
+                        position: "absolute",
                         width: "100%",
                         bottom: "25px",
                       }}
@@ -1078,6 +1081,12 @@ const AdminBasicDetailsModal = ({
       open={openAdminFolder}
       AdminUploadedIds={AdminUploadedIds}
       onClose={() => setOpenAdminFolder(false)}
+      AdminBasicItemId={AdminBasicItemId}
+      setAssignDesignerModalOpen={ setAssignDesignerModalOpen}
+      setAdminBasicDetailsOpen={setAdminBasicDetailsOpen}
+      setUploadedImage={setUploadedImage}
+      setAssignedDesignerId={ setAssignedDesignerId}
+      
       // formData={formData}
       // onClose={() => setShowAssignmentModal(false)}
       // selectedAssignment={selectedAssignment}

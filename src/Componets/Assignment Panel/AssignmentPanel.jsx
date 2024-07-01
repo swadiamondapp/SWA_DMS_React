@@ -151,10 +151,11 @@ const AssignmentPanel = () => {
       date: "12 june 2023",
     },
   ];
-
+console.log(modalDetails,"modalDetails")
   const handleDrawModal = (item) => {
-    setOpenDesignPool(true);
+    // setOpenDesignPool(true);
     setModalDetails(item);
+    setFolderDetialViewID(item.id)
   };
   const handleAdminBasicModal = () => {
     setAdminBasicModalOpen(true)
@@ -163,6 +164,11 @@ const AssignmentPanel = () => {
   const handleCloseAdminModal = ()=> {
     setAdminBasicModalOpen(false)
   }
+
+  const handleForlderDetailsVeiw = ()=> {
+
+  }
+
   console.log(selectedDesignCode, "selectedDesignCode");
 
   const formatDate = (dateString) => {
@@ -221,7 +227,7 @@ const AssignmentPanel = () => {
 
               return (
                 <div className="New_Design_card" key={itemId}>
-                  <div className="Card_img">
+                  <div className="Card_img" onClick={()=>handleForlderDetailsVeiw(item.id)}>
                     <img
                       src={image}
                       alt={`Design by ${designer}`}

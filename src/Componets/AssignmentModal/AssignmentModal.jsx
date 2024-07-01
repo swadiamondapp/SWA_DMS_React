@@ -16,7 +16,13 @@ const AssignmentModal = ({
   selectedFechedTagsId,
   ItemMovedToAssignment,
   setItemMovedToAssignment,
-  AdminUploadedIds
+  AdminUploadedIds,
+  AdminBasicItemId,
+  setAssignDesignerModalOpen,
+  setAdminBasicDetailsOpen,
+  setUploadedImage,
+  setAssignedDesignerId
+  
 }) => {
   // create modal
   // const [isModalOpen, setIsModalOpen] = useState(false);
@@ -36,11 +42,20 @@ const AssignmentModal = ({
   };
   const handleCreateButton = () => {
     const isAssignmentPanel = window.location.pathname === '/assignmentpanel';
-    const adminUploadedIdsArray = Array.isArray(AdminUploadedIds) ? AdminUploadedIds : [AdminUploadedIds];
+    // const adminUploadedIdsArray = Array.isArray(AdminUploadedIds) ? AdminUploadedIds : [AdminUploadedIds];
+    const adminBasicItemIdsArray = Array.isArray(AdminBasicItemId) ? AdminBasicItemId : [AdminBasicItemId];
     if (isAssignmentPanel) {
       move_to_folder_admin_user(
-        adminUploadedIdsArray,
-        folderName
+        adminBasicItemIdsArray,
+        folderName,
+        setSuccessMessage,
+        setSuccessModalOpen,
+        setFolderName,
+        onClose,
+        setAssignDesignerModalOpen,
+        setAdminBasicDetailsOpen,
+        setUploadedImage,
+        setAssignedDesignerId
       );
     } else {
       move_to_folder(

@@ -4,9 +4,9 @@
 }
 .AssignmentView {
   display: grid;
-  grid-template-columns: 1fr 0.7fr;
+  grid-template-columns: 1fr 1fr;
   gap: 30px;
-  padding: 20px 30px 20px 100px;
+  padding: 20px 30px 20px 60px;
 }
 .Left_img_View {
   background: #fff;
@@ -25,6 +25,19 @@
   background: #fff;
   padding: 20px;
   border-radius: 4px;
+  position: relative;
+}
+.editContainer {
+  position: absolute;
+  right:30px;
+  top:0;
+  color:#0464D5
+}
+.editContainer p {
+  text-decoration: underline;
+  color: #0464D5;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
 }
 .Assignment_contents {
   font-family: "Lato", sans-serif;
