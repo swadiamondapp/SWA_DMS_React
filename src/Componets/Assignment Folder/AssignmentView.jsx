@@ -12,6 +12,7 @@ import {
 } from "../Assignment Panel/Api";
 import BasicDetailModal from "../BasicDetails/BasicDetailModal";
 import BasicDetialsEditModal from "../BasicDetails/BasicDetialsEditModal";
+import EdiIcon from "../../assets/EditBasic.png"
 
 const AssignmentView = () => {
   const { id } = useParams();
@@ -63,7 +64,7 @@ const AssignmentView = () => {
               className="editContainer"
               onClick={() => handleEditBasicDetails()}
             >
-              <img src="" alt="" />
+              <img src={EdiIcon} alt="" />
               <p>Edit</p>
             </div>
             <div className="Assignment_contents">
@@ -102,7 +103,7 @@ const AssignmentView = () => {
                   <p>{basicDetails?.findings}</p>
                 </div>
                 <div className="A1_text">
-                  <p>Approx weight</p>
+                  <p>Approx Metal Weight</p>
                   <p>{basicDetails?.approx_metal_weight}</p>
                 </div>
                 <div className="A1_text">
@@ -134,6 +135,8 @@ const AssignmentView = () => {
        onClose={() => setIsOpen(false)}
        folderIdA={id}
        designId={designId}
+       DetailsProductId={itemDetails?.paper_design?.designcode}
+       basicDetails={basicDetails}
     />
     </div>
 

@@ -38,6 +38,7 @@ const Sidebar = () => {
 
           <Link to="/">
             <div className="Links">
+          {/* <div className="SidebarVerticalLine"></div> */}
               <img src={userimg} alt="" />
               {sidebarExpanded && <p>Users</p>}
             </div>

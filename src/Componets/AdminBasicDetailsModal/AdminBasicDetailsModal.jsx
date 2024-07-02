@@ -13,6 +13,7 @@ import DeleteICon from "../../assets/imageDelete.png";
 import SuccessTickk from "../../assets/tickad.png";
 import SuccessModal from "../SuccessModal/SuccessModal";
 import CircularProgress from "@mui/material/CircularProgress";
+import closeButton from "../../assets/closeButton.svg";
 
 // import {
 //   diamond_type_dropdown_basicDetails,
@@ -477,7 +478,7 @@ const AdminBasicDetailsModal = ({
                       {AssignDesignerModalOpen ? (
                         <>
                           <div className="Assigner_Designer_Container">
-                            <label>Assig Designer</label>
+                            <label>Assign Designer</label>
                             <div className="AssignInput">
                               <div className="assigner_SearchBar">
                                 <input
@@ -1076,6 +1077,95 @@ const AdminBasicDetailsModal = ({
             </Box>
           </Modal>
         </div>
+        <Modal open={BasicModalEyeOpen} onClose={handleBasicEyeClose}>
+          <Box sx={BasicEye}>
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              <div className="headerModal">
+                <span
+                  className="assignTitle"
+                  style={{ position: "absolute", top: 10, left: 25 }}
+                >
+                  MRP Calculation
+                </span>
+                <button
+                  onClick={() => handleBasicEyeClose()}
+                  // onClose={onClose}
+                  style={{
+                    position: "absolute",
+                    top: 18,
+                    right: 30,
+                    background: "none",
+                    border: "none",
+                  }}
+                >
+                  <img src={closeButton} />
+                </button>
+              </div>
+            </Typography>
+            <Typography>
+              <div className="calculationContainer">
+                <table className="calculationTable">
+                  <thead>
+                    <tr>
+                      {/* <th>Type</th>
+                  <th>Amount</th> */}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td className="calculationType">Net Weight</td>
+                      <td className="calculatedAmount">
+                        {CalculationData?.net_weight?.toFixed(2)}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="calculationType">Metal Cost</td>
+                      <td className="calculatedAmount">
+                        {CalculationData.metal_cost}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="calculationType">Diamond Cost</td>
+                      <td className="calculatedAmount">
+                        {CalculationData?.diamond_cost}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="calculationType">Manufacturing Cost</td>
+                      <td className="calculatedAmount">
+                        {CalculationData?.manufacturing_cost?.toFixed(2)}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="calculationType">GST</td>
+                      <td className="calculatedAmount">
+                        {CalculationData?.gst?.toFixed(2)}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="calculationType">Production Cost</td>
+                      <td className="calculatedAmount">
+                        {CalculationData?.production_cost?.toFixed(2)}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="calculationType">Value Add</td>
+                      <td className="calculatedAmount">
+                        {CalculationData?.value_additions?.toFixed(2)}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="calculationType">Calculated MRP</td>
+                      <td className="calculatedAmount">
+                        {CalculationData?.calculated_mrp?.toFixed(2)}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </Typography>
+          </Box>
+        </Modal>
       </div>
       <AssignmentModal
       open={openAdminFolder}

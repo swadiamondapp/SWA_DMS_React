@@ -5,6 +5,7 @@ import {
   ASSIGN_UNASSIGN_DESIGNERS,
   CALCULATION,
   DIAMOND_TYPE_DROPDOWN,
+  EDIT_BASIC_DETAILS,
   FINDINGS_LIST,
   FOLDER_DETAIL_API,
   LIST_ALL_DESIGNERS,
@@ -211,6 +212,64 @@ export const move_to_assignment = async (
       setSelectButtonLabel("Select");
       setShowAssignmentModal(true);
       setMovedItemsId(response?.data?.results.data);
+      setFormData({
+        SKU: "",
+        productCategory: "",
+        length: "",
+        width: "",
+        height: "",
+        typeOfMetal: "",
+        diamondType: "",
+        approxDiamondWeight: "",
+        findings: "",
+        approxMetalWeights: "",
+        approxMRP: "",
+        tag: "",
+        notes: "",
+      });
+    }
+  } catch (error) {
+    console.error("Error moving designs:", error);
+  }
+};
+
+export const editBasicDetails = async (
+  formData,
+  folderIdA,
+  designId,
+  setSuccessMessage,
+  setSuccessModalOpen,
+  setFormData,
+  onClose
+) => {
+  try {
+    const body = {
+      design_codes: formData.SKU,
+      assignment_data: {
+        length: formData.length,
+        width: formData.width,
+        height: formData.height,
+        approx_diamond_weight: formData.approxDiamondWeight,
+        approx_metal_weight: formData.approxMetalWeights,
+        approx_price: formData.approxMRP,
+        note: formData.notes,
+        product_category: formData.productCategory,
+        type_of_metal: formData.typeOfMetal,
+        diamond_type: formData.diamondType,
+        findings: formData.findings,
+        tag: formData.tag,
+      },
+    };
+    console.log(body, "move_TO_ASSINGG");
+    const response = await apiService.patch(`${EDIT_BASIC_DETAILS}${folderIdA}/items/${designId}/edit/`, body);
+    if (response.data.results.status_code === 200) {
+      // all_Designs(setIsLoading, setData);
+      onClose();
+      setSuccessMessage("Basic Details Edited SuccessFully");
+      setSuccessModalOpen(true);
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1600);
       setFormData({
         SKU: "",
         productCategory: "",

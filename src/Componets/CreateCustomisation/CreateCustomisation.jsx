@@ -23,6 +23,7 @@ import {
   product_type_drop_down,
 } from "../ADMIN PANEL/Api_dropDown";
 import DeleteConfirmationModal from "../ConfirmationModal/DeleteConfirmationModal";
+import { diamond_type_dropdown_basicDetails, findings_List_basicDetails, metal_type_dropdown_basicDetails, product_category_basicDetails, tag_List_basicDetails } from "../Assignment Panel/Api";
 
 const style = {
   position: "absolute",
@@ -72,6 +73,7 @@ const CreateCustomisation = ({
   const [isLoading, setIsLoading] = useState(false);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
   const [MetalTypeDropDown, setMetalTypeDropDown] = useState([]);
+  const [ProudctCategory, setListProductCategory] = useState([""]);
   const [productTypeDropDown, setProductTypeDropDown] = useState([]);
   const [SelectDiamondColours, setSelectDiamondColor] = useState([]);
   const [SelectDiamondClarity, setSelectDiamondClarity] = useState([]);
@@ -83,6 +85,7 @@ const CreateCustomisation = ({
   const [successMessage, setSuccessMessage] = useState(
     "Mail Send Successfully"
   );
+  const [diamonType, setDiamondType] = useState([]);
   const [formData, setFormData] = useState({
     sallerName: "",
     mobileNumber: "",
@@ -107,12 +110,16 @@ const CreateCustomisation = ({
   });
 
   useEffect(() => {
-    metal_type_drop_down(setMetalTypeDropDown);
+    // metal_type_drop_down(setMetalTypeDropDown);
     product_type_drop_down(setProductTypeDropDown);
     choose_outlet_drop_down(setOutLetDropDown);
     diamond_colours(setSelectDiamondColor);
     diamond_clarity_choice(setSelectDiamondClarity);
+    metal_type_dropdown_basicDetails(setMetalTypeDropDown);
+    diamond_type_dropdown_basicDetails(setDiamondType);
+    product_category_basicDetails(setListProductCategory);
   }, []);
+
   console.log(MetalTypeDropDown, "MetalTypeDropDown");
 
   useEffect(() => {
@@ -145,7 +152,7 @@ const CreateCustomisation = ({
     }
   }, [dataToDisplaytomodal]);
 
-  console.log(dataToDisplaytomodal, "editCus");
+  console.log(formData, "editCus");
 
   const schema = Joi.object({
     sallerName: Joi.string().required().messages({
@@ -165,7 +172,7 @@ const CreateCustomisation = ({
     chooseOutlet: Joi.string().required().messages({
       "string.empty": `choose Outlet cannot be an empty feild`,
     }),
-    productType: Joi.string().required().messages({
+    productType: Joi.required().messages({
       "string.empty": `Product Type cannot be an empty feild`,
     }),
     modelPrevioslyMade: Joi.string().required().messages({
@@ -179,7 +186,7 @@ const CreateCustomisation = ({
       }),
       // Otherwise, it's optional
     }),
-    metalType: Joi.string().required().messages({
+    metalType: Joi.required().messages({
       "string.empty": `Metal Type cannot be empty`,
     }),
     weight: Joi.string().required().messages({
@@ -223,6 +230,7 @@ const CreateCustomisation = ({
     }),
 
   });
+  console.log(ProudctCategory,"diamonType")
 
   const handleSubmitButton = (e) => {
     e.preventDefault();
@@ -478,7 +486,11 @@ const CreateCustomisation = ({
                           onSearch={onSearch}
                           filterOption={filterOption}
                           style={{ width: "100%" }}
-                          options={productTypeDropDown}
+                          // options={productTypeDropDown}
+                          options={ProudctCategory.map((item) => ({
+                            value: item.id,
+                            label: item.name,
+                          }))}
                           value={formData.productType || undefined}
                         />
                         <div style={{ marginTop: "2px" }}>
@@ -673,7 +685,11 @@ const CreateCustomisation = ({
                           onSearch={onSearch}
                           filterOption={filterOption}
                           style={{ width: "100%" }}
-                          options={MetalTypeDropDown}
+                          // options={MetalTypeDropDown}
+                          options={MetalTypeDropDown.map((item) => ({
+                            value: item.id,
+                            label: item.metal_name,
+                          }))}
                           value={formData.metalType || undefined}
                         />
                         {errors.metalType && (
@@ -759,7 +775,7 @@ const CreateCustomisation = ({
                       </div>
                       <div className="parant_relative">
                         <label htmlFor="" className="label_text">
-                          Diamon Type
+                          Diamond Type
                         </label>
                         <Select
                           showSearch
@@ -774,7 +790,11 @@ const CreateCustomisation = ({
                           onSearch={onSearch}
                           filterOption={filterOption}
                           style={{ width: "100%" }}
-                          options={MetalTypeDropDown}
+                          // options={MetalTypeDropDown}
+                          options={diamonType.map((item) => ({
+                            value: item.id,
+                            label: item.name,
+                          }))}
                           value={formData.diamond_type || undefined}
                         />
                         {errors.metalType && (

@@ -70,6 +70,7 @@ export const list_all_cutomization_paper_design= async (
   setCustomizationDesign,
 ) => {
   try {
+    debugger
     const response = await apiService.get(LIST_ALL_CUSTOMIZATION_DESIGNS);
     if (checkApiStatus(response)) {
       setCustomizationDesign(response.data.results.data);

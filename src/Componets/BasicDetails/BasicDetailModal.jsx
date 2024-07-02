@@ -13,6 +13,7 @@ import closeButton from "../../assets/closeButton.svg";
 import {
   basic_calculation,
   diamond_type_dropdown_basicDetails,
+  editBasicDetails,
   findings_List_basicDetails,
   metal_type_dropdown_basicDetails,
   move_to_assignment,
@@ -64,6 +65,10 @@ const BasicDetailModal = ({
   setShowRadioButtons,
   setSelectButtonLabel,
   name,
+  DetailsProductId,
+  folderIdA,
+  designId,
+  basicDetails,
 }) => {
   // create modal
 
@@ -107,13 +112,36 @@ const BasicDetailModal = ({
     tag: "",
     notes: "",
   });
+
+  useEffect(() => {
+    if (name === "editbasicDetails" && basicDetails) {
+    console.log("jjjjjjj",basicDetails)
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        SKU: DetailsProductId || "",
+        productCategory: basicDetails.product_category || "",
+        length: basicDetails.length || "",
+        width: basicDetails.width || "",
+        height: basicDetails.height || "",
+        typeOfMetal: basicDetails.type_of_metal || "",
+        diamondType: basicDetails.diamond_type || "",
+        approxDiamondWeight:basicDetails.approx_diamond_weight || "",
+        findings: basicDetails.findings || "",
+        approxMetalWeights:basicDetails ? basicDetails.approx_metal_weight : "" ,
+        approxMRP: basicDetails.approx_price || "",
+        tag: basicDetails.tag || "",
+        notes: basicDetails.notes || "",
+      }));
+    }
+  }, [name, DetailsProductId, basicDetails]);
   console.log(successMessage, "success");
   console.log(formData, "basicFormdData");
   console.log(selectedAssignment, "basic=====>");
-  console.log(formData.tag, "taaggss");
+  console.log(formData.approxMetalWeights, "metalWieght");
   console.log(metalTypeDropDown, "metalTypeDropDown");
   console.log(ProudctCategory, "taggggg");
   console.log(CalculationData, "CalculationData");
+  console.log(basicDetails&& basicDetails.approx_metal_weight, "basicDtails");
 
   const schema = Joi.object({
     SKU: Joi.required().messages({
@@ -223,19 +251,54 @@ const BasicDetailModal = ({
       // Form is valid, proceed with submission
       console.log("Form submitted:", formData);
       // onClose();
-      move_to_assignment(
+      if (name === "editbasicDetails") {
+        editBasicDetails(formData, setFormData, folderIdA, designId);
+      } else {
+        move_to_assignment(
+          formData,
+          onClose,
+          setSuccessModalOpen,
+          setSuccessMessage,
+          setIsLoading,
+          setSelectedDesigns,
+          setData,
+          setShowRadioButtons,
+          setSelectButtonLabel,
+          setShowAssignmentModal,
+          setMovedItemsId,
+          setFormData
+        );
+      }
+      // setShowAssignmentModal(true);
+      // Clear errors
+      setErrors({ undefined });
+    }
+  };
+  const handleEditDetails = () => {
+    const { error } = schema.validate(formData, {
+      abortEarly: false,
+      allowUnknown: true,
+    });
+
+    if (error) {
+      // Form is invalid, display validation errors
+      const validationErrors = error.details.reduce((errors, err) => {
+        errors[err.path[0]] = err.message;
+        return errors;
+      }, {});
+      setErrors(validationErrors);
+    } else {
+      // Form is valid, proceed with submission
+      console.log("Form submitted:", formData);
+      // onClose();
+      editBasicDetails(
         formData,
-        onClose,
-        setSuccessModalOpen,
+        folderIdA,
+        designId,
         setSuccessMessage,
-        setIsLoading,
-        setSelectedDesigns,
-        setData,
-        setShowRadioButtons,
-        setSelectButtonLabel,
-        setShowAssignmentModal,
-        setMovedItemsId,
-        setFormData
+        setSuccessModalOpen,
+        setFormData,
+        onClose
       );
       // setShowAssignmentModal(true);
       // Clear errors
@@ -292,28 +355,28 @@ const BasicDetailModal = ({
   };
   // console.log(selectedDesignCode)
 
-  const CalculateApproxAmount = () => {
-    if (
-      formData.approxMetalWeights &&
-      formData.approxDiamondWeight &&
-      SelectedDiamondId &&
-      SelectedMetalId
-    ) {
-      basic_calculation(
-        setIsLoadingCalculation,
-        formData,
-        SelectedDiamondId,
-        SelectedMetalId,
-        setCalculationData
-      );
-    }
-  };
+  // const CalculateApproxAmount = () => {
+  //   if (
+  //     formData.approxMetalWeights &&
+  //     formData.approxDiamondWeight &&
+  //     SelectedDiamondId &&
+  //     SelectedMetalId
+  //   ) {
+  //     basic_calculation(
+  //       setIsLoadingCalculation,
+  //       formData,
+  //       SelectedDiamondId,
+  //       SelectedMetalId,
+  //       setCalculationData
+  //     );
+  //   }
+  // };
   useEffect(() => {
     if (
       formData.approxMetalWeights &&
       formData.approxDiamondWeight &&
       SelectedDiamondId &&
-      SelectedMetalId
+      SelectedMetalId && formData.diamondType &&  formData.typeOfMetal
     ) {
       basic_calculation(
         setIsLoadingCalculation,
@@ -329,6 +392,7 @@ const BasicDetailModal = ({
     formData.approxDiamondWeight,
     SelectedMetalId,
     SelectedDiamondId,
+    basicDetails,
   ]);
 
   console.log(CalculationData, "CalculationData");
@@ -369,6 +433,7 @@ const BasicDetailModal = ({
                           name="SKU"
                           value={formData.SKU || getSelectedDesign}
                           onChange={handleInput}
+                          readOnly
                         />
                       ) : (
                         <TagsInput
@@ -399,7 +464,7 @@ const BasicDetailModal = ({
                         showSearch
                         placeholder="-Select-"
                         optionFilterProp="children"
-                        // value={formData.typeOfMetal}
+                        value={formData.productCategory}
                         onChange={(value) =>
                           setFormData((prevState) => ({
                             ...prevState,
@@ -494,13 +559,13 @@ const BasicDetailModal = ({
                           showSearch
                           placeholder="-Select-"
                           optionFilterProp="children"
-                          // value={formData.typeOfMetal}
+                          value={formData.typeOfMetal}
                           onChange={(value) => {
                             setFormData((prevState) => ({
                               ...prevState,
                               typeOfMetal: [value],
                             }));
-                            setSelectedMetalId(value); // Update the state with the selected metal ID
+                            setSelectedMetalId(value);
                           }}
                           onSearch={onSearch}
                           filterOption={filterOption}
@@ -530,6 +595,7 @@ const BasicDetailModal = ({
                           showSearch
                           placeholder="-Select-"
                           optionFilterProp="children"
+                          value={formData.diamondType}
                           onChange={(value) => {
                             setFormData((prevState) => ({
                               ...prevState,
@@ -653,6 +719,7 @@ const BasicDetailModal = ({
                             zIndex: "9999999",
                             background: "#006E7F1A",
                           }}
+                          value={formData.findings}
                           placeholder="Select tags"
                           onChange={(value) => {
                             console.log("Tag changed to:", value);
@@ -717,6 +784,7 @@ const BasicDetailModal = ({
                             zIndex: "9999999",
                             background: "#006E7F1A",
                           }}
+                          value={formData.tag}
                           placeholder="Select tags"
                           onChange={(value) => {
                             console.log("Tag changed to:", value);
@@ -758,15 +826,27 @@ const BasicDetailModal = ({
                         )}
                       </div>
                     </div>
-                    <div style={{ marginTop: "10px" }}>
-                      <button
-                        className="next-button"
-                        type="submit"
-                        onClick={() => handleNextClick()}
-                      >
-                        Next
-                      </button>
-                    </div>
+                    {name === "editbasicDetails" ? (
+                      <div style={{ marginTop: "10px" }}>
+                        <button
+                          className="next-button"
+                          type="submit"
+                          onClick={() => handleEditDetails()}
+                        >
+                          Next
+                        </button>
+                      </div>
+                    ) : (
+                      <div style={{ marginTop: "10px" }}>
+                        <button
+                          className="next-button"
+                          type="submit"
+                          onClick={() => handleNextClick()}
+                        >
+                          Next
+                        </button>
+                      </div>
+                    )}
                   </form>
                 </div>
               </Typography>

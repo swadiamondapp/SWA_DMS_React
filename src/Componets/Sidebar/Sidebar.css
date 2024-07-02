@@ -19,9 +19,19 @@
   gap: 10px;
   margin-bottom: 25px;
 }
+.Links:hover {
+  background: linear-gradient(90deg, #064B70 0%, rgba(6, 75, 112, 0) 98.46%);
+
+  color: #70E2CF; /* Change to your preferred text color */
+}
+
 .Links p {
   color: #ffffffc9;
 }
+.Links.active p {
+  color: #70E2CF; /* Change to your preferred active text color */
+}
+
 .Links2 {
   display: flex;
   align-items: center;
