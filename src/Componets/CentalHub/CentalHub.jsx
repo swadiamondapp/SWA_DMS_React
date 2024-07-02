@@ -25,7 +25,16 @@ const style = {
   borderRadius: 2,
 };
 
-const CentalHub = ({ open, onClose }) => {
+const CentalHub = ({
+  open,
+  onClose,
+  productCode,
+  images,
+  setImages,
+  handleUploadFile,
+  folderDetails,
+  reupload,
+}) => {
   // create modal
 
   // const [open, setOpen] = useState(false);
@@ -55,11 +64,11 @@ const CentalHub = ({ open, onClose }) => {
   const handleCancelButton = () => {
     setImageFile(null);
     setThreeDFile(null);
-    setDesignCode("")
+    setDesignCode("");
     setUploadInstructionsVisible(true);
     setUploadInstructionsVisibleRender(true);
     onClose();
-    setErrorMessage("")
+    setErrorMessage("");
   };
 
   const onChange = (value) => {
@@ -74,46 +83,17 @@ const CentalHub = ({ open, onClose }) => {
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
-      setImageFile(file);
+      setImages({ ...images, normal: file });
       setUploadInstructionsVisible(false);
     }
   };
-  // const handleFileUploadRender = (event) => {
-  //   const file = event.target.files[0];
-  //   if (file) {
-  //     const reader = new FileReader();
-  //     reader.onload = () => {
-  //       setUploadInstructionsVisibleRender(false);
-  //     };
-  //     reader.readAsDataURL(file);
-  //   }
-  // };
   const handleFileUploadRender = (event) => {
     const file = event.target.files[0];
     if (file) {
-      setThreeDFile(file);
+      setImages({ ...images, threeD: file });
       setUploadInstructionsVisibleRender(false);
     }
   };
-
-  // const handleUploadFile = () => {
-  //   if (errorMessage) {
-  //     alert("Please correct the errors before uploading.");
-  //     return;
-  //   }
-  //   upload_cad_design(
-  //     setIsLoading,
-  //     designCode,
-  //     imageFile,
-  //     threeDFile,
-  //     onClose,
-  //     setSuccessModalOpen,
-  //     setSuccessMessage
-  //   );
-  //   console.log("Image file:", imageFile);
-  //   console.log("3D file:", threeDFile);
-  //   console.log("Design code:", designCode);
-  // };
 
   const designCodeSchema = Joi.string()
     .regex(/^SWACAD0\d*$/i)
@@ -138,34 +118,34 @@ const CentalHub = ({ open, onClose }) => {
     console.log("Design code:", value);
     console.log("Error message:", error?.message);
   };
-  const handleUploadFile = () => {
-    const { error } = designCodeSchema.validate(designCode);
-    if (error) {
-      setErrorMessage(error.message);
-      return;
-    } else {
-      setErrorMessage("");
-    }
+  // const handleUploadFile = () => {
+  //   const { error } = designCodeSchema.validate(designCode);
+  //   if (error) {
+  //     setErrorMessage(error.message);
+  //     return;
+  //   } else {
+  //     setErrorMessage("");
+  //   }
 
-    if (!imageFile || !threeDFile) {
-      alert("Please upload both image and 3D files.");
-      return;
-    }
+  //   if (!imageFile || !threeDFile) {
+  //     alert("Please upload both image and 3D files.");
+  //     return;
+  //   }
 
-    upload_cad_design(
-      setIsLoading,
-      designCode,
-      imageFile,
-      threeDFile,
-      onClose,
-      setSuccessModalOpen,
-      setSuccessMessage,
-      handleSuccessUpload 
-    );
-    console.log("Image file:", imageFile);
-    console.log("3D file:", threeDFile);
-    console.log("Design code:", designCode);
-  };
+  //   upload_cad_design(
+  //     setIsLoading,
+  //     designCode,
+  //     imageFile,
+  //     threeDFile,
+  //     onClose,
+  //     setSuccessModalOpen,
+  //     setSuccessMessage,
+  //     handleSuccessUpload
+  //   );
+  //   console.log("Image file:", imageFile);
+  //   console.log("3D file:", threeDFile);
+  //   console.log("Design code:", designCode);
+  // };
 
   const handleSuccessUpload = (message) => {
     setSuccessModalOpen(true);
@@ -279,7 +259,8 @@ const CentalHub = ({ open, onClose }) => {
                       <input
                         id="fileInput3D"
                         type="file"
-                        accept=".3dm"
+                        // accept=".3dm"
+                        accept="image/*"
                         style={{ display: "none" }}
                         onChange={handleFileUploadRender}
                       />
@@ -295,8 +276,9 @@ const CentalHub = ({ open, onClose }) => {
                     <input
                       type="text"
                       placeholder="SWACAD0--"
-                      value={designCode}
-                      onChange={handleDesignCodeChange}
+                      value={productCode}
+                      disabled={true}
+                      // onChange={handleDesignCodeChange}
                       className="inputFeildUpload"
                     />
                   </div>

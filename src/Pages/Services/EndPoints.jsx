@@ -47,18 +47,22 @@ export const USER_ACTIVATING = "users";
 export const LIKE_DESIGN = "designs";
 export const FORGOT_PASSWORD = "forgot-password/";
 export const RESET_PASSWORD = "reset-password/";
-export const TRANSFER_CAD = "update_cad_status"
-export const STOCK_ORDER = "list/gallery/stock/"
-export const CREATE_ORDER_GALLARY = "orders/create/"
-export const FINISHED_PROJECT_CAD = "list-cad-designs/"
-;
+export const TRANSFER_CAD = "update_cad_status";
+export const STOCK_ORDER = "list/gallery/stock/";
+export const CREATE_ORDER_GALLARY = "orders/create/";
+export const FINISHED_PROJECT_CAD = "list-cad-designs/";
 export const CREATE_FINISHED_PROJECTS = "create-finished-projects/";
-export const CUSTOMIZED_ORDER = "list-all-customization/?orderstatus=true"
-export const GET_LIST_FOLDER_BY_ID = "getlist-folder/?designer_id="
-export const METAL_TYPE = "list/metaltype/"
-export const DIAMOND_TYPE_DROPDOWN = "list/diamondtype/"
-export const TAG_LIST ="list/tag/"
-export const FINDINGS_LIST = "list/findings/"
-export const PRODUCT_CATEGORY_LIST = "master/category/list/"
-export const ASSIGNMENT_MOVE = "move-design/"
-export const CALCULATION = "master/calculate-mrp/"
+export const CUSTOMIZED_ORDER = "list-all-customization/?orderstatus=true";
+export const GET_LIST_FOLDER_BY_ID = "getlist-folder/?designer_id=";
+export const METAL_TYPE = "list/metaltype/";
+export const DIAMOND_TYPE_DROPDOWN = "list/diamondtype/";
+export const TAG_LIST = "list/tag/";
+export const FINDINGS_LIST = "list/findings/";
+export const PRODUCT_CATEGORY_LIST = "master/category/list/";
+export const ASSIGNMENT_MOVE = "move-design/";
+export const CALCULATION = "master/calculate-mrp/";
+export const CAD_DESIGNS = "single-user-designlistof-cad";
+export const STATUS_CHANGE = "cad/complete-assignment/";
+export const CAD_UPLOAD = "cad/upload-file/";
+export const FINISHED_FOLDERS = "cad/finished-folder/";
+export const FOLDER_DETAILS = "cad/list/folder-items/";
