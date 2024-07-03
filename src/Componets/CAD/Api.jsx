@@ -6,6 +6,11 @@ import {
   LIST_ASSIGNED_CAD_DESIGN,
   TRANSFER_CAD,
   UPLOAD_CAD_DESIGN,
+  CAD_DESIGNS,
+  STATUS_CHANGE,
+  CAD_UPLOAD,
+  FINISHED_FOLDERS,
+  FOLDER_DETAILS,
 } from "../../Pages/Services/EndPoints";
 
 export const list_assigned_cad_design = async (
@@ -88,7 +93,7 @@ export const transfer_work = async (
   setSuccessModalOpen,
   paramId,
   setFolderDetailsById,
-  setIsLoading,
+  setIsLoading
 ) => {
   try {
     const body = {
@@ -103,18 +108,16 @@ export const transfer_work = async (
       setTimeout(() => {
         setSuccessModalOpen(false);
       }, 1500);
-     assigned_data_by_id(setIsLoading, setFolderDetailsById, paramId);
+      assigned_data_by_id(setIsLoading, setFolderDetailsById, paramId);
     }
   } catch (error) {
     console.log(error);
   }
 };
 
-
 export const finished_product_list_cad = async (
   setIsLoading,
-  setFinishedProduct,
-
+  setFinishedProduct
 ) => {
   try {
     const response = await apiService.get(FINISHED_PROJECT_CAD);
@@ -126,6 +129,86 @@ export const finished_product_list_cad = async (
   }
 };
 
+export const getDesignList = async (setIsLoading, setData) => {
+  try {
+    setIsLoading(true);
+    const response = await apiService.get(CAD_DESIGNS);
+    if (checkApiStatus(response)) {
+      setData(response.data.results.data);
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setIsLoading(false);
+  }
+};
 
+export const designListStatusChange = async (
+  setIsLoading,
+  id,
+  callBack,
+  status,
+  timer
+) => {
+  try {
+    const body = timer
+      ? {
+          timer_status: status,
+          timer_value: timer,
+        }
+      : {
+          timer_status: status,
+        };
+    setIsLoading(true);
+    const response = await apiService.patch(`${STATUS_CHANGE}${id}`, body);
+    if (checkApiStatus(response)) {
+      callBack();
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setIsLoading(false);
+  }
+};
 
+export const uploadFile = async (setIsLoading, body, callBack) => {
+  try {
+    setIsLoading(true);
+    const response = await apiService.post(CAD_UPLOAD, body);
+    if (checkApiStatus(response)) {
+      callBack();
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setIsLoading(false);
+  }
+};
 
+export const finishedProjectFolder = async (setIsLoading, setData) => {
+  try {
+    setIsLoading(true);
+    const response = await apiService.get(FINISHED_FOLDERS);
+    if (checkApiStatus(response)) {
+      setData(response.data.results.data);
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+export const projectDetails = async (setIsLoading, setData, id) => {
+  try {
+    setIsLoading(true);
+    const response = await apiService.get(`${FOLDER_DETAILS}${id}`);
+    if (checkApiStatus(response)) {
+      setData(response.data.results.data);
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setIsLoading(false);
+  }
+};

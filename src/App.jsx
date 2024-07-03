@@ -40,6 +40,7 @@ import ForgotPassword from "./Componets/ForgotPassword/ForgetPassword";
 import ForgotPassOtp from "./Componets/ForgotPassword/ForgotPassOtp";
 import CreateNewPassword from "./Componets/ForgotPassword/CreateNewPassword";
 import PasswordResetComplete from "./Componets/ForgotPassword/PasswordResetComplete";
+import FolderDetails from "./Componets/CAD/FolderDetails/FolderDetails";
 
 function App() {
   return (
@@ -97,14 +98,15 @@ function App() {
               element={<CadAssignmentCardPage />}
             />
             <Route path="/FinishedProduct" element={<FinishedProductsPage />} />
+            <Route path="/folderdetails/:id" element={<FolderDetails />} />
             <Route path="/centralDashboard" element={<CentralHubDashboard />} />
             <Route path="/slot" element={<HubSlot />} />
           </Route>
           <Route path="/login" element={<Login />} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />
-          <Route path="/verifyotp" element={<ForgotPassOtp/>} />
-          <Route path="/createnewpassword" element={<CreateNewPassword/>} />
-          <Route path="/resetcomplete" element={<PasswordResetComplete/>} />
+          <Route path="/verifyotp" element={<ForgotPassOtp />} />
+          <Route path="/createnewpassword" element={<CreateNewPassword />} />
+          <Route path="/resetcomplete" element={<PasswordResetComplete />} />
         </Routes>
       </Router>
     </>

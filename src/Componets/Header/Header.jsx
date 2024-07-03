@@ -9,10 +9,10 @@ import { useNavigate } from "react-router-dom";
 import { removeLocalstorage } from "../../Pages/Utils/Common";
 import { useParams } from "react-router-dom";
 
-const Header = () => {
+const Header = ({ leftHeader }) => {
   const location = useLocation();
   const { wareHouseuserId, customizationsku } = location.state || {};
-  const {cadFolderName,cadId } = location.state || {};
+  const { cadFolderName, cadId } = location.state || {};
   const query = new URLSearchParams(location.search);
   const folderName = query.get("name");
   const folderNamec = query.get("folderNamec");
@@ -23,8 +23,6 @@ const Header = () => {
   const handleLogout = () => {
     setIsLogoutDropdown(!isLogoutDropdown);
   };
-
-
 
   const { id } = useParams();
   // const folderName = location.state?.name || "Unknown Folder";
@@ -99,22 +97,18 @@ const Header = () => {
             {location.pathname === `/assignmentpaneldetailsview/${id}` && (
               <h3>{folderName}</h3>
             )}
-              {location.pathname === `/warehouseDetails` && (
-              <h3>ID : { customizationsku }</h3>
+            {location.pathname === `/warehouseDetails` && (
+              <h3>ID : {customizationsku}</h3>
             )}
-             {location.pathname === `/CadAssignmentcard` && (
+            {location.pathname === `/CadAssignmentcard` && (
               <h3>{cadFolderName}</h3>
             )}
-             {location.pathname === `/FinishedProduct` && (
+            {location.pathname === `/FinishedProduct` && (
               <h3>Finished Project</h3>
             )}
-             {location.pathname === "/centralDashboard" && (
-              <h3>Dashboard</h3>
-            )}
-              {location.pathname === "/slot" && (
-              <h3>Slot</h3>
-            )}
-
+            {location.pathname === "/centralDashboard" && <h3>Dashboard</h3>}
+            {location.pathname === "/slot" && <h3>Slot</h3>}
+            {leftHeader && <h3>{leftHeader}</h3>}
           </div>
           <div className="Right_User_Section">
             {location.pathname !== "/assignmentpanel" &&
@@ -130,10 +124,7 @@ const Header = () => {
               location.pathname !== "/designerassign" &&
               location.pathname !== "/warehouseDetails" &&
               location.pathname !== `/CadAssignmentcard` &&
-              location.pathname !== "/customRequestTable" &&
-
-              
-              (
+              location.pathname !== "/customRequestTable" && (
                 <div className="Search_Admin">
                   <div className="Search_User">
                     <input type="text" placeholder="Search Users" />

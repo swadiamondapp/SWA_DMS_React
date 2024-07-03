@@ -4,32 +4,53 @@ import { move_to_folder } from "../Assignment Panel/Api";
 import { Modal, Select } from "antd";
 import SuccessModal from "../SuccessModal/SuccessModal";
 
-const AssignmentModal = ({ open, onClose, formData,selectedAssignment, setAssignmentFolder,setSelectedAssignment,setFormData,findingsNames, selectedFechedTagsId }) => {
+const AssignmentModal = ({
+  open,
+  onClose,
+  formData,
+  selectedAssignment,
+  setAssignmentFolder,
+  setSelectedAssignment,
+  setFormData,
+  findingsNames,
+  selectedFechedTagsId,
+  ItemMovedToAssignment,
+}) => {
   // create modal
   // const [isModalOpen, setIsModalOpen] = useState(false);
   const [AssinedButton, setAssignedButton] = useState("Assign");
   const [isLoading, setIsLoading] = useState(false);
-  const [successModalOpen,setSuccessModalOpen] =useState(false)
+  const [successModalOpen, setSuccessModalOpen] = useState(false);
   const [folderName, setFolderName] = useState("");
-  const [successMessage,setSuccessMessage] = useState("")
-  const [error,setError] = useState([])
+  const [successMessage, setSuccessMessage] = useState("");
+  const [error, setError] = useState([]);
 
   const handleOpen = () => {
-    setIsModalOpen(true);
+    setSuccessModalOpen(true);
   };
 
   const handleClose = () => {
-    setIsModalOpen(false);
+    setSuccessModalOpen(false);
   };
   const handleCreateButton = () => {
-   
-    move_to_folder(setIsLoading, formData,folderName,selectedAssignment, setAssignmentFolder,onClose,setSuccessMessage,setSuccessModalOpen,setSelectedAssignment,setFormData,findingsNames, selectedFechedTagsId);
+    // move_to_folder(setIsLoading, formData,folderName,selectedAssignment, setAssignmentFolder,onClose,setSuccessMessage,setSuccessModalOpen,setSelectedAssignment,setFormData,findingsNames, selectedFechedTagsId);
+    move_to_folder(
+      setIsLoading,
+      folderName,
+      setAssignmentFolder,
+      onClose,
+      setSuccessMessage,
+      setSuccessModalOpen,
+      setSelectedAssignment,
+      ItemMovedToAssignment,
+      handleClose
+    );
   };
   const handleChange = (event) => {
     setFolderName(event.target.value);
-
   };
-  console.log(folderName,'folder')
+  console.log(folderName, "folder");
+  console.log(successModalOpen,"successModalOpen")
 
   return (
     <div>
@@ -40,7 +61,6 @@ const AssignmentModal = ({ open, onClose, formData,selectedAssignment, setAssign
             <div className="modal-Content">
               <div>
                 <p className="title">Assignment folder name</p>
-                
               </div>
               <div className="folderInputContainer">
                 <label htmlFor="" className="label-title">

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import DesignBtn from "../ADMIN PANEL/Design Pool/DesignBtn";
 // import ring from "../../../assets/ring.png";
-import { useParams,useLocation,Link } from "react-router-dom";
+import { useParams, useLocation, Link } from "react-router-dom";
 
 import { list_designer_folderDetails } from "../DESIGNER PANEL/Designer Detail View/Api";
 
@@ -14,10 +14,9 @@ const AssignmentPanelFolderCards = (props) => {
   const [selectedAssignment, setSelectedAssignment] = useState([]);
   const location = useLocation();
   const query = new URLSearchParams(location.search);
-  const folderName = query.get('name');
-  
-  console.log(folderName,"folderName====>")
-  
+  const folderName = query.get("name");
+
+  console.log(folderName, "folderName====>");
 
   const card = [
     {
@@ -65,6 +64,12 @@ const AssignmentPanelFolderCards = (props) => {
   // const handleAssignmentCad = () => {
   //   assign_to_cad(setIsLoading,folderId,userId,selectedDesigns)
   // }
+  console.log(props.folderDetails.assignment_items, "props.folderDetails");
+  const formatDate = (dateString) => {
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-GB", options);
+  };
 
   return (
     <div className="DesignerAssignmentPanel">
@@ -82,12 +87,11 @@ const AssignmentPanelFolderCards = (props) => {
           <div className="Card_Design_Parent">
             {props.folderDetails &&
               props.folderDetails?.assignment_items?.map((item) => (
-              
                 <div className="New_Design_card">
                   {console.log("folderDetails?", item.paper_design.image)}
                   <div className="Card_img">
-                  <Link to={`/assignmentview/${props.id}`}>
-                    <img src={item.paper_design.image}  alt="" />
+                    <Link to={`/assignmentview/${props.id}`}>
+                      <img src={item.paper_design.image} alt="" />
                     </Link>
                   </div>
                   <div className="Card_Details">
@@ -95,12 +99,12 @@ const AssignmentPanelFolderCards = (props) => {
                     <div className="Card_Details_Inner">
                       <div className="Inner_Left">
                         <p>{item.paper_design.designer_name}</p>
-                        <p>date pending</p>
+                        <p>{formatDate(item.paper_design.created_at)}</p>
                       </div>
                     </div>
                   </div>
                   {/* radio btn */}
-                  
+
                   {showRadioButtons && (
                     <input
                       className="Radio_select"
@@ -108,8 +112,8 @@ const AssignmentPanelFolderCards = (props) => {
                       id="html"
                       name="fav_language"
                       value=""
-                      onChange={()=>handleCheckboxChange(item.item_id)}
-                    //   disabled={item.items_status === 'ALLOCATED'}
+                      onChange={() => handleCheckboxChange(item.item_id)}
+                      //   disabled={item.items_status === 'ALLOCATED'}
                     ></input>
                   )}
                   {/* radio btn */}
