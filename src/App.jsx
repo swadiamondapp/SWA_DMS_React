@@ -40,6 +40,8 @@ import ForgotPassword from "./Componets/ForgotPassword/ForgetPassword";
 import ForgotPassOtp from "./Componets/ForgotPassword/ForgotPassOtp";
 import CreateNewPassword from "./Componets/ForgotPassword/CreateNewPassword";
 import PasswordResetComplete from "./Componets/ForgotPassword/PasswordResetComplete";
+import UnAssignedDesignerView from "./Pages/DESIGNER PANEL/UnAssignedDesignerPage/UnAssignedDesignerView";
+import CentralFolderDetailsPage from "./Pages/CENTRAL HUB/Central Hub Details Page/CentralFolderDetailsPage";
 
 function App() {
   return (
@@ -72,7 +74,9 @@ function App() {
               path="/assignmentpaneldetailsview/:id"
               element={<AssignmentPanelFolderCardPage />}
             />
+             <Route path="/centralfolderdetails/:id" element={<CentralFolderDetailsPage />} />
             <Route path="/Customizedorder" element={<CustomizedOrderPage />} />
+            <Route path="/unassigneddesigner" element={<UnAssignedDesignerView />} />
             <Route path="/votorspanal" element={<VotorsPanalPage />} />
             <Route
               path="/votorscustomization"

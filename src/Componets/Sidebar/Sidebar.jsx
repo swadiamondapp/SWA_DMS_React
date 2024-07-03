@@ -7,6 +7,8 @@ import mastersimg from "../../assets/masters.png";
 import assignmentimg from "../../assets/assignment.png";
 import chatboximg from "../../assets/chatbox.png";
 import customeimg from "../../assets/custome.png";
+import sideStar from "../../assets/sideStar.png";
+import Tranfer from "../../assets/transfer.png";
 import galleryimg from "../../assets/gallery.png";
 import loginzimg from "../../assets/loginz.png";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
@@ -102,6 +104,12 @@ const Sidebar = () => {
               {sidebarExpanded && <p>Customized Order</p>}
             </div>
           </Link>
+          <Link to="/unassigneddesigner">
+            <div className="Links">
+              <img src={sideStar} alt="" />
+              {sidebarExpanded && <p>Assigned To</p>}
+            </div>
+          </Link>
           {/* For Designer Module */}
         </>
       );
@@ -180,8 +188,14 @@ const Sidebar = () => {
           </Link>
           <Link to="/slot">
             <div className="Links">
-              <img src={customeimg} alt="" />
-              {sidebarExpanded && <p>Slot</p>}
+              <img src={sideStar} alt="" />
+              {sidebarExpanded && <p>Bag</p>}
+            </div>
+          </Link>
+          <Link to="/slot">
+            <div className="Links">
+              <img src={Tranfer} alt="" />
+              {sidebarExpanded && <p>Transfer</p>}
             </div>
           </Link>
           {/* CENTRAL HUB SIDEBAR */}

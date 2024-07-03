@@ -239,7 +239,6 @@ export const editBasicDetails = async (
   designId,
   setSuccessMessage,
   setSuccessModalOpen,
-  setFormData,
   onClose
 ) => {
   try {
@@ -270,21 +269,6 @@ export const editBasicDetails = async (
       setTimeout(() => {
         setSuccessModalOpen(false);
       }, 1600);
-      setFormData({
-        SKU: "",
-        productCategory: "",
-        length: "",
-        width: "",
-        height: "",
-        typeOfMetal: "",
-        diamondType: "",
-        approxDiamondWeight: "",
-        findings: "",
-        approxMetalWeights: "",
-        approxMRP: "",
-        tag: "",
-        notes: "",
-      });
     }
   } catch (error) {
     console.error("Error moving designs:", error);

@@ -1,10 +1,14 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "./Slot.css";
 import { IoEye } from "react-icons/io5";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import SlotCreation from "../../SlotCreation/SlotCreation";
 import SlotView from "../../SlotVIew/SlotView";
-import { list_slot_central_hub, slot_view_by_id } from "../../../Pages/CENTRAL HUB/Api";
+import {
+  list_slot_central_hub,
+  slot_view_by_id,
+} from "../../../Pages/CENTRAL HUB/Api";
+import printIcon from "../../../assets/printIconSlot.png";
 
 const Slots = () => {
   const [showEditDelete, setShowEditDelete] = useState(null);
@@ -13,8 +17,8 @@ const Slots = () => {
 
   const [Data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [userId,setUserId] = useState([])
-  const [slotView,setSloteView] = useState([])
+  const [userId, setUserId] = useState([]);
+  const [slotView, setSloteView] = useState([]);
   const userlist = [
     {
       slino: "1",
@@ -45,28 +49,28 @@ const Slots = () => {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (showEditDelete !== null && !event.target.closest('.parentSlotS')) {
+      if (showEditDelete !== null && !event.target.closest(".parentSlotS")) {
         setShowEditDelete(null);
       }
     };
 
-    document.addEventListener('click', handleClickOutside);
+    document.addEventListener("click", handleClickOutside);
     return () => {
-      document.removeEventListener('click', handleClickOutside);
+      document.removeEventListener("click", handleClickOutside);
     };
   }, [showEditDelete]);
 
-  const handleEyeButton = (Id)=> {
-    setIsModalOpenslotview(true)
-    setUserId(Id)
+  const handleEyeButton = (Id) => {
+    setIsModalOpenslotview(true);
+    setUserId(Id);
     slot_view_by_id(Id, setSloteView);
-  }
+  };
   useEffect(() => {
     list_slot_central_hub(setIsLoading, setData);
   }, []);
-  console.log(slotView,"slotView")
-  console.log(userId,"slotView")
-  console.log(Data,'center==============>')
+  console.log(slotView, "slotView");
+  console.log(userId, "slotView");
+  console.log(Data, "center==============>");
   const sortedData = Data.sort((a, b) => a.id - b.id);
   return (
     <div className="parentCentral">
@@ -90,15 +94,23 @@ const Slots = () => {
           <tbody>
             {sortedData.map((item, index) => (
               <tr key={index} style={{ color: "#2E364C" }}>
-                <td>{item.id}</td>
+                <td className="serialNumber_cell">{item.id}</td>
                 <td>{item.created_at}</td>
-                <td>{item.slotnumber}</td>
-                <td>
+                <td className="slot_cell">{item.slotnumber}</td>
+                <td className="actions-cell">
                   <div className="parentSlotS">
                     <div className="EYEBTN">
+                      <button className="slotPrintButton">
+                        <img src={printIcon} style={{ marginRight: '5px' }} alt="" />
+                        Print
+                      </button>
                       <IoEye
                         onClick={() => handleEyeButton(item.id)}
-                        style={{ color: "#455173", cursor: "pointer" }}
+                        style={{
+                          color: "#455173",
+                          cursor: "pointer",
+                          margin: "0px 25px",
+                        }}
                       />
                     </div>
                     <div className="DOTSBTNS">
@@ -134,7 +146,6 @@ const Slots = () => {
         onClose={() => setIsModalOpenslotview(false)}
         userId={userId}
         slotView={slotView}
-        
       />
     </div>
   );

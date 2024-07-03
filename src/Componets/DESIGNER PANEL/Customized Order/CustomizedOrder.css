@@ -6,6 +6,7 @@
   justify-content: space-between;
   margin-bottom: 8px;
   align-items: center;
+  position: relative;
 }
 .OrderHigh {
   background: #fbe3de;
@@ -24,4 +25,19 @@
   background: #dfecdd;
   padding: 5px 10px;
   border-radius: 4px;
+}
+
+.dropdown {
+  /* border: 1px solid #ccc; */
+  position: absolute;
+  padding: 10px;
+  margin-top: 10px;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+  right: 0;
+  bottom:-100px
+}
+.OrderHigh, .OrderMedium {
+  margin: 5px 0;
+  cursor: pointer;
 }

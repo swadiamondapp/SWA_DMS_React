@@ -115,7 +115,6 @@ const BasicDetailModal = ({
 
   useEffect(() => {
     if (name === "editbasicDetails" && basicDetails) {
-    console.log("jjjjjjj",basicDetails)
       setFormData((prevFormData) => ({
         ...prevFormData,
         SKU: DetailsProductId || "",
@@ -125,9 +124,11 @@ const BasicDetailModal = ({
         height: basicDetails.height || "",
         typeOfMetal: basicDetails.type_of_metal || "",
         diamondType: basicDetails.diamond_type || "",
-        approxDiamondWeight:basicDetails.approx_diamond_weight || "",
+        approxDiamondWeight: basicDetails.approx_diamond_weight || "",
         findings: basicDetails.findings || "",
-        approxMetalWeights:basicDetails ? basicDetails.approx_metal_weight : "" ,
+        approxMetalWeights: basicDetails
+          ? basicDetails.approx_metal_weight
+          : "",
         approxMRP: basicDetails.approx_price || "",
         tag: basicDetails.tag || "",
         notes: basicDetails.notes || "",
@@ -141,7 +142,7 @@ const BasicDetailModal = ({
   console.log(metalTypeDropDown, "metalTypeDropDown");
   console.log(ProudctCategory, "taggggg");
   console.log(CalculationData, "CalculationData");
-  console.log(basicDetails&& basicDetails.approx_metal_weight, "basicDtails");
+  console.log(basicDetails && basicDetails.approx_metal_weight, "basicDtails");
 
   const schema = Joi.object({
     SKU: Joi.required().messages({
@@ -166,10 +167,10 @@ const BasicDetailModal = ({
     diamondType: Joi.required().messages({
       "string.empty": `cannot be empty`,
     }),
-    approxDiamondWeight: Joi.string().required().messages({
+    approxDiamondWeight: Joi.required().messages({
       "string.empty": `cannot be empty`,
     }),
-    approxMetalWeights: Joi.string().required().messages({
+    approxMetalWeights: Joi.required().messages({
       "string.empty": `cannot be empty`,
     }),
     approxMRP: Joi.number().required().messages({
@@ -297,7 +298,6 @@ const BasicDetailModal = ({
         designId,
         setSuccessMessage,
         setSuccessModalOpen,
-        setFormData,
         onClose
       );
       // setShowAssignmentModal(true);
@@ -355,28 +355,12 @@ const BasicDetailModal = ({
   };
   // console.log(selectedDesignCode)
 
-  // const CalculateApproxAmount = () => {
-  //   if (
-  //     formData.approxMetalWeights &&
-  //     formData.approxDiamondWeight &&
-  //     SelectedDiamondId &&
-  //     SelectedMetalId
-  //   ) {
-  //     basic_calculation(
-  //       setIsLoadingCalculation,
-  //       formData,
-  //       SelectedDiamondId,
-  //       SelectedMetalId,
-  //       setCalculationData
-  //     );
-  //   }
-  // };
-  useEffect(() => {
+  const CalculateApproxAmount = () => {
     if (
       formData.approxMetalWeights &&
       formData.approxDiamondWeight &&
       SelectedDiamondId &&
-      SelectedMetalId && formData.diamondType &&  formData.typeOfMetal
+      SelectedMetalId
     ) {
       basic_calculation(
         setIsLoadingCalculation,
@@ -386,13 +370,30 @@ const BasicDetailModal = ({
         setCalculationData
       );
     }
+  };
+  useEffect(() => {
+    if (
+      formData.approxMetalWeights &&
+      formData.approxDiamondWeight &&
+      SelectedDiamondId &&
+      SelectedMetalId &&
+      formData.diamondType &&
+      formData.typeOfMetal
+    ) {
+      CalculateApproxAmount()
+    } else {
+      setFormData(prevFormData => ({
+        ...prevFormData,
+        approxMRP: 0
+      }));
+    }
   }, [
-    formData.approxMRP,
     formData.approxMetalWeights,
     formData.approxDiamondWeight,
-    SelectedMetalId,
     SelectedDiamondId,
-    basicDetails,
+    SelectedMetalId,
+    formData.diamondType,
+    formData.typeOfMetal,
   ]);
 
   console.log(CalculationData, "CalculationData");
@@ -712,27 +713,50 @@ const BasicDetailModal = ({
                         <label htmlFor="" className="label-text">
                           Findings
                         </label>
-                        <Select
-                          mode="multiple"
-                          style={{
-                            width: "100%",
-                            zIndex: "9999999",
-                            background: "#006E7F1A",
-                          }}
-                          value={formData.findings}
-                          placeholder="Select tags"
-                          onChange={(value) => {
-                            console.log("Tag changed to:", value);
-                            setFormData((prevState) => ({
-                              ...prevState,
-                              findings: value,
-                            }));
-                          }}
-                          options={findingsNames.map((tag) => ({
-                            label: tag.name,
-                            value: tag.id,
-                          }))}
-                        />
+                        {name === "editbasicDetails" ? (
+                          <Select
+                            mode="multiple"
+                            style={{
+                              width: "100%",
+                              zIndex: "9999999",
+                              background: "#006E7F1A",
+                            }}
+                            value={formData.findings}
+                            placeholder="Select tags"
+                            onChange={(value) => {
+                              console.log("Tag changed to:", value);
+                              setFormData((prevState) => ({
+                                ...prevState,
+                                findings: value,
+                              }));
+                            }}
+                            options={findingsNames.map((tag) => ({
+                              label: tag.name,
+                              value: tag.id,
+                            }))}
+                          />
+                        ) : (
+                          <Select
+                            mode="multiple"
+                            style={{
+                              width: "100%",
+                              zIndex: "9999999",
+                              background: "#006E7F1A",
+                            }}
+                            placeholder="Select tags"
+                            onChange={(value) => {
+                              console.log("Tag changed to:", value);
+                              setFormData((prevState) => ({
+                                ...prevState,
+                                findings: value,
+                              }));
+                            }}
+                            options={findingsNames.map((tag) => ({
+                              label: tag.name,
+                              value: tag.id,
+                            }))}
+                          />
+                        )}
                         {/* <TagsInput
                           value={findingsNames}
                           onChange={(value) =>
@@ -777,27 +801,50 @@ const BasicDetailModal = ({
                           // placeHolder="Tags"
                           classNames="inputTag"
                         /> */}
-                        <Select
-                          mode="multiple"
-                          style={{
-                            width: "100%",
-                            zIndex: "9999999",
-                            background: "#006E7F1A",
-                          }}
-                          value={formData.tag}
-                          placeholder="Select tags"
-                          onChange={(value) => {
-                            console.log("Tag changed to:", value);
-                            setFormData((prevState) => ({
-                              ...prevState,
-                              tag: value,
-                            }));
-                          }}
-                          options={selectedFechedTags.map((tag) => ({
-                            label: tag.name,
-                            value: tag.id,
-                          }))}
-                        />
+                        {name === "editbasicDetails" ? (
+                          <Select
+                            mode="multiple"
+                            style={{
+                              width: "100%",
+                              zIndex: "9999999",
+                              background: "#006E7F1A",
+                            }}
+                            value={formData.tag}
+                            placeholder="Select tags"
+                            onChange={(value) => {
+                              console.log("Tag changed to:", value);
+                              setFormData((prevState) => ({
+                                ...prevState,
+                                tag: value,
+                              }));
+                            }}
+                            options={selectedFechedTags.map((tag) => ({
+                              label: tag.name,
+                              value: tag.id,
+                            }))}
+                          />
+                        ) : (
+                          <Select
+                            mode="multiple"
+                            style={{
+                              width: "100%",
+                              zIndex: "9999999",
+                              background: "#006E7F1A",
+                            }}
+                            placeholder="Select tags"
+                            onChange={(value) => {
+                              console.log("Tag changed to:", value);
+                              setFormData((prevState) => ({
+                                ...prevState,
+                                tag: value,
+                              }));
+                            }}
+                            options={selectedFechedTags.map((tag) => ({
+                              label: tag.name,
+                              value: tag.id,
+                            }))}
+                          />
+                        )}
                         <div>
                           {errors.tag && (
                             <span className="error_input_p">{errors.tag}</span>

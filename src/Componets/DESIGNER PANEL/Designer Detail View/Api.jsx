@@ -7,6 +7,8 @@ import {
   FOLDER_DETAIL_API,
   ASSIGN_TO_CAD,
   LIST_ALL_CUSTOMIZATION_DESIGNS,
+  LIST_UNASSIGNED_DESIGNER,
+  ASSIGN_UNASSIGN_DESIGNERS,
 } from "../../../Pages/Services/EndPoints";
 
 export const list_designer_folderDetails = async (
@@ -35,7 +37,6 @@ export const assign_to_cad = async (
   setSuccessModalOpen,
   setSuccessMessage,
   setSelectedAssignment
-
 ) => {
   try {
     const body = {
@@ -44,38 +45,75 @@ export const assign_to_cad = async (
       assignment_items: selectedDesign,
     };
     console.log(body, "body====>");
-    console.log( selectedDesign," selectedDesign")
+    console.log(selectedDesign, " selectedDesign");
     const response = await apiService.post(ASSIGN_TO_CAD, body);
     if (response.data.status_code === 200) {
-      setSelectedAssignment([])
-      onClose()
-      list_designer_folderDetails()
-      setSuccessMessage("Item Assigned SuccessFully")
-      setSuccessModalOpen(true)
+      setSelectedAssignment([]);
+      onClose();
+      list_designer_folderDetails();
+      setSuccessMessage("Item Assigned SuccessFully");
+      setSuccessModalOpen(true);
       setTimeout(() => {
         setSuccessModalOpen(false);
       }, 1600);
-      
     }
   } catch (error) {
-      // setSelectedAssignment([])
+    // setSelectedAssignment([])
     console.error("Error moving designs:", error);
-    alert(error?.response?.data?.assignment_items
-    )
+    alert(error?.response?.data?.assignment_items);
   }
 };
 
-export const list_all_cutomization_paper_design= async (
+export const list_all_cutomization_paper_design = async (
   setIsLoading,
-  setCustomizationDesign,
+  setCustomizationDesign
 ) => {
   try {
-    debugger
     const response = await apiService.get(LIST_ALL_CUSTOMIZATION_DESIGNS);
-    if (checkApiStatus(response)) {
+    if (response.data.results.status_code === 200) {
       setCustomizationDesign(response.data.results.data);
     }
   } catch (error) {
     console.log(error);
+  }
+};
+export const listUnAssignedLists = async (setIsLoading, setUnAssignedLists) => {
+  try {
+    const response = await apiService.get(LIST_UNASSIGNED_DESIGNER);
+    if (response.data.results.status_code === 200) {
+      setUnAssignedLists(response.data.results.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const unassignDesigner = async (
+  setIsLoading,
+  id,
+  userId,
+  setSuccessMessage,
+  setSuccessModalOpen,
+  setUnAssignedLists
+) => {
+  try {
+    const body = {
+      paper_design_id: id,
+      user: userId,
+    };
+    console.log(body, "unasssdfidf");
+    const response = await apiService.post(ASSIGN_UNASSIGN_DESIGNERS, body);
+    if (response.data.results.status_code === 200) {
+      listUnAssignedLists(setIsLoading,setUnAssignedLists)
+      setSuccessMessage("Item Unassigned SuccessFully");
+      setSuccessModalOpen(true);
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+
+      }, 1600);
+    }
+  } catch (error) {
+    console.error("Error moving designs:", error);
+    alert(error);
   }
 };
