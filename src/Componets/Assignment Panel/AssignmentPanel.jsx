@@ -29,7 +29,7 @@ const AssignmentPanel = () => {
   const [openDesignPool, setOpenDesignPool] = useState(false);
   const [modalDetails, setModalDetails] = useState([]);
   const [activeCardId, setActiveCardId] = useState(null);
-  const [ AdminBasicModalOpen,setAdminBasicModalOpen] = useState(false)
+  const [AdminBasicModalOpen, setAdminBasicModalOpen] = useState(false);
   const [uploadInstructionsVisible, setUploadInstructionsVisible] =
     useState(true);
   const location = useLocation();
@@ -151,41 +151,44 @@ const AssignmentPanel = () => {
       date: "12 june 2023",
     },
   ];
-console.log(modalDetails,"modalDetails")
+  console.log(modalDetails, "modalDetails");
   const handleDrawModal = (item) => {
     // setOpenDesignPool(true);
     setModalDetails(item);
-    setFolderDetialViewID(item.id)
+    setFolderDetialViewID(item.id);
   };
   const handleAdminBasicModal = () => {
-    setAdminBasicModalOpen(true)
-  }
+    setAdminBasicModalOpen(true);
+  };
 
-  const handleCloseAdminModal = ()=> {
-    setAdminBasicModalOpen(false)
-  }
+  const handleCloseAdminModal = () => {
+    setAdminBasicModalOpen(false);
+  };
 
-  const handleForlderDetailsVeiw = ()=> {
-
-  }
+  const handleForlderDetailsVeiw = () => {};
 
   console.log(selectedDesignCode, "selectedDesignCode");
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
     const year = date.getFullYear();
     return `${day}-${month}-${year}`;
   };
   return (
     <div className="Parent_AssignmentView">
-      <div className="AssignmentPanel_FileUpload" style={{ padding: '10px' }}>
+      <div className="AssignmentPanel_FileUpload" style={{ padding: "10px" }}>
         {uploadInstructionsVisible && !uploadedImage && (
           <>
             <p>Create new assignment</p>
             <p>You can create Assignment directly</p>
-            <span className="assignmentPanal_upload_text" onClick={handleAdminBasicModal}>Create Assignment</span>
+            <span
+              className="assignmentPanal_upload_text"
+              onClick={handleAdminBasicModal}
+            >
+              Create Assignment
+            </span>
           </>
         )}
         {uploadedImage && (
@@ -212,6 +215,24 @@ console.log(modalDetails,"modalDetails")
           setAssignmentFolder={setAssignmentFolder}
           selectedDesignCode={selectedDesignCode}
         />
+        <div className="Parent_Folder_section">
+          <h3 className="HeadNewdesign">Folders</h3>
+          <div className="folderCard_parent">
+            {assignmentFolder.map((item) => (
+              <div className="folder__card" key={item.id}>
+                <Link
+                  to={`/assignmentpaneldetailsview/${
+                    item.id
+                  }?name=${encodeURIComponent(item.name)}`}
+                >
+                  <img src={folderimg} alt="" />
+                </Link>
+                <p>{item.name}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
         <div className="Assignment_panel_section">
           <h3 className="HeadNewdesign">Selected</h3>
           <div className="Card_Design_Parent">
@@ -223,11 +244,13 @@ console.log(modalDetails,"modalDetails")
               const designCode = paperDesign?.designcode;
               const image = paperDesign?.image;
               const likesCount = paperDesign?.likes_count;
-              
 
               return (
                 <div className="New_Design_card" key={itemId}>
-                  <div className="Card_img" onClick={()=>handleForlderDetailsVeiw(item.id)}>
+                  <div
+                    className="Card_img"
+                    onClick={() => handleForlderDetailsVeiw(item.id)}
+                  >
                     <img
                       src={image}
                       alt={`Design by ${designer}`}
@@ -261,11 +284,18 @@ console.log(modalDetails,"modalDetails")
                       checked={selectedAssignment.includes(itemId)}
                     />
                   )}
-                  {!showRadioButtons && location.pathname === "/assignmentpanel" && (
-                    <div onClick={() => toggleDeleteMoveButtons(itemId)} ref={dotsRef}>
-                      <BsThreeDotsVertical className="A_dots" style={{ fontSize: "20px" }} />
-                    </div>
-                  )}
+                  {!showRadioButtons &&
+                    location.pathname === "/assignmentpanel" && (
+                      <div
+                        onClick={() => toggleDeleteMoveButtons(itemId)}
+                        ref={dotsRef}
+                      >
+                        <BsThreeDotsVertical
+                          className="A_dots"
+                          style={{ fontSize: "20px" }}
+                        />
+                      </div>
+                    )}
                   {activeCardId === itemId && (
                     <div className="Dots_Delete_DesignPool_btns">
                       <p>Delete</p>
@@ -277,33 +307,18 @@ console.log(modalDetails,"modalDetails")
             })}
           </div>
         </div>
-
-        <div className="Parent_Folder_section">
-          <h3 className="HeadNewdesign">Folders</h3>
-          <div className="folderCard_parent">
-            {assignmentFolder.map((item) => (
-              <div className="folder__card" key={item.id}>
-                <Link to={`/assignmentpaneldetailsview/${item.id}?name=${encodeURIComponent(item.name)}`}>
-                  <img src={folderimg} alt="" />
-                </Link>
-                <p>{item.name}</p>
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
       <DesignPools
         handleOpenDesignPool={handleOpenDesignPool}
         hadnleCloseDesignPool={hadnleCloseDesignPool}
         openDesignPool={openDesignPool}
         modalDetails={modalDetails}
-       
       />
-      <AdminBasicDetailsModal 
-      AdminBasicModalOpen={AdminBasicModalOpen}
-      setAdminBasicModalOpen={setAdminBasicModalOpen}
-      onClose={handleCloseAdminModal}
-      selectedDesignCode={selectedDesignCode}
+      <AdminBasicDetailsModal
+        AdminBasicModalOpen={AdminBasicModalOpen}
+        setAdminBasicModalOpen={setAdminBasicModalOpen}
+        onClose={handleCloseAdminModal}
+        selectedDesignCode={selectedDesignCode}
       />
     </div>
   );

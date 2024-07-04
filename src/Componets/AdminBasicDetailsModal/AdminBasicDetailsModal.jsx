@@ -509,15 +509,18 @@ const AdminBasicDetailsModal = ({
                                         <span className="nameA">
                                           {item.name}
                                         </span>
-                                        <span className="nameB">
+                                        {/* <span className="nameB">
                                           {item.Usertype}
-                                        </span>
+                                        </span> */}
                                       </div>
                                     </div>
                                     <div className="rightTo">
                                       <div className="tagged">
                                         <span className="taggedText">
-                                          {item.status}
+                                          {/* {item.status} */}
+                                          {assignedDesignerId === item.id
+                                            ? "Assigned"
+                                            : ""}
                                         </span>
                                       </div>
                                       <div>
@@ -555,7 +558,7 @@ const AdminBasicDetailsModal = ({
                                   // onClick={() => handleNextClick()}
                                   onClick={() => handleAssignDesigners()}
                                 >
-                                  Next
+                                  Done
                                 </button>
                               </div>
                             </div>

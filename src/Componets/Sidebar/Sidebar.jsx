@@ -192,7 +192,7 @@ const Sidebar = () => {
               {sidebarExpanded && <p>Bag</p>}
             </div>
           </Link>
-          <Link to="/slot">
+          <Link to="/centralhubtransfer">
             <div className="Links">
               <img src={Tranfer} alt="" />
               {sidebarExpanded && <p>Transfer</p>}

@@ -58,7 +58,7 @@ const CustomizedOrder = () => {
           <div className="Card_Design_Parent">
             {UnAssignedLists.map((item) => (
               <div className="New_Design_card">
-                <div className="Card_img" style={{ minHeight: "180px" }}>
+                <div className="Card_img" style={{ minHeight: "190px" }}>
                   <img src={item.image} alt="" />
                 </div>
                 <div className="Card_Details">

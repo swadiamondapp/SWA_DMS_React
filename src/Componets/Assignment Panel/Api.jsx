@@ -23,12 +23,12 @@ import {
 
 export const list_assignment_panel = async (
   setIsLoading,
-  setAssignmentFolder
+  setData
 ) => {
   try {
     const response = await apiService.get(LIST_ASSIGNMENT_PANEL);
     if (checkApiStatus(response)) {
-      setAssignmentFolder(response.data.results.data);
+      setData(response.data.results.data);
     }
   } catch (error) {
     console.log(error);
@@ -92,7 +92,6 @@ export const move_to_folder = async (
     console.log(body, "itemMovirddd");
     const response = await apiService.post(MOVE_TO_FOLDER, body);
     if (response.data.results.status_code === 200) {
-      debugger;
       list_assignment_folder(setIsLoading, setAssignmentFolder);
       onClose();
       setSuccessMessage("Assignment Folder Created SuccessFully");

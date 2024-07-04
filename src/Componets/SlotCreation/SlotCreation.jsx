@@ -155,18 +155,20 @@ const SlotCreation = ({ open, onClose }) => {
             className="modal"
           >
             <div>
-              <button onClick={()=>handleClose()} className="overLayButton_sc">
+              <button
+                onClick={() => handleClose()}
+                className="overLayButton_sc"
+              >
                 <img src={roundedClose} />
                 CLOSE
               </button>
               <Box sx={style}>
                 <div className="wrapper">
                   <div className="leftTable">
+                    <span className="left_header_title_sc">Create Bag</span>
                     <div className="header_slotCreation_left">
                       <div>
-                        <span className="left_header_title_sc">
-                          Create Slot
-                        </span>
+                        <button className="add_button_sc">ADD TO SLOT</button>
                       </div>
                       <div className="searchContiainer">
                         <div className="Search_Userr">
@@ -192,16 +194,33 @@ const SlotCreation = ({ open, onClose }) => {
                                 </div>
                               </th>
                               <th className="table-header">Created Date</th>
-                              <th className="table-header">Product Category</th>
-                              <th className="table-header weight_header-left">
-                                Weight
+                              <th className="table_productCat">
+                                Product Category
                               </th>
+                              <th className="table_weight">Weight</th>
                             </tr>
                           </thead>
                           <tbody>
                             {data.map((item) => (
                               <tr key={item.id}>
-                                <td className="table-data">{item.id}</td>
+                                <td className="table-data">
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      justifyContent: "center",
+                                      gap: "5px",
+                                      padding: "8px 0px",
+                                    }}
+                                  >
+                                    <div>
+                                      <input
+                                        type="checkbox"
+                                        className="center-input"
+                                      />
+                                    </div>
+                                    <div>{item.id}</div>
+                                  </div>
+                                </td>
                                 <td className="table-data">
                                   {item.createdDate}
                                 </td>
@@ -211,9 +230,6 @@ const SlotCreation = ({ open, onClose }) => {
                                 <td className="table-data">
                                   <div className="right-data-and-button-c">
                                     <span>{item.weight}</span>
-                                    <button className="add_button_sc">
-                                      ADD TO SLOT
-                                    </button>
                                   </div>
                                 </td>
                               </tr>

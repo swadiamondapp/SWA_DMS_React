@@ -30,12 +30,14 @@
   font-family: "Gilroy medium";
   font-weight: 600;
   font-size: 16px;
+  padding: 0px 0px 0px 0px;
 }
 .header_slotCreation_left {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 15px;
+  flex-direction: row-reverse;
+  padding: 0px 10px;
 }
 .Search_Userr {
   position: relative;
@@ -69,10 +71,10 @@
   background: #126e72;
   border-radius: 32px;
   color: #ffff;
-  padding: 8px 6px;
-  font-size: 9px;
+  padding: 10px 10px;
+  font-size: 14px;
   /* margin: 4px 0px 3px 20px; */
-  margin:4px 0px
+  margin: 4px 0px;
 }
 .supermarket-table {
   border-collapse: collapse;
@@ -158,7 +160,7 @@
   padding: 10px 15px;
 }
 .table-container-right {
-  max-height: 275px; /* Set a max height for the container */
+  max-height: 340px; /* Set a max height for the container */
   overflow-y: auto;
   box-shadow: 0px 2px 4px 0px #0000000D;
 
@@ -198,4 +200,15 @@
   color:#ffff;
   display:flex;
   gap:5px;
+}
+.table_productCat {
+  width: 40%;
+  color: #455173;
+}
+.table_weight {
+  color: #455173;
+  width: 15%;
+} 
+.print_slot_modal_container {
+  
 }

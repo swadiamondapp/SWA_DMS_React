@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import "./Slot.css";
+import "./Transfer.css";
 import { IoEye } from "react-icons/io5";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import SlotCreation from "../../SlotCreation/SlotCreation";
 import SlotView from "../../SlotVIew/SlotView";
 import {
+  centralTransfer,
   list_slot_central_hub,
   slot_view_by_id,
 } from "../../../Pages/CENTRAL HUB/Api";
@@ -15,7 +16,7 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import closeButton from "../../../assets/closeButton.svg";
 
-const Slots = () => {
+const Transfer = () => {
   const [showEditDelete, setShowEditDelete] = useState(null);
   const [isModalOpenslot, setIsModalOpenslot] = useState(false);
   const [isModalOpenslotview, setIsModalOpenslotview] = useState(false);
@@ -25,6 +26,7 @@ const Slots = () => {
   const [userId, setUserId] = useState([]);
   const [slotView, setSloteView] = useState([]);
   const [printSlotModalOpen, setPrintSlotModalOpen] = useState(false);
+  const [TransferData, setTransferData] = useState([]);
 
   const handlePrintSlotModalClose = () => {
     setPrintSlotModalOpen(false);
@@ -72,18 +74,18 @@ const Slots = () => {
     borderRadius: 0,
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (showEditDelete !== null && !event.target.closest(".parentSlotS")) {
-        setShowEditDelete(null);
-      }
-    };
+  // useEffect(() => {
+  //   const handleClickOutside = (event) => {
+  //     if (showEditDelete !== null && !event.target.closest(".parentSlotS")) {
+  //       setShowEditDelete(null);
+  //     }
+  //   };
 
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, [showEditDelete]);
+  //   document.addEventListener("click", handleClickOutside);
+  //   return () => {
+  //     document.removeEventListener("click", handleClickOutside);
+  //   };
+  // }, [showEditDelete]);
 
   const handleEyeButton = (Id) => {
     setIsModalOpenslotview(true);
@@ -91,7 +93,8 @@ const Slots = () => {
     slot_view_by_id(Id, setSloteView);
   };
   useEffect(() => {
-    list_slot_central_hub(setIsLoading, setData);
+    // list_slot_central_hub(setIsLoading, setData);
+    centralTransfer(setIsLoading, setTransferData);
   }, []);
 
   const handlePrintButton = () => {
@@ -100,7 +103,9 @@ const Slots = () => {
   console.log(slotView, "slotView");
   console.log(userId, "slotView");
   console.log(Data, "center==============>");
+  console.log(TransferData, "TransferData");
   const sortedData = Data.sort((a, b) => a.id - b.id);
+  const sortedTransfer = Data.sort((a, b) => a.id - b.id);
   return (
     <div className="parentCentral">
       <div className="slot_create">
@@ -117,28 +122,26 @@ const Slots = () => {
               <th>SL NO</th>
               <th>Created on</th>
               <th>Slot ID</th>
-              <th>Action</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody>
-            {sortedData.map((item, index) => (
+            {TransferData.map((item, index) => (
               <tr key={index} style={{ color: "#2E364C" }}>
-                <td className="serialNumber_cell">{item.id}</td>
+                <td className="serialNumber_cell">{index + 1}</td>
                 <td>{item.created_at}</td>
-                <td className="slot_cell">{item.slotnumber}</td>
+                <td className="slot_cell">{item.slot.slotnumber}</td>
                 <td className="actions-cell">
                   <div className="parentSlotS">
                     <div className="EYEBTN">
+                      <div  className="slotPrintButton">
+                      {item.slot.status}
+                      </div>
                       <button
                         className="slotPrintButton"
                         onClick={() => handlePrintButton()}
                       >
-                        <img
-                          src={printIcon}
-                          style={{ marginRight: "5px" }}
-                          alt=""
-                        />
-                        Print
+                        {/* {item.slot.status} */}
                       </button>
                       <IoEye
                         onClick={() => handleEyeButton(item.id)}
@@ -270,4 +273,4 @@ const Slots = () => {
   );
 };
 
-export default Slots;
+export default Transfer;

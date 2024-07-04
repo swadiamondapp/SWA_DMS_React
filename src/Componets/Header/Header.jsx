@@ -128,7 +128,9 @@ const Header = ({centralId,designCodesCentralHub}) => {
               location.pathname !== "/warehouseDetails" &&
               location.pathname !== `/CadAssignmentcard` &&
               location.pathname !== `/centralfolderdetails/${centralId}` &&
-              location.pathname !== "/customRequestTable" && (
+              location.pathname !== "/customRequestTable" &&
+              location.pathname !== "/unassigneddesigner" && 
+              location.pathname !== "/Customizedorder" &&(
                 <div className="Search_Admin">
                   <div className="Search_User">
                     <input type="text" placeholder="Search Users" />
