@@ -133,16 +133,21 @@ const Transfer = () => {
                 <td className="slot_cell">{item.slot.slotnumber}</td>
                 <td className="actions-cell">
                   <div className="parentSlotS">
-                    <div className="EYEBTN"  style={{display:'flex',alignItems:"center",gap:"15px"}}>
+                    <div
+                      className="EYEBTN"
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "15px",
+                      }}
+                    >
                       <div>
-
-                      <button
-                        className="slotPrintButton"
-                        onClick={() => handlePrintButton()}
-                       
-                      >
-                        {item.slot.status}
-                      </button>
+                        <button
+                          className="slotPrintButton"
+                          onClick={() => handlePrintButton()}
+                        >
+                          {item.slot.status}
+                        </button>
                       </div>
                       {/* <div  className="slotPrintButton">
                       {item.slot.status}
