@@ -112,7 +112,12 @@ const CadAssignment = ({
                       {item.timer_value}
                     </button>
                   ) : item.timer_status === "on-going" ? (
-                    <button className="Download_btn_hub">{timer}</button>
+                    <button
+                      className="Download_btn_hub"
+                      // onClick={() => onButtonClick(item.item_id)}
+                    >
+                      {timer}
+                    </button>
                   ) : (
                     <button
                       className="Download_btn_hub"

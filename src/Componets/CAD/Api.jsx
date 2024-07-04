@@ -11,6 +11,7 @@ import {
   CAD_UPLOAD,
   FINISHED_FOLDERS,
   FOLDER_DETAILS,
+  CAD_RE_UPLOAD,
 } from "../../Pages/Services/EndPoints";
 
 export const list_assigned_cad_design = async (
@@ -171,11 +172,28 @@ export const designListStatusChange = async (
   }
 };
 
-export const uploadFile = async (setIsLoading, body, callBack) => {
+export const uploadFile = async (
+  setIsLoading,
+  body,
+  setSuccessModalOpen,
+  setSuccessMessage,
+  setIsModalOpen,
+  setImages,
+  setProductCode,
+  callBack
+) => {
   try {
     setIsLoading(true);
     const response = await apiService.post(CAD_UPLOAD, body);
     if (checkApiStatus(response)) {
+      setIsModalOpen(false);
+      setImages({ normal: null, threeD: null });
+      setProductCode("");
+      setSuccessMessage("Successfully uploaded");
+      setSuccessModalOpen(true);
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1500);
       callBack();
     }
   } catch (error) {
@@ -205,6 +223,38 @@ export const projectDetails = async (setIsLoading, setData, id) => {
     const response = await apiService.get(`${FOLDER_DETAILS}${id}`);
     if (checkApiStatus(response)) {
       setData(response.data.results.data);
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+export const reUploadFile = async (
+  setIsLoading,
+  body,
+  setSuccessModalOpen,
+  setSuccessMessage,
+  setIsModalOpen,
+  setImages,
+  setProductCode,
+  id,
+  callBack
+) => {
+  try {
+    setIsLoading(true);
+    const response = await apiService.put(`${CAD_RE_UPLOAD}${id}`, body);
+    if (checkApiStatus(response)) {
+      setIsModalOpen(false);
+      setImages({ normal: null, threeD: null });
+      setProductCode("");
+      setSuccessMessage("Successfully uploaded");
+      setSuccessModalOpen(true);
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1500);
+      callBack();
     }
   } catch (error) {
     console.log(error);

@@ -7,10 +7,13 @@ import {
   designListStatusChange,
   uploadFile,
 } from "../../../Componets/CAD/Api";
+import SuccessModal from "../../../Componets/SuccessModal/SuccessModal";
 import CentalHub from "../../../Componets/CentalHub/CentalHub";
 
 const CadAssignmentPage = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [successModalOpen, setSuccessModalOpen] = useState("");
   const [designList, setDesignList] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [timer, setTimer] = useState("");
@@ -102,13 +105,14 @@ const CadAssignmentPage = () => {
     uploadFile(
       setIsLoading,
       formData,
+      setSuccessModalOpen,
+      setSuccessMessage,
+      setIsModalOpen,
+      setImages,
+      setProductCode,
       () => {
         onStopButtonClick();
       }
-      // setIsModalOpen,
-      // setSuccessModalOpen,
-      // setSuccessMessage,
-      // handleSuccessUpload
     );
   };
 
@@ -130,6 +134,12 @@ const CadAssignmentPage = () => {
         setImages={setImages}
         handleUploadFile={handleUploadFile}
         onStopButtonClick={onStopButtonClick}
+      />
+      <SuccessModal
+        successModalOpen={successModalOpen}
+        handleOpen={() => setSuccessModalOpen(true)}
+        handleClose={() => setSuccessModalOpen(false)}
+        successMessage={successMessage}
       />
     </div>
   );
