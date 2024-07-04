@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from "react";
 import "./CadAssignment.css";
+import { GoDownload } from "react-icons/go";
 import { LiaCloudUploadAltSolid } from "react-icons/lia";
 import { useLocation, Link } from "react-router-dom";
 import folderimg from "../../../assets/folder.png";
 import { list_assigned_cad_design } from "../Api";
-const CadAssignment = () => {
+const CadAssignment = ({
+  designList,
+  onButtonClick,
+  timer,
+  setIsModalOpen,
+}) => {
   const [uploadInstructionsVisible, setUploadInstructionsVisible] =
     useState(true);
   const [assignedCadDesign, setAssignedCadDesign] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [timers, setTimers] = useState({});
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
@@ -25,7 +32,6 @@ const CadAssignment = () => {
     list_assigned_cad_design(setIsLoading, setAssignedCadDesign);
   }, []);
 
-  console.log(assignedCadDesign, "assssssss==-->");
   return (
     <div className="ParentCad">
       <div
@@ -40,12 +46,12 @@ const CadAssignment = () => {
                 Upload your finished file as png and 3.dm file format
               </p>
             </div>
-            {/* <div className="File____uploadbtn">
-              <button>
+            <div className="File____uploadbtn">
+              <button onClick={() => setIsModalOpen(true)}>
                 Upload File{" "}
                 <LiaCloudUploadAltSolid style={{ fontSize: "22px" }} />
               </button>
-            </div> */}
+            </div>
           </>
         ) : (
           <div className="De__file">
@@ -69,68 +75,65 @@ const CadAssignment = () => {
       </div>
       {/* cad folder */}
       <div className="CadFolder">
-        <div className="Parent_Folder_section_Designer">
-          <h3 className="HeadNewdesign">Folders</h3>
-          <div className="folderCard_parent">
-            {assignedCadDesign.map((item, index) => (
-              <div className="folder__card">
-                <Link
-                  to={`/CadAssignmentcard?id=${item.id}`}
-                  state={{ cadId: item.id, cadFolderName: item.folder_name }}
-                >
-                  <img src={folderimg} alt="" />
-                </Link>
-                {/* <Link
-                  to={{
-                    pathname: `/CadAssignmentcard`,
-                    state: { cadId: item.id, cadFolderName: item.folder_name },
-                  }}
-                >
-                  <img src={folderimg} alt="" />
-                </Link> */}
-
-                <p>{item.folder_name}</p>
-              </div>
-            ))}
-            {/* <div className="folder__card">
-              <Link to="">
-                <img src={folderimg} alt="" />
-              </Link>
-              <p>Akshayathithiya</p>
-            </div>
-            <div className="folder__card">
-              <Link to="">
-                <img src={folderimg} alt="" />
-              </Link>
-              <p>Akshayathithiya</p>
-            </div>
-            <div className="folder__card">
-              <Link to="">
-                <img src={folderimg} alt="" />
-              </Link>
-              <p>Akshayathithiya</p>
-            </div> */}
-          </div>
-        </div>
-        <div className="Finished_Items">
-          <div className="Parent_Folder_section_Designer">
-            <h3 className="HeadNewdesign">Finished items</h3>
-            <div className="folderCard_parent">
-              <div className="folder__card">
-                <Link to="">
-                  <img src={folderimg} alt="" />
-                </Link>
-
-                <p>Akshayathithiya</p>
-              </div>
-              <div className="folder__card">
-                <Link to="">
-                  <img src={folderimg} alt="" />
-                </Link>
-                <p>Akshayathithiya</p>
+        <div
+          className="Parent_Folder_section_Designer"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr 1fr 1fr",
+            gap: "30px",
+          }}
+        >
+          {designList?.map((item, index) => (
+            <div className="New_Design_card">
+              <div className="Card_Details">
+                <div className="Card_img" style={{ borderBottom: "0px" }}>
+                  <img src={item.design_image} alt="" />
+                </div>
+                <div className="Card_Details_Inner_cad_Hub">
+                  <h3>ID : {item.design_code}</h3>
+                  <p>POSTED ON: {item.created_at}</p>
+                  <span
+                    className={
+                      item.timer_status === "Completed"
+                        ? "completed"
+                        : item.timer_status === "on-going"
+                        ? "ongoing"
+                        : "notstarted"
+                    }
+                  >
+                    {item.timer_status.charAt(0) +
+                      item.timer_status.slice(1).toLowerCase()}
+                  </span>
+                  {item.timer_status === "Completed" ? (
+                    <button
+                      className="Download_btn_hub"
+                      style={{ background: "#0464D5" }}
+                    >
+                      {item.timer_value}
+                    </button>
+                  ) : item.timer_status === "on-going" ? (
+                    <button
+                      className="Download_btn_hub"
+                      // onClick={() => onButtonClick(item.item_id)}
+                    >
+                      {timer}
+                    </button>
+                  ) : (
+                    <button
+                      className="Download_btn_hub"
+                      style={{ background: "#006E7F" }}
+                      onClick={() => onButtonClick(item.item_id)}
+                      disabled={designList.some(
+                        (d) => d.timer_status === "on-going"
+                      )}
+                    >
+                      START
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
+          ))}
         </div>
       </div>
     </div>

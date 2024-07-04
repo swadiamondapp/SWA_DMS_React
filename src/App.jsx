@@ -43,6 +43,7 @@ import PasswordResetComplete from "./Componets/ForgotPassword/PasswordResetCompl
 import UnAssignedDesignerView from "./Pages/DESIGNER PANEL/UnAssignedDesignerPage/UnAssignedDesignerView";
 import CentralFolderDetailsPage from "./Pages/CENTRAL HUB/Central Hub Details Page/CentralFolderDetailsPage";
 import TransferPage from "./Pages/CENTRAL HUB/Transfer Page/TransferPage";
+import FolderDetails from "./Componets/CAD/FolderDetails/FolderDetails";
 
 function App() {
   return (
@@ -103,14 +104,15 @@ function App() {
               element={<CadAssignmentCardPage />}
             />
             <Route path="/FinishedProduct" element={<FinishedProductsPage />} />
+            <Route path="/folderdetails/:id" element={<FolderDetails />} />
             <Route path="/centralDashboard" element={<CentralHubDashboard />} />
             <Route path="/slot" element={<HubSlot />} />
           </Route>
           <Route path="/login" element={<Login />} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />
-          <Route path="/verifyotp" element={<ForgotPassOtp/>} />
-          <Route path="/createnewpassword" element={<CreateNewPassword/>} />
-          <Route path="/resetcomplete" element={<PasswordResetComplete/>} />
+          <Route path="/verifyotp" element={<ForgotPassOtp />} />
+          <Route path="/createnewpassword" element={<CreateNewPassword />} />
+          <Route path="/resetcomplete" element={<PasswordResetComplete />} />
         </Routes>
       </Router>
     </>

@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { removeLocalstorage } from "../../Pages/Utils/Common";
 import { useParams } from "react-router-dom";
 
-const Header = ({centralId,designCodesCentralHub}) => {
+const Header = ({centralId,designCodesCentralHub, leftHeader}) => {
   const location = useLocation();
   const { nameCentral } = useParams();
   const { wareHouseuserId, customizationsku } = location.state || {};
