@@ -90,7 +90,7 @@ const Transfer = () => {
   const handleEyeButton = (Id) => {
     setIsModalOpenslotview(true);
     setUserId(Id);
-    slot_view_by_id(Id, setSloteView);
+    // slot_view_by_id(Id, setSloteView);
   };
   useEffect(() => {
     // list_slot_central_hub(setIsLoading, setData);
@@ -98,7 +98,7 @@ const Transfer = () => {
   }, []);
 
   const handlePrintButton = () => {
-    setPrintSlotModalOpen(true);
+    // setPrintSlotModalOpen(true);
   };
   console.log(slotView, "slotView");
   console.log(userId, "slotView");
@@ -133,24 +133,31 @@ const Transfer = () => {
                 <td className="slot_cell">{item.slot.slotnumber}</td>
                 <td className="actions-cell">
                   <div className="parentSlotS">
-                    <div className="EYEBTN">
-                      <div  className="slotPrintButton">
-                      {item.slot.status}
-                      </div>
+                    <div className="EYEBTN"  style={{display:'flex',alignItems:"center",gap:"15px"}}>
+                      <div>
+
                       <button
                         className="slotPrintButton"
                         onClick={() => handlePrintButton()}
+                       
                       >
-                        {/* {item.slot.status} */}
+                        {item.slot.status}
                       </button>
-                      <IoEye
-                        onClick={() => handleEyeButton(item.id)}
-                        style={{
-                          color: "#455173",
-                          cursor: "pointer",
-                          margin: "0px 25px",
-                        }}
-                      />
+                      </div>
+                      {/* <div  className="slotPrintButton">
+                      {item.slot.status}
+                      </div> */}
+                      <div>
+                        <IoEye
+                          onClick={() => handleEyeButton(item.id)}
+                          style={{
+                            color: "#455173",
+                            cursor: "pointer",
+                            margin: "0px 25px",
+                            fontSize: "15px",
+                          }}
+                        />
+                      </div>
                     </div>
                     <div className="DOTSBTNS">
                       <BsThreeDotsVertical

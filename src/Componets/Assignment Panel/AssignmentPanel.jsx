@@ -61,8 +61,8 @@ const AssignmentPanel = () => {
   };
   const handleClickOutside = (event) => {
     if (dotsRef.current && !dotsRef.current.contains(event.target)) {
-      setActiveCardId(null);
-      setShowOverlay(false);
+      // setActiveCardId(null);
+      // setShowOverlay(false);
     }
   };
   // const handleClickOutside = (event) => {

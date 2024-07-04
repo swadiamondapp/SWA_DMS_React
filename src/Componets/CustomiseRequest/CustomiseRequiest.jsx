@@ -200,13 +200,13 @@ const CustomiseRequest = ({
                           <img className="" src={dataToDisplay.image} alt="" />
                         </div>
                         <div className="imageContainer">
-                          <img src={dataToDisplay.image2} alt="" />
+                          <img src={`https://dmstestapi.zinfog.in/${dataToDisplay.image2}`} alt="" />
                         </div>
                         <div className="imageContainer">
-                          <img src={dataToDisplay.image3} alt="" />
+                          <img src={`https://dmstestapi.zinfog.in/${dataToDisplay.image3}`}  alt="" />
                         </div>
                         <div className="imageContainer">
-                          <img src={dataToDisplay.image4} alt="" />
+                          <img src={`https://dmstestapi.zinfog.in/${dataToDisplay.image3}`}  alt="" />
                         </div>
                         <div className="imageContainer">
                           <img src={dataToDisplay.image5} alt="" />
