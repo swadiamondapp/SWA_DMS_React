@@ -1,5 +1,6 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import "./CadAssignment.css";
+import { useNavigate } from "react-router-dom";
 import { TbDownload } from "react-icons/tb";
 import { LiaCloudUploadAltSolid } from "react-icons/lia";
 import { useLocation, Link } from "react-router-dom";
@@ -11,6 +12,7 @@ const CadAssignment = ({
   timer,
   setIsModalOpen,
 }) => {
+  const navigate = useNavigate();
   const [uploadInstructionsVisible, setUploadInstructionsVisible] =
     useState(true);
   const [assignedCadDesign, setAssignedCadDesign] = useState([]);
@@ -112,7 +114,20 @@ const CadAssignment = ({
           }}
         >
           {designList?.map((item, index) => (
-            <div className="New_Design_card">
+            <div
+              className="New_Design_card"
+              onClick={(e) => {
+                if (
+                  e.target.tagName.toLowerCase() !== "button" &&
+                  e.target.tagName.toLowerCase() !== "svg" &&
+                  e.target.tagName.toLowerCase() !== "path"
+                ) {
+                  // Your card onClick functionality here
+                  navigate(`/Details/${item.item_id}`);
+                }
+              }}
+              key={index}
+            >
               <div className="Card_Details">
                 <div className="Card_img" style={{ borderBottom: "0px" }}>
                   <img src={item.design_image} alt="" />

@@ -67,3 +67,4 @@ export const CAD_UPLOAD = "cad/upload-file/";
 export const FINISHED_FOLDERS = "cad/finished-folder/";
 export const FOLDER_DETAILS = "cad/list/folder-items/";
 export const CAD_RE_UPLOAD = "cad/reupload/folder-items/";
+export const BASIC_DETAILS = "items/";

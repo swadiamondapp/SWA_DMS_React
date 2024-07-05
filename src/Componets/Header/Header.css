@@ -45,7 +45,7 @@
 }
 .Profile_Admin img {
   border-radius: 32px;
-  width:40px;
+  width: 40px;
   height: 40px;
 }
 .Search_User {
@@ -86,4 +86,10 @@
   color: #2a3144b5 !important;
   font-size: 12px;
   margin-top: 5px;
+}
+.basic-details_header {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
 }

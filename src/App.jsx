@@ -41,6 +41,7 @@ import ForgotPassOtp from "./Componets/ForgotPassword/ForgotPassOtp";
 import CreateNewPassword from "./Componets/ForgotPassword/CreateNewPassword";
 import PasswordResetComplete from "./Componets/ForgotPassword/PasswordResetComplete";
 import FolderDetails from "./Componets/CAD/FolderDetails/FolderDetails";
+import BasicDetails from "./Pages/Basic Details/BasicDetails";
 
 function App() {
   return (
@@ -97,6 +98,7 @@ function App() {
               path="/CadAssignmentcard"
               element={<CadAssignmentCardPage />}
             />
+            <Route path="/Details/:id" element={<BasicDetails />} />
             <Route path="/FinishedProduct" element={<FinishedProductsPage />} />
             <Route path="/folderdetails/:id" element={<FolderDetails />} />
             <Route path="/centralDashboard" element={<CentralHubDashboard />} />

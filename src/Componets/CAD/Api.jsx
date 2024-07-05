@@ -12,6 +12,7 @@ import {
   FINISHED_FOLDERS,
   FOLDER_DETAILS,
   CAD_RE_UPLOAD,
+  BASIC_DETAILS,
 } from "../../Pages/Services/EndPoints";
 
 export const list_assigned_cad_design = async (
@@ -224,6 +225,20 @@ export const projectDetails = async (setIsLoading, setData, id, setItemId) => {
     if (checkApiStatus(response)) {
       setData(response.data.results.data);
       setItemId(response.data.results.data[0].id);
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+export const getBasicDetails = async (setIsLoading, setData, id) => {
+  try {
+    setIsLoading(true);
+    const response = await apiService.get(`${BASIC_DETAILS}${id}`);
+    if (checkApiStatus(response)) {
+      setData(response.data.results.data);
     }
   } catch (error) {
     console.log(error);
