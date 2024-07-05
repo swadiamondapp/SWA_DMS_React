@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
-import "./Slot.css";
+import "./Transfer.css";
 import { IoEye } from "react-icons/io5";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import SlotCreation from "../../SlotCreation/SlotCreation";
 import SlotView from "../../SlotVIew/SlotView";
 import {
-  generateSloteNumber,
+  centralTransfer,
+  changeCentralHubStatus,
+  listCentralHubStatus,
   list_slot_central_hub,
+  scanSloteTransfer,
   slot_view_by_id,
 } from "../../../Pages/CENTRAL HUB/Api";
 import printIcon from "../../../assets/printIconSlot.png";
@@ -15,51 +18,29 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import closeButton from "../../../assets/closeButton.svg";
+import searchIcon from "../../../assets/search.png";
+import SuccessModal from "../../SuccessModal/SuccessModal";
 
-const Slots = () => {
+const Transfer = () => {
   const [showEditDelete, setShowEditDelete] = useState(null);
   const [isModalOpenslot, setIsModalOpenslot] = useState(false);
   const [isModalOpenslotview, setIsModalOpenslotview] = useState(false);
-  const [generatSloteNum, setGeneratSloteNum] = useState([]);
+  const [successModalOpen, setSuccessModalOpen] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
   const [Data, setData] = useState([]);
-
   const [isLoading, setIsLoading] = useState(false);
   const [userId, setUserId] = useState([]);
   const [slotView, setSloteView] = useState([]);
   const [printSlotModalOpen, setPrintSlotModalOpen] = useState(false);
+  const [TransferData, setTransferData] = useState([]);
+  const [TransferScan, setTransferScan] = useState("");
+  const [centralStatus, setCentralStatus] = useState("Created");
+  const [CentralHubStatus, setCentralHubStatus] = useState([]);
 
   const handlePrintSlotModalClose = () => {
     setPrintSlotModalOpen(false);
   };
-
-  const userlist = [
-    {
-      slino: "1",
-      date: "12/12/2024 04:31 PM",
-      slotid: "SWA245967",
-    },
-    {
-      slino: "1",
-      date: "12/12/2024 04:31 PM",
-      slotid: "SWA245967",
-    },
-    {
-      slino: "1",
-      date: "12/12/2024 04:31 PM",
-      slotid: "SWA245967",
-    },
-    {
-      slino: "1",
-      date: "12/12/2024 04:31 PM",
-      slotid: "SWA245967",
-    },
-    {
-      slino: "1",
-      date: "12/12/2024 04:31 PM",
-      slotid: "SWA245967",
-    },
-  ];
 
   const printSlotOpen = {
     position: "absolute",
@@ -76,48 +57,83 @@ const Slots = () => {
     borderRadius: 0,
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (showEditDelete !== null && !event.target.closest(".parentSlotS")) {
-        setShowEditDelete(null);
-      }
-    };
-
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, [showEditDelete]);
-
   const handleEyeButton = (Id) => {
     setIsModalOpenslotview(true);
     setUserId(Id);
     slot_view_by_id(Id, setSloteView);
   };
   useEffect(() => {
-    list_slot_central_hub(setIsLoading, setData);
+    centralTransfer(setIsLoading, setTransferData);
+    listCentralHubStatus(setIsLoading, setCentralHubStatus);
   }, []);
 
   const handlePrintButton = () => {
-    setPrintSlotModalOpen(true);
+    // setPrintSlotModalOpen(true);
   };
-
-  const handleCreateSloteButton = () => {
-    setIsModalOpenslot(true);
-    generateSloteNumber(setIsLoading, setGeneratSloteNum);
-  };
-  console.log(generatSloteNum, "generateSloteNumber");
   console.log(slotView, "slotView");
   console.log(userId, "slotView");
   console.log(Data, "center==============>");
+  console.log(TransferData, "TransferData");
   const sortedData = Data.sort((a, b) => a.id - b.id);
+  const sortedTransfer = Data.sort((a, b) => a.id - b.id);
+
+  const handleScanChange = (event) => {
+    setTransferScan(event.target.value);
+  };
+  const handleTransferScan = () => {
+    scanSloteTransfer(
+      setIsLoading,
+      TransferScan,
+      setSuccessModalOpen,
+      setSuccessMessage,
+      setTransferData
+    );
+  };
+
+  const selectStyle = {
+    backgroundColor: centralStatus === "Created" ? "green" : "blue",
+    color: centralStatus === "Created" ? "white" : "#fff",
+  };
+  const handleStatusChange = (event, itemId) => {
+    const { value } = event.target;
+    console.log(value, itemId, "acscas");
+    changeCentralHubStatus(itemId, setIsLoading, value);
+
+    // Update TransferData state based on itemId
+    setTransferData((prevTransferData) =>
+      prevTransferData.map((item) =>
+        item.id === itemId ? { ...item, status: value } : item
+      )
+    );
+
+    // Call changeCentralHubStatus with appropriate parameters
+  };
+  console.log(TransferData, "TransferScan");
+  console.log(CentralHubStatus, "CentralHubStatus");
   return (
     <div className="parentCentral">
-      <div className="slot_create">
-        <button onClick={() => handleCreateSloteButton()}>Create</button>
-      </div>
-      <div className="slote_labe">
-        <h3>Slot list</h3>
+      <div className="slote_labe" style={{ border: "none" }}>
+        <div style={{ display: "flex" }}>
+          <form action="">
+            <div className="searchContiainer">
+              <div className="Search_Userr transferSearchIcon">
+                <input
+                  type="text"
+                  placeholder="Scan Product ID"
+                  className="transferSearch"
+                  value={TransferScan}
+                  onChange={(event) => handleScanChange(event)}
+                />
+                <div
+                  className="iconBack searchIconTransfer"
+                  onClick={() => handleTransferScan()}
+                >
+                  <img src={searchIcon} alt="" />
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
       {/* table */}
       <div className="Users_Table_List">
@@ -127,37 +143,53 @@ const Slots = () => {
               <th>SL NO</th>
               <th>Created on</th>
               <th>Slot ID</th>
-              <th>Action</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody>
-            {sortedData.map((item, index) => (
+            {TransferData.map((item, index) => (
               <tr key={index} style={{ color: "#2E364C" }}>
-                <td className="serialNumber_cell">{item.id}</td>
+                <td className="serialNumber_cell">{index + 1}</td>
                 <td>{item.created_at}</td>
-                <td className="slot_cell">{item.slotnumber}</td>
+                <td className="slot_cell">{item.slot.slotnumber}</td>
                 <td className="actions-cell">
                   <div className="parentSlotS">
-                    <div className="EYEBTN">
-                      <button
-                        className="slotPrintButton"
-                        onClick={() => handlePrintButton()}
-                      >
-                        <img
-                          src={printIcon}
-                          style={{ marginRight: "5px" }}
-                          alt=""
+                    <div
+                      className="EYEBTN"
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "15px",
+                      }}
+                    >
+                      <div>
+                        <select
+                          className="scan_select_Central"
+                          name="centralStatus"
+                          id="centralHubStatus"
+                          value={item.status} // Assuming item.status holds the status value
+                          onChange={(e) => handleStatusChange(e, item.id)} // Pass item.id to handleStatusChange
+                          style={selectStyle}
+                        >
+                          {CentralHubStatus.map((option) => (
+                            <option className="custom-option" style={{margin:'10px'}} key={option.id} value={option.id}>
+                              {option.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
+                      <div>
+                        <IoEye
+                          onClick={() => handleEyeButton(item.id)}
+                          style={{
+                            color: "#455173",
+                            cursor: "pointer",
+                            margin: "0px 25px",
+                            fontSize: "15px",
+                          }}
                         />
-                        Print
-                      </button>
-                      <IoEye
-                        onClick={() => handleEyeButton(item.id)}
-                        style={{
-                          color: "#455173",
-                          cursor: "pointer",
-                          margin: "0px 25px",
-                        }}
-                      />
+                      </div>
                     </div>
                     <div className="DOTSBTNS">
                       <BsThreeDotsVertical
@@ -168,12 +200,6 @@ const Slots = () => {
                           )
                         }
                       />
-                      {/* {showEditDelete === index && (
-                        <div className="Edit_delete_btn_user">
-                          <p className="Edit_btn_user">Edit</p>
-                          <p className="Delete_btn_user">Delete</p>
-                        </div>
-                      )} */}
                     </div>
                   </div>
                 </td>
@@ -269,7 +295,6 @@ const Slots = () => {
       <SlotCreation
         open={isModalOpenslot}
         onClose={() => setIsModalOpenslot(false)}
-        generatSloteNum={generatSloteNum}
       />
       <SlotView
         open={isModalOpenslotview}
@@ -277,8 +302,12 @@ const Slots = () => {
         userId={userId}
         slotView={slotView}
       />
+      <SuccessModal
+        successModalOpen={successModalOpen}
+        successMessage={successMessage}
+      />
     </div>
   );
 };
 
-export default Slots;
+export default Transfer;

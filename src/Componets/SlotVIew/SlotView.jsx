@@ -56,7 +56,7 @@ const SlotView = ({ open, onClose, userId, slotView }) => {
   const filterOption = (input, option) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
 
-  console.log(slotView, "slot");
+  console.log(slotView, "slotView");
 
   // useEffect(()=> {
   //   slot_view_by_id(setIsLoading,userId,setSloteView)

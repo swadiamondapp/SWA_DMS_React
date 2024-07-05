@@ -9,8 +9,14 @@ import { useNavigate } from "react-router-dom";
 import { removeLocalstorage } from "../../Pages/Utils/Common";
 import { useParams } from "react-router-dom";
 
-const Header = ({ leftHeader, basicDetails }) => {
+const Header = ({
+  centralId,
+  designCodesCentralHub,
+  leftHeader,
+  basicDetails,
+}) => {
   const location = useLocation();
+  const { nameCentral } = useParams();
   const { wareHouseuserId, customizationsku } = location.state || {};
   const { cadFolderName, cadId } = location.state || {};
   const query = new URLSearchParams(location.search);
@@ -25,6 +31,7 @@ const Header = ({ leftHeader, basicDetails }) => {
   };
 
   const { id } = useParams();
+
   // const folderName = location.state?.name || "Unknown Folder";
   // console.log(folderName,'folderName in Header==>')
   console.log(id, "folderId in Header==>");
@@ -35,7 +42,7 @@ const Header = ({ leftHeader, basicDetails }) => {
   const userPhoneNumber = localStorage.getItem("phone_number");
   const userImage = localStorage.getItem("Loginimage");
   const dropdownRef = useRef(null);
-  console.log(userImage, "userImage");
+  console.log(nameCentral, "nameCentral");
 
   useEffect(() => {
     const handleClickOutside = (event) => {

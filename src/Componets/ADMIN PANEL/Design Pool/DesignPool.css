@@ -85,6 +85,7 @@
   /* border-bottom: 0.5px solid #ceccc7; */
   border-bottom: 0.5px solid #ceccc78a;
   padding-bottom: 10px;
+  min-height: 140px;
 }
 .Card_Details {
   padding-top: 15px;

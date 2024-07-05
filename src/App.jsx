@@ -40,6 +40,9 @@ import ForgotPassword from "./Componets/ForgotPassword/ForgetPassword";
 import ForgotPassOtp from "./Componets/ForgotPassword/ForgotPassOtp";
 import CreateNewPassword from "./Componets/ForgotPassword/CreateNewPassword";
 import PasswordResetComplete from "./Componets/ForgotPassword/PasswordResetComplete";
+import UnAssignedDesignerView from "./Pages/DESIGNER PANEL/UnAssignedDesignerPage/UnAssignedDesignerView";
+import CentralFolderDetailsPage from "./Pages/CENTRAL HUB/Central Hub Details Page/CentralFolderDetailsPage";
+import TransferPage from "./Pages/CENTRAL HUB/Transfer Page/TransferPage";
 import FolderDetails from "./Componets/CAD/FolderDetails/FolderDetails";
 import BasicDetails from "./Pages/Basic Details/BasicDetails";
 
@@ -74,7 +77,10 @@ function App() {
               path="/assignmentpaneldetailsview/:id"
               element={<AssignmentPanelFolderCardPage />}
             />
+             <Route path="/centralfolderdetails/:id" element={<CentralFolderDetailsPage />} />
+             <Route path="/centralhubtransfer" element={<TransferPage />} />
             <Route path="/Customizedorder" element={<CustomizedOrderPage />} />
+            <Route path="/unassigneddesigner" element={<UnAssignedDesignerView />} />
             <Route path="/votorspanal" element={<VotorsPanalPage />} />
             <Route
               path="/votorscustomization"
