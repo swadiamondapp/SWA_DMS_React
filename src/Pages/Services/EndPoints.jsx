@@ -68,11 +68,17 @@ export const FINISHED_FOLDERS = "cad/finished-folder/";
 export const FOLDER_DETAILS = "cad/list/folder-items/";
 export const CAD_RE_UPLOAD = "cad/reupload/folder-items/";
 
-export const UPLOAD_ADMIN_IMAGE_ASSIGNMENT = "admin/upload/design/"
-export const LIST_ALL_DESIGNERS= "list/paperdesigner/"
-export const ASSIGN_UNASSIGN_DESIGNERS = "change-user/"
-export const EDIT_BASIC_DETAILS = "folders/"
-export const LIST_UNASSIGNED_DESIGNER = "list-all-design/?not_assigned=true"
-export const LIST_CENTRAL_FOLDERS = "cad/finished-folder/"
-export const CENTRAL_HUB_FOLDER_DETAILS = "cad/list/folder-items/"
-export const CENTRAL_HUB_TRANSFER = "transfer/list/"
+export const UPLOAD_ADMIN_IMAGE_ASSIGNMENT = "admin/upload/design/";
+export const LIST_ALL_DESIGNERS = "list/paperdesigner/";
+export const ASSIGN_UNASSIGN_DESIGNERS = "change-user/";
+export const EDIT_BASIC_DETAILS = "folders/";
+export const LIST_UNASSIGNED_DESIGNER = "list-all-design/?not_assigned=true";
+export const LIST_CENTRAL_FOLDERS = "all/folderlist/";
+export const CENTRAL_HUB_FOLDER_DETAILS = "cad/list/folder-items/";
+export const CENTRAL_HUB_TRANSFER = "transfer/list/";
+export const LIST_AVAILABLE_CAD_DESIGNS = "allocate/design/slot/list";
+export const CREATE_SLOT_BAG = "allocate/design/slot/";
+export const GENERATE_SLOT_NUMBER = "create-slot/";
+export const SCAN_TRANSFER_SLOT = "transfer/scan-slot/";
+export const LIST_CENTRAL_HUB_STATUS = "master/centralhub/status/list/"
+export const CHANGE_CENTRAL_HUB_STATUS = "transfer/status/update/"

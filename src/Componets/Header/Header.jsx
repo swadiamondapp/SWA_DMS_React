@@ -130,7 +130,8 @@ const Header = ({centralId,designCodesCentralHub, leftHeader}) => {
               location.pathname !== `/centralfolderdetails/${centralId}` &&
               location.pathname !== "/customRequestTable" &&
               location.pathname !== "/unassigneddesigner" && 
-              location.pathname !== "/Customizedorder" &&(
+              location.pathname !== "/Customizedorder" && 
+              location.pathname !== "/centralhubtransfer" && (
                 <div className="Search_Admin">
                   <div className="Search_User">
                     <input type="text" placeholder="Search Users" />

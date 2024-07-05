@@ -5,6 +5,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import SlotCreation from "../../SlotCreation/SlotCreation";
 import SlotView from "../../SlotVIew/SlotView";
 import {
+  generateSloteNumber,
   list_slot_central_hub,
   slot_view_by_id,
 } from "../../../Pages/CENTRAL HUB/Api";
@@ -19,8 +20,10 @@ const Slots = () => {
   const [showEditDelete, setShowEditDelete] = useState(null);
   const [isModalOpenslot, setIsModalOpenslot] = useState(false);
   const [isModalOpenslotview, setIsModalOpenslotview] = useState(false);
+  const [generatSloteNum, setGeneratSloteNum] = useState([]);
 
   const [Data, setData] = useState([]);
+
   const [isLoading, setIsLoading] = useState(false);
   const [userId, setUserId] = useState([]);
   const [slotView, setSloteView] = useState([]);
@@ -29,6 +32,7 @@ const Slots = () => {
   const handlePrintSlotModalClose = () => {
     setPrintSlotModalOpen(false);
   };
+
   const userlist = [
     {
       slino: "1",
@@ -97,6 +101,12 @@ const Slots = () => {
   const handlePrintButton = () => {
     setPrintSlotModalOpen(true);
   };
+
+  const handleCreateSloteButton = () => {
+    setIsModalOpenslot(true);
+    generateSloteNumber(setIsLoading, setGeneratSloteNum);
+  };
+  console.log(generatSloteNum, "generateSloteNumber");
   console.log(slotView, "slotView");
   console.log(userId, "slotView");
   console.log(Data, "center==============>");
@@ -104,7 +114,7 @@ const Slots = () => {
   return (
     <div className="parentCentral">
       <div className="slot_create">
-        <button onClick={() => setIsModalOpenslot(true)}>Create</button>
+        <button onClick={() => handleCreateSloteButton()}>Create</button>
       </div>
       <div className="slote_labe">
         <h3>Slot list</h3>
@@ -259,6 +269,7 @@ const Slots = () => {
       <SlotCreation
         open={isModalOpenslot}
         onClose={() => setIsModalOpenslot(false)}
+        generatSloteNum={generatSloteNum}
       />
       <SlotView
         open={isModalOpenslotview}

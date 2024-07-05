@@ -262,7 +262,7 @@ const Sidebar = () => {
     }
   };
   return (
-    <div>
+    <div >
       <div
         className={`Sidebar_Parent ${
           sidebarExpanded ? "expanded" : "collapsed"
@@ -271,6 +271,8 @@ const Sidebar = () => {
         <div className="logo">
           <img src={logo} alt="Logo" />
         </div>
+        <div className="vertical_sideBar_line"></div>
+        <div className="lin_container"></div>
         <div className="Sidebar_Links">{renderLinks()}</div>
         <div className="Arrow" onClick={toggleSidebar}>
           {sidebarExpanded ? (

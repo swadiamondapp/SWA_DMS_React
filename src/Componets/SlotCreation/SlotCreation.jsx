@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./SlotCreation.css";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -7,6 +7,8 @@ import Modal from "@mui/material/Modal";
 import roundedClose from "../../assets/roundedClose.png";
 import searchIcon from "../../assets/search.png";
 import delteIcon from "../../assets/delete_icon_sc.svg";
+import { createSloteBag, listAvailableCadDesigns } from "./Api";
+import SuccessModal from "../SuccessModal/SuccessModal";
 
 const style = {
   position: "absolute",
@@ -19,103 +21,38 @@ const style = {
   border: "none",
   boxShadow: 24,
   p: 0.5,
-  // overflowY: "auto",
   borderRadius: 2,
 };
 
-const data = [
-  {
-    id: "SWA34R56",
-    createdDate: "12/02/23",
+const SlotCreation = ({ open, onClose, generatSloteNum }) => {
+  const [Data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [selectAll, setSelectAll] = useState(false);
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [sloteCreationId, setSloteCreationId] = useState([]);
+  const [successModalOpen, setSuccessModalOpen] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [generatedSlotId, setGeneratedSlotId] = useState([]);
 
-    weight: 20,
-    productCategory: "Bangles",
-  },
-  {
-    id: "SWA34R56",
-    createdDate: "12/02/23",
+  const handleCheckboxChange = (item) => {
+    setSelectedItems((prevSelectedItems) => {
+      if (
+        prevSelectedItems.some((selectedItem) => selectedItem.id === item.id)
+      ) {
+        return prevSelectedItems.filter(
+          (selectedItem) => selectedItem.id !== item.id
+        );
+      } else {
+        return [...prevSelectedItems, item];
+      }
+    });
+  };
 
-    weight: 25,
-    productCategory: "Bangles",
-  },
-  {
-    id: "SWA34R56",
-    createdDate: "12/02/23",
-
-    weight: 30,
-    productCategory: "Bangles",
-  },
-  {
-    id: "SWA34R56",
-    createdDate: "12/02/23",
-
-    weight: 35,
-    productCategory: "Bangles",
-  },
-  {
-    id: "SWA34R56",
-    createdDate: "12/02/23",
-
-    weight: 40,
-    productCategory: "Bangles",
-  },
-  {
-    id: "SWA34R56",
-    createdDate: "12/02/23",
-
-    weight: 45,
-    productCategory: "Bangles",
-  },
-  {
-    id: "SWA34R56",
-    createdDate: "12/02/23",
-
-    weight: 50,
-    productCategory: "Bangles",
-  },
-  {
-    id: "SWA34R56",
-    createdDate: "12/02/23",
-
-    weight: 55,
-    productCategory: "Bangles",
-  },
-  {
-    id: "SWA34R56",
-    createdDate: "12/02/23",
-
-    weight: 55,
-    productCategory: "Bangles",
-  },
-  {
-    id: "SWA34R56",
-    createdDate: "12/02/23",
-
-    weight: 55,
-    productCategory: "Bangles",
-  },
-  {
-    id: "SWA34R56",
-    createdDate: "12/02/23",
-
-    weight: 55,
-    productCategory: "Bangles",
-  },
-  {
-    id: "SWA34R56",
-    createdDate: "12/02/23",
-
-    weight: 55,
-    productCategory: "Bangles",
-  },
-];
-
-const SlotCreation = ({ open, onClose }) => {
-  // create modal
-
-  // const [open, setOpen] = useState(false);
-  const [AssinedButton, setAssignedButton] = useState("Assign");
-  const [tagText, setTagText] = useState("");
+  const handleSelectAllChange = () => {
+    const newSelectAll = !selectAll;
+    setSelectAll(newSelectAll);
+    setSelectedItems(newSelectAll ? Data : []);
+  };
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => onClose();
@@ -138,12 +75,36 @@ const SlotCreation = ({ open, onClose }) => {
   const filterOption = (input, option) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
 
+  useEffect(() => {
+    listAvailableCadDesigns(setIsLoading, setData);
+  }, []);
+  console.log(Data, "setData");
+  console.log(selectedItems, "selectedItems");
+
+  const handleDeleteItem = (item) => {
+    setSelectedItems((prevSelectedItems) =>
+      prevSelectedItems.filter((selectedItem) => selectedItem.id !== item.id)
+    );
+  };
+  const selectedIds = selectedItems.map((item) => item.id);
+  const genSlotId = generatSloteNum && generatSloteNum?.id;
+  const handleCreateSlot = () => {
+    createSloteBag(
+      setIsLoading,
+      selectedIds,
+      setSuccessMessage,
+      setSuccessModalOpen,
+      genSlotId,
+      onClose,
+      setData,
+      setSelectedItems,
+    );
+  };
+
+  console.log(selectedIds, "dataToSend");
   return (
     <div>
       <div className="">
-        {/* <div className="">
-          <Button onClick={handleOpen}>Slot Creation</Button>
-        </div> */}
         <div className="modalContainer" style={{ position: "relative" }}>
           <Modal
             open={open}
@@ -165,14 +126,16 @@ const SlotCreation = ({ open, onClose }) => {
               <Box sx={style}>
                 <div className="wrapper">
                   <div className="leftTable">
-                    <span className="left_header_title_sc">Create Bag</span>
+                    <span className="left_header_title_sc_left">
+                      Create Bag
+                    </span>
                     <div className="header_slotCreation_left">
                       <div>
                         <button className="add_button_sc">ADD TO SLOT</button>
                       </div>
                       <div className="searchContiainer">
                         <div className="Search_Userr">
-                          <input type="text" placeholder="Search User" />
+                          <input type="text" placeholder="SelectAllUser" />
                           <div className="iconBack">
                             <img src={searchIcon} alt="" />
                           </div>
@@ -189,6 +152,8 @@ const SlotCreation = ({ open, onClose }) => {
                                   <input
                                     type="checkbox"
                                     className="center-input"
+                                    checked={selectAll}
+                                    onChange={handleSelectAllChange}
                                   />
                                   <span>Product ID</span>
                                 </div>
@@ -201,7 +166,7 @@ const SlotCreation = ({ open, onClose }) => {
                             </tr>
                           </thead>
                           <tbody>
-                            {data.map((item) => (
+                            {Data.map((item) => (
                               <tr key={item.id}>
                                 <td className="table-data">
                                   <div
@@ -215,21 +180,26 @@ const SlotCreation = ({ open, onClose }) => {
                                     <div>
                                       <input
                                         type="checkbox"
-                                        className="center-input"
+                                        className="select_input_sc"
+                                        checked={selectedItems.some(
+                                          (selectedItem) =>
+                                            selectedItem.id === item.id
+                                        )}
+                                        onChange={() =>
+                                          handleCheckboxChange(item)
+                                        }
                                       />
                                     </div>
-                                    <div>{item.id}</div>
+                                    <div>{item.designcode}</div>
                                   </div>
                                 </td>
                                 <td className="table-data">
-                                  {item.createdDate}
+                                  {item.created_at}
                                 </td>
-                                <td className="table-data">
-                                  {item.productCategory}
-                                </td>
+                                <td className="table-data">bangle</td>
                                 <td className="table-data">
                                   <div className="right-data-and-button-c">
-                                    <span>{item.weight}</span>
+                                    <span>8787</span>
                                   </div>
                                 </td>
                               </tr>
@@ -247,12 +217,15 @@ const SlotCreation = ({ open, onClose }) => {
                         <span className="right-span-text">
                           slot Number :{" "}
                           <span className="right-span-number-text">
-                            5646DE4
+                            {generatSloteNum && generatSloteNum?.slotnumber}
                           </span>
                         </span>
                       </div>
                       <div className="header-right-side-button">
-                        <button className="create_bag_button">
+                        <button
+                          className="create_bag_button"
+                          onClick={() => handleCreateSlot()}
+                        >
                           Create Slot
                         </button>
                       </div>
@@ -271,19 +244,20 @@ const SlotCreation = ({ open, onClose }) => {
                             </tr>
                           </thead>
                           <tbody>
-                            {data.map((item) => (
+                            {selectedItems.map((item) => (
                               <tr key={item.id}>
                                 <td className="table-data">{item.id}</td>
                                 <td className="table-data">
-                                  {item.createdDate}
+                                  {item.created_at}
                                 </td>
-                                <td className="table-data">
-                                  {item.productCategory}
-                                </td>
+                                <td className="table-data">bangle</td>
                                 <td className="table-data">
                                   <div className="right-data-and-button-c">
                                     <span>{item.weight}Gram</span>
-                                    <button className="Delete_button_sc">
+                                    <button
+                                      className="Delete_button_sc"
+                                      onClick={() => handleDeleteItem(item)}
+                                    >
                                       <img src={delteIcon} alt="" />
                                     </button>
                                   </div>
@@ -300,6 +274,10 @@ const SlotCreation = ({ open, onClose }) => {
             </div>
           </Modal>
         </div>
+        <SuccessModal
+          successModalOpen={successModalOpen}
+          successMessage={successMessage}
+        />
       </div>
     </div>
   );
