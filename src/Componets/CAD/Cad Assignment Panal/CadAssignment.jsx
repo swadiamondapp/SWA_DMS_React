@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./CadAssignment.css";
-import { GoDownload } from "react-icons/go";
+import { TbDownload } from "react-icons/tb";
 import { LiaCloudUploadAltSolid } from "react-icons/lia";
 import { useLocation, Link } from "react-router-dom";
 import folderimg from "../../../assets/folder.png";
@@ -16,6 +16,12 @@ const CadAssignment = ({
   const [assignedCadDesign, setAssignedCadDesign] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [timers, setTimers] = useState({});
+  const [fetching, setFetching] = useState(false);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    list_assigned_cad_design(setIsLoading, setAssignedCadDesign);
+  }, []);
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
@@ -28,9 +34,31 @@ const CadAssignment = ({
     }
   };
 
-  useEffect(() => {
-    list_assigned_cad_design(setIsLoading, setAssignedCadDesign);
-  }, []);
+  const download = (url, name) => {
+    if (!url) {
+      throw new Error("Resource URL not provided! You need to provide one");
+    }
+    setFetching(true);
+    fetch(url)
+      .then((response) => response.blob())
+      .then((blob) => {
+        setFetching(false);
+        const blobURL = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = blobURL;
+        a.style = "display: none";
+
+        if (name && name.length) a.download = name;
+        document.body.appendChild(a);
+        a.click();
+      })
+      .catch(() => setError(true));
+  };
+
+  const extractFilename = (url) => {
+    const parts = url?.split("/");
+    return parts[parts?.length - 1];
+  };
 
   return (
     <div className="ParentCad">
@@ -112,12 +140,37 @@ const CadAssignment = ({
                       {item.timer_value}
                     </button>
                   ) : item.timer_status === "on-going" ? (
-                    <button
-                      className="Download_btn_hub"
-                      // onClick={() => onButtonClick(item.item_id)}
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        gap: "20px",
+                      }}
                     >
-                      {timer}
-                    </button>
+                      <button
+                        className="Download_btn_hub"
+                        // onClick={() => onButtonClick(item.item_id)}
+                      >
+                        {timer}
+                      </button>
+                      <button
+                        className="Download_btn_hub"
+                        style={{
+                          background: "#0464D5",
+                          padding: "12px 20px",
+                        }}
+                        onClick={() =>
+                          download(
+                            item.design_image,
+                            extractFilename(item.design_image)
+                          )
+                        }
+                        // onClick={() => downloadImage(item.design_image)}
+                      >
+                        <TbDownload />
+                      </button>
+                    </div>
                   ) : (
                     <button
                       className="Download_btn_hub"

@@ -26,7 +26,7 @@ const FolderDetails = () => {
   });
 
   useEffect(() => {
-    projectDetails(setIsLoading, setFolderDetails, id);
+    projectDetails(setIsLoading, setFolderDetails, id, setItemId);
   }, []);
 
   useEffect(() => {
@@ -62,7 +62,7 @@ const FolderDetails = () => {
       setIsModalOpen,
       setImages,
       setProductCode,
-      id,
+      itemId,
       () => {
         projectDetails(setIsLoading, setFolderDetails, id);
       }

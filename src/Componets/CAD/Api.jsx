@@ -217,12 +217,13 @@ export const finishedProjectFolder = async (setIsLoading, setData) => {
   }
 };
 
-export const projectDetails = async (setIsLoading, setData, id) => {
+export const projectDetails = async (setIsLoading, setData, id, setItemId) => {
   try {
     setIsLoading(true);
     const response = await apiService.get(`${FOLDER_DETAILS}${id}`);
     if (checkApiStatus(response)) {
       setData(response.data.results.data);
+      setItemId(response.data.results.data[0].id);
     }
   } catch (error) {
     console.log(error);
