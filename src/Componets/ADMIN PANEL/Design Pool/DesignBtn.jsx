@@ -12,6 +12,7 @@ import { move_to_folder } from "../../Assignment Panel/Api";
 import { useParams } from "react-router-dom";
 
 const DesignBtn = ({
+  votersSetData,
   toggleDownloadOptions,
   selectButtonLabel,
   toggleRadioButtons,
@@ -179,6 +180,7 @@ const DesignBtn = ({
       <CreateCustomisation
         open={isModalOpenCreateCutomize}
         onClose={() => setIsCreateCustomizeModalOpen(false)}
+        votersSetData={votersSetData}
       />
     </div>
   );

@@ -100,6 +100,7 @@ const Slots = () => {
 
   const handlePrintButton = () => {
     setPrintSlotModalOpen(true);
+    slot_view_by_id(Id, setSloteView);
   };
 
   const handleCreateSloteButton = () => {
@@ -111,7 +112,7 @@ const Slots = () => {
   console.log(userId, "slotView");
   console.log(Data, "center==============>");
   const sortedData = Data.sort((a, b) => a.id - b.id);
-  console.log(sortedData ,"sortedData ")
+  console.log(sortedData, "sortedData ");
   return (
     <div className="parentCentral">
       <div className="slot_create">
@@ -142,7 +143,7 @@ const Slots = () => {
                     <div className="EYEBTN">
                       <button
                         className="slotPrintButton"
-                        onClick={() => handlePrintButton()}
+                        onClick={() => handlePrintButton(item.id)}
                       >
                         <img
                           src={printIcon}
@@ -219,15 +220,25 @@ const Slots = () => {
                         </tr>
                       </thead>
                       <tbody className="tbodyy">
-                        {/* {slotView.map((item, index) => (
-                          <tr key={index}>
-                            <td class="table-cell">{item.slotnumber}</td>
-                            <td class="table-cell">{item.created_at}</td>
-                            <td class="table-cell">Bangles</td>
-                            <td class="table-cell">16 Gram</td>
-                          </tr>
-                        ))} */}
-                        <tr>
+                        {slotView.map((item, index) =>
+                          item.caddesigns.map((design, designIndex) => (
+                            <tr key={`${index}-${designIndex}`}>
+                              <td className="table-cell">
+                                {design.designcode}
+                              </td>
+                              <td className="table-cell">
+                                {design.created_at}
+                              </td>
+                              <td className="table-cell">
+                                {design.product_category.join(", ")}
+                              </td>
+                              <td className="table-cell">
+                                {design.approx_metal_weight}
+                              </td>
+                            </tr>
+                          ))
+                        )}
+                        {/* <tr>
                           <td class="table-cell">SWA34R56</td>
                           <td class="table-cell">12-02-23</td>
                           <td class="table-cell">Bangles</td>
@@ -256,7 +267,7 @@ const Slots = () => {
                           <td class="table-cell">12-02-23</td>
                           <td class="table-cell">Bangles</td>
                           <td class="table-cell">16 Gram</td>
-                        </tr>
+                        </tr> */}
                       </tbody>
                     </table>
                   </div>

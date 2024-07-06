@@ -156,10 +156,10 @@ export const edit_customizaion_warehouse = async (
   onClose,
   setSuccessMessage,
   setSuccessModalOpen,
-  imageFiles,
-  setData,
+  images,
   setImageFiles,
-  setCustomization
+  setCustomization,
+  votersSetData
 ) => {
   try {
     setIsLoading(true);
@@ -187,20 +187,20 @@ export const edit_customizaion_warehouse = async (
     formDataToSend.append("notes", formData.notes);
 
     // Append image files if they exist
-    if (imageFiles.length > 0) {
-      formDataToSend.append("image", imageFiles[0]);
+    if (images.length > 0) {
+      formDataToSend.append("image", images[0]);
     }
-    if (imageFiles.length > 1) {
-      formDataToSend.append("image2", imageFiles[1]);
+    if (images.length > 1) {
+      formDataToSend.append("image2", images[1]);
     }
-    if (imageFiles.length > 2) {
-      formDataToSend.append("image3", imageFiles[2]);
+    if (images.length > 2) {
+      formDataToSend.append("image3", images[2]);
     }
-    if (imageFiles.length > 3) {
-      formDataToSend.append("image4", imageFiles[3]);
+    if (images.length > 3) {
+      formDataToSend.append("image4", images[3]);
     }
-    if (imageFiles.length > 4) {
-      formDataToSend.append("image5", imageFiles[4]);
+    if (images.length > 4) {
+      formDataToSend.append("image5", images[4]);
     }
 
     const response = await apiService.patch(
@@ -217,12 +217,12 @@ export const edit_customizaion_warehouse = async (
       onClose();
       setSuccessMessage("Your form has been successfully updated.");
       setSuccessModalOpen(true);
-      voters_customization_list(setIsLoading, setData);
-      customization_details(
-        setIsLoading,
-        setCustomization,
-        displayEditDetailsById
-      );
+      voters_customization_list(setIsLoading, votersSetData);
+      // customization_details(
+      //   setIsLoading,
+      //   setCustomization,
+      //   displayEditDetailsById
+      // );
       setTimeout(() => {
         setSuccessModalOpen(false);
       }, 1500);
@@ -359,8 +359,8 @@ export const create_customizaion_warehouse = async (
   imageFiles,
   setImageFiles,
   setCustomization,
-  setData,
-  userId,
+  votersSetData,
+  userId
 ) => {
   try {
     setIsLoading(true);
@@ -402,7 +402,7 @@ export const create_customizaion_warehouse = async (
     if (response.data.results.status_code === 200) {
       // Update states upon successful response
       await customization_details(setIsLoading, setCustomization, userId);
-      await voters_customization_list(setIsLoading, setData);
+      voters_customization_list(setIsLoading, votersSetData);
       onClose();
       setSuccessMessage("Customization Created Successfully");
       setSuccessModalOpen(true);

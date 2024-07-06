@@ -23,7 +23,7 @@ const VotorsCustomization = () => {
   const dropdownRef = useRef(null);
 
   useEffect(() => {
-    voters_customization_list(setIsLoading, setData, );
+    voters_customization_list(setIsLoading, setData);
   }, []);
 
   const handleDeleteCustomization = (cuzId) => {
@@ -75,7 +75,7 @@ const VotorsCustomization = () => {
   return (
     <div className="ParentVotors">
       <div className="votors_btns">
-        <DesignBtn />
+        <DesignBtn votersSetData={setData} />
       </div>
       <div className="VotorsCustomizationTable">
         <div className="Users_Table_List">

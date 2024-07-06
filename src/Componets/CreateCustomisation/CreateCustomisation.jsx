@@ -23,7 +23,14 @@ import {
   product_type_drop_down,
 } from "../ADMIN PANEL/Api_dropDown";
 import DeleteConfirmationModal from "../ConfirmationModal/DeleteConfirmationModal";
-import { diamond_type_dropdown_basicDetails, findings_List_basicDetails, metal_type_dropdown_basicDetails, product_category_basicDetails, tag_List_basicDetails } from "../Assignment Panel/Api";
+import plusICon from "../../assets/plusIcon.png";
+import {
+  diamond_type_dropdown_basicDetails,
+  findings_List_basicDetails,
+  metal_type_dropdown_basicDetails,
+  product_category_basicDetails,
+  tag_List_basicDetails,
+} from "../Assignment Panel/Api";
 
 const style = {
   position: "absolute",
@@ -59,6 +66,7 @@ const style = {
 //   },
 // };
 const CreateCustomisation = ({
+  votersSetData,
   open,
   onClose,
   dataToDisplaytomodal,
@@ -86,6 +94,7 @@ const CreateCustomisation = ({
     "Mail Send Successfully"
   );
   const [diamonType, setDiamondType] = useState([]);
+  const [images, setImages] = useState(Array(5).fill(null));
   const [formData, setFormData] = useState({
     sallerName: "",
     mobileNumber: "",
@@ -96,10 +105,10 @@ const CreateCustomisation = ({
     metalType: "",
     weight: "",
     size: "",
-    width:"",
-    height:"",
-    diamond_type:"",
-    length_of_item:"",
+    width: "",
+    height: "",
+    diamond_type: "",
+    length_of_item: "",
     diamondWeight: "",
     numberOfDiamonds: "",
     diamondClarity: "",
@@ -134,10 +143,10 @@ const CreateCustomisation = ({
         metalType: dataToDisplaytomodal.metal_type || "",
         weight: dataToDisplaytomodal.weight || "",
         size: dataToDisplaytomodal.size || "",
-        width:dataToDisplaytomodal.width || "",
-        height:dataToDisplaytomodal.height || "",
-        length_of_item:dataToDisplaytomodal.length_of_item || "",
-        diamond_type:dataToDisplaytomodal.diamond_type || "",
+        width: dataToDisplaytomodal.width || "",
+        height: dataToDisplaytomodal.height || "",
+        length_of_item: dataToDisplaytomodal.length_of_item || "",
+        diamond_type: dataToDisplaytomodal.diamond_type || "",
         diamondWeight: dataToDisplaytomodal.diamond_weight || "",
         numberOfDiamonds: dataToDisplaytomodal.no_of_diamond || "",
         diamondClarity: dataToDisplaytomodal.diamond_clarity || "",
@@ -222,15 +231,15 @@ const CreateCustomisation = ({
     height: Joi.string().required().messages({
       "string.empty": `cannot be  empty`,
     }),
-    diamond_type: Joi.string().required().messages({
+    diamond_type: Joi.required().messages({
       "string.empty": `cannot be  empty`,
     }),
     length_of_item: Joi.string().required().messages({
       "string.empty": `cannot be  empty`,
     }),
-
   });
-  console.log(ProudctCategory,"diamonType")
+  console.log(ProudctCategory, "diamonType");
+  console.log(errors, "errors");
 
   const handleSubmitButton = (e) => {
     e.preventDefault();
@@ -314,9 +323,15 @@ const CreateCustomisation = ({
         setData,
         setImageFiles,
         setCustomization,
-        userId
+        userId,
+        votersSetData
       );
     }
+  };
+  const handleImageUpload = (index, event) => {
+    const newImages = [...images];
+    newImages[index] = event.target.files[0];
+    setImages(newImages);
   };
   console.log(ErrorMessage, "asdfkd");
   const handleCreateSubmitCustomization = () => {
@@ -348,11 +363,11 @@ const CreateCustomisation = ({
         setSuccessMessage,
         setSuccessModalOpen,
         setErrorMessage,
-        imageFiles,
+        images,
         setImageFiles,
         userId,
-        setData,
-        setCustomization,
+        votersSetData,
+        setCustomization
       );
     }
   };
@@ -366,6 +381,14 @@ const CreateCustomisation = ({
       setUploadInstructionsVisible(false);
     }
   };
+
+  console.log(images,"images")
+  const serverImage = [
+    dataToDisplaytomodal?.image,
+    dataToDisplaytomodal?.image2,
+    dataToDisplaytomodal?.image3,
+    dataToDisplaytomodal?.image4
+  ];
 
   return (
     <div>
@@ -568,7 +591,7 @@ const CreateCustomisation = ({
                           </span>
                         )}
                       </div>
-                      <div className="uploadImageContainer">
+                      {/* <div className="uploadImageContainer">
                         {imageFiles.length > 0 ? (
                           <>
                             {imageFiles.map((item, index) => (
@@ -667,6 +690,46 @@ const CreateCustomisation = ({
                             Upload <BsCloudUpload />
                           </div>
                         </div>
+                      </div> */}
+                      <div className="uploadImageContainer">
+                        
+                        <div className="rightw">
+                          <div
+                            id="fileUpload"
+                            // className="uploadButton"
+                            // onClick={() =>
+                            //   document.getElementById("fileUploadImage").click()
+                            // }
+                          >
+                            <div className="dashed_imageContainer">
+                              {images.map((image, index) => (
+                                <div key={index} className="dashedImage" style={{width:'50px',height:"50px"}}>
+                                  
+                                  {image && (
+                                    <img
+                                      src={URL.createObjectURL(image)}
+                                      alt=""
+                                      style={{ height: "50px", width: "50px" }}
+                                    />
+                                  )}
+                                  <div style={{ position: "absolute" }}>
+                                    <label>
+                                      <img src={plusICon} alt="" />
+                                      <input
+                                        type="file"
+                                        accept="image/png, image/jpeg"
+                                        style={{ display: "none" }}
+                                        onChange={(e) =>
+                                          handleImageUpload(index, e)
+                                        }
+                                      />
+                                    </label>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
                       </div>
                       <div className="parant_relative">
                         <label htmlFor="" className="label_text">
@@ -755,12 +818,14 @@ const CreateCustomisation = ({
                           onChange={handleInput}
                         />
                         {errors.length_of_item && (
-                          <span className="error_select">{errors.length_of_item}</span>
+                          <span className="error_select">
+                            {errors.length_of_item}
+                          </span>
                         )}
                       </div>
-                     <div className="parant_relative">
+                      <div className="parant_relative">
                         <label htmlFor="" className="label_text">
-                        height
+                          height
                         </label>
                         <input
                           type="number"
@@ -797,9 +862,9 @@ const CreateCustomisation = ({
                           }))}
                           value={formData.diamond_type || undefined}
                         />
-                        {errors.metalType && (
+                        {errors.diamond_type && (
                           <span className="error_select">
-                            {errors.metalType}
+                            {errors.diamond_type}
                           </span>
                         )}
                       </div>
