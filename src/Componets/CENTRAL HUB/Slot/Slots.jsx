@@ -111,6 +111,7 @@ const Slots = () => {
   console.log(userId, "slotView");
   console.log(Data, "center==============>");
   const sortedData = Data.sort((a, b) => a.id - b.id);
+  console.log(sortedData ,"sortedData ")
   return (
     <div className="parentCentral">
       <div className="slot_create">
