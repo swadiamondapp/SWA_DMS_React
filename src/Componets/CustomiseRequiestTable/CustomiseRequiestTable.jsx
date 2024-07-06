@@ -78,6 +78,7 @@ const CustomizationTable = (props) => {
   useEffect(() => {
     customizaztion_list_wareHouse(setIsLoading, setCustomizationListData);
   }, []);
+  
   console.log(CustomizationListData, "CustomizationListData");
   const handleEyeClick = (wareHouseId) => {
     setOpenCRModal(true);

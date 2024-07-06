@@ -9,6 +9,10 @@ import {
   LIST_LAST_VOTED_DESIGN,
   LIST_WAREHOUSE_DESIGNS,
   REJECT_WAREHOUSE,
+  SCAN_TABLE_LIST,
+  SCAN_TABLE_SLOTID_SEARCH,
+  SCAN_TABLE_STATUS_CHANGE,
+  SCAN_TABLE_STATUS_GET,
   VOTERS_CUSTOMIZATION_LIST,
 } from "../../Pages/Services/EndPoints";
 import {
@@ -72,6 +76,7 @@ export const customization_details_view_warehouse = async (
   }
 };
 
+  
 export const delete_customization_warehouse = async (
   setIsLoading,
   userId,
@@ -171,7 +176,7 @@ export const edit_customizaion_warehouse = async (
     formDataToSend.append("product_type", formData.productType);
     formDataToSend.append("previously_made", formData.modelPrevioslyMade);
     formDataToSend.append("sku", formData.prevMadeSKU);
-    formDataToSend.append("metal_type", formData.metalType);
+    formDataToSend.append("metal_type", formData.metalType); 
     formDataToSend.append("weight", formData.weight);
     formDataToSend.append("size", formData.size);
     formDataToSend.append("width", formData.width);
@@ -428,3 +433,88 @@ export const create_customizaion_warehouse = async (
     setIsLoading(false);
   }
 };
+
+
+
+// ....WREHOUSE scan table..
+
+export const scan_list_datas = async (
+  setIsLoading,
+   setScanTableData
+) => {
+  try {
+    const response = await apiService.get(SCAN_TABLE_LIST);
+    if (checkApiStatus(response)) {
+       setScanTableData(response.data.results.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const scan_list_search = async (
+  setIsLoading,
+  searchListId,
+  setScanTableData,
+  setsearchListId
+) => {
+  try {
+
+    const body = {
+      slot_id:searchListId
+    }
+  
+
+    const response = await apiService.post(SCAN_TABLE_SLOTID_SEARCH,body);
+    if (response.data.results.status_code === 200) {
+      scan_list_datas(setIsLoading, setScanTableData)
+      setsearchListId("")
+      alert("Item Added")
+    }
+  } catch (error) {
+    console.log(error);
+    alert("Already exists")
+    setsearchListId("")
+  }
+};
+
+
+export const scan_table_status_get = async (
+  setIsLoading,
+  setstatus
+) => {
+  try {
+    const response = await apiService.get(SCAN_TABLE_STATUS_GET);
+    if (checkApiStatus(response)) {
+      setstatus(response.data.results.data);
+    }
+  } catch (error) {
+    console.log(error);
+
+  }
+};
+
+
+export const scan_table_status_change = async (
+  slotId,
+  selectedStatusId
+) => {
+  try {
+    debugger
+    const body = {
+      status_id:selectedStatusId
+    }
+    const response = await apiService.put(
+      `${SCAN_TABLE_STATUS_CHANGE}${slotId}/`, body
+    );
+    if (response.data.results.status_code === 200) {
+      console.log("Status Updated Successfully");
+      alert("updated Successfully")
+    } else {
+      console.error("Failed to update status");
+    }
+  } catch (error) {
+    console.log("error on updating",error);
+  }
+};
+

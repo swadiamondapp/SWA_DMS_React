@@ -43,7 +43,8 @@ const WareHouse = (props) => {
   const toggleMoveOptions = () => {
     setShowMoveOptions(!showMoveOptions);
   };
-  console.log(props.LastVotedDesign, "wareHouse===>");
+  
+  console.log(props.DesignWareHouse, "wareHouse===>");
   return (
     <div>
       <div className="Parent_DesignView">

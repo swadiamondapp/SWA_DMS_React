@@ -31,7 +31,6 @@ const Header = ({
   };
 
   const { id } = useParams();
-
   // const folderName = location.state?.name || "Unknown Folder";
   // console.log(folderName,'folderName in Header==>')
   console.log(id, "folderId in Header==>");
@@ -42,6 +41,7 @@ const Header = ({
   const userPhoneNumber = localStorage.getItem("phone_number");
   const userImage = localStorage.getItem("Loginimage");
   const dropdownRef = useRef(null);
+
   console.log(nameCentral, "nameCentral");
 
   useEffect(() => {
@@ -170,9 +170,25 @@ const Header = ({
                 )}
                 {location.pathname === "/slot" && <h3>Slot</h3>}
                 {leftHeader && <h3>{leftHeader}</h3>}
+
+                {(location.pathname === "/masterspage/findings" ||
+                  location.pathname === "/masterspage/tag" ||
+                  location.pathname === "/masterspage/metal" ||
+                  location.pathname === "/masterspage/diamond" ||
+                  location.pathname === "/masterspage/valueedition" ||
+                  location.pathname === "/masterspage/whstatus" ||
+                  location.pathname === "/masterspage/chstatus" ||
+                  location.pathname === "/masterspage/productcategory" ||
+                  location.pathname === "/masterspage/outlet") && (
+                  <h3>Masters</h3>
+                )}
+
+                {location.pathname === "/scan" && <h3>Scan</h3>}
               </div>
+
               <div className="Right_User_Section">
                 {location.pathname !== "/assignmentpanel" &&
+                  location.pathname !== "/masterspage" &&
                   location.pathname !== "/designdashboard" &&
                   location.pathname !== "/votorscustomization" &&
                   location.pathname !== "/gallery" &&
@@ -185,7 +201,8 @@ const Header = ({
                   location.pathname !== "/designerassign" &&
                   location.pathname !== "/warehouseDetails" &&
                   location.pathname !== `/CadAssignmentcard` &&
-                  location.pathname !== "/customRequestTable" && (
+                  location.pathname !== "/customRequestTable" &&
+                  location.pathname !== "/scan" && (
                     <div className="Search_Admin">
                       <div className="Search_User">
                         <input type="text" placeholder="Search Users" />

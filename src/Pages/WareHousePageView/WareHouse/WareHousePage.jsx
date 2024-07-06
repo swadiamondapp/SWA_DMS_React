@@ -13,6 +13,10 @@ const WareHousePage = () => {
     list_warehouse_design(setIsLoading, setDesignWareHouse);
     list_voted_designs(setIsLoading, setLastVotedDesigns);
   }, []);
+
+  // console.log("DesignWareHouse",DesignWareHouse)
+  console.log("LastVotedDesig",LastVotedDesign)
+
   return (
     <div className="Parent_RendersCard">
       <Sidebar />

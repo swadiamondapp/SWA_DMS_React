@@ -297,6 +297,8 @@ const AdminBasicDetailsModal = ({
   const filterOption = (input, option) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
 
+  console.log("image",uploadedImage)
+
   const handleImageRemove = () => {
     setUploadedImage(null);
   };

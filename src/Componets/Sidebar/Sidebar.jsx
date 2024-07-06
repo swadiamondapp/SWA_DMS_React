@@ -11,6 +11,7 @@ import sideStar from "../../assets/sideStar.png";
 import Tranfer from "../../assets/transfer.png";
 import galleryimg from "../../assets/gallery.png";
 import loginzimg from "../../assets/loginz.png";
+import scan from "../../assets/scan.png";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import AssignmentModal from "../AssignmentModal/AssignmentModal";
 import BasicDetailModal from "../BasicDetails/BasicDetailModal";
@@ -51,10 +52,12 @@ const Sidebar = () => {
               {sidebarExpanded && <p>Design pool</p>}
             </div>
           </Link>
+          <Link to='/masterspage/findings'>
           <div className="Links">
             <img src={mastersimg} alt="" />
             {sidebarExpanded && <p>Masters</p>}
           </div>
+          </Link>
           <Link to="/assignmentpanel">
             <div className="Links">
               <img src={assignmentimg} alt="" />
@@ -253,6 +256,12 @@ const Sidebar = () => {
             <div className="Links">
               <img src={customeimg} alt="" />
               {sidebarExpanded && <p>Confirmed orders</p>}
+            </div>
+          </Link>
+          <Link to="/scan">
+            <div className="Links">
+              <img src={scan} alt="" />
+              {sidebarExpanded && <p>Scan </p>}
             </div>
           </Link>
 

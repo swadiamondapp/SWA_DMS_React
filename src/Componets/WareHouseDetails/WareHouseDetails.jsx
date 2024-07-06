@@ -44,6 +44,8 @@ const WareHouseDetails = () => {
       [name]: "", // Clear the error for the current input field
     }));
   };
+
+
   return (
     <div className="Parant_WareHouseDetails">
       <div className="wareHouseImageConatainer">
@@ -147,6 +149,7 @@ const WareHouseDetails = () => {
                   name="width"
                   value={actualFormData.width}
                   onChange={handleInput}
+                  // style={{backgroundColor:"red"}}
                 />
               </div>
               <div className="A1_text">

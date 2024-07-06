@@ -23,7 +23,13 @@ import {
   product_type_drop_down,
 } from "../ADMIN PANEL/Api_dropDown";
 import DeleteConfirmationModal from "../ConfirmationModal/DeleteConfirmationModal";
-import { diamond_type_dropdown_basicDetails, findings_List_basicDetails, metal_type_dropdown_basicDetails, product_category_basicDetails, tag_List_basicDetails } from "../Assignment Panel/Api";
+import {
+  diamond_type_dropdown_basicDetails,
+  findings_List_basicDetails,
+  metal_type_dropdown_basicDetails,
+  product_category_basicDetails,
+  tag_List_basicDetails,
+} from "../Assignment Panel/Api";
 
 const style = {
   position: "absolute",
@@ -96,10 +102,10 @@ const CreateCustomisation = ({
     metalType: "",
     weight: "",
     size: "",
-    width:"",
-    height:"",
-    diamond_type:"",
-    length_of_item:"",
+    width: "",
+    height: "",
+    diamond_type: "",
+    length_of_item: "",
     diamondWeight: "",
     numberOfDiamonds: "",
     diamondClarity: "",
@@ -119,7 +125,6 @@ const CreateCustomisation = ({
     diamond_type_dropdown_basicDetails(setDiamondType);
     product_category_basicDetails(setListProductCategory);
   }, []);
-
   console.log(MetalTypeDropDown, "MetalTypeDropDown");
 
   useEffect(() => {
@@ -134,10 +139,10 @@ const CreateCustomisation = ({
         metalType: dataToDisplaytomodal.metal_type || "",
         weight: dataToDisplaytomodal.weight || "",
         size: dataToDisplaytomodal.size || "",
-        width:dataToDisplaytomodal.width || "",
-        height:dataToDisplaytomodal.height || "",
-        length_of_item:dataToDisplaytomodal.length_of_item || "",
-        diamond_type:dataToDisplaytomodal.diamond_type || "",
+        width: dataToDisplaytomodal.width || "",
+        height: dataToDisplaytomodal.height || "",
+        length_of_item: dataToDisplaytomodal.length_of_item || "",
+        diamond_type: dataToDisplaytomodal.diamond_type || "",
         diamondWeight: dataToDisplaytomodal.diamond_weight || "",
         numberOfDiamonds: dataToDisplaytomodal.no_of_diamond || "",
         diamondClarity: dataToDisplaytomodal.diamond_clarity || "",
@@ -228,9 +233,8 @@ const CreateCustomisation = ({
     length_of_item: Joi.string().required().messages({
       "string.empty": `cannot be  empty`,
     }),
-
   });
-  console.log(ProudctCategory,"diamonType")
+  console.log(ProudctCategory, "diamonType");
 
   const handleSubmitButton = (e) => {
     e.preventDefault();
@@ -352,7 +356,7 @@ const CreateCustomisation = ({
         setImageFiles,
         userId,
         setData,
-        setCustomization,
+        setCustomization
       );
     }
   };
@@ -617,7 +621,7 @@ const CreateCustomisation = ({
                                     borderRadius: "4px",
                                   }}
                                 />
-                                 <img
+                                <img
                                   // key={index}
                                   src={dataToDisplaytomodal.image4}
                                   style={{
@@ -626,7 +630,7 @@ const CreateCustomisation = ({
                                     borderRadius: "4px",
                                   }}
                                 />
-                                  <img
+                                <img
                                   // key={index}
                                   src={dataToDisplaytomodal.image5}
                                   style={{
@@ -653,7 +657,12 @@ const CreateCustomisation = ({
                             onClick={() =>
                               document.getElementById("fileUploadImage").click()
                             }
-                            style={{display:imageFiles.length === 5 || dataToDisplaytomodal ? "none":"block"}}
+                            style={{
+                              display:
+                                imageFiles.length === 5 || dataToDisplaytomodal
+                                  ? "none"
+                                  : "block",
+                            }}
                           >
                             {console.log(imageFiles, "images#")}
                             <input
@@ -755,12 +764,14 @@ const CreateCustomisation = ({
                           onChange={handleInput}
                         />
                         {errors.length_of_item && (
-                          <span className="error_select">{errors.length_of_item}</span>
+                          <span className="error_select">
+                            {errors.length_of_item}
+                          </span>
                         )}
                       </div>
-                     <div className="parant_relative">
+                      <div className="parant_relative">
                         <label htmlFor="" className="label_text">
-                        height
+                          height
                         </label>
                         <input
                           type="number"
