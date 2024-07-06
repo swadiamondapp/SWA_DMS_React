@@ -72,6 +72,8 @@ const AdminBasicDetailsModal = ({
     }
   };
 
+  console.log("image",uploadedImage)
+
   const handleImageRemove = () => {
     setUploadedImage(null);
   };

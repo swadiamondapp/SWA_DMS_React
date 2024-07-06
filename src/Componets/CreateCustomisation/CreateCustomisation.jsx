@@ -113,6 +113,7 @@ const CreateCustomisation = ({
     diamond_colours(setSelectDiamondColor);
     diamond_clarity_choice(setSelectDiamondClarity);
   }, []);
+  
   console.log(MetalTypeDropDown, "MetalTypeDropDown");
 
   useEffect(() => {

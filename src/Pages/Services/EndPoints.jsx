@@ -66,3 +66,8 @@ export const STATUS_CHANGE = "cad/complete-assignment/";
 export const CAD_UPLOAD = "cad/upload-file/";
 export const FINISHED_FOLDERS = "cad/finished-folder/";
 export const FOLDER_DETAILS = "cad/list/folder-items/";
+
+export const SCAN_TABLE_LIST = "transfer/list/";
+export const SCAN_TABLE_SLOTID_SEARCH = "transfer/scan-slot/";
+export const SCAN_TABLE_STATUS_GET = "master/warehouse/status/list/";
+export const SCAN_TABLE_STATUS_CHANGE = "warehouse/status/update/";

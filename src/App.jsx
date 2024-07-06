@@ -6,6 +6,7 @@ import {
   Navigate,
   Routes,
   Route,
+  Outlet,
 } from "react-router-dom";
 import Login from "./Componets/Login/Login";
 import Users from "./Pages/Users Page/Users";
@@ -41,6 +42,18 @@ import ForgotPassOtp from "./Componets/ForgotPassword/ForgotPassOtp";
 import CreateNewPassword from "./Componets/ForgotPassword/CreateNewPassword";
 import PasswordResetComplete from "./Componets/ForgotPassword/PasswordResetComplete";
 import FolderDetails from "./Componets/CAD/FolderDetails/FolderDetails";
+import MastersMainPage from "./Componets/MastersSection/MastersMainPage/MastersMainPage";
+import MastersTable from "./Componets/MastersSection/MastersTable/MastersTable";
+import TableItems from "./Componets/MastersSection/MasterTableItems/TableItems";
+import TagTable from "./Componets/MastersSection/MasterTableItems/TagTable";
+import MetalType from "./Componets/MastersSection/MasterTableItems/MetalType";
+import DiamondType from "./Componets/MastersSection/MasterTableItems/DiamondType";
+import ValueAddition from "./Componets/MastersSection/MasterTableItems/ValueAddition";
+import WarehouseStatus from "./Componets/MastersSection/MasterTableItems/WarehouseStatus";
+import CHstatus from "./Componets/MastersSection/MasterTableItems/CHstatus";
+import ProductCategory from "./Componets/MastersSection/MasterTableItems/ProductCategory";
+import Outlets from "./Componets/MastersSection/MasterTableItems/Outlets";
+import ScanPage from "./Componets/ScanComponentWarehouse/ScanPage/ScanPage";
 
 function App() {
   return (
@@ -93,6 +106,13 @@ function App() {
               path="/wareHouseDetails"
               element={<WareHouseDetailsPage />}
             />
+         
+            <Route
+              path="/scan"
+              element={<ScanPage />}
+            />
+            
+
             <Route
               path="/CadAssignmentcard"
               element={<CadAssignmentCardPage />}
@@ -101,12 +121,30 @@ function App() {
             <Route path="/folderdetails/:id" element={<FolderDetails />} />
             <Route path="/centralDashboard" element={<CentralHubDashboard />} />
             <Route path="/slot" element={<HubSlot />} />
-          </Route>
+
+         <Route path="/mastertable" element={<MastersTable />} />
+
+         <Route path="/masterspage" element={<MastersMainPage />}>
+         <Route path="findings" element={<TableItems />} />
+         <Route path="tag" element={<TagTable />} />
+         <Route path="metal" element={<MetalType />} />
+         <Route path="diamond" element={<DiamondType />} />
+         <Route path="valueedition" element={<ValueAddition />} />
+         <Route path="whstatus" element={<WarehouseStatus />} />
+         <Route path="chstatus" element={<CHstatus />} />
+         <Route path="productcategory" element={<ProductCategory />} />
+         <Route path="outlet" element={<Outlets/>} />
+         </Route>
+       </Route>
+
           <Route path="/login" element={<Login />} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/verifyotp" element={<ForgotPassOtp />} />
           <Route path="/createnewpassword" element={<CreateNewPassword />} />
           <Route path="/resetcomplete" element={<PasswordResetComplete />} />
+
+         
+          
         </Routes>
       </Router>
     </>
