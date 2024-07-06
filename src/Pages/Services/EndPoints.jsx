@@ -83,7 +83,12 @@ export const GENERATE_SLOT_NUMBER = "create-slot/";
 export const SCAN_TRANSFER_SLOT = "transfer/scan-slot/";
 export const LIST_CENTRAL_HUB_STATUS = "master/centralhub/status/list/";
 export const CHANGE_CENTRAL_HUB_STATUS = "transfer/status/update/";
-export const SCAN_TABLE_LIST = "transfer/list/";
-export const SCAN_TABLE_SLOTID_SEARCH = "transfer/scan-slot/";
+export const SCAN_TABLE_LIST = "warehouse/scan/list/";
+export const SCAN_TABLE_SLOTID_SEARCH = "warehouse/scan/";
 export const SCAN_TABLE_STATUS_GET = "master/warehouse/status/list/";
 export const SCAN_TABLE_STATUS_CHANGE = "warehouse/status/update/";
+
+export const SCAN_SLOT_LIST_GET = "slot/";
+
+export const WORKDONE_TABLE_LIST = "workdone/scan/list";
+export const WORKDONE_TABLE_SLOTID_SEARCH = "workdone/scan/";

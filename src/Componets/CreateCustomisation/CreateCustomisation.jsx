@@ -268,9 +268,11 @@ const CreateCustomisation = ({
     }));
     setErrors((prevErrors) => ({
       ...prevErrors,
-      [name]: "", // Clear the error for the current input field
-    }));
-  };
+      [name]: "", 
+    }))
+  }
+
+  
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
