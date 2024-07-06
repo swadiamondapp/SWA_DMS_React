@@ -24,8 +24,6 @@ const ScanTable = () => {
   const [statusId, setstatusId] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const [message, setMessage] = useState("");
- 
-
 
   const handleopenModal = () => {
     setOpenModal(!openModal);
@@ -51,9 +49,6 @@ const ScanTable = () => {
     // scan_table_status_change(setIsLoading, setMessage ,statusId);
   }, []);
 
-
-
-
   const handleInputChange = (event) => {
     setsearchListId(event.target.value);
   };
@@ -78,18 +73,17 @@ const ScanTable = () => {
     setIsLoading(true);
     // console.log("getting id",slotId)
     try {
-      await scan_table_status_change(slotId,selectedStatusId);
+      await scan_table_status_change(slotId, selectedStatusId);
       await scan_list_datas(setIsLoading, setScanTableData);
     } catch (error) {
       console.error("Error updating status:", error);
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   console.log("search id", searchListId);
   console.log("data", scanTableData);
-  
 
   return (
     <div className="scantable_main">
@@ -127,16 +121,18 @@ const ScanTable = () => {
                   <td style={{ borderLeft: "none" }}>
                     <select
                       className="scan_select"
-                      value={item.slot.status} 
+                      value={item.slot.status}
                       onChange={(e) =>
-                        handleStatusChange(item.slot.slot_id, e.target.value)
+                        handleStatusChange(item.id, e.target.value)
                       }
                     >
                       <option value="">Active</option>
                       {status.map((status) => (
                         <option
-                        onChange={() =>scan_table_status_change(status.id)}
-                        key={status.id} value={status.id}>
+                          onChange={() => scan_table_status_change(status.id)}
+                          key={status.id}
+                          value={status.id}
+                        >
                           {status.name}
                         </option>
                       ))}
