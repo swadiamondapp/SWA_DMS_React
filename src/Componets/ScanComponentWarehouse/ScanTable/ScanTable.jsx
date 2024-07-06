@@ -25,28 +25,18 @@ const ScanTable = () => {
   const [openModal, setOpenModal] = useState(false);
   const [message, setMessage] = useState("");
 
-  const handleopenModal = () => {
+  const [clickedProductId, setclickedProductId] = useState("");
+
+  // console.log("iId",clickedProductId)
+
+  const handleopenModal = (itemId) => {
+    setclickedProductId(itemId);
     setOpenModal(!openModal);
   };
 
-  // useEffect(() => {
-  //   scan_list_datas(setIsLoading, setScanTableData)
-  //     .then((data) => {
-  //       if (data.length > 0) {
-  //         setstatus(data[0].slot.status);
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error fetching scan list data:", error);
-  //     });
-  //     scan_table_status_change(setIsLoading, statusId )
-  // }, []);
-
   useEffect(() => {
-    // fetchInitialData();
     scan_list_datas(setIsLoading, setScanTableData);
     scan_table_status_get(setIsLoading, setstatus);
-    // scan_table_status_change(setIsLoading, setMessage ,statusId);
   }, []);
 
   const handleInputChange = (event) => {
@@ -121,9 +111,9 @@ const ScanTable = () => {
                   <td style={{ borderLeft: "none" }}>
                     <select
                       className="scan_select"
-                      value={item.slot.status.id}
+                      value={item?.slot?.status?.id}
                       onChange={(e) =>
-                        handleStatusChange(item.id, e.target.value)
+                        handleStatusChange(item.slot.slot_id, e.target.value)
                       }
                     >
                       <option value="">Active</option>
@@ -141,7 +131,10 @@ const ScanTable = () => {
 
                   <td style={{ borderLeft: "none" }}>
                     <div className="scan_btn_div">
-                      <button className="btn_scan" onClick={handleopenModal}>
+                      <button
+                        className="btn_scan"
+                        onClick={() => handleopenModal(item.slot.slot_id)}
+                      >
                         <IoEye className="btn_scan_img1" />
                       </button>
                       <button className="btn_scan">
@@ -161,7 +154,12 @@ const ScanTable = () => {
         </div>
       </div>
 
-      {openModal && <ScanModal setOpenModal={setOpenModal} />}
+      {openModal && (
+        <ScanModal
+          setOpenModal={setOpenModal}
+          clickedProductId={clickedProductId}
+        />
+      )}
     </div>
   );
 };

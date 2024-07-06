@@ -10,6 +10,7 @@ import customeimg from "../../assets/custome.png";
 import galleryimg from "../../assets/gallery.png";
 import loginzimg from "../../assets/loginz.png";
 import scan from "../../assets/scan.png";
+import done from "../../assets/done.png";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import AssignmentModal from "../AssignmentModal/AssignmentModal";
 import BasicDetailModal from "../BasicDetails/BasicDetailModal";
@@ -247,6 +248,12 @@ const Sidebar = () => {
             <div className="Links">
               <img src={scan} alt="" />
               {sidebarExpanded && <p>Scan </p>}
+            </div>
+          </Link>
+          <Link to="/workdone">
+            <div className="Links">
+              <img src={done} alt="" />
+              {sidebarExpanded && <p>Work Done </p>}
             </div>
           </Link>
 

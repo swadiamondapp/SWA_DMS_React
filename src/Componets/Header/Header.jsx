@@ -121,6 +121,7 @@ const Header = ({ leftHeader }) => {
               location.pathname === "/masterspage/outlet") && <h3>Masters</h3>}
 
             {location.pathname === "/scan" && <h3>Scan</h3>}
+            {location.pathname === "/workdone" && <h3>Work Done</h3>}
           </div>
 
           <div className="Right_User_Section">
@@ -139,6 +140,7 @@ const Header = ({ leftHeader }) => {
               location.pathname !== "/warehouseDetails" &&
               location.pathname !== `/CadAssignmentcard` &&
               location.pathname !== "/customRequestTable" && 
+              location.pathname !== "/workdone" && 
               location.pathname !== "/scan" && (
                 <div className="Search_Admin">
                   <div className="Search_User">

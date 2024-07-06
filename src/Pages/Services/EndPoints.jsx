@@ -67,7 +67,12 @@ export const CAD_UPLOAD = "cad/upload-file/";
 export const FINISHED_FOLDERS = "cad/finished-folder/";
 export const FOLDER_DETAILS = "cad/list/folder-items/";
 
-export const SCAN_TABLE_LIST = "transfer/list/";
-export const SCAN_TABLE_SLOTID_SEARCH = "transfer/scan-slot/";
+export const SCAN_TABLE_LIST = "warehouse/scan/list/";
+export const SCAN_TABLE_SLOTID_SEARCH = "warehouse/scan/";
 export const SCAN_TABLE_STATUS_GET = "master/warehouse/status/list/";
 export const SCAN_TABLE_STATUS_CHANGE = "warehouse/status/update/";
+
+export const SCAN_SLOT_LIST_GET = "slot/";
+
+export const WORKDONE_TABLE_LIST = "workdone/scan/list";
+export const WORKDONE_TABLE_SLOTID_SEARCH = "workdone/scan/";
