@@ -10,12 +10,16 @@ import {
   LIST_WAREHOUSE_DESIGNS,
   REJECT_WAREHOUSE,
   SCAN_SLOT_LIST_GET,
+  SCAN_SLOT_LIST_GET,
   SCAN_TABLE_LIST,
   SCAN_TABLE_SLOTID_SEARCH,
   SCAN_TABLE_STATUS_CHANGE,
   SCAN_TABLE_STATUS_GET,
   VOTERS_CUSTOMIZATION_LIST,
   WORKDONE_TABLE_LIST,
+  WORKDONE_TABLE_PRODUCT_DETAIL,
+  WORKDONE_TABLE_PRODUCT_SEARCH,
+  WORKDONE_TABLE_PRODUCT_UPDATE,
   WORKDONE_TABLE_SLOTID_SEARCH,
 } from "../../Pages/Services/EndPoints";
 import {
@@ -486,7 +490,6 @@ export const scan_table_status_get = async (setIsLoading, setstatus) => {
 
 export const scan_table_status_change = async (slotId, selectedStatusId) => {
   try {
-    debugger;
     const body = {
       status_id: selectedStatusId,
     };
@@ -501,6 +504,7 @@ export const scan_table_status_change = async (slotId, selectedStatusId) => {
       console.error("Failed to update status");
     }
   } catch (error) {
+    console.log("error on updating", error);
     console.log("error on updating", error);
   }
 };
@@ -521,7 +525,7 @@ export const scan_table_item_products = async (
   }
 };
 
-// ....WREHOUSE Wor-kdone table..
+// ....WREHOUSE Workdone table..
 
 export const workDone_list_datas = async (setIsLoading, setworkTableData) => {
   try {
@@ -542,10 +546,10 @@ export const workDone_list_search = async (
 ) => {
   try {
     const body = {
-      slot_id: searchListId,
+      product_id: searchListId,
     };
 
-    const response = await apiService.post(WORKDONE_TABLE_SLOTID_SEARCH, body);
+    const response = await apiService.post(WORKDONE_TABLE_PRODUCT_SEARCH, body);
     if (response.data.results.status_code === 200) {
       workDone_list_datas(setIsLoading, setworkTableData);
       setsearchListId("");
@@ -555,5 +559,42 @@ export const workDone_list_search = async (
     console.log(error);
     alert("Product Already exists");
     setsearchListId("");
+  }
+};
+
+export const workDone_table_product_detail = async (
+  clickedProductId,
+  setclickedProducts
+) => {
+  try {
+    const response = await apiService.get(
+      `${WORKDONE_TABLE_PRODUCT_DETAIL}${clickedProductId}/`
+    );
+    if (checkApiStatus(response)) {
+      setclickedProducts(response.data.results.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const workDone_table_product_update = async (
+  pId,
+  formData,
+  setOpenLeftbar
+) => {
+  try {
+    // setIsLoading(true);
+    const response = await apiService.patch(
+      `${WORKDONE_TABLE_PRODUCT_UPDATE}/${pId}/update/`,
+      formData
+    );
+
+    if (response.data.results.status_code === 200) {
+      alert("Data Updated Successfully");
+      setOpenLeftbar(false);
+    }
+  } catch (error) {
+    console.error("Update Failed", error);
   }
 };
