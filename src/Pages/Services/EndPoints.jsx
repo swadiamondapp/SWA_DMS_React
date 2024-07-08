@@ -87,8 +87,9 @@ export const SCAN_TABLE_LIST = "warehouse/scan/list/";
 export const SCAN_TABLE_SLOTID_SEARCH = "warehouse/scan/";
 export const SCAN_TABLE_STATUS_GET = "master/warehouse/status/list/";
 export const SCAN_TABLE_STATUS_CHANGE = "warehouse/status/update/";
-
 export const SCAN_SLOT_LIST_GET = "slot/";
-
-export const WORKDONE_TABLE_LIST = "workdone/scan/list";
 export const WORKDONE_TABLE_SLOTID_SEARCH = "workdone/scan/";
+export const WORKDONE_TABLE_LIST = "workdone/scan/list";
+export const WORKDONE_TABLE_PRODUCT_SEARCH = "workdone/scan/";
+export const WORKDONE_TABLE_PRODUCT_DETAIL = "workdone/";
+export const WORKDONE_TABLE_PRODUCT_UPDATE = "assignment/";

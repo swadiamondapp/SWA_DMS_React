@@ -10,6 +10,7 @@ import {
   LIST_WAREHOUSE_DESIGNS,
   REJECT_WAREHOUSE,
   SCAN_SLOT_LIST_GET,
+  SCAN_SLOT_LIST_GET,
   SCAN_TABLE_LIST,
   SCAN_TABLE_SLOTID_SEARCH,
   SCAN_TABLE_STATUS_CHANGE,
@@ -17,6 +18,10 @@ import {
   VOTERS_CUSTOMIZATION_LIST,
   WORKDONE_TABLE_LIST,
   WORKDONE_TABLE_SLOTID_SEARCH,
+  WORKDONE_TABLE_LIST,
+  WORKDONE_TABLE_PRODUCT_DETAIL,
+  WORKDONE_TABLE_PRODUCT_SEARCH,
+  WORKDONE_TABLE_PRODUCT_UPDATE,
 } from "../../Pages/Services/EndPoints";
 import {
   customization_details,
@@ -486,7 +491,6 @@ export const scan_table_status_get = async (setIsLoading, setstatus) => {
 
 export const scan_table_status_change = async (slotId, selectedStatusId) => {
   try {
-    debugger;
     const body = {
       status_id: selectedStatusId,
     };
@@ -555,5 +559,94 @@ export const workDone_list_search = async (
     console.log(error);
     alert("Product Already exists");
     setsearchListId("");
+  }
+};
+export const scan_table_item_products = async (
+  clickedProductId,
+  setclickedProducts
+) => {
+  try {
+    const response = await apiService.get(
+      `${SCAN_SLOT_LIST_GET}${clickedProductId}/`
+    );
+    if (checkApiStatus(response)) {
+      setclickedProducts(response.data.results.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// ....WREHOUSE Workdone table..
+
+export const workDone_list_datas = async (setIsLoading, setworkTableData) => {
+  try {
+    const response = await apiService.get(WORKDONE_TABLE_LIST);
+    if (checkApiStatus(response)) {
+      setworkTableData(response.data.results.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const workDone_list_search = async (
+  setIsLoading,
+  searchListId,
+  setworkTableData,
+  setsearchListId
+) => {
+  try {
+    const body = {
+      product_id: searchListId,
+    };
+
+    const response = await apiService.post(WORKDONE_TABLE_PRODUCT_SEARCH, body);
+    if (response.data.results.status_code === 200) {
+      workDone_list_datas(setIsLoading, setworkTableData);
+      setsearchListId("");
+      alert("Product Added");
+    }
+  } catch (error) {
+    console.log(error);
+    alert("Product Already exists");
+    setsearchListId("");
+  }
+};
+
+export const workDone_table_product_detail = async (
+  clickedProductId,
+  setclickedProducts
+) => {
+  try {
+    const response = await apiService.get(
+      `${WORKDONE_TABLE_PRODUCT_DETAIL}${clickedProductId}/`
+    );
+    if (checkApiStatus(response)) {
+      setclickedProducts(response.data.results.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const workDone_table_product_update = async (
+  pId,
+  formData,
+  setOpenLeftbar
+) => {
+  try {
+    // setIsLoading(true);
+    const response = await apiService.patch(
+      `${WORKDONE_TABLE_PRODUCT_UPDATE}/${pId}/update/`,
+      formData
+    );
+
+    if (response.data.results.status_code === 200) {
+      alert("Data Updated Successfully");
+      setOpenLeftbar(false);
+    }
+  } catch (error) {
+    console.error("Update Failed", error);
   }
 };

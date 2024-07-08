@@ -59,6 +59,7 @@ import ProductCategory from "./Componets/MastersSection/MasterTableItems/Product
 import Outlets from "./Componets/MastersSection/MasterTableItems/Outlets";
 import ScanPage from "./Componets/ScanComponentWarehouse/ScanPage/ScanPage";
 import WorkDone from "./Componets/WorkdoneWarehorse/WorkDone/WorkDone";
+import WorkDone from "./Componets/WorkdoneWarehorse/WorkDone/WorkDone";
 
 function App() {
   return (
@@ -122,6 +123,7 @@ function App() {
             />
 
             <Route path="/scan" element={<ScanPage />} />
+            <Route path="/workdone" element={<WorkDone />} />
             <Route path="/workdone" element={<WorkDone />} />
 
             <Route
