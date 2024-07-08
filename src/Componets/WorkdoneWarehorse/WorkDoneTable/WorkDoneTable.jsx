@@ -17,6 +17,7 @@ const WorkDoneTable = () => {
   const [workTableData, setworkTableData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [searchListId, setsearchListId] = useState("");
+  const [clickedProductId, setclickedProductId] = useState("");
 
   useEffect(() => {
     workDone_list_datas(setIsLoading, setworkTableData);
@@ -42,12 +43,15 @@ const WorkDoneTable = () => {
     }
   };
 
-  console.log("workTableData", workTableData);
+  console.log("workTableData", clickedProductId);
 
-  const openModal = () => {
+  const openModal = (productId) => {
+    setclickedProductId(productId);
     setOpen(true);
   };
-  const handleopenLeftBar = () => {
+
+  const handleopenLeftBar = (productId) => {
+    setclickedProductId(productId);
     setOpenLeftbar(true);
   };
 
@@ -90,14 +94,20 @@ const WorkDoneTable = () => {
 
                   <td style={{ borderLeft: "none" }}>
                     <div className="scan_btn_div">
-                      <button className="btn_scan" onClick={handleopenLeftBar}>
+                      <button
+                        className="btn_scan"
+                        onClick={() => handleopenLeftBar(item.id)}
+                      >
                         <AiOutlineEdit
                           style={{ color: "#0464D5" }}
                           className="btn_scan_img1"
                         />{" "}
                         <span>Edit Details</span>
                       </button>
-                      <button onClick={openModal} className="btn_scan">
+                      <button
+                        onClick={() => openModal(item.id)}
+                        className="btn_scan"
+                      >
                         <IoEye className="btn_scan_img1" />
                       </button>
                       <button className="btn_scan">
@@ -117,8 +127,15 @@ const WorkDoneTable = () => {
         </div>
       </div>
 
-      {open && <WorkDoneModal setOpen={setOpen} />}
-      {openLeftbar && <WorkdoneEditModal setOpenLeftbar={setOpenLeftbar} />}
+      {open && (
+        <WorkDoneModal clickedProductId={clickedProductId} setOpen={setOpen} />
+      )}
+      {openLeftbar && (
+        <WorkdoneEditModal
+          setOpenLeftbar={setOpenLeftbar}
+          clickedProductId={clickedProductId}
+        />
+      )}
     </div>
   );
 };
