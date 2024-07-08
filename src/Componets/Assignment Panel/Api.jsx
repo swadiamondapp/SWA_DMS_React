@@ -21,10 +21,7 @@ import {
   list_assignment_folder,
 } from "../ADMIN PANEL/Design Pool/Api";
 
-export const list_assignment_panel = async (
-  setIsLoading,
-  setData
-) => {
+export const list_assignment_panel = async (setIsLoading, setData) => {
   try {
     const response = await apiService.get(LIST_ASSIGNMENT_PANEL);
     if (checkApiStatus(response)) {
@@ -259,7 +256,10 @@ export const editBasicDetails = async (
       },
     };
     console.log(body, "move_TO_ASSINGG");
-    const response = await apiService.patch(`${EDIT_BASIC_DETAILS}${folderIdA}/items/${designId}/edit/`, body);
+    const response = await apiService.patch(
+      `${EDIT_BASIC_DETAILS}${folderIdA}/items/${designId}/edit/`,
+      body
+    );
     if (response.data.results.status_code === 200) {
       // all_Designs(setIsLoading, setData);
       onClose();
@@ -460,8 +460,8 @@ export const upload_admin_image_assignment = async (
 export const basic_calculation = async (
   setIsLoadingCalculation,
   formData,
-  SelectedMetalId,
   SelectedDiamondId,
+  SelectedMetalId,
   setCalculationData
 ) => {
   try {
