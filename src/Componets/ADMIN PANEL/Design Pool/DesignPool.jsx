@@ -139,7 +139,7 @@ const DesignPool = () => {
           <div className="Card_Design_Parent">
             {Data.map((item, index) => (
               <div className="New_Design_card" key={item.id}>
-                <div className="Card_img">
+                <div className="Card_img" style={{    minHeight: '190px'}}>
                   <img src={item.image} alt="image" />
 
                 </div>

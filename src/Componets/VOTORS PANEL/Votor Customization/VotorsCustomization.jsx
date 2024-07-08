@@ -7,7 +7,7 @@ import { voters_customization_list, delete_customization } from "../Api";
 import DeleteConfirmationModal from "../../ConfirmationModal/DeleteConfirmationModal";
 import SuccessModal from "../../SuccessModal/SuccessModal";
 
-const VotorsCustomization = () => {
+const   VotorsCustomization = () => {
   const [showEditDelete, setShowEditDelete] = useState(null);
   const [IsModalOpen, setIsModalOpen] = useState(false);
   const [Data, setData] = useState([]);

@@ -18,7 +18,14 @@ const FinishedProducts = () => {
 
   return (
     <div className="ParentCad">
-      <div className="CadAssignmentCard">
+      <div
+        className="CadAssignmentCard"
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr",
+          gap: "20px",
+        }}
+      >
         {finishedProjects &&
           finishedProjects.map((item) => (
             <div className="folderCard_parent">

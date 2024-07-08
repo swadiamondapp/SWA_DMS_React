@@ -51,6 +51,7 @@ const AssignmentPanelFolderCards = (props) => {
   const toggleMoveOptions = () => {
     setShowMoveOptions(!showMoveOptions);
   };
+  const handleFolderDetailsView = (designId) => {};
 
   const handleCheckboxChange = (designcode) => {
     if (selectedAssignment.includes(designcode)) {
@@ -89,8 +90,15 @@ const AssignmentPanelFolderCards = (props) => {
               props.folderDetails?.assignment_items?.map((item) => (
                 <div className="New_Design_card">
                   {console.log("folderDetails?", item.paper_design.image)}
-                  <div className="Card_img">
-                    <Link to={`/assignmentview/${props.id}`}>
+                  <div
+                    className="Card_img"
+                    onClick={() =>
+                      handleFolderDetailsView(item.paper_design.design_id)
+                    }
+                  >
+                    <Link
+                      to={`/assignmentview/${props.id}?design_id=${item.item_id}`}
+                    >
                       <img src={item.paper_design.image} alt="" />
                     </Link>
                   </div>

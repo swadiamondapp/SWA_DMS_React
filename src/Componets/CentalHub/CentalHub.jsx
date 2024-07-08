@@ -33,7 +33,7 @@ const CentalHub = ({
   setImages,
   handleUploadFile,
   folderDetails,
-  reupload,
+  reUpload,
 }) => {
   // create modal
 
@@ -302,12 +302,6 @@ const CentalHub = ({
             </Box>
           </Modal>
         </div>
-        <SuccessModal
-          successModalOpen={successModalOpen}
-          handleOpen={handleOpen}
-          handleClose={handleClose}
-          successMessage={successMessage}
-        />
       </div>
     </div>
   );

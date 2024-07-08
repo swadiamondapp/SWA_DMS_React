@@ -6,6 +6,7 @@ import {
   Navigate,
   Routes,
   Route,
+  Outlet,
 } from "react-router-dom";
 import Login from "./Componets/Login/Login";
 import Users from "./Pages/Users Page/Users";
@@ -40,7 +41,25 @@ import ForgotPassword from "./Componets/ForgotPassword/ForgetPassword";
 import ForgotPassOtp from "./Componets/ForgotPassword/ForgotPassOtp";
 import CreateNewPassword from "./Componets/ForgotPassword/CreateNewPassword";
 import PasswordResetComplete from "./Componets/ForgotPassword/PasswordResetComplete";
+import UnAssignedDesignerView from "./Pages/DESIGNER PANEL/UnAssignedDesignerPage/UnAssignedDesignerView";
+import CentralFolderDetailsPage from "./Pages/CENTRAL HUB/Central Hub Details Page/CentralFolderDetailsPage";
+import TransferPage from "./Pages/CENTRAL HUB/Transfer Page/TransferPage";
 import FolderDetails from "./Componets/CAD/FolderDetails/FolderDetails";
+import BasicDetails from "./Pages/Basic Details/BasicDetails";
+import MastersMainPage from "./Componets/MastersSection/MastersMainPage/MastersMainPage";
+import MastersTable from "./Componets/MastersSection/MastersTable/MastersTable";
+import TableItems from "./Componets/MastersSection/MasterTableItems/TableItems";
+import TagTable from "./Componets/MastersSection/MasterTableItems/TagTable";
+import MetalType from "./Componets/MastersSection/MasterTableItems/MetalType";
+import DiamondType from "./Componets/MastersSection/MasterTableItems/DiamondType";
+import ValueAddition from "./Componets/MastersSection/MasterTableItems/ValueAddition";
+import WarehouseStatus from "./Componets/MastersSection/MasterTableItems/WarehouseStatus";
+import CHstatus from "./Componets/MastersSection/MasterTableItems/CHstatus";
+import ProductCategory from "./Componets/MastersSection/MasterTableItems/ProductCategory";
+import Outlets from "./Componets/MastersSection/MasterTableItems/Outlets";
+import ScanPage from "./Componets/ScanComponentWarehouse/ScanPage/ScanPage";
+import WorkDone from "./Componets/WorkdoneWarehorse/WorkDone/WorkDone";
+import WorkDone from "./Componets/WorkdoneWarehorse/WorkDone/WorkDone";
 
 function App() {
   return (
@@ -73,7 +92,16 @@ function App() {
               path="/assignmentpaneldetailsview/:id"
               element={<AssignmentPanelFolderCardPage />}
             />
+            <Route
+              path="/centralfolderdetails/:id"
+              element={<CentralFolderDetailsPage />}
+            />
+            <Route path="/centralhubtransfer" element={<TransferPage />} />
             <Route path="/Customizedorder" element={<CustomizedOrderPage />} />
+            <Route
+              path="/unassigneddesigner"
+              element={<UnAssignedDesignerView />}
+            />
             <Route path="/votorspanal" element={<VotorsPanalPage />} />
             <Route
               path="/votorscustomization"
@@ -93,15 +121,36 @@ function App() {
               path="/wareHouseDetails"
               element={<WareHouseDetailsPage />}
             />
+
+            <Route path="/scan" element={<ScanPage />} />
+            <Route path="/workdone" element={<WorkDone />} />
+            <Route path="/workdone" element={<WorkDone />} />
+
             <Route
               path="/CadAssignmentcard"
               element={<CadAssignmentCardPage />}
             />
+            <Route path="/Details/:id" element={<BasicDetails />} />
             <Route path="/FinishedProduct" element={<FinishedProductsPage />} />
             <Route path="/folderdetails/:id" element={<FolderDetails />} />
             <Route path="/centralDashboard" element={<CentralHubDashboard />} />
             <Route path="/slot" element={<HubSlot />} />
+
+            <Route path="/mastertable" element={<MastersTable />} />
+
+            <Route path="/masterspage" element={<MastersMainPage />}>
+              <Route path="findings" element={<TableItems />} />
+              <Route path="tag" element={<TagTable />} />
+              <Route path="metal" element={<MetalType />} />
+              <Route path="diamond" element={<DiamondType />} />
+              <Route path="valueedition" element={<ValueAddition />} />
+              <Route path="whstatus" element={<WarehouseStatus />} />
+              <Route path="chstatus" element={<CHstatus />} />
+              <Route path="productcategory" element={<ProductCategory />} />
+              <Route path="outlet" element={<Outlets />} />
+            </Route>
           </Route>
+
           <Route path="/login" element={<Login />} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/verifyotp" element={<ForgotPassOtp />} />

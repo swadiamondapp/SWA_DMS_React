@@ -65,8 +65,8 @@ const CustomizationTable = (props) => {
   const [showEditDelete, setShowEditDelete] = useState(null);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
-  const [DeleteConfirmationOpen,setDeleteConfirmationOpen] = useState(false)
-  const [userId,setUserId] =useState([])
+  const [DeleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
+  const [userId, setUserId] = useState([]);
 
   const [Data, setData] = useState([]);
   const [CustomizationWareHouseData, setCustomizationWareHouseData] = useState(
@@ -78,6 +78,7 @@ const CustomizationTable = (props) => {
   useEffect(() => {
     customizaztion_list_wareHouse(setIsLoading, setCustomizationListData);
   }, []);
+  
   console.log(CustomizationListData, "CustomizationListData");
   const handleEyeClick = (wareHouseId) => {
     setOpenCRModal(true);
@@ -89,8 +90,8 @@ const CustomizationTable = (props) => {
     );
   };
   const handleDeleteCustomization = (userId) => {
-    setUserId(userId)
-    setDeleteConfirmationOpen(true)
+    setUserId(userId);
+    setDeleteConfirmationOpen(true);
     // delete_customization_warehouse(
     //   setIsLoading,
     //   userId,
@@ -107,12 +108,12 @@ const CustomizationTable = (props) => {
   const handleClose = () => {
     setSuccessModalOpen(false);
   };
-  const handleDeleteClose = ()=> {
-    setDeleteConfirmationOpen(false)
-  }
-  const handleDeleteOpen = ()=> {
-    setDeleteConfirmationOpen(true)
-  }
+  const handleDeleteClose = () => {
+    setDeleteConfirmationOpen(false);
+  };
+  const handleDeleteOpen = () => {
+    setDeleteConfirmationOpen(true);
+  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -219,7 +220,7 @@ const CustomizationTable = (props) => {
         wareHouseuserId={wareHouseuserId}
         CustomizationWareHouseData={CustomizationWareHouseData}
       />
-       <DeleteConfirmationModal
+      <DeleteConfirmationModal
         DeleteConfirmationOpen={DeleteConfirmationOpen}
         handleDeleteClose={handleDeleteClose}
         setDeleteConfirmationOpen={setDeleteConfirmationOpen}
@@ -233,8 +234,7 @@ const CustomizationTable = (props) => {
             setDeleteConfirmationOpen,
             setSuccessModalOpen,
             setSuccessMessage
-
-          )
+          );
         }}
       />
       <SuccessModal

@@ -64,7 +64,7 @@ const validateForm = (data) => {
   return errors;
 };
 
-const UsersList = () => {
+const  UsersList = () => {
   // create modal
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);

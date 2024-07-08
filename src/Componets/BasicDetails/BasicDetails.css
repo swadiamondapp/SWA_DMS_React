@@ -191,7 +191,7 @@
   font-weight: normal;
   text-align: start;
   font-family: "Gilroy medium";
-  white-space: nowrap;
+  /* white-space: nowrap; */
 }
 .basic_eye_cirCular {
   position: absolute;

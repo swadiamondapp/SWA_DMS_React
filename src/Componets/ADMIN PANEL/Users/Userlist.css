@@ -32,7 +32,9 @@ th,
 td:first-child,
 td:nth-child(3),
 td:nth-child(5) {
-  font-weight:normal
+  font-weight:normal;
+  
+
 }
 .Users_Table_List table,
 th,
@@ -42,7 +44,7 @@ td {
   background: #fff;
   padding: 10px 15px;
 
-  border-radius: 4px;
+  /* border-radius: 4px; */
   text-align: left;
   font-family: "Gilroy medium";
 
@@ -223,6 +225,7 @@ input:checked + .slider:before {
 }
 .Edit_btn_user {
   padding: 15px;
+  text-align: center;
 }
 .Delete_btn_user {
   padding: 15px;

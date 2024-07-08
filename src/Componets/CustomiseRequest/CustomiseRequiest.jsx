@@ -203,10 +203,10 @@ const CustomiseRequest = ({
                           <img src={dataToDisplay.image2} alt="" />
                         </div>
                         <div className="imageContainer">
-                          <img src={dataToDisplay.image3} alt="" />
+                          <img src={dataToDisplay.image3}  alt="" />
                         </div>
                         <div className="imageContainer">
-                          <img src={dataToDisplay.image4} alt="" />
+                          <img src={dataToDisplay.image3}  alt="" />
                         </div>
                         <div className="imageContainer">
                           <img src={dataToDisplay.image5} alt="" />

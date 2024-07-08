@@ -9,7 +9,19 @@ import {
   LIST_LAST_VOTED_DESIGN,
   LIST_WAREHOUSE_DESIGNS,
   REJECT_WAREHOUSE,
+  SCAN_SLOT_LIST_GET,
+  SCAN_SLOT_LIST_GET,
+  SCAN_TABLE_LIST,
+  SCAN_TABLE_SLOTID_SEARCH,
+  SCAN_TABLE_STATUS_CHANGE,
+  SCAN_TABLE_STATUS_GET,
   VOTERS_CUSTOMIZATION_LIST,
+  WORKDONE_TABLE_LIST,
+  WORKDONE_TABLE_SLOTID_SEARCH,
+  WORKDONE_TABLE_LIST,
+  WORKDONE_TABLE_PRODUCT_DETAIL,
+  WORKDONE_TABLE_PRODUCT_SEARCH,
+  WORKDONE_TABLE_PRODUCT_UPDATE,
 } from "../../Pages/Services/EndPoints";
 import {
   customization_details,
@@ -360,7 +372,7 @@ export const create_customizaion_warehouse = async (
   setImageFiles,
   setCustomization,
   setData,
-  userId,
+  userId
 ) => {
   try {
     setIsLoading(true);
@@ -426,5 +438,215 @@ export const create_customizaion_warehouse = async (
     setErrorMessage(errorReasonString);
   } finally {
     setIsLoading(false);
+  }
+};
+
+// ....WREHOUSE scan table..
+
+export const scan_list_datas = async (setIsLoading, setScanTableData) => {
+  try {
+    const response = await apiService.get(SCAN_TABLE_LIST);
+    if (checkApiStatus(response)) {
+      setScanTableData(response.data.results.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const scan_list_search = async (
+  setIsLoading,
+  searchListId,
+  setScanTableData,
+  setsearchListId
+) => {
+  try {
+    const body = {
+      slot_id: searchListId,
+    };
+
+    const response = await apiService.post(SCAN_TABLE_SLOTID_SEARCH, body);
+    if (response.data.results.status_code === 200) {
+      scan_list_datas(setIsLoading, setScanTableData);
+      setsearchListId("");
+      alert("Item Added");
+    }
+  } catch (error) {
+    console.log(error);
+    alert("Already exists");
+    setsearchListId("");
+  }
+};
+
+export const scan_table_status_get = async (setIsLoading, setstatus) => {
+  try {
+    const response = await apiService.get(SCAN_TABLE_STATUS_GET);
+    if (checkApiStatus(response)) {
+      setstatus(response.data.results.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const scan_table_status_change = async (slotId, selectedStatusId) => {
+  try {
+    const body = {
+      status_id: selectedStatusId,
+    };
+    const response = await apiService.put(
+      `${SCAN_TABLE_STATUS_CHANGE}${slotId}/`,
+      body
+    );
+    if (response.data.results.status_code === 200) {
+      console.log("Status Updated Successfully");
+      alert("updated Successfully");
+    } else {
+      console.error("Failed to update status");
+    }
+  } catch (error) {
+    console.log("error on updating", error);
+  }
+};
+
+export const scan_table_item_products = async (
+  clickedProductId,
+  setclickedProducts
+) => {
+  try {
+    const response = await apiService.get(
+      `${SCAN_SLOT_LIST_GET}${clickedProductId}/`
+    );
+    if (checkApiStatus(response)) {
+      setclickedProducts(response.data.results.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// ....WREHOUSE Wor-kdone table..
+
+export const workDone_list_datas = async (setIsLoading, setworkTableData) => {
+  try {
+    const response = await apiService.get(WORKDONE_TABLE_LIST);
+    if (checkApiStatus(response)) {
+      setworkTableData(response.data.results.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const workDone_list_search = async (
+  setIsLoading,
+  searchListId,
+  setworkTableData,
+  setsearchListId
+) => {
+  try {
+    const body = {
+      slot_id: searchListId,
+    };
+
+    const response = await apiService.post(WORKDONE_TABLE_SLOTID_SEARCH, body);
+    if (response.data.results.status_code === 200) {
+      workDone_list_datas(setIsLoading, setworkTableData);
+      setsearchListId("");
+      alert("Product Added");
+    }
+  } catch (error) {
+    console.log(error);
+    alert("Product Already exists");
+    setsearchListId("");
+  }
+};
+export const scan_table_item_products = async (
+  clickedProductId,
+  setclickedProducts
+) => {
+  try {
+    const response = await apiService.get(
+      `${SCAN_SLOT_LIST_GET}${clickedProductId}/`
+    );
+    if (checkApiStatus(response)) {
+      setclickedProducts(response.data.results.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// ....WREHOUSE Workdone table..
+
+export const workDone_list_datas = async (setIsLoading, setworkTableData) => {
+  try {
+    const response = await apiService.get(WORKDONE_TABLE_LIST);
+    if (checkApiStatus(response)) {
+      setworkTableData(response.data.results.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const workDone_list_search = async (
+  setIsLoading,
+  searchListId,
+  setworkTableData,
+  setsearchListId
+) => {
+  try {
+    const body = {
+      product_id: searchListId,
+    };
+
+    const response = await apiService.post(WORKDONE_TABLE_PRODUCT_SEARCH, body);
+    if (response.data.results.status_code === 200) {
+      workDone_list_datas(setIsLoading, setworkTableData);
+      setsearchListId("");
+      alert("Product Added");
+    }
+  } catch (error) {
+    console.log(error);
+    alert("Product Already exists");
+    setsearchListId("");
+  }
+};
+
+export const workDone_table_product_detail = async (
+  clickedProductId,
+  setclickedProducts
+) => {
+  try {
+    const response = await apiService.get(
+      `${WORKDONE_TABLE_PRODUCT_DETAIL}${clickedProductId}/`
+    );
+    if (checkApiStatus(response)) {
+      setclickedProducts(response.data.results.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const workDone_table_product_update = async (
+  pId,
+  formData,
+  setOpenLeftbar
+) => {
+  try {
+    // setIsLoading(true);
+    const response = await apiService.patch(
+      `${WORKDONE_TABLE_PRODUCT_UPDATE}/${pId}/update/`,
+      formData
+    );
+
+    if (response.data.results.status_code === 200) {
+      alert("Data Updated Successfully");
+      setOpenLeftbar(false);
+    }
+  } catch (error) {
+    console.error("Update Failed", error);
   }
 };

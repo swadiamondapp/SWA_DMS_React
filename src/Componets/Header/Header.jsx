@@ -9,8 +9,14 @@ import { useNavigate } from "react-router-dom";
 import { removeLocalstorage } from "../../Pages/Utils/Common";
 import { useParams } from "react-router-dom";
 
-const Header = ({ leftHeader }) => {
+const Header = ({
+  centralId,
+  designCodesCentralHub,
+  leftHeader,
+  basicDetails,
+}) => {
   const location = useLocation();
+  const { nameCentral } = useParams();
   const { wareHouseuserId, customizationsku } = location.state || {};
   const { cadFolderName, cadId } = location.state || {};
   const query = new URLSearchParams(location.search);
@@ -35,7 +41,8 @@ const Header = ({ leftHeader }) => {
   const userPhoneNumber = localStorage.getItem("phone_number");
   const userImage = localStorage.getItem("Loginimage");
   const dropdownRef = useRef(null);
-  console.log(userImage, "userImage");
+
+  console.log(nameCentral, "nameCentral");
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -56,117 +63,195 @@ const Header = ({ leftHeader }) => {
     <div>
       <div className="Parent_Section">
         <div className="Header_Section">
-          <div className="Left_User_Section">
-            {location.pathname === "/users" && <h3>Users</h3>}
-            {location.pathname === "/designpool" && <h3>Design pool</h3>}
-            {location.pathname === "/customRequestTable" && (
-              <h3>Customize Request</h3>
-            )}
-            {location.pathname === "/wareHouse" && <h3>Votors panel</h3>}
-            {location.pathname === "/votorspanal" && <h3>Votors panel</h3>}
-            {location.pathname === "/gallery" && <h3>Gallery</h3>}
-            {location.pathname === "/finishedProject" && (
-              <h3>Finished project</h3>
-            )}
-            {location.pathname === "/renderCard" && <h3>SWAD3456</h3>}
-            {location.pathname === "/wareHouseDetails" && (
-              <h3> ID : SWAD3456</h3>
-            )}
-            {location.pathname === "/finished" && <h3>SWAD3456</h3>}
+          {basicDetails ? (
+            <div className="basic-details_header">
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "20px",
+                }}
+              >
+                <h3>ID : {basicDetails?.design_code}</h3>
+                <span
+                  className={
+                    basicDetails.timer_status === "Completed"
+                      ? "completed"
+                      : basicDetails.timer_status === "on-going"
+                      ? "ongoing"
+                      : "notstarted"
+                  }
+                >
+                  {basicDetails.timer_status}
+                </span>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "10px",
+                }}
+              >
+                <p className="Name_Sub_admin">Assigned To:</p>
+                <div className="Profile_Admin" onClick={handleLogout}>
+                  {userImage ===
+                  "http://dmstestapi.zinfog.in/media/default.png" ? (
+                    <>
+                      <img src={profileimg} />
+                    </>
+                  ) : (
+                    <>
+                      <img src={userImage} />
+                    </>
+                  )}
 
-            {location.pathname === "/assignmentpanel" && (
-              <h3>Assignment Panel</h3>
-            )}
-            {location.pathname === "/otherlogin" && <h3>Other Login</h3>}
-            {location.pathname === "/votorscustomization" && (
-              <h3>Customization</h3>
-            )}
-            {location.pathname === `/designerassignview/${id}` && (
-              <h3>{folderName}</h3>
-            )}
-            {location.pathname === `/CadAssignment` && <h3>Assigments</h3>}
-            {location.pathname === "/designerassign" && (
-              <h3>Assignment panel</h3>
-            )}
-            {location.pathname === "/designdashboard" && <h3>Dashboard</h3>}
-            {location.pathname === "/Customizedorder" && (
-              <h3>Customized Order</h3>
-            )}
-            {location.pathname === "/chat" && <h3>Chat</h3>}
-            {location.pathname === "/" && <h3>Users</h3>}
-            {location.pathname === `/assignmentpaneldetailsview/${id}` && (
-              <h3>{folderName}</h3>
-            )}
-            {location.pathname === `/warehouseDetails` && (
-              <h3>ID : {customizationsku}</h3>
-            )}
-            {location.pathname === `/CadAssignmentcard` && (
-              <h3>{cadFolderName}</h3>
-            )}
-            {location.pathname === `/FinishedProduct` && (
-              <h3>Finished Project</h3>
-            )}
-            {location.pathname === "/centralDashboard" && <h3>Dashboard</h3>}
-            {location.pathname === "/slot" && <h3>Slot</h3>}
-            {leftHeader && <h3>{leftHeader}</h3>}
-          </div>
-          <div className="Right_User_Section">
-            {location.pathname !== "/assignmentpanel" &&
-              location.pathname !== "/designdashboard" &&
-              location.pathname !== "/votorscustomization" &&
-              location.pathname !== "/gallery" &&
-              location.pathname !== "/CadAssignment" &&
-              location.pathname !== "/renderCard" &&
-              location.pathname !== "/votorspanal" &&
-              location.pathname !== "/centralDashboard" &&
-              location.pathname !== "/slot" &&
-              location.pathname !== `/designerassignview/${id}` &&
-              location.pathname !== "/designerassign" &&
-              location.pathname !== "/warehouseDetails" &&
-              location.pathname !== `/CadAssignmentcard` &&
-              location.pathname !== "/customRequestTable" && (
-                <div className="Search_Admin">
-                  <div className="Search_User">
-                    <input type="text" placeholder="Search Users" />
-                    <img src={searchimg} alt="" />
+                  <div className="Name_Sub">
+                    <p style={{ fontSize: "15px" }}>{userName}</p>
                   </div>
                 </div>
-              )}
-
-            <div className="Profile_Admin" onClick={handleLogout}>
-              {userImage === "http://dmstestapi.zinfog.in/media/default.png" ? (
-                <>
-                  <img src={profileimg} />
-                </>
-              ) : (
-                <>
-                  <img src={userImage} />
-                </>
-              )}
-
-              <div className="Name_Sub">
-                <p style={{ fontSize: "15px" }}>{userName}</p>
-                <p className="Name_Sub_admin">
-                  {userType.charAt(0).toUpperCase() +
-                    userType.slice(1).toLowerCase()}
-                </p>
               </div>
-              <IoChevronDown style={{ color: "#1AA1A1" }} />
-              {isLogoutDropdown && (
-                <div
-                  className="log_out__btns"
-                  ref={dropdownRef}
-                  onClick={() => {
-                    removeLocalstorage(navigate);
-                  }}
-                >
-                  <button>
-                    <MdOutlineLogout /> Log Out
-                  </button>
-                </div>
-              )}
             </div>
-          </div>
+          ) : (
+            <>
+              <div className="Left_User_Section">
+                {location.pathname === "/users" && <h3>Users</h3>}
+                {location.pathname === "/designpool" && <h3>Design pool</h3>}
+                {location.pathname === "/customRequestTable" && (
+                  <h3>Customize Request</h3>
+                )}
+                {location.pathname === "/wareHouse" && <h3>Votors panel</h3>}
+                {location.pathname === "/votorspanal" && <h3>Votors panel</h3>}
+                {location.pathname === "/gallery" && <h3>Gallery</h3>}
+                {location.pathname === "/finishedProject" && (
+                  <h3>Finished project</h3>
+                )}
+                {location.pathname === "/renderCard" && <h3>SWAD3456</h3>}
+                {location.pathname === "/wareHouseDetails" && (
+                  <h3> ID : SWAD3456</h3>
+                )}
+                {location.pathname === "/finished" && <h3>SWAD3456</h3>}
+
+                {location.pathname === "/assignmentpanel" && (
+                  <h3>Assignment Panel</h3>
+                )}
+                {location.pathname === "/otherlogin" && <h3>Other Login</h3>}
+                {location.pathname === "/votorscustomization" && (
+                  <h3>Customization</h3>
+                )}
+                {location.pathname === `/designerassignview/${id}` && (
+                  <h3>{folderName}</h3>
+                )}
+                {location.pathname === `/CadAssignment` && <h3>Assigments</h3>}
+                {location.pathname === "/designerassign" && (
+                  <h3>Assignment panel</h3>
+                )}
+                {location.pathname === "/designdashboard" && <h3>Dashboard</h3>}
+                {location.pathname === "/Customizedorder" && (
+                  <h3>Customized Order</h3>
+                )}
+                {location.pathname === "/chat" && <h3>Chat</h3>}
+                {location.pathname === "/" && <h3>Users</h3>}
+                {location.pathname === `/assignmentpaneldetailsview/${id}` && (
+                  <h3>{folderName}</h3>
+                )}
+                {location.pathname === `/warehouseDetails` && (
+                  <h3>ID : {customizationsku}</h3>
+                )}
+                {location.pathname === `/CadAssignmentcard` && (
+                  <h3>{cadFolderName}</h3>
+                )}
+                {location.pathname === `/FinishedProduct` && (
+                  <h3>Finished Project</h3>
+                )}
+                {location.pathname === "/centralDashboard" && (
+                  <h3>Dashboard</h3>
+                )}
+                {location.pathname === "/slot" && <h3>Slot</h3>}
+                {leftHeader && <h3>{leftHeader}</h3>}
+
+                {(location.pathname === "/masterspage/findings" ||
+                  location.pathname === "/masterspage/tag" ||
+                  location.pathname === "/masterspage/metal" ||
+                  location.pathname === "/masterspage/diamond" ||
+                  location.pathname === "/masterspage/valueedition" ||
+                  location.pathname === "/masterspage/whstatus" ||
+                  location.pathname === "/masterspage/chstatus" ||
+                  location.pathname === "/masterspage/productcategory" ||
+                  location.pathname === "/masterspage/outlet") && (
+                  <h3>Masters</h3>
+                )}
+
+                {location.pathname === "/scan" && <h3>Scan</h3>}
+                {location.pathname === "/workdone" && <h3>Work Done</h3>}
+                {location.pathname === "/workdone" && <h3>Work Done</h3>}
+              </div>
+
+              <div className="Right_User_Section">
+                {location.pathname !== "/assignmentpanel" &&
+                  location.pathname !== "/masterspage" &&
+                  location.pathname !== "/designdashboard" &&
+                  location.pathname !== "/votorscustomization" &&
+                  location.pathname !== "/gallery" &&
+                  location.pathname !== "/CadAssignment" &&
+                  location.pathname !== "/renderCard" &&
+                  location.pathname !== "/votorspanal" &&
+                  location.pathname !== "/centralDashboard" &&
+                  location.pathname !== "/slot" &&
+                  location.pathname !== `/designerassignview/${id}` &&
+                  location.pathname !== "/designerassign" &&
+                  location.pathname !== "/warehouseDetails" &&
+                  location.pathname !== `/CadAssignmentcard` &&
+                  location.pathname !== "/customRequestTable" &&
+                  location.pathname !== "/workdone" &&
+                  location.pathname !== "/workdone" &&
+                  location.pathname !== "/scan" && (
+                    <div className="Search_Admin">
+                      <div className="Search_User">
+                        <input type="text" placeholder="Search Users" />
+                        <img src={searchimg} alt="" />
+                      </div>
+                    </div>
+                  )}
+
+                <div className="Profile_Admin" onClick={handleLogout}>
+                  {userImage ===
+                  "http://dmstestapi.zinfog.in/media/default.png" ? (
+                    <>
+                      <img src={profileimg} />
+                    </>
+                  ) : (
+                    <>
+                      <img src={userImage} />
+                    </>
+                  )}
+
+                  <div className="Name_Sub">
+                    <p style={{ fontSize: "15px" }}>{userName}</p>
+                    <p className="Name_Sub_admin">
+                      {userType.charAt(0).toUpperCase() +
+                        userType.slice(1).toLowerCase()}
+                    </p>
+                  </div>
+                  <IoChevronDown style={{ color: "#1AA1A1" }} />
+                  {isLogoutDropdown && (
+                    <div
+                      className="log_out__btns"
+                      ref={dropdownRef}
+                      onClick={() => {
+                        removeLocalstorage(navigate);
+                      }}
+                    >
+                      <button>
+                        <MdOutlineLogout /> Log Out
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>
