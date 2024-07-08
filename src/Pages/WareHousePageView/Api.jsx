@@ -10,7 +10,6 @@ import {
   LIST_WAREHOUSE_DESIGNS,
   REJECT_WAREHOUSE,
   SCAN_SLOT_LIST_GET,
-  SCAN_SLOT_LIST_GET,
   SCAN_TABLE_LIST,
   SCAN_TABLE_SLOTID_SEARCH,
   SCAN_TABLE_STATUS_CHANGE,
@@ -20,7 +19,6 @@ import {
   WORKDONE_TABLE_PRODUCT_DETAIL,
   WORKDONE_TABLE_PRODUCT_SEARCH,
   WORKDONE_TABLE_PRODUCT_UPDATE,
-  WORKDONE_TABLE_SLOTID_SEARCH,
 } from "../../Pages/Services/EndPoints";
 import {
   customization_details,
@@ -586,7 +584,7 @@ export const workDone_table_product_update = async (
   try {
     // setIsLoading(true);
     const response = await apiService.patch(
-      `${WORKDONE_TABLE_PRODUCT_UPDATE}/${pId}/update/`,
+      `${WORKDONE_TABLE_PRODUCT_UPDATE}${pId}/update/`,
       formData
     );
 
