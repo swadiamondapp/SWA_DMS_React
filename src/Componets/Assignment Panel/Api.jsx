@@ -194,7 +194,6 @@ export const move_to_assignment = async (
         tag: formData.tag,
       },
     };
-    console.log(body, "move_TO_ASSINGG");
     const response =
       formData.SKU && body && (await apiService.post(ASSIGNMENT_MOVE, body));
     if (response?.data?.results?.status_code === 200) {
