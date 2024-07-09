@@ -196,7 +196,7 @@ export const move_to_assignment = async (
     console.log(body, "move_TO_ASSINGG");
     const response =
       formData.SKU && body && (await apiService.post(ASSIGNMENT_MOVE, body));
-    if (response.data.results.status_code === 200) {
+    if (response?.data?.results?.status_code === 200) {
       all_Designs(setIsLoading, setData);
       onClose();
       setSuccessMessage("Moved to Assignment Successfully");
