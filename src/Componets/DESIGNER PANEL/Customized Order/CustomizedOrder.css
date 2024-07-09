@@ -1,0 +1,43 @@
+.CustomizedOrderParent {
+  margin: 12px;
+}
+.parent_CustomeOrder {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  align-items: center;
+  position: relative;
+}
+.OrderHigh {
+  background: #fbe3de;
+  color: #561c18;
+  padding: 5px 10px;
+  border-radius: 4px;
+}
+.OrderMedium {
+  color: #3d2d1e;
+  background: #fbeccc;
+  padding: 5px 10px;
+  border-radius: 4px;
+}
+.OrderLow {
+  color: #23372a;
+  background: #dfecdd;
+  padding: 5px 10px;
+  border-radius: 4px;
+}
+
+.dropdown {
+  /* border: 1px solid #ccc; */
+  position: absolute;
+  padding: 10px;
+  margin-top: 10px;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+  right: 0;
+  bottom:-100px
+}
+.OrderHigh, .OrderMedium {
+  margin: 5px 0;
+  cursor: pointer;
+}

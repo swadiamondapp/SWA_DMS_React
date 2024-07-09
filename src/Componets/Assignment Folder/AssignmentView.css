@@ -1,0 +1,68 @@
+.Parent_AssignmentView {
+  padding-left: 225px;
+  padding-top: 20px;
+}
+.AssignmentView {
+  display: grid;
+  grid-template-columns: 1fr 0.7fr;
+  gap: 30px;
+  padding: 20px 30px 20px 60px;
+}
+.Left_img_View {
+  background: #fff;
+  box-shadow: 0px 2.767256498336792px 7.471592426300049px 0px #00000008;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-height: 420px;
+}
+.Left_img_View img {
+  max-width: 390px;
+}
+.right_Assignment_View {
+  box-shadow: 0px 2px 2px 0px #0000000d;
+  background: #fff;
+  padding: 20px;
+  border-radius: 4px;
+  position: relative;
+}
+.editContainer {
+  /* position: absolute; */
+  right:30px;
+  top:0;
+  color:#0464D5;
+  display: flex;
+  justify-content: flex-end;
+  gap:8px
+}
+.editContainer p {
+  text-decoration: underline;
+  color: #0464D5;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 7px;
+  font-size: 13px;
+  font-family: "Lato", sans-serif;
+}
+.Assignment_contents {
+  font-family: "Lato", sans-serif;
+}
+.Assignment_contents h3 {
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+.A1_text {
+  display: grid;
+
+  gap: 25px;
+  grid-template-columns: 1.2fr 1.5fr;
+  border-bottom: 0.5px solid #e8e9ea;
+  padding: 12px 0px;
+  font-size: 15px;
+}
+.A1_text p:nth-child(1) {
+  color: #7a8288;
+}
+.A1_text p:nth-child(2) {
+  color: #303a42;
+}

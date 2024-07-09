@@ -1,0 +1,14 @@
+.successModalContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap:20px
+}
+.tick {
+    width:60px
+}
+.titlesuccesModal {
+    font-family: "Gilroy medium";
+}
+

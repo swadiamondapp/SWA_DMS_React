@@ -1,0 +1,28 @@
+.deleteModalContainer {
+    display: flex;
+    flex-direction: column;
+    gap:30px
+
+}
+.deleteButtonContiner {
+
+    display: flex;
+    justify-content: space-between;
+    gap:10px;
+   
+}
+.deleteButtonContiner button {
+    border:none;
+    border-radius: 8px;
+    padding:8px 10px;
+    width: 100%; 
+}
+.delete_button_modal {
+    color:whitesmoke;
+    background-color: rgb(211, 44, 44);
+    border: none;
+}
+.deleteMessageText {
+    font-size: 14px;
+    font-family: "Gilroy medium";
+}

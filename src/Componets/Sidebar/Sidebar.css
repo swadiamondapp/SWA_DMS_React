@@ -1,0 +1,90 @@
+.Sidebar_Parent {
+  width: 204px;
+  background: #04344d;
+  border-radius: 10px;
+  padding: 20px 20px 20px 25px;
+  color: #ffffffc9;
+  font-family: "Gilroy medium";
+  font-weight: 400;
+  /* height: 100%; */
+  height: 96.9%;
+  position: fixed;
+}
+
+.collapsed {
+  width: 108px;
+}
+.Links {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 25px;
+  height: 30px;
+}
+
+.vertical_sideBar_line {
+  position: absolute;
+  display: none;
+  left: 0px;
+  height: 31px;
+  width: 4px;
+  background: rgba(90, 191, 181, 1);
+  opacity: 1;
+}
+.lin_container {
+  position: absolute;
+  display: none;
+  left: 7px;
+  height: 32px;
+  width: 175px;
+  opacity: 1;
+  background: linear-gradient(90deg, #064b70 0%, rgba(6, 75, 112, 0) 98.46%);
+}
+.Links:hover .lin_container {
+  display: block; /* Show the container on hover */
+}
+.Links p {
+  color: #ffffffc9;
+}
+.Links.active p {
+  color: #70e2cf; /* Change to your preferred active text color */
+}
+
+.Links2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 25px;
+  justify-content: center;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 40px;
+  position: relative;
+}
+.Arrow {
+}
+.ArrowIcon1 {
+  background: #0b6483;
+  font-size: 27px;
+  border-radius: 32px;
+  cursor: pointer;
+  position: absolute;
+  bottom: 5%;
+  right: -5%;
+}
+.ArrowIcon2 {
+  background: #0b6483;
+  font-size: 27px;
+  border-radius: 32px;
+  cursor: pointer;
+  position: absolute;
+  bottom: 5%;
+  right: -10%;
+}
+.Links img{
+  width: 15px;
+  height: 15px;
+}

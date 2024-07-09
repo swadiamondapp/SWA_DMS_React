@@ -1,0 +1,84 @@
+.Login_Parent {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 10px;
+}
+.Right_Section {
+  position: relative;
+}
+.Login_bg {
+  background-image: url(../../assets/dots.png);
+  background-repeat: no-repeat;
+}
+.Login_Form {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  width: 50%;
+}
+.Login_Form h3 {
+  font-family: "Gilroy bold";
+  color: #000000;
+  font-weight: 700;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+.Login_Inp {
+  display: grid;
+  margin-bottom: 15px;
+  position: relative;
+}
+.Login_Inp label {
+  margin-bottom: 8px;
+  color: #2d333e;
+  font-family: "Gilroy medium";
+  font-weight: 400;
+}
+.Login_Inp input {
+  border: 0.1px solid #dfe5ec;
+  padding: 10px;
+  border-radius: 8px;
+  background: #fcfcfd;
+  outline: none;
+  width: 100%;
+}
+.Forgot_password p {
+  text-align: end;
+  font-family: "Gilroy medium";
+  color: #2d333e;
+  font-weight: 400;
+  margin-bottom: 15px;
+}
+.Submit_btn button {
+  background: #2b2b2b;
+  color: #fff;
+  border: none;
+  width: 100%;
+  padding: 12px;
+  outline: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: "Gilroy medium";
+}
+.Left_Banner {
+  height: 621px;
+}
+.Left_Banner img {
+  height: 100%;
+}
+.loginCred::placeholder {
+  opacity: 60% !important;
+  font-size: 12px;
+}
+.login_eyeIcon img {
+  width: 14px;
+}
+.login_eyeIcon  {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+}

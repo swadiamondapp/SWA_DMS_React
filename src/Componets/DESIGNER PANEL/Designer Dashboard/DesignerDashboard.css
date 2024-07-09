@@ -1,0 +1,47 @@
+.DesignerDashboard {
+  padding-left: 225px;
+  padding-top: 20px;
+}
+.Design_FileUpload {
+  border: 0.5px dashed #e6e3d7;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  width:100%
+}
+.De__file {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+.D__fileUpload {
+  font-family: "Gilroy medium";
+  color: #000;
+  font-weight: 600;
+  margin-bottom: 7px;
+}
+.D__fileUpload2 {
+  color: #19242d99;
+  font-family: "lato";
+}
+.File____uploadbtn button {
+  box-shadow: 0px 2px 4px 0px #0000000d;
+  background: #0464d5;
+  border-radius: 32px;
+  padding: 10px 15px;
+  color: #fff;
+  font-family: "Gilroy medium";
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: none;
+  font-size: 15px;
+  cursor: pointer;
+}
+.Uploaded___list {
+  margin-top: 25px;
+}

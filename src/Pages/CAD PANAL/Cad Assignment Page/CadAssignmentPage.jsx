@@ -1,0 +1,148 @@
+import React, { useState, useEffect } from "react";
+import Sidebar from "../../../Componets/Sidebar/Sidebar";
+import Header from "../../../Componets/Header/Header";
+import CadAssignment from "../../../Componets/CAD/Cad Assignment Panal/CadAssignment";
+import {
+  getDesignList,
+  designListStatusChange,
+  uploadFile,
+} from "../../../Componets/CAD/Api";
+import SuccessModal from "../../../Componets/SuccessModal/SuccessModal";
+import CentalHub from "../../../Componets/CentalHub/CentalHub";
+
+const CadAssignmentPage = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [successModalOpen, setSuccessModalOpen] = useState("");
+  const [designList, setDesignList] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [timer, setTimer] = useState("");
+  const [productCode, setProductCode] = useState("");
+  const [itemId, setItemId] = useState("");
+  const [images, setImages] = useState({
+    normal: null,
+    threeD: null,
+  });
+
+  useEffect(() => {
+    getDesignList(setIsLoading, setDesignList);
+  }, []);
+
+  useEffect(() => {
+    const ongoingItem = designList.find(
+      (item) => item.timer_status === "on-going"
+    );
+    if (ongoingItem) {
+      const interval = setInterval(() => {
+        const now = new Date().getTime();
+        const startTime = localStorage.getItem(
+          `start_time_${ongoingItem.item_id}`
+        );
+        const elapsedTime = now - new Date(startTime).getTime();
+        const formattedTime = formatTime(elapsedTime);
+        setDesignList((prevList) =>
+          prevList.map((item) =>
+            item.item_id === ongoingItem.item_id
+              ? { ...item, timer_value: formattedTime }
+              : item
+          )
+        );
+        console.log(`Timer for item ${ongoingItem.item_id}: ${formattedTime}`);
+        setProductCode(ongoingItem.design_code);
+        setItemId(ongoingItem.item_id);
+        setTimer(formattedTime);
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [designList]);
+
+  const formatTime = (milliseconds) => {
+    const totalSeconds = Math.floor(milliseconds / 1000);
+    const seconds = totalSeconds % 60;
+    const totalMinutes = Math.floor(totalSeconds / 60);
+    const minutes = totalMinutes % 60;
+    const hours = Math.floor(totalMinutes / 60);
+
+    // Add leading zeros to the values if they are less than 10
+    const formattedHours = String(hours).padStart(2, "0");
+    const formattedMinutes = String(minutes).padStart(2, "0");
+    const formattedSeconds = String(seconds).padStart(2, "0");
+
+    return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+  };
+
+  const onButtonClick = (id) => {
+    const startTime = new Date().toISOString();
+    localStorage.setItem(`start_time_${id}`, startTime);
+    designListStatusChange(
+      setIsLoading,
+      id,
+      () => {
+        getDesignList(setIsLoading, setDesignList);
+      },
+      "on-going"
+    );
+  };
+
+  const onStopButtonClick = () => {
+    localStorage.removeItem(`start_time_${itemId}`);
+    designListStatusChange(
+      setIsLoading,
+      itemId,
+      () => {
+        getDesignList(setIsLoading, setDesignList);
+      },
+      "Completed",
+      timer
+    );
+  };
+
+  const handleUploadFile = () => {
+    const formData = new FormData();
+    formData.append("designcode", productCode);
+    formData.append("file_2d", images.normal);
+    formData.append("file_3d", images.threeD);
+    uploadFile(
+      setIsLoading,
+      formData,
+      setSuccessModalOpen,
+      setSuccessMessage,
+      setIsModalOpen,
+      setImages,
+      setProductCode,
+      () => {
+        onStopButtonClick();
+      }
+    );
+  };
+
+  return (
+    <div className="ParentVotorPage">
+      <Sidebar />
+      <Header />
+      <CadAssignment
+        designList={designList}
+        onButtonClick={onButtonClick}
+        timer={timer}
+        setIsModalOpen={setIsModalOpen}
+      />
+      <CentalHub
+        open={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        productCode={productCode}
+        images={images}
+        setImages={setImages}
+        handleUploadFile={handleUploadFile}
+        onStopButtonClick={onStopButtonClick}
+      />
+      <SuccessModal
+        successModalOpen={successModalOpen}
+        handleOpen={() => setSuccessModalOpen(true)}
+        handleClose={() => setSuccessModalOpen(false)}
+        successMessage={successMessage}
+      />
+    </div>
+  );
+};
+
+export default CadAssignmentPage;
