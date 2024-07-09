@@ -268,7 +268,8 @@ const BasicDetailModal = ({
           setSelectButtonLabel,
           setShowAssignmentModal,
           setMovedItemsId,
-          setFormData
+          setFormData,
+          getSelectedDesign
         );
       }
       // setShowAssignmentModal(true);
