@@ -175,6 +175,7 @@ export const move_to_assignment = async (
   setMovedItemsId,
   setFormData
 ) => {
+  console.log(formData.SKU, "move_TO_ASSINGG");
   try {
     const body = {
       design_codes: formData.SKU,
