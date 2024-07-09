@@ -195,8 +195,7 @@ export const move_to_assignment = async (
         tag: formData.tag,
       },
     };
-    const response =
-      formData.SKU && body && (await apiService.post(ASSIGNMENT_MOVE, body));
+    const response = body && (await apiService.post(ASSIGNMENT_MOVE, body));
     if (response?.data?.results?.status_code === 200) {
       all_Designs(setIsLoading, setData);
       onClose();
