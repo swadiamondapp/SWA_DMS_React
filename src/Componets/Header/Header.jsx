@@ -117,7 +117,7 @@ const Header = ({
             <>
               <div className="Left_User_Section">
                 {location.pathname === "/users" && <h3>Users</h3>}
-                {location.pathname === "/designpool" && <h3>Design pool</h3>}
+                {location.pathname === "/designpool" && <h3>Design pool123</h3>}
                 {location.pathname === "/customRequestTable" && (
                   <h3>Customize Request</h3>
                 )}
