@@ -173,12 +173,13 @@ export const move_to_assignment = async (
   setSelectButtonLabel,
   setShowAssignmentModal,
   setMovedItemsId,
-  setFormData
+  setFormData,
+  getSelectedDesign
 ) => {
-  console.log(formData.SKU, "move_TO_ASSINGG");
+  console.log(getSelectedDesign, "move_TO_ASSINGG");
   try {
     const body = {
-      design_codes: formData.SKU,
+      design_codes: getSelectedDesign ? getSelectedDesign : formData.SKU,
       assignment_data: {
         length: formData.length,
         width: formData.width,
