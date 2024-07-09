@@ -255,6 +255,7 @@ const BasicDetailModal = ({
       if (name === "editbasicDetails") {
         editBasicDetails(formData, setFormData, folderIdA, designId);
       } else {
+        console.log("formData-----------hdsc", formData);
         move_to_assignment(
           formData,
           onClose,
