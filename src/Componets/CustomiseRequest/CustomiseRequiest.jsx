@@ -321,6 +321,8 @@ const CustomiseRequest = ({
         wareHouseuserId={wareHouseuserId}
         setData={setData}
         setCustomization={setCustomization}
+        name="editModalOpen"
+        customizationFunction={()=>customization_details(setIsLoading, setCustomization, userId)}
       />
       <SuccessModal
         successModalOpen={successModalOpen}

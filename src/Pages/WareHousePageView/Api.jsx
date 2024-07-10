@@ -157,9 +157,9 @@ export const edit_customizaion_warehouse = async (
   setSuccessMessage,
   setSuccessModalOpen,
   images,
-  setImageFiles,
-  setCustomization,
-  votersSetData
+  setImages,
+  votersSetData,
+  customizationFunction
 ) => {
   try {
     setIsLoading(true);
@@ -188,18 +188,23 @@ export const edit_customizaion_warehouse = async (
 
     // Append image files if they exist
     if (images.length > 0) {
+      console.log(`Appending image 1:`, images[0]);
       formDataToSend.append("image", images[0]);
     }
     if (images.length > 1) {
+      console.log(`Appending image 2:`, images[1]);
       formDataToSend.append("image2", images[1]);
     }
     if (images.length > 2) {
+      console.log(`Appending image 3:`, images[2]);
       formDataToSend.append("image3", images[2]);
     }
     if (images.length > 3) {
+      console.log(`Appending image 4:`, images[3]);
       formDataToSend.append("image4", images[3]);
     }
     if (images.length > 4) {
+      console.log(`Appending image 5:`, images[4]);
       formDataToSend.append("image5", images[4]);
     }
 
@@ -218,16 +223,18 @@ export const edit_customizaion_warehouse = async (
       setSuccessMessage("Your form has been successfully updated.");
       setSuccessModalOpen(true);
       voters_customization_list(setIsLoading, votersSetData);
+      customizationFunction()
       // customization_details(
-      //   setIsLoading,
-      //   setCustomization,
-      //   displayEditDetailsById
-      // );
-      setTimeout(() => {
-        setSuccessModalOpen(false);
+
+        //   setIsLoading,
+        //   setCustomization,
+        //   displayEditDetailsById
+        // );
+        setTimeout(() => {
+          setSuccessModalOpen(false);
       }, 1500);
     }
-    setImageFiles([]);
+    setImages(Array(5).fill(""));
   } catch (error) {
     console.error("Error moving designs:", error);
   } finally {
@@ -351,16 +358,12 @@ export const confirm_customization = async (
 export const create_customizaion_warehouse = async (
   setIsLoading,
   formData,
-  displayEditDetailsById,
   onClose,
   setSuccessMessage,
   setSuccessModalOpen,
   setErrorMessage,
-  imageFiles,
-  setImageFiles,
-  setCustomization,
+  images,
   votersSetData,
-  userId
 ) => {
   try {
     setIsLoading(true);
@@ -389,11 +392,11 @@ export const create_customizaion_warehouse = async (
     body.append("notes", formData.notes);
 
     // Append images to FormData
-    if (imageFiles.length > 0) body.append("image", imageFiles[0]);
-    if (imageFiles.length > 1) body.append("image2", imageFiles[1]);
-    if (imageFiles.length > 2) body.append("image3", imageFiles[2]);
-    if (imageFiles.length > 3) body.append("image4", imageFiles[3]);
-    if (imageFiles.length > 4) body.append("image5", imageFiles[4]);
+    if (images.length > 1) body.append("image", images[0]);
+    if (images.length > 1) body.append("image2", images[1]);
+    if (images.length > 2) body.append("image3", images[2]);
+    if (images.length > 3) body.append("image4", images[3]);
+    if (images.length > 4) body.append("image5", images[4]);
 
     const response = await apiService.post(CREATE_CUSTOMIZATION, body, {
       headers: { "Content-Type": "multipart/form-data" },
@@ -401,7 +404,7 @@ export const create_customizaion_warehouse = async (
 
     if (response.data.results.status_code === 200) {
       // Update states upon successful response
-      await customization_details(setIsLoading, setCustomization, userId);
+      // await customization_details(setIsLoading, setCustomization, userId);
       voters_customization_list(setIsLoading, votersSetData);
       onClose();
       setSuccessMessage("Customization Created Successfully");
@@ -410,7 +413,7 @@ export const create_customizaion_warehouse = async (
         setSuccessModalOpen(false);
       }, 1500);
       setErrorMessage("");
-      setImageFiles([]);
+      // setImages(Array(5).fill(null));
       // Ensure refresh state update if needed
       // setRefresh((prev) => !prev);
     } else {

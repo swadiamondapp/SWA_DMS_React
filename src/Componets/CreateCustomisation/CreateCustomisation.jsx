@@ -74,6 +74,8 @@ const CreateCustomisation = ({
   wareHouseuserId,
   setData,
   setCustomization,
+  name,
+  customizationFunction,
 }) => {
   // const [open, setOpen] = useState(false);
   const [tagText, setTagText] = useState("");
@@ -94,7 +96,7 @@ const CreateCustomisation = ({
     "Mail Send Successfully"
   );
   const [diamonType, setDiamondType] = useState([]);
-  const [images, setImages] = useState(Array(5).fill(null));
+  const [images, setImages] = useState(Array(5).fill(""));
   const [formData, setFormData] = useState({
     sallerName: "",
     mobileNumber: "",
@@ -129,7 +131,7 @@ const CreateCustomisation = ({
     product_category_basicDetails(setListProductCategory);
   }, []);
 
-  console.log(MetalTypeDropDown, "MetalTypeDropDown");
+  console.log(outLetDropDown, "outLetDropDown");
 
   useEffect(() => {
     if (dataToDisplaytomodal) {
@@ -178,7 +180,7 @@ const CreateCustomisation = ({
         "string.min": `Mobile number must be exactly 10 digits`,
         "string.max": `Mobile number must be exactly 10 digits`,
       }),
-    chooseOutlet: Joi.string().required().messages({
+    chooseOutlet: Joi.required().messages({
       "string.empty": `choose Outlet cannot be an empty feild`,
     }),
     productType: Joi.required().messages({
@@ -319,12 +321,10 @@ const CreateCustomisation = ({
         onClose,
         setSuccessMessage,
         setSuccessModalOpen,
-        imageFiles,
-        setData,
-        setImageFiles,
-        setCustomization,
-        userId,
-        votersSetData
+        images,
+        setImages,
+        votersSetData,
+        customizationFunction
       );
     }
   };
@@ -333,6 +333,7 @@ const CreateCustomisation = ({
     newImages[index] = event.target.files[0];
     setImages(newImages);
   };
+
   console.log(ErrorMessage, "asdfkd");
   const handleCreateSubmitCustomization = () => {
     // Call handleSubmitButton first
@@ -358,16 +359,12 @@ const CreateCustomisation = ({
       create_customizaion_warehouse(
         setIsLoading,
         formData,
-        displayEditDetailsById,
         onClose,
         setSuccessMessage,
         setSuccessModalOpen,
         setErrorMessage,
         images,
-        setImageFiles,
-        userId,
-        votersSetData,
-        setCustomization
+        votersSetData
       );
     }
   };
@@ -382,12 +379,13 @@ const CreateCustomisation = ({
     }
   };
 
-  console.log(images,"images")
+  console.log(images, "images==>new");
   const serverImage = [
     dataToDisplaytomodal?.image,
     dataToDisplaytomodal?.image2,
     dataToDisplaytomodal?.image3,
-    dataToDisplaytomodal?.image4
+    dataToDisplaytomodal?.image4,
+    dataToDisplaytomodal?.image5,
   ];
 
   return (
@@ -480,7 +478,10 @@ const CreateCustomisation = ({
                           onSearch={onSearch}
                           filterOption={filterOption}
                           style={{ width: "100%" }}
-                          options={outLetDropDown}
+                          options={outLetDropDown.map((item) => ({
+                            value: item.id,
+                            label: item.name,
+                          }))}
                           value={formData.chooseOutlet || undefined}
                         />
                         {errors.chooseOutlet && (
@@ -691,46 +692,111 @@ const CreateCustomisation = ({
                           </div>
                         </div>
                       </div> */}
-                      <div className="uploadImageContainer">
-                        
-                        <div className="rightw">
-                          <div
-                            id="fileUpload"
-                            // className="uploadButton"
-                            // onClick={() =>
-                            //   document.getElementById("fileUploadImage").click()
-                            // }
-                          >
-                            <div className="dashed_imageContainer">
-                              {images.map((image, index) => (
-                                <div key={index} className="dashedImage" style={{width:'50px',height:"50px"}}>
-                                  
-                                  {image && (
-                                    <img
-                                      src={URL.createObjectURL(image)}
-                                      alt=""
-                                      style={{ height: "50px", width: "50px" }}
-                                    />
-                                  )}
-                                  <div style={{ position: "absolute" }}>
-                                    <label>
-                                      <img src={plusICon} alt="" />
-                                      <input
-                                        type="file"
-                                        accept="image/png, image/jpeg"
-                                        style={{ display: "none" }}
-                                        onChange={(e) =>
-                                          handleImageUpload(index, e)
+                      {name === "editModalOpen" ? (
+                        <div className="uploadImageContainer">
+                          <div className="rightw">
+                            <div
+                              id="fileUpload"
+                              // className="uploadButton"
+                              // onClick={() =>
+                              //   document.getElementById("fileUploadImage").click()
+                              // }
+                            >
+                              <div className="dashed_imageContainer">
+                                {images.map((image, index) => (
+                                  <div
+                                    key={index}
+                                    className="dashedImage"
+                                    style={{
+                                      width: "50px",
+                                      height: "50px",
+                                      position: "relative",
+                                    }}
+                                  >
+                                    {(images[index] || serverImage[index]) && (
+                                      <img
+                                        src={
+                                          images[index]
+                                            ? URL.createObjectURL(images[index])
+                                            : serverImage[index]
                                         }
+                                        alt=""
+                                        style={{
+                                          height: "50px",
+                                          width: "50px",
+                                        }}
                                       />
-                                    </label>
+                                    )}
+                                    <div
+                                      style={{
+                                        position: "absolute",
+                                      }}
+                                    >
+                                      <label>
+                                        <img src={plusICon} alt="" />
+                                        <input
+                                          type="file"
+                                          accept="image/png, image/jpeg"
+                                          style={{ display: "none" }}
+                                          onChange={(e) =>
+                                            handleImageUpload(index, e)
+                                          }
+                                        />
+                                      </label>
+                                    </div>
                                   </div>
-                                </div>
-                              ))}
+                                ))}
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
+                      ) : (
+                        <div className="uploadImageContainer">
+                          <div className="rightw">
+                            <div
+                              id="fileUpload"
+                              // className="uploadButton"
+                              // onClick={() =>
+                              //   document.getElementById("fileUploadImage").click()
+                              // }
+                            >
+                              <div className="dashed_imageContainer">
+                                {images.map((image, index) => (
+                                  <div
+                                    key={index}
+                                    className="dashedImage"
+                                    style={{ width: "50px", height: "50px" }}
+                                  >
+                                    {image && (
+                                      <img
+                                        src={URL.createObjectURL(image)}
+                                        alt=""
+                                        style={{
+                                          height: "50px",
+                                          width: "50px",
+                                        }}
+                                      />
+                                    )}
+                                    <div style={{ position: "absolute" }}>
+                                      <label>
+                                        <img src={plusICon} alt="" />
+                                        <input
+                                          type="file"
+                                          accept="image/png, image/jpeg"
+                                          style={{ display: "none" }}
+                                          onChange={(e) =>
+                                            handleImageUpload(index, e)
+                                          }
+                                        />
+                                      </label>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
                       <div className="parant_relative">
                         <label htmlFor="" className="label_text">
                           Metal Type

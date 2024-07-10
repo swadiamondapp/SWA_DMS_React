@@ -111,8 +111,8 @@ const Slots = () => {
   console.log(slotView, "slotView");
   console.log(userId, "slotView");
   console.log(Data, "center==============>");
-  const sortedData = Data.sort((a, b) => a.id - b.id);
-  console.log(sortedData, "sortedData ");
+  // const sortedData = Data.sort((a, b) => a.id - b.id);
+  // console.log(sortedData, "sortedData");
   return (
     <div className="parentCentral">
       <div className="slot_create">
@@ -133,7 +133,7 @@ const Slots = () => {
             </tr>
           </thead>
           <tbody>
-            {sortedData.map((item, index) => (
+            {Data.map((item, index) => (
               <tr key={index} style={{ color: "#2E364C" }}>
                 <td className="serialNumber_cell">{item.id}</td>
                 <td>{item.created_at}</td>

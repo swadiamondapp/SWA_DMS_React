@@ -189,7 +189,7 @@ const Sidebar = () => {
           <Link to="/slot">
             <div className="Links">
               <img src={sideStar} alt="" />
-              {sidebarExpanded && <p>Bag</p>}
+              {sidebarExpanded && <p>Slot</p>}
             </div>
           </Link>
           <Link to="/centralhubtransfer">
