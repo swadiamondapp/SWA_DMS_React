@@ -17,7 +17,7 @@ export const list_designer_folderDetails = async (
   id
 ) => {
   try {
-    const response = await apiService.get(`${FOLDER_DETAIL_API}/${id}/`);
+    const response = await apiService.get(`${FOLDER_DETAIL_API}/${id}`);
     if (checkApiStatus(response)) {
       setFolderDetails(response.data.results.data);
     }

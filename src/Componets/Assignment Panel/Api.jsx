@@ -77,22 +77,28 @@ export const move_to_folder = async (
   ItemMovedToAssignment,
   handleClose,
   setFolderName,
-  setItemMovedToAssignment
+  setItemMovedToAssignment,
+  selectedAssignment,
+  setError
 ) => {
+  debugger
   try {
     const body = {
       folder_data: {
         name: folderName,
       },
-      items: ItemMovedToAssignment,
+      items: selectedAssignment,
     };
     console.log(body, "itemMovirddd");
+
     const response = await apiService.post(MOVE_TO_FOLDER, body);
     if (response.data.results.status_code === 200) {
-      list_assignment_folder(setIsLoading, setAssignmentFolder);
+      list_assignment_folder(setIsLoading, setAssignmentFolder,setData);
       onClose();
+      setError("")
       setSuccessMessage("Assignment Folder Created SuccessFully");
       setSuccessModalOpen(true);
+      ToCloseCreatefolder(false)
       setTimeout(() => {
         setSuccessModalOpen(false);
       }, 1600);
@@ -171,7 +177,7 @@ export const move_to_assignment = async (
   setData,
   setShowRadioButtons,
   setSelectButtonLabel,
-  setShowAssignmentModal,
+  // setShowAssignmentModal,
   setMovedItemsId,
   setFormData,
   getSelectedDesign
@@ -207,7 +213,7 @@ export const move_to_assignment = async (
       setSelectedDesigns([]);
       setShowRadioButtons(false);
       setSelectButtonLabel("Select");
-      setShowAssignmentModal(true);
+      // setShowAssignmentModal(true);
       setMovedItemsId(response?.data?.results.data);
       setFormData({
         SKU: "",

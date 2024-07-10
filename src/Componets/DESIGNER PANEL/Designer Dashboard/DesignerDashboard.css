@@ -3,13 +3,13 @@
   padding-top: 20px;
 }
 .Design_FileUpload {
-  border: 0.5px dashed #e6e3d7;
   background: #fff;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 20px;
-  width:100%
+  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='6' ry='6' stroke='%23E6E3D7' stroke-width='2' stroke-dasharray='8%2c 7' stroke-dashoffset='100' stroke-linecap='butt'/%3e%3c/svg%3e");
+  border-radius: 6px;
 }
 .De__file {
   display: flex;

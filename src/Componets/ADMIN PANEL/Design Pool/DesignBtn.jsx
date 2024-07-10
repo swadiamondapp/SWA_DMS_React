@@ -10,6 +10,7 @@ import AssignToModal from "../../AssignToModal/AssignToModal";
 import CreateCustomisation from "../../CreateCustomisation/CreateCustomisation";
 import { move_to_folder } from "../../Assignment Panel/Api";
 import { useParams } from "react-router-dom";
+import AssignmentModal from "../../AssignmentModal/AssignmentModal";
 
 const DesignBtn = ({
   toggleDownloadOptions,
@@ -35,7 +36,10 @@ const DesignBtn = ({
   setData,
   setSelectedDesigns,
   setShowRadioButtons,
-  setSelectButtonLabel
+  setSelectButtonLabel,
+
+  setcreateFolderModal,
+  handleCreatedFolder
 }) => {
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -43,14 +47,18 @@ const DesignBtn = ({
   const [isModalOpenCreateCutomize, setIsCreateCustomizeModalOpen] =
     useState(false);
 
-  const handleCreatedFolder = () => {
-    setIsModalOpen(true);
-  };
+    // const [createFolderModal, setcreateFolderModal] = useState(false);
+
+
+  // const handleCreatedFolder = () => {
+  //   setcreateFolderModal(true)
+  //   setIsModalOpen(true);
+  // };
   const handleAssignment = () => {
     setIsModalOpenAssign(false);
   };
   const { id } = useParams();
-  console.log(selectedAssignment, "selectedAssignment?==>");
+
   return (
     <div>
       <div className="DesignPool_btns">
@@ -124,7 +132,7 @@ const DesignBtn = ({
             <div className="Parent_MoveTo">
               <button
                 className="D_moveBtn"
-                onClick={() => handleCreatedFolder()}
+                onClick={handleCreatedFolder}
               >
                 Create folder
               </button>
@@ -180,6 +188,22 @@ const DesignBtn = ({
         open={isModalOpenCreateCutomize}
         onClose={() => setIsCreateCustomizeModalOpen(false)}
       />
+
+
+{/* <AssignmentModal
+      open={openAdminFolder}
+      AdminUploadedIds={AdminUploadedIds}
+      onClose={() => setOpenAdminFolder(false)}
+      AdminBasicItemId={AdminBasicItemId}
+      setAssignDesignerModalOpen={ setAssignDesignerModalOpen}
+      setAdminBasicDetailsOpen={setAdminBasicDetailsOpen}
+      setUploadedImage={setUploadedImage}
+      setAssignedDesignerId={ setAssignedDesignerId}
+    
+      /> */}
+
+
+
     </div>
   );
 };

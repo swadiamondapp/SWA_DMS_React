@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import "./Header.css";
 import searchimg from "../../assets/search.png";
 import profileimg from "../../assets/profile.png";
@@ -8,12 +8,15 @@ import { MdOutlineLogout } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { removeLocalstorage } from "../../Pages/Utils/Common";
 import { useParams } from "react-router-dom";
+import { RenderCreateContext } from "../Renders/RendersContext/RendersContext";
 
 const Header = ({
   centralId,
   designCodesCentralHub,
   leftHeader,
   basicDetails,
+  folderDetails,
+  designListData,
 }) => {
   const location = useLocation();
   const { nameCentral } = useParams();
@@ -25,6 +28,8 @@ const Header = ({
   console.log("header===>FolderName", folderName);
   const [isLogoutDropdown, setIsLogoutDropdown] = useState(false);
   const navigate = useNavigate();
+  const { setRenderProductId, renderProductId } =
+    useContext(RenderCreateContext);
 
   const handleLogout = () => {
     setIsLogoutDropdown(!isLogoutDropdown);
@@ -41,8 +46,6 @@ const Header = ({
   const userPhoneNumber = localStorage.getItem("phone_number");
   const userImage = localStorage.getItem("Loginimage");
   const dropdownRef = useRef(null);
-
-  console.log(nameCentral, "nameCentral");
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -127,7 +130,7 @@ const Header = ({
                 {location.pathname === "/finishedProject" && (
                   <h3>Finished project</h3>
                 )}
-                {location.pathname === "/renderCard" && <h3>SWAD3456</h3>}
+                {location.pathname === "/renderCard" && <h3>Renders</h3>}
                 {location.pathname === "/wareHouseDetails" && (
                   <h3> ID : SWAD3456</h3>
                 )}
@@ -154,7 +157,10 @@ const Header = ({
                 {location.pathname === "/chat" && <h3>Chat</h3>}
                 {location.pathname === "/" && <h3>Users</h3>}
                 {location.pathname === `/assignmentpaneldetailsview/${id}` && (
-                  <h3>{folderName}</h3>
+                  <h3>{renderProductId}</h3>
+                )}
+                {location.pathname === `/finished/${id}` && (
+                  <h3>{renderProductId}</h3>
                 )}
                 {location.pathname === `/warehouseDetails` && (
                   <h3>ID : {customizationsku}</h3>
@@ -204,6 +210,9 @@ const Header = ({
                   location.pathname !== `/CadAssignmentcard` &&
                   location.pathname !== "/customRequestTable" &&
                   location.pathname !== "/workdone" &&
+                  location.pathname !== "/finishedProject" &&
+                  location.pathname !== `/assignmentpaneldetailsview/${id}` &&
+                  location.pathname !== `/finished/${id}` &&
                   location.pathname !== "/scan" && (
                     <div className="Search_Admin">
                       <div className="Search_User">

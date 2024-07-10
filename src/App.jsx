@@ -59,102 +59,120 @@ import ProductCategory from "./Componets/MastersSection/MasterTableItems/Product
 import Outlets from "./Componets/MastersSection/MasterTableItems/Outlets";
 import ScanPage from "./Componets/ScanComponentWarehouse/ScanPage/ScanPage";
 import WorkDone from "./Componets/WorkdoneWarehorse/WorkDone/WorkDone";
+import RendersContext from "./Componets/Renders/RendersContext/RendersContext";
 
 function App() {
   return (
     <>
       <Router>
-        <Routes>
-          <Route element={<PrivateRoute />}>
-            <Route path="/" element={<Users />} />
-            <Route path="/otherlogin" element={<OtherLoginPage />} />
-            <Route
-              path="/assignmentview/:id"
-              element={<AssignmentViewPage />}
-            />
-            <Route path="/designpool" element={<DesignPoolView />} />
-            <Route path="/assignmentpanel" element={<AssignmentPanalPage />} />
-            <Route path="/chat" element={<ChatPage />} />
-            <Route
-              path="/designdashboard"
-              element={<DesignerDashboardPage />}
-            />
-            <Route
-              path="/designerassign"
-              element={<DesignerAsignmentPanelPage />}
-            />
-            <Route
-              path="/designerassignview/:id"
-              element={<DesignerAssignViewPage />}
-            />
-            <Route
-              path="/assignmentpaneldetailsview/:id"
-              element={<AssignmentPanelFolderCardPage />}
-            />
-            <Route
-              path="/centralfolderdetails/:id"
-              element={<CentralFolderDetailsPage />}
-            />
-            <Route path="/centralhubtransfer" element={<TransferPage />} />
-            <Route path="/Customizedorder" element={<CustomizedOrderPage />} />
-            <Route
-              path="/unassigneddesigner"
-              element={<UnAssignedDesignerView />}
-            />
-            <Route path="/votorspanal" element={<VotorsPanalPage />} />
-            <Route
-              path="/votorscustomization"
-              element={<VotorCustomization />}
-            />
-            <Route path="/gallery" element={<GalleryPage />} />
-            <Route path="/CadAssignment" element={<CadAssignmentPage />} />
-            <Route path="/finished/:id" element={<RendersPage />} />
-            <Route path="/finishedProject" element={<FinishedProjectPage />} />
-            <Route path="/renderCard" element={<RenderCardPage />} />
-            <Route path="/wareHouse" element={<WareHousePage />} />
-            <Route
-              path="/customRequestTable"
-              element={<WareHouseTablePage />}
-            />
-            <Route
-              path="/wareHouseDetails"
-              element={<WareHouseDetailsPage />}
-            />
+        <RendersContext>
+          <Routes>
+            <Route element={<PrivateRoute />}>
+              <Route path="/" element={<Users />} />
+              <Route path="/otherlogin" element={<OtherLoginPage />} />
+              <Route
+                path="/assignmentview/:id"
+                element={<AssignmentViewPage />}
+              />
+              <Route path="/designpool" element={<DesignPoolView />} />
+              <Route
+                path="/assignmentpanel"
+                element={<AssignmentPanalPage />}
+              />
+              <Route path="/chat" element={<ChatPage />} />
+              <Route
+                path="/designdashboard"
+                element={<DesignerDashboardPage />}
+              />
+              <Route
+                path="/designerassign"
+                element={<DesignerAsignmentPanelPage />}
+              />
+              <Route
+                path="/designerassignview/:id"
+                element={<DesignerAssignViewPage />}
+              />
+              <Route
+                path="/assignmentpaneldetailsview/:id"
+                element={<AssignmentPanelFolderCardPage />}
+              />
+              <Route
+                path="/centralfolderdetails/:id"
+                element={<CentralFolderDetailsPage />}
+              />
+              <Route path="/centralhubtransfer" element={<TransferPage />} />
+              <Route
+                path="/Customizedorder"
+                element={<CustomizedOrderPage />}
+              />
+              <Route
+                path="/unassigneddesigner"
+                element={<UnAssignedDesignerView />}
+              />
+              <Route path="/votorspanal" element={<VotorsPanalPage />} />
+              <Route
+                path="/votorscustomization"
+                element={<VotorCustomization />}
+              />
+              <Route path="/gallery" element={<GalleryPage />} />
+              <Route path="/CadAssignment" element={<CadAssignmentPage />} />
+              <Route path="/finished/:id" element={<RendersPage />} />
+              <Route
+                path="/finishedProject"
+                element={<FinishedProjectPage />}
+              />
+              <Route path="/renderCard" element={<RenderCardPage />} />
+              <Route path="/wareHouse" element={<WareHousePage />} />
+              <Route
+                path="/customRequestTable"
+                element={<WareHouseTablePage />}
+              />
+              <Route
+                path="/wareHouseDetails"
+                element={<WareHouseDetailsPage />}
+              />
 
-            <Route path="/scan" element={<ScanPage />} />
-            <Route path="/workdone" element={<WorkDone />} />
+              <Route path="/scan" element={<ScanPage />} />
+              <Route path="/workdone" element={<WorkDone />} />
 
-            <Route
-              path="/CadAssignmentcard"
-              element={<CadAssignmentCardPage />}
-            />
-            <Route path="/Details/:id" element={<BasicDetails />} />
-            <Route path="/FinishedProduct" element={<FinishedProductsPage />} />
-            <Route path="/folderdetails/:id" element={<FolderDetails />} />
-            <Route path="/centralDashboard" element={<CentralHubDashboard />} />
-            <Route path="/slot" element={<HubSlot />} />
+              <Route
+                path="/CadAssignmentcard"
+                element={<CadAssignmentCardPage />}
+              />
+              <Route path="/Details/:id" element={<BasicDetails />} />
+              <Route
+                path="/FinishedProduct"
+                element={<FinishedProductsPage />}
+              />
+              <Route path="/folderdetails/:id" element={<FolderDetails />} />
+              <Route
+                path="/centralDashboard"
+                element={<CentralHubDashboard />}
+              />
+              <Route path="/slot" element={<HubSlot />} />
 
-            <Route path="/mastertable" element={<MastersTable />} />
+              <Route path="/mastertable" element={<MastersTable />} />
 
-            <Route path="/masterspage" element={<MastersMainPage />}>
-              <Route path="findings" element={<TableItems />} />
-              <Route path="tag" element={<TagTable />} />
-              <Route path="metal" element={<MetalType />} />
-              <Route path="diamond" element={<DiamondType />} />
-              <Route path="valueedition" element={<ValueAddition />} />
-              <Route path="whstatus" element={<WarehouseStatus />} />
-              <Route path="chstatus" element={<CHstatus />} />
-              <Route path="productcategory" element={<ProductCategory />} />
-              <Route path="outlet" element={<Outlets />} />
+              <Route path="/masterspage" element={<MastersMainPage />}>
+                <Route path="findings" element={<TableItems />} />
+                <Route path="tag" element={<TagTable />} />
+                <Route path="metal" element={<MetalType />} />
+                <Route path="diamond" element={<DiamondType />} />
+                <Route path="valueedition" element={<ValueAddition />} />
+                <Route path="whstatus" element={<WarehouseStatus />} />
+                <Route path="chstatus" element={<CHstatus />} />
+                <Route path="productcategory" element={<ProductCategory />} />
+                <Route path="outlet" element={<Outlets />} />
+              </Route>
             </Route>
-          </Route>
 
-          <Route path="/login" element={<Login />} />
-          <Route path="/forgotpassword" element={<ForgotPassword />} />
-          <Route path="/verifyotp" element={<ForgotPassOtp />} />
-          <Route path="/createnewpassword" element={<CreateNewPassword />} />
-          <Route path="/resetcomplete" element={<PasswordResetComplete />} />
-        </Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/forgotpassword" element={<ForgotPassword />} />
+            <Route path="/verifyotp" element={<ForgotPassOtp />} />
+            <Route path="/createnewpassword" element={<CreateNewPassword />} />
+            <Route path="/resetcomplete" element={<PasswordResetComplete />} />
+          </Routes>
+        </RendersContext>
       </Router>
     </>
   );

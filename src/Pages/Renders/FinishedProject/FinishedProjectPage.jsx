@@ -12,6 +12,7 @@ const FinishedProjectPage = () => {
   useEffect(() => {
     finishedProjectList(setIsLoading, setFinishedProjectData);
   }, []);
+
   return (
     <div className="Parent_FinishedProjectPage">
       <Sidebar />

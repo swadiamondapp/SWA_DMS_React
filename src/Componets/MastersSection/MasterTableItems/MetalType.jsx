@@ -31,7 +31,7 @@ const MetalType = () => {
         </div>
 
         <div className="table-container">
-          <table>
+          <table className="table_borderleft">
             <thead>
               <tr>
                 <th>Sl No</th>

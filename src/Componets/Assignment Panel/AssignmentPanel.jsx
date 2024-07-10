@@ -11,6 +11,7 @@ import { list_assignment_panel, list_folderDetails } from "./Api";
 import { list_assignment_folder } from "../ADMIN PANEL/Design Pool/Api";
 import DesignPools from "../DesignPoolExtended/DesignPools";
 import AdminBasicDetailsModal from "../AdminBasicDetailsModal/AdminBasicDetailsModal";
+import AssignmentModal from "../AssignmentModal/AssignmentModal";
 // import { useLocation, useNavigate } from "react-router-dom";
 
 const AssignmentPanel = () => {
@@ -32,6 +33,11 @@ const AssignmentPanel = () => {
   const [AdminBasicModalOpen, setAdminBasicModalOpen] = useState(false);
   const [uploadInstructionsVisible, setUploadInstructionsVisible] =
     useState(true);
+
+    const [createFolderModal, setcreateFolderModal] = useState(false);
+
+
+
   const location = useLocation();
   const dotsRef = useRef(null);
   const navigate = useNavigate();
@@ -165,6 +171,11 @@ const AssignmentPanel = () => {
     setAdminBasicModalOpen(false);
   };
 
+    const handleCreatedFolder = () => {
+    setcreateFolderModal(true)
+  };
+
+
   const handleForlderDetailsVeiw = () => {};
 
   console.log(selectedDesignCode, "selectedDesignCode");
@@ -214,6 +225,9 @@ const AssignmentPanel = () => {
           setSelectedAssignment={setSelectedAssignment}
           setAssignmentFolder={setAssignmentFolder}
           selectedDesignCode={selectedDesignCode}
+          handleCreatedFolder={handleCreatedFolder}
+          // setcreateFolderModal={setcreateFolderModal}
+          // handleCreateFolderModal
         />
         <div className="Parent_Folder_section">
           <h3 className="HeadNewdesign">Folders</h3>
@@ -320,6 +334,24 @@ const AssignmentPanel = () => {
         onClose={handleCloseAdminModal}
         selectedDesignCode={selectedDesignCode}
       />
+
+<AssignmentModal
+      open={createFolderModal}
+      // AdminUploadedIds={AdminUploadedIds}
+      onClose={() => setcreateFolderModal(false)}
+      // AdminBasicItemId={AdminBasicItemId}
+      // setAssignDesignerModalOpen={ setAssignDesignerModalOpen}
+      // setAdminBasicDetailsOpen={setAdminBasicDetailsOpen}
+      // setUploadedImage={setUploadedImage}
+      // setAssignedDesignerId={ setAssignedDesignerId}
+      setcreateFolderModal={setcreateFolderModal}
+      selectedAssignment={selectedAssignment}
+    setData={setData}
+    ToCloseCreatefolder={setcreateFolderModal}
+
+      />
+
+
     </div>
   );
 };

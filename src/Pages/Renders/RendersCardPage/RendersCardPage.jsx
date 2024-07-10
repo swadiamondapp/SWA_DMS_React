@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Sidebar from "../../../Componets/Sidebar/Sidebar";
 import Header from "../../../Componets/Header/Header";
 import RenderCard from "../../../Componets/RenderCard/RenderCard";
 import { cadDesignList } from "../Apis";
 import AnnotationCanvas from "../../../Componets/AnnotationCanvas/AnnotationCanvas";
+import RendersHome from "../../../Componets/Renders/RendersHome/RendersHome";
+import { RenderCreateContext } from "../../../Componets/Renders/RendersContext/RendersContext";
 
 const RendersPage = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -12,12 +14,15 @@ const RendersPage = () => {
   useEffect(() => {
     cadDesignList(setIsLoading, setDesignListData);
   }, []);
+
+
   return (
     <div className="Parent_RendersCard">
       <Sidebar />
-      <Header />
-      <RenderCard designListData={designListData} />
-      <AnnotationCanvas />
+      <Header/>
+      {/* <RenderCard designListData={designListData} /> */}
+      {/* <AnnotationCanvas /> */}
+      <RendersHome designListData={designListData}/>
     </div>
   );
 };

@@ -266,7 +266,7 @@ const BasicDetailModal = ({
           setData,
           setShowRadioButtons,
           setSelectButtonLabel,
-          setShowAssignmentModal,
+          // setShowAssignmentModal,
           setMovedItemsId,
           setFormData,
           getSelectedDesign
