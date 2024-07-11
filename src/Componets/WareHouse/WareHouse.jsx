@@ -46,7 +46,7 @@ const WareHouse = (props) => {
   console.log(props.LastVotedDesign, "wareHouse===>");
   return (
     <div>
-      <div className="Parent_DesignView">
+      <div className="Parent_DesignView" style={{paddingLeft:props.sidebarExpanded? "225px":"130px"}}>
         {/* <div className="DesignPool_btns">
           <div className="Download_ParentD">
             <button className="D_downlodBtn" onClick={toggleDownloadOptions}>

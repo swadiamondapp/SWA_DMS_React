@@ -21,7 +21,7 @@ const FinishedProjects = (props) => {
     setShowMoveOptions(!showMoveOptions);
   };
   return (
-    <div className="Parant_FinishedProject">
+     <div className="Parant_FinishedProject" style={{paddingLeft:props.sidebarExpanded? "225px":"130px"}}>
       <div className="filter_Container">
         <DesignBtn
           toggleDownloadOptions={toggleDownloadOptions}

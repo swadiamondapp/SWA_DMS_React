@@ -4,7 +4,7 @@ import ring from "../../../assets/ring.png";
 // import { voters_customization_list } from "./Api";
 import { all_Designs_items, like_design, voted_design_list } from "../Api";
 
-const VotorsPanal = () => {
+const VotorsPanal = ({sidebarExpanded}) => {
   const [Data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState([]);
   const [votedList, setVotedList] = useState([]);
@@ -48,7 +48,7 @@ const VotorsPanal = () => {
     },
   ];
   return (
-    <div className="ParentVotors">
+    <div className="ParentVotors" style={{paddingLeft:sidebarExpanded? "225px":"130px"}}>
       <div className="VotorsPanelsection">
         <div className="Parent_NewDesign">
           <h3 className="HeadNewdesign">Newly added</h3>

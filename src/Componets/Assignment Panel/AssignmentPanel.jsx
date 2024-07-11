@@ -13,7 +13,7 @@ import DesignPools from "../DesignPoolExtended/DesignPools";
 import AdminBasicDetailsModal from "../AdminBasicDetailsModal/AdminBasicDetailsModal";
 // import { useLocation, useNavigate } from "react-router-dom";
 
-const AssignmentPanel = () => {
+const AssignmentPanel = ({sidebarExpanded}) => {
   const [showRadioButtons, setShowRadioButtons] = useState(false);
   const [selectButtonLabel, setSelectButtonLabel] = useState("Select");
   const [showDownloadOptions, setShowDownloadOptions] = useState(false);
@@ -177,7 +177,7 @@ const AssignmentPanel = () => {
     return `${day}-${month}-${year}`;
   };
   return (
-    <div className="Parent_AssignmentView">
+    <div className="Parent_AssignmentView" style={{paddingLeft:sidebarExpanded? "225px":"130px"}}>
       <div className="AssignmentPanel_FileUpload" style={{ padding: "10px" }}>
         {uploadInstructionsVisible && !uploadedImage && (
           <>

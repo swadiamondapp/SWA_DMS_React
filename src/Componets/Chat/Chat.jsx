@@ -5,7 +5,7 @@ import chatuser from "../../assets/chatuser.png";
 import chatimg1 from "../../assets/c1.png";
 import chatimg2 from "../../assets/c2.png";
 
-const Chat = () => {
+const Chat = ({sidebarExpanded}) => {
   const users = [
     {
       username: "Vipin vinod",
@@ -25,7 +25,7 @@ const Chat = () => {
     },
   ];
   return (
-    <div className="Parent_DesignView">
+    <div className="Parent_DesignView" style={{paddingLeft:sidebarExpanded? "225px":"130px"}}>
       <div className="ParentChatSection">
         <div className="Left_Chat_Section">
           <div className="Chat__list">

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import folderimg from "../../../assets/folder.png";
 import { finishedProjectFolder } from "../Api";
 
-const FinishedProducts = () => {
+const FinishedProducts = ({sidebarExpanded}) => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [finishedProjects, setFinishedProjects] = useState([]);
@@ -17,7 +17,7 @@ const FinishedProducts = () => {
   };
 
   return (
-    <div className="ParentCad">
+    <div className="ParentCad" style={{paddingLeft:sidebarExpanded? "225px":"130px"}}>
       <div className="CadAssignmentCard" style={{display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr"}}>
         {finishedProjects &&
           finishedProjects.map((item) => (

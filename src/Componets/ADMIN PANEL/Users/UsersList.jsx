@@ -64,7 +64,7 @@ const validateForm = (data) => {
   return errors;
 };
 
-const UsersList = () => {
+const UsersList = ({sidebarExpanded}) => {
   // create modal
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -399,7 +399,7 @@ const UsersList = () => {
   // update_user(setIsLoading, data, setUserList ,"70");
   return (
     <div>
-      <div className="Parent_userList">
+      <div className="Parent_userList" style={{paddingLeft:sidebarExpanded? "225px":"130px"}}>
         <div className="Create_user">
           <button onClick={showModal}>Create user</button>
         </div>

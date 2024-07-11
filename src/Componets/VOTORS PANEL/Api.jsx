@@ -14,12 +14,15 @@ import { ALL_DESIGNS, VOTED_DESIGN_LIST } from "../../Pages/Services/EndPoints";
 
 export const voters_customization_list = async (setIsLoading, setData) => {
   try {
+    setIsLoading(true);
     const response = await apiService.get(VOTERS_CUSTOMIZATION_LIST);
     if (checkApiStatus(response)) {
       setData(response.data.results.data);
     }
   } catch (error) {
     console.log(error);
+  } finally {
+    setIsLoading(false);
   }
 };
 
@@ -224,11 +227,9 @@ export const customized_order_gallary = async (setCustomizedOrder) => {
 };
 
 export const create_stock_order_gallary = async (
-  orderDesignCode,
   orderAssignMentCode,
   selectedValues,
   value,
-  CustomizedCod,
   CustomizedId,
   onClose,
   setSuccessMessage,
@@ -239,8 +240,7 @@ export const create_stock_order_gallary = async (
     let body;
     if (value === "1") {
       body = {
-        assignment: orderAssignMentCode, // ID of the Customization or  ID of the stock order (Assignment id:"assignment")
-        design_code: orderDesignCode,
+        assignment_item: orderAssignMentCode, // ID of the Customization or  ID of the stock order (Assignment id:"assignment")
         status: "Processed",
         type_of_order: selectedValues.type,
         colour: selectedValues.colour,
@@ -249,7 +249,6 @@ export const create_stock_order_gallary = async (
     } else {
       body = {
         customization: CustomizedId, // ID of the Customization or  ID of the stock order (Assignment id:"assignment")
-        design_code: CustomizedCod,
         status: "Processed",
         type_of_order: selectedValues.type,
         colour: selectedValues.colour,
@@ -274,8 +273,8 @@ export const create_stock_order_gallary = async (
         size: "",
         type: "",
         colour: "",
-        notes:""
-      })
+        notes: "",
+      });
     }
   } catch (error) {
     console.log(error);

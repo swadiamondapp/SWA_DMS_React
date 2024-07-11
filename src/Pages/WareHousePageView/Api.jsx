@@ -364,6 +364,8 @@ export const create_customizaion_warehouse = async (
   setErrorMessage,
   images,
   votersSetData,
+  setFormData,
+  setImages
 ) => {
   try {
     setIsLoading(true);
@@ -413,9 +415,30 @@ export const create_customizaion_warehouse = async (
         setSuccessModalOpen(false);
       }, 1500);
       setErrorMessage("");
-      // setImages(Array(5).fill(null));
-      // Ensure refresh state update if needed
-      // setRefresh((prev) => !prev);
+      setFormData({
+        sallerName: "",
+        mobileNumber: "",
+        chooseOutlet: "",
+        productType: "",
+        modelPrevioslyMade: "",
+        prevMadeSKU: "",
+        metalType: "",
+        weight: "",
+        size: "",
+        width: "",
+        height: "",
+        diamond_type: "",
+        length_of_item: "",
+        diamondWeight: "",
+        numberOfDiamonds: "",
+        diamondClarity: "",
+        diamondColor: "",
+        Budget: "",
+        swaProductSKU: "",
+        notes: "",
+      })
+      setImages(Array(5).fill(""))
+     
     } else {
       throw new Error("Failed to create customization"); // Optional: handle specific error cases
     }

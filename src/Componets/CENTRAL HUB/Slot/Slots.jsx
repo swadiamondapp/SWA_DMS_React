@@ -16,7 +16,7 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import closeButton from "../../../assets/closeButton.svg";
 
-const Slots = () => {
+const Slots = ({sidebarExpanded}) => {
   const [showEditDelete, setShowEditDelete] = useState(null);
   const [isModalOpenslot, setIsModalOpenslot] = useState(false);
   const [isModalOpenslotview, setIsModalOpenslotview] = useState(false);
@@ -114,7 +114,7 @@ const Slots = () => {
   // const sortedData = Data.sort((a, b) => a.id - b.id);
   // console.log(sortedData, "sortedData");
   return (
-    <div className="parentCentral">
+    <div className="parentCentral"  style={{paddingLeft:sidebarExpanded? "225px":"130px"}}>
       <div className="slot_create">
         <button onClick={() => handleCreateSloteButton()}>Create</button>
       </div>

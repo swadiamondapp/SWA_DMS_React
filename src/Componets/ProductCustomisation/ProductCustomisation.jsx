@@ -85,11 +85,9 @@ const ProductCustomisation = ({
       setErrors(validationErrors);
     } else {
       create_stock_order_gallary(
-        orderDesignCode,
         orderAssignMentCode,
         selectedValues,
         value,
-        CustomizedCod,
         CustomizedId,
         onClose,
         setSuccessMessage,
@@ -112,6 +110,8 @@ const ProductCustomisation = ({
   };
   const filterOption = (input, option) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
+
+  console.log(orderAssignMentCode,"orderAssignMentCode")
 
   return (
     <div>

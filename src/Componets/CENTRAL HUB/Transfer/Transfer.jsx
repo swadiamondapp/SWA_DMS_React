@@ -21,7 +21,7 @@ import closeButton from "../../../assets/closeButton.svg";
 import searchIcon from "../../../assets/search.png";
 import SuccessModal from "../../SuccessModal/SuccessModal";
 
-const Transfer = () => {
+const Transfer = ({sidebarExpanded}) => {
   const [showEditDelete, setShowEditDelete] = useState(null);
   const [isModalOpenslot, setIsModalOpenslot] = useState(false);
   const [isModalOpenslotview, setIsModalOpenslotview] = useState(false);
@@ -111,7 +111,7 @@ const Transfer = () => {
   console.log(TransferData, "TransferScan");
   console.log(CentralHubStatus, "CentralHubStatus");
   return (
-    <div className="parentCentral">
+    <div className="parentCentral"  style={{paddingLeft:sidebarExpanded? "225px":"130px"}}>
       <div className="slote_labe" style={{ border: "none" }}>
         <div style={{ display: "flex" }}>
           <form action="">

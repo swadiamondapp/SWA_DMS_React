@@ -3,7 +3,7 @@ import ring from "../../../assets/ring.png";
 import "./CustomizedOrder.css";
 import { list_all_cutomization_paper_design } from "../Designer Detail View/Api";
 
-const CustomizedOrder = () => {
+const CustomizedOrder = ({sidebarExpanded}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [customizationDesign, setCustomizationDesign] = useState([]);
 
@@ -34,7 +34,7 @@ const CustomizedOrder = () => {
   ];
   console.log(customizationDesign, "customizattion");
   return (
-    <div className="DesignerAssignmentPanel">
+    <div className="DesignerAssignmentPanel" style={{paddingLeft:sidebarExpanded? "225px":"130px"}}>
       <div className="CustomizedOrderParent">
         <div className="Parent_NewDesign">
           <div className="Card_Design_Parent">

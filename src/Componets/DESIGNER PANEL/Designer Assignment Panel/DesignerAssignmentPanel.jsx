@@ -4,7 +4,7 @@ import { useLocation, Link } from "react-router-dom";
 import folderimg from "../../../assets/folder.png";
 import { list_designer_folder } from "./Api";
 
-const DesignerAssignmentPanel = () => {
+const DesignerAssignmentPanel = ({sidebarExpanded}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [designerFolder, setDesignerFolder] = useState([]);
 
@@ -14,7 +14,7 @@ const DesignerAssignmentPanel = () => {
   console.log(designerFolder, "folderName");
 
   return (
-    <div className="DesignerAssignmentPanel">
+    <div className="DesignerAssignmentPanel" style={{paddingLeft:sidebarExpanded? "225px":"130px"}}>
       <div className="Parent_Folder_section_Designer">
         <h3 className="HeadNewdesign">Folders</h3>
         <div className="folderCard_parent">

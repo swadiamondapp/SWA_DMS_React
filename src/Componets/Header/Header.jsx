@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { removeLocalstorage } from "../../Pages/Utils/Common";
 import { useParams } from "react-router-dom";
 
-const Header = ({centralId,designCodesCentralHub, leftHeader}) => {
+const Header = ({centralId,designCodesCentralHub, leftHeader,sidebarExpanded}) => {
   const location = useLocation();
   const { nameCentral } = useParams();
   const { wareHouseuserId, customizationsku } = location.state || {};
@@ -56,7 +56,7 @@ const Header = ({centralId,designCodesCentralHub, leftHeader}) => {
 
   return (
     <div>
-      <div className="Parent_Section">
+      <div className="Parent_Section" style={{paddingLeft:sidebarExpanded? "225px":"130px"}}>
         <div className="Header_Section">
           <div className="Left_User_Section">
             {location.pathname === "/users" && <h3>Users</h3>}

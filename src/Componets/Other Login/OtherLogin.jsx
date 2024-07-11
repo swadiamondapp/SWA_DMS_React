@@ -2,10 +2,10 @@ import React from "react";
 import "./OtherLogin.css";
 import login from "../../assets/log.png";
 
-const OtherLogin = () => {
+const OtherLogin = ({sidebarExpanded}) => {
   return (
     <div>
-      <div className="Parent_OtherLogin">
+      <div className="Parent_OtherLogin" style={{paddingLeft:sidebarExpanded? "225px":"130px"}}>
         <div className="other_logins">
           <div className="login_card">
             <p className="LogeLabel">SWA Order</p>

@@ -364,7 +364,9 @@ const CreateCustomisation = ({
         setSuccessModalOpen,
         setErrorMessage,
         images,
-        votersSetData
+        votersSetData,
+        setFormData,
+        setImages
       );
     }
   };
@@ -1095,8 +1097,16 @@ const CreateCustomisation = ({
                             onClick={() => handleCreateSubmitCustomization()}
                             type="submit"
                             className="submitButton"
+                            disabled={isLoading}
                           >
-                            SUBMIT
+                            {isLoading ? (
+                              <CircularProgress
+                                size={15}
+                                sx={{ color: "#fff" }}
+                              />
+                            ) : (
+                              " SUBMIT"
+                            )}
                           </button>
                         </>
                       )}
