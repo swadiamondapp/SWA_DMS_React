@@ -68,6 +68,9 @@
   gap: 40px;
   font-family: "Gilroy medium";
   flex-wrap: wrap;
+  /* gap: 20px; */
+  /* justify-content: space-between; */
+  /* background-color: red; */
 }
 .folder__card p {
   font-size: 14px;

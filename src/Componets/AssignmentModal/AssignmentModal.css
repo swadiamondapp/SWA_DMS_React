@@ -1,4 +1,9 @@
 
+
+.create_folder{
+    display: flex;
+    z-index: 999;
+}
 .title {
     font-weight: 400;
     font-family: "Gilroy medium";

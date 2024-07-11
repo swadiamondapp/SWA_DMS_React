@@ -16,9 +16,15 @@
   align-items: center;
   justify-content: center;
   max-height: 420px;
+  padding: 10px;
+  
 }
 .Left_img_View img {
-  max-width: 390px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  object-fit: contain;
+  /* background-size: contain; */
 }
 .right_Assignment_View {
   box-shadow: 0px 2px 2px 0px #0000000d;

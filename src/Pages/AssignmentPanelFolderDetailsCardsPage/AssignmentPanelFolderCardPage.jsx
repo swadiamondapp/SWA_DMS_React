@@ -4,6 +4,7 @@ import Sidebar from "../../Componets/Sidebar/Sidebar";
 import Header from "../../Componets/Header/Header";
 import { list_designer_folderDetails } from "../../Componets/DESIGNER PANEL/Designer Detail View/Api";
 import AssignmentPanelFolderCards from "../../Componets/Assignment Panel/AssignmentPanelFolderCards";
+import RendersDetailPage from "../../Componets/Renders/RendersDetailPage/RendersDetailPage";
 
 const DesignerAssignViewPage = () => {
   const { id } = useParams();
@@ -14,11 +15,13 @@ const DesignerAssignViewPage = () => {
     list_designer_folderDetails(setIsLoading, setFolderDetails, id);
   }, []);
 
+
   return (
     <div className="DesignerDashboardPage">
       <Sidebar />
-      <Header />
-      <AssignmentPanelFolderCards folderDetails={folderDetails} id={id} />
+      <Header folderDetails={folderDetails}/>
+      {/* <AssignmentPanelFolderCards folderDetails={folderDetails} id={id} /> */}
+      <RendersDetailPage  folderDetails={folderDetails}  />
     </div>
   );
 };

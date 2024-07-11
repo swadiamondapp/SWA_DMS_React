@@ -21,17 +21,20 @@ const AssignmentModal = ({
   setAssignDesignerModalOpen,
   setAdminBasicDetailsOpen,
   setUploadedImage,
-  setAssignedDesignerId
-  
+  setAssignedDesignerId,
+  setData,
+  ToCloseCreatefolder
+  // selectedAssignment
+
 }) => {
   // create modal
-  // const [isModalOpen, setIsModalOpen] = useState(false);
+ 
   const [AssinedButton, setAssignedButton] = useState("Assign");
   const [isLoading, setIsLoading] = useState(false);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
   const [folderName, setFolderName] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-  const [error, setError] = useState([]);
+  const [error, setError] = useState('');
 
   const handleOpen = () => {
     setSuccessModalOpen(true);
@@ -41,23 +44,26 @@ const AssignmentModal = ({
     setSuccessModalOpen(false);
   };
   const handleCreateButton = () => {
-    const isAssignmentPanel = window.location.pathname === '/assignmentpanel';
+    // const isAssignmentPanel = window.location.pathname === '/assignmentpanel';
     // const adminUploadedIdsArray = Array.isArray(AdminUploadedIds) ? AdminUploadedIds : [AdminUploadedIds];
-    const adminBasicItemIdsArray = Array.isArray(AdminBasicItemId) ? AdminBasicItemId : [AdminBasicItemId];
-    if (isAssignmentPanel) {
-      move_to_folder_admin_user(
-        adminBasicItemIdsArray,
-        folderName,
-        setSuccessMessage,
-        setSuccessModalOpen,
-        setFolderName,
-        onClose,
-        setAssignDesignerModalOpen,
-        setAdminBasicDetailsOpen,
-        setUploadedImage,
-        setAssignedDesignerId
-      );
-    } else {
+    // const adminBasicItemIdsArray = Array.isArray(AdminBasicItemId) ? AdminBasicItemId : [AdminBasicItemId];
+    // if (isAssignmentPanel) {
+    //   move_to_folder_admin_user(
+    //     adminBasicItemIdsArray,
+    //     folderName,
+    //     setSuccessMessage,
+    //     setSuccessModalOpen,
+    //     setFolderName,
+    //     onClose,
+    //     setAssignDesignerModalOpen,
+    //     setAdminBasicDetailsOpen,
+    //     setUploadedImage,
+    //     setAssignedDesignerId
+    //   );
+    // } else {
+    if(folderName===""){
+     setError("Plese write the folder name.")
+    }else{
       move_to_folder(
         setIsLoading,
         folderName,
@@ -69,18 +75,24 @@ const AssignmentModal = ({
         ItemMovedToAssignment,
         handleClose,
         setFolderName,
-        setItemMovedToAssignment
+        setItemMovedToAssignment,
+        selectedAssignment,
+        setData,
+        setError,
+        ToCloseCreatefolder
       );
+      ToCloseCreatefolder(false)
     }
+    // }
   };
   const handleChange = (event) => {
     setFolderName(event.target.value);
   };
   console.log(folderName, "folder");
-  console.log(successModalOpen,"successModalOpen")
+  console.log(selectedAssignment,"selectedAssignment")
 
   return (
-    <div>
+    <div className="create_folder">
       <div className="">
         <div className=""></div>
         <div className="modalContainer">
@@ -100,9 +112,10 @@ const AssignmentModal = ({
                   value={folderName}
                   onChange={handleChange}
                 />
+                {error && <p style={{fontSize:"10px",color:"red"}}>{error}</p>}
                 <button
                   className="button-create"
-                  onClick={() => handleCreateButton()}
+                  onClick={handleCreateButton}
                 >
                   Create
                 </button>

@@ -1172,7 +1172,7 @@ const AdminBasicDetailsModal = ({
           </Box>
         </Modal>
       </div>
-      <AssignmentModal
+      {/* <AssignmentModal
       open={openAdminFolder}
       AdminUploadedIds={AdminUploadedIds}
       onClose={() => setOpenAdminFolder(false)}
@@ -1182,15 +1182,8 @@ const AdminBasicDetailsModal = ({
       setUploadedImage={setUploadedImage}
       setAssignedDesignerId={ setAssignedDesignerId}
       
-      // formData={formData}
-      // onClose={() => setShowAssignmentModal(false)}
-      // selectedAssignment={selectedAssignment}
-      // setAssignmentFolder={setAssignmentFolder}
-      // setSelectedAssignment={setSelectedAssignment}
-      // setFormData={setFormData}
-      // findingsNames={findingsNames}
-      // selectedFechedTagsId={selectedFechedTagsId}
-      />
+      
+      /> */}
     </div>
   );
 };

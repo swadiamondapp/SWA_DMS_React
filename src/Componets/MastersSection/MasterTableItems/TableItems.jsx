@@ -32,18 +32,18 @@ const TableItems = () => {
         </div>
 
         <div className="table-container">
-          <table>
+          <table className="table_borderleft">
             <thead>
               <tr>
-                <th>Sl No</th>
+                <th style={{borderLeft:"none"}}>Sl No</th>
                 <th>Name</th>
                 <th className="wide-column">Priority</th>
                 <th>Action</th>
               </tr>
             </thead>
-            <tbody>
-              <tr className="table_row">
-                <td>1</td>
+            <tbody className="table_border_left">
+              <tr className="table_row" >
+                <td style={{borderLeft:"none"}}>1</td>
                 <td>
                   <span className="bg_cover">John doe</span>
                 </td>
