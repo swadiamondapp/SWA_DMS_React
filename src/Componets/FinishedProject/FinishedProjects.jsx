@@ -18,8 +18,6 @@ const FinishedProjects = (props) => {
   const [elapsedTime, setElapsedTime] = useState(0);
   const [success, setSuccess] = useState(false);
 
-  const { setRenderProductId, renderProductId } =
-    useContext(RenderCreateContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -70,6 +68,17 @@ const FinishedProjects = (props) => {
   const toggleMoveOptions = () => {
     setShowMoveOptions(!showMoveOptions);
   };
+
+  const handleFolderClick = (item) => {
+    navigate(`/finished/${item.id}`, {
+      state: {
+        folderName: item.name,
+      },
+    });
+  };
+
+  console.log("props?.finishedProjectData", props?.finishedProjectData);
+
   return (
     <>
       <div className="Parant_FinishedProject">
@@ -125,10 +134,7 @@ const FinishedProjects = (props) => {
           {props?.finishedProjectData?.map((item, index) => (
             <div
               className="folder__card"
-              onClick={() => {
-                navigate(`/finished/${item.id}`);
-                setRenderProductId(item.name);
-              }}
+              onClick={() => handleFolderClick(item)}
             >
               <img src={folderimg} alt="" />
 
@@ -143,6 +149,8 @@ const FinishedProjects = (props) => {
         onClose={() => setUploadModalOpen(false)}
         createFinsishedProjects={createFinsishedProjects}
         setSuccess={setSuccess}
+        setFinishedProjectData={props?.setFinishedProjectData}
+
       />
       <SuccessModal
         successModalOpen={success}

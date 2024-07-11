@@ -7,11 +7,16 @@ import folderimg from "../../../assets/folder.png";
 import { Link, useNavigate } from "react-router-dom";
 import { RenderCreateContext } from "../RendersContext/RendersContext";
 
-const RendersHome = ({designListData}) => {
-    const navigate = useNavigate()
+const RendersHome = ({ designListData }) => {
+  const navigate = useNavigate();
 
-    const {setRenderProductId,renderProductId} = useContext(RenderCreateContext)
-
+  const handleFolderClick = (item) => {
+    navigate(`/assignmentpaneldetailsview/${item.id}`, {
+      state: {
+        folderName: item.name,
+      },
+    });
+  };
 
   return (
     <div className="RendersHome">
@@ -31,22 +36,18 @@ const RendersHome = ({designListData}) => {
         </button>
       </div>
       <div className="RendersHome_folders">
-          {designListData.map((item) => (
-        <div className="folderCard_parent">
-            
-          <div
-            className="folder__card"
+        {designListData.map((item) => (
+          <div className="folderCard_parent">
+            <div
+              className="folder__card"
               key={item.id}
-              onClick={()=> {navigate(`/assignmentpaneldetailsview/${item.id}`); setRenderProductId(item.name);}}
-          >
+              onClick={() => handleFolderClick(item)}
+            >
               <img src={folderimg} alt="" />
-            <p className="folder_name">
-              {item.name}
-            </p>
+              <p className="folder_name">{item.name}</p>
+            </div>
           </div>
-           
-        </div>
-         ))} 
+        ))}
       </div>
     </div>
   );

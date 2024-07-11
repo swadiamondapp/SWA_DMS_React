@@ -17,7 +17,9 @@ const FinishedProjectPage = () => {
     <div className="Parent_FinishedProjectPage">
       <Sidebar />
       <Header />
-      <FinishedProjects finishedProjectData={finishedProjectData} />
+      <FinishedProjects finishedProjectData={finishedProjectData}
+       setFinishedProjectData={setFinishedProjectData}
+      />
     </div>
   );
 };

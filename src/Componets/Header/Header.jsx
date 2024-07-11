@@ -23,13 +23,11 @@ const Header = ({
   const { wareHouseuserId, customizationsku } = location.state || {};
   const { cadFolderName, cadId } = location.state || {};
   const query = new URLSearchParams(location.search);
-  const folderName = query.get("name");
+  // const folderName = query.get("name");
   const folderNamec = query.get("folderNamec");
-  console.log("header===>FolderName", folderName);
+
   const [isLogoutDropdown, setIsLogoutDropdown] = useState(false);
   const navigate = useNavigate();
-  const { setRenderProductId, renderProductId } =
-    useContext(RenderCreateContext);
 
   const handleLogout = () => {
     setIsLogoutDropdown(!isLogoutDropdown);
@@ -39,13 +37,15 @@ const Header = ({
   // const folderName = location.state?.name || "Unknown Folder";
   // console.log(folderName,'folderName in Header==>')
   console.log(id, "folderId in Header==>");
-  console.log(folderName, "folderName====oii>");
   const userType = localStorage.getItem("Usertype");
   const userName = localStorage.getItem("name");
   const userEmail = localStorage.getItem("email");
   const userPhoneNumber = localStorage.getItem("phone_number");
   const userImage = localStorage.getItem("Loginimage");
   const dropdownRef = useRef(null);
+
+  const { folderName } = location.state || {};
+  console.log("header===>FolderName", folderName);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -157,10 +157,10 @@ const Header = ({
                 {location.pathname === "/chat" && <h3>Chat</h3>}
                 {location.pathname === "/" && <h3>Users</h3>}
                 {location.pathname === `/assignmentpaneldetailsview/${id}` && (
-                  <h3>{renderProductId}</h3>
+                  <h3>{folderName}</h3>
                 )}
                 {location.pathname === `/finished/${id}` && (
-                  <h3>{renderProductId}</h3>
+                  <h3>{folderName}</h3>
                 )}
                 {location.pathname === `/warehouseDetails` && (
                   <h3>ID : {customizationsku}</h3>

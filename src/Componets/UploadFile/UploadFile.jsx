@@ -23,7 +23,7 @@ const style = {
   borderRadius: 2,
 };
 
-const UploadFile = ({ open, onClose, createFinsishedProjects, setSuccess }) => {
+const UploadFile = ({ open, onClose, createFinsishedProjects, setSuccess,setFinishedProjectData }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [images, setImages] = useState(Array(6).fill(null));
   const [file, setFile] = useState(null);
@@ -77,7 +77,7 @@ const UploadFile = ({ open, onClose, createFinsishedProjects, setSuccess }) => {
     if (file) {
       formData.append("file1", file);
     }
-    createFinsishedProjects(setIsLoading, formData, setSuccess,onClose);
+    createFinsishedProjects(setIsLoading, formData, setSuccess,onClose,setFinishedProjectData);
   };
 
   return (
