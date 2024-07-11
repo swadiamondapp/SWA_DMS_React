@@ -2,7 +2,6 @@ import React, { useContext, useEffect } from "react";
 import "./RendersDetailPage.css";
 import download from "../../../assets/download.png";
 import print from "../../../assets/printer.png";
-import { RenderCreateContext } from "../RendersContext/RendersContext";
 
 const RendersDetailPage = ({ folderDetails }) => {
   console.log("folderDetails", folderDetails);

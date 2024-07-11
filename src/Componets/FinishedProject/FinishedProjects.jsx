@@ -7,7 +7,6 @@ import { LiaCloudUploadAltSolid } from "react-icons/lia";
 import UploadFile from "../UploadFile/UploadFile";
 import { createFinsishedProjects } from "../../Pages/Renders/Apis";
 import SuccessModal from "../SuccessModal/SuccessModal";
-import { RenderCreateContext } from "../Renders/RendersContext/RendersContext";
 
 const FinishedProjects = (props) => {
   const [uploadInstructionsVisible, setUploadInstructionsVisible] =
