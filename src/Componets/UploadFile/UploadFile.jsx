@@ -108,7 +108,7 @@ const UploadFile = ({ open, onClose, createFinsishedProjects, setSuccess,setFini
                     Upload file
                   </span>
                   <button
-                    // onClick={handleClose}
+                   onClick={() => onClose()}
                     style={{ background: "#FAFAFA", border: "none" }}
                   >
                     <img src={closeButton} />
