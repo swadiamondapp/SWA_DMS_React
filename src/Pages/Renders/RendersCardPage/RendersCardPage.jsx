@@ -9,7 +9,6 @@ import RendersHome from "../../../Componets/Renders/RendersHome/RendersHome";
 const RendersPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [designListData, setDesignListData] = useState([]);
-  const [sidebarExpanded, setSidebarExpanded] = useState(true);
 
   useEffect(() => {
     cadDesignList(setIsLoading, setDesignListData);
@@ -17,16 +16,11 @@ const RendersPage = () => {
 
   return (
     <div className="Parent_RendersCard">
-      <Sidebar
-        sidebarExpanded={sidebarExpanded}
-        setSidebarExpanded={setSidebarExpanded}
-      />
-      <Header sidebarExpanded={sidebarExpanded} />
-      <RenderCard
-        designListData={designListData}
-        sidebarExpanded={sidebarExpanded}
-      />
+      <Sidebar />
+      <Header />
+      {/* <RenderCard designListData={designListData} /> */}
       {/* <AnnotationCanvas /> */}
+      <RendersHome designListData={designListData} />
     </div>
   );
 };
