@@ -21,7 +21,10 @@ import {
   list_assignment_folder,
 } from "../ADMIN PANEL/Design Pool/Api";
 
-export const list_assignment_panel = async (setIsLoading, setData) => {
+export const list_assignment_panel = async (
+  setIsLoading,
+  setData
+) => {
   try {
     const response = await apiService.get(LIST_ASSIGNMENT_PANEL);
     if (checkApiStatus(response)) {
@@ -77,28 +80,22 @@ export const move_to_folder = async (
   ItemMovedToAssignment,
   handleClose,
   setFolderName,
-  setItemMovedToAssignment,
-  selectedAssignment,
-  setError
+  setItemMovedToAssignment
 ) => {
-  debugger
   try {
     const body = {
       folder_data: {
         name: folderName,
       },
-      items: selectedAssignment,
+      items: ItemMovedToAssignment,
     };
     console.log(body, "itemMovirddd");
-
     const response = await apiService.post(MOVE_TO_FOLDER, body);
     if (response.data.results.status_code === 200) {
-      list_assignment_folder(setIsLoading, setAssignmentFolder,setData);
+      list_assignment_folder(setIsLoading, setAssignmentFolder);
       onClose();
-      setError("")
       setSuccessMessage("Assignment Folder Created SuccessFully");
       setSuccessModalOpen(true);
-      ToCloseCreatefolder(false)
       setTimeout(() => {
         setSuccessModalOpen(false);
       }, 1600);
@@ -177,15 +174,13 @@ export const move_to_assignment = async (
   setData,
   setShowRadioButtons,
   setSelectButtonLabel,
-  // setShowAssignmentModal,
+  setShowAssignmentModal,
   setMovedItemsId,
-  setFormData,
-  getSelectedDesign
+  setFormData
 ) => {
-  console.log(getSelectedDesign, "move_TO_ASSINGG");
   try {
     const body = {
-      design_codes: getSelectedDesign ? getSelectedDesign : formData.SKU,
+      design_codes: formData.SKU,
       assignment_data: {
         length: formData.length,
         width: formData.width,
@@ -201,8 +196,9 @@ export const move_to_assignment = async (
         tag: formData.tag,
       },
     };
-    const response = body && (await apiService.post(ASSIGNMENT_MOVE, body));
-    if (response?.data?.results?.status_code === 200) {
+    console.log(body, "move_TO_ASSINGG");
+    const response = await apiService.post(ASSIGNMENT_MOVE, body);
+    if (response.data.results.status_code === 200) {
       all_Designs(setIsLoading, setData);
       onClose();
       setSuccessMessage("Moved to Assignment Successfully");
@@ -213,7 +209,7 @@ export const move_to_assignment = async (
       setSelectedDesigns([]);
       setShowRadioButtons(false);
       setSelectButtonLabel("Select");
-      // setShowAssignmentModal(true);
+      setShowAssignmentModal(true);
       setMovedItemsId(response?.data?.results.data);
       setFormData({
         SKU: "",
@@ -263,10 +259,7 @@ export const editBasicDetails = async (
       },
     };
     console.log(body, "move_TO_ASSINGG");
-    const response = await apiService.patch(
-      `${EDIT_BASIC_DETAILS}${folderIdA}/items/${designId}/edit/`,
-      body
-    );
+    const response = await apiService.patch(`${EDIT_BASIC_DETAILS}${folderIdA}/items/${designId}/edit/`, body);
     if (response.data.results.status_code === 200) {
       // all_Designs(setIsLoading, setData);
       onClose();
@@ -467,8 +460,8 @@ export const upload_admin_image_assignment = async (
 export const basic_calculation = async (
   setIsLoadingCalculation,
   formData,
-  SelectedDiamondId,
   SelectedMetalId,
+  SelectedDiamondId,
   setCalculationData
 ) => {
   try {
