@@ -6,8 +6,9 @@ import CustomiseRequest from "../../CustomiseRequest/CustomiseRequiest";
 import { voters_customization_list, delete_customization } from "../Api";
 import DeleteConfirmationModal from "../../ConfirmationModal/DeleteConfirmationModal";
 import SuccessModal from "../../SuccessModal/SuccessModal";
+import CircularProgress from "@mui/material/CircularProgress";
 
-const   VotorsCustomization = () => {
+const VotorsCustomization = ({sidebarExpanded}) => {
   const [showEditDelete, setShowEditDelete] = useState(null);
   const [IsModalOpen, setIsModalOpen] = useState(false);
   const [Data, setData] = useState([]);
@@ -23,7 +24,7 @@ const   VotorsCustomization = () => {
   const dropdownRef = useRef(null);
 
   useEffect(() => {
-    voters_customization_list(setIsLoading, setData, );
+    voters_customization_list(setIsLoading, setData);
   }, []);
 
   const handleDeleteCustomization = (cuzId) => {
@@ -73,12 +74,25 @@ const   VotorsCustomization = () => {
   console.log(Data, "votersCuz");
 
   return (
-    <div className="ParentVotors">
+    <div className="ParentVotors" style={{paddingLeft:sidebarExpanded? "225px":"130px"}}>
       <div className="votors_btns">
-        <DesignBtn />
+        <DesignBtn votersSetData={setData} />
       </div>
       <div className="VotorsCustomizationTable">
-        <div className="Users_Table_List">
+        {isLoading ? (
+          <div style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
+           
+            <CircularProgress
+              size={100} // Set the desired size
+              sx={{
+                color: "#126e72",
+                padding: "8px 10px",
+                width: "35px",
+              }}
+            />
+          </div>
+        ) : (
+          <div className="Users_Table_List">
           <table style={{ width: "100%" }}>
             <thead>
               <tr style={{ color: "#455173" }}>
@@ -158,6 +172,8 @@ const   VotorsCustomization = () => {
             </tbody>
           </table>
         </div>
+        )}
+       
       </div>
       <CustomiseRequest
         open={IsModalOpen}

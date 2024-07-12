@@ -8,15 +8,15 @@ import ring from "../../../assets/ring.png";
 import ProductCustomisation from "../../ProductCustomisation/ProductCustomisation";
 import { customized_order_gallary, stock_order_gallary } from "../Api";
 
-const Gallery = () => {
+const Gallery = ({sidebarExpanded}) => {
   const [value, setValue] = React.useState("1");
   const [IsModalOpen, setIsModalOpen] = useState(false);
   const [stockOrder, setStockOrder] = useState([]);
   const [customizedOrder, setCustomizedOrder] = useState([]);
   const [orderDesignCode, setOrderDesignCode] = useState([]);
   const [orderAssignMentCode, setOrderAssignMentCode] = useState([]);
-  const [CustomizedCod,setCustomizedCode] = useState([])
-  const [CustomizedId,setCustomizedId] = useState([])
+  const [CustomizedCod, setCustomizedCode] = useState([]);
+  const [CustomizedId, setCustomizedId] = useState([]);
 
   useEffect(() => {
     stock_order_gallary(setStockOrder);
@@ -52,17 +52,18 @@ const Gallery = () => {
     setOrderDesignCode(designCode);
     setOrderAssignMentCode(assignmentId);
   };
-  const handleCustomizedOrder = (cutomizedCode,customizedId) => {
+  const handleCustomizedOrder = (cutomizedCode, customizedId) => {
     setIsModalOpen(true);
-    setCustomizedCode(cutomizedCode)
-    setCustomizedId(customizedId)
-  }
+    setCustomizedCode(cutomizedCode);
+    setCustomizedId(customizedId);
+  };
   console.log(orderDesignCode, orderAssignMentCode, "clickorder");
   console.log(stockOrder, "stockOrder");
   console.log(customizedOrder, "customizedOrder");
   console.log("currentTab", value);
+  console.log(sidebarExpanded,"sidebarExpanded")
   return (
-    <div className="ParentVotors">
+    <div className="ParentVotors" style={{paddingLeft:sidebarExpanded? "225px":"130px"}}>
       <div className="gallery__tab">
         <Box sx={{ width: "100%", typography: "body1" }}>
           <TabContext value={value}>
@@ -104,7 +105,7 @@ const Gallery = () => {
                             onClick={() =>
                               handleStockOrder(
                                 item.items[0].paper_design.designcode,
-                                item.items[0].id
+                                item.items[0].item_id
                               )
                             }
                           >
@@ -134,7 +135,14 @@ const Gallery = () => {
                             ID : {item.customizationcode}
                           </h3>
 
-                          <button onClick={() => handleCustomizedOrder(item.customizationcode,item.id)}>
+                          <button
+                            onClick={() =>
+                              handleCustomizedOrder(
+                                item.customizationcode,
+                                item.id
+                              )
+                            }
+                          >
                             Make order
                           </button>
                         </div>
