@@ -14,14 +14,13 @@ const RendersPage = () => {
     cadDesignList(setIsLoading, setDesignListData);
   }, []);
 
-
   return (
     <div className="Parent_RendersCard">
       <Sidebar />
-      <Header/>
+      <Header />
       {/* <RenderCard designListData={designListData} /> */}
       {/* <AnnotationCanvas /> */}
-      <RendersHome designListData={designListData}/>
+      <RendersHome designListData={designListData} />
     </div>
   );
 };

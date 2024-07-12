@@ -59,7 +59,7 @@ const RenderCard = (props) => {
   };
 
   return (
-    <div className="MainContainer">
+    <div className="MainContainer" style={{paddingLeft:props.sidebarExpanded? "225px":"130px"}}>
       <div
         className="Design_FileUpload"
         onClick={() => setUploadModalOpen(true)}

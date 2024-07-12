@@ -6,7 +6,7 @@ import image12 from "../../assets/ring_Wh.png";
 import { useLocation } from "react-router-dom";
 import { customization_details_view_warehouse } from "../../Pages/WareHousePageView/Api";
 
-const WareHouseDetails = () => {
+const WareHouseDetails = ({sidebarExpanded}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const [actualFormData, setActualFormData] = useState({
@@ -47,7 +47,7 @@ const WareHouseDetails = () => {
 
 
   return (
-    <div className="Parant_WareHouseDetails">
+    <div className="Parant_WareHouseDetails" style={{paddingLeft:sidebarExpanded? "225px":"130px"}}>
       <div className="wareHouseImageConatainer">
         <div className="imageWarehouspart1">
           <img src={image1} />

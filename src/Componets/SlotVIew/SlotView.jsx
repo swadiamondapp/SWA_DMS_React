@@ -104,14 +104,20 @@ const SlotView = ({ open, onClose, userId, slotView }) => {
                         </tr>
                       </thead>
                       <tbody className="tbodyy">
-                        {slotView.map((item, index) => (
-                          <tr key={index}>
-                            <td class="table-cell">{item.slotnumber}</td>
-                            <td class="table-cell">{item.created_at}</td>
-                            <td class="table-cell">Bangles</td>
-                            <td class="table-cell">16 Gram</td>
-                          </tr>
-                        ))}
+                        {slotView.map((item, index) =>
+                          item.caddesigns.map((design, designIndex) => (
+                            <tr key={`${index}-${designIndex}`}>
+                              <td className="table-cell">{design.designcode}</td>
+                              <td className="table-cell">{design.created_at}</td>
+                              <td className="table-cell">
+                                {design.product_category.join(", ")}
+                              </td>
+                              <td className="table-cell">
+                                {design.approx_metal_weight}
+                              </td>
+                            </tr>
+                          ))
+                        )}
                         {/* <tr>
                           <td class="table-cell">SWA34R56</td>
                           <td class="table-cell">12-02-23</td>

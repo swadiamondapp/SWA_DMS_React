@@ -149,7 +149,6 @@ const FinishedProjects = (props) => {
         createFinsishedProjects={createFinsishedProjects}
         setSuccess={setSuccess}
         setFinishedProjectData={props?.setFinishedProjectData}
-
       />
       <SuccessModal
         successModalOpen={success}

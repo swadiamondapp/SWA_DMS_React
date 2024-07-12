@@ -10,6 +10,8 @@ const CentralFolderDetailsPage = () => {
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(false);
   const [CentralFolderDetails, setCentralFolderDetails] = useState([]);
+  const [sidebarExpanded, setSidebarExpanded] = useState(true);
+
 
   useEffect(() => {
     centralFolderDetails(id, setCentralFolderDetails);
@@ -18,9 +20,9 @@ const CentralFolderDetailsPage = () => {
   const designCodesCentralHub = CentralFolderDetails.map((design) => design.designcode);
   return (
     <div className="centralhubDashboard">
-      <Sidebar />
-      <Header centralId={id} designCodesCentralHub={designCodesCentralHub}/>
-      <CentralHubDetailsView CentralFolderDetails={CentralFolderDetails} />
+      <Sidebar  sidebarExpanded={sidebarExpanded}  setSidebarExpanded={setSidebarExpanded} />
+      <Header centralId={id} designCodesCentralHub={designCodesCentralHub} sidebarExpanded={sidebarExpanded} />
+      <CentralHubDetailsView CentralFolderDetails={CentralFolderDetails} sidebarExpanded={sidebarExpanded} />
     </div>
   );
 };

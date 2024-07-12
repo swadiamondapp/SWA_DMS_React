@@ -136,7 +136,7 @@ const CustomizationTable = (props) => {
   }, []);
 
   return (
-    <div className="Parant_CustomTable">
+    <div className="Parant_CustomTable" style={{paddingLeft:props.sidebarExpanded? "225px":"130px"}}>
       <div className="TableContainer">
         <table>
           <thead>

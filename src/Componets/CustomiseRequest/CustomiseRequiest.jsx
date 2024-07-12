@@ -206,7 +206,7 @@ const CustomiseRequest = ({
                           <img src={dataToDisplay.image3}  alt="" />
                         </div>
                         <div className="imageContainer">
-                          <img src={dataToDisplay.image3}  alt="" />
+                          <img src={dataToDisplay.image4}  alt="" />
                         </div>
                         <div className="imageContainer">
                           <img src={dataToDisplay.image5} alt="" />
@@ -321,6 +321,8 @@ const CustomiseRequest = ({
         wareHouseuserId={wareHouseuserId}
         setData={setData}
         setCustomization={setCustomization}
+        name="editModalOpen"
+        customizationFunction={()=>customization_details(setIsLoading, setCustomization, userId)}
       />
       <SuccessModal
         successModalOpen={successModalOpen}

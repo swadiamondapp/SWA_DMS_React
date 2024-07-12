@@ -5,7 +5,7 @@ import DesignBtn from "../../ADMIN PANEL/Design Pool/DesignBtn";
 import ring from "../../../assets/ring.png";
 import { list_uploaded_designs, upload_designs_items } from "./Api";
 
-const DesignerDashboard = () => {
+const DesignerDashboard = ({sidebarExpanded}) => {
   const [uploadInstructionsVisible, setUploadInstructionsVisible] =
     useState(true);
   const [showDownloadOptions, setShowDownloadOptions] = useState(false);
@@ -64,7 +64,7 @@ const DesignerDashboard = () => {
 
   return (
     <div>
-      <div className="DesignerDashboard">
+      <div className="DesignerDashboard" style={{paddingLeft:sidebarExpanded? "225px":"130px"}}>
         <div
           className="Design_FileUpload"
           
