@@ -10,20 +10,25 @@ const FinishedProjectInner = (props) => {
           props?.folderItem[0]?.images?.map((imgObj, index) => {
             const imageUrl = Object.values(imgObj)[0];
             const createdAt = imgObj.created_at;
-            return (
-              <div className="finishedCardContainer">
-                <img src={imageUrl} alt="card_image" />
-                <span className="postedOn">
-                  POSTED ON: <span className="postedOn_data">{createdAt}</span>
-                </span>
-                <div>
-                  <button className="shareButton_finished">
-                    <img src={ShareIcon} arlt="" />
-                    Share
-                  </button>
+            {console.log(imageUrl,"imageUrl")}
+            if (imageUrl) {
+              return (
+                <div className="finishedCardContainer" key={index}>
+                  <img src={imageUrl} alt="card_image" />
+                  <span className="postedOn">
+                    POSTED ON: <span className="postedOn_data">{createdAt}</span>
+                  </span>
+                  <div>
+                    <button className="shareButton_finished">
+                      <img src={ShareIcon} alt="Share icon" />
+                      Share
+                    </button>
+                  </div>
                 </div>
-              </div>
-            );
+              );
+            } else {
+              return null; // Return null if imageUrl does not exist
+            }
           })}
       </div>
     </div>

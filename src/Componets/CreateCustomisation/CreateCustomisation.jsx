@@ -163,6 +163,7 @@ const CreateCustomisation = ({
     }
   }, [dataToDisplaytomodal]);
 
+  console.log(dataToDisplaytomodal?.image2 ,"dataToDisplaytomodal.image2 ")
   console.log(formData, "editCus");
 
   const schema = Joi.object({
