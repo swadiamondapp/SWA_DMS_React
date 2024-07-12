@@ -23,6 +23,7 @@ import {
   product_type_drop_down,
 } from "../ADMIN PANEL/Api_dropDown";
 import DeleteConfirmationModal from "../ConfirmationModal/DeleteConfirmationModal";
+import plusICon from "../../assets/plusIcon.png";
 import {
   diamond_type_dropdown_basicDetails,
   findings_List_basicDetails,
@@ -65,6 +66,7 @@ const style = {
 //   },
 // };
 const CreateCustomisation = ({
+  votersSetData,
   open,
   onClose,
   dataToDisplaytomodal,
@@ -72,6 +74,8 @@ const CreateCustomisation = ({
   wareHouseuserId,
   setData,
   setCustomization,
+  name,
+  customizationFunction,
 }) => {
   // const [open, setOpen] = useState(false);
   const [tagText, setTagText] = useState("");
@@ -92,6 +96,7 @@ const CreateCustomisation = ({
     "Mail Send Successfully"
   );
   const [diamonType, setDiamondType] = useState([]);
+  const [images, setImages] = useState(Array(5).fill(""));
   const [formData, setFormData] = useState({
     sallerName: "",
     mobileNumber: "",
@@ -125,7 +130,8 @@ const CreateCustomisation = ({
     diamond_type_dropdown_basicDetails(setDiamondType);
     product_category_basicDetails(setListProductCategory);
   }, []);
-  console.log(MetalTypeDropDown, "MetalTypeDropDown");
+
+  console.log(outLetDropDown, "outLetDropDown");
 
   useEffect(() => {
     if (dataToDisplaytomodal) {
@@ -174,7 +180,7 @@ const CreateCustomisation = ({
         "string.min": `Mobile number must be exactly 10 digits`,
         "string.max": `Mobile number must be exactly 10 digits`,
       }),
-    chooseOutlet: Joi.string().required().messages({
+    chooseOutlet: Joi.required().messages({
       "string.empty": `choose Outlet cannot be an empty feild`,
     }),
     productType: Joi.required().messages({
@@ -227,7 +233,7 @@ const CreateCustomisation = ({
     height: Joi.string().required().messages({
       "string.empty": `cannot be  empty`,
     }),
-    diamond_type: Joi.string().required().messages({
+    diamond_type: Joi.required().messages({
       "string.empty": `cannot be  empty`,
     }),
     length_of_item: Joi.string().required().messages({
@@ -235,6 +241,7 @@ const CreateCustomisation = ({
     }),
   });
   console.log(ProudctCategory, "diamonType");
+  console.log(errors, "errors");
 
   const handleSubmitButton = (e) => {
     e.preventDefault();
@@ -268,11 +275,9 @@ const CreateCustomisation = ({
     }));
     setErrors((prevErrors) => ({
       ...prevErrors,
-      [name]: "", 
-    }))
-  }
-
-  
+      [name]: "", // Clear the error for the current input field
+    }));
+  };
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -316,14 +321,19 @@ const CreateCustomisation = ({
         onClose,
         setSuccessMessage,
         setSuccessModalOpen,
-        imageFiles,
-        setData,
-        setImageFiles,
-        setCustomization,
-        userId
+        images,
+        setImages,
+        votersSetData,
+        customizationFunction
       );
     }
   };
+  const handleImageUpload = (index, event) => {
+    const newImages = [...images];
+    newImages[index] = event.target.files[0];
+    setImages(newImages);
+  };
+
   console.log(ErrorMessage, "asdfkd");
   const handleCreateSubmitCustomization = () => {
     // Call handleSubmitButton first
@@ -349,16 +359,14 @@ const CreateCustomisation = ({
       create_customizaion_warehouse(
         setIsLoading,
         formData,
-        displayEditDetailsById,
         onClose,
         setSuccessMessage,
         setSuccessModalOpen,
         setErrorMessage,
-        imageFiles,
-        setImageFiles,
-        userId,
-        setData,
-        setCustomization
+        images,
+        votersSetData,
+        setFormData,
+        setImages
       );
     }
   };
@@ -372,6 +380,15 @@ const CreateCustomisation = ({
       setUploadInstructionsVisible(false);
     }
   };
+
+  console.log(images, "images==>new");
+  const serverImage = [
+    dataToDisplaytomodal?.image,
+    dataToDisplaytomodal?.image2,
+    dataToDisplaytomodal?.image3,
+    dataToDisplaytomodal?.image4,
+    dataToDisplaytomodal?.image5,
+  ];
 
   return (
     <div>
@@ -463,7 +480,10 @@ const CreateCustomisation = ({
                           onSearch={onSearch}
                           filterOption={filterOption}
                           style={{ width: "100%" }}
-                          options={outLetDropDown}
+                          options={outLetDropDown.map((item) => ({
+                            value: item.id,
+                            label: item.name,
+                          }))}
                           value={formData.chooseOutlet || undefined}
                         />
                         {errors.chooseOutlet && (
@@ -574,7 +594,7 @@ const CreateCustomisation = ({
                           </span>
                         )}
                       </div>
-                      <div className="uploadImageContainer">
+                      {/* <div className="uploadImageContainer">
                         {imageFiles.length > 0 ? (
                           <>
                             {imageFiles.map((item, index) => (
@@ -623,7 +643,7 @@ const CreateCustomisation = ({
                                     borderRadius: "4px",
                                   }}
                                 />
-                                <img
+                                 <img
                                   // key={index}
                                   src={dataToDisplaytomodal.image4}
                                   style={{
@@ -632,7 +652,7 @@ const CreateCustomisation = ({
                                     borderRadius: "4px",
                                   }}
                                 />
-                                <img
+                                  <img
                                   // key={index}
                                   src={dataToDisplaytomodal.image5}
                                   style={{
@@ -659,12 +679,7 @@ const CreateCustomisation = ({
                             onClick={() =>
                               document.getElementById("fileUploadImage").click()
                             }
-                            style={{
-                              display:
-                                imageFiles.length === 5 || dataToDisplaytomodal
-                                  ? "none"
-                                  : "block",
-                            }}
+                            style={{display:imageFiles.length === 5 || dataToDisplaytomodal ? "none":"block"}}
                           >
                             {console.log(imageFiles, "images#")}
                             <input
@@ -678,7 +693,112 @@ const CreateCustomisation = ({
                             Upload <BsCloudUpload />
                           </div>
                         </div>
-                      </div>
+                      </div> */}
+                      {name === "editModalOpen" ? (
+                        <div className="uploadImageContainer">
+                          <div className="rightw">
+                            <div
+                              id="fileUpload"
+                              // className="uploadButton"
+                              // onClick={() =>
+                              //   document.getElementById("fileUploadImage").click()
+                              // }
+                            >
+                              <div className="dashed_imageContainer">
+                                {images.map((image, index) => (
+                                  <div
+                                    key={index}
+                                    className="dashedImage"
+                                    style={{
+                                      width: "50px",
+                                      height: "50px",
+                                      position: "relative",
+                                    }}
+                                  >
+                                    {(images[index] || serverImage[index]) && (
+                                      <img
+                                        src={
+                                          images[index]
+                                            ? URL.createObjectURL(images[index])
+                                            : serverImage[index]
+                                        }
+                                        alt=""
+                                        style={{
+                                          height: "50px",
+                                          width: "50px",
+                                        }}
+                                      />
+                                    )}
+                                    <div
+                                      style={{
+                                        position: "absolute",
+                                      }}
+                                    >
+                                      <label>
+                                        <img src={plusICon} alt="" />
+                                        <input
+                                          type="file"
+                                          accept="image/png, image/jpeg"
+                                          style={{ display: "none" }}
+                                          onChange={(e) =>
+                                            handleImageUpload(index, e)
+                                          }
+                                        />
+                                      </label>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="uploadImageContainer">
+                          <div className="rightw">
+                            <div
+                              id="fileUpload"
+                              // className="uploadButton"
+                              // onClick={() =>
+                              //   document.getElementById("fileUploadImage").click()
+                              // }
+                            >
+                              <div className="dashed_imageContainer">
+                                {images.map((image, index) => (
+                                  <div
+                                    key={index}
+                                    className="dashedImage"
+                                    style={{ width: "50px", height: "50px" }}
+                                  >
+                                    {image && (
+                                      <img
+                                        src={URL.createObjectURL(image)}
+                                        alt=""
+                                        style={{
+                                          height: "50px",
+                                          width: "50px",
+                                        }}
+                                      />
+                                    )}
+                                    <div style={{ position: "absolute" }}>
+                                      <label>
+                                        <img src={plusICon} alt="" />
+                                        <input
+                                          type="file"
+                                          accept="image/png, image/jpeg"
+                                          style={{ display: "none" }}
+                                          onChange={(e) =>
+                                            handleImageUpload(index, e)
+                                          }
+                                        />
+                                      </label>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
                       <div className="parant_relative">
                         <label htmlFor="" className="label_text">
                           Metal Type
@@ -810,9 +930,9 @@ const CreateCustomisation = ({
                           }))}
                           value={formData.diamond_type || undefined}
                         />
-                        {errors.metalType && (
+                        {errors.diamond_type && (
                           <span className="error_select">
-                            {errors.metalType}
+                            {errors.diamond_type}
                           </span>
                         )}
                       </div>
@@ -977,8 +1097,16 @@ const CreateCustomisation = ({
                             onClick={() => handleCreateSubmitCustomization()}
                             type="submit"
                             className="submitButton"
+                            disabled={isLoading}
                           >
-                            SUBMIT
+                            {isLoading ? (
+                              <CircularProgress
+                                size={15}
+                                sx={{ color: "#fff" }}
+                              />
+                            ) : (
+                              " SUBMIT"
+                            )}
                           </button>
                         </>
                       )}
