@@ -79,21 +79,62 @@ const FinishedProjects = (props) => {
   console.log("props?.finishedProjectData", props?.finishedProjectData);
 
   return (
-     <div className="Parant_FinishedProject" style={{paddingLeft:props.sidebarExpanded? "225px":"130px"}}>
-      <div className="filter_Container">
-        <DesignBtn
-          toggleDownloadOptions={toggleDownloadOptions}
-          selectButtonLabel={selectButtonLabel}
-          toggleRadioButtons={toggleRadioButtons}
-          toggleMoveOptions={toggleMoveOptions}
-          showDownloadOptions={showDownloadOptions}
-          showMoveOptions={showMoveOptions}
-        />
-      </div>
-      <div className="folderCard_parent">
-        {props?.finishedProjectData?.map((item, index) => (
-          <div className="folder__card">
-            <Link to={`/finished/${item.id}`}>
+    <>
+      <div className="Parant_FinishedProject">
+        <div className="filter_Container">
+          <DesignBtn
+            toggleDownloadOptions={toggleDownloadOptions}
+            selectButtonLabel={selectButtonLabel}
+            toggleRadioButtons={toggleRadioButtons}
+            toggleMoveOptions={toggleMoveOptions}
+            showDownloadOptions={showDownloadOptions}
+            showMoveOptions={showMoveOptions}
+          />
+        </div>
+
+        <div
+          className="Design_FileUpload"
+          onClick={() => setUploadModalOpen(true)}
+        >
+          {uploadInstructionsVisible ? (
+            <>
+              <div>
+                <p className="D__fileUpload">Submit design</p>
+                <p className="D__fileUpload2">Upload your finished Projects</p>
+              </div>
+              <div className="File____uploadbtn">
+                <button>
+                  Upload File{" "}
+                  <LiaCloudUploadAltSolid style={{ fontSize: "22px" }} />
+                </button>
+              </div>
+            </>
+          ) : (
+            <div className="De__file">
+              <p>File uploaded successfully!</p>
+              <div className="File____uploadbtn">
+                <button>
+                  Upload File
+                  <LiaCloudUploadAltSolid style={{ fontSize: "22px" }} />
+                </button>
+              </div>
+            </div>
+          )}
+
+          <input
+            id="fileInput"
+            type="file"
+            accept="image/*"
+            style={{ display: "none" }}
+            onChange={handleFileUpload}
+          />
+        </div>
+        <div className="folderCard_parent RendersHome_folders_top">
+          {props?.finishedProjectData?.map((item, index) => (
+            <div
+              className="folder__card"
+              onClick={() => handleFolderClick(item)}
+            >
               <img src={folderimg} alt="" />
 
               <p>{item.name}</p>
@@ -108,7 +149,6 @@ const FinishedProjects = (props) => {
         createFinsishedProjects={createFinsishedProjects}
         setSuccess={setSuccess}
         setFinishedProjectData={props?.setFinishedProjectData}
-
       />
       <SuccessModal
         successModalOpen={success}
