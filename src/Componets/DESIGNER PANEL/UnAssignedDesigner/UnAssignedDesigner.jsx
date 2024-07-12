@@ -9,7 +9,7 @@ import {
 import avatar from "../../../assets/avataprofile.png";
 import SuccessModal from "../../SuccessModal/SuccessModal";
 
-const CustomizedOrder = () => {
+const CustomizedOrder = ({sidebarExpanded}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [UnAssignedLists, setUnAssignedLists] = useState([]);
   const [successMessage, setSuccessMessage] = useState("");
@@ -52,7 +52,7 @@ const CustomizedOrder = () => {
   ];
   console.log(UnAssignedLists, "customizattion");
   return (
-    <div className="DesignerAssignmentPanel">
+    <div className="DesignerAssignmentPanel" style={{paddingLeft:sidebarExpanded? "225px":"130px"}}>
       <div className="CustomizedOrderParent">
         <div className="Parent_NewDesign">
           <div className="Card_Design_Parent">

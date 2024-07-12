@@ -48,7 +48,10 @@ const VotorsPanal = ({ sidebarExpanded }) => {
     },
   ];
   return (
-    <div className="ParentVotors">
+    <div
+      className="ParentVotors"
+      style={{ paddingLeft: sidebarExpanded ? "225px" : "130px" }}
+    >
       <div className="VotorsPanelsection">
         <div className="Parent_NewDesign">
           <h3 className="HeadNewdesign">Newly added</h3>

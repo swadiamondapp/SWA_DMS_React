@@ -8,6 +8,7 @@ const WareHousePage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [DesignWareHouse, setDesignWareHouse] = useState([]);
   const [LastVotedDesign,setLastVotedDesigns] = useState([])
+  const [sidebarExpanded, setSidebarExpanded] = useState(true);
 
   useEffect(() => {
     list_warehouse_design(setIsLoading, setDesignWareHouse);
@@ -19,9 +20,9 @@ const WareHousePage = () => {
 
   return (
     <div className="Parent_RendersCard">
-      <Sidebar />
-      <Header />
-      <WareHouse DesignWareHouse={DesignWareHouse} LastVotedDesign={LastVotedDesign} />
+      <Sidebar  sidebarExpanded={sidebarExpanded} setSidebarExpanded={setSidebarExpanded} />
+      <Header  sidebarExpanded={sidebarExpanded} />
+      <WareHouse DesignWareHouse={DesignWareHouse} LastVotedDesign={LastVotedDesign}  sidebarExpanded={sidebarExpanded} />
     </div>
   );
 };

@@ -10,7 +10,7 @@ import {
 import folderimg from "../../../assets/folder.png";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 
-const CentralDashboard = () => {
+const CentralDashboard = ({sidebarExpanded}) => {
   const [Data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [Folders, setFolders] = useState([]);
@@ -29,7 +29,7 @@ const CentralDashboard = () => {
   }, []);
   console.log(Folders, "listaksjdfks====>");
   return (
-    <div className="parentCentral">
+    <div className="parentCentral"  style={{paddingLeft:sidebarExpanded? "225px":"130px"}}>
       <div className="CadAssignmentCard">
         <div className="folderCard_parent">
           {Folders.map((item) => (

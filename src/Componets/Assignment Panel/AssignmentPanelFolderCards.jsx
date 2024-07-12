@@ -73,7 +73,7 @@ const AssignmentPanelFolderCards = (props) => {
   };
 
   return (
-    <div className="DesignerAssignmentPanel">
+    <div className="DesignerAssignmentPanel"  style={{paddingLeft:props.sidebarExpanded? "225px":"130px"}} >
       {/* <DesignBtn
         toggleDownloadOptions={toggleDownloadOptions}
         selectButtonLabel={selectButtonLabel}

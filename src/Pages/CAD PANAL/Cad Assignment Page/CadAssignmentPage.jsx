@@ -18,6 +18,7 @@ const CadAssignmentPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [timer, setTimer] = useState("");
   const [productCode, setProductCode] = useState("");
+  const [sidebarExpanded, setSidebarExpanded] = useState(true);
   const [itemId, setItemId] = useState("");
   const [images, setImages] = useState({
     normal: null,
@@ -118,13 +119,14 @@ const CadAssignmentPage = () => {
 
   return (
     <div className="ParentVotorPage">
-      <Sidebar />
-      <Header />
+      <Sidebar sidebarExpanded={sidebarExpanded} setSidebarExpanded={setSidebarExpanded}/>
+      <Header  sidebarExpanded={sidebarExpanded} />
       <CadAssignment
         designList={designList}
         onButtonClick={onButtonClick}
         timer={timer}
         setIsModalOpen={setIsModalOpen}
+        sidebarExpanded={sidebarExpanded}
       />
       <CentalHub
         open={isModalOpen}

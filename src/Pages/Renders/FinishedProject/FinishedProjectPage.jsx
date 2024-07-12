@@ -8,6 +8,7 @@ import FinishedProjects from "../../../Componets/FinishedProject/FinishedProject
 const FinishedProjectPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [finishedProjectData, setFinishedProjectData] = useState([]);
+  const [sidebarExpanded, setSidebarExpanded] = useState(true);
 
   useEffect(() => {
     finishedProjectList(setIsLoading, setFinishedProjectData);
@@ -15,10 +16,15 @@ const FinishedProjectPage = () => {
 
   return (
     <div className="Parent_FinishedProjectPage">
-      <Sidebar />
-      <Header />
-      <FinishedProjects finishedProjectData={finishedProjectData}
-       setFinishedProjectData={setFinishedProjectData}
+      <Sidebar
+        sidebarExpanded={sidebarExpanded}
+        setSidebarExpanded={setSidebarExpanded}
+      />
+      <Header sidebarExpanded={sidebarExpanded} />
+      <FinishedProjects
+        finishedProjectData={finishedProjectData}
+        setFinishedProjectData={setFinishedProjectData}
+        sidebarExpanded={sidebarExpanded}
       />
     </div>
   );

@@ -9,6 +9,8 @@ const DesignerAssignViewPage = () => {
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(false)
   const [folderDetails, setFolderDetails] = useState([])
+  const [sidebarExpanded, setSidebarExpanded] = useState(true);
+
 
   useEffect(() => {
     list_designer_folderDetails(setIsLoading, setFolderDetails, id);
@@ -16,9 +18,9 @@ const DesignerAssignViewPage = () => {
 
   return (
     <div className="DesignerDashboardPage">
-      <Sidebar />
-      <Header />
-      <DesignerDetailView folderDetails={folderDetails} id={id} list_designer_folderDetails={()=>{list_designer_folderDetails(setIsLoading, setFolderDetails, id)}}/>
+      <Sidebar sidebarExpanded={sidebarExpanded}  setSidebarExpanded={ setSidebarExpanded} />
+      <Header sidebarExpanded={sidebarExpanded}  />
+      <DesignerDetailView folderDetails={folderDetails} id={id} list_designer_folderDetails={()=>{list_designer_folderDetails(setIsLoading, setFolderDetails, id)}} sidebarExpanded={sidebarExpanded} />
     </div>
   );
 };

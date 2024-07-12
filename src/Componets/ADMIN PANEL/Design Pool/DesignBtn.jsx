@@ -13,6 +13,7 @@ import { useParams } from "react-router-dom";
 import AssignmentModal from "../../AssignmentModal/AssignmentModal";
 
 const DesignBtn = ({
+  votersSetData,
   toggleDownloadOptions,
   selectButtonLabel,
   toggleRadioButtons,
@@ -187,6 +188,7 @@ const DesignBtn = ({
       <CreateCustomisation
         open={isModalOpenCreateCutomize}
         onClose={() => setIsCreateCustomizeModalOpen(false)}
+        votersSetData={votersSetData}
       />
 
 

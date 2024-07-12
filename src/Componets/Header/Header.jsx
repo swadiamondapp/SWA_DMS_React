@@ -16,6 +16,7 @@ const Header = ({
   basicDetails,
   folderDetails,
   designListData,
+  sidebarExpanded,
 }) => {
   const location = useLocation();
   const { nameCentral } = useParams();
@@ -63,7 +64,10 @@ const Header = ({
 
   return (
     <div>
-      <div className="Parent_Section">
+      <div
+        className="Parent_Section"
+        style={{ paddingLeft: sidebarExpanded ? "225px" : "130px" }}
+      >
         <div className="Header_Section">
           {basicDetails ? (
             <div className="basic-details_header">

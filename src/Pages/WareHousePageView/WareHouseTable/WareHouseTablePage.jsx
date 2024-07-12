@@ -6,12 +6,13 @@ import "./warehouse.css";
 
 
 const WareHouseTablePage = () => {
+  const [sidebarExpanded, setSidebarExpanded] = useState(true);
  
   return (
     <div className="Parent_WareHouseTable">
-      <Sidebar />
-      <Header />
-      <CustomiseRequiestTable/>
+      <Sidebar  sidebarExpanded={sidebarExpanded} setSidebarExpanded={setSidebarExpanded} />
+      <Header  sidebarExpanded={sidebarExpanded}/>
+      <CustomiseRequiestTable  sidebarExpanded={sidebarExpanded}/>
     </div>
   );
 };

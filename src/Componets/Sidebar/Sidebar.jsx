@@ -27,8 +27,8 @@ import SlotCreation from "../SlotCreation/SlotCreation";
 import CustomiseRequest from "../CustomiseRequest/CustomiseRequiest";
 import DesignPools from "../DesignPoolExtended/DesignPools";
 
-const Sidebar = () => {
-  const [sidebarExpanded, setSidebarExpanded] = useState(true);
+const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
+  // const [sidebarExpanded, setSidebarExpanded] = useState(true);
   const usertype = localStorage.getItem("Usertype");
   const toggleSidebar = () => {
     setSidebarExpanded(!sidebarExpanded);
@@ -42,37 +42,48 @@ const Sidebar = () => {
 
           <Link to="/">
             <div className="Links">
-          {/* <div className="SidebarVerticalLine"></div> */}
+              <div className="horizontal_line_sidebar"></div>
+              <div className="lin_container"></div>
               <img src={userimg} alt="" />
               {sidebarExpanded && <p>Users</p>}
             </div>
           </Link>
           <Link to="/designpool">
             <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
               <img src={designimg} alt="" />
               {sidebarExpanded && <p>Design pool</p>}
             </div>
           </Link>
           <Link to='/masterspage/findings'>
           <div className="Links">
+          <div className="horizontal_line_sidebar"></div>
+          <div className="lin_container"></div>
             <img src={mastersimg} alt="" />
             {sidebarExpanded && <p>Masters</p>}
           </div>
           </Link>
           <Link to="/assignmentpanel">
             <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
               <img src={assignmentimg} alt="" />
               {sidebarExpanded && <p>Assignment panel</p>}
             </div>
           </Link>
           <Link to="/chat">
             <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
               <img src={chatboximg} alt="" />
               {sidebarExpanded && <p>Chat box</p>}
             </div>
           </Link>
           <Link to="/otherlogin">
             <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
               <img src={loginzimg} alt="" />
               {sidebarExpanded && <p>Other logins</p>}
             </div>
@@ -86,30 +97,40 @@ const Sidebar = () => {
           {/* For Designer Module */}
           <Link to="/designdashboard">
             <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
               <img src={userimg} alt="" />
               {sidebarExpanded && <p>Dashboard</p>}
             </div>
           </Link>
           <Link to="/designerassign">
             <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
               <img src={assignmentimg} alt="" />
               {sidebarExpanded && <p>Assign</p>}
             </div>
           </Link>
           <Link to="/chat">
             <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
               <img src={chatboximg} alt="" />
               {sidebarExpanded && <p>Chat box</p>}
             </div>
           </Link>
           <Link to="/Customizedorder">
             <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
               <img src={customeimg} alt="" />
               {sidebarExpanded && <p>Customized Order</p>}
             </div>
           </Link>
           <Link to="/unassigneddesigner">
             <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
               <img src={sideStar} alt="" />
               {sidebarExpanded && <p>Assigned To</p>}
             </div>
@@ -123,24 +144,32 @@ const Sidebar = () => {
           {/* For Votors Panel */}
           <Link to="/votorspanal">
             <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
               <img src={userimg} alt="" />
               {sidebarExpanded && <p>votors panel</p>}
             </div>
           </Link>
           <Link to="/chat">
             <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
               <img src={chatboximg} alt="" />
               {sidebarExpanded && <p>Chat box</p>}
             </div>
           </Link>
           <Link to="/votorscustomization">
             <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
               <img src={customeimg} alt="" />
               {sidebarExpanded && <p>Customization</p>}
             </div>
           </Link>
           <Link to="/gallery">
             <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
               <img src={galleryimg} alt="" />
               {sidebarExpanded && <p>Gallery</p>}
             </div>
@@ -154,18 +183,24 @@ const Sidebar = () => {
           {/* CAD PANEL SIDEBAR */}
           <Link to="/CadAssignment">
             <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
               <img src={userimg} alt="" />
               {sidebarExpanded && <p>Assignments</p>}
             </div>
           </Link>
           <Link to="/chat">
             <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
               <img src={chatboximg} alt="" />
               {sidebarExpanded && <p>Chat box</p>}
             </div>
           </Link>
           <Link to="/FinishedProduct">
             <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
               <img src={customeimg} alt="" />
               {sidebarExpanded && <p>Finished project</p>}
             </div>
@@ -180,24 +215,32 @@ const Sidebar = () => {
           {/* CENTRAL HUB SIDEBAR */}
           <Link to="/centralDashboard">
             <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
               <img src={userimg} alt="" />
               {sidebarExpanded && <p>Dashboard</p>}
             </div>
           </Link>
           <Link to="/chat">
             <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
               <img src={chatboximg} alt="" />
               {sidebarExpanded && <p>Chat box</p>}
             </div>
           </Link>
           <Link to="/slot">
             <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
               <img src={sideStar} alt="" />
-              {sidebarExpanded && <p>Bag</p>}
+              {sidebarExpanded && <p>Slot</p>}
             </div>
           </Link>
           <Link to="/centralhubtransfer">
             <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
               <img src={Tranfer} alt="" />
               {sidebarExpanded && <p>Transfer</p>}
             </div>
@@ -211,18 +254,24 @@ const Sidebar = () => {
           {/* RENDERS PANEL SIDEVAR */}
           <Link to="/renderCard">
             <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
               <img src={userimg} alt="" />
               {sidebarExpanded && <p>Render</p>}
             </div>
           </Link>
           <Link to="/finishedProject">
             <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
               <img src={customeimg} alt="" />
               {sidebarExpanded && <p>Finished project</p>}
             </div>
           </Link>
           <Link to="/chat">
             <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
               <img src={chatboximg} alt="" />
               {sidebarExpanded && <p>Chat box</p>}
             </div>
@@ -237,24 +286,32 @@ const Sidebar = () => {
           {/* WAREHOUSE PANEL SIDEBAR */}
           <Link to="/wareHouse">
             <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
               <img src={userimg} alt="" />
               {sidebarExpanded && <p>votors panel</p>}
             </div>
           </Link>
           <Link to="/chat">
             <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
               <img src={chatboximg} alt="" />
               {sidebarExpanded && <p>Chat box</p>}
             </div>
           </Link>
           <Link to="/customRequestTable">
             <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
               <img src={customeimg} alt="" />
               {sidebarExpanded && <p>Customize Request </p>}
             </div>
           </Link>
           <Link to="/wareHouseDetails">
             <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
               <img src={customeimg} alt="" />
               {sidebarExpanded && <p>Confirmed orders</p>}
             </div>
@@ -278,7 +335,7 @@ const Sidebar = () => {
     }
   };
   return (
-    <div >
+    <div>
       <div
         className={`Sidebar_Parent ${
           sidebarExpanded ? "expanded" : "collapsed"

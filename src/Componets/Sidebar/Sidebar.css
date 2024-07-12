@@ -20,6 +20,16 @@
   gap: 10px;
   margin-bottom: 25px;
   height: 30px;
+  z-index: 999999;
+}
+.horizontal_line_sidebar {
+  width:5px;
+  height: 32px;
+  background: #70e2cf;
+  margin-right: 4px;
+  position: absolute;
+  left:0;
+  display: none;
 }
 
 .vertical_sideBar_line {
@@ -36,12 +46,16 @@
   display: none;
   left: 7px;
   height: 32px;
-  width: 175px;
+  width: 100%;
   opacity: 1;
   background: linear-gradient(90deg, #064b70 0%, rgba(6, 75, 112, 0) 98.46%);
 }
 .Links:hover .lin_container {
   display: block; /* Show the container on hover */
+  z-index: -1
+}
+.Links:hover .horizontal_line_sidebar {
+  display: block; /* Show the horizontal line on hover */
 }
 .Links p {
   color: #ffffffc9;

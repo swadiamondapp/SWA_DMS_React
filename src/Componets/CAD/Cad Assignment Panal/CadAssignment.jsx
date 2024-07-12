@@ -11,6 +11,7 @@ const CadAssignment = ({
   onButtonClick,
   timer,
   setIsModalOpen,
+  sidebarExpanded,
 }) => {
   const navigate = useNavigate();
   const [uploadInstructionsVisible, setUploadInstructionsVisible] =
@@ -63,7 +64,7 @@ const CadAssignment = ({
   };
 
   return (
-    <div className="ParentCad">
+    <div className="ParentCad" style={{paddingLeft:sidebarExpanded? "225px":"130px"}}>
       <div
         className="Design_FileUpload"
         // onClick={() => document.getElementById("fileInput").click()}

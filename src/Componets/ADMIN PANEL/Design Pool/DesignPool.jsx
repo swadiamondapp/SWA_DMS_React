@@ -10,7 +10,7 @@ import {useNavigate } from "react-router-dom";
 import LottieAnimation from "../../../LottiAnimation";
 import BasicDetailModal from "../../BasicDetails/BasicDetailModal";
 
-const DesignPool = () => {
+const DesignPool = ({sidebarExpanded}) => {
   const [showRadioButtons, setShowRadioButtons] = useState(false);
   const [selectButtonLabel, setSelectButtonLabel] = useState("Select");
   const [showDownloadOptions, setShowDownloadOptions] = useState(false);
@@ -75,7 +75,7 @@ const DesignPool = () => {
   };
   return (
     <div>
-      <div className="Parent_DesignView">
+      <div className="Parent_DesignView" style={{paddingLeft:sidebarExpanded? "225px":"130px"}}>
         {/* <div className="DesignPool_btns">
           <div className="Download_ParentD">
             <button className="D_downlodBtn" onClick={toggleDownloadOptions}>

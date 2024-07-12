@@ -4,7 +4,7 @@ import { GoDownload } from "react-icons/go";
 import { IoPrintOutline } from "react-icons/io5";
 import { centralFolderDetails } from "../../../Pages/CENTRAL HUB/Api";
 
-const CentralHubDetailsView = ({CentralFolderDetails}) => {
+const CentralHubDetailsView = ({CentralFolderDetails,sidebarExpanded}) => {
 
 
 
@@ -19,7 +19,7 @@ const CentralHubDetailsView = ({CentralFolderDetails}) => {
   }
 //   console.log(CentralFolderDetails, "cetasdlfkje");
   return (
-    <div className="parentCentral">
+    <div className="parentCentral"  style={{paddingLeft:sidebarExpanded? "225px":"130px"}}>
       <div className="CadAssignmentCard">
         <div className="Card_Design_Parent">
           {CentralFolderDetails.map((item) => (

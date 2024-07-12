@@ -131,7 +131,7 @@ const SlotCreation = ({ open, onClose, generatSloteNum }) => {
                     </span>
                     <div className="header_slotCreation_left">
                       <div>
-                        <button className="add_button_sc">ADD TO SLOT</button>
+                        {/* <button className="add_button_sc">ADD TO SLOT</button> */}
                       </div>
                       <div className="searchContiainer">
                         <div className="Search_Userr">
