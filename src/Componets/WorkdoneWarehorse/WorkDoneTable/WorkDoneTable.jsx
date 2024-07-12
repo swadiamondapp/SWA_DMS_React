@@ -11,7 +11,7 @@ import {
   workDone_list_search,
 } from "../../../Pages/WareHousePageView/Api";
 
-const WorkDoneTable = () => {
+const WorkDoneTable = ({ sidebarExpanded}) => {
   const [open, setOpen] = useState(false);
   const [openLeftbar, setOpenLeftbar] = useState(false);
   const [workTableData, setworkTableData] = useState([]);
@@ -56,7 +56,7 @@ const WorkDoneTable = () => {
   };
 
   return (
-    <div className="scantable_main">
+    <div className="scantable_main"  style={{ marginLeft: sidebarExpanded ? "225px" : "130px" }}>
       <div className="Search_Admin scan_search">
         <div className="Search_User">
           <input

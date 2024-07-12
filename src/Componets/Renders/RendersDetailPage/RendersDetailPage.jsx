@@ -3,13 +3,13 @@ import "./RendersDetailPage.css";
 import download from "../../../assets/download.png";
 import print from "../../../assets/printer.png";
 
-const RendersDetailPage = ({ folderDetails }) => {
+const RendersDetailPage = ({ folderDetails,sidebarExpanded }) => {
   console.log("folderDetails", folderDetails);
 
   return (
     <>
       {folderDetails.map((item) => (
-        <div className="RendersDetailPage">
+        <div className="RendersDetailPage"  style={{ marginLeft: sidebarExpanded ? "225px" : "130px" }}>
           <div className="Detail_Card">
             <img src={item.file_2d} alt="" />
             <span>

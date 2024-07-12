@@ -16,7 +16,7 @@ import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import { BsFillCaretDownFill } from "react-icons/bs";
 import { BiSolidUpArrow } from "react-icons/bi";
 
-const ScanTable = () => {
+const ScanTable = ({ sidebarExpanded}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [scanTableData, setScanTableData] = useState([]);
   const [status, setstatus] = useState([]);
@@ -76,7 +76,7 @@ const ScanTable = () => {
   console.log("data", scanTableData);
 
   return (
-    <div className="scantable_main">
+    <div className="scantable_main"  style={{ marginLeft: sidebarExpanded ? "225px" : "130px" }}>
       <div className="Search_Admin scan_search">
         <div className="Search_User">
           <input

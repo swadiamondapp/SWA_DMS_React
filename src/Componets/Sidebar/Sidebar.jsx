@@ -318,12 +318,16 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
           </Link>
           <Link to="/scan">
             <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
               <img src={scan} alt="" />
               {sidebarExpanded && <p>Scan </p>}
             </div>
           </Link>
           <Link to="/workdone">
             <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
               <img src={done} alt="" />
               {sidebarExpanded && <p>Work Done </p>}
             </div>
