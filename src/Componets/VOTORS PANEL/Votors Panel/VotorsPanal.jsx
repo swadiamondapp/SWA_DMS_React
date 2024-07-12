@@ -4,7 +4,7 @@ import ring from "../../../assets/ring.png";
 // import { voters_customization_list } from "./Api";
 import { all_Designs_items, like_design, voted_design_list } from "../Api";
 
-const VotorsPanal = ({sidebarExpanded}) => {
+const VotorsPanal = ({ sidebarExpanded }) => {
   const [Data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState([]);
   const [votedList, setVotedList] = useState([]);
@@ -16,7 +16,7 @@ const VotorsPanal = ({sidebarExpanded}) => {
   }, []);
 
   const handleLikeClicks = (id) => {
-    like_design(setIsLoading,id,setData)
+    like_design(setIsLoading, id, setData);
     setAnimate((prev) => ({ ...prev, [id]: true }));
     setTimeout(() => {
       setAnimate((prev) => ({ ...prev, [id]: false })); // Reset the animation state after it completes
@@ -48,7 +48,7 @@ const VotorsPanal = ({sidebarExpanded}) => {
     },
   ];
   return (
-    <div className="ParentVotors" style={{paddingLeft:sidebarExpanded? "225px":"130px"}}>
+    <div className="ParentVotors">
       <div className="VotorsPanelsection">
         <div className="Parent_NewDesign">
           <h3 className="HeadNewdesign">Newly added</h3>
@@ -67,9 +67,11 @@ const VotorsPanal = ({sidebarExpanded}) => {
                     </div>
                     <div
                       // className="Inner_Right"
-                      className={`Inner_Right ${animate[item.id] ? "wobble" : ""}`}
+                      className={`Inner_Right ${
+                        animate[item.id] ? "wobble" : ""
+                      }`}
                       style={{ borderRadius: "4px" }}
-                      onClick={()=>handleLikeClicks(item.id)}
+                      onClick={() => handleLikeClicks(item.id)}
                     >
                       <p style={{ padding: "8px 18px" }}>{item.likes_count}</p>
                     </div>
