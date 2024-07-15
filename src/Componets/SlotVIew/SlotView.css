@@ -49,16 +49,20 @@
     font-weight: 400;
     color:#2E364C;
   }
-  .overLayButton {
+  .overLayButton_cht{
     background:none;
     border:none;
     position: absolute;
-    right:450px;
-    top:200px;
+    right: 460px;
+    top: 160px;
     color:#ffff;
     display:flex;
     gap:5px;
+    
 
+}
+.modal_cht {
+  position: relative;
 }
 .mainContaier{
     display: grid;

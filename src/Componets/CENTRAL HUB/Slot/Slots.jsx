@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import "./Slot.css";
 import { IoEye } from "react-icons/io5";
 import { BsThreeDotsVertical } from "react-icons/bs";
@@ -15,6 +15,9 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import closeButton from "../../../assets/closeButton.svg";
+import ReactToPrint, { useReactToPrint } from "react-to-print";
+import { LuPrinter } from "react-icons/lu";
+import SlotePrint from "./SlotePrint";
 
 const Slots = ({sidebarExpanded}) => {
   const [showEditDelete, setShowEditDelete] = useState(null);
@@ -98,8 +101,9 @@ const Slots = ({sidebarExpanded}) => {
     list_slot_central_hub(setIsLoading, setData);
   }, []);
 
-  const handlePrintButton = () => {
+  const handlePrintButton = (Id) => {
     setPrintSlotModalOpen(true);
+    setUserId(Id);
     slot_view_by_id(Id, setSloteView);
   };
 
@@ -111,6 +115,12 @@ const Slots = ({sidebarExpanded}) => {
   console.log(slotView, "slotView");
   console.log(userId, "slotView");
   console.log(Data, "center==============>");
+
+  const printRef = useRef();
+
+  const handlePrint = useReactToPrint({
+    content: printRef.current,
+  });
   // const sortedData = Data.sort((a, b) => a.id - b.id);
   // console.log(sortedData, "sortedData");
   return (
@@ -193,7 +203,7 @@ const Slots = ({sidebarExpanded}) => {
                   <span className="assignTitle" style={{ fontSize: "15px" }}>
                     Slot List
                   </span>
-                  <button
+                  {/* <button
                     className="slotPrintButton"
                     onClick={() => handlePrintButton()}
                   >
@@ -203,8 +213,29 @@ const Slots = ({sidebarExpanded}) => {
                       alt=""
                     />
                     Print
-                  </button>
+                  </button> */}
+                  <ReactToPrint
+                      trigger={() => (
+                        <div
+                          className="slotPrintButton"
+                          onClick={handlePrint}
+
+                        >
+                          <LuPrinter /> Print
+                        </div>
+                      )}
+                      content={() => printRef.current}
+                    />
+                    <div style={{display:'none'}}>
+                      <SlotePrint                        
+                        ref={printRef}
+                        slotView={slotView}
+                      />
+                    </div>
+
+
                 </div>
+
               </Typography>
 
               <Typography>

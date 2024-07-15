@@ -1,0 +1,50 @@
+.print-renders-product {
+    margin: 20px 20px;
+  }
+  
+  .print-slot-modal-container {
+    /* Add any specific styles for the modal container if needed */
+  }
+  
+  .print-slot-container {
+    width: 100%;
+  }
+  
+  .print-custom-table {
+    width: 100%;
+    /* border-collapse: collapse; */
+  }
+  
+  .print-single-border {
+    border: 1px solid #ddd;
+  }
+  
+  .print-column-header {
+    background: white;
+    text-align: left;
+    padding: 8px;
+    color:#2E364C;
+    font-family: "Gilroy medium";
+    border:1px solid rgba(231, 237, 244, 1) 
+  }
+  
+  .print-table-body {
+    vertical-align: top;
+  }
+  
+  .print-table-cell {
+    font-family: "Gilroy medium";
+    font-size: 14px;
+    font-weight: 400;
+    padding:8px;
+    color:#2E364C;
+    border:1px solid rgba(231, 237, 244, 1) 
+  }
+  
+  .print-custom-table .print-table-cell {
+    width: 25%;
+  }
+  
+  tbody tr:last-child .print-table-cell {
+    border-bottom: none;
+  }

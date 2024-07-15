@@ -5,12 +5,12 @@ import dlticon from "../../../assets/Vector.png";
 import editicon from "../../../assets/Edit.png";
 import { Link, Outlet, useLocation } from "react-router-dom";
 
-const MastersTable = () => {
+const MastersTable = (props) => {
   const location = useLocation();
 
   return (
     <>
-      <div className="MastersTable">
+      <div className="MastersTable" style={{paddingLeft:props.sidebarExpanded? "225px":"130px"}}>
         <div className="table_header">
           <Link to="/masterspage/findings">
             <h3
