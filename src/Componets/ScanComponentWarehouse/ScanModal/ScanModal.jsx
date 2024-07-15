@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./ScanModal.css";
 import { Box, Modal, Typography } from "@mui/material";
 import printer from "../../../assets/printer.png";
 import close from "../../../assets/close2.png";
 import { scan_table_item_products } from "../../../Pages/WareHousePageView/Api";
+import ScanTablePrint from "../ScanTablePrint/ScanTablePrint";
+import ReactToPrint, { useReactToPrint } from "react-to-print";
+import { LuPrinter } from "react-icons/lu";
 
 const style = {
   position: "absolute",
@@ -42,6 +45,13 @@ const ScanModal = ({ setOpenModal, clickedProductId }) => {
     setOpenModal(false);
   };
 
+  const printRef = useRef();
+
+const handlePrint = useReactToPrint({
+  content: printRef.current
+})
+
+
   return (
     <>
       <Modal
@@ -58,12 +68,29 @@ const ScanModal = ({ setOpenModal, clickedProductId }) => {
             </button>
             <div className="master_modal scan_head">
               <h3>Slot List</h3>
-              <button className="scan_list">
+              {/* <button className="scan_list">
                 {" "}
                 <img src={printer} alt="" srcset="" />
                 <span> Print</span>
-              </button>
+              </button> */}
+                <ReactToPrint
+              trigger={() => (
+                <div className="scan_list" 
+                 onClick={handlePrint}
+                 >
+                  <LuPrinter /> Print
+                </div>
+              )}
+              content={() => printRef.current}
+            />
+
             </div>
+            <div style={{ display: "none" }}>
+    <ScanTablePrint
+          ref={printRef}
+              clickedProducts={clickedProducts}
+            />
+          </div>
             <div className="scan_table">
               <table>
                 <thead>
