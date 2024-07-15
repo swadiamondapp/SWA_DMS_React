@@ -1,10 +1,19 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import "./RendersDetailPage.css";
 import download from "../../../assets/download.png";
 import print from "../../../assets/printer.png";
+import ReactToPrint, { useReactToPrint } from "react-to-print";
+import { LuPrinter } from "react-icons/lu";
+import RendersProductPrint from "../RendersProductPrint/RendersProductPrint";
 
 const RendersDetailPage = ({ folderDetails,sidebarExpanded }) => {
   console.log("folderDetails", folderDetails);
+
+  const printRef = useRef();
+
+  const handlePrint = useReactToPrint({
+    content: printRef.current,
+  });
 
   return (
     <>
@@ -25,9 +34,23 @@ const RendersDetailPage = ({ folderDetails,sidebarExpanded }) => {
             <span>
               POSTED ON: <b> {item.created_at.split("T")[0]} </b>
             </span>
-            <button className="Detail_Card_print">
+            {/* <button className="Detail_Card_print">
               Print <img className="img_detail" src={print} alt="" srcset="" />
-            </button>
+            </button> */}
+            <ReactToPrint
+              trigger={() => (
+                <div className="Detail_Card_print" onClick={handlePrint}>
+                  <LuPrinter /> Print
+                </div>
+              )}
+              content={() => printRef.current}
+            />
+            <div style={{ display: "none" }}>
+              <RendersProductPrint
+                ref={printRef}
+                folderDetails={folderDetails}
+              />
+            </div>
           </div>
         </div>
       ))}
