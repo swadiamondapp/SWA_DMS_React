@@ -177,6 +177,10 @@ const Header = ({
                 {location.pathname === "/centralDashboard" && (
                   <h3>Dashboard</h3>
                 )}
+                  {location.pathname === "/centralhubtransfer" && (
+                  <h3>Transfer</h3>
+                )}
+                
                 {location.pathname === "/slot" && <h3>Slot</h3>}
                 {leftHeader && <h3>{leftHeader}</h3>}
 
@@ -213,6 +217,7 @@ const Header = ({
                   location.pathname !== `/CadAssignmentcard` &&
                   location.pathname !== "/customRequestTable" &&
                   location.pathname !== "/workdone" &&
+                  location.pathname !== "/centralhubtransfer" &&
                   location.pathname !== "/finishedProject" &&
                   location.pathname !== `/assignmentpaneldetailsview/${id}` &&
                   location.pathname !== `/finished/${id}` &&

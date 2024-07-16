@@ -108,6 +108,12 @@ const Transfer = ({sidebarExpanded}) => {
 
     // Call changeCentralHubStatus with appropriate parameters
   };
+
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    const options = { day: 'numeric', month: 'long', year: 'numeric' };
+    return new Intl.DateTimeFormat('en-GB', options).format(date);
+  }
   console.log(TransferData, "TransferScan");
   console.log(CentralHubStatus, "CentralHubStatus");
   return (
@@ -150,7 +156,7 @@ const Transfer = ({sidebarExpanded}) => {
             {TransferData.map((item, index) => (
               <tr key={index} style={{ color: "#2E364C" }}>
                 <td className="serialNumber_cell">{index + 1}</td>
-                <td>{item.created_at}</td>
+                <td>{formatDate(item.created_at)}</td>
                 <td className="slot_cell">{item.slot.slotnumber}</td>
                 <td className="actions-cell">
                   <div className="parentSlotS">

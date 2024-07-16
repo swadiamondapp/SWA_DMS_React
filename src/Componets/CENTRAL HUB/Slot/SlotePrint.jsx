@@ -24,7 +24,7 @@ const SlotePrint = forwardRef(({ slotView }, ref) => {
                     <td className="print-table-cell">
                       {design.product_category.join(", ")}
                     </td>
-                    <td className="print-table-cell">{design.approx_metal_weight}</td>
+                    <td className="print-table-cell">{design.approx_metal_weight} Gram</td>
                   </tr>
                 ))
               )}

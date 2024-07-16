@@ -10,10 +10,9 @@ import {
 import folderimg from "../../../assets/folder.png";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 
-const CentralDashboard = ({sidebarExpanded}) => {
+const CentralDashboard = ({sidebarExpanded,Folders}) => {
   const [Data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [Folders, setFolders] = useState([]);
+
   const card = [
     {
       product: "ID : SWAD3456",
@@ -23,10 +22,10 @@ const CentralDashboard = ({sidebarExpanded}) => {
     },
   ];
 
-  useEffect(() => {
-    // list_all_designs_from_cad(setIsLoading, setData);
-    listFoldersCentralHub(setIsLoading, setFolders);
-  }, []);
+  // useEffect(() => {
+  //   // list_all_designs_from_cad(setIsLoading, setData);
+  //   listFoldersCentralHub(setIsLoading, setFolders);
+  // }, []);
   console.log(Folders, "listaksjdfks====>");
   return (
     <div className="parentCentral"  style={{paddingLeft:sidebarExpanded? "225px":"130px"}}>

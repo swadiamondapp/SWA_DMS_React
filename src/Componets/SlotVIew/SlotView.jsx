@@ -113,7 +113,7 @@ const SlotView = ({ open, onClose, userId, slotView }) => {
                                 {design.product_category.join(", ")}
                               </td>
                               <td className="table-cell">
-                                {design.approx_metal_weight}
+                                {design.approx_metal_weight} Gram
                               </td>
                             </tr>
                           ))

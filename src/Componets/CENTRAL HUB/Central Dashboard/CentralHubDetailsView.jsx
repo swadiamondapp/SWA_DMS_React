@@ -6,8 +6,13 @@ import { centralFolderDetails } from "../../../Pages/CENTRAL HUB/Api";
 import CentralHubImagePrint from "../CentralHubImagePrint/CentralHubImagePrint";
 import ReactToPrint, { useReactToPrint } from "react-to-print";
 import { LuPrinter } from "react-icons/lu";
+import Base64Downloader from "react-base64-downloader";
 
 const CentralHubDetailsView = ({ CentralFolderDetails, sidebarExpanded }) => {
+  const [imageBlobConverted,setImageBlobConverted] = useState([])
+  const base64 =
+    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjEuNv1OCegAAAAMSURBVBhXY/jPYAwAAzQBM849AKsAAAAASUVORK5CYII=";
+
   const printRef = useRef();
 
   function formatDate(timestamp) {
@@ -22,6 +27,31 @@ const CentralHubDetailsView = ({ CentralFolderDetails, sidebarExpanded }) => {
   const handlePrint = useReactToPrint({
     content: printRef.current,
   });
+
+  const handleDownloadImage = async (imageSrc, ImageName, forceDownload=false) => {
+    if (!forceDownload) {
+      const link = document.createElement("a");
+      link.href = imageSrc;
+      link.download = ImageName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+    // const imageBlob = await fetch(imageSrc).then((response) => response.blob());
+    const imageBlob = await fetch(imageSrc)
+      .then((response) => response.arrayBuffer())
+      .then((buffer) => new Blob([buffer], { type: "image/png" }));
+
+    console.log(imageBlob, URL.createObjectURL(imageBlob), "imagebol");
+
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(imageBlob);
+    setImageBlobConverted(imageBlob)
+    link.download = ImageName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
   //   console.log(CentralFolderDetails, "cetasdlfkje");
   return (
     <div
@@ -48,10 +78,28 @@ const CentralHubDetailsView = ({ CentralFolderDetails, sidebarExpanded }) => {
                       posted on : {formatDate(item.created_at)}
                     </p>
 
-                    <button className="Download_btn_hub">
+                    <button
+                      className="Download_btn_hub"
+                      onClick={() => {
+                        handleDownloadImage(item.file_2d, "image_name2d");
+                      }}
+                    >
                       DOWNLOAD
                       <GoDownload />
                     </button>
+                    {/* <Base64Downloader
+                      className="Download_btn_hub"
+                      base64={item.file_2d} // Ensure this is a Base64 string
+                      downloadName="image_2d.png" // Change the file name as needed
+                      onClick={() => {
+                        handleDownloadImage(item.file_2d, "image_name2d");
+                      }}
+                    >
+                      {/* <button> */}
+                    {/* DOWNLOAD */}
+                    {/* <GoDownload /> */}
+                    {/* </button> */}
+                    {/* </Base64Downloader> */}
                   </div>
                 </div>
               </div>
@@ -76,17 +124,13 @@ const CentralHubDetailsView = ({ CentralFolderDetails, sidebarExpanded }) => {
                     </button> */}
                     <ReactToPrint
                       trigger={() => (
-                        <div
-                          className="Prinit_btn_hub"
-                          onClick={handlePrint}
-
-                        >
+                        <div className="Prinit_btn_hub" onClick={handlePrint}>
                           <LuPrinter /> Print
                         </div>
                       )}
                       content={() => printRef.current}
                     />
-                    <div style={{display:'none'}}>
+                    <div style={{ display: "none" }}>
                       <CentralHubImagePrint
                         CentralFolderDetails={CentralFolderDetails}
                         ref={printRef}

@@ -40,7 +40,7 @@ const DesignBtn = ({
   setSelectButtonLabel,
 
   setcreateFolderModal,
-  handleCreatedFolder
+  handleCreatedFolder,
 }) => {
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -48,8 +48,7 @@ const DesignBtn = ({
   const [isModalOpenCreateCutomize, setIsCreateCustomizeModalOpen] =
     useState(false);
 
-    // const [createFolderModal, setcreateFolderModal] = useState(false);
-
+  // const [createFolderModal, setcreateFolderModal] = useState(false);
 
   // const handleCreatedFolder = () => {
   //   setcreateFolderModal(true)
@@ -131,10 +130,7 @@ const DesignBtn = ({
         {location.pathname === "/assignmentpanel" &&
           selectButtonLabel === "Unselect" && (
             <div className="Parent_MoveTo">
-              <button
-                className="D_moveBtn"
-                onClick={handleCreatedFolder}
-              >
+              <button className="D_moveBtn" onClick={handleCreatedFolder}>
                 Create folder
               </button>
             </div>
@@ -171,7 +167,7 @@ const DesignBtn = ({
         setAssignmentFolder={setAssignmentFolder}
         setSelectedAssignment={setSelectedAssignment}
         getSelectedDesign={getSelectedDesign}
-        setData={ setData}
+        setData={setData}
         setSelectedDesigns={setSelectedDesigns}
         setShowRadioButtons={setShowRadioButtons}
         setSelectButtonLabel={setSelectButtonLabel}
@@ -187,12 +183,13 @@ const DesignBtn = ({
       />
       <CreateCustomisation
         open={isModalOpenCreateCutomize}
-        onClose={() => setIsCreateCustomizeModalOpen(false)}
+        onClose={() => {
+          setIsCreateCustomizeModalOpen(false);
+        }}
         votersSetData={votersSetData}
       />
 
-
-{/* <AssignmentModal
+      {/* <AssignmentModal
       open={openAdminFolder}
       AdminUploadedIds={AdminUploadedIds}
       onClose={() => setOpenAdminFolder(false)}
@@ -203,9 +200,6 @@ const DesignBtn = ({
       setAssignedDesignerId={ setAssignedDesignerId}
     
       /> */}
-
-
-
     </div>
   );
 };

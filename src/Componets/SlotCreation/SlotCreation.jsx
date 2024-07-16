@@ -33,6 +33,7 @@ const SlotCreation = ({ open, onClose, generatSloteNum }) => {
   const [successModalOpen, setSuccessModalOpen] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [generatedSlotId, setGeneratedSlotId] = useState([]);
+  const [ErrorMessage, setErrorMessage] = useState("");
 
   const handleCheckboxChange = (item) => {
     setSelectedItems((prevSelectedItems) => {
@@ -89,6 +90,14 @@ const SlotCreation = ({ open, onClose, generatSloteNum }) => {
   const selectedIds = selectedItems.map((item) => item.id);
   const genSlotId = generatSloteNum && generatSloteNum?.id;
   const handleCreateSlot = () => {
+    if (selectedItems.length === 0) {
+      setErrorMessage("No items In the Bag");
+      setTimeout(() => {
+        setErrorMessage("");
+      }, 1000); 
+
+      return;
+    }
     createSloteBag(
       setIsLoading,
       selectedIds,
@@ -97,7 +106,7 @@ const SlotCreation = ({ open, onClose, generatSloteNum }) => {
       genSlotId,
       onClose,
       setData,
-      setSelectedItems,
+      setSelectedItems
     );
   };
 
@@ -135,7 +144,7 @@ const SlotCreation = ({ open, onClose, generatSloteNum }) => {
                       </div>
                       <div className="searchContiainer">
                         <div className="Search_Userr">
-                          <input type="text" placeholder="SelectAllUser" />
+                          <input type="text" placeholder="Search" />
                           <div className="iconBack">
                             <img src={searchIcon} alt="" />
                           </div>
@@ -221,13 +230,21 @@ const SlotCreation = ({ open, onClose, generatSloteNum }) => {
                           </span>
                         </span>
                       </div>
-                      <div className="header-right-side-button">
+                      <div
+                        className="header-right-side-button"
+                        style={{ position: "relative" }}
+                      >
                         <button
                           className="create_bag_button"
                           onClick={() => handleCreateSlot()}
                         >
                           Create Slot
                         </button>
+                        <div style={{ position: "absolute", bottom: "-20px" }}>
+                          {ErrorMessage && (
+                            <p style={{ color: "red" }}>{ErrorMessage}</p>
+                          )}
+                        </div>
                       </div>
                     </div>
                     <div className="table-righ-container-sc">

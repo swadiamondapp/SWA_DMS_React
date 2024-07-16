@@ -109,9 +109,11 @@ const BasicDetailModal = ({
     findings: "",
     approxMetalWeights: "",
     approxMRP: "",
-    tag: "",
+    tag: [],
     notes: "",
   });
+
+  console.log(errors,"errroCOnodf")
 
   useEffect(() => {
     if (name === "editbasicDetails" && basicDetails) {
@@ -167,20 +169,21 @@ const BasicDetailModal = ({
     diamondType: Joi.required().messages({
       "string.empty": `cannot be empty`,
     }),
-    approxDiamondWeight: Joi.required().messages({
-      "string.empty": `cannot be empty`,
+    approxDiamondWeight: Joi.number().required().messages({
+      "number.base": "cannot be empty",
+      "number.empty": "cannot be empty",
+      "any.required": "Field is required",
     }),
-    approxMetalWeights: Joi.required().messages({
+    approxMetalWeights: Joi.number().required().messages({
+      "number.base": "cannot be empty",
       "string.empty": `cannot be empty`,
+      "any.required": `cannot be empty`, 
     }),
     approxMRP: Joi.number().required().messages({
       "string.empty": `cannot be empty`,
     }),
     tag: Joi.array().items(Joi.required()).min(1).required().messages({
-      "any.required": "Tags are required",
-      "array.min": "At least one tag is required",
-      "array.includesRequiredUnknowns": "Each tag must be a string",
-      "string.empty": `cannot be empty`,
+     "array.min": "At least one tag is required",
     }),
     findings: Joi.required().messages({
       "string.empty": `cannot be empty`,
@@ -407,7 +410,7 @@ const BasicDetailModal = ({
       setItemMovedToAssignment(mappedItems);
     }
   }, [MovedItemsId]);
-
+  
   return (
     <div>
       <div className="">

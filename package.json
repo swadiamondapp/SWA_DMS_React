@@ -30,6 +30,7 @@
     "multiselect-react-dropdown": "^2.0.25",
     "otp-input-react": "^0.3.0",
     "react": "^18.2.0",
+    "react-base64-downloader": "^2.1.7",
     "react-dom": "^18.2.0",
     "react-icons": "^5.0.1",
     "react-konva": "^18.2.10",

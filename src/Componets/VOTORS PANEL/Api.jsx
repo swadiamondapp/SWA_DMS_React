@@ -124,14 +124,12 @@ export const customization_details = async (
 export const like_design = async (setIsLoading, id, setData) => {
   try {
     const response = await apiService.post(`${LIKE_DESIGN}/${id}/like/`);
-    console.log("responces", response.data.results.status_code);
-    if (response?.data?.results?.status_code === 200) {
-    }
+
     if (checkApiStatus(response)) {
       all_Designs_items(setIsLoading, setData);
-      message.success("User created successfully!");
+      // message.success("User created successfully!");
     } else {
-      message.error("Failed to create user. Please try again.");
+      // message.error("Failed to create user. Please try again.");
     }
   } catch (error) {
     console.log(error);
