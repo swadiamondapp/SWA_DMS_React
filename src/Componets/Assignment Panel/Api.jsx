@@ -210,7 +210,7 @@ export const move_to_assignment = async (
       setShowRadioButtons(false);
       setSelectButtonLabel("Select");
       setShowAssignmentModal(true);
-      setMovedItemsId(response?.data?.results.data);
+      setMovedItemsId(response?.data?.results?.data);
       setFormData({
         SKU: "",
         productCategory: "",
