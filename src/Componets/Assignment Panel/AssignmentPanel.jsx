@@ -187,6 +187,12 @@ const AssignmentPanel = ({sidebarExpanded}) => {
     const year = date.getFullYear();
     return `${day}-${month}-${year}`;
   };
+
+ const handleFolderNaviate = (item)=> {
+  navigate(`/assignmentpaneldetailsview/${item.id}`, {
+    state: { assignmentFolderName: item.name }
+  });
+ }
   return (
     <div className="Parent_AssignmentView" style={{paddingLeft:sidebarExpanded? "225px":"130px"}}>
       <div className="AssignmentPanel_FileUpload" style={{ padding: "10px" }}>
@@ -233,14 +239,14 @@ const AssignmentPanel = ({sidebarExpanded}) => {
           <h3 className="HeadNewdesign">Folders</h3>
           <div className="folderCard_parent">
             {assignmentFolder.map((item) => (
-              <div className="folder__card" key={item.id}>
-                <Link
+              <div className="folder__card" key={item.id} onClick={()=> handleFolderNaviate(item)}>
+                {/* <Link
                   to={`/assignmentpaneldetailsview/${
                     item.id
                   }?name=${encodeURIComponent(item.name)}`}
-                >
+                > */}
                   <img src={folderimg} alt="" />
-                </Link>
+                {/* </Link> */}
                 <p>{item.name}</p>
               </div>
             ))}
