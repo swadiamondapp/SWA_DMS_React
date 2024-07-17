@@ -5,13 +5,15 @@
   padding: 10px 0px 30px 10px;
 }
 .Parant_FinishedProject {
-  padding-left: 225px;
+  margin-left: 225px;
   padding-top: 20px;
+  width: 100%;
+  /* background-color: red !important; */
   }
   .folderCard_parent {
     display: flex;
     align-items: center;
-    gap: 40px;
+    gap: 20px;
     font-family: "Gilroy medium";
     flex-wrap: wrap;
   }

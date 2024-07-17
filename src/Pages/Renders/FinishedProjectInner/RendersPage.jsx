@@ -18,8 +18,8 @@ const RendersPage = () => {
 
   return (
     <div className="Parent_RendersPage">
-      <Sidebar  sidebarExpanded={sidebarExpanded} setSidebarExpanded={setSidebarExpanded}/>
-      <Header  sidebarExpanded={sidebarExpanded}/>
+      <Sidebar sidebarExpanded={sidebarExpanded} setSidebarExpanded={setSidebarExpanded}/>
+      <Header sidebarExpanded={sidebarExpanded}/>
       <FinishedProjectInner folderItem={folderItem} sidebarExpanded={sidebarExpanded}/>
     </div>
   );

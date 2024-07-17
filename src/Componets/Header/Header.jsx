@@ -44,7 +44,7 @@ const Header = ({
   const userImage = localStorage.getItem("Loginimage");
   const dropdownRef = useRef(null);
 
-  // const { folderName } = location.state || {};
+const { folderName } = location.state || {};
   console.log("header===>FolderName", folderName);
 
   useEffect(() => {
@@ -162,6 +162,9 @@ const Header = ({
                 {location.pathname === `/assignmentpaneldetailsview/${id}` && (
                   <h3>{folderName}</h3>
                 )}
+                {location.pathname === `/rendersdetailing/${id}` && (
+                  <h3>{folderName}</h3>
+                )}
                 {location.pathname === `/finished/${id}` && (
                   <h3>{folderName}</h3>
                 )}
@@ -219,7 +222,17 @@ const Header = ({
                   location.pathname !== "/workdone" &&
                   location.pathname !== "/centralhubtransfer" &&
                   location.pathname !== "/finishedProject" &&
+                  location.pathname !== "/masterspage/findings" &&
+                  location.pathname !== "/masterspage/tag" &&
+                  location.pathname !== "/masterspage/metal" &&
+                  location.pathname !== "/masterspage/diamond" &&
+                  location.pathname !== "/masterspage/diamond" &&
+                  location.pathname !== "/masterspage/whstatus" &&
+                  location.pathname !== "/masterspage/chstatus" &&
+                  location.pathname !== "/masterspage/productcategory" &&
+                  location.pathname !== "/masterspage/outlet" &&
                   location.pathname !== `/assignmentpaneldetailsview/${id}` &&
+                  location.pathname !== `/rendersdetailing/${id}` &&
                   location.pathname !== `/finished/${id}` &&
                   location.pathname !== "/scan" && (
                     <div className="Search_Admin">

@@ -69,6 +69,7 @@ export const FINISHED_FOLDERS = "cad/finished-folder/";
 export const FOLDER_DETAILS = "cad/list/folder-items/";
 export const CAD_RE_UPLOAD = "cad/reupload/folder-items/";
 export const BASIC_DETAILS = "items/";
+export const ASSIGNMENT_PANEL_DETAILS_PAGE = "folder-detail/"
 
 export const UPLOAD_ADMIN_IMAGE_ASSIGNMENT = "admin/upload/design/";
 export const LIST_ALL_DESIGNERS = "list/paperdesigner/";
@@ -94,4 +95,57 @@ export const WORKDONE_TABLE_LIST = "workdone/scan/list";
 export const WORKDONE_TABLE_PRODUCT_SEARCH = "workdone/scan/";
 export const WORKDONE_TABLE_PRODUCT_DETAIL = "workdone/";
 export const WORKDONE_TABLE_PRODUCT_UPDATE = "assignment/";
-export const ASSIGNMENT_PANEL_DETAILS_PAGE = "folder-detail/"
+
+export const MASTERS_FINDING_DATAS = "master/finding/list";
+export const MASTERS_FINDING_CREATE = "master/finding/create/";
+export const FINDING_ITEM_DELETE = "master/finding/";
+export const FINDING_ITEM_SEARCH_PRIORITY = "master/finding/list?page=";
+export const FINDING_ITEM_UPDATE = "master/finding/";
+
+export const MASTERS_TAG_DATAS = "master/tags/list";
+export const TAG_ITEM_DELETE = "master/tags/";
+export const TAG_ITEM_SEARCH = "master/tags/list?page=";
+export const TAG_ITEM_CREATE = "master/tags/create/";
+export const TAG_ITEM_UPDATE = "master/tags/";
+
+export const MASTERS_METAL_DATAS = "master/metaltype/list";
+export const METAL_ITEM_CREATE = "master/metaltype/create/";
+export const METAL_ITEM_DELETE = "master/metaltype/";
+export const METAL_ITEM_SEARCH = "master/metaltype/list?page=";
+export const METAL_ITEM_UPDATE = "master/metaltype/";
+
+export const MASTERS_DIAMOND_DATAS = "master/diamondtype/list";
+export const DIAMOND_ITEM_CREATE = "master/diamondtype/create/";
+export const DIAMOND_ITEM_DELETE = "master/diamondtype/";
+export const DIAMOND_ITEM_SEARCH = "master/diamondtype/list?page=";
+export const DIAMOND_ITEM_UPDATE = "master/diamondtype/";
+
+export const MASTERS_VALUEADD_DATAS = "master/valueadd/list";
+export const VALUEADD_ITEM_CREATE = "master/valueadd/create/";
+export const VALUEADD_ITEM_DELETE = "master/valueadd/";
+export const VALUEADD_ITEM_SEARCH = "master/valueadd/list?page=";
+export const VALUEADD_ITEM_UPDATE = "master/valueadd/";
+
+export const MASTERS_WHSTATUS_DATAS = "master/warehouse/status/list";
+export const WHSTATUS_ITEM_CREATE = "master/warehouse/create/";
+export const WHSTATUS_ITEM_DELETE = "master/warehouse/";
+export const WHSTATUS_ITEM_SEARCH = "master/warehouse/status/list?page=";
+export const WHSTATUS_ITEM_UPDATE = "master/warehouse/";
+
+export const MASTERS_CENTRAL_DATAS = "master/centralhub/status/list";
+export const CENTRAL_ITEM_CREATE = "master/centralhub/create/";
+export const CENTRAL_ITEM_DELETE = "master/centralhub/";
+export const CENTRAL_ITEM_SEARCH = "master/centralhub/status/list?page=";
+export const CENTRAL_ITEM_UPDATE = "master/centralhub/";
+
+export const MASTERS_CATEGORY_DATAS = "master/category/list";
+export const CATEGORY_ITEM_CREATE = "master/category/create/";
+export const CATEGORY_ITEM_DELETE = "master/category/";
+export const CATEGORY_ITEM_SEARCH = "master/category/list?page=";
+export const CATEGORY_ITEM_UPDATE = "master/category/";
+
+export const MASTERS_OUTLET_DATAS = "master/outlet/list";
+export const OUTLET_ITEM_CREATE = "master/outlet/create/";
+export const OUTLET_ITEM_DELETE = "master/outlet/";
+export const OUTLET_ITEM_SEARCH = "master/outlet/list?page=";
+export const OUTLET_ITEM_UPDATE = "master/outlet/";

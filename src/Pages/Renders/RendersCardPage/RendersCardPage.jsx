@@ -18,11 +18,11 @@ const RendersPage = () => {
 
   return (
     <div className="Parent_RendersCard">
-      <Sidebar   sidebarExpanded={sidebarExpanded} setSidebarExpanded={setSidebarExpanded}/>
-      <Header   sidebarExpanded={sidebarExpanded} />
+ <Sidebar sidebarExpanded={sidebarExpanded} setSidebarExpanded={setSidebarExpanded}/>
+      <Header sidebarExpanded={sidebarExpanded}/>
       {/* <RenderCard designListData={designListData} /> */}
       {/* <AnnotationCanvas /> */}
-      <RendersHome designListData={designListData}   sidebarExpanded={sidebarExpanded} />
+      <RendersHome designListData={designListData} sidebarExpanded={sidebarExpanded}/>
     </div>
   );
 };

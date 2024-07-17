@@ -17,7 +17,7 @@ const successM = {
   boxShadow: 24,
   borderRadius: "4px",
   px: 1,
-  py:4
+  py: 4,
 };
 
 const DeleteConfirmationModal = ({
@@ -25,7 +25,8 @@ const DeleteConfirmationModal = ({
   handleDeleteClose,
   deleteFunction,
   setDeleteConfirmationOpen,
-  isLoading,
+  // isLoading,
+  // deleteId,
 }) => {
   const [isMobileView, setIsMobileView] = useState(
     window.innerWidth >= 300 && window.innerWidth <= 575
@@ -42,10 +43,10 @@ const DeleteConfirmationModal = ({
     };
   }, []);
 
-
+  // console.log("deleteId",deleteId);
 
   const handleDeleteModalButton = () => {
-    deleteFunction()
+    deleteFunction();
   };
   const handlCancelButton = () => {
     setDeleteConfirmationOpen(false);
@@ -82,8 +83,8 @@ const DeleteConfirmationModal = ({
                     </>
                   ) : (
                     <> */}
-                    delete
-                    {/* </>
+                  delete
+                  {/* </>
                   )} */}
                 </button>
               </div>

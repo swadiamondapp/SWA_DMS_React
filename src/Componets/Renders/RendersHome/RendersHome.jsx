@@ -7,11 +7,11 @@ import folderimg from "../../../assets/folder.png";
 import { Link, useNavigate } from "react-router-dom";
 import DesignBtn from "../../ADMIN PANEL/Design Pool/DesignBtn";
 
-const RendersHome = ({ designListData, sidebarExpanded }) => {
+const RendersHome = ({ designListData,sidebarExpanded }) => {
   const navigate = useNavigate();
 
   const handleFolderClick = (item) => {
-    navigate(`/assignmentpaneldetailsview/${item.id}`, {
+    navigate(`/rendersdetailing/${item.id}`, {
       state: {
         folderName: item.name,
       },
@@ -19,7 +19,7 @@ const RendersHome = ({ designListData, sidebarExpanded }) => {
   };
 
   return (
-    <div className="RendersHome"  style={{ marginLeft: sidebarExpanded ? "225px" : "130px" }}>
+<div className="RendersHome" style={{ marginLeft:sidebarExpanded ? "218px" : "120px", width:sidebarExpanded ? "82%" : "90%"}}>
       <div className="RendersHome_butns">
         <button>
           <img className="RendersHome_img" src={view} alt="" srcset="" />

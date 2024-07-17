@@ -16,6 +16,7 @@ const FinishedProjects = (props) => {
   const [activeDesignCode, setActiveDesignCode] = useState(null);
   const [elapsedTime, setElapsedTime] = useState(0);
   const [success, setSuccess] = useState(false);
+  
 
   const navigate = useNavigate();
 
@@ -80,7 +81,7 @@ const FinishedProjects = (props) => {
 
   return (
     <>
-      <div className="Parant_FinishedProject"  style={{ paddingLeft: props.sidebarExpanded ? "225px" : "130px" }}>
+<div className="Parant_FinishedProject" style={{ marginLeft:props?.sidebarExpanded ? "225px" : "130px",width:props?.sidebarExpanded ? "82%" : "90%"}}>
         <div className="filter_Container">
           <DesignBtn
             toggleDownloadOptions={toggleDownloadOptions}

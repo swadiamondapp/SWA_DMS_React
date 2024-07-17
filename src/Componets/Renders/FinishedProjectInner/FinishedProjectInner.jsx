@@ -3,8 +3,9 @@ import "./FinishedProjectInner.css";
 import ShareIcon from "../../../assets/shareIcon.png";
 
 const FinishedProjectInner = (props) => {
+
   return (
-    <div className="MainContainer"  style={{ paddingLeft: props.sidebarExpanded ? "225px" : "130px" }}>
+<div className="MainContainer" style={{ marginLeft:props?.sidebarExpanded ? "225px" : "125px",width:props?.sidebarExpanded ? "82%" : "90%"}}>
       <div className="parentRendercard">
         {props?.folderItem &&
           props?.folderItem[0]?.images?.map((imgObj, index) => {
