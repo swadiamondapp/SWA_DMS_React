@@ -6,7 +6,7 @@ import ReactToPrint, { useReactToPrint } from "react-to-print";
 import { LuPrinter } from "react-icons/lu";
 import RendersProductPrint from "../RendersProductPrint/RendersProductPrint";
 
-const RendersDetailPage = ({ folderDetails }) => {
+const RendersDetailPage = ({ folderDetails ,sidebarExpanded}) => {
   console.log("folderDetails", folderDetails);
 
   const printRef = useRef();
@@ -28,7 +28,7 @@ const RendersDetailPage = ({ folderDetails }) => {
   return (
     <>
       {folderDetails.map((item) => (
-        <div className="RendersDetailPage" key={item.id}>
+        <div className="RendersDetailPage" key={item.id} style={{ marginLeft:sidebarExpanded ? "218px" : "120px" }}>
           <div className="Detail_Card">
             <img src={item.file_2d} alt="" />
             <span>

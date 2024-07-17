@@ -10,6 +10,8 @@ const RendersPage = () => {
   const { id } = useParams();
   const [isLoadig, setIsLoadig] = useState(false);
   const [folderItem, setFolderItem] = useState([]);
+  const [sidebarExpanded, setSidebarExpanded] = useState(true);
+
 
   useEffect(() => {
     folderItemList(setIsLoadig, setFolderItem, id);
@@ -17,9 +19,9 @@ const RendersPage = () => {
 
   return (
     <div className="Parent_RendersPage">
-      <Sidebar />
-      <Header />
-      <FinishedProjectInner folderItem={folderItem} />
+      <Sidebar sidebarExpanded={sidebarExpanded} setSidebarExpanded={setSidebarExpanded}/>
+      <Header sidebarExpanded={sidebarExpanded}/>
+      <FinishedProjectInner folderItem={folderItem} sidebarExpanded={sidebarExpanded}/>
     </div>
   );
 };

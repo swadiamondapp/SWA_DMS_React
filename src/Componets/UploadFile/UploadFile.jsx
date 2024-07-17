@@ -28,6 +28,8 @@ const UploadFile = ({ open, onClose, createFinsishedProjects, setSuccess,setFini
   const [images, setImages] = useState(Array(6).fill(null));
   const [file, setFile] = useState(null);
   const [id, setId] = useState("");
+  const [errors, seterrors] = useState("");
+
   // create modal
 
   // const [open, setOpen] = useState(false);
@@ -66,6 +68,9 @@ const UploadFile = ({ open, onClose, createFinsishedProjects, setSuccess,setFini
   };
 
   const handleUpload = () => {
+    if( !id ||  !images){
+      seterrors("fill the fields")
+    }else{
     const formData = new FormData();
     formData.append("designcode", id);
     formData.append("name", id);
@@ -78,6 +83,7 @@ const UploadFile = ({ open, onClose, createFinsishedProjects, setSuccess,setFini
       formData.append("file1", file);
     }
     createFinsishedProjects(setIsLoading, formData, setSuccess,onClose,setFinishedProjectData);
+  }
   };
 
   return (
@@ -181,7 +187,7 @@ const UploadFile = ({ open, onClose, createFinsishedProjects, setSuccess,setFini
                     </div>
                   </div>
                   <div className="upload_DMFile"></div>
-
+                {errors && <p style={{color:"red",fontSize:"11px"}}>{errors}</p>}
                   <div className="buttons">
                     <button className="cancerButton" onClick={() => onClose()}>
                       cancel

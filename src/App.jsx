@@ -59,6 +59,7 @@ import ProductCategory from "./Componets/MastersSection/MasterTableItems/Product
 import Outlets from "./Componets/MastersSection/MasterTableItems/Outlets";
 import ScanPage from "./Componets/ScanComponentWarehouse/ScanPage/ScanPage";
 import WorkDone from "./Componets/WorkdoneWarehorse/WorkDone/WorkDone";
+import RendersDetailing from "./Pages/RendersDetailing/RendersDetailing";
 
 function App() {
   return (
@@ -91,6 +92,11 @@ function App() {
               path="/assignmentpaneldetailsview/:id"
               element={<AssignmentPanelFolderCardPage />}
             />
+            <Route
+              path="/rendersdetailing/:id"
+              element={<RendersDetailing />}
+            />
+        
             <Route
               path="/centralfolderdetails/:id"
               element={<CentralFolderDetailsPage />}

@@ -58,7 +58,7 @@ const DesignerAssignViewPage = () => {
       <Sidebar />
       <Header folderDetails={folderDetails} />
       {/* <AssignmentPanelFolderCards folderDetails={folderDetails} id={id} /> */}
-      <RendersDetailPage folderDetails={folderDetails} />
+      {/* <RendersDetailPage folderDetails={folderDetails} /> */}
     </div>
   );
 };

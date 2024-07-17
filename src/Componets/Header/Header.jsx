@@ -45,6 +45,7 @@ const Header = ({
   const dropdownRef = useRef(null);
 
   const { folderName } = location.state || {};
+  
   console.log("header===>FolderName", folderName);
 
   useEffect(() => {
@@ -162,6 +163,9 @@ const Header = ({
                 {location.pathname === `/assignmentpaneldetailsview/${id}` && (
                   <h3>{folderName}</h3>
                 )}
+                {location.pathname === `/rendersdetailing/${id}` && (
+                  <h3>{folderName}</h3>
+                )}
                 {location.pathname === `/finished/${id}` && (
                   <h3>{folderName}</h3>
                 )}
@@ -224,6 +228,7 @@ const Header = ({
                   location.pathname !== "/masterspage/productcategory" &&
                   location.pathname !== "/masterspage/outlet" &&
                   location.pathname !== `/assignmentpaneldetailsview/${id}` &&
+                  location.pathname !== `/rendersdetailing/${id}` &&
                   location.pathname !== `/finished/${id}` &&
                   location.pathname !== "/scan" && (
                     <div className="Search_Admin">
