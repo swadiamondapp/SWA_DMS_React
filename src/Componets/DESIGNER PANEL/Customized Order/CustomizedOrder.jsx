@@ -50,7 +50,7 @@ const CustomizedOrder = ({sidebarExpanded}) => {
                     </h3>
                     {/* <p className="OrderHigh">High</p> */}
                     {/* <p className="OrderMedium">Medium</p> */}
-                    <p className="OrderLow">Low</p>
+                    {/* <p className="OrderLow">Low</p> */}
                   </div>
                   <div className="Card_Details_Inner">
                     <div className="Inner_Left">

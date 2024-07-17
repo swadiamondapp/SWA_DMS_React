@@ -83,3 +83,6 @@ export const SCAN_TRANSFER_SLOT = "transfer/scan-slot/";
 export const LIST_CENTRAL_HUB_STATUS = "master/centralhub/status/list/";
 export const CHANGE_CENTRAL_HUB_STATUS = "transfer/status/update/";
 export const OUTLET_DROP_DOWN_MASTER = "list/outlets/";
+
+export const MOVE_SINGLE_ITEM_TO_DESIGNPOOL = "move-assignments/"
+export const DELETE_ITEM_FROM_ASSIGNMENT_PANEL = "delete-assignment-item/"
