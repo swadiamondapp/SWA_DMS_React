@@ -6,11 +6,12 @@ import DesignBtn from "../../ADMIN PANEL/Design Pool/DesignBtn";
 import { all_Designs, unvoted_design, moveSelectedDesign } from "./Api";
 import { MOVE_TO_ASSIGNMENT } from "../../../Pages/Services/EndPoints";
 import { apiService } from "../../../Pages/Services/ApiInstants";
-import {useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import LottieAnimation from "../../../LottiAnimation";
 import BasicDetailModal from "../../BasicDetails/BasicDetailModal";
+import { CircularProgress } from "@mui/material";
 
-const DesignPool = ({sidebarExpanded}) => {
+const DesignPool = ({ sidebarExpanded }) => {
   const [showRadioButtons, setShowRadioButtons] = useState(false);
   const [selectButtonLabel, setSelectButtonLabel] = useState("Select");
   const [showDownloadOptions, setShowDownloadOptions] = useState(false);
@@ -20,7 +21,7 @@ const DesignPool = ({sidebarExpanded}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [unvotedData, setUnvotedData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [open,setIsOpen] = useState(false)
+  const [open, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
   const toggleRadioButtons = () => {
@@ -40,10 +41,8 @@ const DesignPool = ({sidebarExpanded}) => {
     // moveSelectedDesign(setIsLoading,setSelectedDesigns)
   }, []);
 
-
   console.log(Data, "datat========d==>");
   console.log(selectedDesigns, "selectedDesigns");
-
 
   const handleCheckboxChange = (designcode) => {
     if (selectedDesigns.includes(designcode)) {
@@ -52,7 +51,7 @@ const DesignPool = ({sidebarExpanded}) => {
       setSelectedDesigns([...selectedDesigns, designcode]);
     }
   };
-  
+
   // const handleCheckboxChange = (designcode) => {
   //   setSelectedDesigns(prevState => ({
   //     ...prevState,
@@ -60,8 +59,8 @@ const DesignPool = ({sidebarExpanded}) => {
   //   }));
   // };
   const moveSelectedDesigns = async () => {
-    setIsOpen(true)
-    setShowMoveOptions(false)
+    setIsOpen(true);
+    setShowMoveOptions(false);
 
     // try {
     //  const res =  await moveSelectedDesign(setIsLoading,selectedDesigns);
@@ -75,7 +74,10 @@ const DesignPool = ({sidebarExpanded}) => {
   };
   return (
     <div>
-      <div className="Parent_DesignView" style={{paddingLeft:sidebarExpanded? "225px":"130px"}}>
+      <div
+        className="Parent_DesignView"
+        style={{ paddingLeft: sidebarExpanded ? "225px" : "130px" }}
+      >
         {/* <div className="DesignPool_btns">
           <div className="Download_ParentD">
             <button className="D_downlodBtn" onClick={toggleDownloadOptions}>
@@ -125,23 +127,31 @@ const DesignPool = ({sidebarExpanded}) => {
           setSelectedDesigns={setSelectedDesigns}
           setIsOpen={setIsOpen}
           open={open}
-          setData={ setData}
+          setData={setData}
           setShowRadioButtons={setShowRadioButtons}
-          
-
         />
         {/* new design section */}
         {/* new design section */}
         <div className="Parent_NewDesign">
           <h3 className="HeadNewdesign">New design</h3>
-          {Data.length === 0 && <LottieAnimation/>}
-          
+          {Data.length === 0 && (
+            <div style={{display:'flex',justifyContent:'center',alignItems:'center'}}>
+            <CircularProgress
+              size={65} // Set the desired size
+              sx={{
+                color: "#000000",
+                padding: "8px 10px",
+                width: "35px",
+              }}
+            />
+            </div>
+          )}
+
           <div className="Card_Design_Parent">
             {Data.map((item, index) => (
               <div className="New_Design_card" key={item.id}>
-                <div className="Card_img" style={{    minHeight: '190px'}}>
+                <div className="Card_img" style={{ minHeight: "190px" }}>
                   <img src={item.image} alt="image" />
-
                 </div>
                 <div className="Card_Details">
                   <h3>ID : {item.designcode}</h3>
@@ -205,7 +215,7 @@ const DesignPool = ({sidebarExpanded}) => {
         </div>
         {/* new design section */}
       </div>
-      <BasicDetailModal/>
+      <BasicDetailModal />
     </div>
   );
 };
