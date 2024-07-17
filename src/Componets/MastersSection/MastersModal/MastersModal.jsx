@@ -1,9 +1,30 @@
 import { Box, Modal } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./MastersModal.css";
 import { IoCloseOutline } from "react-icons/io5";
 import upload from "../../../assets/Group.png";
 import close from "../../../assets/close.png";
+import {
+  categoryDataCreate,
+  categoryDataUpadate,
+  centralStatusDataCreate,
+  centralStatusDataUpadate,
+  diamondDataCreate,
+  diamondDataUpadate,
+  finding_data_upadate,
+  finding_table_data_create,
+  metalDataCreate,
+  metalDataUpadate,
+  outletDataCreate,
+  outletDataUpadate,
+  tag_data_upadate,
+  tag_table_data_create,
+  valueaddDataCreate,
+  valueaddDataUpadate,
+  whstatusDataCreate,
+  whstatusDataUpadate,
+} from "../ApiMasters/ApiMasters";
+import { useLocation } from "react-router-dom";
 
 const style = {
   position: "absolute",
@@ -11,16 +32,277 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 400,
-  bgcolor: "background.paper",    
+  bgcolor: "background.paper",
   fontFamily: "Gilroy medium",
   boxShadow: 24,
   p: 2,
 };
 
-const MastersModal = ({ setOpen, modalHeading, btnName, modalPage }) => {
+const MastersModal = ({
+  setOpen,
+  modalHeading,
+  btnName,
+  modalPage,
+  setTableData,
+  inputData,
+  setInputData,
+  setSelectedImage,
+  selectedImage,
+}) => {
+  const location = useLocation();
+  const [errors, setErrors] = useState("");
+
   const handleClose = () => {
     setOpen(false);
   };
+
+  const handleInputData = (e) => {
+    const { name, value } = e.target;
+    setInputData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleCreatedata = () => {
+    if (location.pathname === "/masterspage/findings") {
+      if (!inputData.find_name || !inputData.priority) {
+        setErrors("Please fill in all required fields.");
+      } else {
+        if (inputData.id) {
+          finding_data_upadate(
+            inputData,
+            setErrors,
+            setTableData,
+            handleClose,
+            setInputData,
+            inputData.id
+          );
+        } else {
+          finding_table_data_create(
+            inputData,
+            setErrors,
+            setTableData,
+            handleClose,
+            setInputData
+          );
+        }
+      }
+    } else if (location.pathname === "/masterspage/tag") {
+      if (!inputData.name || !inputData.priority || !selectedImage) {
+        setErrors("Please fill missing fields.");
+      } else {
+        if (inputData.id) {
+          const formData = new FormData();
+          formData.append("name", inputData.name);
+          formData.append("priority", inputData.priority);
+          formData.append("image", selectedImage);
+
+          tag_data_upadate(
+            formData,
+            inputData,
+            setErrors,
+            setTableData,
+            handleClose,
+            setInputData,
+            inputData.id,
+            selectedImage
+          );
+        } else {
+          const formData = new FormData();
+          formData.append("name", inputData.name);
+          formData.append("priority", inputData.priority);
+          formData.append("image", selectedImage);
+
+          tag_table_data_create(
+            formData,
+            setErrors,
+            setTableData,
+            handleClose,
+            setInputData,
+            setSelectedImage
+          );
+        }
+      }
+    } else if (location.pathname === "/masterspage/metal") {
+      if (!inputData.metal_name || !inputData.price || !inputData.making_cost) {
+        setErrors("Please fill in all required fields.");
+      } else {
+        if (inputData.id) {
+          metalDataUpadate(
+            inputData,
+            setErrors,
+            setTableData,
+            handleClose,
+            setInputData,
+            inputData.id
+          );
+        } else {
+          metalDataCreate(
+            inputData,
+            setErrors,
+            setTableData,
+            handleClose,
+            setInputData
+          );
+        }
+      }
+    } else if (location.pathname === "/masterspage/diamond") {
+      if (!inputData.name || !inputData.price) {
+        setErrors("Please fill in all required fields.");
+      } else {
+        if (inputData.id) {
+          diamondDataUpadate(
+            inputData,
+            setErrors,
+            setTableData,
+            handleClose,
+            setInputData,
+            inputData.id
+          );
+        } else {
+          diamondDataCreate(
+            inputData,
+            setErrors,
+            setTableData,
+            handleClose,
+            setInputData
+          );
+        }
+      }
+    } else if (location.pathname === "/masterspage/valueedition") {
+      if (
+        !inputData.slab_number ||
+        !inputData.min_value ||
+        !inputData.max_value ||
+        !inputData.value
+      ) {
+        setErrors("Please fill in all required fields.");
+      } else {
+        if (inputData.id) {
+          valueaddDataUpadate(
+            inputData,
+            setErrors,
+            setTableData,
+            handleClose,
+            setInputData,
+            inputData.id
+          );
+        } else {
+          valueaddDataCreate(
+            inputData,
+            setErrors,
+            setTableData,
+            handleClose,
+            setInputData
+          );
+        }
+      }
+    }else if (location.pathname === "/masterspage/whstatus") {
+      if (
+        !inputData.name ||
+        !inputData.order 
+      ) {
+        setErrors("Please fill in all required fields.");
+      } else {
+        if (inputData.id) {
+          whstatusDataUpadate(
+            inputData,
+            setErrors,
+            setTableData,
+            handleClose,
+            setInputData,
+            inputData.id
+          );
+        } else {
+          whstatusDataCreate(
+            inputData,
+            setErrors,
+            setTableData,
+            handleClose,
+            setInputData
+          );
+        }
+      }
+    } else if (location.pathname === "/masterspage/chstatus") {
+      if (
+        !inputData.name 
+      ) {
+        setErrors("Please fill in all required fields.");
+      } else {
+        if (inputData.id) {
+          centralStatusDataUpadate(
+            inputData,
+            setErrors,
+            setTableData,
+            handleClose,
+            setInputData,
+            inputData.id
+          );
+        } else {
+          centralStatusDataCreate(
+            inputData,
+            setErrors,
+            setTableData,
+            handleClose,
+            setInputData
+          );
+        }
+      }
+    }else if (location.pathname === "/masterspage/productcategory") {
+      if (
+        !inputData.name 
+      ) {
+        setErrors("Please fill in all required fields.");
+      } else {
+        if (inputData.id) {
+          categoryDataUpadate(
+            inputData,
+            setErrors,
+            setTableData,
+            handleClose,
+            setInputData,
+            inputData.id
+          );
+        } else {
+          categoryDataCreate(
+            inputData,
+            setErrors,
+            setTableData,
+            handleClose,
+            setInputData
+          );
+        }
+      }
+    } else if (location.pathname === "/masterspage/outlet") {
+      if (
+        !inputData.name 
+      ) {
+        setErrors("Please fill in all required fields.");
+      } else {
+        if (inputData.id) {
+          outletDataUpadate(
+            inputData,
+            setErrors,
+            setTableData,
+            handleClose,
+            setInputData,
+            inputData.id
+          );
+        } else {
+          outletDataCreate(
+            inputData,
+            setErrors,
+            setTableData,
+            handleClose,
+            setInputData
+          );
+        }
+      }
+    }
+  };
+
+  console.log("inputData", inputData);
 
   return (
     <div>
@@ -33,48 +315,101 @@ const MastersModal = ({ setOpen, modalHeading, btnName, modalPage }) => {
         <Box sx={style} className="MastersModal">
           <div className="master_modal" onclick={handleClose}>
             <h3>{modalHeading}</h3>
-            <button onClick={handleClose}><img className="btn_close" src={close} alt="" srcset="" /></button>
+            <button onClick={handleClose}>
+              <img className="btn_close" src={close} alt="" srcset="" />
+            </button>
           </div>
 
-          {(modalPage === "Findings" || modalPage === "Tags") && (
+          {modalPage === "Findings" && (
             <div className="modal_fields">
               <div className="inp1">
                 <label htmlFor="">Findings Name</label>
-                <input type="text" />
+                <input
+                  name="find_name"
+                  type="text"
+                  value={inputData.find_name || ""}
+                  onChange={handleInputData}
+                />
               </div>
               <div className="inp1 inp_2nd">
                 <label htmlFor="">Priority</label>
-                <input type="text" />
+                <input
+                  name="priority"
+                  type="number"
+                  value={inputData.priority || ""}
+                  onChange={handleInputData}
+                />
               </div>
             </div>
           )}
 
           {modalPage === "Tags" && (
-            <div className="img_div">
-              <span>Upload Image</span>
-              <div className="image_upload">
-                <label htmlFor="image_upload">
-                  Upload Image{" "}
-                  <img className="upload_img" src={upload} alt="" srcset="" />
-                </label>
-                <input id="image_upload" type="file" />
+            <>
+              <div className="modal_fields">
+                <div className="inp1">
+                  <label htmlFor="">Tag Name</label>
+                  <input
+                    name="name"
+                    type="text"
+                    value={inputData.name || ""}
+                    onChange={handleInputData}
+                  />
+                </div>
+                <div className="inp1 inp_2nd">
+                  <label htmlFor="">Priority</label>
+                  <input
+                    name="priority"
+                    type="number"
+                    value={inputData.priority || ""}
+                    onChange={handleInputData}
+                  />
+                </div>
               </div>
-            </div>
+              <div className="img_div">
+                <span>Upload Image</span>
+                <div className="image_upload">
+                  <label htmlFor="image_upload">
+                    Upload Image{" "}
+                    <img className="upload_img" src={upload} alt="" srcset="" />
+                  </label>
+                  <input
+                    id="image_upload"
+                    type="file"
+                    onChange={(e) => setSelectedImage(e.target.files[0])}
+                  />
+                </div>
+              </div>
+            </>
           )}
 
           {modalPage === "Metal" && (
             <>
               <div className="inp1 inp3">
                 <label htmlFor="">Metal Name</label>
-                <input type="text" />
+                <input
+                  type="text"
+                  name="metal_name"
+                  value={inputData.metal_name || ""}
+                  onChange={handleInputData}
+                />
               </div>
               <div className="inp1 inp3">
                 <label htmlFor="">Price</label>
-                <input type="text" />
+                <input
+                  type="text"
+                  name="price"
+                  value={inputData.price || ""}
+                  onChange={handleInputData}
+                />
               </div>
               <div className="inp1 inp3">
                 <label htmlFor="">Making Cost</label>
-                <input type="text" />
+                <input
+                  type="text"
+                  name="making_cost"
+                  value={inputData.making_cost || ""}
+                  onChange={handleInputData}
+                />
               </div>
             </>
           )}
@@ -83,11 +418,21 @@ const MastersModal = ({ setOpen, modalHeading, btnName, modalPage }) => {
             <>
               <div className="inp1 inp3">
                 <label htmlFor="">Diamond Name</label>
-                <input type="text" />
+                <input
+                  type="text"
+                  name="name"
+                  value={inputData.name || ""}
+                  onChange={handleInputData}
+                />
               </div>
               <div className="inp1 inp3">
                 <label htmlFor="">Price</label>
-                <input type="text" />
+                <input
+                  type="text"
+                  name="price"
+                  value={inputData.price || ""}
+                  onChange={handleInputData}
+                />
               </div>
             </>
           )}
@@ -96,19 +441,39 @@ const MastersModal = ({ setOpen, modalHeading, btnName, modalPage }) => {
             <>
               <div className="inp1 inp3">
                 <label htmlFor="">Slab No</label>
-                <input type="text" />
+                <input
+                  type="text"
+                  name="slab_number"
+                  value={inputData.slab_number || ""}
+                  onChange={handleInputData}
+                />
               </div>
               <div className="inp1 inp3">
                 <label htmlFor="">Min</label>
-                <input type="text" />
+                <input
+                  type="text"
+                  name="min_value"
+                  value={inputData.min_value || ""}
+                  onChange={handleInputData}
+                />
               </div>
               <div className="inp1 inp3">
                 <label htmlFor="">Max</label>
-                <input type="text" />
+                <input
+                  type="text"
+                  name="max_value"
+                  value={inputData.max_value || ""}
+                  onChange={handleInputData}
+                />
               </div>
               <div className="inp1 inp3">
                 <label htmlFor="">Value</label>
-                <input type="text" />
+                <input
+                  type="text"
+                  name="value"
+                  value={inputData.value || ""}
+                  onChange={handleInputData}
+                />
               </div>
             </>
           )}
@@ -117,11 +482,19 @@ const MastersModal = ({ setOpen, modalHeading, btnName, modalPage }) => {
             <div className="modal_fields">
               <div className="inp1">
                 <label htmlFor="">Status Name</label>
-                <input type="text" />
+                <input type="text" 
+                 name="name"
+                 value={inputData.name || ""}
+                 onChange={handleInputData}
+                />
               </div>
               <div className="inp1 inp_2nd">
                 <label htmlFor="">Order</label>
-                <input type="text" />
+                <input type="text"
+                 name="order"
+                 value={inputData.order || ""}
+                 onChange={handleInputData}
+                />
               </div>
             </div>
           )}
@@ -129,14 +502,22 @@ const MastersModal = ({ setOpen, modalHeading, btnName, modalPage }) => {
           {modalPage === "CHstatus" && (
             <div className="inp1 inp3">
               <label htmlFor="">Status Name</label>
-              <input type="text" />
+              <input type="text"
+                name="name"
+                value={inputData.name || ""}
+                onChange={handleInputData}
+              />
             </div>
           )}
 
           {modalPage === "productCategory" && (
             <div className="inp1 inp3">
               <label htmlFor="">Category Name</label>
-              <input type="text" />
+              <input type="text"
+               name="name"
+               value={inputData.name || ""}
+               onChange={handleInputData}
+              />
             </div>
           )}
 
@@ -144,7 +525,11 @@ const MastersModal = ({ setOpen, modalHeading, btnName, modalPage }) => {
             <>
               <div className="inp1 inp3">
                 <label htmlFor="">Outlet Name</label>
-                <input type="text" />
+                <input type="text" 
+                  name="name"
+                  value={inputData.name || ""}
+                  onChange={handleInputData}
+                />
               </div>
               <div className="inp1 inp3">
                 <label htmlFor="">Place</label>
@@ -153,9 +538,13 @@ const MastersModal = ({ setOpen, modalHeading, btnName, modalPage }) => {
             </>
           )}
 
+          {errors && (
+            <span style={{ color: "red", fontSize: "10px" }}>{errors}</span>
+          )}
+          {/* <h1>helooooooo</h1> */}
           <div className="modal_btns">
             <button onClick={handleClose}>Cancel</button>
-            <button>{btnName}</button>
+            <button onClick={handleCreatedata}>{btnName}</button>
           </div>
         </Box>
       </Modal>

@@ -214,6 +214,15 @@ const Header = ({
                   location.pathname !== "/customRequestTable" &&
                   location.pathname !== "/workdone" &&
                   location.pathname !== "/finishedProject" &&
+                  location.pathname !== "/masterspage/findings" &&
+                  location.pathname !== "/masterspage/tag" &&
+                  location.pathname !== "/masterspage/metal" &&
+                  location.pathname !== "/masterspage/diamond" &&
+                  location.pathname !== "/masterspage/diamond" &&
+                  location.pathname !== "/masterspage/whstatus" &&
+                  location.pathname !== "/masterspage/chstatus" &&
+                  location.pathname !== "/masterspage/productcategory" &&
+                  location.pathname !== "/masterspage/outlet" &&
                   location.pathname !== `/assignmentpaneldetailsview/${id}` &&
                   location.pathname !== `/finished/${id}` &&
                   location.pathname !== "/scan" && (

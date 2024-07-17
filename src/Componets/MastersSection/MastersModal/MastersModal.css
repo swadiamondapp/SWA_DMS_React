@@ -122,3 +122,8 @@ cursor: pointer;
 .inp3 {
   width: 100%;
 }
+
+.error{
+  color: red;
+  font-size: 10px;
+}
