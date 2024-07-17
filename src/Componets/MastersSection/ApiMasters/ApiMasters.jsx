@@ -398,8 +398,8 @@ export const metalDataUpadate = async (
 ) => {
   try {
     const body = {
-      metal_name: inputData.find_name,
-      priority: inputData.priority,
+      metal_name: inputData.metal_name,
+      price: inputData.price,
       making_cost: inputData.making_cost,
     };
     console.log(body, "finding update");

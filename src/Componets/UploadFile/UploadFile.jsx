@@ -5,7 +5,6 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import closeButton from "../../assets/closeButton.svg";
-import { Select } from "antd";
 import plusICon from "../../assets/plusIcon.png";
 
 const style = {
@@ -23,44 +22,28 @@ const style = {
   borderRadius: 2,
 };
 
-const UploadFile = ({ open, onClose, createFinsishedProjects, setSuccess,setFinishedProjectData }) => {
+const UploadFile = ({
+  open,
+  onClose,
+  createFinsishedProjects,
+  setSuccess,
+  setFinishedProjectData,
+}) => {
+  const initialImageSlots = 6; 
   const [isLoading, setIsLoading] = useState(false);
-  const [images, setImages] = useState(Array(6).fill(null));
+  const [images, setImages] = useState(Array(initialImageSlots).fill(null));
   const [file, setFile] = useState(null);
   const [id, setId] = useState("");
-  const [errors, seterrors] = useState("");
-
-  // create modal
-
-  // const [open, setOpen] = useState(false);
-  const [AssinedButton, setAssignedButton] = useState("Assign");
-  const [tagText, setTagText] = useState("");
-
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
-  const handleAssignButton = () => {
-    setAssignedButton((prevText) =>
-      prevText === "Assign" ? "Unasign" : "Assign"
-    );
-  };
-  const handleCancelButton = () => {
-    setOpen(false);
-  };
-
-  const onChange = (value) => {
-    console.log(`selected ${value}`);
-  };
-  const onSearch = (value) => {
-    console.log("search:", value);
-  };
-  const filterOption = (input, option) =>
-    (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
+  const [errors, setErrors] = useState("");
 
   const handleImageUpload = (index, event) => {
     const newImages = [...images];
     newImages[index] = event.target.files[0];
     setImages(newImages);
+
+    if (index === newImages.length - 1 && newImages.every(image => image !== null)) {
+      setImages([...newImages, null]);
+    }
   };
 
   const handleFileUpload = (event) => {
@@ -68,30 +51,35 @@ const UploadFile = ({ open, onClose, createFinsishedProjects, setSuccess,setFini
   };
 
   const handleUpload = () => {
-    if( !id ||  !images){
-      seterrors("fill the fields")
-    }else{
-    const formData = new FormData();
-    formData.append("designcode", id);
-    formData.append("name", id);
-    images.forEach((image, index) => {
-      if (image) {
-        formData.append(`img${index + 1}`, image);
+    if (!id || !images) {
+      setErrors("Please fill all fields.");
+    } else {
+      const formData = new FormData();
+      formData.append("designcode", id);
+      formData.append("name", id);
+      images.forEach((image, index) => {
+        if (image) {
+          formData.append(`img${index + 1}`, image);
+        }
+      });
+      if (file) {
+        formData.append("file1", file);
       }
-    });
-    if (file) {
-      formData.append("file1", file);
+      createFinsishedProjects(
+        setIsLoading,
+        formData,
+        setSuccess,
+        onClose,
+        setFinishedProjectData
+      );
     }
-    createFinsishedProjects(setIsLoading, formData, setSuccess,onClose,setFinishedProjectData);
-  }
   };
+
+  console.log("upload images",images)
 
   return (
     <div>
       <div className="">
-        {/* <div className="">
-          <Button onClick={handleOpen}> UploadFile</Button>
-        </div> */}
         <div className="modalContainer" style={{ position: "relative" }}>
           <Modal
             open={open}
@@ -114,10 +102,10 @@ const UploadFile = ({ open, onClose, createFinsishedProjects, setSuccess,setFini
                     Upload file
                   </span>
                   <button
-                   onClick={() => onClose()}
+                    onClick={() => onClose()}
                     style={{ background: "#FAFAFA", border: "none" }}
                   >
-                    <img src={closeButton} />
+                    <img src={closeButton} alt="close" />
                   </button>
                 </div>
               </Typography>
@@ -151,7 +139,7 @@ const UploadFile = ({ open, onClose, createFinsishedProjects, setSuccess,setFini
                             )}
                             <div style={{ position: "absolute" }}>
                               <label>
-                                <img src={plusICon} alt="" />
+                                <img src={plusICon} alt="add" />
                                 <input
                                   type="file"
                                   accept="image/png, image/jpeg"
@@ -172,7 +160,7 @@ const UploadFile = ({ open, onClose, createFinsishedProjects, setSuccess,setFini
                             <span>{file.name}</span>
                           ) : (
                             <label>
-                              <img src={plusICon} alt="" />
+                              <img src={plusICon} alt="add" />
                               <input
                                 type="file"
                                 // accept=".3dm"
@@ -187,10 +175,12 @@ const UploadFile = ({ open, onClose, createFinsishedProjects, setSuccess,setFini
                     </div>
                   </div>
                   <div className="upload_DMFile"></div>
-                {errors && <p style={{color:"red",fontSize:"11px"}}>{errors}</p>}
+                  {errors && (
+                    <p style={{ color: "red", fontSize: "11px" }}>{errors}</p>
+                  )}
                   <div className="buttons">
-                    <button className="cancerButton" onClick={() => onClose()}>
-                      cancel
+                    <button className="cancelButton" onClick={() => onClose()}>
+                      Cancel
                     </button>
                     <button className="upButton" onClick={handleUpload}>
                       Upload

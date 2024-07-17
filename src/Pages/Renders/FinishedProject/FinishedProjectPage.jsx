@@ -11,7 +11,7 @@ const FinishedProjectPage = () => {
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
 
   useEffect(() => {
-    finishedProjectList(setIsLoading, setFinishedProjectData);
+    finishedProjectList(setFinishedProjectData);
   }, []);
 
   return (

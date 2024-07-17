@@ -3,21 +3,26 @@ import "./FinishedProjectInner.css";
 import ShareIcon from "../../../assets/shareIcon.png";
 
 const FinishedProjectInner = (props) => {
-
   return (
-<div className="MainContainer" style={{ marginLeft:props?.sidebarExpanded ? "225px" : "125px",width:props?.sidebarExpanded ? "82%" : "90%"}}>
+    <div
+      className="MainContainer"
+      style={{ marginLeft: props?.sidebarExpanded ? "225px" : "125px" }}
+    >
       <div className="parentRendercard">
         {props?.folderItem &&
           props?.folderItem[0]?.images?.map((imgObj, index) => {
             const imageUrl = Object.values(imgObj)[0];
             const createdAt = imgObj.created_at;
-            {console.log(imageUrl,"imageUrl")}
+            {
+              console.log(imageUrl, "imageUrl");
+            }
             if (imageUrl) {
               return (
                 <div className="finishedCardContainer" key={index}>
                   <img src={imageUrl} alt="card_image" />
                   <span className="postedOn">
-                    POSTED ON: <span className="postedOn_data">{createdAt}</span>
+                    POSTED ON:{" "}
+                    <span className="postedOn_data">{createdAt}</span>
                   </span>
                   <div>
                     <button className="shareButton_finished">

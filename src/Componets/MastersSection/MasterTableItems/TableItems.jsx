@@ -65,7 +65,7 @@ const TableItems = () => {
   const handleEdit = (itemId) => {
     const selectedItem = tableData.find((item) => item.id === itemId);
     setOpen(true);
-    setInputData(selectedItem || { find_name: '', priority: '' });
+    setInputData(selectedItem || { find_name: "", priority: "" });
   };
 
   console.log("errors -----", errors);
@@ -137,6 +137,7 @@ const TableItems = () => {
                   </td>
                 </tr>
               ))}
+
               {errors && <span style={{ color: "red" }}>{errors}</span>}
             </tbody>
           </table>
