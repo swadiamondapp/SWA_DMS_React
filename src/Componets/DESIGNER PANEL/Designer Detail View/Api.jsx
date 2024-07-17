@@ -9,6 +9,7 @@ import {
   LIST_ALL_CUSTOMIZATION_DESIGNS,
   LIST_UNASSIGNED_DESIGNER,
   ASSIGN_UNASSIGN_DESIGNERS,
+  ASSIGNMENT_PANEL_DETAILS_PAGE,
 } from "../../../Pages/Services/EndPoints";
 
 export const list_designer_folderDetails = async (
@@ -17,7 +18,7 @@ export const list_designer_folderDetails = async (
   id
 ) => {
   try {
-    const response = await apiService.get(`${FOLDER_DETAIL_API}/${id}`);
+    const response = await apiService.get(`${ASSIGNMENT_PANEL_DETAILS_PAGE}${id}`);
     if (checkApiStatus(response)) {
       setFolderDetails(response.data.results.data);
     }

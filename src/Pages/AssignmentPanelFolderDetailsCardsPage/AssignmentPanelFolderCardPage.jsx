@@ -58,8 +58,8 @@ const DesignerAssignViewPage = () => {
     <div className="DesignerDashboardPage">
       <Sidebar  sidebarExpanded={sidebarExpanded} setSidebarExpanded={setSidebarExpanded} />
       <Header folderDetails={folderDetails} sidebarExpanded={sidebarExpanded} />
-      {/* <AssignmentPanelFolderCards folderDetails={folderDetails} id={id} /> */}
-      <RendersDetailPage folderDetails={folderDetails} sidebarExpanded={sidebarExpanded}/>
+      <AssignmentPanelFolderCards folderDetails={folderDetails} id={id}  sidebarExpanded={sidebarExpanded}/>
+      {/* <RendersDetailPage folderDetails={folderDetails} sidebarExpanded={sidebarExpanded}/> */}
     </div>
   );
 };

@@ -94,3 +94,4 @@ export const WORKDONE_TABLE_LIST = "workdone/scan/list";
 export const WORKDONE_TABLE_PRODUCT_SEARCH = "workdone/scan/";
 export const WORKDONE_TABLE_PRODUCT_DETAIL = "workdone/";
 export const WORKDONE_TABLE_PRODUCT_UPDATE = "assignment/";
+export const ASSIGNMENT_PANEL_DETAILS_PAGE = "folder-detail/"
