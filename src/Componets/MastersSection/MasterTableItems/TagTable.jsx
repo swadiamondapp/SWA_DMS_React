@@ -1,16 +1,76 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import dlticon from "../../../assets/Vector.png";
 import editicon from "../../../assets/Edit.png";
 import searchimg from "../../../assets/search.png";
 import eye from "../../../assets/eye.png";
 import MastersModal from "../MastersModal/MastersModal";
+import { delete_tag_data, search_tag_data, tag_table_data } from "../ApiMasters/ApiMasters";
+import DeleteConfirmationModal from "../../ConfirmationModal/DeleteConfirmationModal";
+import SuccessModal from "../../SuccessModal/SuccessModal";
 
 const TagTable = () => {
   const [open, setOpen] = useState(false);
+  const [tableData, setTableData] = useState([]);
+  const [DeleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState("");
+  const [successModalOpen, setSuccessModalOpen] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [searchListId, setsearchListId] = useState("");
+  const [filteredData, setfilteredData] = useState([]);
+  const [errors, setErrors] = useState("");
+  const [inputData, setInputData] = useState({
+    name: "",
+    priority: "",
+    image: "",
+  });
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const openModal = () => {
     setOpen(!open);
   };
+
+  useEffect(() => {
+    tag_table_data(setTableData);
+  }, []);
+
+  const handleDeleteOpen = (userId) => {
+    setDeleteConfirmationOpen(true);
+    setDeleteId(userId);
+  };
+
+  const handleOpen = () => {
+    setSuccessModalOpen(true);
+  };
+  const handleClose = () => {
+    setSuccessModalOpen(false);
+  };
+
+  const handleInputChange = (event) => {
+    const { value } = event.target;
+    setsearchListId(value);
+    search_tag_data(
+      searchListId,
+      setTableData,
+      setsearchListId
+    );
+  };
+
+  useEffect(() => {
+    search_tag_data(searchListId, setTableData, setErrors);
+  }, [searchListId]);
+
+  const handleEdit = (itemId) => {
+    const selectedItem = tableData.find((item) => item.id === itemId);
+    setOpen(true);
+    setInputData(selectedItem || {
+      name: "",
+      priority: "",
+      image: "",
+    });
+  };
+
+
+  console.log("selectedImage", selectedImage);
 
   return (
     <>
@@ -21,7 +81,12 @@ const TagTable = () => {
           <div className="secton_search">
             <div className="Search_Admin">
               <div className="Search_User">
-                <input type="text" placeholder="Search Users" />
+                <input
+                  type="text"
+                  placeholder="Search"
+                  value={searchListId}
+                  onChange={handleInputChange}
+                />
                 <img src={searchimg} alt="" />
               </div>
             </div>
@@ -43,52 +108,68 @@ const TagTable = () => {
               </tr>
             </thead>
             <tbody>
-              <tr className="table_row">
-                <td>1</td>
-                <td>
-                  <span className="bg_cover">John doe</span>
-                </td>
-                <td>01</td>
-                <td>
-                  <img
-                    style={{ width: "70px", height: "50px" }}
-                    src="https://images.pexels.com/photos/757889/pexels-photo-757889.jpeg?auto=compress&cs=tinysrgb&w=600"
-                    alt=""
-                    srcset=""
-                  />
-                </td>
-                <td>
-                  <div className="btn_td">
-                    <button className="btn_section">
-                      <img
-                        className="btn_section_img"
-                        src={eye}
-                        alt=""
-                        srcset=""
-                      />
-                    </button>
-                    <button className="btn_section">
-                      <img
-                        className="btn_section_img"
-                        src={editicon}
-                        alt=""
-                        srcset=""
-                      />
-                    </button>
-                    <button className="btn_section2">
-                      <img
-                        className="btn_section_img"
-                        src={dlticon}
-                        alt=""
-                        srcset=""
-                      />
-                    </button>
-                  </div>
-                </td>
-              </tr>
+            {(filteredData.length > 0 && searchListId !== ""
+                ? filteredData
+                : tableData
+              ).map((item, index) => (
+                <tr className="table_row">
+                  <td>{index + 1}</td>
+                  <td>
+                    <span className="bg_cover">{item.name}</span>
+                  </td>
+                  <td>{item.priority}</td>
+                  <td>
+                    <img
+                      style={{ width: "70px", height: "50px" }}
+                      src={item.image}
+                      alt=""
+                      srcset=""
+                    />
+                  </td>
+                  <td>
+                    <div className="btn_td">
+                      <button className="btn_section">
+                        <img
+                          className="btn_section_img"
+                          src={eye}
+                          alt=""
+                          srcset=""
+                        />
+                      </button>
+                      <button className="btn_section"
+                       onClick={() => handleEdit(item.id)}
+                      >
+                        <img
+                          className="btn_section_img"
+                          src={editicon}
+                          alt=""
+                          srcset=""
+                        />
+                      </button>
+                      <button
+                        className="btn_section2"
+                        onClick={() => handleDeleteOpen(item.id)}
+                      >
+                        <img
+                          className="btn_section_img"
+                          src={dlticon}
+                          alt=""
+                          srcset=""
+                        />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
+        <SuccessModal
+          successModalOpen={successModalOpen}
+          handleOpen={handleOpen}
+          handleClose={handleClose}
+          successMessage={successMessage}
+        />
       </div>
 
       {open && (
@@ -98,6 +179,28 @@ const TagTable = () => {
           modalPage="Tags"
           openModal={openModal}
           setOpen={setOpen}
+          setTableData={setTableData}
+          inputData={inputData}
+          setInputData={setInputData}
+          setSelectedImage={setSelectedImage}
+          selectedImage={selectedImage}
+        />
+      )}
+
+      {DeleteConfirmationOpen && (
+        <DeleteConfirmationModal
+          DeleteConfirmationOpen={DeleteConfirmationOpen}
+          handleDeleteOpen={handleDeleteOpen}
+          setDeleteConfirmationOpen={setDeleteConfirmationOpen}
+          deleteFunction={() => {
+            delete_tag_data(
+              setTableData,
+              deleteId,
+              setDeleteConfirmationOpen,
+              setSuccessMessage,
+              setSuccessModalOpen
+            );
+          }}
         />
       )}
     </>

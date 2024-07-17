@@ -15,18 +15,28 @@ const RendersDetailPage = ({ folderDetails }) => {
     content: printRef.current,
   });
 
+  const handleDownload = (imageUrl) => {
+    // Create a temporary anchor element
+    const link = document.createElement("a");
+    link.href = imageUrl;
+    link.setAttribute("download", "");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <>
       {folderDetails.map((item) => (
-        <div className="RendersDetailPage">
+        <div className="RendersDetailPage" key={item.id}>
           <div className="Detail_Card">
             <img src={item.file_2d} alt="" />
             <span>
               POSTED ON: <b>{item.created_at.split("T")[0]} </b>
             </span>
-            <button>
+            <button onClick={() => handleDownload(item.file_2d)}>
               DOWNLOAD{" "}
-              <img className="img_detail" src={download} alt="" srcset="" />
+              <img className="img_detail" src={download} alt="" />
             </button>
           </div>
           <div className="Detail_Card">
@@ -34,9 +44,6 @@ const RendersDetailPage = ({ folderDetails }) => {
             <span>
               POSTED ON: <b> {item.created_at.split("T")[0]} </b>
             </span>
-            {/* <button className="Detail_Card_print">
-              Print <img className="img_detail" src={print} alt="" srcset="" />
-            </button> */}
             <ReactToPrint
               trigger={() => (
                 <div className="Detail_Card_print" onClick={handlePrint}>
@@ -46,10 +53,7 @@ const RendersDetailPage = ({ folderDetails }) => {
               content={() => printRef.current}
             />
             <div style={{ display: "none" }}>
-              <RendersProductPrint
-                ref={printRef}
-                folderDetails={folderDetails}
-              />
+              <RendersProductPrint ref={printRef} folderDetails={folderDetails} />
             </div>
           </div>
         </div>
