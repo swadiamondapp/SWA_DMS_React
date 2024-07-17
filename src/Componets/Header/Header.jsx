@@ -23,7 +23,6 @@ const Header = ({
   const { wareHouseuserId, customizationsku } = location.state || {};
   const { cadFolderName, cadId } = location.state || {};
   const query = new URLSearchParams(location.search);
-  const folderName = query.get("name");
   const folderNamec = query.get("folderNamec");
 
   const [isLogoutDropdown, setIsLogoutDropdown] = useState(false);
@@ -44,7 +43,7 @@ const Header = ({
   const userImage = localStorage.getItem("Loginimage");
   const dropdownRef = useRef(null);
 
-const { folderName } = location.state || {};
+  const { folderName } = location.state || {};
   console.log("header===>FolderName", folderName);
 
   useEffect(() => {
@@ -180,10 +179,10 @@ const { folderName } = location.state || {};
                 {location.pathname === "/centralDashboard" && (
                   <h3>Dashboard</h3>
                 )}
-                  {location.pathname === "/centralhubtransfer" && (
+                {location.pathname === "/centralhubtransfer" && (
                   <h3>Transfer</h3>
                 )}
-                
+
                 {location.pathname === "/slot" && <h3>Slot</h3>}
                 {leftHeader && <h3>{leftHeader}</h3>}
 

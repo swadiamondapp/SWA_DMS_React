@@ -18,7 +18,24 @@ export const list_designer_folderDetails = async (
   id
 ) => {
   try {
-    const response = await apiService.get(`${ASSIGNMENT_PANEL_DETAILS_PAGE}${id}`);
+    const response = await apiService.get(
+      `${ASSIGNMENT_PANEL_DETAILS_PAGE}${id}`
+    );
+    if (checkApiStatus(response)) {
+      setFolderDetails(response.data.results.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const renderFolderDetails = async (
+  setIsLoading,
+  setFolderDetails,
+  id
+) => {
+  try {
+    const response = await apiService.get(`${FOLDER_DETAIL_API}${id}`);
     if (checkApiStatus(response)) {
       setFolderDetails(response.data.results.data);
     }
@@ -105,12 +122,11 @@ export const unassignDesigner = async (
     console.log(body, "unasssdfidf");
     const response = await apiService.post(ASSIGN_UNASSIGN_DESIGNERS, body);
     if (response.data.results.status_code === 200) {
-      listUnAssignedLists(setIsLoading,setUnAssignedLists)
+      listUnAssignedLists(setIsLoading, setUnAssignedLists);
       setSuccessMessage("Item Unassigned SuccessFully");
       setSuccessModalOpen(true);
       setTimeout(() => {
         setSuccessModalOpen(false);
-
       }, 1600);
     }
   } catch (error) {
