@@ -2,6 +2,7 @@ import { apiService, checkApiStatus } from "../../Pages/Services/ApiInstants";
 import { setToLocalstorage } from "../../Pages/Utils/Common";
 import {
   ASSIGNMENT_MOVE,
+  ASSIGNMENT_PANEL_DETAILS_PAGE,
   ASSIGN_UNASSIGN_DESIGNERS,
   CALCULATION,
   DELETE_ITEM_FROM_ASSIGNMENT_PANEL,
@@ -54,11 +55,11 @@ export const listFolderDetailVeiwAssignmentPanel = async (
   setIsLoading,
   setFolderDetailsView,
   id,
-  designId
+  designIdA
 ) => {
   try {
     const response = await apiService.get(
-      `${FOLDER_DETAIL_API}${id}/item/${designId}/`
+      `${ASSIGNMENT_PANEL_DETAILS_PAGE}${id}/item/${ designIdA}/`
     );
     if (checkApiStatus(response)) {
       setFolderDetailsView(response.data.results.data);
