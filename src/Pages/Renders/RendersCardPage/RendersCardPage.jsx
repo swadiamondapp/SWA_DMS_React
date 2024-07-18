@@ -11,18 +11,23 @@ const RendersPage = () => {
   const [designListData, setDesignListData] = useState([]);
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
 
-
   useEffect(() => {
-    cadDesignList(setIsLoading, setDesignListData);
+    cadDesignList(setDesignListData);
   }, []);
 
   return (
     <div className="Parent_RendersCard">
- <Sidebar sidebarExpanded={sidebarExpanded} setSidebarExpanded={setSidebarExpanded}/>
-      <Header sidebarExpanded={sidebarExpanded}/>
+      <Sidebar
+        sidebarExpanded={sidebarExpanded}
+        setSidebarExpanded={setSidebarExpanded}
+      />
+      <Header sidebarExpanded={sidebarExpanded} />
       {/* <RenderCard designListData={designListData} /> */}
       {/* <AnnotationCanvas /> */}
-      <RendersHome designListData={designListData} sidebarExpanded={sidebarExpanded}/>
+      <RendersHome
+        designListData={designListData}
+        sidebarExpanded={sidebarExpanded}
+      />
     </div>
   );
 };

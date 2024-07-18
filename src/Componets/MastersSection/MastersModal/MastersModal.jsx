@@ -198,11 +198,8 @@ const MastersModal = ({
           );
         }
       }
-    }else if (location.pathname === "/masterspage/whstatus") {
-      if (
-        !inputData.name ||
-        !inputData.order 
-      ) {
+    } else if (location.pathname === "/masterspage/whstatus") {
+      if (!inputData.name || !inputData.order) {
         setErrors("Please fill in all required fields.");
       } else {
         if (inputData.id) {
@@ -225,9 +222,7 @@ const MastersModal = ({
         }
       }
     } else if (location.pathname === "/masterspage/chstatus") {
-      if (
-        !inputData.name 
-      ) {
+      if (!inputData.name) {
         setErrors("Please fill in all required fields.");
       } else {
         if (inputData.id) {
@@ -249,10 +244,8 @@ const MastersModal = ({
           );
         }
       }
-    }else if (location.pathname === "/masterspage/productcategory") {
-      if (
-        !inputData.name 
-      ) {
+    } else if (location.pathname === "/masterspage/productcategory") {
+      if (!inputData.name) {
         setErrors("Please fill in all required fields.");
       } else {
         if (inputData.id) {
@@ -275,9 +268,7 @@ const MastersModal = ({
         }
       }
     } else if (location.pathname === "/masterspage/outlet") {
-      if (
-        !inputData.name 
-      ) {
+      if ((!inputData.name, !inputData.place)) {
         setErrors("Please fill in all required fields.");
       } else {
         if (inputData.id) {
@@ -302,7 +293,7 @@ const MastersModal = ({
     }
   };
 
-  console.log("inputData", inputData);
+  console.log("inputDataerrors", errors);
 
   return (
     <div>
@@ -482,41 +473,56 @@ const MastersModal = ({
             <div className="modal_fields">
               <div className="inp1">
                 <label htmlFor="">Status Name</label>
-                <input type="text" 
-                 name="name"
-                 value={inputData.name || ""}
-                 onChange={handleInputData}
+                <input
+                  type="text"
+                  name="name"
+                  value={inputData.name || ""}
+                  onChange={handleInputData}
                 />
               </div>
               <div className="inp1 inp_2nd">
                 <label htmlFor="">Order</label>
-                <input type="text"
-                 name="order"
-                 value={inputData.order || ""}
-                 onChange={handleInputData}
+                <input
+                  type="text"
+                  name="order"
+                  value={inputData.order || ""}
+                  onChange={handleInputData}
                 />
               </div>
             </div>
           )}
 
           {modalPage === "CHstatus" && (
-            <div className="inp1 inp3">
-              <label htmlFor="">Status Name</label>
-              <input type="text"
-                name="name"
-                value={inputData.name || ""}
-                onChange={handleInputData}
-              />
-            </div>
+             <div className="modal_fields">
+             <div className="inp1">
+               <label htmlFor="">Status Name</label>
+               <input
+                 type="text"
+                 name="name"
+                 value={inputData.name || ""}
+                 onChange={handleInputData}
+               />
+             </div>
+             <div className="inp1 inp_2nd">
+               <label htmlFor="">Order</label>
+               <input
+                 type="text"
+                 name="order"
+                 value={inputData.order || ""}
+                 onChange={handleInputData}
+               />
+             </div>
+           </div>
           )}
 
           {modalPage === "productCategory" && (
             <div className="inp1 inp3">
               <label htmlFor="">Category Name</label>
-              <input type="text"
-               name="name"
-               value={inputData.name || ""}
-               onChange={handleInputData}
+              <input
+                type="text"
+                name="name"
+                value={inputData.name || ""}
+                onChange={handleInputData}
               />
             </div>
           )}
@@ -525,7 +531,8 @@ const MastersModal = ({
             <>
               <div className="inp1 inp3">
                 <label htmlFor="">Outlet Name</label>
-                <input type="text" 
+                <input
+                  type="text"
                   name="name"
                   value={inputData.name || ""}
                   onChange={handleInputData}
@@ -533,7 +540,12 @@ const MastersModal = ({
               </div>
               <div className="inp1 inp3">
                 <label htmlFor="">Place</label>
-                <input type="text" />
+                <input
+                  type="text"
+                  name="place"
+                  value={inputData.place || ""}
+                  onChange={handleInputData}
+                />
               </div>
             </>
           )}

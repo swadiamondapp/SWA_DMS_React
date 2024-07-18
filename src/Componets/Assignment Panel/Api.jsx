@@ -42,7 +42,7 @@ export const list_folderDetails = async (
 ) => {
   try {
     const response = await apiService.get(
-      `${FOLDER_DETAIL_API}/${selectedId}/`
+      `${FOLDER_DETAIL_API}${selectedId}/`
     );
     if (response.data.results.status_code === 200) {
       setFolderDetails(response.data.results.data);
@@ -80,28 +80,32 @@ export const move_to_folder = async (
   ItemMovedToAssignment,
   handleClose,
   setFolderName,
-  setItemMovedToAssignment
+  setItemMovedToAssignment,
+  selectedAssignment,
+  setData,
+  setError,
+  ToCloseCreatefolder
 ) => {
   try {
     const body = {
       folder_data: {
         name: folderName,
       },
-      items: ItemMovedToAssignment,
+      items: selectedAssignment,
     };
     console.log(body, "itemMovirddd");
     const response = await apiService.post(MOVE_TO_FOLDER, body);
-    if (response.data.results.status_code === 200) {
-      list_assignment_folder(setIsLoading, setAssignmentFolder);
+    if (checkApiStatus(response)) {
+      list_assignment_folder(setIsLoading,setAssignmentFolder);
       onClose();
       setSuccessMessage("Assignment Folder Created SuccessFully");
       setSuccessModalOpen(true);
       setTimeout(() => {
         setSuccessModalOpen(false);
       }, 1600);
-      setItemMovedToAssignment([]);
       setFolderName("");
       setSelectedAssignment([]);
+      setItemMovedToAssignment([])
     }
   } catch (error) {
     console.error("Error moving designs:", error);

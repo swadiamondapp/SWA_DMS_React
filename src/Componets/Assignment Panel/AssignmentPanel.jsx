@@ -106,12 +106,12 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
     list_folderDetails();
   }, []);
 
-  const handleFolderClick = (id) => {
-    console.log("id.....>", id);
-    if (location.pathname === "/assignmentview") {
-      navigate(`assignmentview${id}`);
-    }
-  };
+  // const handleFolderClick = (id) => {
+  //   console.log("id.....>", id);
+  //   if (location.pathname === "/assignmentview") {
+  //     navigate(`assignmentview${id}`);
+  //   }
+  // };
   const [selectedDesignCode, setSelectedDesignCode] = useState([]);
   const handleCheckboxChange = (designcode, tickedDesings) => {
     if (selectedAssignment.includes(designcode)) {
@@ -170,7 +170,7 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
     return `${day}-${month}-${year}`;
   };
 
-  const handleFolderNaviate = (item) => {
+const handleFolderNaviate = (item) => {
     navigate(`/assignmentpaneldetailsview/${item.id}`, {
       state: { assignmentFolderName: item.name },
     });
@@ -245,7 +245,7 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
           <h3 className="HeadNewdesign">Folders</h3>
           <div className="folderCard_parent">
             {assignmentFolder.map((item) => (
-              <div
+<div
                 className="folder__card"
                 key={item.id}
                 onClick={() => handleFolderNaviate(item)}
@@ -255,7 +255,7 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
                     item.id
                   }?name=${encodeURIComponent(item.name)}`}
                 > */}
-                <img src={folderimg} alt="" />
+<img src={folderimg} alt="" />
                 {/* </Link> */}
                 <p>{item.name}</p>
               </div>
@@ -356,7 +356,7 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
         selectedDesignCode={selectedDesignCode}
       />
 
-      <AssignmentModal
+<AssignmentModal
         open={createFolderModal}
         // AdminUploadedIds={AdminUploadedIds}
         onClose={() => setcreateFolderModal(false)}

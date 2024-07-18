@@ -35,9 +35,11 @@ export const renderFolderDetails = async (
   id
 ) => {
   try {
+    setIsLoading(true)
     const response = await apiService.get(`${FOLDER_DETAIL_API}${id}`);
     if (checkApiStatus(response)) {
       setFolderDetails(response.data.results.data);
+      setIsLoading(false)
     }
   } catch (error) {
     console.log(error);
