@@ -377,10 +377,18 @@ const AdminBasicDetailsModal = ({
       onClose,
       setSuccessModalOpen,
       setSuccessMessage,
-      setOpenAdminFolder
+      setOpenAdminFolder,
+      setAssignDesignerModalOpen,
+      setAdminBasicDetailsOpen,
+      setUploadedImage,
+      setAssignedDesignerId
     );
   };
 
+ const handleBackdropClick = (event) => {
+    // Prevent the modal from closing when clicking the backdrop
+    event.stopPropagation();
+  };
   console.log(assignedDesignerId, "assignedDesignerId");
   return (
     <div>
@@ -393,10 +401,15 @@ const AdminBasicDetailsModal = ({
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
             style={{ position: "absolute", right: "0" }}
+            BackdropProps={{
+              onClick: handleBackdropClick // Stop backdrop clicks from closing the modal
+            }}
+            
           >
             <Box sx={style}>
               <Typography>
                 <div className="adminBasicModal_container">
+                  <div style={{position:'relative'}}><div style={{position:'absolute',right:'0'}} onClick={onClose}><img src={closeButton} alt="" /></div></div>
                   <div className="numbers_container">
                     <div className="Container1">
                       <div className="parant1">
@@ -1028,7 +1041,7 @@ const AdminBasicDetailsModal = ({
                               </div>
                               <input
                                 type="file"
-                                accept="image/*"
+                                accept="image/jpeg, image/png, image/jpg"
                                 onChange={handleImageUpload}
                                 style={{ display: "none" }}
                                 id="upload-input"

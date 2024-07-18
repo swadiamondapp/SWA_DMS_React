@@ -266,7 +266,7 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
         <div className="Assignment_panel_section">
           <h3 className="HeadNewdesign">Selected</h3>
           <div className="Card_Design_Parent">
-            {Data.map((item) => {
+            {Data.map((item,index) => {
               const paperDesign = item?.items?.[0]?.paper_design;
               const itemId = item?.items?.[0]?.id;
               const createdAt = item?.created_at;
@@ -274,9 +274,12 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
               const designCode = paperDesign?.designcode;
               const image = paperDesign?.image;
               const likesCount = paperDesign?.likes_count;
+              if (!image) {
+                return null;
+              }
 
               return (
-                <div className="New_Design_card" key={itemId}>
+                <div className="New_Design_card" key={index}>
                   <div
                     className="Card_img"
                     onClick={() => handleForlderDetailsVeiw(item.id)}
