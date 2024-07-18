@@ -4,6 +4,7 @@ import {
   ASSIGNMENT_MOVE,
   ASSIGN_UNASSIGN_DESIGNERS,
   CALCULATION,
+  DELETE_ITEM_FROM_ASSIGNMENT_PANEL,
   DIAMOND_TYPE_DROPDOWN,
   EDIT_BASIC_DETAILS,
   FINDINGS_LIST,
@@ -11,6 +12,7 @@ import {
   LIST_ALL_DESIGNERS,
   LIST_ASSIGNMENT_PANEL,
   METAL_TYPE,
+  MOVE_SINGLE_ITEM_TO_DESIGNPOOL,
   MOVE_TO_FOLDER,
   PRODUCT_CATEGORY_LIST,
   TAG_LIST,
@@ -21,10 +23,7 @@ import {
   list_assignment_folder,
 } from "../ADMIN PANEL/Design Pool/Api";
 
-export const list_assignment_panel = async (
-  setIsLoading,
-  setData
-) => {
+export const list_assignment_panel = async (setIsLoading, setData) => {
   try {
     const response = await apiService.get(LIST_ASSIGNMENT_PANEL);
     if (checkApiStatus(response)) {
@@ -201,7 +200,7 @@ export const move_to_assignment = async (
     if (response.data.results.status_code === 200) {
       all_Designs(setIsLoading, setData);
       onClose();
-      setSuccessMessage("Moved to Assignment Successfully");
+      setSuccessMessage("Moved to Assignment Panel Successfully");
       setSuccessModalOpen(true);
       setTimeout(() => {
         setSuccessModalOpen(false);
@@ -259,7 +258,10 @@ export const editBasicDetails = async (
       },
     };
     console.log(body, "move_TO_ASSINGG");
-    const response = await apiService.patch(`${EDIT_BASIC_DETAILS}${folderIdA}/items/${designId}/edit/`, body);
+    const response = await apiService.patch(
+      `${EDIT_BASIC_DETAILS}${folderIdA}/items/${designId}/edit/`,
+      body
+    );
     if (response.data.results.status_code === 200) {
       // all_Designs(setIsLoading, setData);
       onClose();
@@ -560,6 +562,57 @@ export const move_to_folder_admin_user = async (
       }, 1600);
       setAssignedDesignerId(null);
       setFolderName("");
+    }
+  } catch (error) {
+    console.error("Error moving designs:", error);
+  }
+};
+
+export const moveSingleItemToDesignPool = async (
+  setIsLoading,
+  item,
+  setData,
+  setSuccessModalOpen,
+  setSuccessMessage,
+  setActiveCardId
+) => {
+  try {
+    const response = await apiService.delete(
+      `${MOVE_SINGLE_ITEM_TO_DESIGNPOOL}${item}/`
+    );
+    if (checkApiStatus(response)) {
+      list_assignment_panel(setIsLoading, setData);
+      setSuccessMessage("item Moved SuccessFully");
+      setSuccessModalOpen(true);
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1600);
+      setActiveCardId([])
+    }
+  } catch (error) {
+    console.error("Error moving designs:", error);
+  }
+};
+export const deleteItemFromAssignmentPanel = async (
+  setIsLoading,
+  item,
+  setData,
+  setSuccessModalOpen,
+  setSuccessMessage,
+  setActiveCardId
+) => {
+  try {
+    const response = await apiService.delete(
+      `${DELETE_ITEM_FROM_ASSIGNMENT_PANEL}${item}/`
+    );
+    if (checkApiStatus(response)) {
+      list_assignment_panel(setIsLoading, setData);
+      setSuccessMessage("item Deleted SuccessFully");
+      setSuccessModalOpen(true);
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1600);
+      setActiveCardId([])
     }
   } catch (error) {
     console.error("Error moving designs:", error);

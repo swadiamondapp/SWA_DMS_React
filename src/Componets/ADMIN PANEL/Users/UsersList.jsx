@@ -103,7 +103,7 @@ const UsersList = ({ sidebarExpanded }) => {
     };
   }, []);
 
-  console.log("imageUrl===>", userList);
+  console.log("imageUrl===>", ErrorMessages);
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -182,7 +182,7 @@ const UsersList = ({ sidebarExpanded }) => {
       }
       console.log(file, "file");
 
-      if (userIdToEdit) {
+      if (submitBtn === "Update User") {
         update_user(
           setIsLoading,
           data,

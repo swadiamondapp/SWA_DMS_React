@@ -3,7 +3,7 @@ import "./BasicDetails.css";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import Modal from "@mui/material/Modal";
+import { Modal, Backdrop, Fade } from '@mui/material';
 import { Select, Space } from "antd";
 import { TagsInput } from "react-tag-input-component";
 import Joi from "joi";
@@ -23,6 +23,7 @@ import {
 } from "../Assignment Panel/Api";
 import SuccessModal from "../SuccessModal/SuccessModal";
 import CircularProgress from "@mui/material/CircularProgress";
+import closeButtonBM from '../../assets/closeButtonBM.png'
 
 const style = {
   position: "absolute",
@@ -422,11 +423,26 @@ const BasicDetailModal = ({
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
             style={{ position: "absolute", right: "0" }}
+            closeAfterTransition
+            BackdropComponent={Backdrop}
+            BackdropProps={{
+              timeout: 500,
+              onClick: (event) => event.stopPropagation(), // Prevent modal close on backdrop click
+            }}
           >
             <Box sx={style}>
               <Typography>
                 <div className="container">
+                  <div className="basicClosModalIcon">
+                    <div>
+
                   <span className="titleBasic">Basic details</span>
+                    </div>
+                    <div className="closeButtonImageBm" onClick={onClose}>
+                      <img src={closeButtonBM} alt="" />
+                    </div>
+
+                  </div>
                   <form onSubmit={handleSubmit}>
                     <div className="formContainer">
                       <label htmlFor="" className="label-text">

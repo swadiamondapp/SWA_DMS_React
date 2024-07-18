@@ -198,3 +198,10 @@
   right: 2px;
   top: 22px;
 }
+.basicClosModalIcon {
+  display: flex;
+  justify-content: space-between;
+}
+.closeButtonImageBm img{
+  width:14px
+}
