@@ -504,7 +504,11 @@ export const assign_to_designers = async (
   onClose,
   setSuccessModalOpen,
   setSuccessMessage,
-  setOpenAdminFolder
+  setOpenAdminFolder,
+  setAssignDesignerModalOpen,
+  setAdminBasicDetailsOpen,
+  setUploadedImage,
+  setAssignedDesignerId
 ) => {
   try {
     const body = {
@@ -517,15 +521,19 @@ export const assign_to_designers = async (
       setSuccessMessage("Item Assigned SuccessFully");
       setSuccessModalOpen(true);
       setTimeout(() => {
-        setOpenAdminFolder(true);
+        // setOpenAdminFolder(true);
         setSuccessModalOpen(false);
         onClose();
       }, 1600);
+        setAssignDesignerModalOpen(false);
+        setAdminBasicDetailsOpen(false);
+        setUploadedImage(null);
+      setAssignedDesignerId(null);
     }
   } catch (error) {
     // setSelectedAssignment([])
     console.error("Error moving designs:", error);
-    alert(error);
+    alert("Please Assign A Designer");
   }
 };
 export const move_to_folder_admin_user = async (
