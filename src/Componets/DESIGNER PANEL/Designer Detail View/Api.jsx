@@ -59,6 +59,7 @@ export const assign_to_cad = async (
   setSelectedAssignment
 ) => {
   try {
+    setIsLoading(true)
     const body = {
       folder: assignToCadId,
       user: userId,
@@ -81,6 +82,8 @@ export const assign_to_cad = async (
     // setSelectedAssignment([])
     console.error("Error moving designs:", error);
     alert(error?.response?.data?.assignment_items);
+  }finally {
+    setIsLoading(false)
   }
 };
 

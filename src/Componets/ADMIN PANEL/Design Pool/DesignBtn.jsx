@@ -91,6 +91,7 @@ const DesignBtn = ({
 
         {location.pathname !== "/assignmentpanel" &&
           location.pathname !== "/designdashboard" &&
+          location.pathname === "/designpool" && selectButtonLabel === "Unselect" &&  getSelectedDesign.length>0 &&
           location.pathname !== "/designerassignview" &&
           location.pathname !== "/votorscustomization" &&
           location.pathname !== `/designerassignview/${id}` &&

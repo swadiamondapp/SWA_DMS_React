@@ -43,6 +43,8 @@ const Header = ({
   const userImage = localStorage.getItem("Loginimage");
   const dropdownRef = useRef(null);
 
+  const { assignmentId,folderNameAssignmentView} = location.state || {}
+  const { assignmentFolderName } = location.state || {};
   const { folderName } = location.state || {};
   console.log("header===>FolderName", folderName);
 
@@ -159,7 +161,10 @@ const Header = ({
                 {location.pathname === "/chat" && <h3>Chat</h3>}
                 {location.pathname === "/" && <h3>Users</h3>}
                 {location.pathname === `/assignmentpaneldetailsview/${id}` && (
-                  <h3>{folderName}</h3>
+                  <h3>{assignmentFolderName}</h3>
+                )}
+                  {location.pathname === `/assignmentview/${assignmentId}` && (
+                  <h3>{folderNameAssignmentView}</h3>
                 )}
                 {location.pathname === `/rendersdetailing/${id}` && (
                   <h3>{folderName}</h3>

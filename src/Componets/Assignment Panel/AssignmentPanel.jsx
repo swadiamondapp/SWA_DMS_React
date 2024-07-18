@@ -7,14 +7,20 @@ import like from "../../assets/like.png";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import folderimg from "../../assets/folder.png";
-import { list_assignment_panel, list_folderDetails } from "./Api";
+import {
+  list_assignment_panel,
+  list_folderDetails,
+  moveSingleItemToDesignPool,
+  deleteItemFromAssignmentPanel,
+} from "./Api";
 import { list_assignment_folder } from "../ADMIN PANEL/Design Pool/Api";
 import DesignPools from "../DesignPoolExtended/DesignPools";
 import AdminBasicDetailsModal from "../AdminBasicDetailsModal/AdminBasicDetailsModal";
 import AssignmentModal from "../AssignmentModal/AssignmentModal";
+import SuccessModal from "../SuccessModal/SuccessModal";
 // import { useLocation, useNavigate } from "react-router-dom";
 
-const AssignmentPanel = ({sidebarExpanded}) => {
+const AssignmentPanel = ({ sidebarExpanded }) => {
   const [showRadioButtons, setShowRadioButtons] = useState(false);
   const [selectButtonLabel, setSelectButtonLabel] = useState("Select");
   const [showDownloadOptions, setShowDownloadOptions] = useState(false);
@@ -31,12 +37,12 @@ const AssignmentPanel = ({sidebarExpanded}) => {
   const [modalDetails, setModalDetails] = useState([]);
   const [activeCardId, setActiveCardId] = useState(null);
   const [AdminBasicModalOpen, setAdminBasicModalOpen] = useState(false);
+  const [successModalOpen, setSuccessModalOpen] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
   const [uploadInstructionsVisible, setUploadInstructionsVisible] =
     useState(true);
 
-    const [createFolderModal, setcreateFolderModal] = useState(false);
-
-
+  const [createFolderModal, setcreateFolderModal] = useState(false);
 
   const location = useLocation();
   const dotsRef = useRef(null);
@@ -134,29 +140,6 @@ const AssignmentPanel = ({sidebarExpanded}) => {
 
   console.log(Data, "assignmentDatatat");
   console.log(selectedAssignment, "selecte==================>");
-
-  const card = [
-    {
-      product: "SWAD3456",
-      name: "Shivaprasad Yadav",
-      date: "12 june 2023",
-    },
-    {
-      product: "SWAD3456",
-      name: "Shivaprasad Yadav",
-      date: "12 june 2023",
-    },
-    {
-      product: "SWAD3456",
-      name: "Shivaprasad Yadav",
-      date: "12 june 2023",
-    },
-    {
-      product: "SWAD3456",
-      name: "Shivaprasad Yadav",
-      date: "12 june 2023",
-    },
-  ];
   console.log(modalDetails, "modalDetails");
   const handleDrawModal = (item) => {
     // setOpenDesignPool(true);
@@ -171,10 +154,9 @@ const AssignmentPanel = ({sidebarExpanded}) => {
     setAdminBasicModalOpen(false);
   };
 
-    const handleCreatedFolder = () => {
-    setcreateFolderModal(true)
+  const handleCreatedFolder = () => {
+    setcreateFolderModal(true);
   };
-
 
   const handleForlderDetailsVeiw = () => {};
 
@@ -188,15 +170,37 @@ const AssignmentPanel = ({sidebarExpanded}) => {
     return `${day}-${month}-${year}`;
   };
 
-  const handleFolderClick = (item) => {
+const handleFolderNaviate = (item) => {
     navigate(`/assignmentpaneldetailsview/${item.id}`, {
-      state: {
-        folderName: item.name,
-      },
+      state: { assignmentFolderName: item.name },
     });
   };
+  const moveToDesignPool = (item) => {
+    moveSingleItemToDesignPool(
+      setIsLoading,
+      item,
+      setData,
+      setSuccessModalOpen,
+      setSuccessMessage,
+      setActiveCardId
+    );
+    console.log(item, "itemmmmm");
+  };
+  const handleDeleteSingle = (item) => {
+    deleteItemFromAssignmentPanel(
+      setIsLoading,
+      item,
+      setData,
+      setSuccessModalOpen,
+      setSuccessMessage,
+      setActiveCardId
+    );
+  };
   return (
-    <div className="Parent_AssignmentView" style={{paddingLeft:sidebarExpanded? "225px":"130px"}}>
+    <div
+      className="Parent_AssignmentView"
+      style={{ paddingLeft: sidebarExpanded ? "225px" : "130px" }}
+    >
       <div className="AssignmentPanel_FileUpload" style={{ padding: "10px" }}>
         {uploadInstructionsVisible && !uploadedImage && (
           <>
@@ -241,15 +245,17 @@ const AssignmentPanel = ({sidebarExpanded}) => {
           <h3 className="HeadNewdesign">Folders</h3>
           <div className="folderCard_parent">
             {assignmentFolder.map((item) => (
-              <div className="folder__card" key={item.id}
-              onClick={() => handleFolderClick(item)}
+<div
+                className="folder__card"
+                key={item.id}
+                onClick={() => handleFolderNaviate(item)}
               >
                 {/* <Link
                   to={`/assignmentpaneldetailsview/${
                     item.id
                   }?name=${encodeURIComponent(item.name)}`}
                 > */}
-                  <img src={folderimg} alt="" />
+<img src={folderimg} alt="" />
                 {/* </Link> */}
                 <p>{item.name}</p>
               </div>
@@ -260,7 +266,7 @@ const AssignmentPanel = ({sidebarExpanded}) => {
         <div className="Assignment_panel_section">
           <h3 className="HeadNewdesign">Selected</h3>
           <div className="Card_Design_Parent">
-            {Data.map((item) => {
+            {Data.map((item,index) => {
               const paperDesign = item?.items?.[0]?.paper_design;
               const itemId = item?.items?.[0]?.id;
               const createdAt = item?.created_at;
@@ -268,9 +274,12 @@ const AssignmentPanel = ({sidebarExpanded}) => {
               const designCode = paperDesign?.designcode;
               const image = paperDesign?.image;
               const likesCount = paperDesign?.likes_count;
+              if (!image) {
+                return null;
+              }
 
               return (
-                <div className="New_Design_card" key={itemId}>
+                <div className="New_Design_card" key={index}>
                   <div
                     className="Card_img"
                     onClick={() => handleForlderDetailsVeiw(item.id)}
@@ -322,8 +331,10 @@ const AssignmentPanel = ({sidebarExpanded}) => {
                     )}
                   {activeCardId === itemId && (
                     <div className="Dots_Delete_DesignPool_btns">
-                      <p>Delete</p>
-                      <p>Move to Design pool</p>
+                      <p onClick={() => handleDeleteSingle(itemId)}>Delete</p>
+                      <p onClick={() => moveToDesignPool(itemId)}>
+                        Move to Design pool
+                      </p>
                     </div>
                   )}
                 </div>
@@ -346,27 +357,26 @@ const AssignmentPanel = ({sidebarExpanded}) => {
       />
 
 <AssignmentModal
-      open={createFolderModal}
-      // AdminUploadedIds={AdminUploadedIds}
-      onClose={() => setcreateFolderModal(false)}
-      // AdminBasicItemId={AdminBasicItemId}
-      // setAssignDesignerModalOpen={ setAssignDesignerModalOpen}
-      // setAdminBasicDetailsOpen={setAdminBasicDetailsOpen}
-      // setUploadedImage={setUploadedImage}
-      // setAssignedDesignerId={ setAssignedDesignerId}
-      setAssignmentFolder={setAssignmentFolder}
-      setcreateFolderModal={setcreateFolderModal}
-      selectedAssignment={selectedAssignment}
-      setSelectedAssignment={setSelectedAssignment}
-    setData={setData}
-    ToCloseCreatefolder={setcreateFolderModal}
-
+        open={createFolderModal}
+        // AdminUploadedIds={AdminUploadedIds}
+        onClose={() => setcreateFolderModal(false)}
+        // AdminBasicItemId={AdminBasicItemId}
+        // setAssignDesignerModalOpen={ setAssignDesignerModalOpen}
+        // setAdminBasicDetailsOpen={setAdminBasicDetailsOpen}
+        // setUploadedImage={setUploadedImage}
+        // setAssignedDesignerId={ setAssignedDesignerId}
+        setcreateFolderModal={setcreateFolderModal}
+        selectedAssignment={selectedAssignment}
+        setData={setData}
+        ToCloseCreatefolder={setcreateFolderModal}
       />
 
-
+      <SuccessModal
+        successModalOpen={successModalOpen}
+        successMessage={successMessage}
+      />
     </div>
   );
 };
 
 export default AssignmentPanel;
-

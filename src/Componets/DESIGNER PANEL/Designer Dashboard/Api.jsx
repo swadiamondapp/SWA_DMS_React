@@ -18,6 +18,7 @@ export const list_uploaded_designs = async (setIsLoading, setData) => {
 
 export const upload_designs_items = async (setIsLoading, uploadImage,setData) => {
   try {
+    setIsLoading(true)
     const formData = new FormData();
     formData.append('image', uploadImage);
     const body = formData
@@ -30,6 +31,8 @@ export const upload_designs_items = async (setIsLoading, uploadImage,setData) =>
     return res
   } catch (error) {
     console.error("Error moving designs:", error);
+  }finally {
+    setIsLoading(false)
   }
 };
 

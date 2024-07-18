@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import DesignBtn from "../ADMIN PANEL/Design Pool/DesignBtn";
 // import ring from "../../../assets/ring.png";
 import { useParams, useLocation, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { list_designer_folderDetails } from "../DESIGNER PANEL/Designer Detail View/Api";
 
@@ -15,6 +16,7 @@ const AssignmentPanelFolderCards = (props) => {
   const location = useLocation();
   const query = new URLSearchParams(location.search);
   const folderName = query.get("name");
+  const navigate = useNavigate();
 
   console.log(folderName, "folderName====>");
 
@@ -51,7 +53,15 @@ const AssignmentPanelFolderCards = (props) => {
   const toggleMoveOptions = () => {
     setShowMoveOptions(!showMoveOptions);
   };
-  const handleFolderDetailsView = (designId) => {};
+  const handleFolderDetailsView = (item) => {
+    navigate(`/assignmentview/${props.id}?design_id=${item.item_id}`, {
+      state: {
+        folderNameAssignmentView: item.paper_design.designcode,
+        assignmentId: props.id,
+        designId:item.paper_design.design_id
+      },
+    });
+  };
 
   const handleCheckboxChange = (designcode) => {
     if (selectedAssignment.includes(designcode)) {
@@ -73,7 +83,10 @@ const AssignmentPanelFolderCards = (props) => {
   };
 
   return (
-    <div className="DesignerAssignmentPanel"  style={{paddingLeft:props.sidebarExpanded? "225px":"130px"}} >
+    <div
+      className="DesignerAssignmentPanel"
+      style={{ paddingLeft: props.sidebarExpanded ? "225px" : "130px" }}
+    >
       {/* <DesignBtn
         toggleDownloadOptions={toggleDownloadOptions}
         selectButtonLabel={selectButtonLabel}
@@ -92,15 +105,13 @@ const AssignmentPanelFolderCards = (props) => {
                   {console.log("folderDetails?", item.paper_design.image)}
                   <div
                     className="Card_img"
-                    onClick={() =>
-                      handleFolderDetailsView(item.paper_design.design_id)
-                    }
+                    onClick={() => handleFolderDetailsView(item)}
                   >
-                    <Link
+                    {/* <Link
                       to={`/assignmentview/${props.id}?design_id=${item.item_id}`}
-                    >
-                      <img src={item.paper_design.image} alt="" />
-                    </Link>
+                    > */}
+                    <img src={item.paper_design.image} alt="" />
+                    {/* </Link> */}
                   </div>
                   <div className="Card_Details">
                     <h3>ID : {item.paper_design.designcode}</h3>
