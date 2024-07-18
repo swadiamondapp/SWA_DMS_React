@@ -59,7 +59,7 @@ export const listFolderDetailVeiwAssignmentPanel = async (
 ) => {
   try {
     const response = await apiService.get(
-      `${ASSIGNMENT_PANEL_DETAILS_PAGE}${id}/item/${ designIdA}/`
+      `${ASSIGNMENT_PANEL_DETAILS_PAGE}${id}/item/${designIdA}/`
     );
     if (checkApiStatus(response)) {
       setFolderDetailsView(response.data.results.data);
@@ -176,11 +176,12 @@ export const move_to_assignment = async (
   setSelectButtonLabel,
   setShowAssignmentModal,
   setMovedItemsId,
-  setFormData
+  setFormData,
+  getSelectedDesign
 ) => {
   try {
     const body = {
-      design_codes: formData.SKU,
+      design_codes: formData.SKU ? formData.SKU : getSelectedDesign,
       assignment_data: {
         length: formData.length,
         width: formData.width,
@@ -197,7 +198,9 @@ export const move_to_assignment = async (
       },
     };
     console.log(body, "move_TO_ASSINGG");
-    const response = await apiService.post(ASSIGNMENT_MOVE, body);
+    const response =
+      (formData.SKU || getSelectedDesign) &&
+      (await apiService.post(ASSIGNMENT_MOVE, body));
     if (response.data.results.status_code === 200) {
       all_Designs(setIsLoading, setData);
       onClose();
@@ -525,9 +528,9 @@ export const assign_to_designers = async (
         setSuccessModalOpen(false);
         onClose();
       }, 1600);
-        setAssignDesignerModalOpen(false);
-        setAdminBasicDetailsOpen(false);
-        setUploadedImage(null);
+      setAssignDesignerModalOpen(false);
+      setAdminBasicDetailsOpen(false);
+      setUploadedImage(null);
       setAssignedDesignerId(null);
     }
   } catch (error) {
@@ -596,7 +599,7 @@ export const moveSingleItemToDesignPool = async (
       setTimeout(() => {
         setSuccessModalOpen(false);
       }, 1600);
-      setActiveCardId([])
+      setActiveCardId([]);
     }
   } catch (error) {
     console.error("Error moving designs:", error);
@@ -621,7 +624,7 @@ export const deleteItemFromAssignmentPanel = async (
       setTimeout(() => {
         setSuccessModalOpen(false);
       }, 1600);
-      setActiveCardId([])
+      setActiveCardId([]);
     }
   } catch (error) {
     console.error("Error moving designs:", error);
