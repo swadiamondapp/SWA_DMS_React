@@ -480,7 +480,8 @@ export const scan_list_search = async (
   setIsLoading,
   searchListId,
   setScanTableData,
-  setsearchListId
+  setsearchListId,
+  setError
 ) => {
   try {
     const body = {
@@ -492,10 +493,12 @@ export const scan_list_search = async (
       scan_list_datas(setIsLoading, setScanTableData);
       setsearchListId("");
       alert("Item Added");
+      setError("")
     }
   } catch (error) {
     console.log(error);
     alert("Already exists");
+    setError("")
     setsearchListId("");
   }
 };

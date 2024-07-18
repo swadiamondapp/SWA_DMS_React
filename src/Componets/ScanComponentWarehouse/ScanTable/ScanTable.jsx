@@ -24,6 +24,7 @@ const ScanTable = ({ sidebarExpanded}) => {
   const [statusId, setstatusId] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
 
   const [clickedProductId, setclickedProductId] = useState("");
 
@@ -45,18 +46,23 @@ const ScanTable = ({ sidebarExpanded}) => {
 
   const handleSearch = async () => {
     setIsLoading(true);
+    if(searchListId === ""){
+      setError("Enter slot ID")
+    }else{
     try {
       await scan_list_search(
         setIsLoading,
         searchListId,
         setScanTableData,
-        setsearchListId
+        setsearchListId,
+        setError
       );
     } catch (error) {
       console.error("Error searching scan list:", error);
     } finally {
       setIsLoading(false);
     }
+  }
   };
 
   const handleStatusChange = async (slotId, selectedStatusId) => {
@@ -70,6 +76,11 @@ const ScanTable = ({ sidebarExpanded}) => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const formatDate = (dateString) => {
+    const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+    return new Date(dateString).toLocaleDateString('en-GB', options);
   };
 
   console.log("search id", searchListId);
@@ -88,6 +99,7 @@ const ScanTable = ({ sidebarExpanded}) => {
           />
           <img onClick={handleSearch} src={searchimg} alt="" />
         </div>
+        {error && <span style={{color:"red",fontSize:"10px"}}>{error}</span>}
       </div>
       <div className="ScanTable">
         <div className="table-container">
@@ -105,7 +117,7 @@ const ScanTable = ({ sidebarExpanded}) => {
               {scanTableData.map((item, index) => (
                 <tr className="table_row">
                   <td style={{ borderLeft: "none" }}>{index + 1}</td>
-                  <td style={{ borderLeft: "none" }}>{item.created_at}</td>
+                  <td style={{ borderLeft: "none" }}>{formatDate(item.created_at)}</td>
                   <td style={{ borderLeft: "none" }}>{item.slot.slotnumber}</td>
 
                   <td style={{ borderLeft: "none" }}>
