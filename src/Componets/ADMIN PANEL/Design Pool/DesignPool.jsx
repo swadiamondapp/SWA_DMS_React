@@ -135,15 +135,21 @@ const DesignPool = ({ sidebarExpanded }) => {
         <div className="Parent_NewDesign">
           <h3 className="HeadNewdesign">New design</h3>
           {Data.length === 0 && (
-            <div style={{display:'flex',justifyContent:'center',alignItems:'center'}}>
-            <CircularProgress
-              size={65} // Set the desired size
-              sx={{
-                color: "#000000",
-                padding: "8px 10px",
-                width: "35px",
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
               }}
-            />
+            >
+              <CircularProgress
+                size={50} // Set the desired size
+                sx={{
+                  color: "#126e72",
+                  padding: "8px 10px",
+                  width: "35px",
+                }}
+              />
             </div>
           )}
 

@@ -82,17 +82,13 @@ export const user_delete = async (
 ) => {
   try {
     const response = await apiService.delete(`${USER_DELETE}${userId}/`);
-    if (response?.data?.status_code === 200) {
+    if (checkApiStatus(response)) {
       list_all_users(setIsLoading, setUserList);
       setDeleteConfirmationOpen(false);
-      setSuccessMessage("Deleted Successfully"),
-      setSuccessModalOpen(true)
+      setSuccessMessage("Deleted Successfully"), setSuccessModalOpen(true);
       setTimeout(() => {
         setSuccessModalOpen(false);
       }, 1600);
-
-    }
-    if (checkApiStatus(response)) {
       setData(response.data.results.data);
     }
   } catch (error) {
