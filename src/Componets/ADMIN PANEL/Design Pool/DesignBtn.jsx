@@ -38,7 +38,6 @@ const DesignBtn = ({
   setSelectedDesigns,
   setShowRadioButtons,
   setSelectButtonLabel,
-
   setcreateFolderModal,
   handleCreatedFolder,
 }) => {
@@ -58,6 +57,8 @@ const DesignBtn = ({
     setIsModalOpenAssign(false);
   };
   const { id } = useParams();
+
+  console.log("selectedAssignmentbtnnnnnn", selectedAssignment);
 
   return (
     <div>
@@ -129,6 +130,7 @@ const DesignBtn = ({
           )}
 
         {location.pathname === "/assignmentpanel" &&
+          selectedAssignment.length > 0 &&
           selectButtonLabel === "Unselect" && (
             <div className="Parent_MoveTo">
               <button className="D_moveBtn" onClick={handleCreatedFolder}>

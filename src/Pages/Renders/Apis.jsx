@@ -6,23 +6,19 @@ import {
 } from "../Services/EndPoints";
 import { apiService, checkApiStatus } from "../Services/ApiInstants";
 
-export const cadDesignList = async (setIsLoading, setData) => {
+export const cadDesignList = async (setData) => {
   try {
-    setIsLoading(true);
     const response = await apiService.get(DESIGN_LIST_CAD);
     if (checkApiStatus(response)) {
       setData(response?.data?.results?.data);
     }
   } catch (error) {
     console.log(error);
-  } finally {
-    setIsLoading(false);
   }
 };
 
-export const finishedProjectList = async (setIsLoading, setData) => {
+export const finishedProjectList = async (setData) => {
   try {
-    setIsLoading(true);
     const response = await apiService.get(FINISHED_PROJECTS);
     if (checkApiStatus(response)) {
       setData(response?.data?.results?.data);
@@ -59,9 +55,9 @@ export const createFinsishedProjects = async (
     setIsLoading(true);
     const response = await apiService.post(CREATE_FINISHED_PROJECTS, data);
     if (checkApiStatus(response)) {
-      finishedProjectList(setIsLoading,setFinishedProjectData)
+      finishedProjectList(setFinishedProjectData);
       setSuccess(true);
-      onClose()
+      onClose();
       setTimeout(() => {
         setSuccess(false);
       }, 1600);

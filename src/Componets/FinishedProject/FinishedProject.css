@@ -5,17 +5,22 @@
   padding: 10px 0px 30px 10px;
 }
 .Parant_FinishedProject {
-  margin-left: 225px;
+  /* margin-left: 225px; */
   padding-top: 20px;
-  width: 100%;
+  /* width: 100%; */
+  
   /* background-color: red !important; */
   }
   .folderCard_parent {
     display: flex;
     align-items: center;
-    gap: 20px;
+    /* justify-content: space-evenly; */
+    /* justify-content: center; */
+    gap: 10px;
     font-family: "Gilroy medium";
     flex-wrap: wrap;
+    /* overflow-x: hidden !important; */
+    /* background-color: tan; */
   }
   .folder__card p {
     font-size: 14px;
@@ -30,3 +35,22 @@
   .RendersHome_folders_top{
   margin-top: 40px;
   }
+
+
+  @media (min-width: 1300px) {
+    /* .Parant_FinishedProject {
+      padding-top: 20px;
+      width: 85% !important;
+    }
+   */
+    .sidebarExpanded .Parant_FinishedProject {
+      width: 82% !important; 
+      background-color: yellow !important ;
+    }
+  
+    .sidebarCollapsed .Parant_FinishedProject {
+      width: 92% !important; 
+      background-color: red !important;
+    }
+  }
+  

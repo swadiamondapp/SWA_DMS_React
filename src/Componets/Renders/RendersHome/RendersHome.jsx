@@ -7,7 +7,7 @@ import folderimg from "../../../assets/folder.png";
 import { Link, useNavigate } from "react-router-dom";
 import DesignBtn from "../../ADMIN PANEL/Design Pool/DesignBtn";
 
-const RendersHome = ({ designListData,sidebarExpanded }) => {
+const RendersHome = ({ designListData, sidebarExpanded }) => {
   const navigate = useNavigate();
 
   const handleFolderClick = (item) => {
@@ -19,7 +19,10 @@ const RendersHome = ({ designListData,sidebarExpanded }) => {
   };
 
   return (
-<div className="RendersHome" style={{ marginLeft:sidebarExpanded ? "218px" : "120px", width:sidebarExpanded ? "82%" : "90%"}}>
+    <div
+      className="RendersHome"
+      style={{ marginLeft: sidebarExpanded ? "218px" : "120px" }}
+    >
       <div className="RendersHome_butns">
         <button>
           <img className="RendersHome_img" src={view} alt="" srcset="" />
@@ -35,7 +38,10 @@ const RendersHome = ({ designListData,sidebarExpanded }) => {
           Filter
         </button>
       </div>
-      <div className="RendersHome_folders"  style={{ width: sidebarExpanded ? "100%" : "110%" }} >
+      <div
+        className="RendersHome_folders"
+        style={{ width: sidebarExpanded ? "100%" : "110%" }}
+      >
         {designListData.map((item) => (
           <div className="folderCard_parent">
             <div
