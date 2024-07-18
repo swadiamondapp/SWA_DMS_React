@@ -29,7 +29,7 @@ const UploadFile = ({
   setSuccess,
   setFinishedProjectData,
 }) => {
-  const initialImageSlots = 6; 
+  const initialImageSlots = 6;
   const [isLoading, setIsLoading] = useState(false);
   const [images, setImages] = useState(Array(initialImageSlots).fill(null));
   const [file, setFile] = useState(null);
@@ -41,13 +41,22 @@ const UploadFile = ({
     newImages[index] = event.target.files[0];
     setImages(newImages);
 
-    if (index === newImages.length - 1 && newImages.every(image => image !== null)) {
+    if (
+      index === newImages.length - 1 &&
+      newImages.every((image) => image !== null)
+    ) {
       setImages([...newImages, null]);
     }
   };
 
   const handleFileUpload = (event) => {
     setFile(event.target.files[0]);
+  };
+
+  const handleclose = () => {
+    onClose();
+    setImages(Array(initialImageSlots).fill(null));
+    setId("");
   };
 
   const handleUpload = () => {
@@ -69,13 +78,13 @@ const UploadFile = ({
         setIsLoading,
         formData,
         setSuccess,
-        onClose,
+        handleclose,
         setFinishedProjectData
       );
     }
   };
 
-  console.log("upload images",images)
+  console.log("upload images", images);
 
   return (
     <div>
@@ -102,7 +111,7 @@ const UploadFile = ({
                     Upload file
                   </span>
                   <button
-                    onClick={() => onClose()}
+                    onClick={handleclose}
                     style={{ background: "#FAFAFA", border: "none" }}
                   >
                     <img src={closeButton} alt="close" />
@@ -179,7 +188,7 @@ const UploadFile = ({
                     <p style={{ color: "red", fontSize: "11px" }}>{errors}</p>
                   )}
                   <div className="buttons">
-                    <button className="cancelButton" onClick={() => onClose()}>
+                    <button className="cancelButton" onClick={handleclose}>
                       Cancel
                     </button>
                     <button className="upButton" onClick={handleUpload}>

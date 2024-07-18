@@ -3,7 +3,11 @@ import dlticon from "../../../assets/Vector.png";
 import editicon from "../../../assets/Edit.png";
 import searchimg from "../../../assets/search.png";
 import MastersModal from "../MastersModal/MastersModal";
-import { centralStatusTableData, deleteCentralData, searchCentralItems } from "../ApiMasters/ApiMasters";
+import {
+  centralStatusTableData,
+  deleteCentralData,
+  searchCentralItems,
+} from "../ApiMasters/ApiMasters";
 import DeleteConfirmationModal from "../../ConfirmationModal/DeleteConfirmationModal";
 import SuccessModal from "../../SuccessModal/SuccessModal";
 
@@ -18,7 +22,9 @@ const CHstatus = () => {
   const [filteredData, setfilteredData] = useState([]);
   const [errors, setErrors] = useState("");
   const [inputData, setInputData] = useState({
-    name: ""
+    name: "",
+    order: "",
+    status: "active",
   });
 
   const openModal = () => {
@@ -56,7 +62,9 @@ const CHstatus = () => {
     setOpen(true);
     setInputData(
       selectedItem || {
-        name: ""
+        name: "",
+        order: "",
+        status: "active",
       }
     );
   };
@@ -72,9 +80,11 @@ const CHstatus = () => {
           <div className="secton_search">
             <div className="Search_Admin">
               <div className="Search_User">
-                <input type="text" placeholder="Search"
-                value={searchListId}
-                onChange={handleInputChange}
+                <input
+                  type="text"
+                  placeholder="Search"
+                  value={searchListId}
+                  onChange={handleInputChange}
                 />
                 <img src={searchimg} alt="" />
               </div>
@@ -96,40 +106,42 @@ const CHstatus = () => {
               </tr>
             </thead>
             <tbody>
-            {(filteredData.length > 0 && searchListId !== ""
+              {(filteredData.length > 0 && searchListId !== ""
                 ? filteredData
                 : tableData
               ).map((item, index) => (
-              <tr className="table_row">
-                <td>{index + 1}</td>
-                <td>{item.name}</td>
-                <td>{item.order}</td>
-                <td>
-                  <div className="btn_td">
-                    <button className="btn_section"
-                      onClick={() => handleEdit(item.id)}
-                    >
-                      <img
-                        className="btn_section_img"
-                        src={editicon}
-                        alt=""
-                        srcset=""
-                      />
-                    </button>
-                    <button className="btn_section2"
-                    onClick={() => handleDeleteOpen(item.id)}
-                    >
-                      <img
-                        className="btn_section_img"
-                        src={dlticon}
-                        alt=""
-                        srcset=""
-                      />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-               ))}
+                <tr className="table_row">
+                  <td>{index + 1}</td>
+                  <td>{item.name}</td>
+                  <td>{item.order}</td>
+                  <td>
+                    <div className="btn_td">
+                      <button
+                        className="btn_section"
+                        onClick={() => handleEdit(item.id)}
+                      >
+                        <img
+                          className="btn_section_img"
+                          src={editicon}
+                          alt=""
+                          srcset=""
+                        />
+                      </button>
+                      <button
+                        className="btn_section2"
+                        onClick={() => handleDeleteOpen(item.id)}
+                      >
+                        <img
+                          className="btn_section_img"
+                          src={dlticon}
+                          alt=""
+                          srcset=""
+                        />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>

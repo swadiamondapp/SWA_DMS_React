@@ -75,19 +75,16 @@ export const finding_table_data_create = async (
       handleClose();
       setInputData({});
       alert("Item added successfully");
-    } else {
-      if (response.data.results && response.data.results.status_code === 206) {
-        setErrors(response.data.results.message);
-      } else {
-        setErrors("Failed to add item. Please try again."); 
-      }
+    } else if (
+      response.data.results &&
+      response.data.results.status_code === 206
+    ) {
+      setErrors(response.data.results.message);
     }
   } catch (error) {
     console.error("Error adding item:", error);
-    setErrors("Failed to add item. Please try again."); 
   }
 };
-
 
 export const delete_finding_data = async (
   // setIsLoading,
@@ -169,6 +166,11 @@ export const finding_data_upadate = async (
       handleClose();
       setInputData({});
       alert("Item Updated Successfully");
+    } else if (
+      response.data.results &&
+      response.data.results.status_code === 206
+    ) {
+      setErrors(response.data.results.message);
     }
   } catch (error) {
     console.error("Error moving designs:", error);
@@ -256,10 +258,12 @@ export const tag_table_data_create = async (
       setInputData({});
       setSelectedImage(null);
       alert("Item added successfully");
+    } else if (
+      response.data.results &&
+      response.data.results.status_code === 206
+    ) {
+      setErrors(response.data.results.message);
     }
-    // else if (response.data.results.message == "Priority already exists.") {
-    //   setErrors("Priority already exists.");
-    // }
   } catch (error) {
     console.error("Error adding item:", error);
     setErrors("If any of the field alredy exist");
@@ -298,6 +302,11 @@ export const tag_data_upadate = async (
       handleClose();
       setInputData({});
       alert("Item Updated Successfully");
+    } else if (
+      response.data.results &&
+      response.data.results.status_code === 206
+    ) {
+      setErrors(response.data.results.message);
     }
   } catch (error) {
     console.error("Error moving designs:", error);
@@ -543,7 +552,6 @@ export const diamondDataUpadate = async (
   }
 };
 
-
 // ../Valueaddition..
 
 export const valueaddTableData = async (setTableData) => {
@@ -641,7 +649,7 @@ export const valueaddDataUpadate = async (
       slab_number: inputData.slab_number,
       min_value: inputData.min_value,
       max_value: inputData.max_value,
-      value: inputData.value
+      value: inputData.value,
     };
     console.log(body, "finding update");
     const response = await apiService.patch(
@@ -686,16 +694,21 @@ export const whstatusDataCreate = async (
   setInputData
 ) => {
   try {
+    debugger;
     const response = await apiService.post(WHSTATUS_ITEM_CREATE, inputData);
     if (checkApiStatus(response)) {
       whstatusTableData(setTableData);
       handleClose();
       setInputData({});
       alert("item added Successfully");
+    } else if (
+      response.data.results &&
+      response.data.results.status_code === 206
+    ) {
+      setErrors(response.data.results.message);
     }
   } catch (error) {
     console.log(error);
-    setErrors(error);
   }
 };
 
@@ -760,9 +773,8 @@ export const whstatusDataUpadate = async (
   try {
     const body = {
       name: inputData.name,
-      order: inputData.order
+      order: inputData.order,
     };
-    console.log(body, "finding update");
     const response = await apiService.patch(
       `${WHSTATUS_ITEM_UPDATE}${itemId}/edit/`,
       body
@@ -778,6 +790,11 @@ export const whstatusDataUpadate = async (
       handleClose();
       setInputData({});
       alert("Item Updated Successfully");
+    } else if (
+      response.data.results &&
+      response.data.results.status_code === 206
+    ) {
+      setErrors(response.data.results.message);
     }
   } catch (error) {
     console.error("Error moving designs:", error);
@@ -811,6 +828,11 @@ export const centralStatusDataCreate = async (
       handleClose();
       setInputData({});
       alert("item added Successfully");
+    } else if (
+      response.data.results &&
+      response.data.results.status_code === 206
+    ) {
+      setErrors(response.data.results.message);
     }
   } catch (error) {
     console.log(error);
@@ -879,7 +901,8 @@ export const centralStatusDataUpadate = async (
   try {
     const body = {
       name: inputData.name,
-      order: inputData.order
+      order: inputData.order,
+      status: inputData.order,
     };
     console.log(body, "finding update");
     const response = await apiService.patch(
@@ -897,6 +920,11 @@ export const centralStatusDataUpadate = async (
       handleClose();
       setInputData({});
       alert("Item Updated Successfully");
+    } else if (
+      response.data.results &&
+      response.data.results.status_code === 206
+    ) {
+      setErrors(response.data.results.message);
     }
   } catch (error) {
     console.error("Error moving designs:", error);
@@ -930,10 +958,14 @@ export const categoryDataCreate = async (
       handleClose();
       setInputData({});
       alert("item added Successfully");
+    } else if (
+      response.data.results &&
+      response.data.results.status_code === 206
+    ) {
+      setErrors(response.data.results.message);
     }
   } catch (error) {
     console.log(error);
-    setErrors(error);
   }
 };
 
@@ -997,7 +1029,7 @@ export const categoryDataUpadate = async (
 ) => {
   try {
     const body = {
-      name: inputData.name
+      name: inputData.name,
     };
     console.log(body, "finding update");
     const response = await apiService.patch(
@@ -1020,7 +1052,6 @@ export const categoryDataUpadate = async (
     console.error("Error moving designs:", error);
   }
 };
-
 
 // ../OUTLET..
 
@@ -1052,7 +1083,6 @@ export const outletDataCreate = async (
     }
   } catch (error) {
     console.log(error);
-    setErrors(error);
   }
 };
 
@@ -1066,7 +1096,7 @@ export const deleteOutletData = async (
 ) => {
   try {
     const response = await apiService.delete(
-      `${ OUTLET_ITEM_DELETE}${tagId}/delete/`
+      `${OUTLET_ITEM_DELETE}${tagId}/delete/`
     );
 
     if (checkApiStatus(response)) {
@@ -1116,7 +1146,8 @@ export const outletDataUpadate = async (
 ) => {
   try {
     const body = {
-      name: inputData.name
+      name: inputData.name,
+      place: inputData.place,
     };
     console.log(body, "finding update");
     const response = await apiService.patch(

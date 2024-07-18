@@ -18,7 +18,8 @@ const Outlets = () => {
   const [filteredData, setfilteredData] = useState([]);
   const [errors, setErrors] = useState("");
   const [inputData, setInputData] = useState({
-    name: ""
+    name: "",
+    place:""
   });
 
   const openModal = () => {
@@ -56,7 +57,8 @@ const Outlets = () => {
     setOpen(true);
     setInputData(
       selectedItem || {
-        name: ""
+        name: "",
+        place:""
       }
     );
   };
@@ -102,7 +104,7 @@ const Outlets = () => {
               <tr className="table_row">
                 <td>{index + 1}</td>
                 <td>{item.name}</td>
-                <td>{item.palce}</td>
+                <td>{item.place}</td>
                 <td>
                   <div className="btn_td">
                     <button className="btn_section"

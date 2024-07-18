@@ -55,7 +55,7 @@ export const createFinsishedProjects = async (
     setIsLoading(true);
     const response = await apiService.post(CREATE_FINISHED_PROJECTS, data);
     if (checkApiStatus(response)) {
-      finishedProjectList(setIsLoading, setFinishedProjectData);
+      finishedProjectList(setFinishedProjectData);
       setSuccess(true);
       onClose();
       setTimeout(() => {

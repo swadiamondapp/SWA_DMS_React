@@ -148,6 +148,7 @@ const FinishedProjects = (props) => {
 
       <UploadFile
         open={uploadModalOpen}
+        setUploadModalOpen
         onClose={() => setUploadModalOpen(false)}
         createFinsishedProjects={createFinsishedProjects}
         setSuccess={setSuccess}

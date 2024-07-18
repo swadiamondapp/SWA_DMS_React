@@ -48,7 +48,7 @@ export const moveSelectedDesign = async (setIsLoading, selectedDesigns) => {
 
 
 
-export const list_assignment_folder = async (setIsLoading,  setAssignmentFolder) => {
+export const list_assignment_folder = async (setIsLoading,setAssignmentFolder) => {
   try {
     const response = await apiService.get(LIST_ASSIGNMENT_FOLDER);
     if (checkApiStatus(response)) {

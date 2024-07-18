@@ -100,12 +100,12 @@ const AssignmentPanel = ({sidebarExpanded}) => {
     list_folderDetails();
   }, []);
 
-  const handleFolderClick = (id) => {
-    console.log("id.....>", id);
-    if (location.pathname === "/assignmentview") {
-      navigate(`assignmentview${id}`);
-    }
-  };
+  // const handleFolderClick = (id) => {
+  //   console.log("id.....>", id);
+  //   if (location.pathname === "/assignmentview") {
+  //     navigate(`assignmentview${id}`);
+  //   }
+  // };
   const [selectedDesignCode, setSelectedDesignCode] = useState([]);
   const handleCheckboxChange = (designcode, tickedDesings) => {
     if (selectedAssignment.includes(designcode)) {
@@ -187,6 +187,14 @@ const AssignmentPanel = ({sidebarExpanded}) => {
     const year = date.getFullYear();
     return `${day}-${month}-${year}`;
   };
+
+  const handleFolderClick = (item) => {
+    navigate(`/assignmentpaneldetailsview/${item.id}`, {
+      state: {
+        folderName: item.name,
+      },
+    });
+  };
   return (
     <div className="Parent_AssignmentView" style={{paddingLeft:sidebarExpanded? "225px":"130px"}}>
       <div className="AssignmentPanel_FileUpload" style={{ padding: "10px" }}>
@@ -233,14 +241,16 @@ const AssignmentPanel = ({sidebarExpanded}) => {
           <h3 className="HeadNewdesign">Folders</h3>
           <div className="folderCard_parent">
             {assignmentFolder.map((item) => (
-              <div className="folder__card" key={item.id}>
-                <Link
+              <div className="folder__card" key={item.id}
+              onClick={() => handleFolderClick(item)}
+              >
+                {/* <Link
                   to={`/assignmentpaneldetailsview/${
                     item.id
                   }?name=${encodeURIComponent(item.name)}`}
-                >
+                > */}
                   <img src={folderimg} alt="" />
-                </Link>
+                {/* </Link> */}
                 <p>{item.name}</p>
               </div>
             ))}
@@ -344,8 +354,10 @@ const AssignmentPanel = ({sidebarExpanded}) => {
       // setAdminBasicDetailsOpen={setAdminBasicDetailsOpen}
       // setUploadedImage={setUploadedImage}
       // setAssignedDesignerId={ setAssignedDesignerId}
+      setAssignmentFolder={setAssignmentFolder}
       setcreateFolderModal={setcreateFolderModal}
       selectedAssignment={selectedAssignment}
+      setSelectedAssignment={setSelectedAssignment}
     setData={setData}
     ToCloseCreatefolder={setcreateFolderModal}
 

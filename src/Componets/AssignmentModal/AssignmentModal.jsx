@@ -24,8 +24,6 @@ const AssignmentModal = ({
   setAssignedDesignerId,
   setData,
   ToCloseCreatefolder
-  // selectedAssignment
-
 }) => {
   // create modal
  
@@ -81,7 +79,7 @@ const AssignmentModal = ({
         setError,
         ToCloseCreatefolder
       );
-      ToCloseCreatefolder(false)
+      // ToCloseCreatefolder(false)
     }
     // }
   };
@@ -89,7 +87,7 @@ const AssignmentModal = ({
     setFolderName(event.target.value);
   };
   console.log(folderName, "folder");
-  console.log(selectedAssignment,"selectedAssignment")
+  console.log(selectedAssignment,"selectedAssignment infolder")
 
   return (
     <div className="create_folder">
