@@ -9,7 +9,7 @@ import {
 import avatar from "../../../assets/avataprofile.png";
 import SuccessModal from "../../SuccessModal/SuccessModal";
 
-const CustomizedOrder = ({sidebarExpanded}) => {
+const CustomizedOrder = ({ sidebarExpanded }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [UnAssignedLists, setUnAssignedLists] = useState([]);
   const [successMessage, setSuccessMessage] = useState("");
@@ -52,20 +52,23 @@ const CustomizedOrder = ({sidebarExpanded}) => {
   ];
   console.log(UnAssignedLists, "customizattion");
   return (
-    <div className="DesignerAssignmentPanel" style={{paddingLeft:sidebarExpanded? "225px":"130px"}}>
+    <div
+      className="DesignerAssignmentPanel"
+      style={{ paddingLeft: sidebarExpanded ? "225px" : "130px" }}
+    >
       <div className="CustomizedOrderParent">
         <div className="Parent_NewDesign">
           <div className="Card_Design_Parent">
             {UnAssignedLists.map((item) => (
               <div className="New_Design_card">
                 <div className="Card_img" style={{ minHeight: "190px" }}>
-                  <img src={item.image} alt="" />
+                  <img src={item.design_image} alt="" />
                 </div>
                 <div className="Card_Details">
                   <div className="parent_UnAssignedD">
                     <div>
                       <h3 style={{ marginBottom: "0px" }}>
-                        ID : {item.designcode}
+                        ID : {item.design_code}
                       </h3>
                     </div>
                     <div className="Card_Details_Inner">

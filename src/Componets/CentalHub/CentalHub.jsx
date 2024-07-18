@@ -228,7 +228,8 @@ const CentalHub = ({
                       <input
                         id="fileInputImage"
                         type="file"
-                        accept="image/*"
+                        // accept="image/*"
+                         accept="image/png, image/jpeg, image/jpg"
                         style={{ display: "none" }}
                         onChange={handleFileUpload}
                       />
@@ -259,8 +260,8 @@ const CentalHub = ({
                       <input
                         id="fileInput3D"
                         type="file"
-                        // accept=".3dm"
-                        accept="image/*"
+                        accept=".3dm"
+                        // accept="image/*"
                         style={{ display: "none" }}
                         onChange={handleFileUploadRender}
                       />

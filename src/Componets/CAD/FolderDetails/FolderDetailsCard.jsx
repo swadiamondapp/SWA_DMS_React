@@ -1,10 +1,18 @@
-import React from "react";
+import React, { useRef } from "react";
 import "./FolderDetails.css";
 import { LiaCloudUploadAltSolid } from "react-icons/lia";
 import { GoDownload } from "react-icons/go";
 import { IoPrintOutline } from "react-icons/io5";
+import CadPrint from "./CadPrint";
+import ReactToPrint, { useReactToPrint } from "react-to-print";
+import { LuPrinter } from "react-icons/lu";
 
-const FolderDetailsCard = ({ folderDetails, setIsModalOpen }) => {
+const FolderDetailsCard = ({
+  folderDetails,
+  setIsModalOpen,
+  sidebarExpanded,
+}) => {
+  const printRef = useRef();
   function formatDate(timestamp) {
     const dateObj = new Date(timestamp);
     const day = dateObj.getDate();
@@ -13,8 +21,22 @@ const FolderDetailsCard = ({ folderDetails, setIsModalOpen }) => {
 
     return `${day} ${month} ${year}`;
   }
+  const handlePrint = useReactToPrint({
+    content: printRef.current,
+  });
+  const handleDownload = () => {
+    if (!folderDetails?.file_2d) return;
+
+    const link = document.createElement('a');
+    link.href = folderDetails.file_2d;
+    link.download = 'image.png'; // You can dynamically set the filename here
+    link.click();
+  };
   return (
-    <div className="ParentCad">
+    <div
+      className="ParentCad"
+      style={{ paddingLeft: sidebarExpanded ? "225px" : "130px" }}
+    >
       <div className="Design_FileUpload" onClick={() => setIsModalOpen(true)}>
         <div>
           <p className="D__fileUpload">Reupload</p>
@@ -54,7 +76,7 @@ const FolderDetailsCard = ({ folderDetails, setIsModalOpen }) => {
                   >
                     Posted on : {formatDate(folderDetails?.created_at)}
                   </p>
-                  <button className="Download_btn_hub">
+                  <button className="Download_btn_hub"  onClick={handleDownload}>
                     DOWNLOAD
                     <GoDownload />
                   </button>
@@ -76,10 +98,22 @@ const FolderDetailsCard = ({ folderDetails, setIsModalOpen }) => {
                   >
                     Posted on : {formatDate(folderDetails?.created_at)}
                   </p>
-                  <button className="Prinit_btn_hub">
+                  {/* <button className="Prinit_btn_hub">
                     Print
                     <IoPrintOutline />
-                  </button>
+                  </button> */}
+
+                  <ReactToPrint
+                    trigger={() => (
+                      <div className="Prinit_btn_hub" onClick={handlePrint}>
+                        <LuPrinter /> Print
+                      </div>
+                    )}
+                    content={() => printRef.current}
+                  />
+                  <div style={{ display: "none" }}>
+                    <CadPrint ref={printRef} folderDetails={folderDetails} />
+                  </div>
                 </div>
               </div>
             </div>

@@ -170,7 +170,7 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
     return `${day}-${month}-${year}`;
   };
 
-const handleFolderNaviate = (item) => {
+  const handleFolderNaviate = (item) => {
     navigate(`/assignmentpaneldetailsview/${item.id}`, {
       state: { assignmentFolderName: item.name },
     });
@@ -245,7 +245,7 @@ const handleFolderNaviate = (item) => {
           <h3 className="HeadNewdesign">Folders</h3>
           <div className="folderCard_parent">
             {assignmentFolder.map((item) => (
-<div
+              <div
                 className="folder__card"
                 key={item.id}
                 onClick={() => handleFolderNaviate(item)}
@@ -255,9 +255,9 @@ const handleFolderNaviate = (item) => {
                     item.id
                   }?name=${encodeURIComponent(item.name)}`}
                 > */}
-<img src={folderimg} alt="" />
+                <img src={folderimg} alt="" />
                 {/* </Link> */}
-                <p>{item.name}</p>
+                <p style={{ wordWrap: 'break-word', maxWidth: '100px' }}>{item.name}</p>
               </div>
             ))}
           </div>
@@ -266,7 +266,7 @@ const handleFolderNaviate = (item) => {
         <div className="Assignment_panel_section">
           <h3 className="HeadNewdesign">Selected</h3>
           <div className="Card_Design_Parent">
-            {Data.map((item,index) => {
+            {Data.map((item, index) => {
               const paperDesign = item?.items?.[0]?.paper_design;
               const itemId = item?.items?.[0]?.id;
               const createdAt = item?.created_at;
@@ -356,7 +356,7 @@ const handleFolderNaviate = (item) => {
         selectedDesignCode={selectedDesignCode}
       />
 
-<AssignmentModal
+      <AssignmentModal
         open={createFolderModal}
         // AdminUploadedIds={AdminUploadedIds}
         onClose={() => setcreateFolderModal(false)}

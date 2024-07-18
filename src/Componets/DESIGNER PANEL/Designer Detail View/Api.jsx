@@ -10,6 +10,7 @@ import {
   LIST_UNASSIGNED_DESIGNER,
   ASSIGN_UNASSIGN_DESIGNERS,
   ASSIGNMENT_PANEL_DETAILS_PAGE,
+  LIST_ASSIGN_TO_LIST_ITEMS,
 } from "../../../Pages/Services/EndPoints";
 
 export const list_designer_folderDetails = async (
@@ -102,7 +103,7 @@ export const list_all_cutomization_paper_design = async (
 };
 export const listUnAssignedLists = async (setIsLoading, setUnAssignedLists) => {
   try {
-    const response = await apiService.get(LIST_UNASSIGNED_DESIGNER);
+    const response = await apiService.get(LIST_ASSIGN_TO_LIST_ITEMS);
     if (response.data.results.status_code === 200) {
       setUnAssignedLists(response.data.results.data);
     }

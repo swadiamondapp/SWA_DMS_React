@@ -96,7 +96,7 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
           <div className="DesignerDashboardcard">
             <h3 className="HeadNewdesign">Uploaded</h3>
             <div className="Card_Design_Parent">
-              {isLoading && (
+              {isLoading ? (
                 <div
                   style={{
                     position: "fixed",
@@ -107,8 +107,8 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
-                    backgroundColor: "rgba(255, 255, 255, 0.8)",
-                    zIndex: 9999,
+                    // backgroundColor: "rgba(255, 255, 255, 0.8)",
+                    // zIndex: 9999,
                   }}
                 >
                   <CircularProgress
@@ -119,8 +119,8 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
                     }}
                   />
                 </div>
-              )}
-              {uploadedDesigns.map((item, index) => (
+              ):(<>
+                {uploadedDesigns.map((item, index) => (
                 <div className="New_Design_card" key={index}>
                   <div className="Card_img">
                     <img src={item.image} alt="" />
@@ -135,7 +135,8 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
                     </div>
                   </div>
                 </div>
-              ))}
+              ))}</>)}
+            
             </div>
           </div>
         </div>

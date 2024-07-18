@@ -17,6 +17,7 @@ const Header = ({
   folderDetails,
   designListData,
   sidebarExpanded,
+  setSearchWithName,
 }) => {
   const location = useLocation();
   const { nameCentral } = useParams();
@@ -43,7 +44,7 @@ const Header = ({
   const userImage = localStorage.getItem("Loginimage");
   const dropdownRef = useRef(null);
 
-  const { assignmentId,folderNameAssignmentView} = location.state || {}
+  const { assignmentId, folderNameAssignmentView } = location.state || {};
   const { assignmentFolderName } = location.state || {};
   const { folderName } = location.state || {};
   console.log("header===>FolderName", folderName);
@@ -62,6 +63,10 @@ const Header = ({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  const handleSearchWithName = (event) => {
+    setSearchWithName(event.target.value, "nameSarch");
+  };
 
   return (
     <div>
@@ -163,7 +168,7 @@ const Header = ({
                 {location.pathname === `/assignmentpaneldetailsview/${id}` && (
                   <h3>{assignmentFolderName}</h3>
                 )}
-                  {location.pathname === `/assignmentview/${assignmentId}` && (
+                {location.pathname === `/assignmentview/${assignmentId}` && (
                   <h3>{folderNameAssignmentView}</h3>
                 )}
                 {location.pathname === `/rendersdetailing/${id}` && (
@@ -187,7 +192,7 @@ const Header = ({
                 {location.pathname === "/centralhubtransfer" && (
                   <h3>Transfer</h3>
                 )}
-                 {location.pathname === "/unassigneddesigner" && (
+                {location.pathname === "/unassigneddesigner" && (
                   <h3>Assigned to</h3>
                 )}
 
@@ -243,11 +248,16 @@ const Header = ({
                   location.pathname !== `/finished/${id}` &&
                   location.pathname !== `/Customizedorder` &&
                   location.pathname !== `/unassigneddesigner` &&
-
+                  location.pathname !== `/FinishedProduct` &&
+                  location.pathname !== `/folderdetails/${id}` &&
                   location.pathname !== "/scan" && (
                     <div className="Search_Admin">
                       <div className="Search_User">
-                        <input type="text" placeholder="Search Users" />
+                        <input
+                          type="text"
+                          placeholder="Search Users"
+                          onChange={handleSearchWithName}
+                        />
                         <img src={searchimg} alt="" />
                       </div>
                     </div>

@@ -152,3 +152,5 @@ export const OUTLET_ITEM_UPDATE = "master/outlet/";
 
 export const MOVE_SINGLE_ITEM_TO_DESIGNPOOL = "move-assignments/"
 export const DELETE_ITEM_FROM_ASSIGNMENT_PANEL = "delete-assignment-item/"
+export const LIST_ASSIGN_TO_LIST_ITEMS = "list/myassigned-data/"
+export const SEARCH_WITH_NAMES = "list/users/?searchname="
