@@ -70,7 +70,7 @@ export const assign_to_cad = async (
       setSelectedAssignment([]);
       onClose();
       list_designer_folderDetails();
-      setSuccessMessage("Item Assigned SuccessFully");
+      setSuccessMessage("Item Assigned Successfully");
       setSuccessModalOpen(true);
       setTimeout(() => {
         setSuccessModalOpen(false);

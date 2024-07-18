@@ -150,7 +150,7 @@ const Header = ({
                 {location.pathname === `/designerassignview/${id}` && (
                   <h3>{folderName}</h3>
                 )}
-                {location.pathname === `/CadAssignment` && <h3>Assigments</h3>}
+                {location.pathname === `/CadAssignment` && <h3>Assignments</h3>}
                 {location.pathname === "/designerassign" && (
                   <h3>Assignment panel</h3>
                 )}
@@ -186,6 +186,9 @@ const Header = ({
                 )}
                 {location.pathname === "/centralhubtransfer" && (
                   <h3>Transfer</h3>
+                )}
+                 {location.pathname === "/unassigneddesigner" && (
+                  <h3>Assigned to</h3>
                 )}
 
                 {location.pathname === "/slot" && <h3>Slot</h3>}
@@ -238,6 +241,9 @@ const Header = ({
                   location.pathname !== `/assignmentpaneldetailsview/${id}` &&
                   location.pathname !== `/rendersdetailing/${id}` &&
                   location.pathname !== `/finished/${id}` &&
+                  location.pathname !== `/Customizedorder` &&
+                  location.pathname !== `/unassigneddesigner` &&
+
                   location.pathname !== "/scan" && (
                     <div className="Search_Admin">
                       <div className="Search_User">
