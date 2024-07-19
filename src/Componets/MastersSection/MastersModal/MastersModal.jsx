@@ -1,4 +1,11 @@
-import { Box, Modal } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Modal,
+  Select,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import "./MastersModal.css";
 import { IoCloseOutline } from "react-icons/io5";
@@ -48,6 +55,7 @@ const MastersModal = ({
   setInputData,
   setSelectedImage,
   selectedImage,
+  status
 }) => {
   const location = useLocation();
   const [errors, setErrors] = useState("");
@@ -306,9 +314,11 @@ const MastersModal = ({
         <Box sx={style} className="MastersModal">
           <div className="master_modal" onclick={handleClose}>
             <h3>{modalHeading}</h3>
+            {location.pathname !== "/newscanmodule" && (
             <button onClick={handleClose}>
               <img className="btn_close" src={close} alt="" srcset="" />
             </button>
+            )}
           </div>
 
           {modalPage === "Findings" && (
@@ -493,26 +503,26 @@ const MastersModal = ({
           )}
 
           {modalPage === "CHstatus" && (
-             <div className="modal_fields">
-             <div className="inp1">
-               <label htmlFor="">Status Name</label>
-               <input
-                 type="text"
-                 name="name"
-                 value={inputData.name || ""}
-                 onChange={handleInputData}
-               />
-             </div>
-             <div className="inp1 inp_2nd">
-               <label htmlFor="">Order</label>
-               <input
-                 type="text"
-                 name="order"
-                 value={inputData.order || ""}
-                 onChange={handleInputData}
-               />
-             </div>
-           </div>
+            <div className="modal_fields">
+              <div className="inp1">
+                <label htmlFor="">Status Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={inputData.name || ""}
+                  onChange={handleInputData}
+                />
+              </div>
+              <div className="inp1 inp_2nd">
+                <label htmlFor="">Order</label>
+                <input
+                  type="text"
+                  name="order"
+                  value={inputData.order || ""}
+                  onChange={handleInputData}
+                />
+              </div>
+            </div>
           )}
 
           {modalPage === "productCategory" && (
@@ -550,14 +560,46 @@ const MastersModal = ({
             </>
           )}
 
+          {modalPage === "newscanmodule" && (
+            <div className="modal_fields" style={{ height: "40px",marginTop:"15px" }}>
+              <div className="inp1 inp3">
+                <FormControl style={{ height: "40px" }}>
+                  <InputLabel id="demo-simple-select-autowidth-label">
+                    Status
+                  </InputLabel>
+                  <Select
+                    style={{ height: "40px" }}
+                    labelId="demo-simple-select-autowidth-label"
+                    id="demo-simple-select-autowidth"
+                    // value={age}
+                    // onChange={handleChange}
+                    autoWidth
+                    label="Status"
+                  >
+                    <MenuItem value="">
+                      <em>None</em>
+                    </MenuItem>
+                    {status.map((item)=>(
+                    <MenuItem value={item.name}>{item.name}</MenuItem>               
+                  ))}
+                  </Select>
+                </FormControl>
+              </div>
+              <button className="scan_update_btn" onClick={handleClose}>
+                Update
+              </button>
+            </div>
+          )}
+
           {errors && (
             <span style={{ color: "red", fontSize: "10px" }}>{errors}</span>
           )}
-          {/* <h1>helooooooo</h1> */}
-          <div className="modal_btns">
-            <button onClick={handleClose}>Cancel</button>
-            <button onClick={handleCreatedata}>{btnName}</button>
-          </div>
+          {location.pathname !== "/newscanmodule" && (
+            <div className="modal_btns">
+              <button onClick={handleClose}>Cancel</button>
+              <button onClick={handleCreatedata}>{btnName}</button>
+            </div>
+          )}
         </Box>
       </Modal>
     </div>

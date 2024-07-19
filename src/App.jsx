@@ -60,6 +60,7 @@ import Outlets from "./Componets/MastersSection/MasterTableItems/Outlets";
 import ScanPage from "./Componets/ScanComponentWarehouse/ScanPage/ScanPage";
 import WorkDone from "./Componets/WorkdoneWarehorse/WorkDone/WorkDone";
 import RendersDetailing from "./Pages/RendersDetailing/RendersDetailing";
+import ScanModule from "./Pages/ScanModule/ScanModule";
 
 function App() {
   return (
@@ -129,6 +130,8 @@ function App() {
 
             <Route path="/scan" element={<ScanPage />} />
             <Route path="/workdone" element={<WorkDone />} />
+
+            <Route path="/newscanmodule" element={<ScanModule />} />
 
             <Route
               path="/CadAssignmentcard"
