@@ -127,3 +127,17 @@ cursor: pointer;
   color: red;
   font-size: 10px;
 }
+
+.scan_update_btn{
+  /* width: 30% ; */
+  background-color: #0464D5;
+  color: white;
+  display: flex ;
+  align-items: center ;
+  text-align: center ;
+  padding: 5px 20px;
+  margin-left: 20px;
+  border: none;
+  border-radius: 10px;
+  /* height: 90%; */
+}

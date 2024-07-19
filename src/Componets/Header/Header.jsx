@@ -203,8 +203,9 @@ const Header = ({
                   <h3>Masters</h3>
                 )}
 
-                {location.pathname === "/scan" && <h3>Scan</h3>}
+                {location.pathname === "/scan" && <h3>Receive</h3>}
                 {location.pathname === "/workdone" && <h3>Work Done</h3>}
+                {location.pathname === "/newscanmodule" && <h3>Scan</h3>}
               </div>
 
               <div className="Right_User_Section">
@@ -224,6 +225,7 @@ const Header = ({
                   location.pathname !== `/CadAssignmentcard` &&
                   location.pathname !== "/customRequestTable" &&
                   location.pathname !== "/workdone" &&
+                  location.pathname !== "/newscanmodule" &&
                   location.pathname !== "/centralhubtransfer" &&
                   location.pathname !== "/finishedProject" &&
                   location.pathname !== "/masterspage/findings" &&

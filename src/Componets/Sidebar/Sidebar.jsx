@@ -13,6 +13,7 @@ import galleryimg from "../../assets/gallery.png";
 import loginzimg from "../../assets/loginz.png";
 import scan from "../../assets/scan.png";
 import done from "../../assets/done.png";
+import pack from "../../assets/pack.png";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import AssignmentModal from "../AssignmentModal/AssignmentModal";
 import BasicDetailModal from "../BasicDetails/BasicDetailModal";
@@ -320,7 +321,7 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
             <div className="Links">
             <div className="horizontal_line_sidebar"></div>
             <div className="lin_container"></div>
-              <img src={scan} alt="" />
+              <img src={pack} alt="" />
               {sidebarExpanded && <p>Received </p>}
             </div>
           </Link>
@@ -330,6 +331,14 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
             <div className="lin_container"></div>
               <img src={done} alt="" />
               {sidebarExpanded && <p>Work Done </p>}
+            </div>
+          </Link>
+          <Link to="/newscanmodule">
+            <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={scan} alt="" />
+              {sidebarExpanded && <p>Scan </p>}
             </div>
           </Link>
 

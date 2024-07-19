@@ -43,7 +43,7 @@ const WorkDoneTable = ({ sidebarExpanded}) => {
     }
   };
 
-  console.log("workTableData", clickedProductId);
+  console.log("workTableData", workTableData);
 
   const openModal = (productId) => {
     setclickedProductId(productId);
