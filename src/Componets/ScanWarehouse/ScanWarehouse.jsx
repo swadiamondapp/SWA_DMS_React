@@ -1,36 +1,45 @@
 import React, { useEffect, useState } from "react";
-import { IoEye } from "react-icons/io5";
 import searchimg from "../../assets/search.png";
 import searchblue from "../../assets/bluesearch.png";
 import dlt from "../../assets/deleticon.png";
 import scan from "../../assets/scan.png";
 import "./ScanWarehouse.css";
-import ScanModal from "../ScanComponentWarehouse/ScanModal/ScanModal";
 import MastersModal from "../MastersSection/MastersModal/MastersModal";
-import { centralStatusTableData } from "../MastersSection/ApiMasters/ApiMasters";
+import { whstatusTableData } from "../MastersSection/ApiMasters/ApiMasters";
+import { warehoueScanTable } from "../ScanComponentWarehouse/ApiScan/ApiScan";
 
 const ScanWarehouse = ({ sidebarExpanded }) => {
   const [open, setOpen] = useState(false);
-
-  const [isLoading, setIsLoading] = useState(false);
   const [scanTableData, setScanTableData] = useState([]);
-  const [status, setstatus] = useState([]);
-  const [searchListId, setsearchListId] = useState("");
-  const [statusId, setstatusId] = useState("");
-  const [message, setMessage] = useState("");
+  const [status, setStatus] = useState([]);
   const [error, setError] = useState("");
-  const [clickedProductId, setclickedProductId] = useState("");
-  const [inputData, setInputData] = useState([]);
+  const [clickedProductIds, setClickedProductIds] = useState([]);
+
+  useEffect(() => {
+    whstatusTableData(setStatus);
+    warehoueScanTable(setScanTableData);
+  }, []);
 
   const openModal = () => {
     setOpen(!open);
   };
 
-  useEffect(()=>{
-    centralStatusTableData(setstatus)
-  },[])
- 
-  console.log("ch status",status)
+  const handleCheckboxChange = (productId) => {
+    if (clickedProductIds.includes(productId)) {
+      setClickedProductIds(clickedProductIds.filter(id => id !== productId));
+    } else {
+      setClickedProductIds([...clickedProductIds, productId]);
+    }
+  };
+
+  const handleHeaderCheckboxChange = () => {
+    const allProductIds = scanTableData.map(item => item.productId);
+    if (clickedProductIds.length === allProductIds.length) {
+      setClickedProductIds([]);
+    } else {
+      setClickedProductIds(allProductIds);
+    }
+  };
 
   return (
     <>
@@ -45,8 +54,6 @@ const ScanWarehouse = ({ sidebarExpanded }) => {
               type="text"
               name="slot_id"
               placeholder="Search"
-              // value={searchListId}
-              // onChange={handleInputChange}
             />
             <img className="searchblue" src={searchblue} alt="" />
           </div>
@@ -72,14 +79,12 @@ const ScanWarehouse = ({ sidebarExpanded }) => {
                   style={{ paddingLeft: "40px" }}
                   type="text"
                   placeholder="Scan Product ID"
-                  //   value={searchListId}
-                  //   onChange={handleInputChange}
                 />
                 <img src={searchimg} alt="" />
               </div>
             </div>
             <div className="Create_user">
-              <button onClick={openModal}>Change CH Status</button>
+              <button onClick={openModal}>Change WH Status</button>
             </div>
           </div>
         </div>
@@ -89,7 +94,11 @@ const ScanWarehouse = ({ sidebarExpanded }) => {
               <thead>
                 <tr>
                   <th style={{ borderLeft: "none" }}>
-                    <input type="checkbox" />
+                    <input
+                      type="checkbox"
+                      onChange={handleHeaderCheckboxChange}
+                      checked={clickedProductIds.length === scanTableData.length}
+                    />
                   </th>
                   <th style={{ borderLeft: "none" }}>Sl No</th>
                   <th style={{ borderLeft: "none" }}>Product ID</th>
@@ -103,22 +112,30 @@ const ScanWarehouse = ({ sidebarExpanded }) => {
                 </tr>
               </thead>
               <tbody>
-                {/* {scanTableData.map((item, index) => ( */}
-                <tr className="table_row">
-                  <td>
-                    <input type="checkbox" />
-                  </td>
-                  <td style={{ borderLeft: "none" }}>1</td>
-                  <td style={{ borderLeft: "none" }}>SWA234</td>
-                  <td style={{ borderLeft: "none" }}>23-03-24</td>
-                  <td style={{ borderLeft: "none" }}>Bangle</td>
-                  <td style={{ borderLeft: "none" }}>Status name here</td>
-                  <td style={{ borderLeft: "none" }}>8.GM</td>
-                  <td style={{ borderLeft: "none" }}>
-                    <img style={{ width: "16px", height: "20px" }} src={dlt} />
-                  </td>
-                </tr>
-                {/* //   ))} */}
+                {scanTableData.map((item, index) => (
+                  <tr key={item.productId} className="table_row">
+                    <td>
+                      <input
+                        type="checkbox"
+                        onChange={() => handleCheckboxChange(item.productId)}
+                        checked={clickedProductIds.includes(item.productId)}
+                      />
+                    </td>
+                    <td style={{ borderLeft: "none" }}>{index + 1}</td>
+                    <td style={{ borderLeft: "none" }}>{item.productId}</td>
+                    <td style={{ borderLeft: "none" }}>{item.createdDate}</td>
+                    <td style={{ borderLeft: "none" }}>{item.productCategory}</td>
+                    <td style={{ borderLeft: "none" }}>{item.status}</td>
+                    <td style={{ borderLeft: "none" }}>{item.weight}</td>
+                    <td style={{ borderLeft: "none" }}>
+                      <img
+                        style={{ width: "16px", height: "20px" }}
+                        src={dlt}
+                        alt="Delete"
+                      />
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>

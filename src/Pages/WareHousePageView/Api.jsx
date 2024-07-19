@@ -15,6 +15,7 @@ import {
   SCAN_TABLE_STATUS_CHANGE,
   SCAN_TABLE_STATUS_GET,
   VOTERS_CUSTOMIZATION_LIST,
+  WORKDONE_CUSTOMIZATION_APPROVE,
   WORKDONE_TABLE_LIST,
   WORKDONE_TABLE_PRODUCT_DETAIL,
   WORKDONE_TABLE_PRODUCT_SEARCH,
@@ -55,12 +56,15 @@ export const customizaztion_list_wareHouse = async (
   setCustomizationListData
 ) => {
   try {
+    setIsLoading(true);
     const response = await apiService.get(VOTERS_CUSTOMIZATION_LIST);
     if (checkApiStatus(response)) {
       setCustomizationListData(response.data.results.data);
     }
   } catch (error) {
     console.log(error);
+  } finally {
+    setIsLoading(false);
   }
 };
 
@@ -493,12 +497,12 @@ export const scan_list_search = async (
       scan_list_datas(setIsLoading, setScanTableData);
       setsearchListId("");
       alert("Item Added");
-      setError("")
+      setError("");
     }
   } catch (error) {
     console.log(error);
     alert("Already exists");
-    setError("")
+    setError("");
     setsearchListId("");
   }
 };
@@ -619,6 +623,25 @@ export const workDone_table_product_update = async (
     if (response.data.results.status_code === 200) {
       alert("Data Updated Successfully");
       setOpenLeftbar(false);
+    }
+  } catch (error) {
+    console.error("Update Failed", error);
+  }
+};
+
+export const customizationApprove = async (
+  setIsLoading,
+  approveId,
+    
+) => {
+  try {
+    debugger;
+    const response = await apiService.patch(
+      `${WORKDONE_CUSTOMIZATION_APPROVE}${approveId}/`
+    );
+    if (checkApiStatus(response)) {
+      customizaztion_list_wareHouse(setIsLoading, setCustomizationListData);
+      alert("Approved Successfully");
     }
   } catch (error) {
     console.error("Update Failed", error);

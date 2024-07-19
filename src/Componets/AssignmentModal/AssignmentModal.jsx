@@ -86,7 +86,7 @@ const AssignmentModal = ({
   const handleChange = (event) => {
     setFolderName(event.target.value);
   };
-  console.log(folderName, "folder");
+  console.log(error, "error");
   console.log(selectedAssignment,"selectedAssignment infolder")
 
   return (

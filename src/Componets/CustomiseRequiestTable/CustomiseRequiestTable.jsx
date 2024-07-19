@@ -6,12 +6,14 @@ import ThreeDot from "../../assets/threeDots.png";
 import CustomiseRequest from "../../Componets/CustomiseRequest/CustomiseRequiest";
 import {
   customization_details_view_warehouse,
+  customizationApprove,
   customizaztion_list_wareHouse,
   delete_customization_warehouse,
 } from "../../Pages/WareHousePageView/Api";
 import { delete_customization } from "../VOTORS PANEL/Api";
 import DeleteConfirmationModal from "../ConfirmationModal/DeleteConfirmationModal";
 import SuccessModal from "../SuccessModal/SuccessModal";
+import { CircularProgress } from "@mui/material";
 
 const data = [
   {
@@ -69,6 +71,7 @@ const CustomizationTable = (props) => {
   const [userId, setUserId] = useState([]);
 
   const [Data, setData] = useState([]);
+  const [approveId, setApproveId] = useState("");
   const [CustomizationWareHouseData, setCustomizationWareHouseData] = useState(
     []
   );
@@ -78,7 +81,7 @@ const CustomizationTable = (props) => {
   useEffect(() => {
     customizaztion_list_wareHouse(setIsLoading, setCustomizationListData);
   }, []);
-  
+
   console.log(CustomizationListData, "CustomizationListData");
   const handleEyeClick = (wareHouseId) => {
     setOpenCRModal(true);
@@ -135,115 +138,187 @@ const CustomizationTable = (props) => {
     };
   }, []);
 
+  const handleApprove = async (aId) => {
+    try {
+      setApproveId(aId);
+      await customizationApprove(setIsLoading, aId, setCustomizationListData);
+    } catch (error) {
+      console.error("Approve Failed", error);
+    }
+  };
+
+  console.log("approveId", approveId);
+
   return (
-    <div className="Parant_CustomTable" style={{paddingLeft:props.sidebarExpanded? "225px":"130px"}}>
-      <div className="TableContainer">
-        <table>
-          <thead>
-            <tr style={{ backgroundColor: "#fff" }}>
-              <th>Date</th>
-              <th>Customization ID</th>
-              <th>Outlet</th>
-              <th>Mobile number</th>
-              <th>Product type</th>
-              <th
-                style={{ borderBottom: "1px solid #ddd", borderRight: "none" }}
-              >
-                Action
-              </th>
-              <th
-                style={{ borderBottom: "1px solid #ddd", borderRight: "none" }}
-              ></th>
-              <th
-                style={{ borderBottom: "1px solid #ddd", borderRight: "none" }}
-              ></th>
-            </tr>
-          </thead>
-          <tbody>
-            {CustomizationListData.map((item, index) => (
-              <tr
-                key={index}
-                style={{
-                  backgroundColor: index % 2 === 0 ? "#fff" : "#f2f2f2",
-                }}
-              >
-                <td>{item.created_at}</td>
-                <td>{item.customizationcode}</td>
-                <td>{item.outlet}</td>
-                <td>{item.mobile_number}</td>
-                <td>{item.product_type}</td>
-                <td>
-                  <button className="PrintButton_CT">
-                    Print <img src={PrintIcon} />
-                  </button>
-                </td>
+    <>
+      {isLoading ? (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <CircularProgress
+            size={70} // Set the desired size
+            sx={{
+              color: "#126e72",
+              padding: "8px 10px",
+              width: "35px",
+              marginTop: "100px",
+              marginLeft: "100px",
+            }}
+          />
+        </div>
+      ) : (
+        <div
+          className="Parant_CustomTable"
+          style={{ paddingLeft: props.sidebarExpanded ? "225px" : "130px" }}
+        >
+          <div className="TableContainer">
+            <table>
+              <thead>
+                <tr style={{ backgroundColor: "#fff" }}>
+                  <th>Date</th>
+                  <th>Customization ID</th>
+                  <th>Outlet</th>
+                  <th>Mobile number</th>
+                  <th>Product type</th>
+                  <th
+                    style={{
+                      borderBottom: "1px solid #ddd",
+                      borderRight: "none",
+                    }}
+                  >
+                    Action
+                  </th>
+                  <th
+                    style={{
+                      borderBottom: "1px solid #ddd",
+                      borderRight: "none",
+                    }}
+                  ></th>
+                  <th
+                    style={{
+                      borderBottom: "1px solid #ddd",
+                      borderRight: "none",
+                    }}
+                  ></th>
+                </tr>
+              </thead>
+              <tbody>
+                {CustomizationListData.map((item, index) => (
+                  <tr
+                    key={index}
+                    style={{
+                      backgroundColor: index % 2 === 0 ? "#fff" : "#f2f2f2",
+                    }}
+                  >
+                    <td>{item.created_at}</td>
+                    <td>{item.customizationcode}</td>
+                    <td>{item.outlet}</td>
+                    <td>{item.mobile_number}</td>
+                    <td>{item.product_type}</td>
 
-                <td onClick={() => handleEyeClick(item.id)}>
-                  <img src={EyeIcon} />
-                </td>
+                    <td style={{ display: "flex", gap: "10px" }}>
+                      <button className="PrintButton_CT">
+                        Print <img src={PrintIcon} alt="Print" />
+                      </button>
 
-                <td
-                  onClick={() =>
-                    setShowEditDelete(showEditDelete === index ? null : index)
-                  }
-                >
-                  <img src={ThreeDot} />
-                  {showEditDelete === index && (
-                    <div
-                      ref={(el) => (dropdownRefs.current[index] = el)}
-                      className="Edit_delete_btn_user_warehouse"
+                      {item?.customer_response === "Confirmed" &&
+                      item?.status === "Confirmed" ? (
+                        <span
+                          disabled
+                          className="inactive_btn"
+                          style={{ fontWeight: "300" }}
+                        >
+                          Approved
+                        </span>
+                      ) : item?.customer_response === "Confirmed" ? (
+                        <button
+                          onClick={() => handleApprove(item.id)}
+                          className="active_btn"
+                          style={{
+                            backgroundColor: "#23a06496",
+                            color: "white",
+                            cursor: "pointer",
+                          }}
+                        >
+                          Approve
+                        </button>
+                      ) : null}
+                    </td>
+
+                    <td onClick={() => handleEyeClick(item.id)}>
+                      <img src={EyeIcon} />
+                    </td>
+
+                    <td
+                      onClick={() =>
+                        setShowEditDelete(
+                          showEditDelete === index ? null : index
+                        )
+                      }
                     >
-                      {/* <p
+                      <img src={ThreeDot} />
+                      {showEditDelete === index && (
+                        <div
+                          ref={(el) => (dropdownRefs.current[index] = el)}
+                          className="Edit_delete_btn_user_warehouse"
+                        >
+                          {/* <p
                         className="Edit_btn_user"
                         onClick={() => handleEditCustomization(item.id)}
                       >
                         Edit
                       </p> */}
-                      <p
-                        className="Delete_btn_user"
-                        style={{ padding: "10px" }}
-                        onClick={() => handleDeleteCustomization(item.id)}
-                      >
-                        Delete
-                      </p>
-                    </div>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      <CustomiseRequest
-        open={openCRModal}
-        onClose={() => setOpenCRModal(false)}
-        wareHouseuserId={wareHouseuserId}
-        CustomizationWareHouseData={CustomizationWareHouseData}
-      />
-      <DeleteConfirmationModal
-        DeleteConfirmationOpen={DeleteConfirmationOpen}
-        handleDeleteClose={handleDeleteClose}
-        setDeleteConfirmationOpen={setDeleteConfirmationOpen}
-        handleDeleteOpen={handleDeleteOpen}
-        isLoading={isLoading}
-        deleteFunction={() => {
-          delete_customization_warehouse(
-            setIsLoading,
-            userId,
-            setCustomizationListData,
-            setDeleteConfirmationOpen,
-            setSuccessModalOpen,
-            setSuccessMessage
-          );
-        }}
-      />
-      <SuccessModal
-        successModalOpen={successModalOpen}
-        handleOpen={handleOpen}
-        handleClose={handleClose}
-        successMessage={successMessage}
-      />
-    </div>
+                          <p
+                            className="Delete_btn_user"
+                            style={{ padding: "10px" }}
+                            onClick={() => handleDeleteCustomization(item.id)}
+                          >
+                            Delete
+                          </p>
+                        </div>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <CustomiseRequest
+            open={openCRModal}
+            onClose={() => setOpenCRModal(false)}
+            wareHouseuserId={wareHouseuserId}
+            CustomizationWareHouseData={CustomizationWareHouseData}
+          />
+          <DeleteConfirmationModal
+            DeleteConfirmationOpen={DeleteConfirmationOpen}
+            handleDeleteClose={handleDeleteClose}
+            setDeleteConfirmationOpen={setDeleteConfirmationOpen}
+            handleDeleteOpen={handleDeleteOpen}
+            isLoading={isLoading}
+            deleteFunction={() => {
+              delete_customization_warehouse(
+                setIsLoading,
+                userId,
+                setCustomizationListData,
+                setDeleteConfirmationOpen,
+                setSuccessModalOpen,
+                setSuccessMessage
+              );
+            }}
+          />
+          <SuccessModal
+            successModalOpen={successModalOpen}
+            handleOpen={handleOpen}
+            handleClose={handleClose}
+            successMessage={successMessage}
+          />
+        </div>
+      )}
+    </>
   );
 };
 
