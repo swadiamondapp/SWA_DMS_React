@@ -18,6 +18,7 @@ import DesignPools from "../DesignPoolExtended/DesignPools";
 import AdminBasicDetailsModal from "../AdminBasicDetailsModal/AdminBasicDetailsModal";
 import AssignmentModal from "../AssignmentModal/AssignmentModal";
 import SuccessModal from "../SuccessModal/SuccessModal";
+import DeleteConfirmationModal from "../ConfirmationModal/DeleteConfirmationModal";
 // import { useLocation, useNavigate } from "react-router-dom";
 
 const AssignmentPanel = ({ sidebarExpanded }) => {
@@ -39,10 +40,14 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
   const [AdminBasicModalOpen, setAdminBasicModalOpen] = useState(false);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [DeleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
   const [uploadInstructionsVisible, setUploadInstructionsVisible] =
     useState(true);
 
   const [createFolderModal, setcreateFolderModal] = useState(false);
+  const [ IdOfDeleteAssignment, setIdOfDeleteAssignment] = useState([])
+
+
 
   const location = useLocation();
   const dotsRef = useRef(null);
@@ -187,14 +192,23 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
     console.log(item, "itemmmmm");
   };
   const handleDeleteSingle = (item) => {
-    deleteItemFromAssignmentPanel(
-      setIsLoading,
-      item,
-      setData,
-      setSuccessModalOpen,
-      setSuccessMessage,
-      setActiveCardId
-    );
+    setIdOfDeleteAssignment(item)
+    setDeleteConfirmationOpen(true)
+    // deleteItemFromAssignmentPanel(
+    //   setIsLoading,
+    //   IdOfDeleteAssignment,
+    //   setData,
+    //   setSuccessModalOpen,
+    //   setSuccessMessage,
+    //   setActiveCardId
+    // );
+  };
+
+  const handleDeleteClose = () => {
+    setDeleteConfirmationOpen(false);
+  };
+  const handleDeleteOpen = () => {
+    setDeleteConfirmationOpen(true);
   };
   return (
     <div
@@ -374,6 +388,24 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
       <SuccessModal
         successModalOpen={successModalOpen}
         successMessage={successMessage}
+      />
+         <DeleteConfirmationModal
+        DeleteConfirmationOpen={DeleteConfirmationOpen}
+        handleDeleteClose={handleDeleteClose}
+        setDeleteConfirmationOpen={setDeleteConfirmationOpen}
+        handleDeleteOpen={handleDeleteOpen}
+        isLoading={isLoading}
+        deleteFunction={() => {
+          deleteItemFromAssignmentPanel(
+            setIsLoading,
+            IdOfDeleteAssignment,
+            setData,
+            setSuccessModalOpen,
+            setSuccessMessage,
+            setActiveCardId,
+            setDeleteConfirmationOpen
+          );
+        }}
       />
     </div>
   );
