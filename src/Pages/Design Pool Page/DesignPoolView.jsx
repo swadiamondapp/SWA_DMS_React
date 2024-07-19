@@ -6,6 +6,7 @@ import DesignPool from "../../Componets/ADMIN PANEL/Design Pool/DesignPool";
 
 const DesignPoolView = () => {
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
+  
   return (
     <div className="Parent_DesignPoolPage">
       <Sidebar sidebarExpanded={sidebarExpanded} setSidebarExpanded={setSidebarExpanded} />

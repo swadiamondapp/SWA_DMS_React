@@ -18,6 +18,7 @@ import DesignPools from "../DesignPoolExtended/DesignPools";
 import AdminBasicDetailsModal from "../AdminBasicDetailsModal/AdminBasicDetailsModal";
 import AssignmentModal from "../AssignmentModal/AssignmentModal";
 import SuccessModal from "../SuccessModal/SuccessModal";
+import DeleteConfirmationModal from "../ConfirmationModal/DeleteConfirmationModal";
 // import { useLocation, useNavigate } from "react-router-dom";
 
 const AssignmentPanel = ({ sidebarExpanded }) => {
@@ -39,10 +40,14 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
   const [AdminBasicModalOpen, setAdminBasicModalOpen] = useState(false);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [DeleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
   const [uploadInstructionsVisible, setUploadInstructionsVisible] =
     useState(true);
 
   const [createFolderModal, setcreateFolderModal] = useState(false);
+  const [ IdOfDeleteAssignment, setIdOfDeleteAssignment] = useState([])
+
+
 
   const location = useLocation();
   const dotsRef = useRef(null);
@@ -170,7 +175,7 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
     return `${day}-${month}-${year}`;
   };
 
-const handleFolderNaviate = (item) => {
+  const handleFolderNaviate = (item) => {
     navigate(`/assignmentpaneldetailsview/${item.id}`, {
       state: { assignmentFolderName: item.name },
     });
@@ -187,14 +192,23 @@ const handleFolderNaviate = (item) => {
     console.log(item, "itemmmmm");
   };
   const handleDeleteSingle = (item) => {
-    deleteItemFromAssignmentPanel(
-      setIsLoading,
-      item,
-      setData,
-      setSuccessModalOpen,
-      setSuccessMessage,
-      setActiveCardId
-    );
+    setIdOfDeleteAssignment(item)
+    setDeleteConfirmationOpen(true)
+    // deleteItemFromAssignmentPanel(
+    //   setIsLoading,
+    //   IdOfDeleteAssignment,
+    //   setData,
+    //   setSuccessModalOpen,
+    //   setSuccessMessage,
+    //   setActiveCardId
+    // );
+  };
+
+  const handleDeleteClose = () => {
+    setDeleteConfirmationOpen(false);
+  };
+  const handleDeleteOpen = () => {
+    setDeleteConfirmationOpen(true);
   };
   return (
     <div
@@ -245,7 +259,7 @@ const handleFolderNaviate = (item) => {
           <h3 className="HeadNewdesign">Folders</h3>
           <div className="folderCard_parent">
             {assignmentFolder.map((item) => (
-<div
+              <div
                 className="folder__card"
                 key={item.id}
                 onClick={() => handleFolderNaviate(item)}
@@ -255,9 +269,9 @@ const handleFolderNaviate = (item) => {
                     item.id
                   }?name=${encodeURIComponent(item.name)}`}
                 > */}
-<img src={folderimg} alt="" />
+                <img src={folderimg} alt="" />
                 {/* </Link> */}
-                <p>{item.name}</p>
+                <p style={{ wordWrap: 'break-word', maxWidth: '100px' }}>{item.name}</p>
               </div>
             ))}
           </div>
@@ -266,7 +280,7 @@ const handleFolderNaviate = (item) => {
         <div className="Assignment_panel_section">
           <h3 className="HeadNewdesign">Selected</h3>
           <div className="Card_Design_Parent">
-            {Data.map((item,index) => {
+            {Data.map((item, index) => {
               const paperDesign = item?.items?.[0]?.paper_design;
               const itemId = item?.items?.[0]?.id;
               const createdAt = item?.created_at;
@@ -356,7 +370,7 @@ const handleFolderNaviate = (item) => {
         selectedDesignCode={selectedDesignCode}
       />
 
-<AssignmentModal
+      <AssignmentModal
         open={createFolderModal}
         // AdminUploadedIds={AdminUploadedIds}
         onClose={() => setcreateFolderModal(false)}
@@ -374,6 +388,24 @@ const handleFolderNaviate = (item) => {
       <SuccessModal
         successModalOpen={successModalOpen}
         successMessage={successMessage}
+      />
+         <DeleteConfirmationModal
+        DeleteConfirmationOpen={DeleteConfirmationOpen}
+        handleDeleteClose={handleDeleteClose}
+        setDeleteConfirmationOpen={setDeleteConfirmationOpen}
+        handleDeleteOpen={handleDeleteOpen}
+        isLoading={isLoading}
+        deleteFunction={() => {
+          deleteItemFromAssignmentPanel(
+            setIsLoading,
+            IdOfDeleteAssignment,
+            setData,
+            setSuccessModalOpen,
+            setSuccessMessage,
+            setActiveCardId,
+            setDeleteConfirmationOpen
+          );
+        }}
       />
     </div>
   );

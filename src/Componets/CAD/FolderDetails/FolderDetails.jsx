@@ -16,6 +16,7 @@ const FolderDetails = () => {
   const [successModalOpen, setSuccessModalOpen] = useState("");
   const [productCode, setProductCode] = useState("");
   const [itemId, setItemId] = useState("");
+  const [sidebarExpanded, setSidebarExpanded] = useState(true);
   const [imagesName, setImagesName] = useState({
     normalName: null,
     threeDName: null,
@@ -66,6 +67,7 @@ const FolderDetails = () => {
       () => {
         projectDetails(setIsLoading, setFolderDetails, id);
       }
+      
     );
   };
 
@@ -73,11 +75,12 @@ const FolderDetails = () => {
 
   return (
     <div className="ParentVotorPage">
-      <Sidebar />
-      <Header leftHeader={folderDetails[0]?.designcode} />
+      <Sidebar sidebarExpanded={sidebarExpanded} setSidebarExpanded={setSidebarExpanded}  />
+      <Header leftHeader={folderDetails[0]?.designcode}  sidebarExpanded={sidebarExpanded} />
       <FolderDetailsCard
         folderDetails={folderDetails[0]}
         setIsModalOpen={setIsModalOpen}
+        sidebarExpanded={sidebarExpanded}
       />
       <CentalHub
         open={isModalOpen}

@@ -322,7 +322,30 @@ const AdminBasicDetailsModal = ({
     );
   };
 
-  useEffect(() => {
+  // useEffect(() => {
+  //   if (
+  //     formData.approxMetalWeights &&
+  //     formData.approxDiamondWeight &&
+  //     SelectedDiamondId &&
+  //     SelectedMetalId
+  //   ) {
+  //     basic_calculation(
+  //       setIsLoadingCalculation,
+  //       formData,
+  //       SelectedDiamondId,
+  //       SelectedMetalId,
+  //       setCalculationData
+  //     );
+  //   }
+  // }, [
+  //   formData.approxMRP,
+  //   formData.approxMetalWeights,
+  //   formData.approxDiamondWeight,
+  //   SelectedMetalId,
+  //   SelectedDiamondId,
+  // ]);
+
+  const CalculateApproxAmount = () => {
     if (
       formData.approxMetalWeights &&
       formData.approxDiamondWeight &&
@@ -337,12 +360,30 @@ const AdminBasicDetailsModal = ({
         setCalculationData
       );
     }
+  };
+  useEffect(() => {
+    if (
+      formData.approxMetalWeights &&
+      formData.approxDiamondWeight &&
+      SelectedDiamondId &&
+      SelectedMetalId &&
+      formData.diamondType &&
+      formData.typeOfMetal
+    ) {
+      CalculateApproxAmount()
+    } else {
+      setFormData(prevFormData => ({
+        ...prevFormData,
+        approxMRP: 0
+      }));
+    }
   }, [
-    formData.approxMRP,
     formData.approxMetalWeights,
     formData.approxDiamondWeight,
-    SelectedMetalId,
     SelectedDiamondId,
+    SelectedMetalId,
+    formData.diamondType,
+    formData.typeOfMetal,
   ]);
 
   console.log(AdminBasicItemId, "AdminUploadedImageIds");

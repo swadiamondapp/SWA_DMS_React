@@ -64,13 +64,18 @@ const validateForm = (data) => {
   return errors;
 };
 
-const UsersList = ({ sidebarExpanded }) => {
+const UsersList = ({
+  sidebarExpanded,
+  SearchedNamesGet,
+  userList,
+  setUserList,
+}) => {
   // create modal
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState([]);
   const [errors, setErrors] = useState({});
-  const [userList, setUserList] = useState([]);
+  // const [userList, setUserList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [deleteuser, setDeleteuser] = useState([]);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
@@ -303,9 +308,9 @@ const UsersList = ({ sidebarExpanded }) => {
 
   // select box
 
-  useEffect(() => {
-    list_all_users(setIsLoading, setUserList);
-  }, []);
+  // useEffect(() => {
+  //   list_all_users(setIsLoading, setUserList);
+  // }, []);
 
   const handleDelete = (userId) => {
     setDeleteConfirmationOpen(true);
@@ -631,50 +636,56 @@ const UsersList = ({ sidebarExpanded }) => {
               </tr>
             </thead>
             <tbody>
-              {userList?.map((item, index) => (
-                <tr key={index} style={{ color: "#2E364C" }}>
-                  <td>{formatDate(item.created_at)}</td>
-                  {console.log(item.created_at, "createdTime")}
-                  <td>{item.name}</td>
-                  <td>{item.email}</td>
-                  <td>
-                    <div className="view_password">
-                      {showPassword[item.id] ? (
-                        <span className="passwordEncy">{item.Password}</span>
-                      ) : (
-                        <span className="passwordEncy_star">*************</span>
-                      )}
-                      {showPassword ? (
-                        <IoEye
-                          style={{
-                            color: "#455173",
-                            cursor: "pointer",
-                            opacity: showPassword ? 0.5 : 1,
-                            marginRight: "25px",
-                          }}
-                          onClick={() => handleTogglePassword(item.id)}
-                        />
-                      ) : (
-                        <IoEye
-                          style={{ color: "#455173", cursor: "pointer" }}
-                          onClick={() => handleTogglePassword(item.id)}
-                        />
-                      )}
-                    </div>
-                  </td>
-                  <td>{item.Usertype}</td>
-                  <td>
-                    <div className="active_sendmail">
-                      <button
-                        className={
-                          item.status === "ACTIVE"
-                            ? "active_btn"
-                            : "inactive_btn"
-                        }
-                      >
-                        {item.status === "ACTIVE" ? "Active" : "Inactive"}
-                      </button>
-                      {/* <button
+              {userList.length > 0 ? (
+                <>
+                  {userList?.map((item, index) => (
+                    <tr key={index} style={{ color: "#2E364C" }}>
+                      <td>{formatDate(item.created_at)}</td>
+                      {console.log(item.created_at, "createdTime")}
+                      <td>{item.name}</td>
+                      <td>{item.email}</td>
+                      <td>
+                        <div className="view_password">
+                          {showPassword[item.id] ? (
+                            <span className="passwordEncy">
+                              {item.Password}
+                            </span>
+                          ) : (
+                            <span className="passwordEncy_star">
+                              *************
+                            </span>
+                          )}
+                          {showPassword ? (
+                            <IoEye
+                              style={{
+                                color: "#455173",
+                                cursor: "pointer",
+                                opacity: showPassword ? 0.5 : 1,
+                                marginRight: "25px",
+                              }}
+                              onClick={() => handleTogglePassword(item.id)}
+                            />
+                          ) : (
+                            <IoEye
+                              style={{ color: "#455173", cursor: "pointer" }}
+                              onClick={() => handleTogglePassword(item.id)}
+                            />
+                          )}
+                        </div>
+                      </td>
+                      <td>{item.Usertype}</td>
+                      <td>
+                        <div className="active_sendmail">
+                          <button
+                            className={
+                              item.status === "ACTIVE"
+                                ? "active_btn"
+                                : "inactive_btn"
+                            }
+                          >
+                            {item.status === "ACTIVE" ? "Active" : "Inactive"}
+                          </button>
+                          {/* <button
                         className="sendmail_btn"
                         onClick={() => handleSendMail(item.id)}
                       >
@@ -695,50 +706,63 @@ const UsersList = ({ sidebarExpanded }) => {
                           <>Send Mail</>
                         )}
                       </button> */}
-                    </div>
-                  </td>
-                  <td>
-                    <label className="switch">
-                      <input
-                        type="checkbox"
-                        checked={item.status === "ACTIVE"}
-                        onChange={() => toggleStatus(item)}
-                      />
-                      <span
-                        className={`slider round ${
-                          item.status === "ACTIVE" ? "active" : "inactive"
-                        }`}
-                      ></span>
-                    </label>
-                  </td>
-                  <td style={{ position: "relative" }}>
-                    <BsThreeDotsVertical
-                      className="Action_dots"
-                      onClick={() =>
-                        setShowEditDelete(
-                          showEditDelete === index ? null : index
-                        )
-                      }
-                    />
-                    {showEditDelete === index && (
-                      <div ref={dropdownRef} className="Edit_delete_btn_user">
-                        <p
-                          className="Edit_btn_user"
-                          onClick={() => hendleEdit(item)}
-                        >
-                          Edit
-                        </p>
-                        <p
-                          className="Delete_btn_user"
-                          onClick={() => handleDelete(item.id)}
-                        >
-                          Delete
-                        </p>
-                      </div>
-                    )}
-                  </td>
-                </tr>
-              ))}
+                        </div>
+                      </td>
+                      <td>
+                        <label className="switch">
+                          <input
+                            type="checkbox"
+                            checked={item.status === "ACTIVE"}
+                            onChange={() => toggleStatus(item)}
+                          />
+                          <span
+                            className={`slider round ${
+                              item.status === "ACTIVE" ? "active" : "inactive"
+                            }`}
+                          ></span>
+                        </label>
+                      </td>
+                      <td style={{ position: "relative" }}>
+                        <BsThreeDotsVertical
+                          className="Action_dots"
+                          onClick={() =>
+                            setShowEditDelete(
+                              showEditDelete === index ? null : index
+                            )
+                          }
+                        />
+                        {showEditDelete === index && (
+                          <div
+                            ref={dropdownRef}
+                            className="Edit_delete_btn_user"
+                          >
+                            <p
+                              className="Edit_btn_user"
+                              onClick={() => hendleEdit(item)}
+                            >
+                              Edit
+                            </p>
+                            <p
+                              className="Delete_btn_user"
+                              onClick={() => handleDelete(item.id)}
+                            >
+                              Delete
+                            </p>
+                          </div>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </>
+              ) : (
+                <>
+                  <tr>
+                    <td colSpan="8" style={{ textAlign: "center" }}>
+                      No users found.
+                    </td>
+                  </tr>
+                </>
+              )}
             </tbody>
           </table>
         </div>

@@ -23,7 +23,7 @@ const FinishedProducts = ({ sidebarExpanded }) => {
     >
       <div
         className="CadAssignmentCard"
-        style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr" }}
+        style={{ display: "flex", gap:"50px" }}
       >
         {finishedProjects &&
           finishedProjects.map((item) => (
