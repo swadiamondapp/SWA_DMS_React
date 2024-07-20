@@ -632,7 +632,7 @@ export const workDone_table_product_update = async (
 export const customizationApprove = async (
   setIsLoading,
   approveId,
-    
+  setCustomizationListData   
 ) => {
   try {
     debugger;
