@@ -632,7 +632,7 @@ export const workDone_table_product_update = async (
 export const customizationApprove = async (
   setIsLoading,
   approveId,
-  setCustomizationListData   
+  setCustomizationListData
 ) => {
   try {
     debugger;
@@ -688,7 +688,7 @@ export const wareHouseEditBasicDetails = async (
         setSuccessModalOpen(false);
         navigate(`/customRequestTable`);
       }, 1700);
-      setErrors({})
+      setErrors({});
       setActualFormData({
         length: "",
         width: "",
@@ -699,10 +699,10 @@ export const wareHouseEditBasicDetails = async (
         approxDiamondWeight: "",
         approxWeight: "",
         actualPrice: "",
-      })
-      
+      });
     }
   } catch (error) {
     console.log(error);
     setErrorPriceMessage(error);
   }
+};
