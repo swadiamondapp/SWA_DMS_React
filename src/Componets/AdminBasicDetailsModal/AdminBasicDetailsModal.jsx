@@ -77,7 +77,7 @@ const AdminBasicDetailsModal = ({
   setSelectedAssignment,
   getSelectedDesign,
 }) => {
-  const [adminUploadedItemId,setAdminUploadedItemId] = useState([])
+  const [adminUploadedItemId, setAdminUploadedItemId] = useState([]);
   const [uploadedImage, setUploadedImage] = useState(null);
   const [uploadedFileName, setUploadedFileName] = useState("");
   const [AdminUploadedImageFile, setAdminUploadedImageFile] = useState(false);
@@ -108,9 +108,9 @@ const AdminBasicDetailsModal = ({
   const [AllDesigners, setAllDesigners] = useState([]);
   const [AdminUploadedIds, setAdminUploadedIds] = useState([]);
   const [assignedDesignerId, setAssignedDesignerId] = useState(null);
-  const [openAdminFolder,setOpenAdminFolder] = useState(false)
+  const [openAdminFolder, setOpenAdminFolder] = useState(false);
   const [AdminBasicItemId, setAdminBasicItemId] = useState(null);
-  const [SearchDesigners,setSearchDesigner] = useState("")
+  const [SearchDesigners, setSearchDesigner] = useState("");
 
   const [ItemMovedToAssignment, setItemMovedToAssignment] = useState([]);
   console.log(AssignDesignerModalOpen, "AssignDesignerModalOpen");
@@ -176,8 +176,8 @@ const AdminBasicDetailsModal = ({
     }),
   });
 
-  console.log(assignedDesignerId,"assignedDesignerId")
-  console.log(AdminBasicDetailsOpen,"AdminBasicDetailsOpen")
+  console.log(assignedDesignerId, "assignedDesignerId");
+  console.log(AdminBasicDetailsOpen, "AdminBasicDetailsOpen");
 
   const handleNextClick = () => {
     const { error } = schema.validate(formData, {
@@ -204,8 +204,7 @@ const AdminBasicDetailsModal = ({
         setAdminBasicDetailsOpen,
         setAdminBasicItemId,
         setFormData
-
-      );;
+      );
       setErrors({ undefined });
     }
   };
@@ -299,7 +298,7 @@ const AdminBasicDetailsModal = ({
   const filterOption = (input, option) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
 
-  console.log("image",uploadedImage)
+  console.log("image", uploadedImage);
 
   const handleImageRemove = () => {
     setUploadedImage(null);
@@ -372,11 +371,11 @@ const AdminBasicDetailsModal = ({
       formData.diamondType &&
       formData.typeOfMetal
     ) {
-      CalculateApproxAmount()
+      CalculateApproxAmount();
     } else {
-      setFormData(prevFormData => ({
+      setFormData((prevFormData) => ({
         ...prevFormData,
-        approxMRP: 0
+        approxMRP: 0,
       }));
     }
   }, [
@@ -428,15 +427,15 @@ const AdminBasicDetailsModal = ({
     );
   };
 
- const handleBackdropClick = (event) => {
+  const handleBackdropClick = (event) => {
     // Prevent the modal from closing when clicking the backdrop
     event.stopPropagation();
   };
-  const handleCloseButton =()=> {
-    onClose()
-    setUploadedImage(null)
-    setAdminBasicDetailsOpen(false)
-  setFormData ( {
+  const handleCloseButton = () => {
+    onClose();
+    setUploadedImage(null);
+    setAdminBasicDetailsOpen(false);
+    setFormData({
       SKU: [],
       productCategory: "",
       length: "",
@@ -450,17 +449,17 @@ const AdminBasicDetailsModal = ({
       approxMRP: "",
       tag: "",
       notes: "",
-    })
-  }
-  const handleSearchDesigners = (event)=> {
-    setSearchDesigner(event.target.value)
-  }
-  const SearchDesiners = ()=> {
-    listDesignersByName(setIsLoading,setAllDesigners,SearchDesigners)
-  }
-  
+    });
+  };
+  const handleSearchDesigners = (event) => {
+    setSearchDesigner(event.target.value);
+  };
+  const SearchDesiners = () => {
+    listDesignersByName(setIsLoading, setAllDesigners, SearchDesigners);
+  };
+
   console.log(assignedDesignerId, "assignedDesignerId");
-  console.log(SearchDesigners,"SearchDesigners")
+  console.log(SearchDesigners, "SearchDesigners");
   return (
     <div>
       <div className="">
@@ -473,14 +472,20 @@ const AdminBasicDetailsModal = ({
             aria-describedby="modal-modal-description"
             style={{ position: "absolute", right: "0" }}
             BackdropProps={{
-              onClick: handleBackdropClick // Stop backdrop clicks from closing the modal
+              onClick: handleBackdropClick, // Stop backdrop clicks from closing the modal
             }}
-            
           >
             <Box sx={style}>
               <Typography>
                 <div className="adminBasicModal_container">
-                  <div style={{position:'relative'}}><div style={{position:'absolute',right:'0'}} onClick={handleCloseButton}><img src={closeButton} alt="" /></div></div>
+                  <div style={{ position: "relative" }}>
+                    <div
+                      style={{ position: "absolute", right: "0" }}
+                      onClick={handleCloseButton}
+                    >
+                      <img src={closeButton} alt="" />
+                    </div>
+                  </div>
                   <div className="numbers_container">
                     <div className="Container1">
                       <div className="parant1">
@@ -581,63 +586,93 @@ const AdminBasicDetailsModal = ({
                               className="main"
                               style={{ margin: "20px 0px" }}
                             >
-                              {AllDesigners.map((item, index) => (
-                                <div className="Avata" key={index}>
-                                  <div className="avatarContainer">
-                                    <div className="leftTo">
-                                      <div className="avatarImageContainer">
-                                        <img
-                                          src={item.image}
-                                          alt=""
-                                          className="avataImage"
-                                        />
-                                      </div>
-                                      <div className="detailsAvatar">
-                                        <span className="nameA">
-                                          {item.name}
-                                        </span>
-                                        {/* <span className="nameB">
-                                          {item.Usertype}
-                                        </span> */}
-                                      </div>
-                                    </div>
-                                    <div className="rightTo">
-                                      <div className="tagged">
-                                        <span className="taggedText">
-                                          {/* {item.status} */}
-                                          {assignedDesignerId === item.id
-                                            ? "Assigned"
-                                            : ""}
-                                        </span>
-                                      </div>
-                                      <div>
-                                        <button
-                                          onClick={() =>
-                                            handleAssignClick(item.id)
-                                          }
-                                          style={{
-                                            background: assignedDesignerId === item.id && "#fff",
-                                            color:assignedDesignerId === item.id && "#126E72",
-                                            border:assignedDesignerId === item.id && "1px solid #126E72"
-                                          }}
-                                          className={`avatarButton_designer ${
-                                            assignedDesignerId === item.id
-                                              ? "assigned"
-                                              : ""
-                                          }`}
-                                        >
-                                          {assignedDesignerId === item.id
-                                            ? "Unassign"
-                                            : "Assign"}
-                                        </button>
-                                      </div>
-                                    </div>
+                              {isLoading ? (
+                                <>
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      justifyContent: "center",
+                                      alignItems: "center",
+                                    }}
+                                  >
+                                    <CircularProgress
+                                      size={40} // Set the desired size
+                                      sx={{
+                                        color: "#126e72",
+                                        padding: "8px 10px",
+                                        width: "35px",
+                                      }}
+                                    />
                                   </div>
-                                  <div className="line"></div>
-                                </div>
-                                
-                              ))}
-                              
+                                </>
+                              ) : (
+                                <>
+                                  {" "}
+                                  {AllDesigners.map((item, index) => (
+                                    <div className="Avata" key={index}>
+                                      <div className="avatarContainer">
+                                        <div className="leftTo">
+                                          <div className="avatarImageContainer">
+                                            <img
+                                              src={item.image}
+                                              alt=""
+                                              className="avataImage"
+                                            />
+                                          </div>
+                                          <div className="detailsAvatar">
+                                            <span className="nameA">
+                                              {item.name}
+                                            </span>
+                                            {/* <span className="nameB">
+                                                {item.Usertype}
+                                              </span> */}
+                                          </div>
+                                        </div>
+                                        <div className="rightTo">
+                                          <div className="tagged">
+                                            <span className="taggedText">
+                                              {/* {item.status} */}
+                                              {assignedDesignerId === item.id
+                                                ? "Assigned"
+                                                : ""}
+                                            </span>
+                                          </div>
+                                          <div>
+                                            <button
+                                              onClick={() =>
+                                                handleAssignClick(item.id)
+                                              }
+                                              style={{
+                                                background:
+                                                  assignedDesignerId ===
+                                                    item.id && "#fff",
+                                                color:
+                                                  assignedDesignerId ===
+                                                    item.id && "#126E72",
+                                                border:
+                                                  assignedDesignerId ===
+                                                    item.id &&
+                                                  "1px solid #126E72",
+                                              }}
+                                              className={`avatarButton_designer ${
+                                                assignedDesignerId === item.id
+                                                  ? "assigned"
+                                                  : ""
+                                              }`}
+                                            >
+                                              {assignedDesignerId === item.id
+                                                ? "Unassign"
+                                                : "Assign"}
+                                            </button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div className="line"></div>
+                                    </div>
+                                  ))}
+                                </>
+                              )}
+
                               <div style={{ marginTop: "20px" }}>
                                 <button
                                   className="next-button"
@@ -649,7 +684,6 @@ const AdminBasicDetailsModal = ({
                                 </button>
                               </div>
                             </div>
-                 
                           </div>
                         </>
                       ) : (
@@ -679,7 +713,10 @@ const AdminBasicDetailsModal = ({
                                   type="text"
                                   className="inputFields"
                                   name="SKU"
-                                  value={AdminUploadedImageIds?.designcode || getSelectedDesign}
+                                  value={
+                                    AdminUploadedImageIds?.designcode ||
+                                    getSelectedDesign
+                                  }
                                   onChange={handleInput}
                                 />
                                 <div>
