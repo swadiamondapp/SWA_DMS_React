@@ -183,7 +183,7 @@ const WareHouseDetails = ({ sidebarExpanded }) => {
                   <p>{customizationwarehouseData.diamond_type}</p>
                 </div>
                 <div className="A1_text">
-                  <p>APPROX DIAMOND WEIGHT</p>
+                  <p>Approx Diamond weight</p>
                   <p>{customizationwarehouseData.diamond_weight}</p>
                 </div>
                 {/* <div className="A1_text">

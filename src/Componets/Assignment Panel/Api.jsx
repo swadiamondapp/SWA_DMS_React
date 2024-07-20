@@ -16,6 +16,7 @@ import {
   MOVE_SINGLE_ITEM_TO_DESIGNPOOL,
   MOVE_TO_FOLDER,
   PRODUCT_CATEGORY_LIST,
+  SEARCH_DESIGNERS,
   TAG_LIST,
   UPLOAD_ADMIN_IMAGE_ASSIGNMENT,
 } from "../../Pages/Services/EndPoints";
@@ -41,9 +42,7 @@ export const list_folderDetails = async (
   selectedId
 ) => {
   try {
-    const response = await apiService.get(
-      `${FOLDER_DETAIL_API}${selectedId}/`
-    );
+    const response = await apiService.get(`${FOLDER_DETAIL_API}${selectedId}/`);
     if (response.data.results.status_code === 200) {
       setFolderDetails(response.data.results.data);
     }
@@ -96,7 +95,7 @@ export const move_to_folder = async (
     console.log(body, "itemMovirddd");
     const response = await apiService.post(MOVE_TO_FOLDER, body);
     if (checkApiStatus(response)) {
-      list_assignment_folder(setIsLoading,setAssignmentFolder);
+      list_assignment_folder(setIsLoading, setAssignmentFolder);
       onClose();
       setSuccessMessage("Assignment Folder Created SuccessFully");
       setSuccessModalOpen(true);
@@ -105,7 +104,7 @@ export const move_to_folder = async (
       }, 1600);
       setFolderName("");
       setSelectedAssignment([]);
-      setItemMovedToAssignment([])
+      setItemMovedToAssignment([]);
     }
   } catch (error) {
     console.error("Error moving designs:", error);
@@ -628,11 +627,25 @@ export const deleteItemFromAssignmentPanel = async (
       setSuccessModalOpen(true);
       setTimeout(() => {
         setSuccessModalOpen(false);
-        setDeleteConfirmationOpen(false)
+        setDeleteConfirmationOpen(false);
       }, 1600);
       setActiveCardId([]);
     }
   } catch (error) {
     console.error("Error moving designs:", error);
+  }
+};
+
+export const listDesignersByName = async (setIsLoading,setAllDesigners,SearchDesigners) => {
+  try {
+    setIsLoading(true)
+    const response = await apiService.get(`${SEARCH_DESIGNERS}${SearchDesigners}`);
+    if (checkApiStatus(response)) {
+      setAllDesigners(response?.data?.results?.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }finally {
+    setIsLoading(false)
   }
 };

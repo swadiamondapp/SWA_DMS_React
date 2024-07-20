@@ -29,6 +29,7 @@ import {
   diamond_type_dropdown_basicDetails,
   findings_List_basicDetails,
   list_all_designers,
+  listDesignersByName,
   metal_type_dropdown_basicDetails,
   move_to_assignment,
   move_to_assignment_from_admin,
@@ -109,6 +110,7 @@ const AdminBasicDetailsModal = ({
   const [assignedDesignerId, setAssignedDesignerId] = useState(null);
   const [openAdminFolder,setOpenAdminFolder] = useState(false)
   const [AdminBasicItemId, setAdminBasicItemId] = useState(null);
+  const [SearchDesigners,setSearchDesigner] = useState("")
 
   const [ItemMovedToAssignment, setItemMovedToAssignment] = useState([]);
   console.log(AssignDesignerModalOpen, "AssignDesignerModalOpen");
@@ -450,7 +452,15 @@ const AdminBasicDetailsModal = ({
       notes: "",
     })
   }
+  const handleSearchDesigners = (event)=> {
+    setSearchDesigner(event.target.value)
+  }
+  const SearchDesiners = ()=> {
+    listDesignersByName(setIsLoading,setAllDesigners,SearchDesigners)
+  }
+  
   console.log(assignedDesignerId, "assignedDesignerId");
+  console.log(SearchDesigners,"SearchDesigners")
   return (
     <div>
       <div className="">
@@ -560,10 +570,11 @@ const AdminBasicDetailsModal = ({
                                 <input
                                   type="text"
                                   className="assignDesignerSearchBar"
+                                  onChange={handleSearchDesigners}
                                 />
                               </div>
                               <div className="assignSearchBar_button">
-                                <button>Search</button>
+                                <button onClick={SearchDesiners}>Search</button>
                               </div>
                             </div>
                             <div
