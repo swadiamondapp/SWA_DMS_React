@@ -164,15 +164,15 @@ const WareHouseDetails = ({ sidebarExpanded }) => {
                 </div>
                 <div className="A1_text">
                   <p>Length</p>
-                  <p>{customizationwarehouseData.length_of_item}</p>
+                  <p>{customizationwarehouseData.length_of_item} mm</p>
                 </div>
                 <div className="A1_text">
                   <p>Width</p>
-                  <p>{customizationwarehouseData.width}</p>
+                  <p>{customizationwarehouseData.width} mm</p>
                 </div>
                 <div className="A1_text">
                   <p>Height</p>
-                  <p>{customizationwarehouseData.height}</p>
+                  <p>{customizationwarehouseData.height} mm</p>
                 </div>
                 <div className="A1_text">
                   <p>Type of metal</p>
@@ -184,7 +184,7 @@ const WareHouseDetails = ({ sidebarExpanded }) => {
                 </div>
                 <div className="A1_text">
                   <p>Approx Diamond weight</p>
-                  <p>{customizationwarehouseData.diamond_weight}</p>
+                  <p>{customizationwarehouseData.diamond_weight} g</p>
                 </div>
                 {/* <div className="A1_text">
                 <p>Findings</p>
@@ -192,7 +192,7 @@ const WareHouseDetails = ({ sidebarExpanded }) => {
               </div> */}
                 <div className="A1_text">
                   <p>Approx weight</p>
-                  <p>{customizationwarehouseData.weight}</p>
+                  <p>{customizationwarehouseData.weight} g</p>
                 </div>
 
                 <div className="A1_text">
@@ -312,7 +312,7 @@ const WareHouseDetails = ({ sidebarExpanded }) => {
                   />
                 </div>
                 <div className="A1_text">
-                  <p>APPROX DIAMOND WEIGHT</p>
+                  <p>Approx diamond weight</p>
                   <input
                     type="number"
                     className="actualDetails_input"

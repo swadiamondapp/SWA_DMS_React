@@ -42,7 +42,9 @@
 }
 .actualDetails_input {
   border: none;
-  font-size: 13px;
+  font-size: 14px;
+  padding: 6px 0px;
+
 
 }
 .error_input_p_warehouse {

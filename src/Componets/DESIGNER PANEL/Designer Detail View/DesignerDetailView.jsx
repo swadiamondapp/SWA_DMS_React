@@ -63,7 +63,7 @@ const DesignerDetailView = (props) => {
   // const handleAssignmentCad = () => {
   //   assign_to_cad(setIsLoading,folderId,userId,selectedDesigns)
   // }
-  console.log(props.folderDetails, "dataP");
+  console.log(props.folderDetails, "dataP87");
 
   const formatDate = (isoString) => {
     const date = new Date(isoString);

@@ -514,7 +514,9 @@ export const assign_to_designers = async (
   setAssignDesignerModalOpen,
   setAdminBasicDetailsOpen,
   setUploadedImage,
-  setAssignedDesignerId
+  setAssignedDesignerId,
+  setSearchDesigner,
+  setAllDesigners
 ) => {
   try {
     const body = {
@@ -524,7 +526,7 @@ export const assign_to_designers = async (
     console.log(body, "bodyDeesiners");
     const response = await apiService.post(ASSIGN_UNASSIGN_DESIGNERS, body);
     if (response.data.results.status_code === 200) {
-      setSuccessMessage("Item Assigned SuccessFully");
+      setSuccessMessage("Item Assigned Successfully");
       setSuccessModalOpen(true);
       setTimeout(() => {
         // setOpenAdminFolder(true);
@@ -535,11 +537,13 @@ export const assign_to_designers = async (
       setAdminBasicDetailsOpen(false);
       setUploadedImage(null);
       setAssignedDesignerId(null);
+      setSearchDesigner("")
+      list_all_designers(setAllDesigners);
     }
   } catch (error) {
     // setSelectedAssignment([])
     console.error("Error moving designs:", error);
-    alert("Please Assign A Designer");
+    // alert("Please Assign A Designer");
   }
 };
 export const move_to_folder_admin_user = async (
