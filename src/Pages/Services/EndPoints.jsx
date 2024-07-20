@@ -96,6 +96,8 @@ export const WORKDONE_TABLE_PRODUCT_SEARCH = "workdone/scan/";
 export const WORKDONE_TABLE_PRODUCT_DETAIL = "workdone/";
 export const WORKDONE_TABLE_PRODUCT_UPDATE = "assignment/";
 
+export const WORKDONE_CUSTOMIZATION_APPROVE = "confirm/customizations/";
+
 export const MASTERS_FINDING_DATAS = "master/finding/list";
 export const MASTERS_FINDING_CREATE = "master/finding/create/";
 export const FINDING_ITEM_DELETE = "master/finding/";
@@ -152,6 +154,7 @@ export const OUTLET_ITEM_UPDATE = "master/outlet/";
 
 export const MOVE_SINGLE_ITEM_TO_DESIGNPOOL = "move-assignments/"
 export const DELETE_ITEM_FROM_ASSIGNMENT_PANEL = "delete-assignment-item/"
+export const NEW_SCAN_LIST = "warehouse/scan/list/";
 export const LIST_ASSIGN_TO_LIST_ITEMS = "list/myassigned-data/"
 export const SEARCH_WITH_NAMES = "list/users/?searchname="
 export const EDIT_DETAIL_VIEW_WAREHOUSE= "warehouse/update-customization/"
