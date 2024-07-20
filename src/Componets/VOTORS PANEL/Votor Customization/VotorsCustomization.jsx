@@ -3,12 +3,16 @@ import DesignBtn from "../../ADMIN PANEL/Design Pool/DesignBtn";
 import { IoEye } from "react-icons/io5";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import CustomiseRequest from "../../CustomiseRequest/CustomiseRequiest";
-import { voters_customization_list, delete_customization } from "../Api";
+import {
+  voters_customization_list,
+  delete_customization,
+  confirVotersStatus,
+} from "../Api";
 import DeleteConfirmationModal from "../../ConfirmationModal/DeleteConfirmationModal";
 import SuccessModal from "../../SuccessModal/SuccessModal";
 import CircularProgress from "@mui/material/CircularProgress";
 
-const VotorsCustomization = ({sidebarExpanded}) => {
+const VotorsCustomization = ({ sidebarExpanded }) => {
   const [showEditDelete, setShowEditDelete] = useState(null);
   const [IsModalOpen, setIsModalOpen] = useState(false);
   const [Data, setData] = useState([]);
@@ -73,15 +77,27 @@ const VotorsCustomization = ({sidebarExpanded}) => {
 
   console.log(Data, "votersCuz");
 
+  const handleConfirmButton = (userId) => {
+    confirVotersStatus(setIsLoading, userId, setData);
+  };
+
   return (
-    <div className="ParentVotors" style={{paddingLeft:sidebarExpanded? "225px":"130px"}}>
+    <div
+      className="ParentVotors"
+      style={{ paddingLeft: sidebarExpanded ? "225px" : "130px" }}
+    >
       <div className="votors_btns">
         <DesignBtn votersSetData={setData} />
       </div>
       <div className="VotorsCustomizationTable">
         {isLoading ? (
-          <div style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
-           
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
             <CircularProgress
               size={100} // Set the desired size
               sx={{
@@ -93,87 +109,99 @@ const VotorsCustomization = ({sidebarExpanded}) => {
           </div>
         ) : (
           <div className="Users_Table_List">
-          <table style={{ width: "100%" }}>
-            <thead>
-              <tr style={{ color: "#455173" }}>
-                <th style={{ borderRight: "0.5px solid #E7EDF4" }}>
-                  Created Date
-                </th>
-                <th style={{ borderRight: "0.5px solid #E7EDF4" }}>
-                  Customization ID
-                </th>
-                <th style={{ borderRight: "0.5px solid #E7EDF4" }}>Outlet</th>
-                <th style={{ borderRight: "0.5px solid #E7EDF4" }}>
-                  Mobile number
-                </th>
-                <th style={{ borderRight: "0.5px solid #E7EDF4" }}>
-                  Product type
-                </th>
-                <th>Status</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {Data.map((item, index) => (
-                <tr key={index} style={{ color: "#2E364C" }}>
-                  <td>{item.created_at}</td>
-                  <td>{item.customizationcode}</td>
-                  <td>{item.outlet}</td>
-                  <td>
-                    <div className="view_password">{item.mobile_number}</div>
-                  </td>
-                  <td>{item.product_type}</td>
-                  {/* <td>
+            <table style={{ width: "100%" }}>
+              <thead>
+                <tr style={{ color: "#455173" }}>
+                  <th style={{ borderRight: "0.5px solid #E7EDF4" }}>
+                    Created Date
+                  </th>
+                  <th style={{ borderRight: "0.5px solid #E7EDF4" }}>
+                    Customization ID
+                  </th>
+                  <th style={{ borderRight: "0.5px solid #E7EDF4" }}>Outlet</th>
+                  <th style={{ borderRight: "0.5px solid #E7EDF4" }}>
+                    Mobile number
+                  </th>
+                  <th style={{ borderRight: "0.5px solid #E7EDF4" }}>
+                    Product type
+                  </th>
+                  <th></th>
+                  <th>Status</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {Data.map((item, index) => (
+                  <tr key={index} style={{ color: "#2E364C" }}>
+                    <td>{item.created_at}</td>
+                    <td>{item.customizationcode}</td>
+                    <td>{item.outlet}</td>
+                    <td>
+                      <div className="view_password">{item.mobile_number}</div>
+                    </td>
+                    <td>{item.product_type}</td>
+                    {/* <td>
                     <div className="active_sendmail">
                       <button className="sendmail_btn">Send Mail</button>
                     </div>
                   </td> */}
+                    <td>
+                      {item.status === "Updated" && (
+                        <button
+                          className="votersConfirm_btn"
+                          onClick={handleConfirmButton(item.id)}
+                        >
+                          Confirm
+                        </button>
+                      )}
+                    </td>
+                    <td style={{ position: "relative" }}>
+                      <div className="status_votors">
+                        {/* <button className="requested_btn">Requested</button> */}
+                        <button className="updated_btn">{item.status}</button>
+                        {/* <button className="votersConfirm_btn">{item.status}</button> */}
 
-                  <td style={{ position: "relative" }}>
-                    <div className="status_votors">
-                      {/* <button className="requested_btn">Requested</button> */}
-                      <button className="updated_btn">{item.status}</button>
-                      <IoEye
-                        style={{
-                          color: "#A7BED7",
-                          fontSize: "18px",
-                          cursor: "pointer",
-                        }}
-                        onClick={() => handleEyeClick(item.id)}
-                      />
-                      <BsThreeDotsVertical
-                        className="Action_dots"
-                        onClick={() =>
-                          setShowEditDelete(
-                            showEditDelete === index ? null : index
-                          )
-                        }
-                      />
-                    </div>
-                    {showEditDelete === index && (
-                      <div ref={dropdownRef} className="Edit_delete_btn_user">
-                        {/* <p
+                        <IoEye
+                          style={{
+                            color: "#A7BED7",
+                            fontSize: "18px",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => handleEyeClick(item.id)}
+                        />
+                        <BsThreeDotsVertical
+                          className="Action_dots"
+                          onClick={() =>
+                            setShowEditDelete(
+                              showEditDelete === index ? null : index
+                            )
+                          }
+                        />
+                      </div>
+
+                      {showEditDelete === index && (
+                        <div ref={dropdownRef} className="Edit_delete_btn_user">
+                          {/* <p
                           className="Edit_btn_user"
                           onClick={() => handleEditCustomization(item.id)}
                         >
                           Edit
                         </p> */}
-                        <p
-                          className="Delete_btn_user"
-                          onClick={() => handleDeleteCustomization(item.id)}
-                        >
-                          Delete
-                        </p>
-                      </div>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+                          <p
+                            className="Delete_btn_user"
+                            onClick={() => handleDeleteCustomization(item.id)}
+                          >
+                            Delete
+                          </p>
+                        </div>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
-       
       </div>
       <CustomiseRequest
         open={IsModalOpen}

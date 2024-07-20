@@ -78,6 +78,7 @@ const SlotView = ({ open, onClose, userId, slotView }) => {
             className="modal"
           >
             <div>
+              
               <button onClick={() => handleClose()} className="overLayButton_cht">
                 <img src={roundedClose} />
                 CLOSE

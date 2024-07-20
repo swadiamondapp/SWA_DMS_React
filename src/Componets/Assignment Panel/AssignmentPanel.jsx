@@ -45,9 +45,7 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
     useState(true);
 
   const [createFolderModal, setcreateFolderModal] = useState(false);
-  const [ IdOfDeleteAssignment, setIdOfDeleteAssignment] = useState([])
-
-
+  const [IdOfDeleteAssignment, setIdOfDeleteAssignment] = useState([]);
 
   const location = useLocation();
   const dotsRef = useRef(null);
@@ -192,8 +190,8 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
     console.log(item, "itemmmmm");
   };
   const handleDeleteSingle = (item) => {
-    setIdOfDeleteAssignment(item)
-    setDeleteConfirmationOpen(true)
+    setIdOfDeleteAssignment(item);
+    setDeleteConfirmationOpen(true);
     // deleteItemFromAssignmentPanel(
     //   setIsLoading,
     //   IdOfDeleteAssignment,
@@ -255,27 +253,6 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
           // setcreateFolderModal={setcreateFolderModal}
           // handleCreateFolderModal
         />
-        <div className="Parent_Folder_section">
-          <h3 className="HeadNewdesign">Folders</h3>
-          <div className="folderCard_parent">
-            {assignmentFolder.map((item) => (
-              <div
-                className="folder__card"
-                key={item.id}
-                onClick={() => handleFolderNaviate(item)}
-              >
-                {/* <Link
-                  to={`/assignmentpaneldetailsview/${
-                    item.id
-                  }?name=${encodeURIComponent(item.name)}`}
-                > */}
-                <img src={folderimg} alt="" />
-                {/* </Link> */}
-                <p style={{ wordWrap: 'break-word', maxWidth: '100px' }}>{item.name}</p>
-              </div>
-            ))}
-          </div>
-        </div>
 
         <div className="Assignment_panel_section">
           <h3 className="HeadNewdesign">Selected</h3>
@@ -355,6 +332,30 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
               );
             })}
           </div>
+
+          <div className="Parent_Folder_section">
+            <h3 className="HeadNewdesign">Folders</h3>
+            <div className="folderCard_parent">
+              {assignmentFolder.map((item) => (
+                <div
+                  className="folder__card"
+                  key={item.id}
+                  onClick={() => handleFolderNaviate(item)}
+                >
+                  {/* <Link
+                  to={`/assignmentpaneldetailsview/${
+                    item.id
+                  }?name=${encodeURIComponent(item.name)}`}
+                > */}
+                  <img src={folderimg} alt="" />
+                  {/* </Link> */}
+                  <p style={{ wordWrap: "break-word", maxWidth: "100px" }}>
+                    {item.name}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
       <DesignPools
@@ -389,7 +390,7 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
         successModalOpen={successModalOpen}
         successMessage={successMessage}
       />
-         <DeleteConfirmationModal
+      <DeleteConfirmationModal
         DeleteConfirmationOpen={DeleteConfirmationOpen}
         handleDeleteClose={handleDeleteClose}
         setDeleteConfirmationOpen={setDeleteConfirmationOpen}

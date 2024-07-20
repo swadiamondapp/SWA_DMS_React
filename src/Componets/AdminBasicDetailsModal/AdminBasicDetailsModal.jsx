@@ -430,6 +430,26 @@ const AdminBasicDetailsModal = ({
     // Prevent the modal from closing when clicking the backdrop
     event.stopPropagation();
   };
+  const handleCloseButton =()=> {
+    onClose()
+    setUploadedImage(null)
+    setAdminBasicDetailsOpen(false)
+  setFormData ( {
+      SKU: [],
+      productCategory: "",
+      length: "",
+      width: "",
+      height: "",
+      typeOfMetal: "",
+      diamondType: "",
+      approxDiamondWeight: "",
+      findings: "",
+      approxMetalWeights: "",
+      approxMRP: "",
+      tag: "",
+      notes: "",
+    })
+  }
   console.log(assignedDesignerId, "assignedDesignerId");
   return (
     <div>
@@ -450,7 +470,7 @@ const AdminBasicDetailsModal = ({
             <Box sx={style}>
               <Typography>
                 <div className="adminBasicModal_container">
-                  <div style={{position:'relative'}}><div style={{position:'absolute',right:'0'}} onClick={onClose}><img src={closeButton} alt="" /></div></div>
+                  <div style={{position:'relative'}}><div style={{position:'absolute',right:'0'}} onClick={handleCloseButton}><img src={closeButton} alt="" /></div></div>
                   <div className="numbers_container">
                     <div className="Container1">
                       <div className="parant1">

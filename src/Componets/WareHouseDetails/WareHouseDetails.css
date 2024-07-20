@@ -45,4 +45,17 @@
   font-size: 13px;
 
 }
+.error_input_p_warehouse {
+  position: absolute;
+  right: 20px;
+  color: red;
+  font-size: 10px;
+  background: transparent;
+  padding: 2px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  margin-left: 0px;
+  /* bottom: -20px; */
+  margin-top: 2px;
+}
 

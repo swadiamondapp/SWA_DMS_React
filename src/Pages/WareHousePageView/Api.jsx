@@ -6,6 +6,7 @@ import {
   CUSTOMIZATION_LIST_BY_ID_WAREHOUSE,
   DELETE_CUSTOMIZATION,
   EDIT_CUTOMIZATIONS_WAREHOUSE,
+  EDIT_DETAIL_VIEW_WAREHOUSE,
   LIST_LAST_VOTED_DESIGN,
   LIST_WAREHOUSE_DESIGNS,
   REJECT_WAREHOUSE,
@@ -67,11 +68,11 @@ export const customizaztion_list_wareHouse = async (
 export const customization_details_view_warehouse = async (
   setIsLoading,
   setCustomizationWareHouseData,
-  wareHouseuserId
+  userWareHouseId
 ) => {
   try {
     const response = await apiService.get(
-      `${CUSTOMIZATION_LIST_BY_ID_WAREHOUSE}${wareHouseuserId}/`
+      `${CUSTOMIZATION_LIST_BY_ID_WAREHOUSE}${userWareHouseId}/`
     );
     if (response?.data?.results?.status_code === 200) {
       setCustomizationWareHouseData(response.data.results.data);
@@ -493,12 +494,12 @@ export const scan_list_search = async (
       scan_list_datas(setIsLoading, setScanTableData);
       setsearchListId("");
       alert("Item Added");
-      setError("")
+      setError("");
     }
   } catch (error) {
     console.log(error);
     alert("Already exists");
-    setError("")
+    setError("");
     setsearchListId("");
   }
 };
@@ -622,5 +623,65 @@ export const workDone_table_product_update = async (
     }
   } catch (error) {
     console.error("Update Failed", error);
+  }
+};
+
+export const wareHouseEditBasicDetails = async (
+  setIsLoading,
+  setActualFormData,
+  actualFormData,
+  userWareHouseId,
+  setSuccessMessage,
+  setSuccessModalOpen,
+  setErrorPriceMessage,
+  setErrors,
+  navigate
+) => {
+  try {
+    const body = {
+      metal_type: [actualFormData.typeOfMetal],
+      // metal_type: [5],
+
+      weight: actualFormData.weight,
+      size: actualFormData.size,
+      width: actualFormData.width,
+      height: actualFormData.height,
+      length_of_item: actualFormData.length,
+      diamond_type: [actualFormData.diamondType],
+      // diamond_type: [7],
+
+      diamond_weight: actualFormData.approxDiamondWeight,
+      actual_price: actualFormData.actualPrice,
+      notes: actualFormData.notes,
+    };
+    console.log(body, "formBody");
+    const response = await apiService.patch(
+      `${EDIT_DETAIL_VIEW_WAREHOUSE}${userWareHouseId}`,
+      body
+    );
+    if (response.data.results.status_code === 200) {
+      setSuccessMessage("Updated Successfully");
+      setSuccessModalOpen(true);
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+        navigate(`/customRequestTable`);
+      }, 1700);
+      setErrors({})
+      setActualFormData({
+        length: "",
+        width: "",
+        height: "",
+        notes: "",
+        typeOfMetal: [],
+        diamondType: [],
+        approxDiamondWeight: "",
+        approxWeight: "",
+        actualPrice: "",
+      })
+      
+    }
+  } catch (error) {
+    console.log(error);
+    setErrorPriceMessage(error);
   }
 };

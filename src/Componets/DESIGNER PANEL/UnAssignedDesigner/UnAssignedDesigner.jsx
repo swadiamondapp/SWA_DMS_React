@@ -73,7 +73,7 @@ const CustomizedOrder = ({ sidebarExpanded }) => {
                     </div>
                     <div className="Card_Details_Inner">
                       <div className="unassign_name">
-                        <h3 style={{ color: "#455173" }}>{item.user_name}</h3>
+                        <h3 style={{ color: "#455173" }}>{item.designer}</h3>
                         <h5 style={{ color: "#455173" }}>{item.created_at}</h5>
                       </div>
                     </div>
@@ -85,13 +85,15 @@ const CustomizedOrder = ({ sidebarExpanded }) => {
                   <div className="unasignCardDetails">
                     <div className="unassignbuttondetails">
                       <div className="unassign_avatar">
-                        <img src={avatar} alt="" />
+                        <img src={item.CadDesigner.image} alt="" />
                       </div>{" "}
-                      <div>Vipin yadav</div>
+                      <div>{item.CadDesigner.name}</div>
                     </div>
                     <div className="UnassignDesigner">
                       <button
-                        onClick={() => handleUnassign(item.id, item.user)}
+                        onClick={() =>
+                          handleUnassign(item.item_id, item.CadDesigner.id)
+                        }
                       >
                         Unassign
                       </button>

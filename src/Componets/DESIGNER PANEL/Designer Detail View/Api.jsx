@@ -36,11 +36,11 @@ export const renderFolderDetails = async (
   id
 ) => {
   try {
-    setIsLoading(true)
+    setIsLoading(true);
     const response = await apiService.get(`${FOLDER_DETAIL_API}${id}`);
     if (checkApiStatus(response)) {
       setFolderDetails(response.data.results.data);
-      setIsLoading(false)
+      setIsLoading(false);
     }
   } catch (error) {
     console.log(error);
@@ -60,7 +60,7 @@ export const assign_to_cad = async (
   setSelectedAssignment
 ) => {
   try {
-    setIsLoading(true)
+    setIsLoading(true);
     const body = {
       folder: assignToCadId,
       user: userId,
@@ -69,8 +69,7 @@ export const assign_to_cad = async (
     console.log(body, "body====>");
     console.log(selectedDesign, " selectedDesign");
     const response = await apiService.post(ASSIGN_TO_CAD, body);
-    if (response.data.status_code === 200) {
-      setSelectedAssignment([]);
+    if (checkApiStatus(response)) {
       onClose();
       list_designer_folderDetails();
       setSuccessMessage("Item Assigned Successfully");
@@ -78,13 +77,14 @@ export const assign_to_cad = async (
       setTimeout(() => {
         setSuccessModalOpen(false);
       }, 1600);
+      setSelectedAssignment([]);
     }
   } catch (error) {
     // setSelectedAssignment([])
     console.error("Error moving designs:", error);
     alert(error?.response?.data?.assignment_items);
-  }finally {
-    setIsLoading(false)
+  } finally {
+    setIsLoading(false);
   }
 };
 
@@ -121,19 +121,20 @@ export const unassignDesigner = async (
   setUnAssignedLists
 ) => {
   try {
+
     const body = {
       paper_design_id: id,
       user: userId,
     };
     console.log(body, "unasssdfidf");
     const response = await apiService.post(ASSIGN_UNASSIGN_DESIGNERS, body);
-    if (response.data.results.status_code === 200) {
+    if (checkApiStatus(response)){
       listUnAssignedLists(setIsLoading, setUnAssignedLists);
-      setSuccessMessage("Item Unassigned SuccessFully");
+      setSuccessMessage("Item Unassigned Successfully");
       setSuccessModalOpen(true);
       setTimeout(() => {
         setSuccessModalOpen(false);
-      }, 1600);
+      }, 1700);
     }
   } catch (error) {
     console.error("Error moving designs:", error);

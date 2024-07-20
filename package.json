@@ -39,6 +39,7 @@
     "react-tag-input": "^6.10.2",
     "react-tag-input-component": "^2.0.2",
     "react-to-print": "^2.15.1",
+    "react-toastify": "^10.0.5",
     "roughjs": "^4.6.6",
     "use-image": "^1.1.1"
   },
