@@ -118,6 +118,7 @@ const DesignBtn = ({
             </div>
           )}
         {location.pathname === `/designerassignview/${id}` &&
+         selectedDesign.length > 0 &&
           selectButtonLabel === "Unselect" && (
             <div className="Parent_MoveTo">
               <button

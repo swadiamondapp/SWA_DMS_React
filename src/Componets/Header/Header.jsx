@@ -17,6 +17,7 @@ const Header = ({
   folderDetails,
   designListData,
   sidebarExpanded,
+  setSearchWithName,
 }) => {
   const location = useLocation();
   const { nameCentral } = useParams();
@@ -43,7 +44,7 @@ const Header = ({
   const userImage = localStorage.getItem("Loginimage");
   const dropdownRef = useRef(null);
 
-  const { assignmentId,folderNameAssignmentView} = location.state || {}
+  const { assignmentId, folderNameAssignmentView } = location.state || {};
   const { assignmentFolderName } = location.state || {};
   const { folderName } = location.state || {};
   console.log("header===>FolderName", folderName);
@@ -62,6 +63,10 @@ const Header = ({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  const handleSearchWithName = (event) => {
+    setSearchWithName(event.target.value, "nameSarch");
+  };
 
   return (
     <div>
@@ -129,7 +134,7 @@ const Header = ({
                   <h3>Customize Request</h3>
                 )}
                 {location.pathname === "/wareHouse" && <h3>Votors panel</h3>}
-                {location.pathname === "/votorspanal" && <h3>Votors panel</h3>}
+                {location.pathname === "/votorspanal" && <h3>Voters panel</h3>}
                 {location.pathname === "/gallery" && <h3>Gallery</h3>}
                 {location.pathname === "/finishedProject" && (
                   <h3>Finished project</h3>
@@ -150,7 +155,10 @@ const Header = ({
                 {location.pathname === `/designerassignview/${id}` && (
                   <h3>{folderName}</h3>
                 )}
-                {location.pathname === `/CadAssignment` && <h3>Assigments</h3>}
+                {location.pathname === `/centralfolderdetails/${id}` && (
+                  <h3>{assignmentFolderName}</h3>
+                )}
+                {location.pathname === `/CadAssignment` && <h3>Assignments</h3>}
                 {location.pathname === "/designerassign" && (
                   <h3>Assignment panel</h3>
                 )}
@@ -163,7 +171,7 @@ const Header = ({
                 {location.pathname === `/assignmentpaneldetailsview/${id}` && (
                   <h3>{assignmentFolderName}</h3>
                 )}
-                  {location.pathname === `/assignmentview/${assignmentId}` && (
+                {location.pathname === `/assignmentview/${assignmentId}` && (
                   <h3>{folderNameAssignmentView}</h3>
                 )}
                 {location.pathname === `/rendersdetailing/${id}` && (
@@ -186,6 +194,9 @@ const Header = ({
                 )}
                 {location.pathname === "/centralhubtransfer" && (
                   <h3>Transfer</h3>
+                )}
+                {location.pathname === "/unassigneddesigner" && (
+                  <h3>Assigned to</h3>
                 )}
 
                 {location.pathname === "/slot" && <h3>Slot</h3>}
@@ -240,10 +251,20 @@ const Header = ({
                   location.pathname !== `/assignmentpaneldetailsview/${id}` &&
                   location.pathname !== `/rendersdetailing/${id}` &&
                   location.pathname !== `/finished/${id}` &&
-                  location.pathname !== "/scan" && (
+                  location.pathname !== `/Customizedorder` &&
+                  location.pathname !== `/unassigneddesigner` &&
+                  location.pathname !== `/FinishedProduct` &&
+                  location.pathname !== `/folderdetails/${id}` &&
+                  location.pathname !== "/scan" &&
+                  location.pathname !== `/centralfolderdetails/${id}` &&
+                  location.pathname !== `/assignmentview/${assignmentId}` &&  (
                     <div className="Search_Admin">
                       <div className="Search_User">
-                        <input type="text" placeholder="Search Users" />
+                        <input
+                          type="text"
+                          placeholder="Search Users"
+                          onChange={handleSearchWithName}
+                        />
                         <img src={searchimg} alt="" />
                       </div>
                     </div>

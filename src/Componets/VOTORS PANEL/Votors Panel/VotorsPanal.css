@@ -36,6 +36,16 @@
   font-weight: 500;
   cursor: pointer;
 }
+.votersConfirm_btn {
+  color: #fff;
+  border: 0.5px solid #23a06496;
+  background:#126e72;
+  padding: 8px 15px;
+  font-family: "Inter";
+  border-radius: 32px;
+  font-weight: 500;
+  cursor: pointer;
+}
 .Card_Details_Inner_gallery {
   display: flex;
   flex-direction: column;

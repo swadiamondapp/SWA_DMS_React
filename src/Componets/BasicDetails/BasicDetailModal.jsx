@@ -132,7 +132,7 @@ const BasicDetailModal = ({
         approxMetalWeights: basicDetails
           ? basicDetails.approx_metal_weight
           : "",
-        approxMRP: basicDetails.approx_price || "",
+        approxMRP: basicDetails.approx_price || "0",
         tag: basicDetails.tag || "",
         notes: basicDetails.notes || "",
       }));

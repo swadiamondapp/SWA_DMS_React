@@ -270,6 +270,7 @@ export const reUploadFile = async (
       setTimeout(() => {
         setSuccessModalOpen(false);
       }, 1500);
+      setUploadInstructionsVisible(true)
       callBack();
     }
   } catch (error) {

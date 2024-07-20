@@ -694,7 +694,6 @@ export const whstatusDataCreate = async (
   setInputData
 ) => {
   try {
-    debugger;
     const response = await apiService.post(WHSTATUS_ITEM_CREATE, inputData);
     if (checkApiStatus(response)) {
       whstatusTableData(setTableData);

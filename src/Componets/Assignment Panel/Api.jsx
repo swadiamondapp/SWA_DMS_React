@@ -400,8 +400,8 @@ export const move_to_assignment_from_admin = async (
     const response = await apiService.post(ASSIGNMENT_MOVE, body);
     if (response.data.results.status_code === 200) {
       setAdminBasicItemId(response.data.results.data[0].item_id); // Update the new state with the response data
-      setSuccessMessage("Moved to Assignment Successfully");
-      setSuccessModalOpen(true);
+      // setSuccessMessage("Moved to Assignment Successfully");
+      // setSuccessModalOpen(true);
       setAssignDesignerModalOpen(true);
       setFormData({
         SKU: [],
@@ -419,7 +419,7 @@ export const move_to_assignment_from_admin = async (
         notes: "",
       });
       setTimeout(() => {
-        setSuccessModalOpen(false);
+        // setSuccessModalOpen(false);
       }, 1600);
     }
   } catch (error) {
@@ -627,7 +627,8 @@ export const deleteItemFromAssignmentPanel = async (
   setData,
   setSuccessModalOpen,
   setSuccessMessage,
-  setActiveCardId
+  setActiveCardId,
+  setDeleteConfirmationOpen
 ) => {
   try {
     const response = await apiService.delete(
@@ -639,6 +640,7 @@ export const deleteItemFromAssignmentPanel = async (
       setSuccessModalOpen(true);
       setTimeout(() => {
         setSuccessModalOpen(false);
+        setDeleteConfirmationOpen(false)
       }, 1600);
       setActiveCardId([]);
     }

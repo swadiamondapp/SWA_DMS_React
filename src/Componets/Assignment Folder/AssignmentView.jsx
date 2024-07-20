@@ -14,7 +14,7 @@ import BasicDetailModal from "../BasicDetails/BasicDetailModal";
 import BasicDetialsEditModal from "../BasicDetails/BasicDetialsEditModal";
 import EdiIcon from "../../assets/EditBasic.png"
 
-const AssignmentView = () => {
+const AssignmentView = ({sidebarExpanded}) => {
   const { id } = useParams();
   const [folderDetails, setFolderDetails] = useState([]);
   const [folderDetailView, setFolderDetailsView] = useState([]);
@@ -54,7 +54,7 @@ const AssignmentView = () => {
 
   return (
     <div>
-      <div className="Parent_AssignmentView">
+      <div className="Parent_AssignmentView" style={{paddingLeft:sidebarExpanded? "225px": "130px"}}>
         <div className="AssignmentView">
           <div className="Left_img_View">
             <img src={itemDetails?.paper_design?.image} alt="" />

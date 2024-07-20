@@ -9,7 +9,7 @@ import {
 import avatar from "../../../assets/avataprofile.png";
 import SuccessModal from "../../SuccessModal/SuccessModal";
 
-const CustomizedOrder = ({sidebarExpanded}) => {
+const CustomizedOrder = ({ sidebarExpanded }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [UnAssignedLists, setUnAssignedLists] = useState([]);
   const [successMessage, setSuccessMessage] = useState("");
@@ -52,25 +52,28 @@ const CustomizedOrder = ({sidebarExpanded}) => {
   ];
   console.log(UnAssignedLists, "customizattion");
   return (
-    <div className="DesignerAssignmentPanel" style={{paddingLeft:sidebarExpanded? "225px":"130px"}}>
+    <div
+      className="DesignerAssignmentPanel"
+      style={{ paddingLeft: sidebarExpanded ? "225px" : "130px" }}
+    >
       <div className="CustomizedOrderParent">
         <div className="Parent_NewDesign">
           <div className="Card_Design_Parent">
             {UnAssignedLists.map((item) => (
               <div className="New_Design_card">
                 <div className="Card_img" style={{ minHeight: "190px" }}>
-                  <img src={item.image} alt="" />
+                  <img src={item.design_image} alt="" />
                 </div>
                 <div className="Card_Details">
                   <div className="parent_UnAssignedD">
                     <div>
                       <h3 style={{ marginBottom: "0px" }}>
-                        ID : {item.designcode}
+                        ID : {item.design_code}
                       </h3>
                     </div>
                     <div className="Card_Details_Inner">
                       <div className="unassign_name">
-                        <h3 style={{ color: "#455173" }}>{item.user_name}</h3>
+                        <h3 style={{ color: "#455173" }}>{item.designer}</h3>
                         <h5 style={{ color: "#455173" }}>{item.created_at}</h5>
                       </div>
                     </div>
@@ -82,13 +85,15 @@ const CustomizedOrder = ({sidebarExpanded}) => {
                   <div className="unasignCardDetails">
                     <div className="unassignbuttondetails">
                       <div className="unassign_avatar">
-                        <img src={avatar} alt="" />
+                        <img src={item.CadDesigner.image} alt="" />
                       </div>{" "}
-                      <div>Vipin yadav</div>
+                      <div>{item.CadDesigner.name}</div>
                     </div>
                     <div className="UnassignDesigner">
                       <button
-                        onClick={() => handleUnassign(item.id, item.user)}
+                        onClick={() =>
+                          handleUnassign(item.item_id, item.CadDesigner.id)
+                        }
                       >
                         Unassign
                       </button>

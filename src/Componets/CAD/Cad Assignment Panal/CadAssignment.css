@@ -101,6 +101,7 @@
 .Prinit_btn_hub {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
   background: #126e72;
   color: #fff;
