@@ -134,7 +134,7 @@ const Header = ({
                   <h3>Customize Request</h3>
                 )}
                 {location.pathname === "/wareHouse" && <h3>Votors panel</h3>}
-                {location.pathname === "/votorspanal" && <h3>Votors panel</h3>}
+                {location.pathname === "/votorspanal" && <h3>Voters panel</h3>}
                 {location.pathname === "/gallery" && <h3>Gallery</h3>}
                 {location.pathname === "/finishedProject" && (
                   <h3>Finished project</h3>
@@ -154,6 +154,9 @@ const Header = ({
                 )}
                 {location.pathname === `/designerassignview/${id}` && (
                   <h3>{folderName}</h3>
+                )}
+                {location.pathname === `/centralfolderdetails/${id}` && (
+                  <h3>{assignmentFolderName}</h3>
                 )}
                 {location.pathname === `/CadAssignment` && <h3>Assignments</h3>}
                 {location.pathname === "/designerassign" && (
@@ -252,7 +255,9 @@ const Header = ({
                   location.pathname !== `/unassigneddesigner` &&
                   location.pathname !== `/FinishedProduct` &&
                   location.pathname !== `/folderdetails/${id}` &&
-                  location.pathname !== "/scan" && (
+                  location.pathname !== "/scan" &&
+                  location.pathname !== `/centralfolderdetails/${id}` &&
+                  location.pathname !== `/assignmentview/${assignmentId}` &&  (
                     <div className="Search_Admin">
                       <div className="Search_User">
                         <input

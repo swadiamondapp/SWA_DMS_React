@@ -6,7 +6,7 @@
   display: grid;
   grid-template-columns: 1fr 0.7fr;
   gap: 30px;
-  padding: 20px 30px 20px 60px;
+  padding: 20px 0px 20px 0px;
 }
 .Left_img_View {
   background: #fff;

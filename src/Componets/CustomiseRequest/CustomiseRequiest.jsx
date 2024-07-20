@@ -80,7 +80,7 @@ const CustomiseRequest = ({
   // };
   const handleEditWareHouseDetails = (dataToDisplay) => {
     const customizationsku = dataToDisplay.customizationcode;
-
+    localStorage.setItem('wareHouseuserId', wareHouseuserId);
     onClose();
 
     if (location.pathname === "/votorscustomization") {
@@ -281,12 +281,12 @@ const CustomiseRequest = ({
                           {CustomizationWareHouseData.status ===
                             "Requested" && (
                             <>
-                              {/* <button
+                              <button
                                 onClick={() => handleConfirm()}
                                 className="CR_ButtonCommen confirmButtonCR"
                               >
                                 Confirm
-                              </button> */}
+                              </button>
                               <button
                                 onClick={() => handleReject()}
                                 className="CR_ButtonCommen rejectButtonCR"

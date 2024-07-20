@@ -8,6 +8,7 @@ import {
   DELETE_CUSTOMIZATION,
   LIKE_DESIGN,
   STOCK_ORDER,
+  USER_RESPONSE_UPDATING,
   VOTERS_CUSTOMIZATION_LIST,
 } from "../../Pages/Services/EndPoints";
 import { ALL_DESIGNS, VOTED_DESIGN_LIST } from "../../Pages/Services/EndPoints";
@@ -273,6 +274,24 @@ export const create_stock_order_gallary = async (
         colour: "",
         notes: "",
       });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const confirVotersStatus = async (setIsLoading, userId, setData) => {
+  try {
+    const body = {
+      customer_response: "Confirmed",
+    };
+    console.log("Request body:", userId);
+    const response = await apiService.patch(
+      `${USER_RESPONSE_UPDATING}${userId}/update-response/`,
+      body
+    );
+    if (checkApiStatus(response)) {
+      voters_customization_list(setIsLoading, setData);
     }
   } catch (error) {
     console.log(error);

@@ -11,6 +11,7 @@ import folderimg from "../../../assets/folder.png";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 
 const CentralDashboard = ({sidebarExpanded,Folders}) => {
+  const  navigate = useNavigate()
   const [Data, setData] = useState([]);
 
   const card = [
@@ -26,16 +27,21 @@ const CentralDashboard = ({sidebarExpanded,Folders}) => {
   //   // list_all_designs_from_cad(setIsLoading, setData);
   //   listFoldersCentralHub(setIsLoading, setFolders);
   // }, []);
+    const handleFolderNaviate = (item) => {
+    navigate(`/centralfolderdetails/${item.id}`, {
+      state: { assignmentFolderName: item.name },
+    });
+  };
   console.log(Folders, "listaksjdfks====>");
   return (
     <div className="parentCentral"  style={{paddingLeft:sidebarExpanded? "225px":"130px"}}>
       <div className="CadAssignmentCard">
         <div className="folderCard_parent">
           {Folders.map((item) => (
-            <div className="folder__card" key={item.id}>
-              <Link to={`/centralfolderdetails/${item.id}`}>
+            <div className="folder__card" key={item.id} onClick={()=>handleFolderNaviate(item)}>
+              {/* <Link to={`/centralfolderdetails/${item.id}`}> */}
                 <img src={folderimg} alt="" />
-              </Link>
+              {/* </Link> */}
               <p>{item.name}</p>
             </div>
           ))}
