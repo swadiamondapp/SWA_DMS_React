@@ -19,6 +19,7 @@ import AdminBasicDetailsModal from "../AdminBasicDetailsModal/AdminBasicDetailsM
 import AssignmentModal from "../AssignmentModal/AssignmentModal";
 import SuccessModal from "../SuccessModal/SuccessModal";
 import DeleteConfirmationModal from "../ConfirmationModal/DeleteConfirmationModal";
+import { CircularProgress } from "@mui/material";
 // import { useLocation, useNavigate } from "react-router-dom";
 
 const AssignmentPanel = ({ sidebarExpanded }) => {
@@ -263,6 +264,26 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
         />
 
         <div className="Assignment_panel_section">
+          
+        {Data.length === 0  || assignmentFolder.length === 0 ?  (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <CircularProgress
+                size={50} // Set the desired size
+                sx={{
+                  color: "#126e72",
+                  padding: "8px 10px",
+                  width: "35px",
+                }}
+              />
+            </div>
+          ) :(
+            <>
           <h3 className="HeadNewdesign">Selected</h3>
           <div className="Card_Design_Parent">
             {Data.map((item, index) => {
@@ -364,6 +385,8 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
               ))}
             </div>
           </div>
+          </>
+          )}
         </div>
       </div>
       <DesignPools

@@ -7,6 +7,7 @@ import { LiaCloudUploadAltSolid } from "react-icons/lia";
 import UploadFile from "../UploadFile/UploadFile";
 import { createFinsishedProjects } from "../../Pages/Renders/Apis";
 import SuccessModal from "../SuccessModal/SuccessModal";
+import { CircularProgress } from "@mui/material";
 
 const FinishedProjects = (props) => {
   const [uploadInstructionsVisible, setUploadInstructionsVisible] =
@@ -132,6 +133,25 @@ const FinishedProjects = (props) => {
             onChange={handleFileUpload}
           />
         </div>
+        {props?.finishedProjectData?.length === 0 && (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop:"50px"
+              }}
+            >
+              <CircularProgress
+                size={50} // Set the desired size
+                sx={{
+                  color: "#126e72",
+                  padding: "8px 10px",
+                  width: "35px",
+                }}
+              />
+            </div>
+          )}
         <div className="folderCard_parent RendersHome_folders_top">
           {props?.finishedProjectData?.map((item, index) => (
             <div

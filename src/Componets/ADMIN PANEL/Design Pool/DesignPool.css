@@ -62,8 +62,10 @@
   font-size: 14px;
 }
 .Card_img img {
-  max-width: 180px;
-  max-height: 180px;
+  width: 100% !important;
+  height: 100%;
+  object-fit: contain;
+  /* background-size: contain; */
   
 }
 .New_Design_card {
@@ -85,11 +87,16 @@
   /* border-bottom: 0.5px solid #ceccc7; */
   border-bottom: 0.5px solid #ceccc78a;
   padding-bottom: 10px;
-  min-height: 140px;
+  height: 200px;
 }
 .Card_Details {
   padding-top: 15px;
   font-family: "Gilroy medium";
+  display: flex ;
+  flex-direction: column;
+  justify-content:space-between !important;
+  /* background-color: red; */
+  height: 100%;
 }
 .HeadNewdesign {
   font-family: "Gilroy medium";

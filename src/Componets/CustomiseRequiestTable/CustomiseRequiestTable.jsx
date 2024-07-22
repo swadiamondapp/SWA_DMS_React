@@ -220,7 +220,7 @@ const CustomizationTable = (props) => {
                     <td>{item.mobile_number}</td>
                     <td>{item.product_type}</td>
 
-                    <td style={{ display: "flex", gap: "10px" }}>
+                    <td >
                       <button className="PrintButton_CT">
                         Print <img src={PrintIcon} alt="Print" />
                       </button>
@@ -230,7 +230,7 @@ const CustomizationTable = (props) => {
                         <span
                           disabled
                           className="inactive_btn"
-                          style={{ fontWeight: "300" }}
+                          style={{ fontWeight: "300" ,marginLeft:"20px"}}
                         >
                           Approved
                         </span>
@@ -242,6 +242,7 @@ const CustomizationTable = (props) => {
                             backgroundColor: "#23a06496",
                             color: "white",
                             cursor: "pointer",
+                            marginLeft:"20px"
                           }}
                         >
                           Approve

@@ -49,9 +49,11 @@ export const createFinsishedProjects = async (
   data,
   setSuccess,
   onClose,
-  setFinishedProjectData
+  setFinishedProjectData,
+  setErrors
 ) => {
   try {
+    debugger
     setIsLoading(true);
     const response = await apiService.post(CREATE_FINISHED_PROJECTS, data);
     if (checkApiStatus(response)) {
@@ -60,9 +62,14 @@ export const createFinsishedProjects = async (
       onClose();
       setTimeout(() => {
         setSuccess(false);
-      }, 1600);
-    }
-  } catch (error) {
+      }, 1600);   
+  }  else if (
+    response.data
+  ) {
+    setErrors(response.data.name);
+  }
+}
+  catch (error) {
     console.log(error);
   } finally {
     setIsLoading(false);

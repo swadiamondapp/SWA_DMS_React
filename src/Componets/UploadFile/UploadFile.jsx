@@ -31,7 +31,7 @@ const UploadFile = ({
 }) => {
   const initialImageSlots = 6;
   const [isLoading, setIsLoading] = useState(false);
-  const [images,setImages  ] = useState(Array(initialImageSlots).fill(null));
+  const [images, setImages] = useState(Array(initialImageSlots).fill(null));
   const [file, setFile] = useState(null);
   const [id, setId] = useState("");
   const [errors, setErrors] = useState("");
@@ -57,34 +57,46 @@ const UploadFile = ({
     onClose();
     setImages(Array(initialImageSlots).fill(null));
     setId("");
+    setErrors("");
+    setFile(null)
   };
 
   const handleUpload = () => {
-    if (!id || !images) {
-      setErrors("Please fill all fields.");
-    } else {
-      const formData = new FormData();
-      formData.append("designcode", id);
-      formData.append("name", id);
-      images.forEach((image, index) => {
-        if (image) {
-          formData.append(`img${index + 1}`, image);
-        }
-      });
-      if (file) {
-        formData.append("file1", file);
-      }
-      createFinsishedProjects(
-        setIsLoading,
-        formData,
-        setSuccess,
-        handleclose,
-        setFinishedProjectData
-      );
+    setErrors("");
+    if (!id.trim()) {
+      setErrors("Please enter a Folder ID.");
+      return;
     }
+    if (images.every((image) => image === null)) {
+      setErrors("Please upload at least one image.");
+      return;
+    }
+    if (!file) {
+      setErrors("Please upload  2.DM File.");
+      return;
+    }
+    const formData = new FormData();
+    formData.append("designcode", id);
+    formData.append("name", id);
+    images.forEach((image, index) => {
+      if (image) {
+        formData.append(`img${index + 1}`, image);
+      }
+    });
+    if (file) {
+      formData.append("file1", file);
+    }
+    createFinsishedProjects(
+      setIsLoading,
+      formData,
+      setSuccess,
+      handleclose,
+      setFinishedProjectData,
+      setErrors
+    );
   };
 
-  console.log(" images", images);
+  console.log(" errors____", errors);
   console.log("file images", file);
 
   return (
@@ -166,29 +178,39 @@ const UploadFile = ({
                       <span className="title_1">Upload 2.DM File </span>
                       <div className="dashed_imageContainer">
                         <div className="dashedImage">
-                        {file && (
-                              <img
-                                src={URL.createObjectURL(file)}
-                                alt=""
-                                style={{ height: "64px", width: "64px", position: "relative"  }}
-                              />
-                            
+                          {file && (
+                            <img
+                              src={URL.createObjectURL(file)}
+                              alt=""
+                              style={{
+                                height: "64px",
+                                width: "64px",
+                                position: "relative",
+                              }}
+                            />
                           )}
                           {/* <div  style={{ position: "relative" }}> */}
-                            <label>
-                              <img src={plusICon} alt="add"
-                                style={{ position:"absolute",zIndex:"999",top:"30%",left:"30%" }}
-                              />
-                              <input
-                                type="file"
-                                // accept=".3dm"
-                                accept="image/png, image/jpeg"
-                                style={{ display: "none" }}
-                                onChange={handleFileUpload}
-                              />
-                            </label>
-                            {/* </div> */}
-                          </div>
+                          <label>
+                            <img
+                              src={plusICon}
+                              alt="add"
+                              style={{
+                                position: "absolute",
+                                zIndex: "999",
+                                top: "30%",
+                                left: "30%",
+                              }}
+                            />
+                            <input
+                              type="file"
+                              // accept=".3dm"
+                              accept="image/png, image/jpeg"
+                              style={{ display: "none" }}
+                              onChange={handleFileUpload}
+                            />
+                          </label>
+                          {/* </div> */}
+                        </div>
                       </div>
                     </div>
                   </div>

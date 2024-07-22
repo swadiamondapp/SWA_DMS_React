@@ -176,19 +176,20 @@ export const designListStatusChange = async (
 export const uploadFile = async (
   setIsLoading,
   body,
+  setImages,
   setSuccessModalOpen,
   setSuccessMessage,
   setIsModalOpen,
-  setImages,
   setProductCode,
   callBack
 ) => {
   try {
     setIsLoading(true);
+    console.log("cadddddddd", body);
     const response = await apiService.post(CAD_UPLOAD, body);
     if (checkApiStatus(response)) {
-      setIsModalOpen(false);
       setImages({ normal: null, threeD: null });
+      setIsModalOpen(false);
       setProductCode("");
       setSuccessMessage("Successfully uploaded");
       setSuccessModalOpen(true);
@@ -256,22 +257,24 @@ export const reUploadFile = async (
   setImages,
   setProductCode,
   id,
+  setItemId,
+  setData,
   callBack
 ) => {
   try {
     setIsLoading(true);
     const response = await apiService.put(`${CAD_RE_UPLOAD}${id}`, body);
     if (checkApiStatus(response)) {
-      setIsModalOpen(false);
+      // Update state after successful upload
       setImages({ normal: null, threeD: null });
+      setIsModalOpen(false);
       setProductCode("");
       setSuccessMessage("Successfully uploaded");
       setSuccessModalOpen(true);
       setTimeout(() => {
         setSuccessModalOpen(false);
       }, 1500);
-      setUploadInstructionsVisible(true)
-      callBack();
+      callBack(); // Callback function to handle additional actions
     }
   } catch (error) {
     console.log(error);
@@ -279,3 +282,4 @@ export const reUploadFile = async (
     setIsLoading(false);
   }
 };
+

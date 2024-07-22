@@ -21,17 +21,22 @@ const FolderDetailsCard = ({
 
     return `${day} ${month} ${year}`;
   }
+
   const handlePrint = useReactToPrint({
     content: printRef.current,
   });
+
   const handleDownload = () => {
     if (!folderDetails?.file_2d) return;
 
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.href = folderDetails.file_2d;
-    link.download = 'image.png'; // You can dynamically set the filename here
+    link.download = "image.png"; // You can dynamically set the filename here
     link.click();
   };
+ 
+  console.log("folderDetails",folderDetails)
+
   return (
     <div
       className="ParentCad"
@@ -76,7 +81,7 @@ const FolderDetailsCard = ({
                   >
                     Posted on : {formatDate(folderDetails?.created_at)}
                   </p>
-                  <button className="Download_btn_hub"  onClick={handleDownload}>
+                  <button className="Download_btn_hub" onClick={handleDownload}>
                     DOWNLOAD
                     <GoDownload />
                   </button>
@@ -102,7 +107,6 @@ const FolderDetailsCard = ({
                     Print
                     <IoPrintOutline />
                   </button> */}
-
                   <ReactToPrint
                     trigger={() => (
                       <div className="Prinit_btn_hub" onClick={handlePrint}>
@@ -110,7 +114,8 @@ const FolderDetailsCard = ({
                       </div>
                     )}
                     content={() => printRef.current}
-                  />
+                  />{" "}
+                 
                   <div style={{ display: "none" }}>
                     <CadPrint ref={printRef} folderDetails={folderDetails} />
                   </div>

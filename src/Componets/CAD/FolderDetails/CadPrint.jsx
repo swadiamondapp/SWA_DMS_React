@@ -1,18 +1,41 @@
 import React, { forwardRef } from "react";
 import "./CadPrint.css";
 
+// ErrorBoundary component to catch errors
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <p>Something went wrong.</p>;
+    }
+
+    return this.props.children;
+  }
+}
+
+// CadPrint component wrapped with forwardRef and ErrorBoundary
 const CadPrint = forwardRef(({ folderDetails }, ref) => {
-  console.log(folderDetails, "sdfasdfsprint");
   return (
-    <div ref={ref} className="RendersProductPrint">
-      {folderDetails && folderDetails.length > 0 ? (
-        folderDetails.map((item, index) => (
-          <img key={index} src={item?.file_3d} alt="" />
-        ))
-      ) : (
-        <p>No items to display</p>
-      )}
-    </div>
+    <ErrorBoundary>
+      <div ref={ref} className="RendersProductPrint">
+        {folderDetails && (
+          <>
+            <img src={folderDetails.file_3d} alt="" />
+            <span>
+              POSTED ON: <b>{folderDetails.created_at.split("T")[0]} </b>
+            </span>
+          </>
+        )}
+      </div>
+    </ErrorBoundary>
   );
 });
 
