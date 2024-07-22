@@ -57,7 +57,9 @@ export const assign_to_cad = async (
   list_designer_folderDetails,
   setSuccessModalOpen,
   setSuccessMessage,
-  setSelectedAssignment
+  setSelectedAssignment,
+  setSelectButtonLabel,
+  setShowRadioButtons
 ) => {
   try {
     setIsLoading(true);
@@ -77,6 +79,8 @@ export const assign_to_cad = async (
       setTimeout(() => {
         setSuccessModalOpen(false);
       }, 1600);
+      setSelectButtonLabel("Select"),
+      setShowRadioButtons(false)
       setSelectedAssignment([]);
     }
   } catch (error) {

@@ -601,7 +601,7 @@ export const moveSingleItemToDesignPool = async (
     );
     if (checkApiStatus(response)) {
       list_assignment_panel(setIsLoading, setData);
-      setSuccessMessage("item Moved SuccessFully");
+      setSuccessMessage("item Moved Successfully");
       setSuccessModalOpen(true);
       setTimeout(() => {
         setSuccessModalOpen(false);
@@ -627,7 +627,7 @@ export const deleteItemFromAssignmentPanel = async (
     );
     if (checkApiStatus(response)) {
       list_assignment_panel(setIsLoading, setData);
-      setSuccessMessage("item Deleted SuccessFully");
+      setSuccessMessage("item Deleted Successfully");
       setSuccessModalOpen(true);
       setTimeout(() => {
         setSuccessModalOpen(false);

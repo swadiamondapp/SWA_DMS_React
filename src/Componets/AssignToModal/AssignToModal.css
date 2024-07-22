@@ -73,11 +73,11 @@
 
 
 }
-.avatarButton {
-    background: #0464D5;
-    border:none;
+.avatarButton_assign_button {
+    background: transparent;
+    border: 1px solid rgba(18, 110, 114, 1);
     box-shadow: #0000000D;
-    color:#fff;
+    color:rgba(18, 110, 114, 1);
     font-family: "Gilroy medium";
     padding:8px 16px;
     border-radius: 32px;
