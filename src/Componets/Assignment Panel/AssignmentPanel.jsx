@@ -388,6 +388,7 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
         // setAdminBasicDetailsOpen={setAdminBasicDetailsOpen}
         // setUploadedImage={setUploadedImage}
         // setAssignedDesignerId={ setAssignedDesignerId}
+        setAssignmentFolder={setAssignmentFolder}
         setcreateFolderModal={setcreateFolderModal}
         selectedAssignment={selectedAssignment}
         setData={setData}

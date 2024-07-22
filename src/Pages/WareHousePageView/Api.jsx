@@ -16,6 +16,7 @@ import {
   SCAN_TABLE_STATUS_CHANGE,
   SCAN_TABLE_STATUS_GET,
   VOTERS_CUSTOMIZATION_LIST,
+  WORKDONE_CUSTOMIZATION_APPROVE,
   WORKDONE_TABLE_LIST,
   WORKDONE_TABLE_PRODUCT_DETAIL,
   WORKDONE_TABLE_PRODUCT_SEARCH,
@@ -56,12 +57,15 @@ export const customizaztion_list_wareHouse = async (
   setCustomizationListData
 ) => {
   try {
+    setIsLoading(true);
     const response = await apiService.get(VOTERS_CUSTOMIZATION_LIST);
     if (checkApiStatus(response)) {
       setCustomizationListData(response.data.results.data);
     }
   } catch (error) {
     console.log(error);
+  } finally {
+    setIsLoading(false);
   }
 };
 
@@ -625,6 +629,24 @@ export const workDone_table_product_update = async (
     console.error("Update Failed", error);
   }
 };
+export const customizationApprove = async (
+  setIsLoading,
+  approveId,
+  setCustomizationListData
+) => {
+  try {
+    debugger;
+    const response = await apiService.patch(
+      `${WORKDONE_CUSTOMIZATION_APPROVE}${approveId}/`
+    );
+    if (checkApiStatus(response)) {
+      customizaztion_list_wareHouse(setIsLoading, setCustomizationListData);
+      alert("Approved Successfully");
+    }
+  } catch (error) {
+    console.error("Update Failed", error);
+  }
+};
 
 export const wareHouseEditBasicDetails = async (
   setIsLoading,
@@ -666,7 +688,7 @@ export const wareHouseEditBasicDetails = async (
         setSuccessModalOpen(false);
         navigate(`/customRequestTable`);
       }, 1700);
-      setErrors({})
+      setErrors({});
       setActualFormData({
         length: "",
         width: "",
@@ -677,8 +699,7 @@ export const wareHouseEditBasicDetails = async (
         approxDiamondWeight: "",
         approxWeight: "",
         actualPrice: "",
-      })
-      
+      });
     }
   } catch (error) {
     console.log(error);

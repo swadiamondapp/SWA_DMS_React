@@ -87,7 +87,7 @@ const ScanTable = ({ sidebarExpanded}) => {
   console.log("data", scanTableData);
 
   return (
-    <div className="scantable_main"  style={{ marginLeft: sidebarExpanded ? "225px" : "130px" }}>
+       <div className="scantable_main"  style={{ marginLeft: sidebarExpanded ? "225px" : "130px" }}>
       <div className="Search_Admin scan_search">
         <div className="Search_User">
           <input
@@ -121,7 +121,7 @@ const ScanTable = ({ sidebarExpanded}) => {
                   <td style={{ borderLeft: "none" }}>{item.slot.slotnumber}</td>
 
                   <td style={{ borderLeft: "none" }}>
-                    <select
+                    {/* <select
                       className="scan_select"
                       value={item?.slot?.status?.id}
                       onChange={(e) =>
@@ -138,7 +138,8 @@ const ScanTable = ({ sidebarExpanded}) => {
                           {status.name}
                         </option>
                       ))}
-                    </select>
+                    </select> */}
+                    <span className="scan_select_span">{item.status}</span>
                   </td>
 
                   <td style={{ borderLeft: "none" }}>

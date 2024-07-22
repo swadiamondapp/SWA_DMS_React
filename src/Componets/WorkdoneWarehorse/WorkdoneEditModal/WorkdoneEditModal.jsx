@@ -317,6 +317,16 @@ const WorkdoneEditModal = ({ setOpenLeftbar, clickedProductId }) => {
                     </div>
                   </>
                 </div>
+                {/* <div className="workdone_modal">
+                  <span>Actual Price</span>
+                  <input
+                    type="text"
+                    onChange={handleInput}
+                    value={formData.actual_price}
+                    name="actual_price"
+                    required
+                  />
+                </div> */}
                 <div
                   className="workdone_modal"
                   style={{ borderBottom: "none" }}
@@ -329,7 +339,6 @@ const WorkdoneEditModal = ({ setOpenLeftbar, clickedProductId }) => {
                     required
                   />
                 </div>
-              </div>
               <div className="update_btn">
                 <button
                   onClick={() =>
@@ -338,6 +347,7 @@ const WorkdoneEditModal = ({ setOpenLeftbar, clickedProductId }) => {
                 >
                   Update
                 </button>
+              </div>
               </div>
             </div>
           </>

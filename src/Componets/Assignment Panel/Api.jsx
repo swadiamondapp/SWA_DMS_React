@@ -86,6 +86,7 @@ export const move_to_folder = async (
   ToCloseCreatefolder
 ) => {
   try {
+    debugger
     const body = {
       folder_data: {
         name: folderName,
@@ -95,7 +96,8 @@ export const move_to_folder = async (
     console.log(body, "itemMovirddd");
     const response = await apiService.post(MOVE_TO_FOLDER, body);
     if (checkApiStatus(response)) {
-      list_assignment_folder(setIsLoading, setAssignmentFolder);
+list_assignment_folder(setIsLoading,setAssignmentFolder);
+      list_assignment_panel(setIsLoading, setData)
       onClose();
       setSuccessMessage("Assignment Folder Created SuccessFully");
       setSuccessModalOpen(true);
@@ -106,9 +108,19 @@ export const move_to_folder = async (
       setSelectedAssignment([]);
       setItemMovedToAssignment([]);
     }
-  } catch (error) {
+  } 
+  catch (error) {
     console.error("Error moving designs:", error);
   }
+  // catch (error) {
+  //   console.log(error, "erreree");
+  //   const errorReason = error?.response?.data?.name;
+  //   const errorReasonString = errorReason
+  //     ? Object.values(errorReason).flat().join(", ")
+  //     : "";
+  //   console.log(errorReasonString, "errrstring");
+  //   setError(errorReason);
+  // }
 };
 
 export const metal_type_dropdown_basicDetails = async (

@@ -31,7 +31,7 @@ const UploadFile = ({
 }) => {
   const initialImageSlots = 6;
   const [isLoading, setIsLoading] = useState(false);
-  const [images, setImages] = useState(Array(initialImageSlots).fill(null));
+  const [images,setImages  ] = useState(Array(initialImageSlots).fill(null));
   const [file, setFile] = useState(null);
   const [id, setId] = useState("");
   const [errors, setErrors] = useState("");
@@ -84,7 +84,8 @@ const UploadFile = ({
     }
   };
 
-  console.log("upload images", images);
+  console.log(" images", images);
+  console.log("file images", file);
 
   return (
     <div>
@@ -162,14 +163,22 @@ const UploadFile = ({
                       </div>
                     </div>
                     <div className="addButton_Container">
-                      <span className="title_1">Upload 3.DM File </span>
+                      <span className="title_1">Upload 2.DM File </span>
                       <div className="dashed_imageContainer">
                         <div className="dashedImage">
-                          {file ? (
-                            <span>{file.name}</span>
-                          ) : (
+                        {file && (
+                              <img
+                                src={URL.createObjectURL(file)}
+                                alt=""
+                                style={{ height: "64px", width: "64px", position: "relative"  }}
+                              />
+                            
+                          )}
+                          {/* <div  style={{ position: "relative" }}> */}
                             <label>
-                              <img src={plusICon} alt="add" />
+                              <img src={plusICon} alt="add"
+                                style={{ position:"absolute",zIndex:"999",top:"30%",left:"30%" }}
+                              />
                               <input
                                 type="file"
                                 // accept=".3dm"
@@ -178,8 +187,8 @@ const UploadFile = ({
                                 onChange={handleFileUpload}
                               />
                             </label>
-                          )}
-                        </div>
+                            {/* </div> */}
+                          </div>
                       </div>
                     </div>
                   </div>

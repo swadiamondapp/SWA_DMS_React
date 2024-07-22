@@ -48,3 +48,9 @@ input[type="number"]::-webkit-inner-spin-button {
   border-radius: 4px !important;
   /* color: #006e7f1a !important; */
 }
+
+.workdone_modal .rti--container{
+  background: transparent!important;
+  border: none!important;
+  width: 200px !important;
+}
