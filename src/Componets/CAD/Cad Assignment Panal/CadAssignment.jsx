@@ -63,8 +63,15 @@ const CadAssignment = ({
     return parts[parts?.length - 1];
   };
 
+  const status = designList.map((item) => item.timer_status);
+
+  console.log("designList", designList);
+
   return (
-    <div className="ParentCad" style={{paddingLeft:sidebarExpanded? "225px":"130px"}}>
+    <div
+      className="ParentCad"
+      style={{ paddingLeft: sidebarExpanded ? "225px" : "130px" }}
+    >
       <div
         className="Design_FileUpload"
         // onClick={() => document.getElementById("fileInput").click()}
@@ -74,14 +81,18 @@ const CadAssignment = ({
             <div>
               <p className="D__fileUpload">Submit design</p>
               <p className="D__fileUpload2">
-                Upload your finished file as png and 3.dm file format
+                Upload your finished file as png and 2.dm file format
               </p>
             </div>
             <div className="File____uploadbtn">
-              <button onClick={() => setIsModalOpen(true)}>
-                Upload File{" "}
-                <LiaCloudUploadAltSolid style={{ fontSize: "22px" }} />
-              </button>
+              {status.some((item) => item === "on-going") ? (
+                <button onClick={() => setIsModalOpen(true)}>
+                  Upload File{" "}
+                  <LiaCloudUploadAltSolid style={{ fontSize: "22px" }} />
+                </button>
+              ) : (
+                <span className="D__fileUpload2"></span>
+              )}
             </div>
           </>
         ) : (
@@ -104,6 +115,7 @@ const CadAssignment = ({
           onChange={handleFileUpload}
         />
       </div>
+
       {/* cad folder */}
       <div className="CadFolder">
         <div

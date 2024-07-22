@@ -6,6 +6,7 @@ import filter from "../../../assets/filter.png";
 import folderimg from "../../../assets/folder.png";
 import { Link, useNavigate } from "react-router-dom";
 import DesignBtn from "../../ADMIN PANEL/Design Pool/DesignBtn";
+import { CircularProgress } from "@mui/material";
 
 const RendersHome = ({ designListData, sidebarExpanded }) => {
   const navigate = useNavigate();
@@ -38,6 +39,24 @@ const RendersHome = ({ designListData, sidebarExpanded }) => {
           Filter
         </button>
       </div>
+      {designListData.length === 0 && (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <CircularProgress
+                size={50} // Set the desired size
+                sx={{
+                  color: "#126e72",
+                  padding: "8px 10px",
+                  width: "35px",
+                }}
+              />
+            </div>
+          )}
       <div
         className="RendersHome_folders"
         style={{ width: sidebarExpanded ? "100%" : "110%" }}

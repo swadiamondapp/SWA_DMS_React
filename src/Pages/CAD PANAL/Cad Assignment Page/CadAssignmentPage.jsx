@@ -106,16 +106,18 @@ const CadAssignmentPage = () => {
     uploadFile(
       setIsLoading,
       formData,
+      setImages,
       setSuccessModalOpen,
       setSuccessMessage,
       setIsModalOpen,
-      setImages,
       setProductCode,
       () => {
         onStopButtonClick();
       }
     );
   };
+
+  console.log("images cddd",images)
 
   return (
     <div className="ParentVotorPage">
