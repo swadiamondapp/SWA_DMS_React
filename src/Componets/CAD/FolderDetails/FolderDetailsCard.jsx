@@ -11,6 +11,7 @@ const FolderDetailsCard = ({
   folderDetails,
   setIsModalOpen,
   sidebarExpanded,
+  setImages
 }) => {
   const printRef = useRef();
   function formatDate(timestamp) {
@@ -28,21 +29,40 @@ const FolderDetailsCard = ({
 
   const handleDownload = () => {
     if (!folderDetails?.file_2d) return;
-
-    const link = document.createElement("a");
-    link.href = folderDetails.file_2d;
-    link.download = "image.png"; // You can dynamically set the filename here
-    link.click();
+  
+    fetch(folderDetails.file_2d)
+      .then((response) => response.blob())
+      .then((blob) => {
+        const url = window.URL.createObjectURL(new Blob([blob]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "image.png"); // Set desired file name here
+        document.body.appendChild(link);
+        link.click();
+        link.parentNode.removeChild(link); // Clean up the DOM once downloaded
+      })
+      .catch((error) => {
+        console.error("Error downloading file:", error);
+        // Handle errors here
+      });
   };
+  
  
   console.log("folderDetails",folderDetails)
+
+  const handleOpenModal =()=>{
+    setIsModalOpen(true)
+    setImages({ 
+      normal: null, 
+      threeD: null });
+  }
 
   return (
     <div
       className="ParentCad"
       style={{ paddingLeft: sidebarExpanded ? "225px" : "130px" }}
     >
-      <div className="Design_FileUpload" onClick={() => setIsModalOpen(true)}>
+      <div className="Design_FileUpload" onClick={handleOpenModal}>
         <div>
           <p className="D__fileUpload">Reupload</p>
           <p className="D__fileUpload2">
@@ -79,7 +99,7 @@ const FolderDetailsCard = ({
                     className="Hub_head"
                     style={{ fontSize: "13px", padding: "5px 0px" }}
                   >
-                    Posted on : {formatDate(folderDetails?.created_at)}
+                    Posted on : {formatDate(folderDetails?.updated_at)}
                   </p>
                   <button className="Download_btn_hub" onClick={handleDownload}>
                     DOWNLOAD
@@ -101,7 +121,7 @@ const FolderDetailsCard = ({
                     className="Hub_head"
                     style={{ fontSize: "13px", padding: "5px 0px" }}
                   >
-                    Posted on : {formatDate(folderDetails?.created_at)}
+                    Posted on : {formatDate(folderDetails?.updated_at)}
                   </p>
                   {/* <button className="Prinit_btn_hub">
                     Print
