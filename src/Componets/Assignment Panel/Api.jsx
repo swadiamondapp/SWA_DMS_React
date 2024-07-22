@@ -16,6 +16,7 @@ import {
   MOVE_SINGLE_ITEM_TO_DESIGNPOOL,
   MOVE_TO_FOLDER,
   PRODUCT_CATEGORY_LIST,
+  SEARCH_DESIGNERS,
   TAG_LIST,
   UPLOAD_ADMIN_IMAGE_ASSIGNMENT,
 } from "../../Pages/Services/EndPoints";
@@ -41,9 +42,7 @@ export const list_folderDetails = async (
   selectedId
 ) => {
   try {
-    const response = await apiService.get(
-      `${FOLDER_DETAIL_API}${selectedId}/`
-    );
+    const response = await apiService.get(`${FOLDER_DETAIL_API}${selectedId}/`);
     if (response.data.results.status_code === 200) {
       setFolderDetails(response.data.results.data);
     }
@@ -97,7 +96,7 @@ export const move_to_folder = async (
     console.log(body, "itemMovirddd");
     const response = await apiService.post(MOVE_TO_FOLDER, body);
     if (checkApiStatus(response)) {
-      list_assignment_folder(setIsLoading,setAssignmentFolder);
+list_assignment_folder(setIsLoading,setAssignmentFolder);
       list_assignment_panel(setIsLoading, setData)
       onClose();
       setSuccessMessage("Assignment Folder Created SuccessFully");
@@ -107,7 +106,7 @@ export const move_to_folder = async (
       }, 1600);
       setFolderName("");
       setSelectedAssignment([]);
-      setItemMovedToAssignment([])
+      setItemMovedToAssignment([]);
     }
   } 
   catch (error) {
@@ -527,7 +526,9 @@ export const assign_to_designers = async (
   setAssignDesignerModalOpen,
   setAdminBasicDetailsOpen,
   setUploadedImage,
-  setAssignedDesignerId
+  setAssignedDesignerId,
+  setSearchDesigner,
+  setAllDesigners
 ) => {
   try {
     const body = {
@@ -537,7 +538,7 @@ export const assign_to_designers = async (
     console.log(body, "bodyDeesiners");
     const response = await apiService.post(ASSIGN_UNASSIGN_DESIGNERS, body);
     if (response.data.results.status_code === 200) {
-      setSuccessMessage("Item Assigned SuccessFully");
+      setSuccessMessage("Item Assigned Successfully");
       setSuccessModalOpen(true);
       setTimeout(() => {
         // setOpenAdminFolder(true);
@@ -548,11 +549,13 @@ export const assign_to_designers = async (
       setAdminBasicDetailsOpen(false);
       setUploadedImage(null);
       setAssignedDesignerId(null);
+      setSearchDesigner("")
+      list_all_designers(setAllDesigners);
     }
   } catch (error) {
     // setSelectedAssignment([])
     console.error("Error moving designs:", error);
-    alert("Please Assign A Designer");
+    // alert("Please Assign A Designer");
   }
 };
 export const move_to_folder_admin_user = async (
@@ -610,7 +613,7 @@ export const moveSingleItemToDesignPool = async (
     );
     if (checkApiStatus(response)) {
       list_assignment_panel(setIsLoading, setData);
-      setSuccessMessage("item Moved SuccessFully");
+      setSuccessMessage("item Moved Successfully");
       setSuccessModalOpen(true);
       setTimeout(() => {
         setSuccessModalOpen(false);
@@ -636,15 +639,29 @@ export const deleteItemFromAssignmentPanel = async (
     );
     if (checkApiStatus(response)) {
       list_assignment_panel(setIsLoading, setData);
-      setSuccessMessage("item Deleted SuccessFully");
+      setSuccessMessage("item Deleted Successfully");
       setSuccessModalOpen(true);
       setTimeout(() => {
         setSuccessModalOpen(false);
-        setDeleteConfirmationOpen(false)
+        setDeleteConfirmationOpen(false);
       }, 1600);
       setActiveCardId([]);
     }
   } catch (error) {
     console.error("Error moving designs:", error);
+  }
+};
+
+export const listDesignersByName = async (setIsLoading,setAllDesigners,SearchDesigners) => {
+  try {
+    setIsLoading(true)
+    const response = await apiService.get(`${SEARCH_DESIGNERS}${SearchDesigners}`);
+    if (checkApiStatus(response)) {
+      setAllDesigners(response?.data?.results?.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }finally {
+    setIsLoading(false)
   }
 };

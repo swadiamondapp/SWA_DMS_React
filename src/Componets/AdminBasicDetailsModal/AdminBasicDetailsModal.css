@@ -10,6 +10,12 @@
   font-size: 14px;
   font-family: "Gilroy bold";
 }
+.title_upload_container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
 .upload_admin_image {
   border: 1px dashed #0464d5;
   width: 100%;
@@ -44,6 +50,7 @@
   width: 25px;
   height: 25px;
   text-align: center;
+  color: #23A064
 }
 .numberPro2 {
   border: 1px solid #b4c3d0;
@@ -58,6 +65,7 @@
   width: 25px;
   height: 25px;
   text-align: center;
+  color: #23A064
 }
 
 .numbers_container {
@@ -126,12 +134,13 @@
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
   border-right: none;
+  height: 33.2px;
 }
 .assignSearchBar_button button {
   background: #0464d5;
   border: none;
   color: #ffff;
-  padding: 8px 10px;
+  padding: 9px 10px;
 }
 .avatarButton_designer {
   background: #126E72;
@@ -142,4 +151,10 @@
   padding: 8px 16px;
   border-radius: 32px;
   font-size: 14px;
+}
+.assignDesignerTitle {
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 8px;
+  font-family: "Gilroy medium";
 }

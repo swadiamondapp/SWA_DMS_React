@@ -63,7 +63,7 @@ const DesignerDetailView = (props) => {
   // const handleAssignmentCad = () => {
   //   assign_to_cad(setIsLoading,folderId,userId,selectedDesigns)
   // }
-  console.log(props.folderDetails, "dataP");
+  console.log(props.folderDetails, "dataP87");
 
   const formatDate = (isoString) => {
     const date = new Date(isoString);
@@ -96,8 +96,13 @@ const DesignerDetailView = (props) => {
     const seconds = String(date.getSeconds()).padStart(2, "0");
 
     // Return the formatted date in the format "YYYY-MM-DD HH:MM:SS"
-    return `${day}-${monthName}-${year} ${hours}:${minutes}`;
+    return `${day}-${monthName}-${year}`;
   };
+
+  const sortedItems =
+  props.folderDetails?.assignment_items?.sort((a, b) =>
+    a.items_status === "ALLOCATED" ? 1 : -1
+  ) || [];
   return (
     <div className="DesignerAssignmentPanel"  style={{paddingLeft:props.sidebarExpanded? "225px":"130px"}}>
       <DesignBtn
@@ -112,18 +117,20 @@ const DesignerDetailView = (props) => {
         setSelectedAssignment={setSelectedAssignment}
         list_id={props.id}
         list_designer_folderDetails={props.list_designer_folderDetails}
+        setSelectButtonLabel={setSelectButtonLabel}
+        setShowRadioButtons={setShowRadioButtons}
       />
       <div className="DesignerAssignment___panel_Cards">
         <div className="Parent_NewDesign">
           <div className="Card_Design_Parent">
             {props.folderDetails &&
-              props.folderDetails?.assignment_items?.map((item) => (
+              sortedItems.map((item) => (
                 <div
                   className="New_Design_card"
-                  style={{
-                    display:
-                      item.items_status === "ALLOCATED" ? "none" : "block",
-                  }}
+                  // style={{
+                  //   display:
+                  //     item.items_status === "ALLOCATED" ? "none" : "block",
+                  // }}
                 >
                   {console.log("folderDetails?", item.paper_design.image)}
                   <div className="Card_img">

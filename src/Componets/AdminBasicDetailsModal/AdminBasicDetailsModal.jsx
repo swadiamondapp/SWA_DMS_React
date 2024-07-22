@@ -14,6 +14,9 @@ import SuccessTickk from "../../assets/tickad.png";
 import SuccessModal from "../SuccessModal/SuccessModal";
 import CircularProgress from "@mui/material/CircularProgress";
 import closeButton from "../../assets/closeButton.svg";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "./toastStyles.css";
 
 // import {
 //   diamond_type_dropdown_basicDetails,
@@ -29,6 +32,7 @@ import {
   diamond_type_dropdown_basicDetails,
   findings_List_basicDetails,
   list_all_designers,
+  listDesignersByName,
   metal_type_dropdown_basicDetails,
   move_to_assignment,
   move_to_assignment_from_admin,
@@ -76,7 +80,7 @@ const AdminBasicDetailsModal = ({
   setSelectedAssignment,
   getSelectedDesign,
 }) => {
-  const [adminUploadedItemId,setAdminUploadedItemId] = useState([])
+  const [adminUploadedItemId, setAdminUploadedItemId] = useState([]);
   const [uploadedImage, setUploadedImage] = useState(null);
   const [uploadedFileName, setUploadedFileName] = useState("");
   const [AdminUploadedImageFile, setAdminUploadedImageFile] = useState(false);
@@ -107,8 +111,9 @@ const AdminBasicDetailsModal = ({
   const [AllDesigners, setAllDesigners] = useState([]);
   const [AdminUploadedIds, setAdminUploadedIds] = useState([]);
   const [assignedDesignerId, setAssignedDesignerId] = useState(null);
-  const [openAdminFolder,setOpenAdminFolder] = useState(false)
+  const [openAdminFolder, setOpenAdminFolder] = useState(false);
   const [AdminBasicItemId, setAdminBasicItemId] = useState(null);
+  const [SearchDesigners, setSearchDesigner] = useState("");
 
   const [ItemMovedToAssignment, setItemMovedToAssignment] = useState([]);
   console.log(AssignDesignerModalOpen, "AssignDesignerModalOpen");
@@ -174,8 +179,8 @@ const AdminBasicDetailsModal = ({
     }),
   });
 
-  console.log(assignedDesignerId,"assignedDesignerId")
-  console.log(AdminBasicDetailsOpen,"AdminBasicDetailsOpen")
+  console.log(assignedDesignerId, "assignedDesignerId");
+  console.log(AdminBasicDetailsOpen, "AdminBasicDetailsOpen");
 
   const handleNextClick = () => {
     const { error } = schema.validate(formData, {
@@ -202,8 +207,7 @@ const AdminBasicDetailsModal = ({
         setAdminBasicDetailsOpen,
         setAdminBasicItemId,
         setFormData
-
-      );;
+      );
       setErrors({ undefined });
     }
   };
@@ -297,7 +301,7 @@ const AdminBasicDetailsModal = ({
   const filterOption = (input, option) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
 
-  console.log("image",uploadedImage)
+  console.log("image", uploadedImage);
 
   const handleImageRemove = () => {
     setUploadedImage(null);
@@ -370,11 +374,11 @@ const AdminBasicDetailsModal = ({
       formData.diamondType &&
       formData.typeOfMetal
     ) {
-      CalculateApproxAmount()
+      CalculateApproxAmount();
     } else {
-      setFormData(prevFormData => ({
+      setFormData((prevFormData) => ({
         ...prevFormData,
-        approxMRP: 0
+        approxMRP: 0,
       }));
     }
   }, [
@@ -412,6 +416,20 @@ const AdminBasicDetailsModal = ({
   };
 
   const handleAssignDesigners = () => {
+    if (!assignedDesignerId) {
+      toast.warn("Choose a designer", {
+        position: "top-right",
+        autoClose: 1600,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "red",
+        className: "toast-warning",
+      });
+      return;
+    }
     assign_to_designers(
       assignedDesignerId,
       AdminUploadedIds,
@@ -422,19 +440,21 @@ const AdminBasicDetailsModal = ({
       setAssignDesignerModalOpen,
       setAdminBasicDetailsOpen,
       setUploadedImage,
-      setAssignedDesignerId
+      setAssignedDesignerId,
+      setSearchDesigner,
+      setAllDesigners
     );
   };
 
- const handleBackdropClick = (event) => {
+  const handleBackdropClick = (event) => {
     // Prevent the modal from closing when clicking the backdrop
     event.stopPropagation();
   };
-  const handleCloseButton =()=> {
-    onClose()
-    setUploadedImage(null)
-    setAdminBasicDetailsOpen(false)
-  setFormData ( {
+  const handleCloseButton = () => {
+    onClose();
+    setUploadedImage(null);
+    setAdminBasicDetailsOpen(false);
+    setFormData({
       SKU: [],
       productCategory: "",
       length: "",
@@ -448,9 +468,23 @@ const AdminBasicDetailsModal = ({
       approxMRP: "",
       tag: "",
       notes: "",
-    })
-  }
+    });
+  };
+  const handleSearchDesigners = (event) => {
+    const value = event.target.value;
+    setSearchDesigner(value);
+
+    if (value === "") {
+      console.log("Search field is empty");
+      listDesignersByName(setIsLoading, setAllDesigners, value);
+    }
+  };
+  const SearchDesiners = () => {
+    listDesignersByName(setIsLoading, setAllDesigners, SearchDesigners);
+  };
+
   console.log(assignedDesignerId, "assignedDesignerId");
+  console.log(SearchDesigners, "SearchDesigners");
   return (
     <div>
       <div className="">
@@ -463,14 +497,20 @@ const AdminBasicDetailsModal = ({
             aria-describedby="modal-modal-description"
             style={{ position: "absolute", right: "0" }}
             BackdropProps={{
-              onClick: handleBackdropClick // Stop backdrop clicks from closing the modal
+              onClick: handleBackdropClick, // Stop backdrop clicks from closing the modal
             }}
-            
           >
             <Box sx={style}>
               <Typography>
                 <div className="adminBasicModal_container">
-                  <div style={{position:'relative'}}><div style={{position:'absolute',right:'0'}} onClick={handleCloseButton}><img src={closeButton} alt="" /></div></div>
+                  <div style={{ position: "relative" }}>
+                    <div
+                      style={{ position: "absolute", right: "0" }}
+                      onClick={handleCloseButton}
+                    >
+                      <img src={closeButton} alt="" />
+                    </div>
+                  </div>
                   <div className="numbers_container">
                     <div className="Container1">
                       <div className="parant1">
@@ -542,7 +582,23 @@ const AdminBasicDetailsModal = ({
                     <div className="Container3">
                       <div className="parant1">
                         <div className="numberPro3">
-                          <p>3</p>
+                          {assignedDesignerId === null ? (
+                            <p>3</p>
+                          ) : (
+                            <div
+                              className="numberPro3"
+                              style={{
+                                border: "none",
+                                color: "#23A064",
+                              }}
+                            >
+                              <img
+                                style={{ width: "25px" }}
+                                src={SuccessTickk}
+                                alt=""
+                              />
+                            </div>
+                          )}
                         </div>
                         {/* <div className="line1"></div> */}
                       </div>
@@ -553,92 +609,135 @@ const AdminBasicDetailsModal = ({
                     <>
                       {AssignDesignerModalOpen ? (
                         <>
-                          <div className="Assigner_Designer_Container">
-                            <label>Assign Designer</label>
-                            <div className="AssignInput">
-                              <div className="assigner_SearchBar">
-                                <input
-                                  type="text"
-                                  className="assignDesignerSearchBar"
-                                />
-                              </div>
-                              <div className="assignSearchBar_button">
-                                <button>Search</button>
-                              </div>
-                            </div>
-                            <div
-                              className="main"
-                              style={{ margin: "20px 0px" }}
-                            >
-                              {AllDesigners.map((item, index) => (
-                                <div className="Avata" key={index}>
-                                  <div className="avatarContainer">
-                                    <div className="leftTo">
-                                      <div className="avatarImageContainer">
-                                        <img
-                                          src={item.image}
-                                          alt=""
-                                          className="avataImage"
-                                        />
-                                      </div>
-                                      <div className="detailsAvatar">
-                                        <span className="nameA">
-                                          {item.name}
-                                        </span>
-                                        {/* <span className="nameB">
-                                          {item.Usertype}
-                                        </span> */}
-                                      </div>
-                                    </div>
-                                    <div className="rightTo">
-                                      <div className="tagged">
-                                        <span className="taggedText">
-                                          {/* {item.status} */}
-                                          {assignedDesignerId === item.id
-                                            ? "Assigned"
-                                            : ""}
-                                        </span>
-                                      </div>
-                                      <div>
-                                        <button
-                                          onClick={() =>
-                                            handleAssignClick(item.id)
-                                          }
-                                          style={{
-                                            background: assignedDesignerId === item.id && "#fff",
-                                            color:assignedDesignerId === item.id && "#126E72",
-                                            border:assignedDesignerId === item.id && "1px solid #126E72"
-                                          }}
-                                          className={`avatarButton_designer ${
-                                            assignedDesignerId === item.id
-                                              ? "assigned"
-                                              : ""
-                                          }`}
-                                        >
-                                          {assignedDesignerId === item.id
-                                            ? "Unassign"
-                                            : "Assign"}
-                                        </button>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div className="line"></div>
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                              flexDirection: "column",
+                              height: "100%",
+                            }}
+                          >
+                            <div className="Assigner_Designer_Container">
+                              <label className="assignDesignerTitle">
+                                Assign Designer
+                              </label>
+                              <div className="AssignInput">
+                                <div className="assigner_SearchBar">
+                                  <input
+                                    type="text"
+                                    className="assignDesignerSearchBar"
+                                    onChange={handleSearchDesigners}
+                                    placeholder="Search"
+                                  />
                                 </div>
-                                
-                              ))}
-                              
-                              <div style={{ marginTop: "20px" }}>
-                                <button
-                                  className="next-button"
-                                  type="submit"
-                                  // onClick={() => handleNextClick()}
-                                  onClick={() => handleAssignDesigners()}
-                                >
-                                  Done
-                                </button>
+                                <div className="assignSearchBar_button">
+                                  <button onClick={SearchDesiners}>
+                                    Search
+                                  </button>
+                                </div>
+                              </div>
+                              <div
+                                className="main"
+                                style={{ margin: "20px 0px" }}
+                              >
+                                {isLoading ? (
+                                  <>
+                                    <div
+                                      style={{
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                      }}
+                                    >
+                                      <CircularProgress
+                                        size={40} // Set the desired size
+                                        sx={{
+                                          color: "#126e72",
+                                          padding: "8px 10px",
+                                          width: "35px",
+                                        }}
+                                      />
+                                    </div>
+                                  </>
+                                ) : (
+                                  <>
+                                    {" "}
+                                    {AllDesigners.map((item, index) => (
+                                      <div className="Avata" key={index}>
+                                        <div className="avatarContainer">
+                                          <div className="leftTo">
+                                            <div className="avatarImageContainer">
+                                              <img
+                                                src={item.image}
+                                                alt=""
+                                                className="avataImage"
+                                              />
+                                            </div>
+                                            <div className="detailsAvatar">
+                                              <span className="nameA">
+                                                {item.name}
+                                              </span>
+                                              {/* <span className="nameB">
+                                                {item.Usertype}
+                                              </span> */}
+                                            </div>
+                                          </div>
+                                          <div className="rightTo">
+                                            <div className="tagged">
+                                              <span className="taggedText">
+                                                {/* {item.status} */}
+                                                {assignedDesignerId === item.id
+                                                  ? "Assigned"
+                                                  : ""}
+                                              </span>
+                                            </div>
+                                            <div>
+                                              <button
+                                                onClick={() =>
+                                                  handleAssignClick(item.id)
+                                                }
+                                                style={{
+                                                  background:
+                                                    assignedDesignerId ===
+                                                      item.id && "#fff",
+                                                  color:
+                                                    assignedDesignerId ===
+                                                      item.id && "#126E72",
+                                                  border:
+                                                    assignedDesignerId ===
+                                                      item.id &&
+                                                    "1px solid #126E72",
+                                                }}
+                                                className={`avatarButton_designer ${
+                                                  assignedDesignerId === item.id
+                                                    ? "assigned"
+                                                    : ""
+                                                }`}
+                                              >
+                                                {assignedDesignerId === item.id
+                                                  ? "Unassign"
+                                                  : "Assign"}
+                                              </button>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div className="line"></div>
+                                      </div>
+                                    ))}
+                                  </>
+                                )}
                               </div>
                             </div>
-                 
+                            <div style={{ marginTop: "20px" }}>
+                              <button
+                                className="next-button"
+                                type="submit"
+                                // onClick={() => handleNextClick()}
+                                onClick={() => handleAssignDesigners()}
+                              >
+                                Done
+                              </button>
+                            </div>
                           </div>
                         </>
                       ) : (
@@ -668,7 +767,10 @@ const AdminBasicDetailsModal = ({
                                   type="text"
                                   className="inputFields"
                                   name="SKU"
-                                  value={AdminUploadedImageIds?.designcode || getSelectedDesign}
+                                  value={
+                                    AdminUploadedImageIds?.designcode ||
+                                    getSelectedDesign
+                                  }
                                   onChange={handleInput}
                                 />
                                 <div>
@@ -1067,6 +1169,8 @@ const AdminBasicDetailsModal = ({
                   ) : (
                     <>
                       <div className="title_upload_container">
+                        <div>
+
                         <p>Upload File</p>
                         <div className="upload_admin_image">
                           {uploadedImage ? (
@@ -1124,27 +1228,32 @@ const AdminBasicDetailsModal = ({
                             </div>
                           )}
                         </div>
+                        </div>
+
+                        <div>
+                          {!AdminBasicDetailsOpen && (
+                            <div
+                              style={{
+                                // position: "absolute",
+                                width: "100%",
+                                // bottom: "0",
+                              }}
+                            >
+                              <button
+                                className="next-button"
+                                type="submit"
+                                // onClick={() => handleNextClick()}
+                                onClick={() => handleUploadAdminImageClick()}
+                              >
+                                Next
+                              </button>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </>
                   )}
-                  {!AdminBasicDetailsOpen && (
-                    <div
-                      style={{
-                        position: "absolute",
-                        width: "100%",
-                        bottom: "25px",
-                      }}
-                    >
-                      <button
-                        className="next-button"
-                        type="submit"
-                        // onClick={() => handleNextClick()}
-                        onClick={() => handleUploadAdminImageClick()}
-                      >
-                        Next
-                      </button>
-                    </div>
-                  )}
+
                   <SuccessModal
                     successModalOpen={successModalOpen}
                     handleOpen={handleOpen}
@@ -1258,6 +1367,7 @@ const AdminBasicDetailsModal = ({
       
       
       /> */}
+      <ToastContainer />
     </div>
   );
 };

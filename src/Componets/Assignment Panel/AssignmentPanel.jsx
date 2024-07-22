@@ -97,10 +97,17 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
   //     reader.readAsDataURL(file);
   //   }
   // };
+  const dropdownRef = useRef(null);
   useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setActiveCardId(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
   useEffect(() => {
@@ -208,6 +215,7 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
   const handleDeleteOpen = () => {
     setDeleteConfirmationOpen(true);
   };
+  
   return (
     <div
       className="Parent_AssignmentView"
@@ -321,7 +329,7 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
                       </div>
                     )}
                   {activeCardId === itemId && (
-                    <div className="Dots_Delete_DesignPool_btns">
+                    <div className="Dots_Delete_DesignPool_btns"  ref={dropdownRef}>
                       <p onClick={() => handleDeleteSingle(itemId)}>Delete</p>
                       <p onClick={() => moveToDesignPool(itemId)}>
                         Move to Design pool

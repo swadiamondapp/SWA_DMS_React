@@ -181,9 +181,13 @@ const DesignBtn = ({
         onClose={() => handleAssignment()}
         assignToCadId={assignToCadId}
         selectedDesign={selectedDesign}
+        setSelectedDesigns={setSelectedDesigns}
         list_id={list_id}
         list_designer_folderDetails={list_designer_folderDetails}
         setSelectedAssignment={setSelectedAssignment}
+        setSelectButtonLabel={setSelectButtonLabel}
+        setShowRadioButtons={setShowRadioButtons}
+      
       />
       <CreateCustomisation
         open={isModalOpenCreateCutomize}
