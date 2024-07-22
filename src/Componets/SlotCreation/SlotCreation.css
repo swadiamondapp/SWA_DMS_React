@@ -163,6 +163,13 @@
   background: #2b2b2b;
   box-shadow: 0px 2px 4px 0px #0000000d;
 }
+.table-container-left {
+  border: 0.5px solid #dddddd
+}
+.gramstyle {
+  font-size: 10px;
+  font-family: "Gilroy medium";
+}
 .Delete_button_sc {
   border: none;
   background: transparent;
@@ -173,6 +180,7 @@
   justify-content: space-between;
   margin: 0px 15px;
   align-items: center;
+  
 }
 .table-righ-container-sc {
   padding: 10px 15px;

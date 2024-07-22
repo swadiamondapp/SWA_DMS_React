@@ -2,6 +2,7 @@ import { apiService, checkApiStatus } from "../../Pages/Services/ApiInstants";
 import {
   CREATE_SLOT_BAG,
   LIST_AVAILABLE_CAD_DESIGNS,
+  SEARCH_CENTRAL_HUB_ITEMS,
 } from "../../Pages/Services/EndPoints";
 
 export const listAvailableCadDesigns = async (setIsLoading, setData) => {
@@ -48,5 +49,16 @@ export const createSloteBag = async (
     }
   } catch (error) {
     console.error("Error moving designs:", error);
+  }
+};
+
+export const searchCentralHubSlot = async (setIsLoading, setData,searchCentralItem) => {
+  try {
+    const response = await apiService.get(`${SEARCH_CENTRAL_HUB_ITEMS}${searchCentralItem}`);
+    if (checkApiStatus(response)) {
+      setData(response.data.results.data);
+    }
+  } catch (error) {
+    console.log(error);
   }
 };
