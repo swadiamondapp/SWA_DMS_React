@@ -62,13 +62,17 @@ const CentalHub = ({
     );
   };
   const handleCancelButton = () => {
-    setImageFile(null);
-    setThreeDFile(null);
+    // setImageFile(null);
+    // setThreeDFile(null);
     setDesignCode("");
     setUploadInstructionsVisible(true);
     setUploadInstructionsVisibleRender(true);
     onClose();
     setErrorMessage("");
+    setImages({
+      normal: null,
+      threeD: null,
+    })
   };
 
   const onChange = (value) => {
@@ -159,6 +163,8 @@ const CentalHub = ({
     setUploadInstructionsVisibleRender(true);
     setErrorMessage("");
   };
+ 
+ console.log("null image",images)
 
   return (
     <div>
@@ -209,7 +215,7 @@ const CentalHub = ({
                         document.getElementById("fileInputImage").click()
                       }
                     >
-                      {uploadInstructionsVisible ? (
+                      {images.normal === null  ? (
                         <>
                           <span className="textA">PNG/JPEG</span>
                           <span className="textB">
@@ -240,7 +246,7 @@ const CentalHub = ({
                         document.getElementById("fileInput3D").click()
                       }
                     >
-                      {uploadInstructionsVisibleRender ? (
+                      {images.threeD === null  ? (
                         <>
                           <span className="textA">2.DM</span>
                           <span className="textB">

@@ -64,11 +64,11 @@ const FolderDetails = () => {
       setImages,
       setProductCode,
       itemId,
-      setFolderDetails
-      // () => {
-      //   projectDetails(setIsLoading, setFolderDetails, id);
-      // }
-      
+      setItemId,
+      setFolderDetails,
+      () => {
+        projectDetails(setIsLoading, setFolderDetails, id, setItemId);
+      }
     );
   };
 
@@ -76,8 +76,14 @@ const FolderDetails = () => {
 
   return (
     <div className="ParentVotorPage">
-      <Sidebar sidebarExpanded={sidebarExpanded} setSidebarExpanded={setSidebarExpanded}  />
-      <Header leftHeader={folderDetails[0]?.designcode}  sidebarExpanded={sidebarExpanded} />
+      <Sidebar
+        sidebarExpanded={sidebarExpanded}
+        setSidebarExpanded={setSidebarExpanded}
+      />
+      <Header
+        leftHeader={folderDetails[0]?.designcode}
+        sidebarExpanded={sidebarExpanded}
+      />
       <FolderDetailsCard
         folderDetails={folderDetails[0]}
         setIsModalOpen={setIsModalOpen}

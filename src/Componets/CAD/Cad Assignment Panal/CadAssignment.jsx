@@ -65,7 +65,7 @@ const CadAssignment = ({
 
   const status = designList.map((item) => item.timer_status);
 
-  console.log("object", status);
+  console.log("designList", designList);
 
   return (
     <div
@@ -85,7 +85,7 @@ const CadAssignment = ({
               </p>
             </div>
             <div className="File____uploadbtn">
-              {status === "on-going" ? (
+              {status.some((item) => item === "on-going") ? (
                 <button onClick={() => setIsModalOpen(true)}>
                   Upload File{" "}
                   <LiaCloudUploadAltSolid style={{ fontSize: "22px" }} />
