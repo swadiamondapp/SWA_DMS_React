@@ -256,12 +256,15 @@ export const reUploadFile = async (
   setImages,
   setProductCode,
   id,
-  callBack
+  setData
+  // callBack
 ) => {
   try {
+    debugger;
     setIsLoading(true);
     const response = await apiService.put(`${CAD_RE_UPLOAD}${id}`, body);
     if (checkApiStatus(response)) {
+      projectDetails(setIsLoading, setData, id);
       setIsModalOpen(false);
       setImages({ normal: null, threeD: null });
       setProductCode("");
@@ -270,7 +273,7 @@ export const reUploadFile = async (
       setTimeout(() => {
         setSuccessModalOpen(false);
       }, 1500);
-      setUploadInstructionsVisible(true)
+      setUploadInstructionsVisible(true);
       callBack();
     }
   } catch (error) {

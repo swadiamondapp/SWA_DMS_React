@@ -64,9 +64,10 @@ const FolderDetails = () => {
       setImages,
       setProductCode,
       itemId,
-      () => {
-        projectDetails(setIsLoading, setFolderDetails, id);
-      }
+      setFolderDetails
+      // () => {
+      //   projectDetails(setIsLoading, setFolderDetails, id);
+      // }
       
     );
   };

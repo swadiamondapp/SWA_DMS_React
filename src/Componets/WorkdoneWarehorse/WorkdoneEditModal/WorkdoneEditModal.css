@@ -35,7 +35,7 @@ position: fixed;
 }
 .Edit_detail{
     width: 50%;
-    height: 600px !important;
+    height: 100vh !important;
     background-color: #F5F5F5;
     padding: 10px;
     display: flex;

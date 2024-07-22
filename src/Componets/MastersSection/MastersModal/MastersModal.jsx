@@ -55,7 +55,8 @@ const MastersModal = ({
   setInputData,
   setSelectedImage,
   selectedImage,
-  status
+  status,
+  clickedProductIds
 }) => {
   const location = useLocation();
   const [errors, setErrors] = useState("");
@@ -301,6 +302,7 @@ const MastersModal = ({
     }
   };
 
+  console.log("clickedProductIds on status", clickedProductIds);
   console.log("inputDataerrors", errors);
 
   return (

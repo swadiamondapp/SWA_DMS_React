@@ -7,6 +7,7 @@ import "./ScanWarehouse.css";
 import MastersModal from "../MastersSection/MastersModal/MastersModal";
 import { whstatusTableData } from "../MastersSection/ApiMasters/ApiMasters";
 import { warehoueScanTable } from "../ScanComponentWarehouse/ApiScan/ApiScan";
+import DeleteConfirmationModal from "../ConfirmationModal/DeleteConfirmationModal";
 
 const ScanWarehouse = ({ sidebarExpanded }) => {
   const [open, setOpen] = useState(false);
@@ -14,6 +15,8 @@ const ScanWarehouse = ({ sidebarExpanded }) => {
   const [status, setStatus] = useState([]);
   const [error, setError] = useState("");
   const [clickedProductIds, setClickedProductIds] = useState([]);
+  const [DeleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
+
 
   useEffect(() => {
     whstatusTableData(setStatus);
@@ -33,13 +36,21 @@ const ScanWarehouse = ({ sidebarExpanded }) => {
   };
 
   const handleHeaderCheckboxChange = () => {
-    const allProductIds = scanTableData.map(item => item.productId);
+    const allProductIds = scanTableData.map(item => item.slot.slotnumber);
     if (clickedProductIds.length === allProductIds.length) {
       setClickedProductIds([]);
     } else {
       setClickedProductIds(allProductIds);
     }
   };
+
+  const handleDeleteOpen = (pId) => {
+    setDeleteConfirmationOpen(true);
+    setDeleteId(pId);
+  };
+
+  console.log("scanTableData",scanTableData)
+  console.log("clickedProductIds",clickedProductIds)
 
   return (
     <>
@@ -113,22 +124,23 @@ const ScanWarehouse = ({ sidebarExpanded }) => {
               </thead>
               <tbody>
                 {scanTableData.map((item, index) => (
-                  <tr key={item.productId} className="table_row">
+                  <tr key={item.id} className="table_row">
                     <td>
                       <input
                         type="checkbox"
-                        onChange={() => handleCheckboxChange(item.productId)}
-                        checked={clickedProductIds.includes(item.productId)}
+                        onChange={() => handleCheckboxChange(item.slot.slotnumber)}
+                        checked={clickedProductIds.includes(item.slot.slotnumber)}
                       />
                     </td>
                     <td style={{ borderLeft: "none" }}>{index + 1}</td>
-                    <td style={{ borderLeft: "none" }}>{item.productId}</td>
-                    <td style={{ borderLeft: "none" }}>{item.createdDate}</td>
+                    <td style={{ borderLeft: "none" }}>{item.slot.slotnumber}</td>
+                    <td style={{ borderLeft: "none" }}>{item.slot.createdDate}</td>
                     <td style={{ borderLeft: "none" }}>{item.productCategory}</td>
                     <td style={{ borderLeft: "none" }}>{item.status}</td>
                     <td style={{ borderLeft: "none" }}>{item.weight}</td>
                     <td style={{ borderLeft: "none" }}>
                       <img
+                        onClick={() => handleDeleteOpen(item.id)}
                         style={{ width: "16px", height: "20px" }}
                         src={dlt}
                         alt="Delete"
@@ -148,11 +160,28 @@ const ScanWarehouse = ({ sidebarExpanded }) => {
             modalPage="newscanmodule"
             openModal={openModal}
             setOpen={setOpen}
-            inputData={inputData}
             status={status}
+            clickedProductIds={clickedProductIds}
           />
         )}
       </div>
+
+      {DeleteConfirmationOpen && (
+        <DeleteConfirmationModal
+          DeleteConfirmationOpen={DeleteConfirmationOpen}
+          handleDeleteOpen={handleDeleteOpen}
+          setDeleteConfirmationOpen={setDeleteConfirmationOpen}
+          // deleteFunction={() => {
+          //   delete_finding_data(
+          //     setTableData,
+          //     deleteId,
+          //     setDeleteConfirmationOpen,
+          //     setSuccessMessage,
+          //     setSuccessModalOpen
+          //   );
+          // }}
+        />
+      )}
     </>
   );
 };

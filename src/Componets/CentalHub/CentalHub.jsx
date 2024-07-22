@@ -242,7 +242,7 @@ const CentalHub = ({
                     >
                       {uploadInstructionsVisibleRender ? (
                         <>
-                          <span className="textA">3.DM</span>
+                          <span className="textA">2.DM</span>
                           <span className="textB">
                             Drag & Drop or{" "}
                             <span style={{ color: "#0464D5" }}>
@@ -253,15 +253,15 @@ const CentalHub = ({
                         </>
                       ) : (
                         <span style={{ fontSize: "10px", width: "100%" }}>
-                          3D File uploaded successfully!
+                          2D File uploaded successfully!
                         </span>
                       )}
 
                       <input
                         id="fileInput3D"
                         type="file"
-                        accept=".3dm"
-                        // accept="image/*"
+                        // accept=".3dm"
+                        accept="image/png, image/jpeg, image/jpg"
                         style={{ display: "none" }}
                         onChange={handleFileUploadRender}
                       />
