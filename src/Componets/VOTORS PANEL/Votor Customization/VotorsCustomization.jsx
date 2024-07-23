@@ -42,6 +42,7 @@ const VotorsCustomization = ({ sidebarExpanded }) => {
   const handleEyeClick = (id) => {
     setIsModalOpen(true);
     setUserId(id);
+    console.log(id, "votesIsd");
     // customization_details(setIsLoading, setCustomization, userId);
   };
 
@@ -148,10 +149,10 @@ const VotorsCustomization = ({ sidebarExpanded }) => {
                     <td>
                       {item.status === "Updated" && (
                         <button
-                          className="votersConfirm_btn"
-                          onClick={handleConfirmButton(item.id)}
+                          className={item.customer_response === "Confirmed"? "requested_btn": "votersConfirm_btn"}
+                          onClick={() => handleConfirmButton(item.id)}
                         >
-                          Confirm
+                        {item.customer_response === "Confirmed"? "Confirmed" : "Confirm"}
                         </button>
                       )}
                     </td>

@@ -94,7 +94,7 @@
   font-family: "Gilroy medium";
   display: flex ;
   flex-direction: column;
-  justify-content:space-between !important;
+  /* justify-content:space-between !important; */
   /* background-color: red; */
   height: 100%;
 }
