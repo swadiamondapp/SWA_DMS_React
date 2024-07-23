@@ -108,12 +108,10 @@ export const delete_customization = async (
 export const customization_details = async (
   setIsLoading,
   setCustomization,
-  dataByid
+  userId
 ) => {
   try {
-    const response = await apiService.get(
-      `${CUSTOMIZATION_DETAILS}${dataByid}/`
-    );
+    const response = await apiService.get(`${CUSTOMIZATION_DETAILS}${userId}/`);
     if (response?.data?.results?.status_code === 200) {
       setCustomization(response.data.results.data);
     }

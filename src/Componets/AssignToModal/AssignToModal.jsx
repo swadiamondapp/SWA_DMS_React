@@ -6,7 +6,10 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import closeButton from "../../assets/closeButton.svg";
 import avatar from "../../assets/avataprofile.png";
-import { assign_to_cad,} from "../DESIGNER PANEL/Designer Detail View/Api";
+import {
+  assign_to_cad,
+  unAssignCadDesigner,
+} from "../DESIGNER PANEL/Designer Detail View/Api";
 import { list_all_cad_users } from "../DESIGNER PANEL/Designer Dashboard/Api";
 import { useParams, useLocation } from "react-router-dom";
 import SuccessModal from "../SuccessModal/SuccessModal";
@@ -63,36 +66,56 @@ const AssignToModal = ({
 
   const handleOpenSuccess = () => setSuccessModalOpen(true);
   const handleCloseSuccess = () => setSuccessModalOpen(false);
+  const handleUnAssignButton = (userId) => {
+    const itemId = String(userId);
+    console.log(itemId, "itemsdfsdf");
+    unAssignCadDesigner(
+      assignToCadId,
+      userId,
+      selectedDesign,
+      list_id,
+      list_designer_folderDetails,
+      setAssignBtnText
+    );
+  };
+
   const handleAssignButton = (userIdString) => {
     const userId = String(userIdString);
+    const isCurrentlyAssigned = assignedStatus[userId];
+    const newStatus = !isCurrentlyAssigned;
     assign_to_cad(
       setIsLoading,
       assignToCadId,
       userId,
       selectedDesign,
       list_id,
-      onClose,
       list_designer_folderDetails,
-      setSuccessModalOpen,
-      setSuccessMessage,
-      setSelectedAssignment,
-      setSelectButtonLabel,
-      setShowRadioButtons,
-      setAssignBtnText,
-    
+      setAssignBtnText
     );
- 
+
+    setAssignedStatus((prevStatus) => ({
+      ...prevStatus,
+      [userId]: newStatus,
+    }));
   };
-  const handleOnCLose=()=> {
+  const handleOnCLose = () => {
+    onClose();
+    setSelectedAssignment([]);
+    setSelectButtonLabel("Select");
+    setShowRadioButtons(false);
+    setAssignedStatus({});
+  };
+const handleOnCLose=()=> {
     onClose()
     
   }
-  // console.log(setSelectedAssignment, "setSelectedAssignment");
   console.log(setFolderDetails, "ssAAss");
   console.log(assignToCadId, "assignToCadId====>");
   console.log(selectedDesign, "selectedDesign====>Modal");
   console.log(AssignedData, "resp_assignedData==>");
   const activeCadrs = Data.filter((user) => user.status === "ACTIVE");
+  console.log(activeCadrs, "assignedStatus");
+
   return (
     <div>
       <div className="">
@@ -150,15 +173,26 @@ const AssignToModal = ({
                         </div>
                         <div className="rightTo">
                           <div className="tagged">
-                            <span className="taggedText">{item.status}</span>
+                            <span className="taggedText">
+                              {assignedStatus[item.id] && "Assigned"}
+                            </span>
                           </div>
                           <div>
-                            <button
-                              onClick={() => handleAssignButton(item.id)}
-                              className="avatarButton_assign_button"
-                            >
-                              {assignedStatus[item.id] ? "Unassign" : "Assign"}
-                            </button>
+                            {assignedStatus[item.id] ? (
+                              <button
+                                onClick={() => handleUnAssignButton(item.id)}
+                                className="avatarButton_assign_button"
+                              >
+                                Unassign
+                              </button>
+                            ) : (
+                              <button
+                                onClick={() => handleAssignButton(item.id)}
+                                className="avatarButton_assign_button"
+                              >
+                                Assign
+                              </button>
+                            )}
                           </div>
                         </div>
                       </div>

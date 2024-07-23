@@ -47,6 +47,7 @@
   font-weight: 600;
   font-size: 10px;
   color: #455173;
+  width: 100px;
 }
 .ProductInformation {
   display: flex;
@@ -118,4 +119,15 @@
     /* width:200px;
     height: 100px;   */
 }
+.truncated {
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Number of lines to show */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: "Gilroy medium";
+  font-weight: 600;
+  font-size: 10px;
+  color: #455173;
+} 
 

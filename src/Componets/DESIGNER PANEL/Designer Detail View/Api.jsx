@@ -11,6 +11,7 @@ import {
   ASSIGN_UNASSIGN_DESIGNERS,
   ASSIGNMENT_PANEL_DETAILS_PAGE,
   LIST_ASSIGN_TO_LIST_ITEMS,
+  UNASSIGN_CAD_DESIGNERS,
 } from "../../../Pages/Services/EndPoints";
 
 export const list_designer_folderDetails = async (
@@ -53,13 +54,7 @@ export const assign_to_cad = async (
   userId,
   selectedDesign,
   list_id,
-  onClose,
   list_designer_folderDetails,
-  setSuccessModalOpen,
-  setSuccessMessage,
-  setSelectedAssignment,
-  setSelectButtonLabel,
-  setShowRadioButtons
 ) => {
   try {
     setIsLoading(true);
@@ -72,16 +67,9 @@ export const assign_to_cad = async (
     console.log(selectedDesign, " selectedDesign");
     const response = await apiService.post(ASSIGN_TO_CAD, body);
     if (checkApiStatus(response)) {
-      onClose();
       list_designer_folderDetails();
-      setSuccessMessage("Item Assigned Successfully");
-      setSuccessModalOpen(true);
-      setTimeout(() => {
-        setSuccessModalOpen(false);
-      }, 1600);
-      setSelectButtonLabel("Select"),
-      setShowRadioButtons(false)
-      setSelectedAssignment([]);
+   
+    
     }
   } catch (error) {
     // setSelectedAssignment([])
@@ -89,6 +77,34 @@ export const assign_to_cad = async (
     alert(error?.response?.data?.assignment_items);
   } finally {
     setIsLoading(false);
+  }
+};
+export const unAssignCadDesigner = async (
+  setIsLoading,
+  assignToCadId,
+  userId,
+  selectedDesign,
+  list_id,
+  list_designer_folderDetails,
+  setAssignBtnText
+) => {
+  try {
+    const body = {
+      folder: assignToCadId,
+      user: userId,
+      assignment_items: selectedDesign,
+    };
+    const response = await apiService.patch(`${UNASSIGN_CAD_DESIGNERS}`,body);
+    if (checkApiStatus(response)) {
+      list_designer_folderDetails();
+  
+    }
+  } catch (error) {
+    // setSelectedAssignment([])
+    console.error("Error moving designs:", error);
+    alert(error?.response?.data?.assignment_items);
+  } finally {
+  
   }
 };
 
