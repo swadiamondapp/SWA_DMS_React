@@ -68,7 +68,7 @@ function App() {
       <Router>
         <Routes>
           <Route element={<PrivateRoute />}>
-            <Route path="/" element={<Users />} />
+            <Route path="/" element={<Users  />} />
             <Route path="/otherlogin" element={<OtherLoginPage />} />
             <Route
               path="/assignmentview/:id"
@@ -97,7 +97,7 @@ function App() {
               path="/rendersdetailing/:id"
               element={<RendersDetailing />}
             />
-        
+
             <Route
               path="/centralfolderdetails/:id"
               element={<CentralFolderDetailsPage />}
