@@ -7,6 +7,10 @@ export const USER_DELETE = "delete-users/";
 export const EDIT_USER = "edit-users/";
 export const LIST_UPLOAD_DESIGN = "upload-design/";
 
+export const DESIGNPOOL_SEARCHBY_ID = "list-all-design/?design_code=";
+export const ASSIGNMENT_SORTBY_DESIGNER = "assigned-design/?uploaduser=DESIGNER";
+export const ASSIGNMENT_SORTBY_ADMIN = "assigned-design/?uploaduser=ADMIN";
+
 export const MOVE_TO_ASSIGNMENT = "move-design/";
 export const LIST_ASSIGNMENT_PANEL = "assigned-design/";
 export const LIST_ASSIGNMENT_FOLDER = "getlist-folder/";

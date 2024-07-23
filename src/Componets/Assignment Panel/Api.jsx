@@ -3,6 +3,8 @@ import { setToLocalstorage } from "../../Pages/Utils/Common";
 import {
   ASSIGNMENT_MOVE,
   ASSIGNMENT_PANEL_DETAILS_PAGE,
+  ASSIGNMENT_SORTBY_ADMIN,
+  ASSIGNMENT_SORTBY_DESIGNER,
   ASSIGN_UNASSIGN_DESIGNERS,
   CALCULATION,
   DELETE_ITEM_FROM_ASSIGNMENT_PANEL,
@@ -35,6 +37,30 @@ export const list_assignment_panel = async (setIsLoading, setData) => {
     console.log(error);
   }
 };
+
+export const sort_assignmentpanel_bydesigner = async (setIsLoading, setData) => {
+  try {
+    const response = await apiService.get(ASSIGNMENT_SORTBY_DESIGNER);
+    if (checkApiStatus(response)) {
+      setData(response.data.results.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const sort_assignmentpanel_byadmin = async (setIsLoading, setData) => {
+  try {
+    const response = await apiService.get(ASSIGNMENT_SORTBY_ADMIN);
+    if (checkApiStatus(response)) {
+      setData(response.data.results.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+
 
 export const list_folderDetails = async (
   setIsLoading,
@@ -105,8 +131,12 @@ list_assignment_folder(setIsLoading,setAssignmentFolder);
         setSuccessModalOpen(false);
       }, 1600);
       setFolderName("");
+      setError('')
       setSelectedAssignment([]);
       setItemMovedToAssignment([]);
+    }
+    if(response.data.results.status_code === 206){
+      setError(response.data.results.message)
     }
   } 
   catch (error) {

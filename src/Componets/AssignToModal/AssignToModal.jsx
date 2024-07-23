@@ -87,7 +87,7 @@ const AssignToModal = ({
     onClose()
     
   }
-  console.log(Data, "cad");
+  // console.log(setSelectedAssignment, "setSelectedAssignment");
   console.log(setFolderDetails, "ssAAss");
   console.log(assignToCadId, "assignToCadId====>");
   console.log(selectedDesign, "selectedDesign====>Modal");

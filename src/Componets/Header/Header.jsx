@@ -18,6 +18,9 @@ const Header = ({
   designListData,
   sidebarExpanded,
   setSearchWithName,
+  searchListId,
+  handleInputChange,
+  // handleSearchDesignPoool
 }) => {
   const location = useLocation();
   const { nameCentral } = useParams();
@@ -255,16 +258,33 @@ const Header = ({
                   location.pathname !== `/unassigneddesigner` &&
                   location.pathname !== `/FinishedProduct` &&
                   location.pathname !== `/folderdetails/${id}` &&
+                  location.pathname !== "/wareHouse" &&
                   location.pathname !== "/scan" &&
+                  location.pathname !== "/designpool" &&
                   location.pathname !== `/centralfolderdetails/${id}` &&
                   location.pathname !== `/assignmentview/${assignmentId}` &&  (
                     <div className="Search_Admin">
                       <div className="Search_User">
                         <input
                           type="text"
-                          placeholder="Search Users"
+                          placeholder="Search ID"
                           onChange={handleSearchWithName}
                         />
+                        <img src={searchimg} alt="" />
+                      </div>
+                    </div>
+                  )}
+
+                  {location.pathname === "/designpool" && (
+                    <div className="Search_Admin">
+                      <div className="Search_User">
+                        <input
+                          type="text"
+                          placeholder="Search ID"
+                          value={searchListId}
+                          onChange={handleInputChange}
+                        />
+                        {/* <img onClick={handleSearchDesignPoool} src={searchimg} alt="" /> */}
                         <img src={searchimg} alt="" />
                       </div>
                     </div>

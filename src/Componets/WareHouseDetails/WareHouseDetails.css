@@ -15,10 +15,11 @@
   align-items: flex-end;
   gap: 10px;
 }
-.imageWarehouspart1 img {
+.imageWarehouspart1 img{
   width: 100%;
-  object-fit: contain;
-  margin-top: -3px;
+  object-fit: cover;
+  margin-top: 3px;
+  border-radius:4px;
 }
 .A1_text p {
   font-size: 14px;
@@ -32,20 +33,18 @@
   justify-content: flex-end;
   align-items: center;
   padding-top: 30px;
- 
 }
 .actualDetailsButtonContiner button {
   background: #2b2b2b;
   border-radius: 8px;
   padding: 12px 50px;
-  color:#fff
+  color: #fff;
 }
 .actualDetails_input {
   border: none;
   font-size: 14px;
   padding: 6px 0px;
-
-
+  outline: none;
 }
 .error_input_p_warehouse {
   position: absolute;
@@ -60,4 +59,3 @@
   /* bottom: -20px; */
   margin-top: 2px;
 }
-

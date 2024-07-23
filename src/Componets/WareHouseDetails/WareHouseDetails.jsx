@@ -20,7 +20,6 @@ import { Select } from "antd";
 import SuccessModal from "../SuccessModal/SuccessModal";
 
 const WareHouseDetails = ({ sidebarExpanded }) => {
-
   const userWareHouseId = localStorage.getItem("wareHouseuserId");
   const location = useLocation();
   const navigate = useNavigate();
@@ -129,7 +128,7 @@ const WareHouseDetails = ({ sidebarExpanded }) => {
       setSuccessModalOpen,
       setErrorPriceMessage,
       setErrors,
-      navigate 
+      navigate
     );
   };
   const onChange = (value) => {
@@ -148,9 +147,9 @@ const WareHouseDetails = ({ sidebarExpanded }) => {
         style={{ paddingLeft: sidebarExpanded ? "225px" : "130px" }}
       >
         <div className="wareHouseImageConatainer">
-          <div className="imageWarehouspart1">
-            <img src={image1} />
-            <img src={image12} />
+          <div className="imageWarehouspart1" style={{ overflow: "hidden" }}>
+            <img src={customizationwarehouseData.image} />
+            <img src={customizationwarehouseData.image2} />
           </div>
         </div>
         <div className="wareHouse_basicDetails">
@@ -212,7 +211,9 @@ const WareHouseDetails = ({ sidebarExpanded }) => {
               </div> */}
                 <div className="A1_text" style={{ borderBottom: "0px" }}>
                   <p>Note</p>
-                  <p>{customizationwarehouseData.notes}</p>
+                  <p style={{ wordBreak: "break-word" }}>
+                    {customizationwarehouseData.notes}
+                  </p>
                 </div>
               </div>
             </div>
@@ -378,7 +379,9 @@ const WareHouseDetails = ({ sidebarExpanded }) => {
                   />
                 </div>
                 {errors.actualPrice && (
-                  <span className="error_input_p_warehouse">{errors.actualPrice}</span>
+                  <span className="error_input_p_warehouse">
+                    {errors.actualPrice}
+                  </span>
                 )}
                 <div className="actualDetailsButtonContiner">
                   <button onClick={() => handleUpdateWareHouseDetails()}>

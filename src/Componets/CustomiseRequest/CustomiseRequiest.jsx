@@ -9,6 +9,7 @@ import searchIcon from "../../assets/searchIcon.svg";
 import RingA from "../../assets/ringa.png";
 import RingB from "../../assets/ringb.png";
 import RingC from "../../assets/ringc.png";
+import close from "../../assets/close.png";
 import editIcon from "../../assets/editIcon.svg";
 import { customization_details } from "../VOTORS PANEL/Api";
 import CreateCustomisation from "../CreateCustomisation/CreateCustomisation";
@@ -80,7 +81,7 @@ const CustomiseRequest = ({
   // };
   const handleEditWareHouseDetails = (dataToDisplay) => {
     const customizationsku = dataToDisplay.customizationcode;
-    localStorage.setItem('wareHouseuserId', wareHouseuserId);
+    localStorage.setItem("wareHouseuserId", wareHouseuserId);
     onClose();
 
     if (location.pathname === "/votorscustomization") {
@@ -133,6 +134,8 @@ const CustomiseRequest = ({
     );
   };
 
+  console.log("dataToDisplay---", dataToDisplay);
+
   return (
     <div>
       <div className="">
@@ -150,9 +153,22 @@ const CustomiseRequest = ({
               <Typography id="modal-modal-description" sx={{ mx: 1, pb: 1 }}>
                 <div>
                   <div>
-                    <span className="headerTitle">
-                      Customization ID :{dataToDisplay.customizationcode}
-                    </span>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <span className="headerTitle">
+                        Customization ID :{dataToDisplay.customizationcode}
+                      </span>
+                      <img
+                        onClick={onClose}
+                        style={{ width: "16px", height: "18px" }}
+                        src={close}
+                        alt=""
+                      />
+                    </div>
                     <div className="lineCR"></div>
                     <div style={{ marginBottom: "5px" }}>
                       <span className="basic-Details-title">Basic Details</span>
@@ -188,7 +204,13 @@ const CustomiseRequest = ({
                       </div>
                       <div className="ProductInformation">
                         <span>If previously made</span>
-                        <span>{dataToDisplay.outlet}</span>
+                        <span>
+                          {dataToDisplay.previously_made &&
+                            dataToDisplay.previously_made
+                              .charAt(0)
+                              .toUpperCase() +
+                              dataToDisplay.previously_made.slice(1)}
+                        </span>
                       </div>
                     </div>
                     <div>
@@ -203,10 +225,10 @@ const CustomiseRequest = ({
                           <img src={dataToDisplay.image2} alt="" />
                         </div>
                         <div className="imageContainer">
-                          <img src={dataToDisplay.image3}  alt="" />
+                          <img src={dataToDisplay.image3} alt="" />
                         </div>
                         <div className="imageContainer">
-                          <img src={dataToDisplay.image4}  alt="" />
+                          <img src={dataToDisplay.image4} alt="" />
                         </div>
                         <div className="imageContainer">
                           <img src={dataToDisplay.image5} alt="" />
@@ -224,7 +246,7 @@ const CustomiseRequest = ({
                       </div>
                       <div className="ProductInformation">
                         <span>Weight</span>
-                        <span>{dataToDisplay.weight}</span>
+                        <span>{dataToDisplay.weight} GM</span>
                       </div>
                       <div className="ProductInformation">
                         <span>Size</span>
@@ -240,7 +262,7 @@ const CustomiseRequest = ({
                     <div className="DiamondType">
                       <div className="ProductInformation">
                         <span>Diamond Weight</span>
-                        <span>{dataToDisplay.diamond_weight}</span>
+                        <span>{dataToDisplay.diamond_weight} CT</span>
                       </div>
                       <div className="ProductInformation">
                         <span>Number of Diamonds</span>
@@ -270,7 +292,9 @@ const CustomiseRequest = ({
                       </div>
                       <div className="ProductInformation">
                         <span>Note</span>
-                        <span>{dataToDisplay.notes}</span>
+                        <span style={{ wordBreak: "break-word" }}>
+                          {dataToDisplay.notes}
+                        </span>
                       </div>
                     </div>
                     <div className="lineCR"></div>
@@ -281,12 +305,12 @@ const CustomiseRequest = ({
                           {CustomizationWareHouseData.status ===
                             "Requested" && (
                             <>
-                              <button
+                              {/* <button
                                 onClick={() => handleConfirm()}
                                 className="CR_ButtonCommen confirmButtonCR"
                               >
                                 Confirm
-                              </button>
+                              </button> */}
                               <button
                                 onClick={() => handleReject()}
                                 className="CR_ButtonCommen rejectButtonCR"
@@ -297,14 +321,20 @@ const CustomiseRequest = ({
                           )}
                         </>
                       )}
-                      <button
-                        onClick={() =>
-                          handleEditWareHouseDetails(dataToDisplay)
-                        }
-                        className="CR_ButtonCommen editButtonCR"
-                      >
-                        edit <img src={editIcon} alt="" />
-                      </button>
+
+                      {dataToDisplay.status === "Updated" ||
+                      dataToDisplay.status === "Confirmed" ? (
+                        <span>Already Updated</span>
+                      ) : (
+                        <button
+                          onClick={() =>
+                            handleEditWareHouseDetails(dataToDisplay)
+                          }
+                          className="CR_ButtonCommen editButtonCR"
+                        >
+                          edit <img src={editIcon} alt="" />
+                        </button>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -322,7 +352,9 @@ const CustomiseRequest = ({
         setData={setData}
         setCustomization={setCustomization}
         name="editModalOpen"
-        customizationFunction={()=>customization_details(setIsLoading, setCustomization, userId)}
+        customizationFunction={() =>
+          customization_details(setIsLoading, setCustomization, userId)
+        }
       />
       <SuccessModal
         successModalOpen={successModalOpen}

@@ -91,6 +91,7 @@ const FolderDetails = () => {
         setIsModalOpen={setIsModalOpen}
         sidebarExpanded={sidebarExpanded}
         setImages={setImages}
+        isLoading={isLoading}
       />
       <CentalHub
         open={isModalOpen}

@@ -39,7 +39,7 @@ const ScanModal = ({ setOpenModal, clickedProductId }) => {
   };
 
   console.log("slot list products", clickedProducts);
-  console.log("iId",clickedProductId)
+  console.log("iId", clickedProductId);
 
   const handleModalClose = () => {
     setOpenModal(false);
@@ -47,10 +47,9 @@ const ScanModal = ({ setOpenModal, clickedProductId }) => {
 
   const printRef = useRef();
 
-const handlePrint = useReactToPrint({
-  content: printRef.current
-})
-
+  const handlePrint = useReactToPrint({
+    content: printRef.current,
+  });
 
   return (
     <>
@@ -73,24 +72,21 @@ const handlePrint = useReactToPrint({
                 <img src={printer} alt="" srcset="" />
                 <span> Print</span>
               </button> */}
-                <ReactToPrint
-              trigger={() => (
-                <div className="scan_list" 
-                 onClick={handlePrint}
-                 >
-                  <LuPrinter /> Print
-                </div>
-              )}
-              content={() => printRef.current}
-            />
-
+              <ReactToPrint
+                trigger={() => (
+                  <div className="scan_list" onClick={handlePrint}>
+                    <LuPrinter /> Print
+                  </div>
+                )}
+                content={() => printRef.current}
+              />
             </div>
             <div style={{ display: "none" }}>
-    <ScanTablePrint
-          ref={printRef}
-              clickedProducts={clickedProducts}
-            />
-          </div>
+              <ScanTablePrint
+                ref={printRef}
+                clickedProducts={clickedProducts}
+              />
+            </div>
             <div className="scan_table">
               <table>
                 <thead>
@@ -102,14 +98,13 @@ const handlePrint = useReactToPrint({
                   </tr>
                 </thead>
                 <tbody>
-                  {clickedProducts.map((product)=>(
-                  <tr>
-                    <td>{product.slotnumber}</td>
-                    <td>{product.created_at}</td>
-                    <td>Missing Feild</td>
-                    <td>Missing Feild</td>  
-                  </tr>
-                
+                  {clickedProducts.map((product) => (
+                    <tr>
+                      <td>{product.slotnumber}</td>
+                      <td>{product.created_at}</td>
+                      <td>Missing Feild</td>
+                      <td>Missing Feild</td>
+                    </tr>
                   ))}
                 </tbody>
               </table>
