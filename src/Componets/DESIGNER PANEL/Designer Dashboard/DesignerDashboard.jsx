@@ -30,9 +30,23 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
   const formData = new FormData();
   formData.append("image", uploadImage);
 
-  const handleFileUpload = (event) => {
+  const handleFileUpload = async (event) => {
     const file = event.target.files[0];
-    upload_designs_items(setIsLoading, file, setUploadedDesigns);
+
+    if (file) {
+      // Display the new image immediately
+      const newImage = {
+        image: URL.createObjectURL(file),
+        designcode: "Loading...",
+        name: "Uploading...",
+        created_at: new Date().toLocaleString(),
+      };
+      setUploadedDesigns((prevDesigns) => [newImage, ...prevDesigns]);
+
+      // Upload the image and refresh the list
+      await upload_designs_items(setIsLoading, file, setUploadedDesigns);
+      await list_uploaded_designs(setIsLoading, setUploadedDesigns);
+    }
   };
 
   useEffect(() => {

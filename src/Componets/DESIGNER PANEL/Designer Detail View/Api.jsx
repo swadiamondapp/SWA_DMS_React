@@ -53,10 +53,12 @@ export const assign_to_cad = async (
   assignToCadId,
   userId,
   selectedDesign,
-  list_id,
   list_designer_folderDetails,
+  setSuccessMessage,
+  setSuccessModalOpen
 ) => {
   try {
+    debugger
     setIsLoading(true);
     const body = {
       folder: assignToCadId,
@@ -68,6 +70,11 @@ export const assign_to_cad = async (
     const response = await apiService.post(ASSIGN_TO_CAD, body);
     if (checkApiStatus(response)) {
       list_designer_folderDetails();
+      setSuccessMessage("Item Assigned Successfully");
+      setSuccessModalOpen(true);
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1700);
    
     
     }

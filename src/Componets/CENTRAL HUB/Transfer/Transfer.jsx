@@ -21,7 +21,7 @@ import closeButton from "../../../assets/closeButton.svg";
 import searchIcon from "../../../assets/search.png";
 import SuccessModal from "../../SuccessModal/SuccessModal";
 
-const Transfer = ({sidebarExpanded}) => {
+const Transfer = ({ sidebarExpanded }) => {
   const [showEditDelete, setShowEditDelete] = useState(null);
   const [isModalOpenslot, setIsModalOpenslot] = useState(false);
   const [isModalOpenslotview, setIsModalOpenslotview] = useState(false);
@@ -111,13 +111,16 @@ const Transfer = ({sidebarExpanded}) => {
 
   function formatDate(dateString) {
     const date = new Date(dateString);
-    const options = { day: 'numeric', month: 'long', year: 'numeric' };
-    return new Intl.DateTimeFormat('en-GB', options).format(date);
+    const options = { day: "numeric", month: "long", year: "numeric" };
+    return new Intl.DateTimeFormat("en-GB", options).format(date);
   }
   console.log(TransferData, "TransferScan");
   console.log(CentralHubStatus, "CentralHubStatus");
   return (
-    <div className="parentCentral"  style={{paddingLeft:sidebarExpanded? "225px":"130px"}}>
+    <div
+      className="parentCentral"
+      style={{ paddingLeft: sidebarExpanded ? "225px" : "130px" }}
+    >
       <div className="slote_labe" style={{ border: "none" }}>
         <div style={{ display: "flex" }}>
           <form action="">
@@ -157,7 +160,7 @@ const Transfer = ({sidebarExpanded}) => {
               <tr key={index} style={{ color: "#2E364C" }}>
                 <td className="serialNumber_cell">{index + 1}</td>
                 <td>{formatDate(item.created_at)}</td>
-                <td className="slot_cell">{item.slot.slotnumber}</td>
+                <td className="slot_cell">{item.finisheditem?.designcode}</td>
                 <td className="actions-cell">
                   <div className="parentSlotS">
                     <div
@@ -178,7 +181,12 @@ const Transfer = ({sidebarExpanded}) => {
                           style={selectStyle}
                         >
                           {CentralHubStatus.map((option) => (
-                            <option className="custom-option" style={{margin:'10px'}} key={option.id} value={option.id}>
+                            <option
+                              className="custom-option"
+                              style={{ margin: "10px" }}
+                              key={option.id}
+                              value={option.id}
+                            >
                               {option.name}
                             </option>
                           ))}
