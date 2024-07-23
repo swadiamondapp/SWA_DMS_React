@@ -7,12 +7,18 @@ import { list_assignment_folder } from "../ADMIN PANEL/Design Pool/Api";
 import { FOLDER_DETAIL_API } from "../../Pages/Services/EndPoints";
 import axios from "axios";
 import {
+  diamond_type_dropdown_basicDetails,
+  findings_List_basicDetails,
   listFolderDetailVeiwAssignmentPanel,
   list_folderDetails,
+  metal_type_dropdown_basicDetails,
+  product_category_basicDetails,
+  tag_List_basicDetails,
 } from "../Assignment Panel/Api";
 import BasicDetailModal from "../BasicDetails/BasicDetailModal";
 import BasicDetialsEditModal from "../BasicDetails/BasicDetialsEditModal";
 import EdiIcon from "../../assets/EditBasic.png"
+import { choose_outlet_drop_down, metal_type_drop_down, product_type_drop_down } from "../ADMIN PANEL/Api_dropDown";
 
 const AssignmentView = ({sidebarExpanded}) => {
   const { id } = useParams();
@@ -23,6 +29,19 @@ const AssignmentView = ({sidebarExpanded}) => {
   const [open, setIsOpen] = useState(false);
   const queryParams = new URLSearchParams(location.search);
   const designId = queryParams.get("design_id");
+  const [MetalTypeDropDown, setMetalTypeDropDown] = useState([]);
+  const [outLetDropDown, setOutLetDropDown] = useState([]);
+  const [ProudctCategory, setListProductCategory] = useState([""]);
+  const [ProductTypeDropDown,setProductTypeDropDown] = useState([])
+  const [DiamondType,setDiamondType] = useState([])
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [FindingsList, setFindingsList] = useState([]);
+
+
+
+
+
+
 
   useEffect(() => {
     // list_folderDetails(setIsLoading,setFolderDetails,id)
@@ -51,7 +70,49 @@ const AssignmentView = ({sidebarExpanded}) => {
   const handleEditBasicDetails = () => {
     setIsOpen(true);
   };
+  useEffect(() => {
+    metal_type_drop_down(setMetalTypeDropDown);
+    product_type_drop_down(setProductTypeDropDown);
+    choose_outlet_drop_down(setOutLetDropDown);
+    // diamond_colours(setSelectDiamondColor);
+    // diamond_clarity_choice(setSelectDiamondClarity);
+    metal_type_dropdown_basicDetails(setMetalTypeDropDown);
+    diamond_type_dropdown_basicDetails(setDiamondType);
+    product_category_basicDetails(setListProductCategory);
+    tag_List_basicDetails(setSelectedTags);
+    findings_List_basicDetails(setFindingsList);
+  }, []);
 
+  const findMetalNameById = (id) => {
+    const item = MetalTypeDropDown.find((entry) => entry.id === id);
+    return item ? item.metal_name : "Not found";
+  };
+
+  const findOutLetNameByID = (id) => {
+    const item = outLetDropDown.find((entry) => entry.id === id);
+    return item ? item.name : "Note Found";
+  };
+  const productCategoryByID = (id) => {
+    const item = ProudctCategory.find((entry) => entry.id === id);
+    return item ? item.name : "Note Found";
+  };
+  const findDiamondNameById = (id) => {
+    const item = DiamondType.find((entry) => entry.id === id);
+    return item ? item.name : "Not found";
+  };
+
+  const findFindingsNameById = (id) => {
+    const item = FindingsList.find((entry) => entry.id === id);
+    return item ? item.find_name : "Not found";
+};
+
+const findNamesByIds = (ids) => {
+  return ids.map(id =>  findFindingsNameById(id));
+};
+  
+
+  console.log(FindingsList,"fghjkl")
+  // console.log(FindingsList,"finsdfasfd")
   return (
     <div>
       <div className="Parent_AssignmentView" style={{paddingLeft:sidebarExpanded? "225px": "130px"}}>
@@ -88,11 +149,11 @@ const AssignmentView = ({sidebarExpanded}) => {
                 </div>
                 <div className="A1_text">
                   <p>Type of metal</p>
-                  <p>{basicDetails?.type_of_metal}</p>
+                  <p>{findMetalNameById(Number(basicDetails?.type_of_metal))}</p>
                 </div>
                 <div className="A1_text">
                   <p>Dimond Type</p>
-                  <p>{basicDetails?.diamond_type}</p>
+                  <p>{findDiamondNameById(Number(basicDetails?.diamond_type))}</p>
                 </div>
                 <div className="A1_text">
                   <p>APPROX DIAMOND WEIGHT</p>
