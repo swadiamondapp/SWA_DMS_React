@@ -105,10 +105,11 @@ const AssignToModal = ({
     setShowRadioButtons(false);
     setAssignedStatus({});
   };
-const handleOnCLose=()=> {
-    onClose()
+  
+// const handleOnCLose=()=> {
+//     onClose()
     
-  }
+//   }
   console.log(setFolderDetails, "ssAAss");
   console.log(assignToCadId, "assignToCadId====>");
   console.log(selectedDesign, "selectedDesign====>Modal");

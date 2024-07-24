@@ -36,10 +36,10 @@ const Transfer = ({ sidebarExpanded }) => {
   const [printSlotModalOpen, setPrintSlotModalOpen] = useState(false);
   const [TransferData, setTransferData] = useState([]);
   const [TransferScan, setTransferScan] = useState("");
-  const [centralStatus, setCentralStatus] = useState("Created");
+  // const [centralStatus, setCentralStatus] = useState("Created");
   const [CentralHubStatus, setCentralHubStatus] = useState([]);
   const [error, setError] = useState("");
-  const [transferStatus, setTransferStatus] = useState("");
+  const [transferStatus, setTransferStatus] = useState("Created");
 
   const handlePrintSlotModalClose = () => {
     setPrintSlotModalOpen(false);
@@ -98,20 +98,18 @@ const Transfer = ({ sidebarExpanded }) => {
     }
   };
 
-  const selectStyle = {
-    backgroundColor: transferStatus === "Created" ? "green" : "blue",
-    color: transferStatus === "Created" ? "white" : "#fff",
-  };
+  // const selectStyle = {
+  //   backgroundColor: transferStatus === "Created" ? "green" : "blue",
+  //   color: transferStatus === "Created" ? "white" : "#fff",
+  // };
+
   const handleStatusChange = (event, itemId) => {
     const { value } = event.target;
     console.log(value, itemId, "acscas");
+
     changeCentralHubStatus(itemId, setIsLoading, value, setTransferData);
 
-    setTransferData((prevTransferData) =>
-      prevTransferData.map((item) =>
-        item.id === itemId ? { ...item, status: value } : item
-      )
-    );
+    setTransferStatus(value);
   };
 
   function formatDate(dateString) {
@@ -120,9 +118,9 @@ const Transfer = ({ sidebarExpanded }) => {
     return new Intl.DateTimeFormat("en-GB", options).format(date);
   }
 
-  const handleTransferStatus = (event) => {
-    setTransferStatus(event.target.value);
-  };
+  // const handleTransferStatus = (event) => {
+  //   setTransferStatus(event.target.value);
+  // };
 
   console.log(transferStatus, "transferStatus");
   console.log(CentralHubStatus, "CentralHubStatus");
@@ -210,15 +208,16 @@ const Transfer = ({ sidebarExpanded }) => {
                           className="scan_select_Central"
                           name="centralStatus"
                           id="centralHubStatus"
-                          value={item.status} // Assuming item.status holds the status value
-                          onChange={handleTransferStatus} // Pass item.id to handleStatusChange
-                          style={selectStyle}
+                          value={item.status}
+                          onChange={(event) =>
+                            handleStatusChange(event, item.id)
+                          }
+                          style={{
+                            backgroundColor:
+                              item.status === "Created" ? "#23A064" : "#0464D5",
+                            color: item.status === "Created" ? "white" : "#fff",
+                          }}
                         >
-                          {/* {CentralHubStatus.map((option) => (
-                            <option className="custom-option" style={{margin:'10px'}} key={option.id} value={option.id}>
-                              {option.name}
-                            </option>
-                          ))} */}
                           <option value="Created">Created</option>
                           <option value="Transfered">Transfered</option>
                         </select>

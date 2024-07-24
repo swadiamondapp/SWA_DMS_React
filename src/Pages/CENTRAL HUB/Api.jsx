@@ -132,22 +132,23 @@ export const listCentralHubStatus = async (
 };
 
 export const changeCentralHubStatus = async (itemId, setIsLoading, value,setTransferData) => {
+  debugger
   try {
     const body = {
-      slot_id: value,
+      status: value,
     };
     const response = await apiService.patch(
       `${CHANGE_CENTRAL_HUB_STATUS}${itemId}/`,
       body
     );
-    if (response.data.results.status_code === 200) {
-      centralTransfer(setIsLoading, );
-      setSuccessMessage("Status Updated Successfully");
-      setSuccessModalOpen(true);
-      setTimeout(() => {
-        setSuccessModalOpen(false);
-      }, 1600);
+    if (checkApiStatus(response)) {
       centralTransfer(setIsLoading, setTransferData);
+      // setSuccessMessage("Status Updated Successfully");
+      // setSuccessModalOpen(true);
+      // setTimeout(() => {
+      //   setSuccessModalOpen(false);
+      // }, 1600);
+      alert("Status Updated Successfully")
     }
   } catch (error) {
     console.error("Error moving designs:", error);
