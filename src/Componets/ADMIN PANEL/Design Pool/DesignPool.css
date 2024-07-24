@@ -96,7 +96,7 @@
   flex-direction: column;
   /* justify-content:space-between !important; */
   /* background-color: red; */
-  height: 100%;
+  /* height: 100%; */
 }
 .HeadNewdesign {
   font-family: "Gilroy medium";
@@ -188,4 +188,40 @@
   z-index: 9;
   font-family: "Gilroy medium";
   top: 45px;
+}
+
+.sortData{
+  display: flex;
+  flex-direction: column;
+  padding:2px ;
+  /* padding-top: 10px;
+  padding-bottom: 10px; */
+  /* gap: 16px; */
+  background-color: white;
+  position: absolute;
+  top: 40px;
+  z-index: 999;
+  width: 120px;
+  left: -25px;
+  border-radius: 20px !important;
+}
+.sortData span{
+  width: 100%;
+height: 35px;
+display: flex;
+align-items: center;
+justify-content: center;
+text-align: center;
+}
+.sortData span:nth-child(1):hover{
+background-color: #0566d433;
+border-radius: 20px 20px 0px 0px !important;
+}
+.sortData span:nth-child(2):hover{
+background-color: #0566d433;
+/* border-radius: 0px 0px  20px 20px !important; */
+}
+.sortData span:nth-child(3):hover{
+background-color: #0566d433;
+border-radius: 0px 0px  20px 20px !important;
 }

@@ -251,10 +251,10 @@ export const getBasicDetails = async (setIsLoading, setData, id) => {
 export const reUploadFile = async (
   setIsLoading,
   body,
+  setImages,
   setSuccessModalOpen,
   setSuccessMessage,
   setIsModalOpen,
-  setImages,
   setProductCode,
   id,
   setItemId,
@@ -265,8 +265,6 @@ export const reUploadFile = async (
     setIsLoading(true);
     const response = await apiService.put(`${CAD_RE_UPLOAD}${id}`, body);
     if (checkApiStatus(response)) {
-      // Update state after successful upload
-      setImages({ normal: null, threeD: null });
       setIsModalOpen(false);
       setProductCode("");
       setSuccessMessage("Successfully uploaded");
@@ -274,7 +272,10 @@ export const reUploadFile = async (
       setTimeout(() => {
         setSuccessModalOpen(false);
       }, 1500);
-      callBack(); // Callback function to handle additional actions
+      callBack();
+      setImages({ 
+        normal: null, 
+        threeD: null });
     }
   } catch (error) {
     console.log(error);
@@ -282,4 +283,5 @@ export const reUploadFile = async (
     setIsLoading(false);
   }
 };
+
 

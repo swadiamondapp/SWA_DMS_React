@@ -99,6 +99,9 @@ const CadAssignmentPage = () => {
   };
 
   const handleUploadFile = () => {
+    if( images.normal === null || images.threeD === null ){
+      setErrors("Plese Upload Both Images")
+    }
     const formData = new FormData();
     formData.append("designcode", productCode);
     formData.append("file_2d", images.normal);

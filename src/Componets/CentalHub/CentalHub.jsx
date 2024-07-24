@@ -33,7 +33,7 @@ const CentalHub = ({
   setImages,
   handleUploadFile,
   folderDetails,
-  reUpload,
+  reUpload
 }) => {
   // create modal
 
@@ -51,6 +51,10 @@ const CentalHub = ({
   const [uploadInstructionsVisibleRender, setUploadInstructionsVisibleRender] =
     useState(true);
   const [errorMessage, setErrorMessage] = useState("");
+  
+  const [errors, setErrors] = useState("");
+
+
   console.log(errorMessage, "designCodeEe");
 
   const handleOpen = () => setOpen(true);
@@ -73,6 +77,7 @@ const CentalHub = ({
       normal: null,
       threeD: null,
     })
+    setErrors("")
   };
 
   const onChange = (value) => {
@@ -163,8 +168,18 @@ const CentalHub = ({
     setUploadInstructionsVisibleRender(true);
     setErrorMessage("");
   };
+
+  const handleUploadeFileNew = () => {
+    if (images.normal === null || images.threeD === null) {
+      setErrors("Please upload both images");
+      return;
+    }
+    handleUploadFile()
+    setErrors("")
+  }
  
  console.log("null image",images)
+ console.log("errors----",errors)
 
   return (
     <div>
@@ -289,7 +304,7 @@ const CentalHub = ({
                       className="inputFeildUpload"
                     />
                   </div>
-
+                      {errors && <span style={{fontSize:"11px",color:"red"}}>{errors}</span>}
                   <div className="buttons">
                     <button
                       className="cancerButton"
@@ -298,7 +313,7 @@ const CentalHub = ({
                       cancel
                     </button>
                     <button
-                      onClick={() => handleUploadFile()}
+                      onClick={handleUploadeFileNew}
                       className="upButton"
                     >
                       Upload

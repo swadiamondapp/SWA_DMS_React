@@ -1,5 +1,5 @@
 import { apiService, checkApiStatus } from "../../../Pages/Services/ApiInstants";
-import { NEW_SCAN_LIST } from "../../../Pages/Services/EndPoints";
+import { CENTRALHUB_NEW_SCAN_LIST, CENTRALHUB_NEW_SCAN_PRODUCTSCAN, CENTRALHUB_NEW_SCAN_PRODUCTSTATUS_UPDATE, NEW_SCAN_LIST, NEW_SCAN_PRODUCTSCAN, NEW_SCAN_PRODUCTSTATUS_UPDATE } from "../../../Pages/Services/EndPoints";
 
 
 
@@ -11,5 +11,137 @@ export const warehoueScanTable = async (setScanTableData) => {
       }
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  export const newScanProductScan = async (
+    setIsLoading,
+    searchListId,
+    setScanTableData,
+    setsearchListId,
+    setError
+  ) => {
+    
+    try {
+      const body = {
+        finisheditem_id: searchListId,
+      };
+  
+      const response = await apiService.post(NEW_SCAN_PRODUCTSCAN, body);
+      if (response.data.results.status_code === 200) {
+        warehoueScanTable( setScanTableData);
+        setsearchListId("");
+        alert("Item Added");
+        setError("");
+      }
+    } catch (error) {
+      console.log(error);
+      alert("Item Not Found");
+      setError("");
+      setsearchListId("");
+    }
+  };
+
+  export const newScanProductStatusUpdate = async (
+    statusId,
+    clickedProductIds,
+    setScanTableData,
+    setError,
+    setStatusId,
+    setOpen
+  ) => {
+    debugger
+    try {
+      const body = {
+        transfer_id: clickedProductIds,
+        status_id: statusId,
+      };
+  
+      const response = await apiService.patch(NEW_SCAN_PRODUCTSTATUS_UPDATE, body);
+      if (response.data.results.status_code === 200) {
+        warehoueScanTable(setScanTableData);
+        setStatusId("");
+        alert("Status Updated");
+        setError("");
+        setOpen(false)
+      }
+    } catch (error) {
+      console.log(error);
+      // alert("Failed to status change");
+      setError("Failed to status change");
+      setStatusId("");
+    }
+  };
+
+  // ......CENTRAL_HB..
+
+
+  export const centralHubScanTable = async (setScanTableData) => {
+    try {
+      const response = await apiService.get(CENTRALHUB_NEW_SCAN_LIST);
+      if (checkApiStatus(response)) {
+        setScanTableData(response.data.results.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  export const CentralHubnewScanProductScan = async (
+    setIsLoading,
+    searchListId,
+    setScanTableData,
+    setsearchListId,
+    setError
+  ) => {
+    
+    try {
+      const body = {
+        finisheditem_id: searchListId,
+      };
+  
+      const response = await apiService.post(CENTRALHUB_NEW_SCAN_PRODUCTSCAN, body);
+      if (response.data.results.status_code === 200) {
+        centralHubScanTable( setScanTableData);
+        setsearchListId("");
+        alert("Item Added");
+        setError("");
+      }
+    } catch (error) {
+      console.log(error);
+      alert("Item Not Found");
+      setError("");
+      setsearchListId("");
+    }
+  };
+
+  export const centralHubnewScanProductStatusUpdate = async (
+    cHstatusId,
+    clickedProductIds,
+    setScanTableData,
+    setError,
+    setChStatusId,
+    setOpen
+  ) => {
+    debugger
+    try {
+      const body = {
+        transfer_id: clickedProductIds,
+        status_id: cHstatusId,
+      };
+  
+      const response = await apiService.patch(CENTRALHUB_NEW_SCAN_PRODUCTSTATUS_UPDATE, body);
+      if (response.data.results.status_code === 200) {
+        centralHubScanTable(setScanTableData);
+        setChStatusId("");
+        alert("Status Updated");
+        setError("");
+        setOpen(false)
+      }
+    } catch (error) {
+      console.log(error);
+      // alert("Failed to status change");
+      setError("Failed to status change");
+      setChStatusId("");
     }
   };

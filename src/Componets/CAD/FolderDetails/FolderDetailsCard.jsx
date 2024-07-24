@@ -6,13 +6,45 @@ import { IoPrintOutline } from "react-icons/io5";
 import CadPrint from "./CadPrint";
 import ReactToPrint, { useReactToPrint } from "react-to-print";
 import { LuPrinter } from "react-icons/lu";
+import axios from "axios";
+import fileDownload from "js-file-download";
+import { CircularProgress } from "@mui/material";
 
 const FolderDetailsCard = ({
   folderDetails,
   setIsModalOpen,
   sidebarExpanded,
+  setImages,
+  isLoading
 }) => {
   const printRef = useRef();
+
+  const handlePrint = useReactToPrint({
+    content: printRef.current,
+  });
+
+  const handleDownload = (url, filename) => {
+    axios
+      .get(url, {
+        responseType: "blob"
+      })
+      .then((res) => {
+        fileDownload(res.data, filename);
+      })
+      .catch((error) => {
+        console.error("Error downloading file:", error);
+        // Handle errors here
+      });
+  };
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+    setImages({ 
+      normal: null, 
+      threeD: null 
+    });
+  };
+
   function formatDate(timestamp) {
     const dateObj = new Date(timestamp);
     const day = dateObj.getDate();
@@ -22,27 +54,9 @@ const FolderDetailsCard = ({
     return `${day} ${month} ${year}`;
   }
 
-  const handlePrint = useReactToPrint({
-    content: printRef.current,
-  });
-
-  const handleDownload = () => {
-    if (!folderDetails?.file_2d) return;
-
-    const link = document.createElement("a");
-    link.href = folderDetails.file_2d;
-    link.download = "image.png"; // You can dynamically set the filename here
-    link.click();
-  };
- 
-  console.log("folderDetails",folderDetails)
-
   return (
-    <div
-      className="ParentCad"
-      style={{ paddingLeft: sidebarExpanded ? "225px" : "130px" }}
-    >
-      <div className="Design_FileUpload" onClick={() => setIsModalOpen(true)}>
+    <div className="ParentCad" style={{ paddingLeft: sidebarExpanded ? "225px" : "130px" }}>
+      <div className="Design_FileUpload">
         <div>
           <p className="D__fileUpload">Reupload</p>
           <p className="D__fileUpload2">
@@ -50,12 +64,11 @@ const FolderDetailsCard = ({
           </p>
         </div>
         <div className="File____uploadbtn">
-          <button>
+          <button onClick={handleOpenModal}>
             Re Upload File{" "}
             <LiaCloudUploadAltSolid style={{ fontSize: "22px" }} />
           </button>
         </div>
-
         <input
           id="fileInput"
           type="file"
@@ -63,25 +76,40 @@ const FolderDetailsCard = ({
           style={{ display: "none" }}
         />
       </div>
+
+      {folderDetails?.length === 0 && (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop:"50px"
+              }}
+            >
+              <CircularProgress
+                size={50} // Set the desired size
+                sx={{
+                  color: "#126e72",
+                  padding: "8px 10px",
+                  width: "35px",
+                }}
+              />
+            </div>
+          )}
+
       <div className="parentCentral" style={{ paddingLeft: "0px" }}>
         <div className="CadAssignmentCard">
           <div className="Card_Design_Parent">
             <div className="New_Design_card">
               <div className="Card_Details">
-                <div
-                  className="Card_img"
-                  style={{ borderBottom: "0px", minHeight: "140px" }}
-                >
+                <div className="Card_img" style={{ borderBottom: "0px", minHeight: "140px" }}>
                   <img src={folderDetails?.file_2d} alt="" />
                 </div>
                 <div className="Card_Details_Inner_cad_Hub">
-                  <p
-                    className="Hub_head"
-                    style={{ fontSize: "13px", padding: "5px 0px" }}
-                  >
-                    Posted on : {formatDate(folderDetails?.created_at)}
+                  <p className="Hub_head" style={{ fontSize: "13px", padding: "5px 0px" }}>
+                    Posted on : {formatDate(folderDetails?.updated_at)}
                   </p>
-                  <button className="Download_btn_hub" onClick={handleDownload}>
+                  <button className="Download_btn_hub" onClick={() => handleDownload(folderDetails?.file_2d, "image.png")}>
                     DOWNLOAD
                     <GoDownload />
                   </button>
@@ -90,23 +118,13 @@ const FolderDetailsCard = ({
             </div>
             <div className="New_Design_card">
               <div className="Card_Details">
-                <div
-                  className="Card_img"
-                  style={{ borderBottom: "0px", minHeight: "140px" }}
-                >
+                <div className="Card_img" style={{ borderBottom: "0px", minHeight: "140px" }}>
                   <img src={folderDetails?.file_3d} alt="" />
                 </div>
                 <div className="Card_Details_Inner_cad_Hub">
-                  <p
-                    className="Hub_head"
-                    style={{ fontSize: "13px", padding: "5px 0px" }}
-                  >
-                    Posted on : {formatDate(folderDetails?.created_at)}
+                  <p className="Hub_head" style={{ fontSize: "13px", padding: "5px 0px" }}>
+                    Posted on : {formatDate(folderDetails?.updated_at)}
                   </p>
-                  {/* <button className="Prinit_btn_hub">
-                    Print
-                    <IoPrintOutline />
-                  </button> */}
                   <ReactToPrint
                     trigger={() => (
                       <div className="Prinit_btn_hub" onClick={handlePrint}>
@@ -115,7 +133,6 @@ const FolderDetailsCard = ({
                     )}
                     content={() => printRef.current}
                   />{" "}
-                 
                   <div style={{ display: "none" }}>
                     <CadPrint ref={printRef} folderDetails={folderDetails} />
                   </div>

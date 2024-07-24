@@ -12,6 +12,8 @@ import {
   list_folderDetails,
   moveSingleItemToDesignPool,
   deleteItemFromAssignmentPanel,
+  sort_assignmentpanel_bydesigner,
+  sort_assignmentpanel_byadmin,
 } from "./Api";
 import { list_assignment_folder } from "../ADMIN PANEL/Design Pool/Api";
 import DesignPools from "../DesignPoolExtended/DesignPools";
@@ -216,6 +218,18 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
   const handleDeleteOpen = () => {
     setDeleteConfirmationOpen(true);
   };
+
+  const handleSortByDesigner =()=>{
+    sort_assignmentpanel_bydesigner(setIsLoading, setData)
+  }
+  const handleSortByAdmin =()=>{
+    sort_assignmentpanel_byadmin(setIsLoading, setData)
+  }
+  const handleSortByAll =()=>{
+    list_assignment_panel(setIsLoading, setData);
+  }
+
+  console.log("handleSortByDesigner",Data)
   
   return (
     <div
@@ -259,6 +273,9 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
           setAssignmentFolder={setAssignmentFolder}
           selectedDesignCode={selectedDesignCode}
           handleCreatedFolder={handleCreatedFolder}
+          handleSortByDesigner={handleSortByDesigner}
+          handleSortByAdmin={handleSortByAdmin}
+          handleSortByAll={handleSortByAll}
           // setcreateFolderModal={setcreateFolderModal}
           // handleCreateFolderModal
         />

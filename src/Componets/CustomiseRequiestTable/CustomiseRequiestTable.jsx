@@ -14,6 +14,10 @@ import { delete_customization } from "../VOTORS PANEL/Api";
 import DeleteConfirmationModal from "../ConfirmationModal/DeleteConfirmationModal";
 import SuccessModal from "../SuccessModal/SuccessModal";
 import { CircularProgress } from "@mui/material";
+import ReactToPrint, { useReactToPrint } from "react-to-print";
+import { LuPrinter } from "react-icons/lu";
+import ScanTablePrint from "../ScanComponentWarehouse/ScanTablePrint/ScanTablePrint";
+import CustomizationListDataPrint from "./CustomizationListDataPrint";
 
 const data = [
   {
@@ -61,6 +65,7 @@ const data = [
 ];
 
 const CustomizationTable = (props) => {
+  const printRef = useRef();
   const [openCRModal, setOpenCRModal] = useState(false);
   const [wareHouseuserId, setWareHouseUserId] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -147,7 +152,11 @@ const CustomizationTable = (props) => {
     }
   };
 
-  console.log("approveId", approveId);
+  const handlePrint = useReactToPrint({
+    content: printRef.current,
+  });
+
+  console.log("CustomizationListData", CustomizationListData);
 
   return (
     <>
@@ -202,6 +211,7 @@ const CustomizationTable = (props) => {
                     style={{
                       borderBottom: "1px solid #ddd",
                       borderRight: "none",
+                      borderLeft: "none",
                     }}
                   ></th>
                 </tr>
@@ -220,17 +230,31 @@ const CustomizationTable = (props) => {
                     <td>{item.mobile_number}</td>
                     <td>{item.product_type}</td>
 
-                    <td >
-                      <button className="PrintButton_CT">
-                        Print <img src={PrintIcon} alt="Print" />
+                    <td>
+                      <button className="PrintButton_CT" onClick={handlePrint}>
+                        <ReactToPrint
+                          trigger={() => (
+                            <div className="scan_list">
+                              <LuPrinter /> Print
+                            </div>
+                          )}
+                          content={() => printRef.current}
+                        />
                       </button>
+
+                      <div style={{ display: "none" }}>
+                        <CustomizationListDataPrint
+                          ref={printRef}
+                          clickedProducts={CustomizationListData}
+                        />
+                      </div>
 
                       {item?.customer_response === "Confirmed" &&
                       item?.status === "Confirmed" ? (
                         <span
                           disabled
                           className="inactive_btn"
-                          style={{ fontWeight: "300" ,marginLeft:"20px"}}
+                          style={{ fontWeight: "300", marginLeft: "20px" }}
                         >
                           Approved
                         </span>
@@ -242,7 +266,7 @@ const CustomizationTable = (props) => {
                             backgroundColor: "#23a06496",
                             color: "white",
                             cursor: "pointer",
-                            marginLeft:"20px"
+                            marginLeft: "20px",
                           }}
                         >
                           Approve

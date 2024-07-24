@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from "react";
-import searchimg from "../../assets/search.png";
-import searchblue from "../../assets/bluesearch.png";
-import dlt from "../../assets/deleticon.png";
-import scan from "../../assets/scan.png";
-import "./ScanWarehouse.css";
-import MastersModal from "../MastersSection/MastersModal/MastersModal";
-import { whstatusTableData } from "../MastersSection/ApiMasters/ApiMasters";
-import { newScanProductScan, warehoueScanTable } from "../ScanComponentWarehouse/ApiScan/ApiScan";
-import DeleteConfirmationModal from "../ConfirmationModal/DeleteConfirmationModal";
+import DeleteConfirmationModal from "../../ConfirmationModal/DeleteConfirmationModal";
+import MastersModal from "../../MastersSection/MastersModal/MastersModal";
+import {
+  CentralHubnewScanProductScan,
+  centralHubScanTable,
+  newScanProductScan,
+  warehoueScanTable,
+} from "../../ScanComponentWarehouse/ApiScan/ApiScan";
+import {
+  centralStatusTableData,
+  whstatusTableData,
+} from "../../MastersSection/ApiMasters/ApiMasters";
+import searchimg from "../../../assets/search.png";
+import searchblue from "../../../assets/bluesearch.png";
+import dlt from "../../../assets/deleticon.png";
+import scan from "../../../assets/scan.png";
 
-const ScanWarehouse = ({ sidebarExpanded }) => {
+const CentralhubScanModule = ({ sidebarExpanded }) => {
   const [open, setOpen] = useState(false);
   const [scanTableData, setScanTableData] = useState([]);
   const [status, setStatus] = useState([]);
@@ -19,11 +26,9 @@ const ScanWarehouse = ({ sidebarExpanded }) => {
   const [searchListId, setsearchListId] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-
-
   useEffect(() => {
-    whstatusTableData(setStatus);
-    warehoueScanTable(setScanTableData);
+    centralStatusTableData(setStatus);
+    centralHubScanTable(setScanTableData);
   }, []);
 
   const openModal = () => {
@@ -32,14 +37,14 @@ const ScanWarehouse = ({ sidebarExpanded }) => {
 
   const handleCheckboxChange = (productId) => {
     if (clickedProductIds.includes(productId)) {
-      setClickedProductIds(clickedProductIds.filter(id => id !== productId));
+      setClickedProductIds(clickedProductIds.filter((id) => id !== productId));
     } else {
       setClickedProductIds([...clickedProductIds, productId]);
     }
   };
 
   const handleHeaderCheckboxChange = () => {
-    const allProductIds = scanTableData.map(item => item.id);
+    const allProductIds = scanTableData.map((item) => item.id);
     if (clickedProductIds.length === allProductIds.length) {
       setClickedProductIds([]);
     } else {
@@ -58,27 +63,27 @@ const ScanWarehouse = ({ sidebarExpanded }) => {
 
   const handleSearch = async () => {
     setIsLoading(true);
-    if(searchListId === ""){
-      setError("Enter slot ID")
-    }else{
-    try {
-      await newScanProductScan(
-        setIsLoading,
-        searchListId,
-        setScanTableData,
-        setsearchListId,
-        setError
-      );
-    } catch (error) {
-      console.error("Error searching scan list:", error);
-    } finally {
-      setIsLoading(false);
+    if (searchListId === "") {
+      setError("Enter slot ID");
+    } else {
+      try {
+        await CentralHubnewScanProductScan(
+          setIsLoading,
+          searchListId,
+          setScanTableData,
+          setsearchListId,
+          setError
+        );
+      } catch (error) {
+        console.error("Error searching scan list:", error);
+      } finally {
+        setIsLoading(false);
+      }
     }
-  }
   };
 
-  console.log("scanTableData",scanTableData)
-  console.log("clickedProductIds",clickedProductIds)
+  console.log("central hub scanTableData", scanTableData);
+  console.log("clickedProductIds", clickedProductIds);
 
   return (
     <>
@@ -97,8 +102,8 @@ const ScanWarehouse = ({ sidebarExpanded }) => {
             <img className="searchblue" src={searchblue} alt="" />
           </div>
           {/* {error && (
-            <span style={{ color: "red", fontSize: "10px" }}>{error}</span>
-          )} */}
+              <span style={{ color: "red", fontSize: "10px" }}>{error}</span>
+            )} */}
 
           <div className="secton_search">
             <div className="Search_Admin">
@@ -123,10 +128,12 @@ const ScanWarehouse = ({ sidebarExpanded }) => {
                 />
                 <img onClick={handleSearch} src={searchimg} alt="" />
               </div>
-              {error && <span style={{color:"red",fontSize:"10px"}}>{error}</span>}
+              {error && (
+                <span style={{ color: "red", fontSize: "10px" }}>{error}</span>
+              )}
             </div>
             <div className="Create_user">
-              <button onClick={openModal}>Change WH Status</button>
+              <button onClick={openModal}>Change CH Status</button>
             </div>
           </div>
         </div>
@@ -139,7 +146,9 @@ const ScanWarehouse = ({ sidebarExpanded }) => {
                     <input
                       type="checkbox"
                       onChange={handleHeaderCheckboxChange}
-                      checked={clickedProductIds.length === scanTableData.length}
+                      checked={
+                        clickedProductIds.length === scanTableData.length
+                      }
                     />
                   </th>
                   <th style={{ borderLeft: "none" }}>Sl No</th>
@@ -164,11 +173,19 @@ const ScanWarehouse = ({ sidebarExpanded }) => {
                       />
                     </td>
                     <td style={{ borderLeft: "none" }}>{index + 1}</td>
-                    <td style={{ borderLeft: "none" }}>{item.Productdetails?.designcode}</td>
+                    <td style={{ borderLeft: "none" }}>
+                      {item.Productdetails?.designcode}
+                    </td>
                     <td style={{ borderLeft: "none" }}>{item.created_at}</td>
-                    <td style={{ borderLeft: "none" }}>{item.Productdetails.product_category}</td>
-                    <td style={{ borderLeft: "none" }}>{item.Productdetails.status}</td>
-                    <td style={{ borderLeft: "none" }}>{item.Productdetails.approx_metal_weight} GM</td>
+                    <td style={{ borderLeft: "none" }}>
+                      {item.Productdetails.product_category}
+                    </td>
+                    <td style={{ borderLeft: "none" }}>
+                      {item.Productdetails.status}
+                    </td>
+                    <td style={{ borderLeft: "none" }}>
+                      {item.Productdetails.approx_metal_weight} GM
+                    </td>
                     <td style={{ borderLeft: "none" }}>
                       <img
                         onClick={() => handleDeleteOpen(item.id)}
@@ -188,7 +205,7 @@ const ScanWarehouse = ({ sidebarExpanded }) => {
           <MastersModal
             modalHeading="Status"
             btnName="Add Finding"
-            modalPage="newscanmodule"
+            modalPage="centralhubscan"
             openModal={openModal}
             setOpen={setOpen}
             status={status}
@@ -218,4 +235,4 @@ const ScanWarehouse = ({ sidebarExpanded }) => {
   );
 };
 
-export default ScanWarehouse;
+export default CentralhubScanModule;

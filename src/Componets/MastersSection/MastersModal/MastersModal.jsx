@@ -32,6 +32,7 @@ import {
   whstatusDataUpadate,
 } from "../ApiMasters/ApiMasters";
 import { useLocation } from "react-router-dom";
+import { centralHubnewScanProductStatusUpdate, newScanProductStatusUpdate } from "../../ScanComponentWarehouse/ApiScan/ApiScan";
 
 const style = {
   position: "absolute",
@@ -56,10 +57,13 @@ const MastersModal = ({
   setSelectedImage,
   selectedImage,
   status,
-  clickedProductIds
+  clickedProductIds,
+  setScanTableData,
 }) => {
   const location = useLocation();
   const [errors, setErrors] = useState("");
+  const [statusId, setStatusId] = useState("");
+  const [cHstatusId, setChStatusId] = useState("");
 
   const handleClose = () => {
     setOpen(false);
@@ -302,8 +306,46 @@ const MastersModal = ({
     }
   };
 
+  const handleUpdateProductStatus = async () => {
+    if (statusId === "") {
+      setErrors("Choose a Option");
+    }
+    try {
+      await newScanProductStatusUpdate(
+        statusId,
+        clickedProductIds,
+        setScanTableData,
+        setErrors,
+        setStatusId,
+        setOpen
+      );
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
+  const handleUpdateCentralStatus = async () => {
+    if (cHstatusId === "") {
+      setErrors("Choose a Option");
+    }
+    try {
+      await centralHubnewScanProductStatusUpdate(
+        cHstatusId,
+        clickedProductIds,
+        setScanTableData,
+        setErrors,
+        setChStatusId,
+        setOpen
+      );
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
   console.log("clickedProductIds on status", clickedProductIds);
-  console.log("inputDataerrors", errors);
+  console.log("satus000", status);
+  console.log("statusId", statusId);
+  console.log("cHstatusId", cHstatusId);
 
   return (
     <div>
@@ -317,9 +359,9 @@ const MastersModal = ({
           <div className="master_modal" onclick={handleClose}>
             <h3>{modalHeading}</h3>
             {location.pathname !== "/newscanmodule" && (
-            <button onClick={handleClose}>
-              <img className="btn_close" src={close} alt="" srcset="" />
-            </button>
+              <button onClick={handleClose}>
+                <img className="btn_close" src={close} alt="" srcset="" />
+              </button>
             )}
           </div>
 
@@ -563,40 +605,86 @@ const MastersModal = ({
           )}
 
           {modalPage === "newscanmodule" && (
-            <div className="modal_fields" style={{ height: "40px",marginTop:"15px" }}>
-              <div className="inp1 inp3">
-                <FormControl style={{ height: "40px" }}>
-                  <InputLabel id="demo-simple-select-autowidth-label">
-                    Status
-                  </InputLabel>
-                  <Select
-                    style={{ height: "40px" }}
-                    labelId="demo-simple-select-autowidth-label"
-                    id="demo-simple-select-autowidth"
-                    // value={age}
-                    // onChange={handleChange}
-                    autoWidth
-                    label="Status"
-                  >
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    {status.map((item)=>(
-                    <MenuItem value={item.name}>{item.name}</MenuItem>               
-                  ))}
-                  </Select>
-                </FormControl>
+            <>
+              <div
+                className="modal_fields"
+                style={{ height: "40px", marginTop: "15px" }}
+              >
+                <div className="inp1 inp3">
+                  <FormControl style={{ height: "40px" }}>
+                    <InputLabel id="demo-simple-select-autowidth-label">
+                      Status
+                    </InputLabel>
+                    <Select
+                      style={{ height: "40px" }}
+                      labelId="demo-simple-select-autowidth-label"
+                      id="demo-simple-select-autowidth"
+                      value={statusId}
+                      onChange={(e) => setStatusId(e.target.value)} 
+                      autoWidth
+                      label="Status"
+                    >
+                      <MenuItem value="">
+                        <em>None</em>
+                      </MenuItem>
+                      {status.map((item) => (
+                        <MenuItem key={item.id} value={item.id}>
+                          {item.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </div>
+                <button className="scan_update_btn" onClick={handleUpdateProductStatus}>
+                  Update
+                </button>
               </div>
-              <button className="scan_update_btn" onClick={handleClose}>
-                Update
-              </button>
-            </div>
+            </>
+          )}
+
+          {modalPage === "centralhubscan" && (
+            <>
+              <div
+                className="modal_fields"
+                style={{ height: "40px", marginTop: "15px" }}
+              >
+                <div className="inp1 inp3">
+                  <FormControl style={{ height: "40px" }}>
+                    <InputLabel id="demo-simple-select-autowidth-label">
+                      Status
+                    </InputLabel>
+                    <Select
+                      style={{ height: "40px" }}
+                      labelId="demo-simple-select-autowidth-label"
+                      id="demo-simple-select-autowidth"
+                      value={cHstatusId}
+                      onChange={(e) => setChStatusId(e.target.value)} 
+                      autoWidth
+                      label="Status"
+                    >
+                      <MenuItem value="">
+                        <em>None</em>
+                      </MenuItem>
+                      {status.map((item) => (
+                        <MenuItem key={item.id} value={item.id}>
+                          {item.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </div>
+                <button className="scan_update_btn" onClick={handleUpdateCentralStatus}>
+                  Update
+                </button>
+              </div>
+            </>
           )}
 
           {errors && (
             <span style={{ color: "red", fontSize: "10px" }}>{errors}</span>
           )}
-          {location.pathname !== "/newscanmodule" && (
+          {location.pathname !== "/newscanmodule" &&
+          location.pathname !== "/centralhubscan" && (
             <div className="modal_btns">
               <button onClick={handleClose}>Cancel</button>
               <button onClick={handleCreatedata}>{btnName}</button>
