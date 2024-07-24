@@ -55,10 +55,10 @@ export const assign_to_cad = async (
   selectedDesign,
   list_designer_folderDetails,
   setSuccessMessage,
-  setSuccessModalOpen
+  setSuccessModalOpen,
+
 ) => {
   try {
-    debugger
     setIsLoading(true);
     const body = {
       folder: assignToCadId,
@@ -91,19 +91,26 @@ export const unAssignCadDesigner = async (
   assignToCadId,
   userId,
   selectedDesign,
-  list_id,
   list_designer_folderDetails,
-  setAssignBtnText
+  setSuccessMessage,
+  setSuccessModalOpen
+
 ) => {
   try {
     const body = {
       folder: assignToCadId,
-      user: userId,
+      user:userId,
       assignment_items: selectedDesign,
     };
+    console.log(body, "body====>Unsss");
     const response = await apiService.patch(`${UNASSIGN_CAD_DESIGNERS}`,body);
     if (checkApiStatus(response)) {
       list_designer_folderDetails();
+      setSuccessMessage("Item Unassigned Successfully");
+      setSuccessModalOpen(true);
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1700);
   
     }
   } catch (error) {
