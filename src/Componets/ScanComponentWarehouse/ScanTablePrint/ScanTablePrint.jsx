@@ -15,8 +15,8 @@ const ScanTablePrint = forwardRef(({ clickedProducts }, ref) => {
         </thead>
         <tbody>
           {clickedProducts.map(product => (
-            <tr style={{border:"1px solid black", fontSize:"14px",padding:"10px"}} key={product.slotnumber}>
-              <td style={{border:"1px solid black", fontSize:"14px",padding:"10px"}} className='print_span'>{product.slotnumber}</td>
+            <tr style={{border:"1px solid black", fontSize:"14px",padding:"10px"}} key={product.finisheditem.designcode}>
+              <td style={{border:"1px solid black", fontSize:"14px",padding:"10px"}} className='print_span'>{product.finisheditem.designcode}</td>
               <td style={{border:"1px solid black", fontSize:"14px",padding:"10px"}} className='print_span'>{product.created_at}</td>
               <td style={{border:"1px solid black", fontSize:"14px",padding:"10px"}} className='print_span'>Missing Field</td>
               <td style={{border:"1px solid black", fontSize:"14px",padding:"10px"}} className='print_span'>Missing Field</td>

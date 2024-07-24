@@ -33,12 +33,13 @@ const ScanModal = ({ setOpenModal, clickedProductId }) => {
       await scan_table_item_products(clickedProductId, setclickedProducts);
     } catch (error) {
       console.error("Error updating slot list item:", error);
-    } finally {
-      setIsLoading(false);
-    }
+    } 
+    // finally {
+    //   setIsLoading(false);
+    // }
   };
 
-  console.log("slot list products", clickedProducts);
+  console.log("moadl list products", clickedProducts);
   console.log("iId", clickedProductId);
 
   const handleModalClose = () => {
@@ -100,7 +101,7 @@ const ScanModal = ({ setOpenModal, clickedProductId }) => {
                 <tbody>
                   {clickedProducts.map((product) => (
                     <tr>
-                      <td>{product.slotnumber}</td>
+                      <td>{product.designcode}</td>
                       <td>{product.created_at}</td>
                       <td>Missing Feild</td>
                       <td>Missing Feild</td>

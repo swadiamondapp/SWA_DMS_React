@@ -246,6 +246,14 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
               {sidebarExpanded && <p>Transfer</p>}
             </div>
           </Link>
+          <Link to="/centralhubscan">
+            <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={scan} alt="" />
+              {sidebarExpanded && <p>Scan </p>}
+            </div>
+          </Link>
           {/* CENTRAL HUB SIDEBAR */}
         </>
       );

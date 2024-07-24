@@ -3,6 +3,7 @@ import "./ScanTable.css";
 import searchimg from "../../../assets/search.png";
 import ThreeDot from "../../../assets/three.png";
 import ScanModal from "../ScanModal/ScanModal";
+import searchblue from "../../../assets/bluesearch.png";
 import { MenuItem, Select } from "@mui/material";
 import {
   scan_list_datas,
@@ -88,19 +89,35 @@ const ScanTable = ({ sidebarExpanded}) => {
 
   return (
        <div className="scantable_main"  style={{ marginLeft: sidebarExpanded ? "225px" : "130px" }}>
-      <div className="Search_Admin scan_search">
-        <div className="Search_User">
+      <div className="scantable_main_search">
+          <div className="Search_User">
+            <input
+              className="searchblue_border"
+              type="text"
+              name="slot_id"
+              placeholder="Search"
+            />
+            <img className="searchblue" src={searchblue} alt="" />
+          </div>
+          {/* {error && (
+            <span style={{ color: "red", fontSize: "10px" }}>{error}</span>
+          )} */}
+
+          <div className="secton_search">
+          <div className="Search_User">
           <input
             type="text"
             name="slot_id"
-            placeholder="Scan Slot ID"
+            placeholder="Scan Product ID"
             value={searchListId}
             onChange={handleInputChange}
           />
           <img onClick={handleSearch} src={searchimg} alt="" />
         </div>
         {error && <span style={{color:"red",fontSize:"10px"}}>{error}</span>}
-      </div>
+          </div>
+          </div>
+      
       <div className="ScanTable">
         <div className="table-container">
           <table>
@@ -108,7 +125,7 @@ const ScanTable = ({ sidebarExpanded}) => {
               <tr>
                 <th style={{ borderLeft: "none" }}>Sl No</th>
                 <th>Created Date</th>
-                <th style={{ width: "40%" }}>Slot ID</th>
+                <th style={{ width: "40%" }}>Product ID</th>
                 <th>Status</th>
                 <th>Action</th>
               </tr>
@@ -118,7 +135,7 @@ const ScanTable = ({ sidebarExpanded}) => {
                 <tr className="table_row">
                   <td style={{ borderLeft: "none" }}>{index + 1}</td>
                   <td style={{ borderLeft: "none" }}>{formatDate(item.created_at)}</td>
-                  <td style={{ borderLeft: "none" }}>{item.slot.slotnumber}</td>
+                  <td style={{ borderLeft: "none" }}>{item.finisheditem.designcode}</td>
 
                   <td style={{ borderLeft: "none" }}>
                     {/* <select
@@ -139,17 +156,18 @@ const ScanTable = ({ sidebarExpanded}) => {
                         </option>
                       ))}
                     </select> */}
-                    <span className="scan_select_span">{item.status}</span>
+                    {/* <span className="scan_select_span">{item.status}</span> */}
+                    <span className="scan_select_span">Recived</span>
                   </td>
 
                   <td style={{ borderLeft: "none" }}>
                     <div className="scan_btn_div">
-                      <button
+                      {/* <button
                         className="btn_scan"
-                        onClick={() => handleopenModal(item.slot.slot_id)}
+                        onClick={() => handleopenModal(item.finisheditem.finisheditem_id)}
                       >
                         <IoEye className="btn_scan_img1" />
-                      </button>
+                      </button> */}
                       <button className="btn_scan">
                         <img
                           className="btn_scan_img2"
@@ -174,6 +192,7 @@ const ScanTable = ({ sidebarExpanded}) => {
         />
       )}
     </div>
+    
   );
 };
 

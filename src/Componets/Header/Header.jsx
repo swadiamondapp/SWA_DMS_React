@@ -220,6 +220,7 @@ const Header = ({
                 {location.pathname === "/scan" && <h3>Receive</h3>}
                 {location.pathname === "/workdone" && <h3>Work Done</h3>}
                 {location.pathname === "/newscanmodule" && <h3>Scan</h3>}
+                {location.pathname === "/centralhubscan" && <h3>Scan</h3>}
               </div>
 
               <div className="Right_User_Section">
@@ -261,6 +262,7 @@ const Header = ({
                   location.pathname !== "/wareHouse" &&
                   location.pathname !== "/scan" &&
                   location.pathname !== "/designpool" &&
+                  location.pathname !== "/centralhubscan" &&
                   location.pathname !== `/centralfolderdetails/${id}` &&
                   location.pathname !== `/assignmentview/${assignmentId}` &&  (
                     <div className="Search_Admin">
