@@ -145,7 +145,7 @@ const Slots = ({sidebarExpanded}) => {
           <tbody>
             {Data.map((item, index) => (
               <tr key={index} style={{ color: "#2E364C" }}>
-                <td className="serialNumber_cell">{item.id}</td>
+                <td className="serialNumber_cell">{index +1}</td>
                 <td>{item.created_at}</td>
                 <td className="slot_cell">{item.slotnumber}</td>
                 <td className="actions-cell">

@@ -90,6 +90,7 @@ const CreateCustomisation = ({
   const [outLetDropDown, setOutLetDropDown] = useState([]);
   const [ErrorMessage, setErrorMessage] = useState([]);
   const [imageFiles, setImageFiles] = useState([]);
+  const [ImageError, setImageError] = useState("");
   const [uploadInstructionsVisible, setUploadInstructionsVisible] =
     useState(true);
   const [successMessage, setSuccessMessage] = useState(
@@ -163,7 +164,7 @@ const CreateCustomisation = ({
     }
   }, [dataToDisplaytomodal]);
 
-  console.log(dataToDisplaytomodal?.image2 ,"dataToDisplaytomodal.image2 ")
+  console.log(dataToDisplaytomodal?.image2, "dataToDisplaytomodal.image2 ");
   console.log(formData, "editCus");
 
   const schema = Joi.object({
@@ -337,6 +338,16 @@ const CreateCustomisation = ({
 
   console.log(ErrorMessage, "asdfkd");
   const handleCreateSubmitCustomization = () => {
+
+
+    const hasAtLeastOneImage = images.some(img => img); // Check if there's at least one image
+
+    if (!hasAtLeastOneImage) {
+      setImageError("At least one image is required.");
+      return; // Stop further execution if image validation fails
+    } else {
+      setImageError(""); // Clear image error if validation passes
+    }
     // Call handleSubmitButton first
     const { error } = schema.validate(formData, {
       abortEarly: false,
@@ -355,6 +366,8 @@ const CreateCustomisation = ({
       setErrors({});
       // Proceed with form submission logic here
       console.log("Form submitted:", formData);
+
+   
 
       // Then proceed with handleCreateSubmitCustomization logic
       create_customizaion_warehouse(
@@ -754,7 +767,10 @@ const CreateCustomisation = ({
                           </div>
                         </div>
                       ) : (
-                        <div className="uploadImageContainer">
+                        <div
+                          className="uploadImageContainer"
+                          style={{ position: "relative" }}
+                        >
                           <div className="rightw">
                             <div
                               id="fileUpload"
@@ -798,6 +814,9 @@ const CreateCustomisation = ({
                               </div>
                             </div>
                           </div>
+                          {ImageError&& (
+                            <span className="error_select">{ImageError}</span>
+                          )}
                         </div>
                       )}
                       <div className="parant_relative">

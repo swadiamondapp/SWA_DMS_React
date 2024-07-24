@@ -119,24 +119,26 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
                     }}
                   />
                 </div>
-              ):(<>
-                {uploadedDesigns.map((item, index) => (
-                <div className="New_Design_card" key={index}>
-                  <div className="Card_img">
-                    <img src={item.image} alt="" />
-                  </div>
-                  <div className="Card_Details">
-                    <h3>ID : {item.designcode}</h3>
-                    <div className="Card_Details_Inner">
-                      <div className="Inner_Left">
-                        <p>{item.name}</p>
-                        <p>{item.created_at}</p>
+              ) : (
+                <>
+                  {uploadedDesigns.map((item, index) => (
+                    <div className="New_Design_card" key={index}>
+                      <div className="Card_img">
+                        <img src={item.image} alt="" />
+                      </div>
+                      <div className="Card_Details_Designer">
+                        <h3>ID : {item.designcode}</h3>
+                        <div className="Card_Details_Inner">
+                          <div className="Inner_Left">
+                            <p>{item.name}</p>
+                            <p>{item.created_at}</p>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-              ))}</>)}
-            
+                  ))}
+                </>
+              )}
             </div>
           </div>
         </div>

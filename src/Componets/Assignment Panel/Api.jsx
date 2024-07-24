@@ -480,7 +480,8 @@ export const upload_admin_image_assignment = async (
   setAdminUploadedImageIds,
   uploadedImage,
   setAdminBasicDetailsOpen,
-  setAdminUploadedIds
+  setAdminUploadedIds,
+  setImageSingleError
 ) => {
   try {
     // Ensure uploadedImage is a File or Blob
@@ -502,6 +503,7 @@ export const upload_admin_image_assignment = async (
       setAdminUploadedImageIds(responseData); // Set the entire response data to state
       setAdminBasicDetailsOpen(true);
       setAdminUploadedIds(responseData.id);
+      setImageSingleError(null)
     }
   } catch (error) {
     console.error("Error uploading image:", error);

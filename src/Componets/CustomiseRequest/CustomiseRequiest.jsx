@@ -19,6 +19,14 @@ import {
   reject_customization,
 } from "../../Pages/WareHousePageView/Api";
 import SuccessModal from "../SuccessModal/SuccessModal";
+import {
+  metal_type_dropdown_basicDetails,
+  product_category_basicDetails,
+} from "../Assignment Panel/Api";
+import {
+  choose_outlet_drop_down,
+  product_type_drop_down,
+} from "../ADMIN PANEL/Api_dropDown";
 
 const CustomiseRequest = ({
   open,
@@ -39,6 +47,9 @@ const CustomiseRequest = ({
   const [tagText, setTagText] = useState("");
   const [customization, setCustomization] = useState([]);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
+  const [MetalTypeDropDown, setMetalTypeDropDown] = useState([]);
+  const [outLetDropDown, setOutLetDropDown] = useState([]);
+  const [ProudctCategory, setListProductCategory] = useState([""]);
   const [successMessage, setSuccessMessage] = useState(
     "Mail Send Success Fully"
   );
@@ -133,6 +144,31 @@ const CustomiseRequest = ({
       setSuccessMessage
     );
   };
+  useEffect(() => {
+    // metal_type_drop_down(setMetalTypeDropDown);
+    // product_type_drop_down(setProductTypeDropDown);
+    choose_outlet_drop_down(setOutLetDropDown);
+    // diamond_colours(setSelectDiamondColor);
+    // diamond_clarity_choice(setSelectDiamondClarity);
+    metal_type_dropdown_basicDetails(setMetalTypeDropDown);
+    // diamond_type_dropdown_basicDetails(setDiamondType);
+    product_category_basicDetails(setListProductCategory);
+  }, []);
+
+  const findMetalNameById = (id) => {
+    const item = MetalTypeDropDown.find((entry) => entry.id === id);
+    return item ? item.metal_name : "Not found";
+  };
+
+  const findOutLetNameByID = (id) => {
+    const item = outLetDropDown.find((entry) => entry.id === id);
+    return item ? item.name : "Note Found";
+  };
+  const productCategoryByID = (id) => {
+    const item = ProudctCategory.find((entry) => entry.id === id);
+    return item ? item.name : "Note Found";
+  };
+  console.log(dataToDisplay, "metalListType");
 
   console.log("dataToDisplay---", dataToDisplay);
 
@@ -184,7 +220,9 @@ const CustomiseRequest = ({
                       </div>
                       <div className="ProductInformation">
                         <span>Outlet</span>
-                        <span>{dataToDisplay.outlet}</span>
+                        <span>
+                          {findOutLetNameByID(Number(dataToDisplay.outlet))}
+                        </span>
                       </div>
                     </div>
                     <div className="lineCR"></div>
@@ -196,7 +234,11 @@ const CustomiseRequest = ({
                     <div className="subTitle">
                       <div className="ProductInformation">
                         <span>Product type</span>
-                        <span>{dataToDisplay.product_type}</span>
+                        <span>
+                          {productCategoryByID(
+                            Number(dataToDisplay.product_type)
+                          )}
+                        </span>
                       </div>
                       <div className="ProductInformation">
                         <span>Model Previously Made</span>
@@ -204,7 +246,7 @@ const CustomiseRequest = ({
                       </div>
                       <div className="ProductInformation">
                         <span>If previously made</span>
-                        <span>
+<span>
                           {dataToDisplay.previously_made &&
                             dataToDisplay.previously_made
                               .charAt(0)
@@ -242,11 +284,13 @@ const CustomiseRequest = ({
                     <div className="subTitle-metal">
                       <div className="ProductInformation">
                         <span>Metel type</span>
-                        <span>{dataToDisplay.metal_type}</span>
+                        <span>
+                          {findMetalNameById(Number(dataToDisplay.metal_type))}
+                        </span>
                       </div>
                       <div className="ProductInformation">
                         <span>Weight</span>
-                        <span>{dataToDisplay.weight} GM</span>
+<span>{dataToDisplay.weight} GM</span>
                       </div>
                       <div className="ProductInformation">
                         <span>Size</span>
@@ -284,7 +328,7 @@ const CustomiseRequest = ({
                     <div className="subTitle-metal">
                       <div className="ProductInformation">
                         <span>Budget</span>
-                        <span>{dataToDisplay.budget}</span>
+                        <span>{Math.floor(dataToDisplay.budget)}</span>
                       </div>
                       <div className="ProductInformation">
                         <span>SWA Product SKU</span>

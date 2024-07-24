@@ -81,6 +81,7 @@ const AdminBasicDetailsModal = ({
   getSelectedDesign,
 }) => {
   const [adminUploadedItemId, setAdminUploadedItemId] = useState([]);
+  const [ ImageSingleError, setImageSingleError] = useState("")
   const [uploadedImage, setUploadedImage] = useState(null);
   const [uploadedFileName, setUploadedFileName] = useState("");
   const [AdminUploadedImageFile, setAdminUploadedImageFile] = useState(false);
@@ -278,6 +279,7 @@ const AdminBasicDetailsModal = ({
         setUploadedImage(reader.result);
         setUploadedFileName(file.name);
         setAdminUploadedImageFile(file);
+        setImageSingleError("");
       };
       reader.readAsDataURL(file);
     }
@@ -318,11 +320,16 @@ const AdminBasicDetailsModal = ({
   console.log(AllDesigners, "AllDesigners");
 
   const handleUploadAdminImageClick = () => {
+    if (uploadedImage === null) {
+      setImageSingleError("Please upload an image");
+      return; 
+    }
     upload_admin_image_assignment(
       setAdminUploadedImageIds,
       AdminUploadedImageFile,
       setAdminBasicDetailsOpen,
-      setAdminUploadedIds
+      setAdminUploadedIds,
+      setImageSingleError
     );
   };
 
@@ -454,6 +461,7 @@ const AdminBasicDetailsModal = ({
     onClose();
     setUploadedImage(null);
     setAdminBasicDetailsOpen(false);
+    setImageSingleError("")
     setFormData({
       SKU: [],
       productCategory: "",
@@ -1228,9 +1236,17 @@ const AdminBasicDetailsModal = ({
                             </div>
                           )}
                         </div>
+                        <div style={{position:'relative'}}>
+                       {ImageSingleError && (
+                            <span className="error_select">
+                              {ImageSingleError}
+                            </span>
+                          )}
+                       </div>
                         </div>
 
                         <div>
+                     
                           {!AdminBasicDetailsOpen && (
                             <div
                               style={{
@@ -1309,7 +1325,8 @@ const AdminBasicDetailsModal = ({
                     <tr>
                       <td className="calculationType">Metal Cost</td>
                       <td className="calculatedAmount">
-                        {CalculationData.metal_cost}
+                        {CalculationData.metal_cost?.toFixed(2)}
+                       
                       </td>
                     </tr>
                     <tr>
