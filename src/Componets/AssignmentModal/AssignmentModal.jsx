@@ -23,7 +23,8 @@ const AssignmentModal = ({
   setUploadedImage,
   setAssignedDesignerId,
   setData,
-  ToCloseCreatefolder
+  ToCloseCreatefolder,
+  setcreateFolderModal
 }) => {
   // create modal
  
@@ -38,9 +39,7 @@ const AssignmentModal = ({
     setSuccessModalOpen(true);
   };
 
-  const handleClose = () => {
-    setSuccessModalOpen(false);
-  };
+
   const handleCreateButton = () => {
     // const isAssignmentPanel = window.location.pathname === '/assignmentpanel';
     // const adminUploadedIdsArray = Array.isArray(AdminUploadedIds) ? AdminUploadedIds : [AdminUploadedIds];
@@ -60,7 +59,7 @@ const AssignmentModal = ({
     //   );
     // } else {
     if(folderName===""){
-     setError("Plese write the folder name.")
+     setError("Plese enter the folder name.")
     }else{
       move_to_folder(
         setIsLoading,
@@ -83,6 +82,17 @@ const AssignmentModal = ({
     }
     // }
   };
+
+  const handleClose = () => {
+    setSuccessModalOpen(false);
+  };
+
+  const handleCloseCreateModal = () => {
+    ToCloseCreatefolder(false);
+    setError("")
+  };
+
+  
   const handleChange = (event) => {
     setFolderName(event.target.value);
   };
@@ -94,7 +104,7 @@ const AssignmentModal = ({
       <div className="">
         <div className=""></div>
         <div className="modalContainer">
-          <Modal title="" open={open} onCancel={onClose} centered width={300}>
+          <Modal title="" open={open} onCancel={handleCloseCreateModal} centered width={300}>
             <div className="modal-Content">
               <div>
                 <p className="title">Assignment folder name</p>

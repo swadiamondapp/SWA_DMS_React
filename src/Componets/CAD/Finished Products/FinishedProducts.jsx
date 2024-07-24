@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import folderimg from "../../../assets/folder.png";
 import { finishedProjectFolder } from "../Api";
+import { CircularProgress } from "@mui/material";
 
 const FinishedProducts = ({ sidebarExpanded }) => {
   const navigate = useNavigate();
@@ -25,6 +26,27 @@ const FinishedProducts = ({ sidebarExpanded }) => {
         className="CadAssignmentCard"
         style={{ display: "flex", gap:"15px" ,flexWrap:"wrap",alignItems:"center"}}
       >
+        {finishedProjects?.length === 0 && (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop:"50px",
+                width:"100%",
+                height:"100%"
+              }}
+            >
+              <CircularProgress
+                size={50} // Set the desired size
+                sx={{
+                  color: "#126e72",
+                  padding: "8px 10px",
+                  width: "35px",
+                }}
+              />
+            </div>
+          )}
         {finishedProjects &&
           finishedProjects.map((item) => (
             <div className="folderCard_parent">

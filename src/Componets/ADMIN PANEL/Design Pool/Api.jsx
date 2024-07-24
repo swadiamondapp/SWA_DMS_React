@@ -3,8 +3,13 @@ import {
   checkApiStatus,
 } from "../../../Pages/Services/ApiInstants";
 import { setToLocalstorage } from "../../../Pages/Utils/Common";
-import { ALL_DESIGNS, MOVE_TO_ASSIGNMENT, UNVOTED_DESIGN,LIST_ASSIGNMENT_FOLDER } from "../../../Pages/Services/EndPoints";
-
+import {
+  ALL_DESIGNS,
+  MOVE_TO_ASSIGNMENT,
+  UNVOTED_DESIGN,
+  LIST_ASSIGNMENT_FOLDER,
+  DESIGNPOOL_SEARCHBY_ID,
+} from "../../../Pages/Services/EndPoints";
 
 export const all_Designs = async (setIsLoading, setData) => {
   try {
@@ -16,6 +21,50 @@ export const all_Designs = async (setIsLoading, setData) => {
     console.log(error);
   }
 };
+
+export const designPoolSearchById = async (searchListId, setData) => {
+  try {
+    if (!searchListId) {
+      const response = await apiService.get(`${ALL_DESIGNS}/?not_assigned=true`);
+      if (checkApiStatus(response)) {
+        setData(response.data.results.data);
+      }
+    } else {
+      const response = await apiService.get(`${DESIGNPOOL_SEARCHBY_ID}${searchListId}`);
+      if (checkApiStatus(response)) {
+        setData(response?.data?.results?.data);
+      }
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+// export const designPoolSearchById = async (
+//   searchListId,
+//   setData,
+//   setErrors
+// ) => {
+//   try {
+//     let response;
+
+//     if (searchListId !== "") {
+//       response = await apiService.get(
+//         `${DESIGNPOOL_SEARCHBY_ID}${searchListId}`
+//       );
+//     } else {
+//       response = await apiService.get(`${ALL_DESIGNS}/?not_assigned=true`); // Replace with your endpoint to fetch all designs
+//     }
+
+//     if (checkApiStatus(response)) {
+//       setData(response.data.results.data);
+//     }
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
+
 
 export const unvoted_design = async (setIsLoading, setUnvotedData) => {
   try {
@@ -34,21 +83,20 @@ export const moveSelectedDesign = async (setIsLoading, selectedDesigns) => {
       design_codes: selectedDesigns,
     };
     const response = await apiService.post(MOVE_TO_ASSIGNMENT, body);
-    const res = response.data.results.status_code === 200
+    const res = response.data.results.status_code === 200;
     if (response.data.results.status_code === 200) {
-      console.log(response.data.results.message,"success")
+      console.log(response.data.results.message, "success");
     }
-    return res
+    return res;
   } catch (error) {
     console.error("Error moving designs:", error);
   }
 };
 
-
-
-
-
-export const list_assignment_folder = async (setIsLoading,setAssignmentFolder) => {
+export const list_assignment_folder = async (
+  setIsLoading,
+  setAssignmentFolder
+) => {
   try {
     const response = await apiService.get(LIST_ASSIGNMENT_FOLDER);
     if (checkApiStatus(response)) {

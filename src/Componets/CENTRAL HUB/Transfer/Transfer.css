@@ -2,7 +2,7 @@
   border: 1px solid balck;
 }
 .scan_select_Central{
-  width: 100px;
+  width: 80px;
   height: 26px;
   border-radius: 32px;
   outline: none;
@@ -30,4 +30,7 @@
   margin: 5px 0; /* This might not be supported in all browsers */
   display: flex;
   gap:10px
+}
+.created_date{
+ width: 200px !important;
 }

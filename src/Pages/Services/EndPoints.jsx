@@ -7,6 +7,10 @@ export const USER_DELETE = "delete-users/";
 export const EDIT_USER = "edit-users/";
 export const LIST_UPLOAD_DESIGN = "upload-design/";
 
+export const DESIGNPOOL_SEARCHBY_ID = "list-all-design/?design_code=";
+export const ASSIGNMENT_SORTBY_DESIGNER = "assigned-design/?uploaduser=DESIGNER";
+export const ASSIGNMENT_SORTBY_ADMIN = "assigned-design/?uploaduser=ADMIN";
+
 export const MOVE_TO_ASSIGNMENT = "move-design/";
 export const LIST_ASSIGNMENT_PANEL = "assigned-design/";
 export const LIST_ASSIGNMENT_FOLDER = "getlist-folder/";
@@ -154,7 +158,15 @@ export const OUTLET_ITEM_UPDATE = "master/outlet/";
 
 export const MOVE_SINGLE_ITEM_TO_DESIGNPOOL = "move-assignments/"
 export const DELETE_ITEM_FROM_ASSIGNMENT_PANEL = "delete-assignment-item/"
-export const NEW_SCAN_LIST = "warehouse/scan/list/";
+
+export const NEW_SCAN_LIST = "warehouse/scan-productlsit";
+export const NEW_SCAN_PRODUCTSCAN = "warehouse/scan-product";
+export const NEW_SCAN_PRODUCTSTATUS_UPDATE = "warehouse/scan-update";
+
+export const CENTRALHUB_NEW_SCAN_LIST = "centralhub/scan-list/";
+export const CENTRALHUB_NEW_SCAN_PRODUCTSCAN = "centralhub/scan-product/";
+export const CENTRALHUB_NEW_SCAN_PRODUCTSTATUS_UPDATE = "centralhub/scan/update";
+
 export const LIST_ASSIGN_TO_LIST_ITEMS = "list/myassigned-data/"
 export const SEARCH_WITH_NAMES = "list/users/?searchname="
 export const EDIT_DETAIL_VIEW_WAREHOUSE= "warehouse/update-customization/"

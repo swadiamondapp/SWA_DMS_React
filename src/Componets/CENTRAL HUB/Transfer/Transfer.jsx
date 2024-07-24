@@ -18,7 +18,8 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import closeButton from "../../../assets/closeButton.svg";
-import searchIcon from "../../../assets/search.png";
+import searchimg from "../../../assets/search.png";
+import bluesearch from "../../../assets/bluesearch.png";
 import SuccessModal from "../../SuccessModal/SuccessModal";
 
 const Transfer = ({ sidebarExpanded }) => {
@@ -35,8 +36,10 @@ const Transfer = ({ sidebarExpanded }) => {
   const [printSlotModalOpen, setPrintSlotModalOpen] = useState(false);
   const [TransferData, setTransferData] = useState([]);
   const [TransferScan, setTransferScan] = useState("");
-  const [centralStatus, setCentralStatus] = useState("Created");
+  // const [centralStatus, setCentralStatus] = useState("Created");
   const [CentralHubStatus, setCentralHubStatus] = useState([]);
+  const [error, setError] = useState("");
+  const [transferStatus, setTransferStatus] = useState("Created");
 
   const handlePrintSlotModalClose = () => {
     setPrintSlotModalOpen(false);
@@ -78,35 +81,35 @@ const Transfer = ({ sidebarExpanded }) => {
   const sortedTransfer = Data.sort((a, b) => a.id - b.id);
 
   const handleScanChange = (event) => {
-    setTransferScan(event.target.value);
+    setTransferScan(event.target.value.toUpperCase());
   };
   const handleTransferScan = () => {
-    scanSloteTransfer(
-      setIsLoading,
-      TransferScan,
-      setSuccessModalOpen,
-      setSuccessMessage,
-      setTransferData
-    );
+    if (TransferScan === "") {
+      setError("Enter slot ID");
+    } else {
+      scanSloteTransfer(
+        setIsLoading,
+        TransferScan,
+        setSuccessModalOpen,
+        setSuccessMessage,
+        setTransferData,
+        setTransferScan
+      );
+    }
   };
 
-  const selectStyle = {
-    backgroundColor: centralStatus === "Created" ? "green" : "blue",
-    color: centralStatus === "Created" ? "white" : "#fff",
-  };
+  // const selectStyle = {
+  //   backgroundColor: transferStatus === "Created" ? "green" : "blue",
+  //   color: transferStatus === "Created" ? "white" : "#fff",
+  // };
+
   const handleStatusChange = (event, itemId) => {
     const { value } = event.target;
     console.log(value, itemId, "acscas");
-    changeCentralHubStatus(itemId, setIsLoading, value);
 
-    // Update TransferData state based on itemId
-    setTransferData((prevTransferData) =>
-      prevTransferData.map((item) =>
-        item.id === itemId ? { ...item, status: value } : item
-      )
-    );
+    changeCentralHubStatus(itemId, setIsLoading, value, setTransferData);
 
-    // Call changeCentralHubStatus with appropriate parameters
+    setTransferStatus(value);
   };
 
   function formatDate(dateString) {
@@ -114,7 +117,12 @@ const Transfer = ({ sidebarExpanded }) => {
     const options = { day: "numeric", month: "long", year: "numeric" };
     return new Intl.DateTimeFormat("en-GB", options).format(date);
   }
-  console.log(TransferData, "TransferScan");
+
+  // const handleTransferStatus = (event) => {
+  //   setTransferStatus(event.target.value);
+  // };
+
+  console.log(transferStatus, "transferStatus");
   console.log(CentralHubStatus, "CentralHubStatus");
   return (
     <div
@@ -123,35 +131,57 @@ const Transfer = ({ sidebarExpanded }) => {
     >
       <div className="slote_labe" style={{ border: "none" }}>
         <div style={{ display: "flex" }}>
-          <form action="">
-            <div className="searchContiainer">
-              <div className="Search_Userr transferSearchIcon">
+          {/* <form action=""> */}
+          <div
+            className="scantable_main_search"
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <div className="Search_User">
+              <input
+                className="searchblue_border"
+                type="text"
+                name="slot_id"
+                placeholder="Search"
+              />
+              <img className="searchblue" src={bluesearch} alt="" />
+            </div>
+            {/* {error && (
+            <span style={{ color: "red", fontSize: "10px" }}>{error}</span>
+          )} */}
+
+            <div className="secton_search">
+              <div className="Search_User">
                 <input
                   type="text"
+                  name="slot_id"
                   placeholder="Scan Product ID"
-                  className="transferSearch"
                   value={TransferScan}
-                  onChange={(event) => handleScanChange(event)}
+                  onChange={handleScanChange}
                 />
-                <div
-                  className="iconBack searchIconTransfer"
-                  onClick={() => handleTransferScan()}
-                >
-                  <img src={searchIcon} alt="" />
-                </div>
+                <img onClick={handleTransferScan} src={searchimg} alt="" />
               </div>
+              {error && (
+                <span style={{ color: "red", fontSize: "10px" }}>{error}</span>
+              )}
             </div>
-          </form>
+          </div>
+          {/* </form> */}
         </div>
       </div>
       {/* table */}
-      <div className="Users_Table_List">
+      <div className="">
         <table style={{ width: "100%" }}>
           <thead>
             <tr style={{ color: "#455173" }}>
               <th>SL NO</th>
-              <th>Created on</th>
-              <th>Slot ID</th>
+              <th className="created_date">Created onnn</th>
+              <th style={{ width: "25%" }}>Product ID</th>
+              <th style={{}}>Product Category</th>
+              <th>Weight</th>
               <th>Status</th>
             </tr>
           </thead>
@@ -159,8 +189,10 @@ const Transfer = ({ sidebarExpanded }) => {
             {TransferData.map((item, index) => (
               <tr key={index} style={{ color: "#2E364C" }}>
                 <td className="serialNumber_cell">{index + 1}</td>
-                <td>{formatDate(item.created_at)}</td>
-                <td className="slot_cell">{item.finisheditem?.designcode}</td>
+ <td style={{ width: "25%" }}>{formatDate(item.created_at)}</td>
+                <td className="slot_cell">{item.finisheditem.designcode}</td>
+                <td className="slot_cell">{item.finisheditem.designcode}</td>
+                <td className="slot_cell">{item.finisheditem.designcode}</td>
                 <td className="actions-cell">
                   <div className="parentSlotS">
                     <div
@@ -176,24 +208,22 @@ const Transfer = ({ sidebarExpanded }) => {
                           className="scan_select_Central"
                           name="centralStatus"
                           id="centralHubStatus"
-                          value={item.status} // Assuming item.status holds the status value
-                          onChange={(e) => handleStatusChange(e, item.id)} // Pass item.id to handleStatusChange
-                          style={selectStyle}
+                          value={item.status}
+                          onChange={(event) =>
+                            handleStatusChange(event, item.id)
+                          }
+                          style={{
+                            backgroundColor:
+                              item.status === "Created" ? "#23A064" : "#0464D5",
+                            color: item.status === "Created" ? "white" : "#fff",
+                          }}
                         >
-                          {CentralHubStatus.map((option) => (
-                            <option
-                              className="custom-option"
-                              style={{ margin: "10px" }}
-                              key={option.id}
-                              value={option.id}
-                            >
-                              {option.name}
-                            </option>
-                          ))}
+ <option value="Created">Created</option>
+                          <option value="Transfered">Transfered</option>
                         </select>
                       </div>
 
-                      <div>
+                      {/* <div>
                         <IoEye
                           onClick={() => handleEyeButton(item.id)}
                           style={{
@@ -203,9 +233,9 @@ const Transfer = ({ sidebarExpanded }) => {
                             fontSize: "15px",
                           }}
                         />
-                      </div>
+                      </div> */}
                     </div>
-                    <div className="DOTSBTNS">
+                    {/* <div className="DOTSBTNS">
                       <BsThreeDotsVertical
                         className="Action_dots"
                         onClick={() =>
@@ -214,7 +244,7 @@ const Transfer = ({ sidebarExpanded }) => {
                           )
                         }
                       />
-                    </div>
+                    </div> */}
                   </div>
                 </td>
               </tr>
@@ -248,7 +278,7 @@ const Transfer = ({ sidebarExpanded }) => {
               <Typography>
                 <div className="print_slot_modal_container">
                   <div className="Slote_Container">
-                    <table class="custom-table single-border">
+                    <table class="">
                       <thead>
                         <tr>
                           <th class="column-header">Product ID</th>

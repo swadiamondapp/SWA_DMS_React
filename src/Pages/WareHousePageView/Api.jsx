@@ -488,9 +488,10 @@ export const scan_list_search = async (
   setsearchListId,
   setError
 ) => {
+  
   try {
     const body = {
-      slot_id: searchListId,
+      finisheditem_id: searchListId,
     };
 
     const response = await apiService.post(SCAN_TABLE_SLOTID_SEARCH, body);

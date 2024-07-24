@@ -61,6 +61,7 @@ import ScanPage from "./Componets/ScanComponentWarehouse/ScanPage/ScanPage";
 import WorkDone from "./Componets/WorkdoneWarehorse/WorkDone/WorkDone";
 import RendersDetailing from "./Pages/RendersDetailing/RendersDetailing";
 import ScanModule from "./Pages/ScanModule/ScanModule";
+import CentralHubScan from "./Componets/CentalHub/CentralHubScan/CentralHubScan";
 
 function App() {
   return (
@@ -132,6 +133,7 @@ function App() {
             <Route path="/workdone" element={<WorkDone />} />
 
             <Route path="/newscanmodule" element={<ScanModule />} />
+            <Route path="/centralhubscan" element={<CentralHubScan />} />
 
             <Route
               path="/CadAssignmentcard"

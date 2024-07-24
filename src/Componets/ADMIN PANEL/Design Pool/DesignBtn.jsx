@@ -40,12 +40,16 @@ const DesignBtn = ({
   setSelectButtonLabel,
   setcreateFolderModal,
   handleCreatedFolder,
+  handleSortByDesigner,
+  handleSortByAdmin,
+  handleSortByAll
 }) => {
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpenAssign, setIsModalOpenAssign] = useState(false);
   const [isModalOpenCreateCutomize, setIsCreateCustomizeModalOpen] =
     useState(false);
+  const [sort, setSort] = useState(false);
 
   // const [createFolderModal, setcreateFolderModal] = useState(false);
 
@@ -58,7 +62,11 @@ const DesignBtn = ({
   };
   const { id } = useParams();
 
-  console.log("selectedAssignmentbtnnnnnn", selectedAssignment);
+  console.log("selectedAssignmentbtnnnnnn", setSelectedAssignment);
+
+  const handleSort = () => {
+    setSort(!sort);
+  };
 
   return (
     <div>
@@ -91,7 +99,9 @@ const DesignBtn = ({
 
         {location.pathname !== "/assignmentpanel" &&
           location.pathname !== "/designdashboard" &&
-          location.pathname === "/designpool" && selectButtonLabel === "Unselect" &&  getSelectedDesign.length>0 &&
+          location.pathname === "/designpool" &&
+          selectButtonLabel === "Unselect" &&
+          getSelectedDesign.length > 0 &&
           location.pathname !== "/designerassignview" &&
           location.pathname !== "/votorscustomization" &&
           location.pathname !== `/designerassignview/${id}` &&
@@ -118,7 +128,7 @@ const DesignBtn = ({
             </div>
           )}
         {location.pathname === `/designerassignview/${id}` &&
-         selectedDesign.length > 0 &&
+          selectedDesign.length > 0 &&
           selectButtonLabel === "Unselect" && (
             <div className="Parent_MoveTo">
               <button
@@ -140,15 +150,25 @@ const DesignBtn = ({
             </div>
           )}
 
-        {location.pathname !== "/votorscustomization" && (
+        {location.pathname !== "/votorscustomization" &&
+        location.pathname !== "/assignmentpanel" &&
+        location.pathname !== "/designpool" && (
           <button className="D_View_Sort_Filter">
             <MdViewModule /> View
           </button>
         )}
 
-        {location.pathname !== "/votorscustomization" && (
-          <button className="D_View_Sort_Filter">
+        {location.pathname !== "/votorscustomization" && 
+        location.pathname !== "/designpool" && (
+          <button onClick={handleSort} className="D_View_Sort_Filter" style={{position:"relative"}}>
             <LuArrowUpDown /> Sort
+            {sort && (
+              <div className="sortData">
+                <span onClick={handleSortByAll}>All</span>
+                <span onClick={handleSortByDesigner}>Designer added</span>
+                <span onClick={handleSortByAdmin}>Admin added</span>
+              </div>
+            )}
           </button>
         )}
 
@@ -187,7 +207,6 @@ const DesignBtn = ({
         setSelectedAssignment={setSelectedAssignment}
         setSelectButtonLabel={setSelectButtonLabel}
         setShowRadioButtons={setShowRadioButtons}
-      
       />
       <CreateCustomisation
         open={isModalOpenCreateCutomize}
