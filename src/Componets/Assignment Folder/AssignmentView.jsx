@@ -17,10 +17,14 @@ import {
 } from "../Assignment Panel/Api";
 import BasicDetailModal from "../BasicDetails/BasicDetailModal";
 import BasicDetialsEditModal from "../BasicDetails/BasicDetialsEditModal";
-import EdiIcon from "../../assets/EditBasic.png"
-import { choose_outlet_drop_down, metal_type_drop_down, product_type_drop_down } from "../ADMIN PANEL/Api_dropDown";
+import EdiIcon from "../../assets/EditBasic.png";
+import {
+  choose_outlet_drop_down,
+  metal_type_drop_down,
+  product_type_drop_down,
+} from "../ADMIN PANEL/Api_dropDown";
 
-const AssignmentView = ({sidebarExpanded}) => {
+const AssignmentView = ({ sidebarExpanded }) => {
   const { id } = useParams();
   const [folderDetails, setFolderDetails] = useState([]);
   const [folderDetailView, setFolderDetailsView] = useState([]);
@@ -32,16 +36,10 @@ const AssignmentView = ({sidebarExpanded}) => {
   const [MetalTypeDropDown, setMetalTypeDropDown] = useState([]);
   const [outLetDropDown, setOutLetDropDown] = useState([]);
   const [ProudctCategory, setListProductCategory] = useState([""]);
-  const [ProductTypeDropDown,setProductTypeDropDown] = useState([])
-  const [DiamondType,setDiamondType] = useState([])
+  const [ProductTypeDropDown, setProductTypeDropDown] = useState([]);
+  const [diamonType, setDiamondType] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
   const [FindingsList, setFindingsList] = useState([]);
-
-
-
-
-
-
 
   useEffect(() => {
     // list_folderDetails(setIsLoading,setFolderDetails,id)
@@ -97,25 +95,27 @@ const AssignmentView = ({sidebarExpanded}) => {
     return item ? item.name : "Note Found";
   };
   const findDiamondNameById = (id) => {
-    const item = DiamondType.find((entry) => entry.id === id);
+    const item = diamonType.find((entry) => entry.id === id);
     return item ? item.name : "Not found";
   };
 
   const findFindingsNameById = (id) => {
     const item = FindingsList.find((entry) => entry.id === id);
     return item ? item.find_name : "Not found";
-};
+  };
 
-const findNamesByIds = (ids) => {
-  return ids.map(id =>  findFindingsNameById(id));
-};
-  
+  const findNamesByIds = (ids) => {
+    return ids.map((id) => findFindingsNameById(id));
+  };
 
-  console.log(FindingsList,"fghjkl")
+  console.log(basicDetails?.findings, "fghjkl");
   // console.log(FindingsList,"finsdfasfd")
   return (
     <div>
-      <div className="Parent_AssignmentView" style={{paddingLeft:sidebarExpanded? "225px": "130px"}}>
+      <div
+        className="Parent_AssignmentView"
+        style={{ paddingLeft: sidebarExpanded ? "225px" : "130px" }}
+      >
         <div className="AssignmentView">
           <div className="Left_img_View">
             <img src={itemDetails?.paper_design?.image} alt="" />
@@ -149,11 +149,15 @@ const findNamesByIds = (ids) => {
                 </div>
                 <div className="A1_text">
                   <p>Type of metal</p>
-                  <p>{findMetalNameById(Number(basicDetails?.type_of_metal))}</p>
+                  <p>
+                    {findMetalNameById(Number(basicDetails?.type_of_metal))}
+                  </p>
                 </div>
                 <div className="A1_text">
                   <p>Dimond Type</p>
-                  <p>{findDiamondNameById(Number(basicDetails?.diamond_type))}</p>
+                  <p>
+                    {findDiamondNameById(Number(basicDetails?.diamond_type))}
+                  </p>
                 </div>
                 <div className="A1_text">
                   <p>APPROX DIAMOND WEIGHT</p>
@@ -161,7 +165,16 @@ const findNamesByIds = (ids) => {
                 </div>
                 <div className="A1_text">
                   <p>Findings</p>
-                  <p>{basicDetails?.findings}</p>
+                  <p>
+                    {basicDetails?.findings?.map((findingId, index) => (
+                      <p className="tagsInBasicDetals" key={index}>
+                        {/* {findFindingsNameById(Number(findingId))} */}
+                        {findFindingsNameById(Number(findingId))}
+                        {index < basicDetails.findings.length - 1 ? ", " : ""}
+                      </p>
+                    ))}
+                    {/* {findFindingsNameById(Number(basicDetails?.findings))} */}
+                  </p>
                 </div>
                 <div className="A1_text">
                   <p>Approx Metal Weight</p>
@@ -188,19 +201,25 @@ const findNamesByIds = (ids) => {
             </div>
           </div>
         </div>
-      
       </div>
-    <BasicDetailModal
-      name={"editbasicDetails"}
-       open={open}
-       onClose={() => setIsOpen(false)}
-       folderIdA={id}
-       designId={designId}
-       DetailsProductId={itemDetails?.paper_design?.designcode}
-       basicDetails={basicDetails}
-    />
+      <BasicDetailModal
+        name={"editbasicDetails"}
+        open={open}
+        onClose={() => setIsOpen(false)}
+        folderIdA={id}
+        designId={designId}
+        DetailsProductId={itemDetails?.paper_design?.designcode}
+        basicDetails={basicDetails}
+        updateEditFunction={() =>
+          listFolderDetailVeiwAssignmentPanel(
+            setIsLoading,
+            setFolderDetailsView,
+            id,
+            designId
+          )
+        }
+      />
     </div>
-
   );
 };
 
