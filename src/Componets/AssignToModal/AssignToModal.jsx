@@ -88,9 +88,9 @@ const AssignToModal = ({
       assignToCadId,
       userId,
       selectedDesign,
-      list_id,
       list_designer_folderDetails,
-      setAssignBtnText
+      setSuccessMessage,
+      setSuccessModalOpen
     );
 
     setAssignedStatus((prevStatus) => ({

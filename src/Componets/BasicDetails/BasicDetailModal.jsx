@@ -70,6 +70,7 @@ const BasicDetailModal = ({
   folderIdA,
   designId,
   basicDetails,
+  updateEditFunction
 }) => {
   // create modal
 
@@ -304,7 +305,8 @@ const BasicDetailModal = ({
         designId,
         setSuccessMessage,
         setSuccessModalOpen,
-        onClose
+        onClose,
+        updateEditFunction
       );
       // setShowAssignmentModal(true);
       // Clear errors
@@ -390,7 +392,7 @@ const BasicDetailModal = ({
     } else {
       setFormData(prevFormData => ({
         ...prevFormData,
-        approxMRP: 0
+        approxMRP: CalculationData?.calculated_mrp,
       }));
     }
   }, [

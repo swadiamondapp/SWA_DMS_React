@@ -27,6 +27,7 @@ export const upload_designs_items = async (setIsLoading, uploadImage,setData) =>
     if (response.data.results.status_code === 200) {
       console.log(response.data.results.message,"success")
       list_uploaded_designs(setIsLoading, setData)
+      
     }
     return res
   } catch (error) {
