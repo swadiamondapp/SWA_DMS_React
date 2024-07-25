@@ -96,6 +96,8 @@ const BasicDetailModal = ({
   const [CalculationData, setCalculationData] = useState([]);
   const [MovedItemsId, setMovedItemsId] = useState([]);
   const [IsLoadingCalculation, setIsLoadingCalculation] = useState(false);
+  const [showMrp,setShowMrp] = useState([])
+
 
   const [ItemMovedToAssignment, setItemMovedToAssignment] = useState([]);
 
@@ -133,7 +135,7 @@ const BasicDetailModal = ({
         approxMetalWeights: basicDetails
           ? basicDetails.approx_metal_weight
           : "",
-        approxMRP: basicDetails.approx_price || "0",
+        approxMRP: basicDetails.approx_price || "",
         tag: basicDetails.tag || "",
         notes: basicDetails.notes || "",
       }));
@@ -377,6 +379,7 @@ const BasicDetailModal = ({
         SelectedMetalId,
         setCalculationData
       );
+      setShowMrp(CalculationData?.calculated_mrp)
     }
   };
   useEffect(() => {
@@ -404,6 +407,16 @@ const BasicDetailModal = ({
     formData.typeOfMetal,
   ]);
 
+  useEffect(() => {
+    if (CalculationData) {
+      setShowMrp(CalculationData.calculated_mrp);
+      setFormData(prevFormData => ({
+        ...prevFormData,
+        approxMRP: CalculationData.calculated_mrp,
+      }));
+    }
+  }, [CalculationData]);
+
   console.log(CalculationData, "CalculationData");
   // const ItemMovedToAssignment = MovedItemsId?.map((item)=> item.item_id)
   // console.log(ItemMovedToAssignment,"MovedItemsId")
@@ -413,6 +426,14 @@ const BasicDetailModal = ({
       setItemMovedToAssignment(mappedItems);
     }
   }, [MovedItemsId]);
+
+  const handleCLoseButton = ()=> {
+    onClose()
+    setSelectedDesigns([]);
+    setShowRadioButtons(false);
+    setSelectButtonLabel("Select");
+
+  }
   
   return (
     <div>
@@ -440,7 +461,7 @@ const BasicDetailModal = ({
 
                   <span className="titleBasic">Basic details</span>
                     </div>
-                    <div className="closeButtonImageBm" onClick={onClose}>
+                    <div className="closeButtonImageBm" onClick={handleCLoseButton}>
                       <img src={closeButtonBM} alt="" />
                     </div>
 

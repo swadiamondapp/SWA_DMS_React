@@ -73,8 +73,10 @@
   color: #303a42;
 }
 .tagsInBasicDetals {
-  background: gainsboro;
+  background: rgba(239, 239, 239, 1);
   border-radius: 32px;
-  padding:4px 4px;
-  margin:2px
+  padding:4px 8px;
+  margin:2px;
+  color:black;
+  z-index: 33;
 }
