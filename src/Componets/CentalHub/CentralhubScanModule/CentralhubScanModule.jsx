@@ -3,6 +3,8 @@ import DeleteConfirmationModal from "../../ConfirmationModal/DeleteConfirmationM
 import MastersModal from "../../MastersSection/MastersModal/MastersModal";
 import {
   CentralHubnewScanProductScan,
+  centralhubScanItemDelete,
+  centralhubScanSearchFilter,
   centralHubScanTable,
   newScanProductScan,
   warehoueScanTable,
@@ -15,6 +17,7 @@ import searchimg from "../../../assets/search.png";
 import searchblue from "../../../assets/bluesearch.png";
 import dlt from "../../../assets/deleticon.png";
 import scan from "../../../assets/scan.png";
+import SuccessModal from "../../SuccessModal/SuccessModal";
 
 const CentralhubScanModule = ({ sidebarExpanded }) => {
   const [open, setOpen] = useState(false);
@@ -25,6 +28,9 @@ const CentralhubScanModule = ({ sidebarExpanded }) => {
   const [DeleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
   const [searchListId, setsearchListId] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [successModalOpen, setSuccessModalOpen] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [deleteId, setDeleteId] = useState("");
 
   useEffect(() => {
     centralStatusTableData(setStatus);
@@ -82,6 +88,28 @@ const CentralhubScanModule = ({ sidebarExpanded }) => {
     }
   };
 
+  const [filterSearchId, setFilterSearchId] = useState("");
+
+  const handleFilterSearch = async (event) => {
+    const { value } = event.target;
+    setFilterSearchId(value.toUpperCase()); 
+
+    await centralhubScanSearchFilter(value.toUpperCase(), setScanTableData);
+  };
+
+  const handleOpen = () => {
+    setSuccessModalOpen(true);
+  };
+  const handleClose = () => {
+    setSuccessModalOpen(false);
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   console.log("central hub scanTableData", scanTableData);
   console.log("clickedProductIds", clickedProductIds);
 
@@ -98,6 +126,8 @@ const CentralhubScanModule = ({ sidebarExpanded }) => {
               type="text"
               name="slot_id"
               placeholder="Search"
+              value={filterSearchId}
+              onChange={handleFilterSearch}
             />
             <img className="searchblue" src={searchblue} alt="" />
           </div>
@@ -125,6 +155,7 @@ const CentralhubScanModule = ({ sidebarExpanded }) => {
                   placeholder="Scan Product ID"
                   value={searchListId}
                   onChange={handleInputChange}
+                  onKeyPress={handleKeyPress}
                 />
                 <img onClick={handleSearch} src={searchimg} alt="" />
               </div>
@@ -199,7 +230,19 @@ const CentralhubScanModule = ({ sidebarExpanded }) => {
               </tbody>
             </table>
           </div>
+          <SuccessModal
+          successModalOpen={successModalOpen}
+          handleOpen={handleOpen}
+          handleClose={handleClose}
+          successMessage={successMessage}
+        />
         </div>
+            {scanTableData.length === 0 && (
+              <div className="" style={{width:"100%",height:"200px",display:"flex",alignItems:"center",justifyContent:"center"}}>
+
+                <span>No Data Found</span>
+              </div>
+            )}
 
         {open && (
           <MastersModal
@@ -220,15 +263,15 @@ const CentralhubScanModule = ({ sidebarExpanded }) => {
           DeleteConfirmationOpen={DeleteConfirmationOpen}
           handleDeleteOpen={handleDeleteOpen}
           setDeleteConfirmationOpen={setDeleteConfirmationOpen}
-          // deleteFunction={() => {
-          //   delete_finding_data(
-          //     setTableData,
-          //     deleteId,
-          //     setDeleteConfirmationOpen,
-          //     setSuccessMessage,
-          //     setSuccessModalOpen
-          //   );
-          // }}
+          deleteFunction={() => {
+            centralhubScanItemDelete(
+              setScanTableData,
+              deleteId,
+              setDeleteConfirmationOpen,
+              setSuccessMessage,
+              setSuccessModalOpen
+            );
+          }}
         />
       )}
     </>

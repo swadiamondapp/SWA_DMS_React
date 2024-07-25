@@ -11,6 +11,7 @@ import {
   list_slot_central_hub,
   scanSloteTransfer,
   slot_view_by_id,
+  transferScanSearchFilter,
 } from "../../../Pages/CENTRAL HUB/Api";
 import printIcon from "../../../assets/printIconSlot.png";
 import Box from "@mui/material/Box";
@@ -93,7 +94,8 @@ const Transfer = ({ sidebarExpanded }) => {
         setSuccessModalOpen,
         setSuccessMessage,
         setTransferData,
-        setTransferScan
+        setTransferScan,
+        setError
       );
     }
   };
@@ -122,6 +124,22 @@ const Transfer = ({ sidebarExpanded }) => {
   //   setTransferStatus(event.target.value);
   // };
 
+  const [filterSearchId, setFilterSearchId] = useState("");
+
+  const handleFilterSearch = async (event) => {
+    const { value } = event.target;
+    setFilterSearchId(value.toUpperCase()); 
+
+    await transferScanSearchFilter(value.toUpperCase(), setTransferData);
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleTransferScan();
+    }
+  };
+
+
   console.log(transferStatus, "transferStatus");
   console.log(CentralHubStatus, "CentralHubStatus");
   return (
@@ -146,6 +164,8 @@ const Transfer = ({ sidebarExpanded }) => {
                 type="text"
                 name="slot_id"
                 placeholder="Search"
+                value={filterSearchId}
+                onChange={handleFilterSearch}
               />
               <img className="searchblue" src={bluesearch} alt="" />
             </div>
@@ -161,6 +181,7 @@ const Transfer = ({ sidebarExpanded }) => {
                   placeholder="Scan Product ID"
                   value={TransferScan}
                   onChange={handleScanChange}
+                  onKeyPress={handleKeyPress}
                 />
                 <img onClick={handleTransferScan} src={searchimg} alt="" />
               </div>
@@ -178,7 +199,7 @@ const Transfer = ({ sidebarExpanded }) => {
           <thead>
             <tr style={{ color: "#455173" }}>
               <th>SL NO</th>
-              <th className="created_date">Created onnn</th>
+              <th className="created_date">Created on</th>
               <th style={{ width: "25%" }}>Product ID</th>
               <th style={{}}>Product Category</th>
               <th>Weight</th>
@@ -191,8 +212,8 @@ const Transfer = ({ sidebarExpanded }) => {
                 <td className="serialNumber_cell">{index + 1}</td>
                 <td style={{ width: "25%" }}>{formatDate(item.created_at)}</td>
                 <td className="slot_cell">{item.finisheditem.designcode}</td>
-                <td className="slot_cell">{item.finisheditem.designcode}</td>
-                <td className="slot_cell">{item.finisheditem.designcode}</td>
+                <td className="slot_cell">{item.finisheditem.product_category}</td>
+                <td className="slot_cell">{item.finisheditem.approx_metal_weight} GM</td>
                 <td className="actions-cell">
                   <div className="parentSlotS">
                     <div
@@ -249,7 +270,9 @@ const Transfer = ({ sidebarExpanded }) => {
                 </td>
               </tr>
             ))}
+            <></>
           </tbody>
+          
 
           <Modal open={printSlotModalOpen} onClose={handlePrintSlotModalClose}>
             <Box sx={printSlotOpen}>
@@ -335,6 +358,13 @@ const Transfer = ({ sidebarExpanded }) => {
           </Modal>
         </table>
       </div>
+
+      {TransferData.length === 0 && (
+              <div className="" style={{width:"100%",height:"200px",display:"flex",alignItems:"center",justifyContent:"center"}}>
+
+                <span>No Data Found</span>
+              </div>
+            )}
       {/* table */}
       <SlotCreation
         open={isModalOpenslot}
