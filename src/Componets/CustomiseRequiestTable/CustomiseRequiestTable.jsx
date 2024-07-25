@@ -81,6 +81,9 @@ const CustomizationTable = (props) => {
     []
   );
   const [CustomizationListData, setCustomizationListData] = useState([]);
+  const [printItem, setPrintItem] = useState(null);
+
+
   const dropdownRefs = useRef([]);
 
   useEffect(() => {
@@ -152,11 +155,15 @@ const CustomizationTable = (props) => {
     }
   };
 
-  const handlePrint = useReactToPrint({
+  const handlePrint  = useReactToPrint({
     content: printRef.current,
   });
 
-  console.log("CustomizationListData", CustomizationListData);
+  const handlePrintClick = (item) => {
+    setPrintItem(item); 
+  };
+
+  console.log("printItem", printItem);
 
   return (
     <>
@@ -231,7 +238,7 @@ const CustomizationTable = (props) => {
                     <td>{item.product_type}</td>
 
                     <td>
-                      <button className="PrintButton_CT" onClick={handlePrint}>
+                      <button className="PrintButton_CT"  onClick={() => handlePrintClick(item)}>
                         <ReactToPrint
                           trigger={() => (
                             <div className="scan_list">
@@ -245,7 +252,7 @@ const CustomizationTable = (props) => {
                       <div style={{ display: "none" }}>
                         <CustomizationListDataPrint
                           ref={printRef}
-                          clickedProducts={CustomizationListData}
+                          dataToDisplay={printItem}
                         />
                       </div>
 

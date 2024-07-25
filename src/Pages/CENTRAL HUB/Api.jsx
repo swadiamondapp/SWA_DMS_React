@@ -90,13 +90,38 @@ export const generateSloteNumber = async (setIsLoading, setGeneratSloteNum) => {
   }
 };
 
+export const transferScanSearchFilter = async (
+  searchListId,
+  setTableData,
+) => {
+  debugger
+  try {
+    let endpoint = `${CENTRAL_HUB_TRANSFER}`;
+
+    if (searchListId !== "") {
+      endpoint += `?designcode=${searchListId}`;
+    } else if (searchListId === "") {
+      centralTransfer(setTableData);
+    }
+
+    const response = await apiService.get(endpoint);
+
+    if (checkApiStatus(response)) {
+      setTableData(response.data.results.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const scanSloteTransfer = async (
   setIsLoading,
   TransferScan,
   setSuccessModalOpen,
   setSuccessMessage,
   setTransferData,
-  setTransferScan
+  setTransferScan,
+  setError
 ) => {
   try {
     const body = {
@@ -106,6 +131,7 @@ export const scanSloteTransfer = async (
     if (response.data.results.status_code === 200) {
       setSuccessMessage("Scanned Successfully");
       setSuccessModalOpen(true);
+      setError("")
       setTimeout(() => {
         setSuccessModalOpen(false);
       }, 1600);

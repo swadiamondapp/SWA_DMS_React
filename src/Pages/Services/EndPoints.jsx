@@ -162,10 +162,12 @@ export const DELETE_ITEM_FROM_ASSIGNMENT_PANEL = "delete-assignment-item/"
 export const NEW_SCAN_LIST = "warehouse/scan-productlsit";
 export const NEW_SCAN_PRODUCTSCAN = "warehouse/scan-product";
 export const NEW_SCAN_PRODUCTSTATUS_UPDATE = "warehouse/scan-update";
+export const NEW_SCAN_PRODUCTSTATUS_DELETE = "warehouse/scan-delete/";
 
 export const CENTRALHUB_NEW_SCAN_LIST = "centralhub/scan-list/";
 export const CENTRALHUB_NEW_SCAN_PRODUCTSCAN = "centralhub/scan-product/";
 export const CENTRALHUB_NEW_SCAN_PRODUCTSTATUS_UPDATE = "centralhub/scan/update";
+export const CENTRALHUB_NEW_SCAN_PRODUCTSTATUS_DELETE = "centralhub/scan-delete/";
 
 export const LIST_ASSIGN_TO_LIST_ITEMS = "list/myassigned-data/"
 export const SEARCH_WITH_NAMES = "list/users/?searchname="

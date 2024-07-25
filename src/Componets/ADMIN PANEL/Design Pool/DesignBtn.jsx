@@ -158,8 +158,7 @@ const DesignBtn = ({
           </button>
         )}
 
-        {location.pathname !== "/votorscustomization" && 
-        location.pathname !== "/designpool" && (
+        {location.pathname === "/assignmentpanel" && (
           <button onClick={handleSort} className="D_View_Sort_Filter" style={{position:"relative"}}>
             <LuArrowUpDown /> Sort
             {sort && (
