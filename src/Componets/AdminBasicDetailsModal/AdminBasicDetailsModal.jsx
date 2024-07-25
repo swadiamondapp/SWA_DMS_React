@@ -115,6 +115,7 @@ const AdminBasicDetailsModal = ({
   const [openAdminFolder, setOpenAdminFolder] = useState(false);
   const [AdminBasicItemId, setAdminBasicItemId] = useState(null);
   const [SearchDesigners, setSearchDesigner] = useState("");
+  const [showMrp,setShowMrp] = useState([])
 
   const [ItemMovedToAssignment, setItemMovedToAssignment] = useState([]);
   console.log(AssignDesignerModalOpen, "AssignDesignerModalOpen");
@@ -396,6 +397,15 @@ const AdminBasicDetailsModal = ({
     formData.diamondType,
     formData.typeOfMetal,
   ]);
+  useEffect(() => {
+    if (CalculationData) {
+      setShowMrp(CalculationData.calculated_mrp);
+      setFormData(prevFormData => ({
+        ...prevFormData,
+        approxMRP: CalculationData.calculated_mrp,
+      }));
+    }
+  }, [CalculationData]);
 
   console.log(AdminBasicItemId, "AdminUploadedImageIds");
   console.log(AdminUploadedImageIds);

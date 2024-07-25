@@ -20,6 +20,7 @@ const Header = ({
   setSearchWithName,
   searchListId,
   handleInputChange,
+  headerDetails,
   // handleSearchDesignPoool
 }) => {
   const location = useLocation();
@@ -70,7 +71,11 @@ const Header = ({
   const handleSearchWithName = (event) => {
     setSearchWithName(event.target.value, "nameSarch");
   };
+  console.log(
+   
 
+    "headerDetailshead"
+  );
   return (
     <div>
       <div
@@ -264,7 +269,7 @@ const Header = ({
                   location.pathname !== "/designpool" &&
                   location.pathname !== "/centralhubscan" &&
                   location.pathname !== `/centralfolderdetails/${id}` &&
-                  location.pathname !== `/assignmentview/${assignmentId}` &&  (
+                  location.pathname !== `/assignmentview/${assignmentId}` && (
                     <div className="Search_Admin">
                       <div className="Search_User">
                         <input
@@ -277,20 +282,42 @@ const Header = ({
                     </div>
                   )}
 
-                  {location.pathname === "/designpool" && (
-                    <div className="Search_Admin">
-                      <div className="Search_User">
-                        <input
-                          type="text"
-                          placeholder="Search ID"
-                          value={searchListId}
-                          onChange={handleInputChange}
-                        />
-                        {/* <img onClick={handleSearchDesignPoool} src={searchimg} alt="" /> */}
-                        <img src={searchimg} alt="" />
-                      </div>
+                {location.pathname === "/designpool" && (
+                  <div className="Search_Admin">
+                    <div className="Search_User">
+                      <input
+                        type="text"
+                        placeholder="Search ID"
+                        value={searchListId}
+                        onChange={handleInputChange}
+                      />
+                      {/* <img onClick={handleSearchDesignPoool} src={searchimg} alt="" /> */}
+                      <img src={searchimg} alt="" />
                     </div>
-                  )}
+                  </div>
+                )}
+
+                <div className="headerImageDesinger">
+                  {headerDetails?.paper_design ? (
+                    <>
+                      <div>
+                        <span>Assigned to : </span>{" "}
+                      </div>
+                      <div className="headerDesingerImage">
+                        <img
+                          src={headerDetails.paper_design.designer_img}
+                          alt={
+                            headerDetails.paper_design.designer_name ||
+                            "Designer Image"
+                          }
+                        />
+                      </div>
+                      <div>
+                        <span>{headerDetails.paper_design.designer_name}</span>
+                      </div>
+                    </>
+                  ) : null}
+                </div>
 
                 <div className="Profile_Admin" onClick={handleLogout}>
                   {userImage ===

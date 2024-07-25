@@ -24,7 +24,7 @@
   position: absolute;
   top: 48px;
   right: 0%;
-  z-index: 999;
+z-index: 999;
 }
 .log_out__btns button {
   background: #fff;
@@ -96,4 +96,13 @@
   align-items: center;
   width: 100%;
   justify-content: space-between;
+}
+.headerImageDesinger {
+  display: flex; 
+  gap:7px;
+  justify-content: center;
+  align-items: center;
+}
+.headerDesingerImage img{
+width: 20px;
 }

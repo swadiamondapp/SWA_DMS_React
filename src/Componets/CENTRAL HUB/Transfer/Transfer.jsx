@@ -210,7 +210,7 @@ const Transfer = ({ sidebarExpanded }) => {
             {TransferData.map((item, index) => (
               <tr key={index} style={{ color: "#2E364C" }}>
                 <td className="serialNumber_cell">{index + 1}</td>
-                <td style={{ width: "25%" }}>{formatDate(item.created_at)}</td>
+ <td style={{ width: "25%" }}>{formatDate(item.created_at)}</td>
                 <td className="slot_cell">{item.finisheditem.designcode}</td>
                 <td className="slot_cell">{item.finisheditem.product_category}</td>
                 <td className="slot_cell">{item.finisheditem.approx_metal_weight} GM</td>
@@ -239,7 +239,7 @@ const Transfer = ({ sidebarExpanded }) => {
                             color: item.status === "Created" ? "white" : "#fff",
                           }}
                         >
-                          <option value="Created">Created</option>
+ <option value="Created">Created</option>
                           <option value="Transfered">Transfered</option>
                         </select>
                       </div>

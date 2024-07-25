@@ -112,7 +112,7 @@ export const move_to_folder = async (
   ToCloseCreatefolder
 ) => {
   try {
-    debugger
+    debugger;
     const body = {
       folder_data: {
         name: folderName,
@@ -122,8 +122,8 @@ export const move_to_folder = async (
     console.log(body, "itemMovirddd");
     const response = await apiService.post(MOVE_TO_FOLDER, body);
     if (checkApiStatus(response)) {
-list_assignment_folder(setIsLoading,setAssignmentFolder);
-      list_assignment_panel(setIsLoading, setData)
+      list_assignment_folder(setIsLoading, setAssignmentFolder);
+      list_assignment_panel(setIsLoading, setData);
       onClose();
       setSuccessMessage("Assignment Folder Created SuccessFully");
       setSuccessModalOpen(true);
@@ -135,7 +135,7 @@ list_assignment_folder(setIsLoading,setAssignmentFolder);
       setSelectedAssignment([]);
       setItemMovedToAssignment([]);
     }
-    if(response.data.results.status_code === 206){
+if(response.data.results.status_code === 206){
       setError(response.data.results.message)
     }
   } 
@@ -286,25 +286,23 @@ export const editBasicDetails = async (
   designId,
   setSuccessMessage,
   setSuccessModalOpen,
-  onClose
+  onClose,
+  updateEditFunction
 ) => {
   try {
     const body = {
-      design_codes: formData.SKU,
-      assignment_data: {
-        length: formData.length,
-        width: formData.width,
-        height: formData.height,
-        approx_diamond_weight: formData.approxDiamondWeight,
-        approx_metal_weight: formData.approxMetalWeights,
-        approx_price: formData.approxMRP,
-        note: formData.notes,
-        product_category: formData.productCategory,
-        type_of_metal: formData.typeOfMetal,
-        diamond_type: formData.diamondType,
-        findings: formData.findings,
-        tag: formData.tag,
-      },
+      length: formData.length,
+      width: formData.width,
+      height: formData.height,
+      approx_diamond_weight: formData.approxDiamondWeight,
+      approx_metal_weight: formData.approxMetalWeights,
+      approx_price: formData.approxMRP,
+      notes: formData.notes,
+      product_category: formData.productCategory,
+      type_of_metal: formData.typeOfMetal,
+      diamond_type: formData.diamondType,
+      findings: formData.findings,
+      tag: formData.tag,
     };
     console.log(body, "move_TO_ASSINGG");
     const response = await apiService.patch(
@@ -319,6 +317,7 @@ export const editBasicDetails = async (
       setTimeout(() => {
         setSuccessModalOpen(false);
       }, 1600);
+      updateEditFunction()
     }
   } catch (error) {
     console.error("Error moving designs:", error);
@@ -503,7 +502,7 @@ export const upload_admin_image_assignment = async (
       setAdminUploadedImageIds(responseData); // Set the entire response data to state
       setAdminBasicDetailsOpen(true);
       setAdminUploadedIds(responseData.id);
-      setImageSingleError(null)
+      setImageSingleError(null);
     }
   } catch (error) {
     console.error("Error uploading image:", error);
@@ -581,7 +580,7 @@ export const assign_to_designers = async (
       setAdminBasicDetailsOpen(false);
       setUploadedImage(null);
       setAssignedDesignerId(null);
-      setSearchDesigner("")
+      setSearchDesigner("");
       list_all_designers(setAllDesigners);
     }
   } catch (error) {
@@ -684,16 +683,22 @@ export const deleteItemFromAssignmentPanel = async (
   }
 };
 
-export const listDesignersByName = async (setIsLoading,setAllDesigners,SearchDesigners) => {
+export const listDesignersByName = async (
+  setIsLoading,
+  setAllDesigners,
+  SearchDesigners
+) => {
   try {
-    setIsLoading(true)
-    const response = await apiService.get(`${SEARCH_DESIGNERS}${SearchDesigners}`);
+    setIsLoading(true);
+    const response = await apiService.get(
+      `${SEARCH_DESIGNERS}${SearchDesigners}`
+    );
     if (checkApiStatus(response)) {
       setAllDesigners(response?.data?.results?.data);
     }
   } catch (error) {
     console.log(error);
-  }finally {
-    setIsLoading(false)
+  } finally {
+    setIsLoading(false);
   }
 };

@@ -58,7 +58,8 @@ const AssignmentPanelFolderCards = (props) => {
       state: {
         folderNameAssignmentView: item.paper_design.designcode,
         assignmentId: props.id,
-        designId:item.paper_design.design_id
+        designId: item.paper_design.design_id,
+      
       },
     });
   };

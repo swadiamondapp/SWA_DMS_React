@@ -49,6 +49,7 @@ const AssignToModal = ({
   const [successMessage, setSuccessMessage] = useState("");
   const [assignBtnText, setAssignBtnText] = useState("Assign");
   const [assignedStatus, setAssignedStatus] = useState({});
+  const [currentlyAssignedUser, setCurrentlyAssignedUser] = useState(null);
 
   // create modal
 
@@ -82,20 +83,36 @@ const AssignToModal = ({
   const handleAssignButton = (userIdString) => {
     const userId = String(userIdString);
     const isCurrentlyAssigned = assignedStatus[userId];
-    const newStatus = !isCurrentlyAssigned;
-    assign_to_cad(
-      setIsLoading,
-      assignToCadId,
-      userId,
-      selectedDesign,
-      list_id,
-      list_designer_folderDetails,
-      setAssignBtnText
-    );
+
+    if (isCurrentlyAssigned) {
+      // Unassign the user
+      unAssignCadDesigner(
+        setIsLoading,
+        assignToCadId,
+        userId,
+        selectedDesign,
+        list_designer_folderDetails,
+        setSuccessMessage,
+        setSuccessModalOpen
+      );
+      setCurrentlyAssignedUser(null);
+    } else {
+      // Assign the user
+      assign_to_cad(
+        setIsLoading,
+        assignToCadId,
+        userId,
+        selectedDesign,
+        list_designer_folderDetails,
+        setSuccessMessage,
+        setSuccessModalOpen
+      );
+      setCurrentlyAssignedUser(userId);
+    }
 
     setAssignedStatus((prevStatus) => ({
       ...prevStatus,
-      [userId]: newStatus,
+      [userId]: !isCurrentlyAssigned,
     }));
   };
   const handleOnCLose = () => {
@@ -105,12 +122,6 @@ const AssignToModal = ({
     setShowRadioButtons(false);
     setAssignedStatus({});
   };
-  
-// const handleOnCLose=()=> {
-//     onClose()
-    
-//   }
-  console.log(setFolderDetails, "ssAAss");
   console.log(assignToCadId, "assignToCadId====>");
   console.log(selectedDesign, "selectedDesign====>Modal");
   console.log(AssignedData, "resp_assignedData==>");
@@ -175,25 +186,20 @@ const AssignToModal = ({
                         <div className="rightTo">
                           <div className="tagged">
                             <span className="taggedText">
-                              {assignedStatus[item.id] && "Assigned"}
+                              {assignedStatus[item.id] ? "Assigned" : ""}
                             </span>
                           </div>
                           <div>
-                            {assignedStatus[item.id] ? (
-                              <button
-                                onClick={() => handleUnAssignButton(item.id)}
-                                className="avatarButton_assign_button"
-                              >
-                                Unassign
-                              </button>
-                            ) : (
-                              <button
-                                onClick={() => handleAssignButton(item.id)}
-                                className="avatarButton_assign_button"
-                              >
-                                Assign
-                              </button>
-                            )}
+                            <button
+                              onClick={() => handleAssignButton(item.id)}
+                              className="avatarButton_assign_button"
+                              disabled={
+                                currentlyAssignedUser &&
+                                currentlyAssignedUser !== item.id
+                              }
+                            >
+                              {assignedStatus[item.id] ? "Unassign" : "Assign"}
+                            </button>
                           </div>
                         </div>
                       </div>

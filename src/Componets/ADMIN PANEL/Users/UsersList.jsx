@@ -453,6 +453,7 @@ const UsersList = ({
                         id="fileInput"
                         type="file"
                         className="avatar-uploader"
+                        accept=".jpeg, .jpg, .png"
                         style={{ display: "none" }}
                         onChange={handleFileChange}
                       />
