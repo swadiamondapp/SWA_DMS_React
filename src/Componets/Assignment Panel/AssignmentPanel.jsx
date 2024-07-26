@@ -108,9 +108,9 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
   useEffect(() => {
@@ -219,18 +219,18 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
     setDeleteConfirmationOpen(true);
   };
 
-  const handleSortByDesigner =()=>{
-    sort_assignmentpanel_bydesigner(setIsLoading, setData)
-  }
-  const handleSortByAdmin =()=>{
-    sort_assignmentpanel_byadmin(setIsLoading, setData)
-  }
-  const handleSortByAll =()=>{
+  const handleSortByDesigner = () => {
+    sort_assignmentpanel_bydesigner(setIsLoading, setData);
+  };
+  const handleSortByAdmin = () => {
+    sort_assignmentpanel_byadmin(setIsLoading, setData);
+  };
+  const handleSortByAll = () => {
     list_assignment_panel(setIsLoading, setData);
-  }
+  };
 
-  console.log("handleSortByDesigner",Data)
-  
+  console.log("handleSortByDesigner", Data);
+
   return (
     <div
       className="Parent_AssignmentView"
@@ -281,8 +281,7 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
         />
 
         <div className="Assignment_panel_section">
-          
-        {Data.length === 0  || assignmentFolder.length === 0 ?  (
+          {Data.length === 0 || assignmentFolder.length === 0 ? (
             <div
               style={{
                 display: "flex",
@@ -299,110 +298,117 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
                 }}
               />
             </div>
-          ) :(
+          ) : (
             <>
-          <h3 className="HeadNewdesign">Selected</h3>
-          <div className="Card_Design_Parent">
-            {Data.map((item, index) => {
-              const paperDesign = item?.items?.[0]?.paper_design;
-              const itemId = item?.items?.[0]?.id;
-              const createdAt = item?.created_at;
-              const designer = paperDesign?.designer;
-              const designCode = paperDesign?.designcode;
-              const image = paperDesign?.image;
-              const likesCount = paperDesign?.likes_count;
-              if (!image) {
-                return null;
-              }
+              <h3 className="HeadNewdesign">Selected</h3>
+              <div className="Card_Design_Parent">
+                {Data.map((item, index) => {
+                  const paperDesign = item?.items?.[0]?.paper_design;
+                  const itemId = item?.items?.[0]?.id;
+                  const createdAt = item?.created_at;
+                  const designer = paperDesign?.designer;
+                  const designCode = paperDesign?.designcode;
+                  const image = paperDesign?.image;
+                  const likesCount = paperDesign?.likes_count;
+                  if (!image) {
+                    return null;
+                  }
 
-              return (
-                <div className="New_Design_card" key={index}>
-                  <div
-                    className="Card_img"
-                    onClick={() => handleForlderDetailsVeiw(item.id)}
-                  >
-                    <img
-                      src={image}
-                      alt={`Design by ${designer}`}
-                      onClick={() => handleDrawModal(image)}
-                    />
-                    {showDeleteMoveButtons && <div className="Overlay" />}
-                  </div>
-                  <div className="Card_Details">
-                    <h3>ID : {designCode}</h3>
-                    <div className="Card_Details_Inner">
-                      <div className="Inner_Left">
-                        <p>{designer}</p>
-                        <p>{formatDate(createdAt)}</p>
-                      </div>
-                      <div className="Inner_Right">
-                        <p>
-                          {likesCount}
-                          <img src={like} alt="Likes" />
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  {showRadioButtons && (
-                    <input
-                      className="Radio_select"
-                      type="checkbox"
-                      id={itemId}
-                      name="fav_language"
-                      value={itemId}
-                      onChange={() => handleCheckboxChange(itemId, designCode)}
-                      checked={selectedAssignment.includes(itemId)}
-                    />
-                  )}
-                  {!showRadioButtons &&
-                    location.pathname === "/assignmentpanel" && (
+                  return (
+                    <div className="New_Design_card" key={index}>
                       <div
-                        onClick={() => toggleDeleteMoveButtons(itemId)}
-                        ref={dotsRef}
+                        className="Card_img"
+                        onClick={() => handleForlderDetailsVeiw(item.id)}
                       >
-                        <BsThreeDotsVertical
-                          className="A_dots"
-                          style={{ fontSize: "20px" }}
+                        <img
+                          src={image}
+                          alt={`Design by ${designer}`}
+                          onClick={() => handleDrawModal(image)}
                         />
+                        {showDeleteMoveButtons && <div className="Overlay" />}
                       </div>
-                    )}
-                  {activeCardId === itemId && (
-                    <div className="Dots_Delete_DesignPool_btns"  ref={dropdownRef}>
-                      <p onClick={() => handleDeleteSingle(itemId)}>Delete</p>
-                      <p onClick={() => moveToDesignPool(itemId)}>
-                        Move to Design pool
-                      </p>
+                      <div className="Card_Details">
+                        <h3>ID : {designCode}</h3>
+                        <div className="Card_Details_Inner">
+                          <div className="Inner_Left">
+                            <p>{designer}</p>
+                            <p>{formatDate(createdAt)}</p>
+                          </div>
+                          <div className="Inner_Right">
+                            <p>
+                              {likesCount}
+                              <img src={like} alt="Likes" />
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      {showRadioButtons && (
+                        <input
+                          className="Radio_select"
+                          type="checkbox"
+                          id={itemId}
+                          name="fav_language"
+                          value={itemId}
+                          onChange={() =>
+                            handleCheckboxChange(itemId, designCode)
+                          }
+                          checked={selectedAssignment.includes(itemId)}
+                        />
+                      )}
+                      {!showRadioButtons &&
+                        location.pathname === "/assignmentpanel" && (
+                          <div
+                            onClick={() => toggleDeleteMoveButtons(itemId)}
+                            ref={dotsRef}
+                          >
+                            <BsThreeDotsVertical
+                              className="A_dots"
+                              style={{ fontSize: "20px" }}
+                            />
+                          </div>
+                        )}
+                      {activeCardId === itemId && (
+                        <div
+                          className="Dots_Delete_DesignPool_btns"
+                          ref={dropdownRef}
+                        >
+                          <p onClick={() => handleDeleteSingle(itemId)}>
+                            Delete
+                          </p>
+                          <p onClick={() => moveToDesignPool(itemId)}>
+                            Move to Design pool
+                          </p>
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
+                  );
+                })}
+              </div>
 
-          <div className="Parent_Folder_section">
-            <h3 className="HeadNewdesign">Folders</h3>
-            <div className="folderCard_parent">
-              {assignmentFolder.map((item) => (
-                <div
-                  className="folder__card"
-                  key={item.id}
-                  onClick={() => handleFolderNaviate(item)}
-                >
-                  {/* <Link
+              <div className="Parent_Folder_section">
+                <h3 className="HeadNewdesign">Folders</h3>
+                <div className="folderCard_parent">
+                  {assignmentFolder.map((item) => (
+                    <div
+                      className="folder__card"
+                      key={item.id}
+                      onClick={() => handleFolderNaviate(item)}
+                    >
+                      {/* <Link
                   to={`/assignmentpaneldetailsview/${
                     item.id
                   }?name=${encodeURIComponent(item.name)}`}
                 > */}
-                  <img src={folderimg} alt="" />
-                  {/* </Link> */}
-                  <p style={{ wordWrap: "break-word", maxWidth: "100px" }}>
-                    {item.name}
-                  </p>
+                      <img src={folderimg} alt="" />
+                      {/* </Link> */}
+                      <p style={{ wordWrap: "break-word", maxWidth: "100px" }}>
+                        {item.name}
+                      </p>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </div>
-          </>
+              </div>
+            </>
           )}
         </div>
       </div>

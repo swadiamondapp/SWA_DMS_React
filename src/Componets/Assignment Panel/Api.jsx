@@ -639,6 +639,7 @@ export const moveSingleItemToDesignPool = async (
   setActiveCardId
 ) => {
   try {
+    setIsLoading(true)
     const response = await apiService.delete(
       `${MOVE_SINGLE_ITEM_TO_DESIGNPOOL}${item}/`
     );
@@ -653,6 +654,8 @@ export const moveSingleItemToDesignPool = async (
     }
   } catch (error) {
     console.error("Error moving designs:", error);
+  }finally {
+    setIsLoading(false)
   }
 };
 export const deleteItemFromAssignmentPanel = async (
@@ -665,6 +668,7 @@ export const deleteItemFromAssignmentPanel = async (
   setDeleteConfirmationOpen
 ) => {
   try {
+    setIsLoading(true)
     const response = await apiService.delete(
       `${DELETE_ITEM_FROM_ASSIGNMENT_PANEL}${item}/`
     );
@@ -680,6 +684,8 @@ export const deleteItemFromAssignmentPanel = async (
     }
   } catch (error) {
     console.error("Error moving designs:", error);
+  }finally {
+    setIsLoading(false)
   }
 };
 
