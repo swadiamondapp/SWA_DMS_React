@@ -23,18 +23,22 @@ const FolderDetailsCard = ({
     content: printRef.current,
   });
 
-  const handleDownload = (url, filename) => {
-    axios
-      .get(url, {
-        responseType: "blob"
-      })
-      .then((res) => {
-        fileDownload(res.data, filename);
-      })
-      .catch((error) => {
-        console.error("Error downloading file:", error);
-        // Handle errors here
-      });
+  const handleDownload = (imageUrl) => {
+    fetch(imageUrl, {
+      method: 'GET',
+      mode: 'cors'
+  })
+  .then(response => response.blob())
+  .then(blob => {
+      const blobUrl = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.download = 'downloaded_image.jpg';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+  })
+  .catch(error => console.error('Error downloading the image:', error));
   };
 
   const handleOpenModal = () => {
@@ -109,7 +113,7 @@ const FolderDetailsCard = ({
                   <p className="Hub_head" style={{ fontSize: "13px", padding: "5px 0px" }}>
                     Posted on : {formatDate(folderDetails?.updated_at)}
                   </p>
-                  <button className="Download_btn_hub" onClick={() => handleDownload(folderDetails?.file_2d, "image.png")}>
+                  <button className="Download_btn_hub" onClick={() => handleDownload(folderDetails?.file_2d)}>
                     DOWNLOAD
                     <GoDownload />
                   </button>

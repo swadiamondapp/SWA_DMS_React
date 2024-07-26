@@ -606,20 +606,20 @@ export const workDone_list_search = async (
   setworkTableData,
   setsearchListId
 ) => {
+  debugger
   try {
     const body = {
       product_id: searchListId,
     };
 
     const response = await apiService.post(WORKDONE_TABLE_PRODUCT_SEARCH, body);
-    if (response.data.results.status_code === 200) {
+    if (checkApiStatus(response)){
       workDone_list_datas(setIsLoading, setworkTableData);
       setsearchListId("");
       alert("Product Added");
     }
   } catch (error) {
     console.log(error);
-    alert("Product Already exists");
     setsearchListId("");
   }
 };
@@ -645,6 +645,7 @@ export const workDone_table_product_update = async (
   formData,
   setOpenLeftbar
 ) => {
+  debugger
   try {
     // setIsLoading(true);
     const response = await apiService.patch(
