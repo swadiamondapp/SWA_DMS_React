@@ -83,13 +83,14 @@ const VotorsCustomization = ({ sidebarExpanded }) => {
   };
 
   return (
+    <>
+      <div className="votors_btns">
+        <DesignBtn votersSetData={setData} />
+      </div>
     <div
       className="ParentVotors"
       style={{ paddingLeft: sidebarExpanded ? "225px" : "130px" }}
     >
-      <div className="votors_btns">
-        <DesignBtn votersSetData={setData} />
-      </div>
       <div className="VotorsCustomizationTable">
         {isLoading ? (
           <div
@@ -234,6 +235,7 @@ const VotorsCustomization = ({ sidebarExpanded }) => {
         successMessage={successMessage}
       />
     </div>
+    </>
   );
 };
 

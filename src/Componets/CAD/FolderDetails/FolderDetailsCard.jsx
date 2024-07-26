@@ -23,7 +23,7 @@ const FolderDetailsCard = ({
     content: printRef.current,
   });
 
-  const handleDownload = (imageUrl) => {
+const handleDownload = (imageUrl) => {
     fetch(imageUrl, {
       method: 'GET',
       mode: 'cors'

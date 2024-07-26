@@ -315,6 +315,7 @@ const Slots = ({sidebarExpanded}) => {
         open={isModalOpenslot}
         onClose={() => setIsModalOpenslot(false)}
         generatSloteNum={generatSloteNum}
+        slotListUpdate={()=>  list_slot_central_hub(setIsLoading, setData)}
       />
       <SlotView
         open={isModalOpenslotview}
