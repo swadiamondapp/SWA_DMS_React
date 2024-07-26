@@ -28,7 +28,7 @@ const style = {
   borderRadius: 2,
 };
 
-const SlotCreation = ({ open, onClose, generatSloteNum }) => {
+const SlotCreation = ({ open, onClose, generatSloteNum ,slotListUpdate}) => {
   const [Data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selectAll, setSelectAll] = useState(false);
@@ -101,8 +101,8 @@ const SlotCreation = ({ open, onClose, generatSloteNum }) => {
       setErrorMessage("No items In the Bag");
       setTimeout(() => {
         setErrorMessage("");
-      }, 1000);
-
+      }, 1600);
+ 
       return;
     }
     createSloteBag(
@@ -113,7 +113,8 @@ const SlotCreation = ({ open, onClose, generatSloteNum }) => {
       genSlotId,
       onClose,
       setData,
-      setSelectedItems
+      setSelectedItems,
+      slotListUpdate
     );
   };
 

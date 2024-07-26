@@ -317,14 +317,14 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
               {sidebarExpanded && <p>Customize Request </p>}
             </div>
           </Link>
-          <Link to="/wareHouseDetails">
+          {/* <Link to="/wareHouseDetails">
             <div className="Links">
             <div className="horizontal_line_sidebar"></div>
             <div className="lin_container"></div>
               <img src={customeimg} alt="" />
               {sidebarExpanded && <p>Confirmed orders</p>}
             </div>
-          </Link>
+          </Link> */}
           <Link to="/scan">
             <div className="Links">
             <div className="horizontal_line_sidebar"></div>

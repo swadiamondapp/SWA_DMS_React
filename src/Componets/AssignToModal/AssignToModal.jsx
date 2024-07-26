@@ -195,7 +195,8 @@ const AssignToModal = ({
                               className="avatarButton_assign_button"
                               disabled={
                                 currentlyAssignedUser &&
-                                currentlyAssignedUser !== item.id
+                                currentlyAssignedUser !== item.id &&
+                                !assignedStatus[item.id]
                               }
                             >
                               {assignedStatus[item.id] ? "Unassign" : "Assign"}

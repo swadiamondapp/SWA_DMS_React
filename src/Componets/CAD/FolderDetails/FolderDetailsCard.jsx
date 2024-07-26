@@ -26,7 +26,8 @@ const FolderDetailsCard = ({
   const handleDownload = (url, filename) => {
     axios
       .get(url, {
-        responseType: "blob"
+        responseType: "blob",
+        
       })
       .then((res) => {
         fileDownload(res.data, filename);

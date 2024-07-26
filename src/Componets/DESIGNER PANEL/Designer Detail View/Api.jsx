@@ -12,6 +12,7 @@ import {
   ASSIGNMENT_PANEL_DETAILS_PAGE,
   LIST_ASSIGN_TO_LIST_ITEMS,
   UNASSIGN_CAD_DESIGNERS,
+  UNASSIGN_TO_CAD,
 } from "../../../Pages/Services/EndPoints";
 
 export const list_designer_folderDetails = async (
@@ -149,20 +150,16 @@ export const listUnAssignedLists = async (setIsLoading, setUnAssignedLists) => {
 export const unassignDesigner = async (
   setIsLoading,
   id,
-  userId,
+ 
   setSuccessMessage,
   setSuccessModalOpen,
   setUnAssignedLists
 ) => {
   try {
-
-    const body = {
-      paper_design_id: id,
-      user: userId,
-    };
-    console.log(body, "unasssdfidf");
-    const response = await apiService.post(ASSIGN_UNASSIGN_DESIGNERS, body);
-    if (checkApiStatus(response)){
+    const response = await apiService.patch(
+      `${(UNASSIGN_TO_CAD)}${id}`
+    );
+    if (checkApiStatus(response)) {
       listUnAssignedLists(setIsLoading, setUnAssignedLists);
       setSuccessMessage("Item Unassigned Successfully");
       setSuccessModalOpen(true);
