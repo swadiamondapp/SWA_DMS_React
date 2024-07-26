@@ -524,12 +524,18 @@ export const scan_list_search = async (
       setsearchListId("");
       alert("Item Added");
       setError("");
+    }if (response.data.results.status_code === 206) {
+      setError(response.data.results.message)
+      setTimeout(() => {
+        setError("");
+      }, 3000);
     }
   } catch (error) {
     console.log(error);
-    alert("Already exists");
+    // alert("Already exists");
     setError("");
     setsearchListId("");
+    
   }
 };
 

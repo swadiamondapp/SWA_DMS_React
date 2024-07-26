@@ -122,7 +122,7 @@ const DesignerDetailView = (props) => {
       />
       <div className="DesignerAssignment___panel_Cards">
         <div className="Parent_NewDesign">
-          <div className="Card_Design_Parent">
+          <div className="Card_Design_Parent" style={{marginTop:"50px"}}>
             {props.folderDetails &&
               sortedItems.map((item) => (
                 <div

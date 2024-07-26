@@ -87,6 +87,9 @@ const Transfer = ({ sidebarExpanded }) => {
   const handleTransferScan = () => {
     if (TransferScan === "") {
       setError("Enter slot ID");
+      setTimeout(() => {
+        setError("");
+      }, 3000);
     } else {
       scanSloteTransfer(
         setIsLoading,
@@ -128,7 +131,7 @@ const Transfer = ({ sidebarExpanded }) => {
 
   const handleFilterSearch = async (event) => {
     const { value } = event.target;
-    setFilterSearchId(value.toUpperCase()); 
+    setFilterSearchId(value.toUpperCase());
 
     await transferScanSearchFilter(value.toUpperCase(), setTransferData);
   };
@@ -138,7 +141,6 @@ const Transfer = ({ sidebarExpanded }) => {
       handleTransferScan();
     }
   };
-
 
   console.log(transferStatus, "transferStatus");
   console.log(CentralHubStatus, "CentralHubStatus");
@@ -173,7 +175,10 @@ const Transfer = ({ sidebarExpanded }) => {
             <span style={{ color: "red", fontSize: "10px" }}>{error}</span>
           )} */}
 
-            <div className="secton_search">
+            <div
+              className="secton_search"
+              style={{ flexDirection: "column", alignItems: "start" }}
+            >
               <div className="Search_User">
                 <input
                   type="text"
@@ -198,7 +203,7 @@ const Transfer = ({ sidebarExpanded }) => {
         <table style={{ width: "100%" }}>
           <thead>
             <tr style={{ color: "#455173" }}>
-              <th>SL NO</th>
+              <th style={{ width: "6%" }}>SL NO</th>
               <th className="created_date">Created on</th>
               <th style={{ width: "25%" }}>Product ID</th>
               <th style={{}}>Product Category</th>
@@ -210,10 +215,14 @@ const Transfer = ({ sidebarExpanded }) => {
             {TransferData.map((item, index) => (
               <tr key={index} style={{ color: "#2E364C" }}>
                 <td className="serialNumber_cell">{index + 1}</td>
- <td style={{ width: "25%" }}>{formatDate(item.created_at)}</td>
+                <td style={{ width: "25%" }}>{formatDate(item.created_at)}</td>
                 <td className="slot_cell">{item.finisheditem.designcode}</td>
-                <td className="slot_cell">{item.finisheditem.product_category}</td>
-                <td className="slot_cell">{item.finisheditem.approx_metal_weight} GM</td>
+                <td className="slot_cell">
+                  {item.finisheditem.product_category}
+                </td>
+                <td className="slot_cell">
+                  {item.finisheditem.approx_metal_weight} GM
+                </td>
                 <td className="actions-cell">
                   <div className="parentSlotS">
                     <div
@@ -239,7 +248,7 @@ const Transfer = ({ sidebarExpanded }) => {
                             color: item.status === "Created" ? "white" : "#fff",
                           }}
                         >
- <option value="Created">Created</option>
+                          <option value="Created">Created</option>
                           <option value="Transfered">Transfered</option>
                         </select>
                       </div>
@@ -272,7 +281,6 @@ const Transfer = ({ sidebarExpanded }) => {
             ))}
             <></>
           </tbody>
-          
 
           <Modal open={printSlotModalOpen} onClose={handlePrintSlotModalClose}>
             <Box sx={printSlotOpen}>
@@ -360,11 +368,19 @@ const Transfer = ({ sidebarExpanded }) => {
       </div>
 
       {TransferData.length === 0 && (
-              <div className="" style={{width:"100%",height:"200px",display:"flex",alignItems:"center",justifyContent:"center"}}>
-
-                <span>No Data Found</span>
-              </div>
-            )}
+        <div
+          className=""
+          style={{
+            width: "100%",
+            height: "200px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <span>No Data Found</span>
+        </div>
+      )}
       {/* table */}
       <SlotCreation
         open={isModalOpenslot}

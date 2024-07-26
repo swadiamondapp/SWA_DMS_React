@@ -38,7 +38,7 @@
     font-weight: 400;
     padding:8px;
     color:#2E364C;
-    border:1px solid rgba(231, 237, 244, 1) 
+    border:1px solid rgba(231, 237, 244, 1) !important; 
   }
   
   .print-custom-table .print-table-cell {

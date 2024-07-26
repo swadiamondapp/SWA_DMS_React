@@ -5,7 +5,11 @@ import searchimg from "../../../assets/search.png";
 import MastersModal from "../MastersModal/MastersModal";
 import DeleteConfirmationModal from "../../ConfirmationModal/DeleteConfirmationModal";
 import SuccessModal from "../../SuccessModal/SuccessModal";
-import { deleteMetalData, metalTableData, searchMetalItems } from "../ApiMasters/ApiMasters";
+import {
+  deleteMetalData,
+  metalTableData,
+  searchMetalItems,
+} from "../ApiMasters/ApiMasters";
 
 const MetalType = () => {
   const [open, setOpen] = useState(false);
@@ -30,7 +34,7 @@ const MetalType = () => {
   useEffect(() => {
     metalTableData(setTableData);
   }, []);
- 
+
   const handleOpen = () => {
     setSuccessModalOpen(true);
   };
@@ -42,15 +46,11 @@ const MetalType = () => {
     setDeleteConfirmationOpen(true);
     setDeleteId(itemId);
   };
- 
-  const handleInputChange = (event) => {
+
+  const handleInputChange = async (event) => {
     const { value } = event.target;
     setsearchListId(value);
-    searchMetalItems(
-      searchListId,
-      setTableData,
-      setsearchListId
-    );
+    await searchMetalItems(value, setTableData);
   };
 
   useEffect(() => {
@@ -60,14 +60,16 @@ const MetalType = () => {
   const handleEdit = (itemId) => {
     const selectedItem = tableData.find((item) => item.id === itemId);
     setOpen(true);
-    setInputData(selectedItem || {
-      metal_name: "",
-      price: "",
-      making_cost: ""
-    });
+    setInputData(
+      selectedItem || {
+        metal_name: "",
+        price: "",
+        making_cost: "",
+      }
+    );
   };
 
-  console.log(searchListId,"searchListId")
+  console.log(searchListId, "searchListId");
 
   return (
     <>
@@ -78,9 +80,11 @@ const MetalType = () => {
           <div className="secton_search">
             <div className="Search_Admin">
               <div className="Search_User">
-                <input type="text" placeholder="Search"
-                value={searchListId}
-                onChange={handleInputChange}
+                <input
+                  type="text"
+                  placeholder="Search"
+                  value={searchListId}
+                  onChange={handleInputChange}
                 />
                 <img src={searchimg} alt="" />
               </div>
@@ -103,43 +107,59 @@ const MetalType = () => {
               </tr>
             </thead>
             <tbody>
-            {(filteredData.length > 0 && searchListId !== ""
+              {(filteredData.length > 0 && searchListId !== ""
                 ? filteredData
                 : tableData
               ).map((item, index) => (
-              <tr className="table_row">
-                <td>{index + 1}</td>
-                <td>{item.metal_name}</td>
-                <td>₹ {item.price}</td>
-                <td>₹ {item.making_cost}</td>
-                <td>
-                  <div className="btn_td">
-                    <button className="btn_section"
-                     onClick={() => handleEdit(item.id)}
-                    >
-                      <img
-                        className="btn_section_img"
-                        src={editicon}
-                        alt=""
-                        srcset=""
-                      />
-                    </button>
-                    <button className="btn_section2"
-                    onClick={() => handleDeleteOpen(item.id)}
-                    >
-                      <img
-                        className="btn_section_img"
-                        src={dlticon}
-                        alt=""
-                        srcset=""
-                      />
-                    </button>
-                  </div>
-                </td>
-              </tr>
+                <tr className="table_row">
+                  <td>{index + 1}</td>
+                  <td>{item.metal_name}</td>
+                  <td>₹ {item.price}</td>
+                  <td>₹ {item.making_cost}</td>
+                  <td>
+                    <div className="btn_td">
+                      <button
+                        className="btn_section"
+                        onClick={() => handleEdit(item.id)}
+                      >
+                        <img
+                          className="btn_section_img"
+                          src={editicon}
+                          alt=""
+                          srcset=""
+                        />
+                      </button>
+                      <button
+                        className="btn_section2"
+                        onClick={() => handleDeleteOpen(item.id)}
+                      >
+                        <img
+                          className="btn_section_img"
+                          src={dlticon}
+                          alt=""
+                          srcset=""
+                        />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
               ))}
             </tbody>
           </table>
+          {tableData.length === 0 && (
+            <div
+              className=""
+              style={{
+                width: "100%",
+                height: "200px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <span>No Data Found</span>
+            </div>
+          )}
         </div>
         <SuccessModal
           successModalOpen={successModalOpen}
@@ -162,7 +182,7 @@ const MetalType = () => {
         />
       )}
 
-{DeleteConfirmationOpen && (
+      {DeleteConfirmationOpen && (
         <DeleteConfirmationModal
           DeleteConfirmationOpen={DeleteConfirmationOpen}
           handleDeleteOpen={handleDeleteOpen}

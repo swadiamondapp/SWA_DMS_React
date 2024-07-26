@@ -69,13 +69,21 @@ const DesignBtn = ({
   };
 
   return (
-    <div>
-      <div className="DesignPool_btns">
-        {location.pathname !== "/assignmentpanel" &&
+    <div style={location.pathname === "/unassigneddesigner" ? { marginTop: "18px" } : {}}>
+
+      <div className="DesignPool_btns" style={{position:"relative",}}>
+
+      {location.pathname === "/unassigneddesigner" && (
+       <h4 style={{marginRight:"59%"}}>Not Started Assignements</h4>
+      )}
+
+      <div className="" style={{display:"flex",gap:"6px",position:"absolute",right:"0%",top:"-10px"}}>
+       {location.pathname !== "/assignmentpanel" &&
           location.pathname !== "/designdashboard" &&
           location.pathname !== "/designerassignview" &&
           location.pathname !== "/votorscustomization" &&
           location.pathname !== "/finishedProject" &&
+          location.pathname !== "/unassigneddesigner" &&
           location.pathname !== `/designerassignview/${id}` && (
             <div className="Download_ParentD">
               <button className="D_downlodBtn" onClick={toggleDownloadOptions}>
@@ -91,6 +99,7 @@ const DesignBtn = ({
           )}
         {location.pathname !== "/designdashboard" &&
           location.pathname !== "/votorscustomization" &&
+          location.pathname !== "/unassigneddesigner" &&
           location.pathname !== "/finishedProject" && (
             <button className="D_selectBtn" onClick={toggleRadioButtons}>
               {selectButtonLabel}
@@ -152,6 +161,7 @@ const DesignBtn = ({
 
         {location.pathname !== "/votorscustomization" &&
         location.pathname !== "/assignmentpanel" &&
+        location.pathname !== "/unassigneddesigner" &&
         location.pathname !== "/designpool" && (
           <button className="D_View_Sort_Filter">
             <MdViewModule /> View
@@ -182,6 +192,7 @@ const DesignBtn = ({
             Create Customization
           </button>
         )}
+      </div>
       </div>
       <BasicDetailModal
         open={open}
@@ -227,6 +238,7 @@ const DesignBtn = ({
     
       /> */}
     </div>
+
   );
 };
 

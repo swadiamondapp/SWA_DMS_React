@@ -42,10 +42,10 @@ const Outlets = () => {
     setDeleteId(itemId);
   };
 
-  const handleInputChange = (event) => {
+  const handleInputChange = async (event) => {
     const { value } = event.target;
     setsearchListId(value);
-    searchOutletItems(searchListId, setTableData, setsearchListId);
+   await searchOutletItems(value, setTableData);
   };
 
   useEffect(() => {
@@ -133,6 +133,20 @@ const Outlets = () => {
               ))}
             </tbody>
           </table>
+          {tableData.length === 0 && (
+          <div
+            className=""
+            style={{
+              width: "100%",
+              height: "200px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <span>No Data Found</span>
+          </div>
+        )}
         </div>
         <SuccessModal
           successModalOpen={successModalOpen}
