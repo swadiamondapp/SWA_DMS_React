@@ -191,7 +191,7 @@ const Transfer = ({ sidebarExpanded }) => {
                 <img onClick={handleTransferScan} src={searchimg} alt="" />
               </div>
               {error && (
-                <span style={{ color: "red", fontSize: "10px" }}>{error}</span>
+                <span style={{ color: "red", fontSize: "10px" ,marginLeft:"2px" }}>{error}</span>
               )}
             </div>
           </div>
