@@ -162,11 +162,11 @@ const CustomiseRequest = ({
 
   const findOutLetNameByID = (id) => {
     const item = outLetDropDown.find((entry) => entry.id === id);
-    return item ? item.name : "Note Found";
+    return item ? item.name : "Not Found";
   };
   const productCategoryByID = (id) => {
     const item = ProudctCategory.find((entry) => entry.id === id);
-    return item ? item.name : "Note Found";
+    return item ? item.name : "Not Found";
   };
   console.log(dataToDisplay, "metalListType");
 
