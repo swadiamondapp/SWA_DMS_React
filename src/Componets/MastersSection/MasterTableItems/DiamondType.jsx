@@ -46,10 +46,10 @@ const DiamondType = () => {
     setDeleteId(itemId);
   };
 
-  const handleInputChange = (event) => {
+  const handleInputChange = async (event) => {
     const { value } = event.target;
     setsearchListId(value);
-    searchDiamondItems(searchListId, setTableData, setsearchListId);
+    await searchDiamondItems(value, setTableData);
   };
 
   useEffect(() => {
@@ -142,6 +142,20 @@ const DiamondType = () => {
               ))}
             </tbody>
           </table>
+          {tableData.length === 0 && (
+          <div
+            className=""
+            style={{
+              width: "100%",
+              height: "200px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <span>No Data Found</span>
+          </div>
+        )}
         </div>
         <SuccessModal
           successModalOpen={successModalOpen}

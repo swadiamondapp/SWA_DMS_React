@@ -34,6 +34,12 @@ export const warehoueScanTable = async (setScanTableData) => {
         alert("Item Added");
         setError("");
       }
+      if (response.data.results.status_code === 206) {
+         setError(response.data.results.message)
+         setTimeout(() => {
+          setError("");
+        }, 3000);
+      }
     } catch (error) {
       console.log(error);
       alert("Item Not Found");

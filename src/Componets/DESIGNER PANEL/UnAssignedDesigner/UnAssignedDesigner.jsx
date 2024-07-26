@@ -8,6 +8,7 @@ import {
 } from "../Designer Detail View/Api";
 import avatar from "../../../assets/avataprofile.png";
 import SuccessModal from "../../SuccessModal/SuccessModal";
+import DesignBtn from "../../ADMIN PANEL/Design Pool/DesignBtn";
 
 const CustomizedOrder = ({ sidebarExpanded }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -52,6 +53,8 @@ const CustomizedOrder = ({ sidebarExpanded }) => {
   ];
   console.log(UnAssignedLists, "customizattion");
   return (
+    <>
+    <DesignBtn />
     <div
       className="DesignerAssignmentPanel"
       style={{ paddingLeft: sidebarExpanded ? "225px" : "130px" }}
@@ -110,6 +113,7 @@ const CustomizedOrder = ({ sidebarExpanded }) => {
         successMessage={successMessage}
       />
     </div>
+    </>
   );
 };
 

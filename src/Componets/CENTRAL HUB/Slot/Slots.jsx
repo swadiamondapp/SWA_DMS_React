@@ -107,10 +107,11 @@ const Slots = ({sidebarExpanded}) => {
     slot_view_by_id(Id, setSloteView);
   };
 
-  const handleCreateSloteButton = () => {
+  const handleCreateSloteButton =() => {
     setIsModalOpenslot(true);
     generateSloteNumber(setIsLoading, setGeneratSloteNum);
   };
+
   console.log(generatSloteNum, "generateSloteNumber");
   console.log(slotView, "slotView");
   console.log(userId, "slotView");
@@ -155,11 +156,12 @@ const Slots = ({sidebarExpanded}) => {
                         className="slotPrintButton"
                         onClick={() => handlePrintButton(item.id)}
                       >
-                        <img
-                          src={printIcon}
-                          style={{ marginRight: "5px" }}
-                          alt=""
-                        />
+                         <LuPrinter  style={{ marginRight: "5px" }} />
+                          {/* <img
+                            src={printIcon}
+                            style={{ marginRight: "5px" }}
+                            alt=""
+                          /> */}
                         Print
                       </button>
                       <IoEye

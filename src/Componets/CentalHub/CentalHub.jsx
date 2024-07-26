@@ -33,7 +33,7 @@ const CentalHub = ({
   setImages,
   handleUploadFile,
   folderDetails,
-  reUpload
+  reUpload,
 }) => {
   // create modal
 
@@ -51,9 +51,8 @@ const CentalHub = ({
   const [uploadInstructionsVisibleRender, setUploadInstructionsVisibleRender] =
     useState(true);
   const [errorMessage, setErrorMessage] = useState("");
-  
-  const [errors, setErrors] = useState("");
 
+  const [errors, setErrors] = useState("");
 
   console.log(errorMessage, "designCodeEe");
 
@@ -76,8 +75,8 @@ const CentalHub = ({
     setImages({
       normal: null,
       threeD: null,
-    })
-    setErrors("")
+    });
+    setErrors("");
   };
 
   const onChange = (value) => {
@@ -96,11 +95,21 @@ const CentalHub = ({
       setUploadInstructionsVisible(false);
     }
   };
+
   const handleFileUploadRender = (event) => {
     const file = event.target.files[0];
     if (file) {
+      const fileName = file.name.toLowerCase();
+      const is3DMFile = fileName.endsWith(".3dm");
+
+      if (!is3DMFile) {
+        setErrors("File must be in .3dm format.");
+        setImages({ ...images, threeD: null });
+        return;
+      }
+
+      setErrors("");
       setImages({ ...images, threeD: file });
-      setUploadInstructionsVisibleRender(false);
     }
   };
 
@@ -174,12 +183,12 @@ const CentalHub = ({
       setErrors("Please upload both images");
       return;
     }
-    handleUploadFile()
-    setErrors("")
-  }
- 
- console.log("null image",images)
- console.log("errors----",errors)
+    handleUploadFile();
+    setErrors("");
+  };
+
+  console.log("null image", images);
+  console.log("errors----", errors);
 
   return (
     <div>
@@ -230,7 +239,7 @@ const CentalHub = ({
                         document.getElementById("fileInputImage").click()
                       }
                     >
-                      {images.normal === null  ? (
+                      {images.normal === null ? (
                         <>
                           <span className="textA">PNG/JPEG</span>
                           <span className="textB">
@@ -250,7 +259,7 @@ const CentalHub = ({
                         id="fileInputImage"
                         type="file"
                         // accept="image/*"
-                         accept="image/png, image/jpeg, image/jpg"
+                        accept="image/png, image/jpeg, image/jpg"
                         style={{ display: "none" }}
                         onChange={handleFileUpload}
                       />
@@ -261,9 +270,9 @@ const CentalHub = ({
                         document.getElementById("fileInput3D").click()
                       }
                     >
-                      {images.threeD === null  ? (
+                      {images.threeD === null ? (
                         <>
-                          <span className="textA">2.DM</span>
+                          <span className="textA">3.DM</span>
                           <span className="textB">
                             Drag & Drop or{" "}
                             <span style={{ color: "#0464D5" }}>
@@ -274,15 +283,15 @@ const CentalHub = ({
                         </>
                       ) : (
                         <span style={{ fontSize: "10px", width: "100%" }}>
-                          2D File uploaded successfully!
+                          3D File uploaded successfully!
                         </span>
                       )}
 
                       <input
                         id="fileInput3D"
                         type="file"
-                        // accept=".3dm"
-                        accept="image/png, image/jpeg, image/jpg"
+                        accept=".3dm"
+                        // accept="image/png, image/jpeg, image/jpg"
                         style={{ display: "none" }}
                         onChange={handleFileUploadRender}
                       />
@@ -304,7 +313,11 @@ const CentalHub = ({
                       className="inputFeildUpload"
                     />
                   </div>
-                      {errors && <span style={{fontSize:"11px",color:"red"}}>{errors}</span>}
+                  {errors && (
+                    <span style={{ fontSize: "11px", color: "red" }}>
+                      {errors}
+                    </span>
+                  )}
                   <div className="buttons">
                     <button
                       className="cancerButton"
@@ -312,10 +325,7 @@ const CentalHub = ({
                     >
                       cancel
                     </button>
-                    <button
-                      onClick={handleUploadeFileNew}
-                      className="upButton"
-                    >
+                    <button onClick={handleUploadeFileNew} className="upButton">
                       Upload
                     </button>
                   </div>

@@ -51,6 +51,9 @@ const ScanTable = ({ sidebarExpanded}) => {
     setIsLoading(true);
     if(searchListId === ""){
       setError("Enter slot ID")
+      setTimeout(() => {
+        setError("");
+      }, 3000);
     }else{
     try {
       await scan_list_search(
@@ -130,7 +133,7 @@ const ScanTable = ({ sidebarExpanded}) => {
             <span style={{ color: "red", fontSize: "10px" }}>{error}</span>
           )} */}
 
-          <div className="secton_search">
+          <div className="secton_search" style={{flexDirection:"column",alignItems:"start"}}>
           <div className="Search_User">
           <input
             type="text"

@@ -71,7 +71,7 @@ const Login = () => {
     } else if (usertype === "WAREHOUSE") {
       navigate("/wareHouse");
     }
-  }, [navigate, usertype]);
+  }, [usertype]);
 
   const handleTogglePassword = () => {
     setShowPassword(!showPassword);

@@ -71,6 +71,9 @@ const CentralhubScanModule = ({ sidebarExpanded }) => {
     setIsLoading(true);
     if (searchListId === "") {
       setError("Enter slot ID");
+      setTimeout(()=>{
+        setError("");
+    },3000)
     } else {
       try {
         await CentralHubnewScanProductScan(

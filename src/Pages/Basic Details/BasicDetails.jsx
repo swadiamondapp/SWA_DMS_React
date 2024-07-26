@@ -9,15 +9,16 @@ const BasicDetails = () => {
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(false);
   const [basicDetails, setBasicDetails] = useState([]);
+  const [sidebarExpanded, setSidebarExpanded] = useState(true);
 
   useEffect(() => {
     getBasicDetails(setIsLoading, setBasicDetails, id);
   }, [id]);
   return (
     <div className="ParentVotorPage">
-      <Sidebar />
-      <Header basicDetails={basicDetails[0]} />
-      <BasicDetailView basicDetails={basicDetails[0]} />
+      <Sidebar sidebarExpanded={sidebarExpanded} setSidebarExpanded={setSidebarExpanded}/>
+      <Header  sidebarExpanded={sidebarExpanded} basicDetails={basicDetails[0]} />
+      <BasicDetailView  sidebarExpanded={sidebarExpanded} basicDetails={basicDetails[0]} />
     </div>
   );
 };
