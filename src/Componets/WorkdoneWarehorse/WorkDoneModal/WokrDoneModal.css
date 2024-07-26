@@ -28,14 +28,16 @@
   font-weight: 400;
   color: #000000;
   width: 60%;
+  word-break: break-all;
 }
 
 .workdone_modal_sub {
-  width: 60%;
+  width: 50%;
   color: black !important;
   display: flex;
-  gap: 20px !important;
+  gap: 5px !important;
   /* background: #000; */
+  flex-wrap: wrap;
 }
 .workdone_modal_sub span {
   /* width: 100%; */

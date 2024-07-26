@@ -8,6 +8,12 @@ import {
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { TagsInput } from "react-tag-input-component";
+import {
+  diamond_type_dropdown_basicDetails,
+  metal_type_dropdown_basicDetails,
+} from "../../Assignment Panel/Api";
+import { Select } from "antd";
+import { finding_table_data, tag_table_data } from "../../MastersSection/ApiMasters/ApiMasters";
 
 const WorkdoneEditModal = ({ setOpenLeftbar, clickedProductId }) => {
   const [formData, setFormData] = useState({
@@ -19,34 +25,39 @@ const WorkdoneEditModal = ({ setOpenLeftbar, clickedProductId }) => {
     approx_diamond_weight: "",
     findings: [],
     approx_metal_weight: "",
-    tags: [],
+    tag: [],
     notes: "",
   });
+  const [MetalTypeDropDown, setMetalTypeDropDown] = useState([]);
+  const [diamonType, setDiamondType] = useState([]);
+  const [findings, setFindings] = useState([]);
+  const [tags, setTags] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleClose = () => {
     setOpenLeftbar(false);
   };
 
-  const handleInput = (valueOrEvent) => {
-    if (typeof valueOrEvent === "object" && valueOrEvent.target) {
-      const { name, value } = valueOrEvent.target;
-      if (name === "type_of_metal" || name === "diamond_type") {
-        setFormData((prevState) => ({
-          ...prevState,
-          [name]: [value],
-        }));
-      } else {
-        setFormData((prevState) => ({
-          ...prevState,
-          [name]: value,
-        }));
-      }
-    } else {
-      setFormData((prevState) => ({
-        ...prevState,
-        tags: valueOrEvent,
-      }));
-    }
+  const handleInput = (event) => {
+    const { name, value } = event.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleSelectChange = (value, name) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: [value],
+    }));
+  };
+
+  const handleSelectChange2 = (value, name) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
   };
 
   console.log("formdata", formData);
@@ -85,6 +96,21 @@ const WorkdoneEditModal = ({ setOpenLeftbar, clickedProductId }) => {
       // setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    metal_type_dropdown_basicDetails(setMetalTypeDropDown);
+    diamond_type_dropdown_basicDetails(setDiamondType);
+    finding_table_data(setFindings);
+    tag_table_data(setTags);
+  }, []);
+
+  const onSearch = (value) => {
+    console.log("search:", value);
+  };
+  const filterOption = (input, option) =>
+    (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
+
+  console.log("findings", tags);
 
   return (
     <>
@@ -166,7 +192,7 @@ const WorkdoneEditModal = ({ setOpenLeftbar, clickedProductId }) => {
                       <div className="workdone_modal_sub">
                         {product?.basic_details?.assignment?.findings.map(
                           (item) => (
-                            <span>{item.find_name} ,</span>
+                            <span className="tag_covering">{item.find_name} ,</span>
                           )
                         )}
                       </div>
@@ -250,24 +276,46 @@ const WorkdoneEditModal = ({ setOpenLeftbar, clickedProductId }) => {
                 </div>
                 <div className="workdone_modal">
                   <span>Type of metal</span>
-                  <input
-                    type="text"
-                    onChange={handleInput}
-                    //  onChange={(newTags) => handleInput({ target: { name: 'type_of_metal', value: newTags } })}
+                  <Select
+                    showSearch
+                    placeholder="-Select-"
+                    optionFilterProp="children"
+                    onChange={(value) =>
+                      handleSelectChange(value, "type_of_metal")
+                    }
+                    style={{ width: "50%" }}
+                    options={MetalTypeDropDown.map((item) => ({
+                      value: item.id,
+                      label: item.metal_name,
+                    }))}
                     value={formData.type_of_metal}
-                    name="type_of_metal"
-                    required
                   />
                 </div>
                 <div className="workdone_modal">
                   <span>Dimond Type</span>
-                  <input
+                  <Select
+                    showSearch
+                    placeholder="-Select-"
+                    optionFilterProp="children"
+                    onChange={(value) =>
+                      handleSelectChange(value, "diamond_type")
+                    }
+                    onSearch={onSearch}
+                    filterOption={filterOption}
+                    style={{ width: "50%" }}
+                    options={diamonType.map((item) => ({
+                      value: item.id,
+                      label: item.name,
+                    }))}
+                    value={formData.diamond_type}
+                  />
+                  {/* <input
                     type="text"
                     onChange={handleInput}
                     value={formData.diamond_type}
                     name="diamond_type"
                     required
-                  />
+                  /> */}
                 </div>
                 <div className="workdone_modal">
                   <span>APPROX DIAMOND WEIGHT</span>
@@ -281,14 +329,20 @@ const WorkdoneEditModal = ({ setOpenLeftbar, clickedProductId }) => {
                 </div>
                 <div className="workdone_modal">
                   <span>Findings</span>
-                  <TagsInput
-                    name="findings"
+                  <Select
+                    mode="multiple"
+                    showSearch
+                    placeholder="-Select-"
+                    optionFilterProp="children"
+                    onChange={(value) => handleSelectChange2(value, 'findings')}
+                    onSearch={onSearch}
+                    filterOption={filterOption}
+                    style={{ width: "50%" }}
+                    options={findings.map((item) => ({
+                      value: item.id,
+                      label: item.find_name,
+                    }))}
                     value={formData.findings}
-                    onChange={(newTags) =>
-                      handleInput({
-                        target: { name: "findings", value: newTags },
-                      })
-                    }
                   />
                 </div>
                 <div className="workdone_modal">
@@ -303,19 +357,24 @@ const WorkdoneEditModal = ({ setOpenLeftbar, clickedProductId }) => {
                 </div>
                 <div className="workdone_modal">
                   <span>Tags</span>
-                  <>
+
                     <div className="workdone_modal_sub">
-                      <TagsInput
-                        name="tag"
-                        value={formData.tags}
-                        onChange={(newTags) =>
-                          handleInput({
-                            target: { name: "tags", value: newTags },
-                          })
-                        }
-                      />
+                    <Select
+                    mode="multiple"
+                    showSearch
+                    placeholder="-Select-"
+                    optionFilterProp="children"
+                    onChange={(value) => handleSelectChange2(value, 'tag')}
+                    onSearch={onSearch}
+                    filterOption={filterOption}
+                    style={{ width: "100%",background:"none" }}
+                    options={tags.map((item) => ({
+                      value: item.id,
+                      label: item.name,
+                    }))}
+                    value={formData.tag}
+                  />
                     </div>
-                  </>
                 </div>
                 {/* <div className="workdone_modal">
                   <span>Actual Price</span>
@@ -339,15 +398,17 @@ const WorkdoneEditModal = ({ setOpenLeftbar, clickedProductId }) => {
                     required
                   />
                 </div>
-              <div className="update_btn">
-                <button
-                  onClick={() =>
-                    handleProductUpdate(product?.basic_details?.assignment?.id)
-                  }
-                >
-                  Update
-                </button>
-              </div>
+                <div className="update_btn">
+                  <button
+                    onClick={() =>
+                      handleProductUpdate(
+                        product?.basic_details?.assignment?.id
+                      )
+                    }
+                  >
+                    Update
+                  </button>
+                </div>
               </div>
             </div>
           </>

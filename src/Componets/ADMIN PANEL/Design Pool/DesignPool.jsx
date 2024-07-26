@@ -44,7 +44,7 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
   };
   const OpenAnntaitionmodal = (Item) => {
     setanotationModal(!anotationModal);
-    setSelectedDesign(Item)
+    setSelectedDesign(Item);
   };
 
   useEffect(() => {
@@ -171,13 +171,13 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
           <div className="Card_Design_Parent">
             {Data.map((item, index) => (
               <>
-                <div
-                  className="New_Design_card"
-                  key={item.id}
-                  onClick={()=>OpenAnntaitionmodal(item)}
-                >
-                  <div className="Card_img" style={{ minHeight: "190px" }}>
-                    <img src={item.image} alt="image" />
+                <div className="New_Design_card" key={item.id}>
+                  <div className="Card_img" style={{ marginTop:"12px",height: "170px" }}>
+                    <img
+                      src={item.image}
+                      alt="image"
+                      onClick={() => OpenAnntaitionmodal(item)}
+                    />
                   </div>
                   <div className="Card_Details">
                     <h3>ID : {item.designcode}</h3>
@@ -213,13 +213,13 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
           </div>
 
           {anotationModal && (
-                  <AnnotationModalDesignPool
-                    setanotationModal={setanotationModal}
-                    anotationModal={anotationModal}
-                    selectedDesign={selectedDesign}
-                  />
-                )}
-           
+            <AnnotationModalDesignPool
+              setanotationModal={setanotationModal}
+              anotationModal={anotationModal}
+              selectedDesign={selectedDesign}
+            />
+          )}
+
           {/* unvoted design */}
           <div className="Parent_unvoted">
             <h3 className="HeadNewdesign">Unvoted</h3>
