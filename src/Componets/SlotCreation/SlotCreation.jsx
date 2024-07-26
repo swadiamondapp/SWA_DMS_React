@@ -7,7 +7,11 @@ import Modal from "@mui/material/Modal";
 import roundedClose from "../../assets/roundedClose.png";
 import searchIcon from "../../assets/search.png";
 import delteIcon from "../../assets/delete_icon_sc.svg";
-import { createSloteBag, listAvailableCadDesigns, searchCentralHubSlot } from "./Api";
+import {
+  createSloteBag,
+  listAvailableCadDesigns,
+  searchCentralHubSlot,
+} from "./Api";
 import SuccessModal from "../SuccessModal/SuccessModal";
 
 const style = {
@@ -34,7 +38,7 @@ const SlotCreation = ({ open, onClose, generatSloteNum }) => {
   const [successMessage, setSuccessMessage] = useState("");
   const [generatedSlotId, setGeneratedSlotId] = useState([]);
   const [ErrorMessage, setErrorMessage] = useState("");
-  const [searchCentralItem,setSearchCentralItem] = useState("")
+  const [searchCentralItem, setSearchCentralItem] = useState("");
 
   const handleCheckboxChange = (item) => {
     setSelectedItems((prevSelectedItems) => {
@@ -89,13 +93,13 @@ const SlotCreation = ({ open, onClose, generatSloteNum }) => {
     );
   };
   const selectedIds = selectedItems.map((item) => item.id);
-  const genSlotId = generatSloteNum && generatSloteNum?.id;
+  const genSlotId = generatSloteNum && generatSloteNum?.slotnumber;
   const handleCreateSlot = () => {
     if (selectedItems.length === 0) {
       setErrorMessage("No items In the Bag");
       setTimeout(() => {
         setErrorMessage("");
-      }, 1000); 
+      }, 1000);
 
       return;
     }
@@ -111,12 +115,12 @@ const SlotCreation = ({ open, onClose, generatSloteNum }) => {
     );
   };
 
-  const handleCentralHubSearch =(e)=> {
-    setSearchCentralItem(e.target.value)
-  }
-useEffect(()=> {
-  searchCentralHubSlot(setIsLoading, setData,searchCentralItem)
-},[searchCentralItem])
+  const handleCentralHubSearch = (e) => {
+    setSearchCentralItem(e.target.value);
+  };
+  useEffect(() => {
+    searchCentralHubSlot(setIsLoading, setData, searchCentralItem);
+  }, [searchCentralItem]);
   console.log(selectedIds, "dataToSend");
   return (
     <div>
@@ -151,7 +155,11 @@ useEffect(()=> {
                       </div>
                       <div className="searchContiainer">
                         <div className="Search_Userr">
-                          <input type="text" placeholder="Search" onChange={handleCentralHubSearch}/>
+                          <input
+                            type="text"
+                            placeholder="Search"
+                            onChange={handleCentralHubSearch}
+                          />
                           <div className="iconBack">
                             <img src={searchIcon} alt="" />
                           </div>
@@ -178,7 +186,12 @@ useEffect(()=> {
                               <th className="table_productCat">
                                 Product Category
                               </th>
-                              <th className="table_weight" style={{width:'20%' ,}}>Weight</th>
+                              <th
+                                className="table_weight"
+                                style={{ width: "20%" }}
+                              >
+                                Weight
+                              </th>
                             </tr>
                           </thead>
                           <tbody>
@@ -212,10 +225,15 @@ useEffect(()=> {
                                 <td className="table-data">
                                   {item.created_at}
                                 </td>
-                                <td className="table-data">{item.product_category}</td>
+                                <td className="table-data">
+                                  {item.product_category}
+                                </td>
                                 <td className="table-data">
                                   <div className="right-data-and-button-c">
-                                    <span >{item.approx_metal_weight} <span className="gramstyle">Gram</span></span>
+                                    <span>
+                                      {item.approx_metal_weight}{" "}
+                                      <span className="gramstyle">Gram</span>
+                                    </span>
                                   </div>
                                 </td>
                               </tr>
@@ -270,14 +288,18 @@ useEffect(()=> {
                           <tbody>
                             {selectedItems.map((item) => (
                               <tr key={item.id}>
-                                <td className="table-data">{item.id}</td>
+                                <td className="table-data">
+                                  {item.designcode}
+                                </td>
                                 <td className="table-data">
                                   {item.created_at}
                                 </td>
-                                <td className="table-data">bangle</td>
+                                <td className="table-data">
+                                  {item.product_category}
+                                </td>
                                 <td className="table-data">
                                   <div className="right-data-and-button-c">
-                                    <span>{item.weight}Gram</span>
+                                    <span>{item.approx_metal_weight} Gram</span>
                                     <button
                                       className="Delete_button_sc"
                                       onClick={() => handleDeleteItem(item)}

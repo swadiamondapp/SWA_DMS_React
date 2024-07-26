@@ -80,10 +80,9 @@ export const centralFolderDetails = async (Id, setCentralFolderDetails) => {
 export const generateSloteNumber = async (setIsLoading, setGeneratSloteNum) => {
   try {
     const response = await apiService.post(GENERATE_SLOT_NUMBER);
-    if (response.data.results.status_code === 201) {
+    if (response.data.results.status_code === 200) {
       console.log("successfully created");
-
-      setGeneratSloteNum(response.data.results.data);
+      setGeneratSloteNum(response.data.results);
     }
   } catch (error) {
     console.error("Error moving designs:", error);
