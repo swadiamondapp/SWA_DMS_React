@@ -1,3 +1,6 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 export const setToLocalstorage = (token) => {
   localStorage.setItem("token", token);
   console.log("token>>>>", token);
@@ -11,6 +14,29 @@ export const removeLocalstorage = (navigate) => {
 export const isAuthenticated = () => {
   try {
     const token = localStorage.getItem("token");
+
+    const usertype = localStorage.getItem("Usertype");
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+      if (usertype === "ADMIN") {
+        navigate("/");
+      } else if (usertype === "DESIGNER") {
+        navigate("/designdashboard");
+      } else if (usertype === "VOTERS") {
+        navigate("/votorspanal");
+      } else if (usertype === "CAD") {
+        navigate("/CadAssignment");
+      } else if (usertype === "CENTRAL HUB") {
+        navigate("/centralDashboard");
+      } else if (usertype === "RENDERS") {
+        navigate("/renderCard");
+      } else if (usertype === "WAREHOUSE") {
+        navigate("/wareHouse");
+      }
+    }, [usertype]);
+
     return !!token;
   } catch (error) {
     return false;
