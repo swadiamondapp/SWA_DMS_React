@@ -24,7 +24,7 @@ import {
   product_type_drop_down,
 } from "../ADMIN PANEL/Api_dropDown";
 
-const AssignmentView = ({ sidebarExpanded,setHeaderDetials }) => {
+const AssignmentView = ({ sidebarExpanded, setHeaderDetials }) => {
   const { id } = useParams();
   const [folderDetails, setFolderDetails] = useState([]);
   const [folderDetailView, setFolderDetailsView] = useState([]);
@@ -91,10 +91,10 @@ const AssignmentView = ({ sidebarExpanded,setHeaderDetials }) => {
     const item = outLetDropDown.find((entry) => entry.id === id);
     return item ? item.name : "Note Found";
   };
-  const productCategoryByID = (id) => {
-    const item = ProudctCategory.find((entry) => entry.id === id);
-    return item ? item.name : "Note Found";
-  };
+  // const productCategoryByID = (id) => {
+  //   const item = ProudctCategory.find((entry) => entry.id === id);
+  //   return item ? item.name : "Note Found";
+  // };
   const findDiamondNameById = (id) => {
     const item = diamonType.find((entry) => entry.id === id);
     return item ? item.name : "Not found";
@@ -114,7 +114,19 @@ const AssignmentView = ({ sidebarExpanded,setHeaderDetials }) => {
     return item ? item.name : "Not found";
   };
 
+  useEffect(() => {
+    product_category_basicDetails(setListProductCategory);
+  }, []);
+
+  const productCategoryByID = (id) => {
+    const item = ProudctCategory.find((entry) => entry.id === id);
+    console.log("kkkkkk",item)
+    return item ? item.name : "Note Found";
+  };
+
+
   console.log(selectedTags, "fghjkl");
+  console.log(itemDetails, "itemDetails");
   // console.log(FindingsList,"finsdfasfd")
   return (
     <div>
@@ -140,6 +152,12 @@ const AssignmentView = ({ sidebarExpanded,setHeaderDetials }) => {
                 <div className="A1_text">
                   <p>Product Id</p>
                   <p>{itemDetails?.paper_design?.designcode}</p>
+                </div>
+                <div className="A1_text">
+                  <p>Category</p>
+                  <p>
+                    {productCategoryByID(Number(basicDetails?.product_category))}
+                  </p>
                 </div>
                 <div className="A1_text">
                   <p>Length</p>
@@ -171,10 +189,14 @@ const AssignmentView = ({ sidebarExpanded,setHeaderDetials }) => {
                 </div>
                 <div className="A1_text">
                   <p>Findings</p>
-                  <div style={{display:'flex',flexWrap: 'wrap' }}>
-                    <div style={{display:'flex',flexWrap: 'wrap' }}>
+                  <div style={{ display: "flex", flexWrap: "wrap" }}>
+                    <div style={{ display: "flex", flexWrap: "wrap" }}>
                       {basicDetails?.findings?.map((findingId, index) => (
-                        <p className="tagsInBasicDetals" key={index} style={{zIndex:""}}>
+                        <p
+                          className="tagsInBasicDetals"
+                          key={index}
+                          style={{ zIndex: "" }}
+                        >
                           {/* {findFindingsNameById(Number(findingId))} */}
                           {findFindingsNameById(Number(findingId))}
                           {index < basicDetails.findings.length - 1 ? ", " : ""}
@@ -197,8 +219,8 @@ const AssignmentView = ({ sidebarExpanded,setHeaderDetials }) => {
                 </div>
                 <div className="A1_text">
                   <p>Tags</p>
-                  <div style={{ display: "flex" ,flexWrap: 'wrap' }}>
-                    <div  style={{display:'flex',flexWrap: 'wrap' }}>
+                  <div style={{ display: "flex", flexWrap: "wrap" }}>
+                    <div style={{ display: "flex", flexWrap: "wrap" }}>
                       {basicDetails?.tag?.map((findingId, index) => (
                         <p className="tagsInBasicDetals" key={index}>
                           {/* {findFindingsNameById(Number(findingId))} */}
