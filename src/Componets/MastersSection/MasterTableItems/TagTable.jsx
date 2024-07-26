@@ -4,7 +4,11 @@ import editicon from "../../../assets/Edit.png";
 import searchimg from "../../../assets/search.png";
 import eye from "../../../assets/eye.png";
 import MastersModal from "../MastersModal/MastersModal";
-import { delete_tag_data, search_tag_data, tag_table_data } from "../ApiMasters/ApiMasters";
+import {
+  delete_tag_data,
+  search_tag_data,
+  tag_table_data,
+} from "../ApiMasters/ApiMasters";
 import DeleteConfirmationModal from "../../ConfirmationModal/DeleteConfirmationModal";
 import SuccessModal from "../../SuccessModal/SuccessModal";
 
@@ -45,14 +49,10 @@ const TagTable = () => {
     setSuccessModalOpen(false);
   };
 
-  const handleInputChange = (event) => {
+  const handleInputChange = async (event) => {
     const { value } = event.target;
     setsearchListId(value);
-    search_tag_data(
-      searchListId,
-      setTableData,
-      setsearchListId
-    );
+    await search_tag_data(value, setTableData);
   };
 
   useEffect(() => {
@@ -62,13 +62,14 @@ const TagTable = () => {
   const handleEdit = (itemId) => {
     const selectedItem = tableData.find((item) => item.id === itemId);
     setOpen(true);
-    setInputData(selectedItem || {
-      name: "",
-      priority: "",
-      image: "",
-    });
+    setInputData(
+      selectedItem || {
+        name: "",
+        priority: "",
+        image: "",
+      }
+    );
   };
-
 
   console.log("selectedImage", selectedImage);
 
@@ -108,7 +109,7 @@ const TagTable = () => {
               </tr>
             </thead>
             <tbody>
-            {(filteredData.length > 0 && searchListId !== ""
+              {(filteredData.length > 0 && searchListId !== ""
                 ? filteredData
                 : tableData
               ).map((item, index) => (
@@ -136,8 +137,9 @@ const TagTable = () => {
                           srcset=""
                         />
                       </button>
-                      <button className="btn_section"
-                       onClick={() => handleEdit(item.id)}
+                      <button
+                        className="btn_section"
+                        onClick={() => handleEdit(item.id)}
                       >
                         <img
                           className="btn_section_img"
@@ -163,6 +165,21 @@ const TagTable = () => {
               ))}
             </tbody>
           </table>
+
+          {tableData.length === 0 && (
+          <div
+            className=""
+            style={{
+              width: "100%",
+              height: "200px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <span>No Data Found</span>
+          </div>
+        )}
         </div>
         <SuccessModal
           successModalOpen={successModalOpen}

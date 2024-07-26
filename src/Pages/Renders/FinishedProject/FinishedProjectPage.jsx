@@ -15,7 +15,7 @@ const FinishedProjectPage = () => {
   }, []);
 
   return (
-    <div className="Parent_FinishedProjectPage">
+      <div className="Parent_FinishedProjectPage">
       <Sidebar
         sidebarExpanded={sidebarExpanded}
         setSidebarExpanded={setSidebarExpanded}

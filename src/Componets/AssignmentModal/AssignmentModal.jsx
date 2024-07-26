@@ -59,7 +59,7 @@ const AssignmentModal = ({
     //   );
     // } else {
     if(folderName===""){
-     setError("Plese enter the folder name.")
+     setError("Please enter the folder name.")
     }else{
       move_to_folder(
         setIsLoading,

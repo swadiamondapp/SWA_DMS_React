@@ -6,8 +6,14 @@ import scan from "../../assets/scan.png";
 import "./ScanWarehouse.css";
 import MastersModal from "../MastersSection/MastersModal/MastersModal";
 import { whstatusTableData } from "../MastersSection/ApiMasters/ApiMasters";
-import { newScanProductScan, warehoueScanTable } from "../ScanComponentWarehouse/ApiScan/ApiScan";
+import {
+  newScanProductScan,
+  newScanSearchFilter,
+  warehoueScanTable,
+  warehouseScanItemDelete,
+} from "../ScanComponentWarehouse/ApiScan/ApiScan";
 import DeleteConfirmationModal from "../ConfirmationModal/DeleteConfirmationModal";
+import SuccessModal from "../SuccessModal/SuccessModal";
 
 const ScanWarehouse = ({ sidebarExpanded }) => {
   const [open, setOpen] = useState(false);
@@ -18,8 +24,10 @@ const ScanWarehouse = ({ sidebarExpanded }) => {
   const [DeleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
   const [searchListId, setsearchListId] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
-
+  const [filterSearchId, setFilterSearchId] = useState("");
+  const [deleteId, setDeleteId] = useState("");
+  const [successModalOpen, setSuccessModalOpen] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
     whstatusTableData(setStatus);
@@ -32,14 +40,14 @@ const ScanWarehouse = ({ sidebarExpanded }) => {
 
   const handleCheckboxChange = (productId) => {
     if (clickedProductIds.includes(productId)) {
-      setClickedProductIds(clickedProductIds.filter(id => id !== productId));
+      setClickedProductIds(clickedProductIds.filter((id) => id !== productId));
     } else {
       setClickedProductIds([...clickedProductIds, productId]);
     }
   };
 
   const handleHeaderCheckboxChange = () => {
-    const allProductIds = scanTableData.map(item => item.id);
+    const allProductIds = scanTableData.map((item) => item.id);
     if (clickedProductIds.length === allProductIds.length) {
       setClickedProductIds([]);
     } else {
@@ -58,27 +66,50 @@ const ScanWarehouse = ({ sidebarExpanded }) => {
 
   const handleSearch = async () => {
     setIsLoading(true);
-    if(searchListId === ""){
-      setError("Enter slot ID")
-    }else{
-    try {
-      await newScanProductScan(
-        setIsLoading,
-        searchListId,
-        setScanTableData,
-        setsearchListId,
-        setError
-      );
-    } catch (error) {
-      console.error("Error searching scan list:", error);
-    } finally {
-      setIsLoading(false);
+    if (searchListId === "") {
+      setError("Enter slot ID");
+      setTimeout(() => {
+        setError("");
+      }, 3000);
+    } else {
+      try {
+        await newScanProductScan(
+          setIsLoading,
+          searchListId,
+          setScanTableData,
+          setsearchListId,
+          setError
+        );
+      } catch (error) {
+        console.error("Error searching scan list:", error);
+      } finally {
+        setIsLoading(false);
+      }
     }
-  }
   };
 
-  console.log("scanTableData",scanTableData)
-  console.log("clickedProductIds",clickedProductIds)
+  const handleFilterSearch = async (event) => {
+    const { value } = event.target;
+    setFilterSearchId(value.toUpperCase());
+
+    await newScanSearchFilter(value.toUpperCase(), setScanTableData);
+  };
+
+  const handleOpen = () => {
+    setSuccessModalOpen(true);
+  };
+  const handleClose = () => {
+    setSuccessModalOpen(false);
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleSearch();
+    }
+  };
+
+  console.log("scanTableData", scanTableData);
+  console.log("clickedProductIds", clickedProductIds);
 
   return (
     <>
@@ -93,6 +124,8 @@ const ScanWarehouse = ({ sidebarExpanded }) => {
               type="text"
               name="slot_id"
               placeholder="Search"
+              value={filterSearchId}
+              onChange={handleFilterSearch}
             />
             <img className="searchblue" src={searchblue} alt="" />
           </div>
@@ -120,10 +153,13 @@ const ScanWarehouse = ({ sidebarExpanded }) => {
                   placeholder="Scan Product ID"
                   value={searchListId}
                   onChange={handleInputChange}
+                  onKeyPress={handleKeyPress}
                 />
                 <img onClick={handleSearch} src={searchimg} alt="" />
               </div>
-              {error && <span style={{color:"red",fontSize:"10px"}}>{error}</span>}
+              {error && (
+                <span style={{ color: "red", fontSize: "10px" }}>{error}</span>
+              )}
             </div>
             <div className="Create_user">
               <button onClick={openModal}>Change WH Status</button>
@@ -139,7 +175,9 @@ const ScanWarehouse = ({ sidebarExpanded }) => {
                     <input
                       type="checkbox"
                       onChange={handleHeaderCheckboxChange}
-                      checked={clickedProductIds.length === scanTableData.length}
+                      checked={
+                        clickedProductIds.length === scanTableData.length
+                      }
                     />
                   </th>
                   <th style={{ borderLeft: "none" }}>Sl No</th>
@@ -164,11 +202,19 @@ const ScanWarehouse = ({ sidebarExpanded }) => {
                       />
                     </td>
                     <td style={{ borderLeft: "none" }}>{index + 1}</td>
-                    <td style={{ borderLeft: "none" }}>{item.Productdetails?.designcode}</td>
+                    <td style={{ borderLeft: "none" }}>
+                      {item.Productdetails?.designcode}
+                    </td>
                     <td style={{ borderLeft: "none" }}>{item.created_at}</td>
-                    <td style={{ borderLeft: "none" }}>{item.Productdetails.product_category}</td>
-                    <td style={{ borderLeft: "none" }}>{item.Productdetails.status}</td>
-                    <td style={{ borderLeft: "none" }}>{item.Productdetails.approx_metal_weight} GM</td>
+                    <td style={{ borderLeft: "none" }}>
+                      {item.Productdetails.product_category}
+                    </td>
+                    <td style={{ borderLeft: "none" }}>
+                      {item.Productdetails.status}
+                    </td>
+                    <td style={{ borderLeft: "none" }}>
+                      {item.Productdetails.approx_metal_weight} GM
+                    </td>
                     <td style={{ borderLeft: "none" }}>
                       <img
                         onClick={() => handleDeleteOpen(item.id)}
@@ -182,7 +228,27 @@ const ScanWarehouse = ({ sidebarExpanded }) => {
               </tbody>
             </table>
           </div>
+          <SuccessModal
+            successModalOpen={successModalOpen}
+            handleOpen={handleOpen}
+            handleClose={handleClose}
+            successMessage={successMessage}
+          />
         </div>
+        {scanTableData.length === 0 && (
+          <div
+            className=""
+            style={{
+              width: "100%",
+              height: "200px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <span>No Data Found</span>
+          </div>
+        )}
 
         {open && (
           <MastersModal
@@ -203,15 +269,15 @@ const ScanWarehouse = ({ sidebarExpanded }) => {
           DeleteConfirmationOpen={DeleteConfirmationOpen}
           handleDeleteOpen={handleDeleteOpen}
           setDeleteConfirmationOpen={setDeleteConfirmationOpen}
-          // deleteFunction={() => {
-          //   delete_finding_data(
-          //     setTableData,
-          //     deleteId,
-          //     setDeleteConfirmationOpen,
-          //     setSuccessMessage,
-          //     setSuccessModalOpen
-          //   );
-          // }}
+          deleteFunction={() => {
+            warehouseScanItemDelete(
+              setScanTableData,
+              deleteId,
+              setDeleteConfirmationOpen,
+              setSuccessMessage,
+              setSuccessModalOpen
+            );
+          }}
         />
       )}
     </>

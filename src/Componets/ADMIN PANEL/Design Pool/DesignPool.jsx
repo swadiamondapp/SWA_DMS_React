@@ -3,15 +3,21 @@ import "./DesignPool.css";
 import like from "../../../assets/like.png";
 import ring from "../../../assets/ring.png";
 import DesignBtn from "../../ADMIN PANEL/Design Pool/DesignBtn";
-import { all_Designs, unvoted_design, moveSelectedDesign, designPoolSearchById } from "./Api";
+import {
+  all_Designs,
+  unvoted_design,
+  moveSelectedDesign,
+  designPoolSearchById,
+} from "./Api";
 import { MOVE_TO_ASSIGNMENT } from "../../../Pages/Services/EndPoints";
 import { apiService } from "../../../Pages/Services/ApiInstants";
 import { useNavigate } from "react-router-dom";
 import LottieAnimation from "../../../LottiAnimation";
 import BasicDetailModal from "../../BasicDetails/BasicDetailModal";
 import { CircularProgress } from "@mui/material";
+import AnnotationModalDesignPool from "./AnnotationModalDesignPool/AnnotationModalDesignPool";
 
-const DesignPool = ({ sidebarExpanded,setData,Data }) => {
+const DesignPool = ({ sidebarExpanded, setData, Data }) => {
   const [showRadioButtons, setShowRadioButtons] = useState(false);
   const [selectButtonLabel, setSelectButtonLabel] = useState("Select");
   const [showDownloadOptions, setShowDownloadOptions] = useState(false);
@@ -21,7 +27,8 @@ const DesignPool = ({ sidebarExpanded,setData,Data }) => {
   const [unvotedData, setUnvotedData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [open, setIsOpen] = useState(false);
-
+  const [anotationModal, setanotationModal] = useState(false);
+  const [selectedDesign, setSelectedDesign] = useState(null);
 
   const navigate = useNavigate();
 
@@ -34,6 +41,10 @@ const DesignPool = ({ sidebarExpanded,setData,Data }) => {
   };
   const toggleMoveOptions = () => {
     setShowMoveOptions(!showMoveOptions);
+  };
+  const OpenAnntaitionmodal = (Item) => {
+    setanotationModal(!anotationModal);
+    setSelectedDesign(Item)
   };
 
   useEffect(() => {
@@ -74,7 +85,7 @@ const DesignPool = ({ sidebarExpanded,setData,Data }) => {
     // }
   };
 
-console.log("data design pool",Data)
+  console.log("selectedDesign", selectedDesign);
 
   return (
     <div>
@@ -159,41 +170,56 @@ console.log("data design pool",Data)
 
           <div className="Card_Design_Parent">
             {Data.map((item, index) => (
-              <div className="New_Design_card" key={item.id}>
-                <div className="Card_img" style={{ minHeight: "190px" }}>
-                  <img src={item.image} alt="image" />
-                </div>
-                <div className="Card_Details">
-                  <h3>ID : {item.designcode}</h3>
-                  <div className="Card_Details_Inner">
-                    <div className="Inner_Left">
-                      <p>{item.user_name}</p>
-                      <p>{item.created_at}</p>
-                    </div>
-                    <div className="Inner_Right">
-                      <p>
-                        {item.likes_count} <img src={like} alt="" />
-                      </p>
+              <>
+                <div
+                  className="New_Design_card"
+                  key={item.id}
+                  onClick={()=>OpenAnntaitionmodal(item)}
+                >
+                  <div className="Card_img" style={{ minHeight: "190px" }}>
+                    <img src={item.image} alt="image" />
+                  </div>
+                  <div className="Card_Details">
+                    <h3>ID : {item.designcode}</h3>
+                    <div className="Card_Details_Inner">
+                      <div className="Inner_Left">
+                        <p>{item.user_name}</p>
+                        <p>{item.created_at}</p>
+                      </div>
+                      <div className="Inner_Right">
+                        <p>
+                          {item.likes_count} <img src={like} alt="" />
+                        </p>
+                      </div>
                     </div>
                   </div>
+                  {/* radio btn */}
+                  {showRadioButtons && (
+                    <input
+                      className="Radio_select"
+                      type="checkbox"
+                      id={item.designcode}
+                      name="fav_language"
+                      value={item.designcode}
+                      onChange={() => handleCheckboxChange(item.designcode)}
+                      // checked={selectedDesigns[item.designcode]}
+                      checked={selectedDesigns.includes(item.designcode)}
+                    ></input>
+                  )}
+                  {/* radio btn */}
                 </div>
-                {/* radio btn */}
-                {showRadioButtons && (
-                  <input
-                    className="Radio_select"
-                    type="checkbox"
-                    id={item.designcode}
-                    name="fav_language"
-                    value={item.designcode}
-                    onChange={() => handleCheckboxChange(item.designcode)}
-                    // checked={selectedDesigns[item.designcode]}
-                    checked={selectedDesigns.includes(item.designcode)}
-                  ></input>
-                )}
-                {/* radio btn */}
-              </div>
+              </>
             ))}
           </div>
+
+          {anotationModal && (
+                  <AnnotationModalDesignPool
+                    setanotationModal={setanotationModal}
+                    anotationModal={anotationModal}
+                    selectedDesign={selectedDesign}
+                  />
+                )}
+           
           {/* unvoted design */}
           <div className="Parent_unvoted">
             <h3 className="HeadNewdesign">Unvoted</h3>

@@ -481,6 +481,30 @@ export const scan_list_datas = async (setIsLoading, setScanTableData) => {
   }
 };
 
+export const scanSearchFilter = async (
+  searchListId,
+  setTableData,
+) => {
+  debugger
+  try {
+    let endpoint = `${SCAN_TABLE_LIST}`;
+
+    if (searchListId !== "") {
+      endpoint += `?designcode=${searchListId}`;
+    } else if (searchListId === "") {
+      scan_list_datas(setTableData);
+    }
+
+    const response = await apiService.get(endpoint);
+
+    if (checkApiStatus(response)) {
+      setTableData(response.data.results.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const scan_list_search = async (
   setIsLoading,
   searchListId,
@@ -500,12 +524,18 @@ export const scan_list_search = async (
       setsearchListId("");
       alert("Item Added");
       setError("");
+    }if (response.data.results.status_code === 206) {
+      setError(response.data.results.message)
+      setTimeout(() => {
+        setError("");
+      }, 3000);
     }
   } catch (error) {
     console.log(error);
-    alert("Already exists");
+    // alert("Already exists");
     setError("");
     setsearchListId("");
+    
   }
 };
 

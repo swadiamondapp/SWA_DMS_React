@@ -47,7 +47,7 @@
   font-weight: 600;
   font-size: 10px;
   color: #455173;
-  width: 100px;
+  width: 100%;
 }
 .ProductInformation {
   display: flex;
@@ -63,7 +63,8 @@
 }
 .ringImages {
     display: flex;
-    gap:10px
+    gap:10px;
+    /* background-color: red; */
 }
 .CR_ButtonCommen {
     border-radius: 32px;

@@ -10,6 +10,7 @@ import {
   scan_list_search,
   scan_table_status_change,
   scan_table_status_get,
+  scanSearchFilter,
   // scan_table_status_change,
 } from "../../../Pages/WareHousePageView/Api";
 import { IoEye } from "react-icons/io5";
@@ -28,6 +29,7 @@ const ScanTable = ({ sidebarExpanded}) => {
   const [error, setError] = useState("");
 
   const [clickedProductId, setclickedProductId] = useState("");
+  const [filterSearchId, setFilterSearchId] = useState("");
 
   // console.log("iId",clickedProductId)
 
@@ -42,13 +44,16 @@ const ScanTable = ({ sidebarExpanded}) => {
   }, []);
 
   const handleInputChange = (event) => {
-    setsearchListId(event.target.value);
+    setsearchListId(event.target.value.toUpperCase());
   };
 
   const handleSearch = async () => {
     setIsLoading(true);
     if(searchListId === ""){
       setError("Enter slot ID")
+      setTimeout(() => {
+        setError("");
+      }, 3000);
     }else{
     try {
       await scan_list_search(
@@ -64,6 +69,23 @@ const ScanTable = ({ sidebarExpanded}) => {
       setIsLoading(false);
     }
   }
+  };
+
+  // const handleFilterSearch = (event) => {
+  //   const { value } = event.target;
+  //   setFilterSearchId(value);
+  //   scanSearchFilter(
+  //     filterSearchId,
+  //     setScanTableData,
+  //     setFilterSearchId
+  //   );
+  // };
+
+  const handleFilterSearch = async (event) => {
+    const { value } = event.target;
+    setFilterSearchId(value.toUpperCase()); 
+
+    await scanSearchFilter(value.toUpperCase(), setScanTableData);
   };
 
   const handleStatusChange = async (slotId, selectedStatusId) => {
@@ -84,6 +106,12 @@ const ScanTable = ({ sidebarExpanded}) => {
     return new Date(dateString).toLocaleDateString('en-GB', options);
   };
 
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   console.log("search id", searchListId);
   console.log("data", scanTableData);
 
@@ -96,6 +124,8 @@ const ScanTable = ({ sidebarExpanded}) => {
               type="text"
               name="slot_id"
               placeholder="Search"
+              value={filterSearchId}
+              onChange={handleFilterSearch}
             />
             <img className="searchblue" src={searchblue} alt="" />
           </div>
@@ -103,7 +133,7 @@ const ScanTable = ({ sidebarExpanded}) => {
             <span style={{ color: "red", fontSize: "10px" }}>{error}</span>
           )} */}
 
-          <div className="secton_search">
+          <div className="secton_search" style={{flexDirection:"column",alignItems:"start"}}>
           <div className="Search_User">
           <input
             type="text"
@@ -111,6 +141,7 @@ const ScanTable = ({ sidebarExpanded}) => {
             placeholder="Scan Product ID"
             value={searchListId}
             onChange={handleInputChange}
+            onKeyPress={handleKeyPress}
           />
           <img onClick={handleSearch} src={searchimg} alt="" />
         </div>
@@ -184,6 +215,12 @@ const ScanTable = ({ sidebarExpanded}) => {
           </table>
         </div>
       </div>
+      {scanTableData.length === 0 && (
+              <div className="" style={{width:"100%",height:"200px",display:"flex",alignItems:"center",justifyContent:"center"}}>
+
+                <span>No Data Found</span>
+              </div>
+            )}
 
       {openModal && (
         <ScanModal

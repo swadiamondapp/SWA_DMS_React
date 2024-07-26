@@ -17,12 +17,13 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: "auto",
   height: "auto",
-  bgcolor: "background.paper",
+  bgcolor: "background.transparent",
   border: "none",
-  boxShadow: 24,
+  boxShadow: "none",
   p: 0,
   overflowY: "auto",
   borderRadius: 0,
+  
 };
 
 const SlotView = ({ open, onClose, userId, slotView }) => {
@@ -56,7 +57,7 @@ const SlotView = ({ open, onClose, userId, slotView }) => {
   const filterOption = (input, option) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
 
-  console.log(slotView, "slotView");
+  console.log(slotView, "slotViewModal");
 
   // useEffect(()=> {
   //   slot_view_by_id(setIsLoading,userId,setSloteView)
@@ -78,12 +79,14 @@ const SlotView = ({ open, onClose, userId, slotView }) => {
             className="modal"
           >
             <div>
-              
-              <button onClick={() => handleClose()} className="overLayButton_cht">
-                <img src={roundedClose} />
-                CLOSE
-              </button>
               <Box sx={style}>
+                <button
+                  onClick={() => handleClose()}
+                  className="overLayButton_cht"
+                >
+                  <img src={roundedClose} />
+                  CLOSE
+                </button>
                 <Typography id="modal-modal-title" variant="h6" component="h2">
                   <div
                     className="headerModal"
@@ -93,7 +96,7 @@ const SlotView = ({ open, onClose, userId, slotView }) => {
                   </div>
                 </Typography>
 
-                <Typography id="modal-modal-description" sx={{ mx: 1, pb: 1 }}>
+                <Typography id="modal-modal-description">
                   <div className="Slote_Container">
                     <table class="custom-table single-border">
                       <thead>
@@ -108,8 +111,12 @@ const SlotView = ({ open, onClose, userId, slotView }) => {
                         {slotView.map((item, index) =>
                           item.caddesigns.map((design, designIndex) => (
                             <tr key={`${index}-${designIndex}`}>
-                              <td className="table-cell">{design.designcode}</td>
-                              <td className="table-cell">{design.created_at}</td>
+                              <td className="print-table-cell">
+                                {design.designcode}
+                              </td>
+                              <td className="table-cell">
+                                {design.created_at}
+                              </td>
                               <td className="table-cell">
                                 {design.product_category.join(", ")}
                               </td>

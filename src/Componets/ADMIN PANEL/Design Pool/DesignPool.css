@@ -5,8 +5,10 @@
 .DesignPool_btns {
   display: flex;
   align-items: center;
-  justify-content: end;
+  justify-content: space-between;
   gap: 10px;
+  /* width: 90%; */
+  margin-left: 225px;
 }
 .D_downlodBtn {
   display: flex;

@@ -84,6 +84,7 @@ const SlotCreation = ({ open, onClose, generatSloteNum }) => {
   useEffect(() => {
     listAvailableCadDesigns(setIsLoading, setData);
   }, []);
+  
   console.log(Data, "setData");
   console.log(selectedItems, "selectedItems");
 
@@ -92,6 +93,7 @@ const SlotCreation = ({ open, onClose, generatSloteNum }) => {
       prevSelectedItems.filter((selectedItem) => selectedItem.id !== item.id)
     );
   };
+
   const selectedIds = selectedItems.map((item) => item.id);
   const genSlotId = generatSloteNum && generatSloteNum?.slotnumber;
   const handleCreateSlot = () => {
@@ -115,13 +117,16 @@ const SlotCreation = ({ open, onClose, generatSloteNum }) => {
     );
   };
 
-  const handleCentralHubSearch = (e) => {
-    setSearchCentralItem(e.target.value);
-  };
-  useEffect(() => {
-    searchCentralHubSlot(setIsLoading, setData, searchCentralItem);
-  }, [searchCentralItem]);
-  console.log(selectedIds, "dataToSend");
+const handleCentralHubSearch =(e)=> {
+    setSearchCentralItem(e.target.value.toLocaleUpperCase())
+  }
+useEffect(()=> {
+  searchCentralHubSlot(setIsLoading, setData,searchCentralItem)
+},[searchCentralItem])
+
+  // console.log(selectedIds, "dataToSend");
+  console.log(selectedIds, "selectedIds");
+  console.log(generatSloteNum, "generatSloteNum");
   return (
     <div>
       <div className="">
@@ -155,11 +160,9 @@ const SlotCreation = ({ open, onClose, generatSloteNum }) => {
                       </div>
                       <div className="searchContiainer">
                         <div className="Search_Userr">
-                          <input
-                            type="text"
-                            placeholder="Search"
-                            onChange={handleCentralHubSearch}
-                          />
+<input type="text" placeholder="Search"
+                          value={searchCentralItem}
+                           onChange={handleCentralHubSearch}/>
                           <div className="iconBack">
                             <img src={searchIcon} alt="" />
                           </div>
@@ -288,15 +291,11 @@ const SlotCreation = ({ open, onClose, generatSloteNum }) => {
                           <tbody>
                             {selectedItems.map((item) => (
                               <tr key={item.id}>
-                                <td className="table-data">
-                                  {item.designcode}
-                                </td>
+<td className="table-data">{item.designcode}</td>
                                 <td className="table-data">
                                   {item.created_at}
                                 </td>
-                                <td className="table-data">
-                                  {item.product_category}
-                                </td>
+                                <td className="table-data">{item.product_category}</td>
                                 <td className="table-data">
                                   <div className="right-data-and-button-c">
                                     <span>{item.approx_metal_weight} Gram</span>

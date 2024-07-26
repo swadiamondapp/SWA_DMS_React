@@ -1,0 +1,17 @@
+.annotation_buttons{
+    width: 90%;
+    height: auto;
+    background-color: #E6E6E6
+    ;
+    display: flex;
+    justify-content: space-evenly;
+    gap: 2px;
+    padding: 3px;
+    border-radius: 8px;
+}
+.annotation_buttons button{
+ width: 20%;
+ border: none;
+ background-color: #E6E6E6;
+ outline: none;
+}

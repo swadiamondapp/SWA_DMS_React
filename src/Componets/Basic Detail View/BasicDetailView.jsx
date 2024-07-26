@@ -2,9 +2,13 @@ import React from "react";
 import "./BasicDetailView.css";
 import "../Assignment Folder/AssignmentView.css";
 
-const BasicDetailView = ({ basicDetails }) => {
+const BasicDetailView = ({ basicDetails,sidebarExpanded }) => {
+
+  console.log("findinggggg",basicDetails?.assignment?.findings)
   return (
-    <div className="ParentCad">
+    <div className="ParentCad"
+    style={{ paddingLeft: sidebarExpanded ? "225px" : "130px" }}
+    >
       {/* <div className="details-container">
         <div>
           <img src={basicDetails?.design_image} alt="" />
@@ -54,15 +58,15 @@ const BasicDetailView = ({ basicDetails }) => {
                 </div>
                 <div className="A1_text">
                   <p>Length</p>
-                  <p>{basicDetails?.assignment?.length}</p>
+                  <p>{basicDetails?.assignment?.length} mm</p>
                 </div>
                 <div className="A1_text">
                   <p>Width</p>
-                  <p>{basicDetails?.assignment?.width}</p>
+                  <p>{basicDetails?.assignment?.width} mm</p>
                 </div>
                 <div className="A1_text">
                   <p>Height</p>
-                  <p>{basicDetails?.assignment?.height}</p>
+                  <p>{basicDetails?.assignment?.height} mm</p>
                 </div>
                 <div className="A1_text">
                   <p>Dimond Type</p>
@@ -74,21 +78,27 @@ const BasicDetailView = ({ basicDetails }) => {
                 </div>
                 <div className="A1_text">
                   <p>APPROX DIAMOND WEIGHT</p>
-                  <p>{basicDetails?.assignment?.approx_diamond_weight}</p>
+                  <p>{basicDetails?.assignment?.approx_diamond_weight} ct</p>
                 </div>
                 <div className="A1_text">
                   <p>Findings</p>
-                  <p>{basicDetails?.assignment?.findings}</p>
+                  <div style={{display:"flex",flexWrap:"wrap",gap:"5px"}}>
+                    {basicDetails?.assignment?.findings.map((item)=>(
+                    <span style={{background:"#EFEFEF",padding:"4px 8px",borderRadius:"10px",fontSize:"11px"}}>{item}</span>
+                  ))}
+                    </div>
                 </div>
                 <div className="A1_text">
                   <p>Approx weight</p>
-                  <p>{basicDetails?.assignment?.approx_metal_weight}</p>
+                  <p>{basicDetails?.assignment?.approx_metal_weight} g</p>
                 </div>
                 <div className="A1_text">
                   <p>Tags</p>
-                  <p>
-                    <span>{basicDetails?.assignment?.tag}</span>
-                  </p>
+                  <div style={{display:"flex",flexWrap:"wrap",gap:"5px"}}>
+                    {basicDetails?.assignment?.tag.map((item)=>(
+                    <span style={{background:"#EFEFEF",padding:"4px 8px",borderRadius:"10px",fontSize:"11px"}}>{item}</span>
+                  ))}
+                    </div>
                 </div>
                 <div className="A1_text" style={{ borderBottom: "0px" }}>
                   <p>Note</p>
