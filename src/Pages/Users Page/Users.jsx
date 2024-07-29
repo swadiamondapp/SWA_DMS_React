@@ -39,6 +39,7 @@ const Users = () => {
         SearchedNamesGet={SearchedNamesGet}
         userList={userList}
         setUserList={setUserList}
+        IsLoading={IsLoading}
       />
     </div>
   );

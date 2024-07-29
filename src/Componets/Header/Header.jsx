@@ -71,11 +71,7 @@ const Header = ({
   const handleSearchWithName = (event) => {
     setSearchWithName(event.target.value, "nameSarch");
   };
-  console.log(
-   
-
-    "headerDetailshead"
-  );
+  console.log("headerDetailshead");
   return (
     <div>
       <div
@@ -222,7 +218,7 @@ const Header = ({
                   <h3>Masters</h3>
                 )}
 
-                {location.pathname === "/scan" && <h3>Receive</h3>}
+                {location.pathname === "/scan" && <h3>Received</h3>}
                 {location.pathname === "/workdone" && <h3>Work Done</h3>}
                 {location.pathname === "/newscanmodule" && <h3>Scan</h3>}
                 {location.pathname === "/centralhubscan" && <h3>Scan</h3>}

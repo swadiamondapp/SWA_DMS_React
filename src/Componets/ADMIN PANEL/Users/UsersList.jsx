@@ -21,6 +21,7 @@ import SuccessModal from "../../SuccessModal/SuccessModal";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import DeleteConfirmationModal from "../../ConfirmationModal/DeleteConfirmationModal";
+import LottieAnimation from "../../../LottiAnimation";
 
 const schema = Joi.object({
   name: Joi.string().required().messages({
@@ -69,6 +70,7 @@ const UsersList = ({
   SearchedNamesGet,
   userList,
   setUserList,
+  IsLoading,
 }) => {
   // create modal
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -624,20 +626,24 @@ const UsersList = ({
         </div>
         {/* create modal */}
         <div className="Users_Table_List">
-          <table style={{ width: "100%" }}>
-            <thead>
-              <tr style={{ color: "#455173" }}>
-                <th>Date</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Password</th>
-                <th>Desigination</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {userList.length > 0 ? (
+          {IsLoading ? (
+            <LottieAnimation />
+          ) : userList == "" ? (
+            "No Data found"
+          ) : (
+            <table style={{ width: "100%" }}>
+              <thead>
+                <tr style={{ color: "#455173" }}>
+                  <th>Date</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Password</th>
+                  <th>Designation</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
                 <>
                   {userList?.map((item, index) => (
                     <tr key={index} style={{ color: "#2E364C" }}>
@@ -755,17 +761,9 @@ const UsersList = ({
                     </tr>
                   ))}
                 </>
-              ) : (
-                <>
-                  <tr>
-                    <td colSpan="8" style={{ textAlign: "center" }}>
-                      No users found.
-                    </td>
-                  </tr>
-                </>
-              )}
-            </tbody>
-          </table>
+              </tbody>
+            </table>
+          )}
         </div>
         <SuccessModal
           successModalOpen={successModalOpen}
