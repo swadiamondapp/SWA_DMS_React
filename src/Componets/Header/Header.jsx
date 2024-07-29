@@ -71,11 +71,7 @@ const Header = ({
   const handleSearchWithName = (event) => {
     setSearchWithName(event.target.value, "nameSarch");
   };
-  console.log(
-   
-
-    "headerDetailshead"
-  );
+  console.log("headerDetailshead");
   return (
     <div>
       <div
@@ -103,7 +99,14 @@ const Header = ({
                       : "notstarted"
                   }
                 >
-                  {basicDetails.timer_status}
+                  {basicDetails.timer_status
+                    .replace("-", "")
+                    .charAt(0)
+                    .toUpperCase() + 
+                    basicDetails.timer_status
+                      .replace("-", "") 
+                      .slice(1) 
+                      .toLowerCase()}
                 </span>
               </div>
               <div
@@ -274,7 +277,7 @@ const Header = ({
                       <div className="Search_User">
                         <input
                           type="text"
-                          placeholder="Search ID"
+                          placeholder="Search User"
                           onChange={handleSearchWithName}
                         />
                         <img src={searchimg} alt="" />

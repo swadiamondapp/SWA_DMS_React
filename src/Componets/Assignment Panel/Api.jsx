@@ -97,22 +97,22 @@ export const listFolderDetailVeiwAssignmentPanel = async (
 export const move_to_folder = async (
   setIsLoading,
   folderName,
+  selectedAssignment,
   setAssignmentFolder,
+  setData,
   onClose,
   setSuccessMessage,
   setSuccessModalOpen,
-  setSelectedAssignment,
-  ItemMovedToAssignment,
-  handleClose,
   setFolderName,
-  setItemMovedToAssignment,
-  selectedAssignment,
-  setData,
+
+  setSelectedAssignment,
   setError,
-  ToCloseCreatefolder
+  setShowRadioButtons,
+  setSelectButtonLabel
+
 ) => {
   try {
-    debugger;
+
     const body = {
       folder_data: {
         name: folderName,
@@ -131,9 +131,11 @@ export const move_to_folder = async (
         setSuccessModalOpen(false);
       }, 1600);
       setFolderName("");
-      setError('')
+     
       setSelectedAssignment([]);
-      setItemMovedToAssignment([]);
+      setError('')
+      setShowRadioButtons(false)
+      setSelectButtonLabel("Select")
     }
 if(response.data.results.status_code === 206){
       setError(response.data.results.message)

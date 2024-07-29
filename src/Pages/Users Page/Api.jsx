@@ -7,6 +7,7 @@ export const searchNamesAdmin = async (
   SearchWithName
 ) => {
   try {
+    setIsLoading(true)
     const response = await apiService.get(
       `${SEARCH_WITH_NAMES}${SearchWithName}`
     );
@@ -15,5 +16,7 @@ export const searchNamesAdmin = async (
     }
   } catch (error) {
     console.log(error);
+  }finally {
+    setIsLoading(false)
   }
 };
