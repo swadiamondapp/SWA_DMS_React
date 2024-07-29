@@ -28,29 +28,30 @@ const CentralHubDetailsView = ({ CentralFolderDetails, sidebarExpanded }) => {
     content: printRef.current,
   });
 
-  const handleDownloadImage = async (imageSrc, ImageName, forceDownload=false) => {
-    if (!forceDownload) {
-      const link = document.createElement("a");
-      link.href = imageSrc;
-      link.download = ImageName;
+  const handleDownload = (imageUrl) => {
+    fetch(imageUrl, {
+      method: 'GET',
+      mode: 'cors'
+  })
+  .then(response => response.blob())
+  .then(blob => {
+      const blobUrl = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.download = 'downloaded_image.jpg';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-    }
-    // const imageBlob = await fetch(imageSrc).then((response) => response.blob());
-    const imageBlob = await fetch(imageSrc)
-      .then((response) => response.arrayBuffer())
-      .then((buffer) => new Blob([buffer], { type: "image/png" }));
+  })
+  .catch(error => console.error('Error downloading the image:', error));
+  };
 
-    console.log(imageBlob, URL.createObjectURL(imageBlob), "imagebol");
-
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(imageBlob);
-    setImageBlobConverted(imageBlob)
-    link.download = ImageName;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+    setImages({ 
+      normal: null, 
+      threeD: null 
+    });
   };
   //   console.log(CentralFolderDetails, "cetasdlfkje");
   return (
@@ -81,7 +82,7 @@ const CentralHubDetailsView = ({ CentralFolderDetails, sidebarExpanded }) => {
                     <button
                       className="Download_btn_hub"
                       onClick={() => {
-                        handleDownloadImage(item.file_2d, "image_name2d");
+                        handleDownload(item.file_2d);
                       }}
                     >
                       DOWNLOAD

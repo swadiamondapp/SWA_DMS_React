@@ -98,6 +98,28 @@ const CreateCustomisation = ({
   );
   const [diamonType, setDiamondType] = useState([]);
   const [images, setImages] = useState(Array(5).fill(""));
+
+  const formRef = useRef(null);
+  const sallerNameRef = useRef(null);
+  const mobileNumberRef = useRef(null);
+  const chooseOutletRef = useRef(null);
+  const productTypeRef = useRef(null);
+  const modelPrevioslyMadeRef = useRef(null);
+  const prevMadeSKURef = useRef(null);
+  const metalTypeRef = useRef(null);
+  const weightRef = useRef(null);
+  const sizeRef = useRef(null);
+  const widthRef = useRef(null);
+  const lengthOfItemRef = useRef(null);
+  const heightRef = useRef(null);
+  const diamondTypeRef = useRef(null);
+  const diamondWeightRef = useRef(null);
+  const numberOfDiamondsRef = useRef(null);
+  const diamondClarityRef = useRef(null);
+  const diamondColorRef = useRef(null);
+  const budgetRef = useRef(null);
+  const swaProductSKURef = useRef(null);
+  const notesRef = useRef(null);
   const [formData, setFormData] = useState({
     sallerName: "",
     mobileNumber: "",
@@ -182,12 +204,26 @@ const CreateCustomisation = ({
         "string.min": `Mobile number must be exactly 10 digits`,
         "string.max": `Mobile number must be exactly 10 digits`,
       }),
-    chooseOutlet: Joi.required().messages({
-      "string.empty": `choose Outlet cannot be an empty feild`,
-    }),
-    productType: Joi.required().messages({
-      "string.empty": `Product Type cannot be an empty feild`,
-    }),
+      chooseOutlet: Joi.alternatives().try(
+        Joi.number().integer().positive(), // if ID is a number
+        Joi.string().min(1) // if ID is a string
+      ).required().messages({
+        "any.required": ` cannot be an empty field`,
+        "string.empty": ` cannot be an empty field`,
+        "number.base": `Choose Outlet must be a valid number`,
+        "number.integer": `Choose Outlet must be an integer`,
+        "number.positive": `Choose Outlet must be a positive number`
+      }),
+    productType:  Joi.alternatives().try(
+        Joi.number().integer().positive(), // if ID is a number
+        Joi.string().min(1) // if ID is a string
+      ).required().messages({
+        "any.required": ` cannot be an empty feild`,
+        "string.empty": `cannot be an empty feild`,
+        "number.base": `Product Type must be a valid number`,
+        "number.integer": `Product Type must be an integer`,
+        "number.positive": `Product Type must be a positive number`
+      }),
     modelPrevioslyMade: Joi.string().required().messages({
       "string.empty": `cannot be empty`,
     }),
@@ -199,8 +235,15 @@ const CreateCustomisation = ({
       }),
       // Otherwise, it's optional
     }),
-    metalType: Joi.required().messages({
-      "string.empty": `Metal Type cannot be empty`,
+    metalType:Joi.alternatives().try(
+      Joi.number().integer().positive(), // if ID is a number
+      Joi.string().min(1) // if ID is a string
+    ).required().messages({
+      "any.required": ` cannot be empty`,
+      "string.empty": `cannot be empty`,
+      "number.base": `Metal Type must be a valid number`,
+      "number.integer": `Metal Type must be an integer`,
+      "number.positive": `Metal Type must be a positive number`
     }),
     weight: Joi.string().required().messages({
       "string.empty": `cannot be  empty`,
@@ -235,8 +278,15 @@ const CreateCustomisation = ({
     height: Joi.string().required().messages({
       "string.empty": `cannot be  empty`,
     }),
-    diamond_type: Joi.required().messages({
-      "string.empty": `cannot be  empty`,
+    diamond_type:Joi.alternatives().try(
+      Joi.number().integer().positive(), // if ID is a number
+      Joi.string().min(1) // if ID is a string
+    ).required().messages({
+      "any.required": ` cannot be empty`,
+      "string.empty": `cannot be empty`,
+      "number.base": `Diamond Type must be a valid number`,
+      "number.integer": `Diamond Type must be an integer`,
+      "number.positive": `Diamond Type must be a positive number`
     }),
     length_of_item: Joi.string().required().messages({
       "string.empty": `cannot be  empty`,
@@ -247,7 +297,7 @@ const CreateCustomisation = ({
 
   const handleSubmitButton = (e) => {
     e.preventDefault();
-
+  
     // Validate form data using Joi schema
     const { error } = schema.validate(formData, {
       abortEarly: false,
@@ -267,6 +317,13 @@ const CreateCustomisation = ({
       // Proceed with form submission logic here
       console.log("Form submitted:", formData);
     }
+    // const firstErrorField = Object.keys(errors).find((key) => errors[key]);
+
+    // // Scroll to the first error field
+    // if (firstErrorField && inputRefs[firstErrorField] && inputRefs[firstErrorField].current) {
+    //   inputRefs[firstErrorField].current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    // }
+
   };
 
   const handleInput = (e) => {
@@ -367,7 +424,12 @@ const CreateCustomisation = ({
       // Proceed with form submission logic here
       console.log("Form submitted:", formData);
 
-   
+      // const firstErrorField = Object.keys(errors).find((key) => errors[key]);
+
+      // // Scroll to the first error field
+      // if (firstErrorField && inputRefs[firstErrorField] && inputRefs[firstErrorField].current) {
+      //   inputRefs[firstErrorField].current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      // }
 
       // Then proceed with handleCreateSubmitCustomization logic
       create_customizaion_warehouse(
@@ -404,6 +466,78 @@ const CreateCustomisation = ({
     dataToDisplaytomodal?.image5,
   ];
 
+  useEffect(() => {
+    // Find the first field with an error
+    const firstErrorField = Object.keys(errors).find((key) => errors[key]);
+
+    // Scroll to the first error field if it exists
+    switch (firstErrorField) {
+      case 'sallerName':
+        sallerNameRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        break;
+      case 'mobileNumber':
+        mobileNumberRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        break;
+      case 'chooseOutlet':
+        chooseOutletRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        break;
+      case 'productType':
+        productTypeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        break;
+      case 'modelPrevioslyMade':
+        modelPrevioslyMadeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        break;
+      case 'prevMadeSKU':
+        prevMadeSKURef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        break;
+      case 'metalType':
+        metalTypeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        break;
+      case 'weight':
+        weightRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        break;
+      case 'size':
+        sizeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        break;
+      case 'width':
+        widthRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        break;
+      case 'length_of_item':
+        lengthOfItemRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        break;
+      case 'height':
+        heightRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        break;
+      case 'diamond_type':
+        diamondTypeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        break;
+      case 'diamondWeight':
+        diamondWeightRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        break;
+      case 'numberOfDiamonds':
+        numberOfDiamondsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        break;
+      case 'diamondClarity':
+        diamondClarityRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        break;
+      case 'diamondColor':
+        diamondColorRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        break;
+      case 'Budget':
+        budgetRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        break;
+      case 'swaProductSKU':
+        swaProductSKURef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        break;
+      case 'notes':
+        notesRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        break;
+      default:
+        break;
+    }
+  }, [errors]);
+
+  
   return (
     <div>
       <div className="">
@@ -453,6 +587,7 @@ const CreateCustomisation = ({
                           type="text"
                           className="input_feild"
                           name="sallerName"
+                          ref={sallerNameRef}
                           value={formData.sallerName}
                           onChange={handleInput}
                         />
@@ -463,13 +598,14 @@ const CreateCustomisation = ({
                         )}
                       </div>
                       <div className="parant_relative">
-                        <label htmlFor="" className="label_text">
+                        <label htmlFor="" className="label_text"   ref={mobileNumberRef} >
                           Mobile Number
                         </label>
                         <input
                           type="number"
                           className="input_feild"
                           name="mobileNumber"
+                         
                           value={formData.mobileNumber}
                           onChange={handleInput}
                         />
@@ -477,7 +613,7 @@ const CreateCustomisation = ({
                           <p className="error_input">{errors.mobileNumber}</p>
                         )}
                       </div>
-                      <div className="parant_relative">
+                      <div className="parant_relative"   ref={chooseOutletRef}>
                         <label htmlFor="" className="label_text">
                           Choose Outlet
                         </label>
@@ -485,6 +621,7 @@ const CreateCustomisation = ({
                           showSearch
                           placeholder="-Select-"
                           optionFilterProp="children"
+                         
                           onChange={(value) =>
                             setFormData((prevState) => ({
                               ...prevState,
@@ -499,6 +636,7 @@ const CreateCustomisation = ({
                             label: item.name,
                           }))}
                           value={formData.chooseOutlet || undefined}
+                          
                         />
                         {errors.chooseOutlet && (
                           <span className="error_select">
@@ -509,6 +647,7 @@ const CreateCustomisation = ({
                       <div
                         className="parant_relative"
                         style={{ marginBottom: "16px" }}
+                        ref={productTypeRef}
                       >
                         <label htmlFor="" className="label_text">
                           Product Type
@@ -517,6 +656,7 @@ const CreateCustomisation = ({
                           showSearch
                           placeholder="-Select-"
                           optionFilterProp="children"
+                      
                           onChange={(value) =>
                             setFormData((prevState) => ({
                               ...prevState,
@@ -544,14 +684,16 @@ const CreateCustomisation = ({
                       <div
                         className="parant_relative"
                         style={{ marginTop: "5px" }}
+                        ref={modelPrevioslyMadeRef}
                       >
-                        <label htmlFor="" className="label_text">
+                        <label htmlFor="" className="label_text" >
                           Model previously made
                         </label>
                         <Select
                           showSearch
                           placeholder="-Select-"
                           optionFilterProp="children"
+                         
                           onChange={(value) =>
                             setFormData((prevState) => ({
                               ...prevState,
@@ -591,6 +733,7 @@ const CreateCustomisation = ({
                         //       ? "none"
                         //       : "block",
                         // }}
+                        ref={prevMadeSKURef}
                       >
                         <label htmlFor="" className="label_text">
                           If previously made please enter the SKU
@@ -599,6 +742,7 @@ const CreateCustomisation = ({
                           type="number"
                           className="input_feild"
                           name="prevMadeSKU"
+                       
                           value={formData.prevMadeSKU}
                           onChange={handleInput}
                         />
@@ -819,7 +963,7 @@ const CreateCustomisation = ({
                           )}
                         </div>
                       )}
-                      <div className="parant_relative">
+                      <div className="parant_relative"   ref={metalTypeRef}>
                         <label htmlFor="" className="label_text">
                           Metal Type
                         </label>
@@ -827,6 +971,7 @@ const CreateCustomisation = ({
                           showSearch
                           placeholder="-Select-"
                           optionFilterProp="children"
+                         
                           onChange={(value) =>
                             setFormData((prevState) => ({
                               ...prevState,
@@ -857,6 +1002,7 @@ const CreateCustomisation = ({
                           type="number"
                           className="input_feild"
                           name="weight"
+                    
                           value={formData.weight}
                           onChange={handleInput}
                         />
@@ -872,6 +1018,7 @@ const CreateCustomisation = ({
                           type="text"
                           className="input_feild"
                           name="size"
+                        
                           value={formData.size}
                           onChange={handleInput}
                         />
@@ -887,6 +1034,7 @@ const CreateCustomisation = ({
                           type="number"
                           className="input_feild"
                           name="width"
+                      
                           value={formData.width}
                           onChange={handleInput}
                         />
@@ -902,6 +1050,7 @@ const CreateCustomisation = ({
                           type="number"
                           className="input_feild"
                           name="length_of_item"
+                          
                           value={formData.length_of_item}
                           onChange={handleInput}
                         />
@@ -919,6 +1068,7 @@ const CreateCustomisation = ({
                           type="number"
                           className="input_feild"
                           name="height"
+                        
                           value={formData.height}
                           onChange={handleInput}
                         />
@@ -934,6 +1084,7 @@ const CreateCustomisation = ({
                           showSearch
                           placeholder="-Select-"
                           optionFilterProp="children"
+                    
                           onChange={(value) =>
                             setFormData((prevState) => ({
                               ...prevState,
@@ -964,6 +1115,7 @@ const CreateCustomisation = ({
                           type="number"
                           className="input_feild"
                           name="diamondWeight"
+                         
                           value={formData.diamondWeight}
                           onChange={handleInput}
                         />
@@ -981,6 +1133,7 @@ const CreateCustomisation = ({
                           type="number"
                           className="input_feild"
                           name="numberOfDiamonds"
+                        
                           value={formData.numberOfDiamonds}
                           onChange={handleInput}
                         />
@@ -998,6 +1151,7 @@ const CreateCustomisation = ({
                           showSearch
                           placeholder="-Select-"
                           optionFilterProp="children"
+                         
                           onChange={(value) =>
                             setFormData((prevState) => ({
                               ...prevState,
@@ -1024,6 +1178,7 @@ const CreateCustomisation = ({
                           showSearch
                           placeholder="-Select-"
                           optionFilterProp="children"
+                      
                           onChange={(value) =>
                             setFormData((prevState) => ({
                               ...prevState,
@@ -1050,6 +1205,7 @@ const CreateCustomisation = ({
                           type="number"
                           className="input_feild"
                           name="Budget"
+                         
                           value={formData.Budget}
                           onChange={handleInput}
                         />
@@ -1079,6 +1235,7 @@ const CreateCustomisation = ({
                         <textarea
                           className="textArea"
                           name="notes"
+                       
                           value={formData.notes}
                           onChange={handleInput}
                           id=""

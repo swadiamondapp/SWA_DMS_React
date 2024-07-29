@@ -187,6 +187,15 @@ const CentalHub = ({
     setErrors("");
   };
 
+  const handleCloseModal =()=> {
+    onClose()
+    setImages({
+      normal: null,
+      threeD: null,
+    })
+     setUploadInstructionsVisible(true);
+    setUploadInstructionsVisibleRender(true)
+  }
   console.log("null image", images);
   console.log("errors----", errors);
 
@@ -215,7 +224,7 @@ const CentalHub = ({
                     Upload file
                   </span>
                   <button
-                    onClick={() => onClose()}
+                    onClick={() => handleCloseModal()}
                     // onClose={onClose}
                     style={{
                       position: "absolute",

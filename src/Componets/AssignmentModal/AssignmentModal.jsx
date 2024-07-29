@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./AssignmentModal.css";
-import { move_to_folder, move_to_folder_admin_user } from "../Assignment Panel/Api";
+import {
+  move_to_folder,
+  move_to_folder_admin_user,
+} from "../Assignment Panel/Api";
 import { Modal, Select } from "antd";
 import SuccessModal from "../SuccessModal/SuccessModal";
 
@@ -24,21 +27,22 @@ const AssignmentModal = ({
   setAssignedDesignerId,
   setData,
   ToCloseCreatefolder,
-  setcreateFolderModal
+  setcreateFolderModal,
+  setShowRadioButtons,
+  setSelectButtonLabel,
 }) => {
   // create modal
- 
+
   const [AssinedButton, setAssignedButton] = useState("Assign");
   const [isLoading, setIsLoading] = useState(false);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
   const [folderName, setFolderName] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const handleOpen = () => {
     setSuccessModalOpen(true);
   };
-
 
   const handleCreateButton = () => {
     // const isAssignmentPanel = window.location.pathname === '/assignmentpanel';
@@ -58,25 +62,23 @@ const AssignmentModal = ({
     //     setAssignedDesignerId
     //   );
     // } else {
-    if(folderName===""){
-     setError("Please enter the folder name.")
-    }else{
+    if (folderName.trim() === "") {
+      setError("Please enter the folder name.");
+    } else {
       move_to_folder(
         setIsLoading,
         folderName,
+        selectedAssignment,
         setAssignmentFolder,
+        setData,
         onClose,
         setSuccessMessage,
         setSuccessModalOpen,
-        setSelectedAssignment,
-        ItemMovedToAssignment,
-        handleClose,
         setFolderName,
-        setItemMovedToAssignment,
-        selectedAssignment,
-        setData,
+        setSelectedAssignment,
         setError,
-        ToCloseCreatefolder
+        setShowRadioButtons,
+        setSelectButtonLabel
       );
       // ToCloseCreatefolder(false)
     }
@@ -89,22 +91,27 @@ const AssignmentModal = ({
 
   const handleCloseCreateModal = () => {
     ToCloseCreatefolder(false);
-    setError("")
+    setError("");
   };
 
-  
   const handleChange = (event) => {
     setFolderName(event.target.value);
   };
   console.log(error, "error");
-  console.log(selectedAssignment,"selectedAssignment infolder")
+  console.log(selectedAssignment, "selectedAssignment infolder");
 
   return (
     <div className="create_folder">
       <div className="">
         <div className=""></div>
         <div className="modalContainer">
-          <Modal title="" open={open} onCancel={handleCloseCreateModal} centered width={300}>
+          <Modal
+            title=""
+            open={open}
+            onCancel={handleCloseCreateModal}
+            centered
+            width={300}
+          >
             <div className="modal-Content">
               <div>
                 <p className="title">Assignment folder name</p>
@@ -120,11 +127,10 @@ const AssignmentModal = ({
                   value={folderName}
                   onChange={handleChange}
                 />
-                {error && <p style={{fontSize:"10px",color:"red"}}>{error}</p>}
-                <button
-                  className="button-create"
-                  onClick={handleCreateButton}
-                >
+                {error && (
+                  <p style={{ fontSize: "10px", color: "red" }}>{error}</p>
+                )}
+                <button className="button-create" onClick={handleCreateButton}>
                   Create
                 </button>
               </div>
