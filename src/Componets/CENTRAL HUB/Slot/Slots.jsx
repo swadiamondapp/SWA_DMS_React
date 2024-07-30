@@ -1,153 +1,175 @@
-import React, { useState, useEffect,useRef } from "react";
-import "./Slot.css";
-import { IoEye } from "react-icons/io5";
-import { BsThreeDotsVertical } from "react-icons/bs";
-import SlotCreation from "../../SlotCreation/SlotCreation";
-import SlotView from "../../SlotVIew/SlotView";
-import {
-  generateSloteNumber,
-  list_slot_central_hub,
-  slot_view_by_id,
-} from "../../../Pages/CENTRAL HUB/Api";
-import printIcon from "../../../assets/printIconSlot.png";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import Modal from "@mui/material/Modal";
-import closeButton from "../../../assets/closeButton.svg";
-import ReactToPrint, { useReactToPrint } from "react-to-print";
-import { LuPrinter } from "react-icons/lu";
-import SlotePrint from "./SlotePrint";
+  import React, { useState, useEffect,useRef } from "react";
+  import "./Slot.css";
+  import { IoEye } from "react-icons/io5";
+  import { BsThreeDotsVertical } from "react-icons/bs";
+  import SlotCreation from "../../SlotCreation/SlotCreation";
+  import SlotView from "../../SlotVIew/SlotView";
+  import {
+    generateSloteNumber,
+    list_slot_central_hub,
+    slot_view_by_id,
+  } from "../../../Pages/CENTRAL HUB/Api";
+  import printIcon from "../../../assets/printIconSlot.png";
+  import Box from "@mui/material/Box";
+  import Button from "@mui/material/Button";
+  import Typography from "@mui/material/Typography";
+  import Modal from "@mui/material/Modal";
+  import closeButton from "../../../assets/closeButton.svg";
+  import ReactToPrint, { useReactToPrint } from "react-to-print";
+  import { LuPrinter } from "react-icons/lu";
+  import SlotePrint from "./SlotePrint";
 
-const Slots = ({sidebarExpanded}) => {
-  const [showEditDelete, setShowEditDelete] = useState(null);
-  const [isModalOpenslot, setIsModalOpenslot] = useState(false);
-  const [isModalOpenslotview, setIsModalOpenslotview] = useState(false);
-  const [generatSloteNum, setGeneratSloteNum] = useState([]);
+  const Slots = ({sidebarExpanded}) => {
+    const [showEditDelete, setShowEditDelete] = useState(null);
+    const [isModalOpenslot, setIsModalOpenslot] = useState(false);
+    const [isModalOpenslotview, setIsModalOpenslotview] = useState(false);
+    const [generatSloteNum, setGeneratSloteNum] = useState([]);
 
-  const [Data, setData] = useState([]);
+    const [Data, setData] = useState([]);
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [userId, setUserId] = useState([]);
-  const [slotView, setSloteView] = useState([]);
-  const [printSlotModalOpen, setPrintSlotModalOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [userId, setUserId] = useState([]);
+    const [slotView, setSloteView] = useState([]);
+    const [printSlotModalOpen, setPrintSlotModalOpen] = useState(false);
 
-  const handlePrintSlotModalClose = () => {
-    setPrintSlotModalOpen(false);
-  };
-
-  const userlist = [
-    {
-      slino: "1",
-      date: "12/12/2024 04:31 PM",
-      slotid: "SWA245967",
-    },
-    {
-      slino: "1",
-      date: "12/12/2024 04:31 PM",
-      slotid: "SWA245967",
-    },
-    {
-      slino: "1",
-      date: "12/12/2024 04:31 PM",
-      slotid: "SWA245967",
-    },
-    {
-      slino: "1",
-      date: "12/12/2024 04:31 PM",
-      slotid: "SWA245967",
-    },
-    {
-      slino: "1",
-      date: "12/12/2024 04:31 PM",
-      slotid: "SWA245967",
-    },
-  ];
-
-  const printSlotOpen = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: "auto",
-    height: "auto",
-    bgcolor: "background.paper",
-    border: "none",
-    boxShadow: 24,
-    p: 0,
-    overflowY: "auto",
-    borderRadius: 0,
-  };
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (showEditDelete !== null && !event.target.closest(".parentSlotS")) {
-        setShowEditDelete(null);
-      }
+    const handlePrintSlotModalClose = () => {
+      setPrintSlotModalOpen(false);
     };
 
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
+    const userlist = [
+      {
+        slino: "1",
+        date: "12/12/2024 04:31 PM",
+        slotid: "SWA245967",
+      },
+      {
+        slino: "1",
+        date: "12/12/2024 04:31 PM",
+        slotid: "SWA245967",
+      },
+      {
+        slino: "1",
+        date: "12/12/2024 04:31 PM",
+        slotid: "SWA245967",
+      },
+      {
+        slino: "1",
+        date: "12/12/2024 04:31 PM",
+        slotid: "SWA245967",
+      },
+      {
+        slino: "1",
+        date: "12/12/2024 04:31 PM",
+        slotid: "SWA245967",
+      },
+    ];
+
+    const printSlotOpen = {
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      width: "auto",
+      height: "auto",
+      bgcolor: "background.paper",
+      border: "none",
+      boxShadow: 24,
+      p: 0,
+      overflowY: "auto",
+      borderRadius: 0,
     };
-  }, [showEditDelete]);
 
-  const handleEyeButton = (Id) => {
-    setIsModalOpenslotview(true);
-    setUserId(Id);
-    slot_view_by_id(Id, setSloteView);
-  };
-  useEffect(() => {
-    list_slot_central_hub(setIsLoading, setData);
-  }, []);
+    useEffect(() => {
+      const handleClickOutside = (event) => {
+        if (showEditDelete !== null && !event.target.closest(".parentSlotS")) {
+          setShowEditDelete(null);
+        }
+      };
 
-  const handlePrintButton = (Id) => {
-    setPrintSlotModalOpen(true);
-    setUserId(Id);
-    slot_view_by_id(Id, setSloteView);
-  };
+      document.addEventListener("click", handleClickOutside);
+      return () => {
+        document.removeEventListener("click", handleClickOutside);
+      };
+    }, [showEditDelete]);
 
-  const handleCreateSloteButton =() => {
-    setIsModalOpenslot(true);
-    generateSloteNumber(setIsLoading, setGeneratSloteNum);
-  };
+    const handleEyeButton = (Id) => {
+      setIsModalOpenslotview(true);
+      setUserId(Id);
+      slot_view_by_id(Id, setSloteView);
+    };
+    useEffect(() => {
+      list_slot_central_hub(setIsLoading, setData);
+    }, []);
 
-  console.log(generatSloteNum, "generateSloteNumber");
-  console.log(slotView, "slotView");
-  console.log(userId, "slotView");
-  console.log(Data, "center==============>");
+    const handlePrintButton = (Id) => {
+      setPrintSlotModalOpen(true);
+      setUserId(Id);
+      slot_view_by_id(Id, setSloteView);
+    };
 
-  const printRef = useRef();
+    const handleCreateSloteButton =() => {
+      setIsModalOpenslot(true);
+      generateSloteNumber(setIsLoading, setGeneratSloteNum);
+    };
 
-  const handlePrint = useReactToPrint({
-    content: printRef.current,
-  });
-  // const sortedData = Data.sort((a, b) => a.id - b.id);
-  // console.log(sortedData, "sortedData");
-  return (
-    <div className="parentCentral"  style={{paddingLeft:sidebarExpanded? "225px":"130px"}}>
-      <div className="slot_create">
-        <button onClick={() => handleCreateSloteButton()}>Create</button>
-      </div>
-      <div className="slote_labe">
-        <h3>Slot list</h3>
-      </div>
-      {/* table */}
-      <div className="Users_Table_List">
-        <table style={{ width: "100%" }}>
-          <thead>
-            <tr style={{ color: "#455173" }}>
-              <th>SL NO</th>
-              <th>Created on</th>
-              <th>Slot ID</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {Data.map((item, index) => (
-              <tr key={index} style={{ color: "#2E364C" }}>
-                <td className="serialNumber_cell">{index +1}</td>
-                <td>{item.created_at}</td>
+    const formatDate = (isoString) => {
+      const date = new Date(isoString);
+      
+      const day = String(date.getDate()).padStart(2, '0');
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const year = date.getFullYear();
+      const formattedDate = `${day}/${month}/${year}`;
+    
+      let hours = date.getHours();
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12;
+      hours = hours ? hours : 12; 
+      const formattedTime = `${String(hours).padStart(2, '0')}:${minutes} ${ampm}`;
+    
+      return { formattedDate, formattedTime };
+    };
+    
+  
+
+    console.log(generatSloteNum, "generateSloteNumber");
+    console.log(slotView, "slotView");
+    console.log(userId, "slotView");
+    console.log(Data, "center==============>");
+
+    const printRef = useRef();
+
+    const handlePrint = useReactToPrint({
+      content: printRef.current,
+    });
+    // const sortedData = Data.sort((a, b) => a.id - b.id);
+    // console.log(sortedData, "sortedData");
+    return (
+      <div className="parentCentral"  style={{paddingLeft:sidebarExpanded? "225px":"130px"}}>
+        <div className="slot_create">
+          <button onClick={() => handleCreateSloteButton()}>Create</button>
+        </div>
+        <div className="slote_labe">
+          <h3>Slot list</h3>
+        </div>
+        {/* table */}
+        <div className="Users_Table_List">
+          <table style={{ width: "100%" }}>
+            <thead>
+              <tr style={{ color: "#455173" }}>
+                <th>SL NO</th>
+                <th>Created on</th>
+                <th>Slot ID</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {Data.map((item, index) =>{
+                const { formattedDate, formattedTime } = formatDate(item.updated_at);
+                return (
+                <tr key={index} style={{ color: "#2E364C" }}>
+                  <td className="serialNumber_cell">{index +1}</td>
+                  <td>{`${formattedDate} ${formattedTime}`}</td>
                 <td className="slot_cell">{item.slotnumber}</td>
                 <td className="actions-cell">
                   <div className="parentSlotS">
@@ -192,7 +214,7 @@ const Slots = ({sidebarExpanded}) => {
                   </div>
                 </td>
               </tr>
-            ))}
+            )})}
           </tbody>
 
           <Modal open={printSlotModalOpen} onClose={handlePrintSlotModalClose}>
