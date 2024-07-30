@@ -159,7 +159,7 @@ const ScanTable = ({ sidebarExpanded }) => {
 
       <div className="ScanTable">
         <div className="table-container">
-          {isLoading === true ? (
+{isLoading === true ? (
             <div
               style={{
                 display: "flex",
@@ -247,7 +247,7 @@ const ScanTable = ({ sidebarExpanded }) => {
           )}
         </div>
       </div>
-      {scanTableData.length === 0 && isLoading !== true && (
+{scanTableData.length === 0 && isLoading !== true && (
         <div
           className=""
           style={{

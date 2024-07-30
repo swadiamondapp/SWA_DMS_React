@@ -13,6 +13,7 @@ import {
 } from "../../../Pages/Services/EndPoints";
 
 export const list_all_users = async (setIsLoading, setUserList) => {
+  setIsLoading(true);
   try {
     setIsLoading(true)
     const response = await apiService.get(LIST_ALL_USER);
@@ -21,7 +22,7 @@ export const list_all_users = async (setIsLoading, setUserList) => {
     }
   } catch (error) {
     console.log(error);
-  }finally {
+}finally {
     setIsLoading(false)
   }
 };

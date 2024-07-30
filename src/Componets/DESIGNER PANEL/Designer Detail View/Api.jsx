@@ -56,8 +56,7 @@ export const assign_to_cad = async (
   selectedDesign,
   list_designer_folderDetails,
   setSuccessMessage,
-  setSuccessModalOpen,
-
+  setSuccessModalOpen
 ) => {
   try {
     setIsLoading(true);
@@ -76,8 +75,6 @@ export const assign_to_cad = async (
       setTimeout(() => {
         setSuccessModalOpen(false);
       }, 1700);
-   
-    
     }
   } catch (error) {
     // setSelectedAssignment([])
@@ -95,16 +92,15 @@ export const unAssignCadDesigner = async (
   list_designer_folderDetails,
   setSuccessMessage,
   setSuccessModalOpen
-
 ) => {
   try {
     const body = {
       folder: assignToCadId,
-      user:userId,
+      user: userId,
       assignment_items: selectedDesign,
     };
     console.log(body, "body====>Unsss");
-    const response = await apiService.patch(`${UNASSIGN_CAD_DESIGNERS}`,body);
+    const response = await apiService.patch(`${UNASSIGN_CAD_DESIGNERS}`, body);
     if (checkApiStatus(response)) {
       list_designer_folderDetails();
       setSuccessMessage("Item Unassigned Successfully");
@@ -112,14 +108,12 @@ export const unAssignCadDesigner = async (
       setTimeout(() => {
         setSuccessModalOpen(false);
       }, 1700);
-  
     }
   } catch (error) {
     // setSelectedAssignment([])
     console.error("Error moving designs:", error);
     alert(error?.response?.data?.assignment_items);
   } finally {
-  
   }
 };
 
@@ -127,6 +121,7 @@ export const list_all_cutomization_paper_design = async (
   setIsLoading,
   setCustomizationDesign
 ) => {
+  setIsLoading(true);
   try {
     const response = await apiService.get(LIST_ALL_CUSTOMIZATION_DESIGNS);
     if (response.data.results.status_code === 200) {
@@ -134,6 +129,8 @@ export const list_all_cutomization_paper_design = async (
     }
   } catch (error) {
     console.log(error);
+  } finally {
+    setIsLoading(false);
   }
 };
 export const listUnAssignedLists = async (setIsLoading, setUnAssignedLists) => {
@@ -150,15 +147,13 @@ export const listUnAssignedLists = async (setIsLoading, setUnAssignedLists) => {
 export const unassignDesigner = async (
   setIsLoading,
   id,
- 
+
   setSuccessMessage,
   setSuccessModalOpen,
   setUnAssignedLists
 ) => {
   try {
-    const response = await apiService.patch(
-      `${(UNASSIGN_TO_CAD)}${id}`
-    );
+    const response = await apiService.patch(`${UNASSIGN_TO_CAD}${id}`);
     if (checkApiStatus(response)) {
       listUnAssignedLists(setIsLoading, setUnAssignedLists);
       setSuccessMessage("Item Unassigned Successfully");

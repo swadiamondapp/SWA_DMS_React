@@ -7,6 +7,7 @@ import Modal from "@mui/material/Modal";
 import closeButton from "../../assets/closeButton.svg";
 import { Select } from "antd";
 import { upload_cad_design } from "../CAD/Api";
+import { CircularProgress } from "@mui/material";
 import SuccessModal from "../SuccessModal/SuccessModal";
 import Joi from "joi";
 
@@ -34,6 +35,7 @@ const CentalHub = ({
   handleUploadFile,
   folderDetails,
   reUpload,
+  isLoading,
 }) => {
   // create modal
 
@@ -43,7 +45,6 @@ const CentalHub = ({
   const [imageFile, setImageFile] = useState(null);
   const [threeDFile, setThreeDFile] = useState(null);
   const [designCode, setDesignCode] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [uploadInstructionsVisible, setUploadInstructionsVisible] =
@@ -72,7 +73,7 @@ const CentalHub = ({
     setUploadInstructionsVisibleRender(true);
     onClose();
     setErrorMessage("");
-    setErrors("")
+    setErrors("");
     setImages({
       normal: null,
       threeD: null,
@@ -188,15 +189,15 @@ const CentalHub = ({
     setErrors("");
   };
 
-  const handleCloseModal =()=> {
-    onClose()
+  const handleCloseModal = () => {
+    onClose();
     setImages({
       normal: null,
       threeD: null,
-    })
-     setUploadInstructionsVisible(true);
-    setUploadInstructionsVisibleRender(true)
-  }
+    });
+    setUploadInstructionsVisible(true);
+    setUploadInstructionsVisibleRender(true);
+  };
   console.log("null image", images);
   console.log("errors----", errors);
 
@@ -225,7 +226,7 @@ const CentalHub = ({
                     Upload file
                   </span>
                   <button
-onClick={() => handleCancelButton()}
+                    onClick={() => handleCancelButton()}
                     style={{
                       position: "absolute",
                       top: 15,
@@ -334,9 +335,25 @@ onClick={() => handleCancelButton()}
                     >
                       cancel
                     </button>
-                    <button onClick={handleUploadeFileNew} className="upButton">
-                      Upload
-                    </button>
+                    {isLoading ? (
+                      <div>
+                        <CircularProgress
+                          size={40} // Set the desired size
+                          sx={{
+                            color: "#126e72",
+                            padding: "8px 10px",
+                            width: "35px",
+                          }}
+                        />
+                      </div>
+                    ) : (
+                      <button
+                        onClick={handleUploadeFileNew}
+                        className="upButton"
+                      >
+                        Upload
+                      </button>
+                    )}
                   </div>
                 </div>
               </Typography>

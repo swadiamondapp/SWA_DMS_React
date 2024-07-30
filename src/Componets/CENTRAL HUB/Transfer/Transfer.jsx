@@ -198,7 +198,11 @@ const Transfer = ({ sidebarExpanded }) => {
                 <img onClick={handleTransferScan} src={searchimg} alt="" />
               </div>
               {error && (
-                <span style={{ color: "red", fontSize: "10px" ,marginLeft:"2px" }}>{error}</span>
+                <span
+                  style={{ color: "red", fontSize: "10px", marginLeft: "2px" }}
+                >
+                  {error}
+                </span>
               )}
             </div>
           </div>
@@ -231,7 +235,7 @@ const Transfer = ({ sidebarExpanded }) => {
             <tr style={{ color: "#455173" }}>
               <th style={{ width: "6%" }}>SL NO</th>
               <th className="created_date">Created on</th>
-              <th style={{ width: "25%" }}>Product ID</th>
+              <th style={{ width: "25%" }}>Slot ID</th>
               <th style={{}}>Product Category</th>
               <th>Weight</th>
               <th>Status</th>

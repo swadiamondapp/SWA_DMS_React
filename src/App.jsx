@@ -69,7 +69,7 @@ function App() {
       <Router>
         <Routes>
           <Route element={<PrivateRoute />}>
-            <Route path="/" element={<Users  />} />
+            <Route path="/" element={<Users />} />
             <Route path="/otherlogin" element={<OtherLoginPage />} />
             <Route
               path="/assignmentview/:id"

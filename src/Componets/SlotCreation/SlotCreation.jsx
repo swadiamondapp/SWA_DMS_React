@@ -28,7 +28,7 @@ const style = {
   borderRadius: 2,
 };
 
-const SlotCreation = ({ open, onClose, generatSloteNum ,slotListUpdate}) => {
+const SlotCreation = ({ open, onClose, generatSloteNum, slotListUpdate }) => {
   const [Data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selectAll, setSelectAll] = useState(false);
@@ -84,7 +84,7 @@ const SlotCreation = ({ open, onClose, generatSloteNum ,slotListUpdate}) => {
   useEffect(() => {
     listAvailableCadDesigns(setIsLoading, setData);
   }, []);
-  
+
   console.log(Data, "setData");
   console.log(selectedItems, "selectedItems");
 
@@ -102,7 +102,7 @@ const SlotCreation = ({ open, onClose, generatSloteNum ,slotListUpdate}) => {
       setTimeout(() => {
         setErrorMessage("");
       }, 1600);
- 
+
       return;
     }
     createSloteBag(
@@ -118,12 +118,12 @@ const SlotCreation = ({ open, onClose, generatSloteNum ,slotListUpdate}) => {
     );
   };
 
-const handleCentralHubSearch =(e)=> {
-    setSearchCentralItem(e.target.value.toLocaleUpperCase())
-  }
-useEffect(()=> {
-  searchCentralHubSlot(setIsLoading, setData,searchCentralItem)
-},[searchCentralItem])
+  const handleCentralHubSearch = (e) => {
+    setSearchCentralItem(e.target.value.toLocaleUpperCase());
+  };
+  useEffect(() => {
+    searchCentralHubSlot(setIsLoading, setData, searchCentralItem);
+  }, [searchCentralItem]);
 
   // console.log(selectedIds, "dataToSend");
   console.log(selectedIds, "selectedIds");
@@ -161,9 +161,12 @@ useEffect(()=> {
                       </div>
                       <div className="searchContiainer">
                         <div className="Search_Userr">
-<input type="text" placeholder="Search"
-                          value={searchCentralItem}
-                           onChange={handleCentralHubSearch}/>
+                          <input
+                            type="text"
+                            placeholder="Search"
+                            value={searchCentralItem}
+                            onChange={handleCentralHubSearch}
+                          />
                           <div className="iconBack">
                             <img src={searchIcon} alt="" />
                           </div>
@@ -171,80 +174,84 @@ useEffect(()=> {
                       </div>
                     </div>
                     <div className="table_left_data_container">
-                      <div className="table-container-left">
-                        <table className="supermarket-table">
-                          <thead>
-                            <tr>
-                              <th className="table-header">
-                                <div className="checkbox_container">
-                                  <input
-                                    type="checkbox"
-                                    className="center-input"
-                                    checked={selectAll}
-                                    onChange={handleSelectAllChange}
-                                  />
-                                  <span>Product ID</span>
-                                </div>
-                              </th>
-                              <th className="table-header">Created Date</th>
-                              <th className="table_productCat">
-                                Product Category
-                              </th>
-                              <th
-                                className="table_weight"
-                                style={{ width: "20%" }}
-                              >
-                                Weight
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {Data.map((item) => (
-                              <tr key={item.id}>
-                                <td className="table-data">
-                                  <div
-                                    style={{
-                                      display: "flex",
-                                      justifyContent: "center",
-                                      gap: "5px",
-                                      padding: "8px 0px",
-                                    }}
-                                  >
-                                    <div>
-                                      <input
-                                        type="checkbox"
-                                        className="select_input_sc"
-                                        checked={selectedItems.some(
-                                          (selectedItem) =>
-                                            selectedItem.id === item.id
-                                        )}
-                                        onChange={() =>
-                                          handleCheckboxChange(item)
-                                        }
-                                      />
-                                    </div>
-                                    <div>{item.designcode}</div>
+                      {Data == "" ? (
+                        <div>No Data Found</div>
+                      ) : (
+                        <div className="table-container-left">
+                          <table className="supermarket-table">
+                            <thead>
+                              <tr>
+                                <th className="table-header">
+                                  <div className="checkbox_container">
+                                    <input
+                                      type="checkbox"
+                                      className="center-input"
+                                      checked={selectAll}
+                                      onChange={handleSelectAllChange}
+                                    />
+                                    <span>Product ID</span>
                                   </div>
-                                </td>
-                                <td className="table-data">
-                                  {item.created_at}
-                                </td>
-                                <td className="table-data">
-                                  {item.product_category}
-                                </td>
-                                <td className="table-data">
-                                  <div className="right-data-and-button-c">
-                                    <span>
-                                      {item.approx_metal_weight}{" "}
-                                      <span className="gramstyle">Gram</span>
-                                    </span>
-                                  </div>
-                                </td>
+                                </th>
+                                <th className="table-header">Created Date</th>
+                                <th className="table_productCat">
+                                  Product Category
+                                </th>
+                                <th
+                                  className="table_weight"
+                                  style={{ width: "20%" }}
+                                >
+                                  Weight
+                                </th>
                               </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
+                            </thead>
+                            <tbody>
+                              {Data.map((item) => (
+                                <tr key={item.id}>
+                                  <td className="table-data">
+                                    <div
+                                      style={{
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        gap: "5px",
+                                        padding: "8px 0px",
+                                      }}
+                                    >
+                                      <div>
+                                        <input
+                                          type="checkbox"
+                                          className="select_input_sc"
+                                          checked={selectedItems.some(
+                                            (selectedItem) =>
+                                              selectedItem.id === item.id
+                                          )}
+                                          onChange={() =>
+                                            handleCheckboxChange(item)
+                                          }
+                                        />
+                                      </div>
+                                      <div>{item.designcode}</div>
+                                    </div>
+                                  </td>
+                                  <td className="table-data">
+                                    {item.created_at}
+                                  </td>
+                                  <td className="table-data">
+                                    {item.product_category}
+                                  </td>
+                                  <td className="table-data">
+                                    <div className="right-data-and-button-c">
+                                      <span>
+                                        {item.approx_metal_weight}{" "}
+                                        <span className="gramstyle">Gram</span>
+                                      </span>
+                                    </div>
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      )}
                     </div>
                   </div>
 
@@ -292,11 +299,15 @@ useEffect(()=> {
                           <tbody>
                             {selectedItems.map((item) => (
                               <tr key={item.id}>
-<td className="table-data">{item.designcode}</td>
+                                <td className="table-data">
+                                  {item.designcode}
+                                </td>
                                 <td className="table-data">
                                   {item.created_at}
                                 </td>
-                                <td className="table-data">{item.product_category}</td>
+                                <td className="table-data">
+                                  {item.product_category}
+                                </td>
                                 <td className="table-data">
                                   <div className="right-data-and-button-c">
                                     <span>{item.approx_metal_weight} Gram</span>

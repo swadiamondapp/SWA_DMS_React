@@ -429,6 +429,7 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
         setAdminBasicModalOpen={setAdminBasicModalOpen}
         onClose={handleCloseAdminModal}
         selectedDesignCode={selectedDesignCode}
+        recallListDesigners={()=>  list_assignment_panel(setIsLoading, setData)}
       />
 
       <AssignmentModal

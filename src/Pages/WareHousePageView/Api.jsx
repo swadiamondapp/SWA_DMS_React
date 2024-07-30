@@ -29,12 +29,14 @@ import {
 
 export const list_warehouse_design = async (
   setIsLoading,
-  setDesignWareHouse
+  setDesignWareHouse,
+  setWarehouseStatus
 ) => {
   try {
     const response = await apiService.get(LIST_WAREHOUSE_DESIGNS);
     if (checkApiStatus(response)) {
       setDesignWareHouse(response.data.results.data);
+      setWarehouseStatus(response.data.results.status_code);
     }
   } catch (error) {
     console.log(error);
@@ -483,11 +485,8 @@ export const scan_list_datas = async (setIsLoading, setScanTableData) => {
   }
 };
 
-export const scanSearchFilter = async (
-  searchListId,
-  setTableData,
-) => {
-  debugger
+export const scanSearchFilter = async (searchListId, setTableData) => {
+  debugger;
   try {
     let endpoint = `${SCAN_TABLE_LIST}`;
 
@@ -514,7 +513,6 @@ export const scan_list_search = async (
   setsearchListId,
   setError
 ) => {
-  
   try {
     const body = {
       finisheditem_id: searchListId,
@@ -526,8 +524,9 @@ export const scan_list_search = async (
       setsearchListId("");
       alert("Item Added");
       setError("");
-    }if (response.data.results.status_code === 206) {
-      setError(response.data.results.message)
+    }
+    if (response.data.results.status_code === 206) {
+      setError(response.data.results.message);
       setTimeout(() => {
         setError("");
       }, 3000);
@@ -537,7 +536,6 @@ export const scan_list_search = async (
     // alert("Already exists");
     setError("");
     setsearchListId("");
-    
   }
 };
 
@@ -608,14 +606,14 @@ export const workDone_list_search = async (
   setworkTableData,
   setsearchListId
 ) => {
-  debugger
+  debugger;
   try {
     const body = {
       product_id: searchListId,
     };
 
     const response = await apiService.post(WORKDONE_TABLE_PRODUCT_SEARCH, body);
-    if (checkApiStatus(response)){
+    if (checkApiStatus(response)) {
       workDone_list_datas(setIsLoading, setworkTableData);
       setsearchListId("");
       alert("Product Added");
@@ -647,7 +645,7 @@ export const workDone_table_product_update = async (
   formData,
   setOpenLeftbar
 ) => {
-  debugger
+  debugger;
   try {
     // setIsLoading(true);
     const response = await apiService.patch(

@@ -561,7 +561,8 @@ export const assign_to_designers = async (
   setUploadedImage,
   setAssignedDesignerId,
   setSearchDesigner,
-  setAllDesigners
+  setAllDesigners,
+  recallListDesigners
 ) => {
   try {
     const body = {
@@ -584,6 +585,7 @@ export const assign_to_designers = async (
       setAssignedDesignerId(null);
       setSearchDesigner("");
       list_all_designers(setAllDesigners);
+      recallListDesigners()
     }
   } catch (error) {
     // setSelectedAssignment([])

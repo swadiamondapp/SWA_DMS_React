@@ -99,8 +99,8 @@ const CadAssignmentPage = () => {
   };
 
   const handleUploadFile = () => {
-    if( images.normal === null || images.threeD === null ){
-      setErrors("Plese Upload Both Images")
+    if (images.normal === null || images.threeD === null) {
+      setErrors("Plese Upload Both Images");
     }
     const formData = new FormData();
     formData.append("designcode", productCode);
@@ -120,12 +120,15 @@ const CadAssignmentPage = () => {
     );
   };
 
-  console.log("images cddd",images)
+  console.log("images cddd", images);
 
   return (
     <div className="ParentVotorPage">
-      <Sidebar sidebarExpanded={sidebarExpanded} setSidebarExpanded={setSidebarExpanded}/>
-      <Header  sidebarExpanded={sidebarExpanded} />
+      <Sidebar
+        sidebarExpanded={sidebarExpanded}
+        setSidebarExpanded={setSidebarExpanded}
+      />
+      <Header sidebarExpanded={sidebarExpanded} />
       <CadAssignment
         designList={designList}
         onButtonClick={onButtonClick}
@@ -141,6 +144,7 @@ const CadAssignmentPage = () => {
         setImages={setImages}
         handleUploadFile={handleUploadFile}
         onStopButtonClick={onStopButtonClick}
+        isLoading={isLoading}
       />
       <SuccessModal
         successModalOpen={successModalOpen}

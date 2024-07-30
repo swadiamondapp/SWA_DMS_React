@@ -13,7 +13,10 @@ import {
   metal_type_dropdown_basicDetails,
 } from "../../Assignment Panel/Api";
 import { Select } from "antd";
-import { finding_table_data, tag_table_data } from "../../MastersSection/ApiMasters/ApiMasters";
+import {
+  finding_table_data,
+  tag_table_data,
+} from "../../MastersSection/ApiMasters/ApiMasters";
 
 const WorkdoneEditModal = ({ setOpenLeftbar, clickedProductId }) => {
   const [formData, setFormData] = useState({
@@ -192,7 +195,9 @@ const WorkdoneEditModal = ({ setOpenLeftbar, clickedProductId }) => {
                       <div className="workdone_modal_sub">
                         {product?.basic_details?.assignment?.findings.map(
                           (item) => (
-                            <span className="tag_covering">{item.find_name} ,</span>
+                            <span className="tag_covering">
+                              {item.find_name} ,
+                            </span>
                           )
                         )}
                       </div>
@@ -292,7 +297,7 @@ const WorkdoneEditModal = ({ setOpenLeftbar, clickedProductId }) => {
                   />
                 </div>
                 <div className="workdone_modal">
-                  <span>Dimond Type</span>
+                  <span>Diamond Type</span>
                   <Select
                     showSearch
                     placeholder="-Select-"
@@ -334,7 +339,7 @@ const WorkdoneEditModal = ({ setOpenLeftbar, clickedProductId }) => {
                     showSearch
                     placeholder="-Select-"
                     optionFilterProp="children"
-                    onChange={(value) => handleSelectChange2(value, 'findings')}
+                    onChange={(value) => handleSelectChange2(value, "findings")}
                     onSearch={onSearch}
                     filterOption={filterOption}
                     style={{ width: "50%" }}
@@ -358,23 +363,23 @@ const WorkdoneEditModal = ({ setOpenLeftbar, clickedProductId }) => {
                 <div className="workdone_modal">
                   <span>Tags</span>
 
-                    <div className="workdone_modal_sub">
+                  <div className="workdone_modal_sub">
                     <Select
-                    mode="multiple"
-                    showSearch
-                    placeholder="-Select-"
-                    optionFilterProp="children"
-                    onChange={(value) => handleSelectChange2(value, 'tag')}
-                    onSearch={onSearch}
-                    filterOption={filterOption}
-                    style={{ width: "100%",background:"none" }}
-                    options={tags.map((item) => ({
-                      value: item.id,
-                      label: item.name,
-                    }))}
-                    value={formData.tag}
-                  />
-                    </div>
+                      mode="multiple"
+                      showSearch
+                      placeholder="-Select-"
+                      optionFilterProp="children"
+                      onChange={(value) => handleSelectChange2(value, "tag")}
+                      onSearch={onSearch}
+                      filterOption={filterOption}
+                      style={{ width: "100%", background: "none" }}
+                      options={tags.map((item) => ({
+                        value: item.id,
+                        label: item.name,
+                      }))}
+                      value={formData.tag}
+                    />
+                  </div>
                 </div>
                 {/* <div className="workdone_modal">
                   <span>Actual Price</span>
