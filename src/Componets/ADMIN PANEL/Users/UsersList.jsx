@@ -6,6 +6,7 @@ import { Modal, Select } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { message, Upload } from "antd";
 import ImgCrop from "antd-img-crop";
+import { CircularProgress } from "@mui/material";
 import UserEm from "../../../assets/userEmpty.png";
 import Joi from "joi";
 import {
@@ -18,10 +19,8 @@ import {
 } from "./Api";
 import UlaodImag from "../../../assets/upi.png";
 import SuccessModal from "../../SuccessModal/SuccessModal";
-import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import DeleteConfirmationModal from "../../ConfirmationModal/DeleteConfirmationModal";
-import LottieAnimation from "../../../LottiAnimation";
 
 const schema = Joi.object({
   name: Joi.string().required().messages({
@@ -627,7 +626,24 @@ const UsersList = ({
         {/* create modal */}
         <div className="Users_Table_List">
           {IsLoading ? (
-            <LottieAnimation />
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <CircularProgress
+                size={70} // Set the desired size
+                sx={{
+                  color: "#126e72",
+                  padding: "8px 10px",
+                  width: "35px",
+                  marginTop: "100px",
+                  marginLeft: "100px",
+                }}
+              />
+            </div>
           ) : userList == "" ? (
             "No Data found"
           ) : (
