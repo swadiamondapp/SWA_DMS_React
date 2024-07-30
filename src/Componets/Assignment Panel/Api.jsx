@@ -224,7 +224,10 @@ export const move_to_assignment = async (
   setShowAssignmentModal,
   setMovedItemsId,
   setFormData,
-  getSelectedDesign
+  getSelectedDesign,
+  callBack
+  
+  
 ) => {
   try {
     const body = {
@@ -261,21 +264,24 @@ export const move_to_assignment = async (
       setSelectButtonLabel("Select");
       // setShowAssignmentModal(true);
       setMovedItemsId(response?.data?.results?.data);
-      setFormData({
-        SKU: "",
-        productCategory: "",
-        length: "",
-        width: "",
-        height: "",
-        typeOfMetal: "",
-        diamondType: "",
-        approxDiamondWeight: "",
-        findings: "",
-        approxMetalWeights: "",
-        approxMRP: "",
-        tag: "",
-        notes: "",
-      });
+      setFormData(
+        {
+          SKU: "",
+          productCategory: "",
+          length: "",
+          width: "",
+          height: "",
+          typeOfMetal: "",
+          diamondType: "",
+          approxDiamondWeight: "",
+          findings: "",
+          approxMetalWeights: "",
+          approxMRP: "",
+          tag: [],
+          notes: "",
+        }
+      )
+      callBack()
     }
   } catch (error) {
     console.error("Error moving designs:", error);

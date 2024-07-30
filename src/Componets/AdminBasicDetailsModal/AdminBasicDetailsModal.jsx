@@ -141,8 +141,10 @@ const AdminBasicDetailsModal = ({
       "array.min": `SKU field must contain at least one item.`,
       "any.required": `SKU field is required and cannot be empty.`,
     }),
-    productCategory: Joi.required().messages({
-      "string.empty": `cannot be empty`,
+    productCategory:  Joi.array().min(1).required().messages({
+      'array.base': 'cannot be empty',
+      'array.empty': 'cannot be empty',
+      'array.min': 'cannot be empty',
     }),
     length: Joi.string().required().messages({
       "string.empty": ` cannot be empty`,
@@ -153,29 +155,44 @@ const AdminBasicDetailsModal = ({
     height: Joi.string().required().messages({
       "string.empty": `cannot be empty`,
     }),
-    typeOfMetal: Joi.required().messages({
+    typeOfMetal:  Joi.array().min(1).required().messages({
+      'array.base': 'cannot be empty',
+      'array.empty': ' cannot be empty',
+      'array.min': ' cannot be empty',
+    }),
+    diamondType:  Joi.array().min(1).required().messages({
+      'array.base': 'cannot be empty',
+      'array.empty': ' cannot be empty',
+      'array.min': ' cannot be empty',
+    }),
+    approxDiamondWeight: Joi.string().custom((value, helpers) => {
+      if (value === "0") {
+        return helpers.message("cannot be zero");
+      }
+      return value;
+    }).required().messages({
       "string.empty": `cannot be empty`,
     }),
-    diamondType: Joi.required().messages({
-      "string.empty": `cannot be empty`,
-    }),
-    approxDiamondWeight: Joi.string().required().messages({
-      "string.empty": `cannot be empty`,
-    }),
-    approxMetalWeights: Joi.string().required().messages({
+    approxMetalWeights: Joi.string().custom((value, helpers) => {
+      if (value === "0") {
+        return helpers.message("cannot be zero");
+      }
+      return value;
+    }).required().messages({
       "string.empty": `cannot be empty`,
     }),
     approxMRP: Joi.number().required().messages({
       "string.empty": `cannot be empty`,
     }),
-    tag: Joi.array().items(Joi.required()).min(1).required().messages({
-      "any.required": "Tags are required",
-      "array.min": "At least one tag is required",
-      "array.includesRequiredUnknowns": "Each tag must be a string",
-      "string.empty": `cannot be empty`,
+    tag:  Joi.array().min(1).required().messages({
+      'array.base': 'cannot be empty',
+      'array.empty': 'cannot be empty',
+      'array.min': ' cannot be empty',
     }),
-    findings: Joi.required().messages({
-      "string.empty": `cannot be empty`,
+    findings:  Joi.array().min(1).required().messages({
+      'array.base': 'cannot be empty',
+      'array.empty': ' cannot be empty',
+      'array.min': 'cannot be empty',
     }),
     notes: Joi.string().messages({
       "string.empty": `cannot be empty`,
@@ -992,7 +1009,7 @@ const AdminBasicDetailsModal = ({
                               <div className="approxMetel">
                                 <div>
                                   <label htmlFor="" className="label-text">
-                                    Approx metel .weight
+                                    Approx metal weight
                                   </label>
                                   <input
                                     type="number"
