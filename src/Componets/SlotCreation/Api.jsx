@@ -25,6 +25,7 @@ export const createSloteBag = async (
   onClose,
   setData,
   setSelectedItems,
+  slotListUpdate
 ) => {
   try {
     const body = {
@@ -33,7 +34,7 @@ export const createSloteBag = async (
     };
     console.log(body, "itemMovirddd");
     const response = await apiService.post(CREATE_SLOT_BAG, body);
-    if (response.data.results.status_code === 201) {
+    if (response.data.results.status_code === 200) {
       // list_assignment_folder(setIsLoading, setAssignmentFolder);
       listAvailableCadDesigns(setIsLoading, setData)
       onClose();
@@ -43,6 +44,7 @@ export const createSloteBag = async (
         setSuccessModalOpen(false);
       }, 1600);
       setSelectedItems([])
+      slotListUpdate()
       // setItemMovedToAssignment([]);
       // setFolderName("");
       // setSelectedAssignment([]);

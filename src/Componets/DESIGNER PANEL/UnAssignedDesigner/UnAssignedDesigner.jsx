@@ -23,7 +23,6 @@ const CustomizedOrder = ({ sidebarExpanded }) => {
     unassignDesigner(
       setIsLoading,
       id,
-      userId,
       setSuccessMessage,
       setSuccessModalOpen,
       setUnAssignedLists

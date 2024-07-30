@@ -97,22 +97,22 @@ export const listFolderDetailVeiwAssignmentPanel = async (
 export const move_to_folder = async (
   setIsLoading,
   folderName,
+  selectedAssignment,
   setAssignmentFolder,
+  setData,
   onClose,
   setSuccessMessage,
   setSuccessModalOpen,
-  setSelectedAssignment,
-  ItemMovedToAssignment,
-  handleClose,
   setFolderName,
-  setItemMovedToAssignment,
-  selectedAssignment,
-  setData,
+
+  setSelectedAssignment,
   setError,
-  ToCloseCreatefolder
+  setShowRadioButtons,
+  setSelectButtonLabel
+
 ) => {
   try {
-    debugger;
+
     const body = {
       folder_data: {
         name: folderName,
@@ -131,9 +131,11 @@ export const move_to_folder = async (
         setSuccessModalOpen(false);
       }, 1600);
       setFolderName("");
-      setError('')
+     
       setSelectedAssignment([]);
-      setItemMovedToAssignment([]);
+      setError('')
+      setShowRadioButtons(false)
+      setSelectButtonLabel("Select")
     }
 if(response.data.results.status_code === 206){
       setError(response.data.results.message)
@@ -639,6 +641,7 @@ export const moveSingleItemToDesignPool = async (
   setActiveCardId
 ) => {
   try {
+    setIsLoading(true)
     const response = await apiService.delete(
       `${MOVE_SINGLE_ITEM_TO_DESIGNPOOL}${item}/`
     );
@@ -653,6 +656,8 @@ export const moveSingleItemToDesignPool = async (
     }
   } catch (error) {
     console.error("Error moving designs:", error);
+  }finally {
+    setIsLoading(false)
   }
 };
 export const deleteItemFromAssignmentPanel = async (
@@ -665,6 +670,7 @@ export const deleteItemFromAssignmentPanel = async (
   setDeleteConfirmationOpen
 ) => {
   try {
+    setIsLoading(true)
     const response = await apiService.delete(
       `${DELETE_ITEM_FROM_ASSIGNMENT_PANEL}${item}/`
     );
@@ -680,6 +686,8 @@ export const deleteItemFromAssignmentPanel = async (
     }
   } catch (error) {
     console.error("Error moving designs:", error);
+  }finally {
+    setIsLoading(false)
   }
 };
 

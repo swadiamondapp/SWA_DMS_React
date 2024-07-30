@@ -4,6 +4,7 @@ import ring from "../../../assets/ring.png";
 // import { voters_customization_list } from "./Api";
 import { all_Designs_items, like_design, voted_design_list } from "../Api";
 import thumb from '../../../assets/thumb2.png'
+import { FaRegThumbsUp, FaThumbsUp } from "react-icons/fa6";
 
 const VotorsPanal = ({ sidebarExpanded }) => {
   const [Data, setData] = useState([]);
@@ -17,7 +18,7 @@ const VotorsPanal = ({ sidebarExpanded }) => {
   }, []);
 
   const handleLikeClicks = (id) => {
-    like_design(setIsLoading, id, setData);
+    like_design(setIsLoading, id, setData,setVotedList);
     setAnimate((prev) => ({ ...prev, [id]: true }));
     setTimeout(() => {
       setAnimate((prev) => ({ ...prev, [id]: false })); // Reset the animation state after it completes
@@ -77,7 +78,15 @@ const VotorsPanal = ({ sidebarExpanded }) => {
                       style={{ borderRadius: "4px" }}
                       onClick={() => handleLikeClicks(item.id)}
                     >
-                      {item.likes_count === 0 ? <p style={{ padding: "8px 18px" }}>Vote</p>: <p style={{ padding: "8px 18px" }}><img src={thumb}/></p> }
+                      {item.likes_count === 0 ? (
+                        <p style={{ padding: "8px 18px" }}>
+                          <FaRegThumbsUp size={20} />
+                        </p>
+                      ) : (
+                        <p style={{ padding: "8px 18px" }}>
+                          <FaThumbsUp size={20} />
+                        </p>
+                      )}
                       {/* <p style={{ padding: "8px 18px" }}>{item.likes_count}</p> */}
                     </div>
                   </div>

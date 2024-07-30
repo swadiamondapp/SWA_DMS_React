@@ -67,6 +67,32 @@ const CadAssignment = ({
 
   console.log("designList", designList);
 
+  const handleDownload = (imageUrl) => {
+    fetch(imageUrl, {
+      method: "GET",
+      mode: "cors",
+    })
+      .then((response) => response.blob())
+      .then((blob) => {
+        const blobUrl = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = blobUrl;
+        link.download = "downloaded_image.jpg";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      })
+      .catch((error) => console.error("Error downloading the image:", error));
+  };
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+    setImages({
+      normal: null,
+      threeD: null,
+    });
+  };
+
   return (
     <div
       className="ParentCad"
@@ -157,8 +183,14 @@ const CadAssignment = ({
                         : "notstarted"
                     }
                   >
-                    {item.timer_status.charAt(0) +
-                      item.timer_status.slice(1).toLowerCase()}
+                    {item.timer_status
+                      .replace("-", "") // Remove hyphen
+                      .charAt(0) // Get the first character
+                      .toUpperCase() + // Capitalize the first character
+                      item.timer_status
+                        .replace("-", "") // Remove hyphen again for the rest of the string
+                        .slice(1) // Get the rest of the string
+                        .toLowerCase()}
                   </span>
                   {item.timer_status === "Completed" ? (
                     <button
@@ -188,12 +220,13 @@ const CadAssignment = ({
                           background: "#0464D5",
                           padding: "12px 20px",
                         }}
-                        onClick={() =>
-                          download(
-                            item.design_image,
-                            extractFilename(item.design_image)
-                          )
-                        }
+                        // onClick={() =>
+                        //   download(
+                        //     item.design_image,
+                        //     extractFilename(item.design_image)
+                        //   )
+                        // }
+                        onClick={() => handleDownload(item.design_image)}
                         // onClick={() => downloadImage(item.design_image)}
                       >
                         <TbDownload />
@@ -203,7 +236,9 @@ const CadAssignment = ({
                     <button
                       className="Download_btn_hub"
                       style={{ background: "#006E7F" }}
-                      onClick={() => onButtonClick(item.item_id)}
+                      onClick={() => {
+                        onButtonClick(item.item_id);
+                      }}
                       disabled={designList.some(
                         (d) => d.timer_status === "on-going"
                       )}
