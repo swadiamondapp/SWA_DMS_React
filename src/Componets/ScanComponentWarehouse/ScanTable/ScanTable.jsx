@@ -164,7 +164,7 @@ const ScanTable = ({ sidebarExpanded }) => {
               <tr>
                 <th style={{ borderLeft: "none" }}>Sl No</th>
                 <th>Created Date</th>
-                <th style={{ width: "40%" }}>Slot ID</th>
+                <th style={{ width: "40%" }}>Product ID</th>
                 <th>Status</th>
                 <th>Action</th>
               </tr>

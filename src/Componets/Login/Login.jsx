@@ -4,19 +4,19 @@ import LoginBnner from "../../assets/login.png";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import Joi from "joi";
 import { userLogin } from "./Api";
-import EyeIcons from  "../../assets/eyeIcon.png"
+import EyeIcons from "../../assets/eyeIcon.png";
 
 const Login = () => {
   const usertype = localStorage.getItem("Usertype");
   const schema = Joi.object({
     email: Joi.string().email({ tlds: false }).messages({
-      'string.empty': `Email cannot be empty`,
-      'string.email': `Please enter a valid email address`,
-      'any.required': `Email is required`,
+      "string.empty": `Email cannot be empty`,
+      "string.email": `Please enter a valid email address`,
+      "any.required": `Email is required`,
     }),
     password: Joi.string().required().messages({
-      'string.empty': `Password cannot be empty`,
-      'any.required': `Password is required`,
+      "string.empty": `Password cannot be empty`,
+      "any.required": `Password is required`,
     }),
   });
   // validation
@@ -42,7 +42,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage,setErrorMessage] = useState([])
+  const [errorMessage, setErrorMessage] = useState([]);
   const [userCredentials, setUserCredentials] = useState({
     email: "",
     password: "",
@@ -51,10 +51,10 @@ const Login = () => {
     e.preventDefault();
     const isValid = validateForm();
     if (isValid) {
-      userLogin(userCredentials, setData, setIsLoading,setErrorMessage);
+      userLogin(userCredentials, setData, setIsLoading, setErrorMessage);
     }
   };
-  console.log(usertype,"userType")
+  console.log(usertype, "userType");
   useEffect(() => {
     if (usertype === "ADMIN") {
       navigate("/");
@@ -108,7 +108,12 @@ const Login = () => {
                   />
                 </div>
                 {validationErrors.email && (
-                  <p className="errorlogins" style={{color:'red',marginLeft:"8px"}}>{validationErrors.email}</p>
+                  <p
+                    className="errorlogins"
+                    style={{ color: "red", marginLeft: "8px" }}
+                  >
+                    {validationErrors.email}
+                  </p>
                 )}
                 <div className="Login_Inp">
                   <label htmlFor="Password">Password</label>
@@ -125,16 +130,27 @@ const Login = () => {
                       })
                     }
                   />
-                <div className="login_eyeIcon" onClick={()=> handleTogglePassword()}><img src={EyeIcons} alt="" /></div>
+                  <div
+                    className="login_eyeIcon"
+                    onClick={() => handleTogglePassword()}
+                  >
+                    <img src={EyeIcons} alt="" />
+                  </div>
                 </div>
 
-                {errorMessage && <p style={{marginLeft:"8px",color:'red'}}>{errorMessage}</p>}
+                {errorMessage && (
+                  <p style={{ marginLeft: "8px", color: "red" }}>
+                    {errorMessage}
+                  </p>
+                )}
                 {validationErrors.password && (
-                  <p className="errorlogins" style={{color:'red'}}>{validationErrors.password}</p>
+                  <p className="errorlogins" style={{ color: "red" }}>
+                    {validationErrors.password}
+                  </p>
                 )}
                 <div className="Forgot_password">
                   <Link to="/forgotpassword">
-                  <p>Forgot password?</p>
+                    <p>Forgot password?</p>
                   </Link>
                 </div>
                 <div className="Submit_btn">
