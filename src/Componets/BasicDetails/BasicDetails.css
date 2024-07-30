@@ -114,16 +114,11 @@
   margin-top: 2px;
 }
 .error_input_p {
-  position: absolute;
   color: red;
   font-size: 10px;
   background: transparent;
-  padding: 2px 10px;
   border-radius: 6px;
-  font-size: 9px;
-  margin-left: 0px;
-  /* bottom: -20px; */
-  margin-top: 2px;
+  font-size: 13px;
 }
 .textArea_feild {
   border-radius: 4px;
@@ -202,6 +197,6 @@
   display: flex;
   justify-content: space-between;
 }
-.closeButtonImageBm img{
-  width:14px
+.closeButtonImageBm img {
+  width: 14px;
 }
