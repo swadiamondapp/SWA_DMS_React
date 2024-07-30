@@ -15,14 +15,15 @@ import {
 export const list_all_users = async (setIsLoading, setUserList) => {
   setIsLoading(true);
   try {
+    setIsLoading(true)
     const response = await apiService.get(LIST_ALL_USER);
     if (checkApiStatus(response)) {
       setUserList(response.data.results.data);
     }
   } catch (error) {
     console.log(error);
-  } finally {
-    setIsLoading(false);
+}finally {
+    setIsLoading(false)
   }
 };
 

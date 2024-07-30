@@ -302,87 +302,93 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
             <>
               <h3 className="HeadNewdesign">Selected</h3>
               <div className="Card_Design_Parent">
-                {Data.map((item, index) => {
-                  const paperDesign = item?.items?.[0]?.paper_design;
-                  const itemId = item?.items?.[0]?.id;
-                  const createdAt = item?.created_at;
-                  const designer = paperDesign?.designer;
-                  const designCode = paperDesign?.designcode;
-                  const image = paperDesign?.image;
-                  const likesCount = paperDesign?.likes_count;
-                  if (!image) {
-                    return null;
-                  }
+                {Data.map((dataItem, dataIndex) =>
+                  dataItem?.items?.map((item, itemIndex) => {
+                    const paperDesign = item?.paper_design;
+                    const itemId = item?.id;
+                    const createdAt = item?.created_at;
+                    const designer = paperDesign?.designer;
+                    const designCode = paperDesign?.designcode;
+                    const image = paperDesign?.image;
+                    const likesCount = paperDesign?.likes_count;
 
-                  return (
-                    <div className="New_Design_card" key={index}>
+                    if (!image) {
+                      return null;
+                    }
+
+                    return (
                       <div
-                        className="Card_img"
-                        onClick={() => handleForlderDetailsVeiw(item.id)}
+                        className="New_Design_card"
+                        key={`${dataIndex}-${itemIndex}`}
                       >
-                        <img
-                          src={image}
-                          alt={`Design by ${designer}`}
-                          onClick={() => handleDrawModal(image)}
-                        />
-                        {showDeleteMoveButtons && <div className="Overlay" />}
-                      </div>
-                      <div className="Card_Details">
-                        <h3>ID : {designCode}</h3>
-                        <div className="Card_Details_Inner">
-                          <div className="Inner_Left">
-                            <p>{designer}</p>
-                            <p>{formatDate(createdAt)}</p>
+                        <div
+                          className="Card_img"
+                          onClick={() => handleForlderDetailsVeiw(item.id)}
+                        >
+                          <img
+                            src={image}
+                            alt={`Design by ${designer}`}
+                            onClick={() => handleDrawModal(image)}
+                          />
+                          {showDeleteMoveButtons && <div className="Overlay" />}
+                        </div>
+                        <div className="Card_Details">
+                          <h3>ID : {designCode}</h3>
+                          <div className="Card_Details_Inner">
+                            <div className="Inner_Left">
+                              <p>{designer}</p>
+                              <p>{formatDate(createdAt)}</p>
+                            </div>
+                            <div className="Inner_Right">
+                              <p>
+                                {likesCount}
+                                <img src={like} alt="Likes" />
+                              </p>
+                            </div>
                           </div>
-                          <div className="Inner_Right">
-                            <p>
-                              {likesCount}
-                              <img src={like} alt="Likes" />
+                        </div>
+                        {showRadioButtons && (
+                          <input
+                            className="Radio_select"
+                            type="checkbox"
+                            id={itemId}
+                            name="fav_language"
+                            value={itemId}
+                            onChange={() =>
+                              handleCheckboxChange(itemId, designCode)
+                            }
+                            checked={selectedAssignment.includes(itemId)}
+                          />
+                        )}
+                        {!showRadioButtons &&
+                          location.pathname === "/assignmentpanel" && (
+                            <div
+                              onClick={() => toggleDeleteMoveButtons(itemId)}
+                              ref={dotsRef}
+                            >
+                              <BsThreeDotsVertical
+                                className="A_dots"
+                                style={{ fontSize: "20px" }}
+                              />
+                            </div>
+                          )}
+                        {activeCardId === itemId && (
+                          <div
+                            className="Dots_Delete_DesignPool_btns"
+                            ref={dropdownRef}
+                          >
+                            <p onClick={() => handleDeleteSingle(itemId)}>
+                              Delete
+                            </p>
+                            <p onClick={() => moveToDesignPool(itemId)}>
+                              Move to Design pool
                             </p>
                           </div>
-                        </div>
-                      </div>
-                      {showRadioButtons && (
-                        <input
-                          className="Radio_select"
-                          type="checkbox"
-                          id={itemId}
-                          name="fav_language"
-                          value={itemId}
-                          onChange={() =>
-                            handleCheckboxChange(itemId, designCode)
-                          }
-                          checked={selectedAssignment.includes(itemId)}
-                        />
-                      )}
-                      {!showRadioButtons &&
-                        location.pathname === "/assignmentpanel" && (
-                          <div
-                            onClick={() => toggleDeleteMoveButtons(itemId)}
-                            ref={dotsRef}
-                          >
-                            <BsThreeDotsVertical
-                              className="A_dots"
-                              style={{ fontSize: "20px" }}
-                            />
-                          </div>
                         )}
-                      {activeCardId === itemId && (
-                        <div
-                          className="Dots_Delete_DesignPool_btns"
-                          ref={dropdownRef}
-                        >
-                          <p onClick={() => handleDeleteSingle(itemId)}>
-                            Delete
-                          </p>
-                          <p onClick={() => moveToDesignPool(itemId)}>
-                            Move to Design pool
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
+                      </div>
+                    );
+                  })
+                )}
               </div>
 
               <div className="Parent_Folder_section">
@@ -423,6 +429,7 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
         setAdminBasicModalOpen={setAdminBasicModalOpen}
         onClose={handleCloseAdminModal}
         selectedDesignCode={selectedDesignCode}
+        recallListDesigners={()=>  list_assignment_panel(setIsLoading, setData)}
       />
 
       <AssignmentModal
@@ -437,8 +444,11 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
         setAssignmentFolder={setAssignmentFolder}
         setcreateFolderModal={setcreateFolderModal}
         selectedAssignment={selectedAssignment}
+        setSelectedAssignment={setSelectedAssignment}
         setData={setData}
         ToCloseCreatefolder={setcreateFolderModal}
+        setShowRadioButtons={setShowRadioButtons}
+        setSelectButtonLabel={setSelectButtonLabel}
       />
 
       <SuccessModal

@@ -71,7 +71,6 @@ const Header = ({
   const handleSearchWithName = (event) => {
     setSearchWithName(event.target.value, "nameSarch");
   };
-  console.log("headerDetailshead");
   return (
     <div>
       <div
@@ -99,7 +98,14 @@ const Header = ({
                       : "notstarted"
                   }
                 >
-                  {basicDetails.timer_status}
+                  {basicDetails.timer_status
+                    .replace("-", "")
+                    .charAt(0)
+                    .toUpperCase() + 
+                    basicDetails.timer_status
+                      .replace("-", "") 
+                      .slice(1) 
+                      .toLowerCase()}
                 </span>
               </div>
               <div
@@ -270,7 +276,7 @@ const Header = ({
                       <div className="Search_User">
                         <input
                           type="text"
-                          placeholder="Search ID"
+                          placeholder="Search User"
                           onChange={handleSearchWithName}
                         />
                         <img src={searchimg} alt="" />
@@ -293,27 +299,26 @@ const Header = ({
                   </div>
                 )}
 
-                <div className="headerImageDesinger">
-                  {headerDetails?.paper_design ? (
-                    <>
-                      <div>
-                        <span>Assigned to : </span>{" "}
-                      </div>
-                      <div className="headerDesingerImage">
-                        <img
-                          src={headerDetails.paper_design.designer_img}
-                          alt={
-                            headerDetails.paper_design.designer_name ||
-                            "Designer Image"
-                          }
-                        />
-                      </div>
-                      <div>
-                        <span>{headerDetails.paper_design.designer_name}</span>
-                      </div>
-                    </>
-                  ) : null}
-                </div>
+{headerDetails?.paper_design &&
+headerDetails.paper_design.designer_img !== "N/A" &&
+headerDetails.paper_design.designer_name !== "N/A" ? (
+  <div className="headerImageDesinger">
+    <div>
+      <span>Assigned to : </span>{" "}
+    </div>
+    <div className="headerDesingerImage">
+      <img
+        src={headerDetails.paper_design.designer_img}
+        alt={
+          headerDetails.paper_design.designer_name || "Designer Image"
+        }
+      />
+    </div>
+    <div>
+      <span>{headerDetails.paper_design.designer_name}</span>
+    </div>
+  </div>
+) : null}
 
                 <div className="Profile_Admin" onClick={handleLogout}>
                   {userImage ===

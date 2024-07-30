@@ -432,6 +432,24 @@ const BasicDetailModal = ({
     setSelectedDesigns([]);
     setShowRadioButtons(false);
     setSelectButtonLabel("Select");
+    setFormData(
+      {
+        SKU: "",
+        productCategory: "",
+        length: "",
+        width: "",
+        height: "",
+        typeOfMetal: "",
+        diamondType: "",
+        approxDiamondWeight: "",
+        findings: "",
+        approxMetalWeights: "",
+        approxMRP: "",
+        tag: [],
+        notes: "",
+      }
+    )
+
 
   }
   
