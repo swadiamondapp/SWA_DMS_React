@@ -204,11 +204,11 @@ const CreateCustomisation = ({
         "string.min": `Mobile number must be exactly 10 digits`,
         "string.max": `Mobile number must be exactly 10 digits`,
       }),
-      chooseOutlet: Joi.required().messages({
-        "string.empty": `cannot be  empty`,
-      }),
+    chooseOutlet: Joi.required().messages({
+      "string.empty": `choose Outlet cannot be an empty feild`,
+    }),
     productType: Joi.required().messages({
-      "string.empty": `cannot be  empty`,
+      "string.empty": `Product Type cannot be an empty feild`,
     }),
     modelPrevioslyMade: Joi.string().required().messages({
       "string.empty": `cannot be empty`,
@@ -221,8 +221,8 @@ const CreateCustomisation = ({
       }),
       // Otherwise, it's optional
     }),
-    metalType:Joi.required().messages({
-      "string.empty": `cannot be  empty`,
+    metalType: Joi.required().messages({
+      "string.empty": `Metal Type cannot be empty`,
     }),
     weight: Joi.string().required().messages({
       "string.empty": `cannot be  empty`,
@@ -257,7 +257,7 @@ const CreateCustomisation = ({
     height: Joi.string().required().messages({
       "string.empty": `cannot be  empty`,
     }),
-    diamond_type:Joi.required().messages({
+    diamond_type: Joi.required().messages({
       "string.empty": `cannot be  empty`,
     }),
     length_of_item: Joi.string().required().messages({
@@ -508,7 +508,12 @@ const CreateCustomisation = ({
   //       break;
   //   }
   // }, [errors]);
-
+const handleCloseButton =()=> {
+  onClose()
+  // setErrorMessage([])
+  setImageError("")
+  setErrors({})
+}
   
   return (
     <div>
@@ -533,7 +538,7 @@ const CreateCustomisation = ({
                     <br /> Customization
                   </span>
                   <button
-                    onClick={onClose}
+                    onClick={handleCloseButton}
                     style={{
                       position: "absolute",
                       top: 15,
