@@ -356,12 +356,15 @@ const CustomiseRequest = ({
                             {dataToDisplay.status === "Rejected" ? (
                               <span>Rejected</span>
                             ) : (
-                              <button
-                                onClick={() => handleReject()}
-                                className="CR_ButtonCommen rejectButtonCR"
-                              >
-                                Reject
-                              </button>
+                              dataToDisplay.status === "Requested" &&
+                              dataToDisplay.status !== "Updated" && (
+                                <button
+                                  onClick={() => handleReject()}
+                                  className="CR_ButtonCommen rejectButtonCR"
+                                >
+                                  Reject
+                                </button>
+                              )
                             )}
                           </>
                         </>

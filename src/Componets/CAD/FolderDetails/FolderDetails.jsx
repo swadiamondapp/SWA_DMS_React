@@ -6,6 +6,7 @@ import CentalHub from "../../CentalHub/CentalHub";
 import FolderDetailsCard from "./FolderDetailsCard";
 import SuccessModal from "../../SuccessModal/SuccessModal";
 import { projectDetails, reUploadFile } from "../Api";
+import { useLocation } from "react-router";
 
 const FolderDetails = () => {
   const { id } = useParams();
@@ -15,8 +16,10 @@ const FolderDetails = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [successModalOpen, setSuccessModalOpen] = useState("");
   const [productCode, setProductCode] = useState("");
+  const [errorss, setErrors] = useState();
   const [itemId, setItemId] = useState("");
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
+  const location = useLocation();
   const [imagesName, setImagesName] = useState({
     normalName: null,
     threeDName: null,
@@ -29,6 +32,8 @@ const FolderDetails = () => {
   useEffect(() => {
     projectDetails(setIsLoading, setFolderDetails, id, setItemId);
   }, []);
+
+  console.log("locationm", location);
 
   useEffect(() => {
     if (folderDetails[0]) {
@@ -51,26 +56,35 @@ const FolderDetails = () => {
   }, [folderDetails[0]]);
 
   const handleUploadFile = () => {
+    if (images.normal === null && images.threeD === null) {
+      setErrors("Please Upload Atleast One image.");
+    }
+
     const formData = new FormData();
     formData.append("designcode", productCode);
-    formData.append("file_2d", images.normal);
-    formData.append("file_3d", images.threeD);
-
-    reUploadFile(
-      setIsLoading,
-      formData,
-      setImages,
-      setSuccessModalOpen,
-      setSuccessMessage,
-      setIsModalOpen,
-      setProductCode,
-      itemId,
-      setItemId,
-      setFolderDetails,
-      () => {
-        projectDetails(setIsLoading, setFolderDetails, id, setItemId);
-      }
-    );
+    if (images.normal) {
+      formData.append("file_2d", images.normal);
+    }
+    if (images.threeD) {
+      formData.append("file_3d", images.threeD);
+    }
+    if (images.normal !== null || images.threeD !== null) {
+      reUploadFile(
+        setIsLoading,
+        formData,
+        setImages,
+        setSuccessModalOpen,
+        setSuccessMessage,
+        setIsModalOpen,
+        setProductCode,
+        itemId,
+        setItemId,
+        setFolderDetails,
+        () => {
+          projectDetails(setIsLoading, setFolderDetails, id, setItemId);
+        }
+      );
+    }
   };
 
   console.log("imagesName--->", imagesName);
@@ -99,6 +113,7 @@ const FolderDetails = () => {
         images={images}
         setImages={setImages}
         handleUploadFile={handleUploadFile}
+        errorss={errorss}
         folderDetails={folderDetails[0]}
         reUpload={true}
         imagesName={imagesName}

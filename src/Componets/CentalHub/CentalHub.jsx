@@ -10,6 +10,7 @@ import { upload_cad_design } from "../CAD/Api";
 import { CircularProgress } from "@mui/material";
 import SuccessModal from "../SuccessModal/SuccessModal";
 import Joi from "joi";
+import { useLocation } from "react-router";
 
 const style = {
   position: "absolute",
@@ -36,6 +37,7 @@ const CentalHub = ({
   folderDetails,
   reUpload,
   isLoading,
+  errorss,
 }) => {
   // create modal
 
@@ -54,8 +56,10 @@ const CentalHub = ({
   const [errorMessage, setErrorMessage] = useState("");
 
   const [errors, setErrors] = useState("");
+  const location = useLocation();
 
   console.log(errorMessage, "designCodeEe");
+  console.log(location, "location");
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -181,10 +185,11 @@ const CentalHub = ({
   };
 
   const handleUploadeFileNew = () => {
-    if (images.normal === null || images.threeD === null) {
-      setErrors("Please upload both images");
-      return;
-    }
+    // if (location.pathname === "/CadAssignment" && images.normal === null && images.threeD === null) {
+    //   setErrors("Please upload at least one image.");
+    //   return;
+    // }
+
     handleUploadFile();
     setErrors("");
   };
@@ -326,6 +331,11 @@ const CentalHub = ({
                   {errors && (
                     <span style={{ fontSize: "11px", color: "red" }}>
                       {errors}
+                    </span>
+                  )}
+                  {errorss && (
+                    <span style={{ fontSize: "11px", color: "red" }}>
+                      {errorss}
                     </span>
                   )}
                   <div className="buttons">

@@ -18,6 +18,7 @@ const CadAssignmentPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [timer, setTimer] = useState("");
   const [productCode, setProductCode] = useState("");
+  const [errorss, setErrors] = useState();
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
   const [itemId, setItemId] = useState("");
   const [images, setImages] = useState({
@@ -100,24 +101,26 @@ const CadAssignmentPage = () => {
 
   const handleUploadFile = () => {
     if (images.normal === null || images.threeD === null) {
-      setErrors("Plese Upload Both Images");
+      setErrors("Please Upload Both image.");
     }
     const formData = new FormData();
     formData.append("designcode", productCode);
     formData.append("file_2d", images.normal);
     formData.append("file_3d", images.threeD);
-    uploadFile(
-      setIsLoading,
-      formData,
-      setImages,
-      setSuccessModalOpen,
-      setSuccessMessage,
-      setIsModalOpen,
-      setProductCode,
-      () => {
-        onStopButtonClick();
-      }
-    );
+    if (images.normal !== null && images.threeD !== null) {
+      uploadFile(
+        setIsLoading,
+        formData,
+        setImages,
+        setSuccessModalOpen,
+        setSuccessMessage,
+        setIsModalOpen,
+        setProductCode,
+        () => {
+          onStopButtonClick();
+        }
+      );
+    }
   };
 
   console.log("images cddd", images);
@@ -143,6 +146,7 @@ const CadAssignmentPage = () => {
         images={images}
         setImages={setImages}
         handleUploadFile={handleUploadFile}
+        errorss={errorss}
         onStopButtonClick={onStopButtonClick}
         isLoading={isLoading}
       />
