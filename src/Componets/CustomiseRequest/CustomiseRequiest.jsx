@@ -168,7 +168,7 @@ const CustomiseRequest = ({
     const item = ProudctCategory.find((entry) => entry.id === id);
     return item ? item.name : "Not Found";
   };
-  console.log(dataToDisplay, "metalListType");
+  console.log(dataToDisplay.status, "metalListType");
 
   console.log("dataToDisplay---", dataToDisplay);
 
@@ -246,7 +246,7 @@ const CustomiseRequest = ({
                       </div>
                       <div className="ProductInformation">
                         <span>If previously made</span>
-<span>
+                        <span>
                           {dataToDisplay.previously_made &&
                             dataToDisplay.previously_made
                               .charAt(0)
@@ -290,7 +290,7 @@ const CustomiseRequest = ({
                       </div>
                       <div className="ProductInformation">
                         <span>Weight</span>
-<span>{dataToDisplay.weight} GM</span>
+                        <span>{dataToDisplay.weight} GM</span>
                       </div>
                       <div className="ProductInformation">
                         <span>Size</span>
@@ -346,43 +346,48 @@ const CustomiseRequest = ({
                     <div className="crButtonContainer">
                       {CustomizationWareHouseData && (
                         <>
-                          {CustomizationWareHouseData.status ===
-                            "Requested" && (
-                            <>
-                              {/* <button
+                          <>
+                            {/* <button
                                 onClick={() => handleConfirm()}
                                 className="CR_ButtonCommen confirmButtonCR"
                               >
                                 Confirm
                               </button> */}
+                            {dataToDisplay.status === "Rejected" ? (
+                              <span>Rejected</span>
+                            ) : (
                               <button
                                 onClick={() => handleReject()}
                                 className="CR_ButtonCommen rejectButtonCR"
                               >
                                 Reject
                               </button>
-                            </>
+                            )}
+                          </>
+                        </>
+                      )}
+                      {console.log(
+                        "CustomizationWareHouseData.status",
+                        dataToDisplay.status
+                      )}
+
+                      {dataToDisplay.status !== "Rejected" && (
+                        <>
+                          {dataToDisplay.status === "Updated" ||
+                          dataToDisplay.status === "Confirmed" ? (
+                            <span>Already Updated</span>
+                          ) : (
+                            <button
+                              onClick={() =>
+                                handleEditWareHouseDetails(dataToDisplay)
+                              }
+                              className="CR_ButtonCommen editButtonCR"
+                            >
+                              edit <img src={editIcon} alt="" />
+                            </button>
                           )}
                         </>
                       )}
-
-                      { dataToDisplay.status !== "Rejected" &&(
-                        <>
-                      {dataToDisplay.status === "Updated" ||
-                      dataToDisplay.status === "Confirmed" ? (
-                        <span>Already Updated</span>
-                      ) : (
-                        <button
-                          onClick={() =>
-                            handleEditWareHouseDetails(dataToDisplay)
-                          }
-                          className="CR_ButtonCommen editButtonCR"
-                        >
-                          edit <img src={editIcon} alt="" />
-                        </button>
-                      )}
-                      </>
-                    )}
                     </div>
                   </div>
                 </div>
