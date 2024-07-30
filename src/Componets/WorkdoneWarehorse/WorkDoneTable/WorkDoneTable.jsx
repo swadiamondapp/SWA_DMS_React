@@ -55,6 +55,11 @@ const WorkDoneTable = ({ sidebarExpanded}) => {
     setOpenLeftbar(true);
   };
 
+  const formatDate = (dateString) => {
+    const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+    return new Date(dateString).toLocaleDateString('en-GB', options);
+  };
+
   return (
     <div className="scantable_main"  style={{ marginLeft: sidebarExpanded ? "225px" : "130px" }}>
       <div className="Search_Admin scan_search">
@@ -85,7 +90,7 @@ const WorkDoneTable = ({ sidebarExpanded}) => {
               {workTableData.map((item, index) => (
                 <tr className="table_row">
                   <td style={{ borderLeft: "none" }}>{index + 1}</td>
-                  <td style={{ borderLeft: "none" }}>{item.created_at}</td>
+                  <td style={{ borderLeft: "none" }}>{formatDate(item.created_at)}</td>
                   <td style={{ borderLeft: "none" }}>{item.productID}</td>
 
                   <td style={{ borderLeft: "none" }}>
