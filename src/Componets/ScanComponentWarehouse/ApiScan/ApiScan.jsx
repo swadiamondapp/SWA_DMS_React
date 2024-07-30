@@ -198,6 +198,10 @@ export const CentralHubnewScanProductScan = async (
       alert("Item Added");
       setError("");
     }
+    if (response.data.results.status_code === 206) {
+      setError(response.data.results.message);
+      setsearchListId("");
+    }
   } catch (error) {
     console.log(error);
     alert("Item Not Found");
