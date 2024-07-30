@@ -134,24 +134,24 @@ const FinishedProjects = (props) => {
           />
         </div>
         {props?.finishedProjectData?.length === 0 && (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                marginTop:"50px"
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: "50px",
+            }}
+          >
+            <CircularProgress
+              size={50} // Set the desired size
+              sx={{
+                color: "#126e72",
+                padding: "8px 10px",
+                width: "35px",
               }}
-            >
-              <CircularProgress
-                size={50} // Set the desired size
-                sx={{
-                  color: "#126e72",
-                  padding: "8px 10px",
-                  width: "35px",
-                }}
-              />
-            </div>
-          )}
+            />
+          </div>
+        )}
         <div className="folderCard_parent RendersHome_folders_top">
           {props?.finishedProjectData?.map((item, index) => (
             <div

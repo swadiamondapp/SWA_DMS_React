@@ -15,27 +15,27 @@ export const isAuthenticated = () => {
   try {
     const token = localStorage.getItem("token");
 
-    const usertype = localStorage.getItem("Usertype");
+    // const usertype = localStorage.getItem("Usertype");
 
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
-    useEffect(() => {
-      if (usertype === "ADMIN") {
-        navigate("/");
-      } else if (usertype === "DESIGNER") {
-        navigate("/designdashboard");
-      } else if (usertype === "VOTERS") {
-        navigate("/votorspanal");
-      } else if (usertype === "CAD") {
-        navigate("/CadAssignment");
-      } else if (usertype === "CENTRAL HUB") {
-        navigate("/centralDashboard");
-      } else if (usertype === "RENDERS") {
-        navigate("/renderCard");
-      } else if (usertype === "WAREHOUSE") {
-        navigate("/wareHouse");
-      }
-    }, [usertype]);
+    // useEffect(() => {
+    //   if (usertype === "ADMIN") {
+    //     navigate("/");
+    //   } else if (usertype === "DESIGNER") {
+    //     navigate("/designdashboard");
+    //   } else if (usertype === "VOTERS") {
+    //     navigate("/votorspanal");
+    //   } else if (usertype === "CAD") {
+    //     navigate("/CadAssignment");
+    //   } else if (usertype === "CENTRAL HUB") {
+    //     navigate("/centralDashboard");
+    //   } else if (usertype === "RENDERS") {
+    //     navigate("/renderCard");
+    //   } else if (usertype === "WAREHOUSE") {
+    //     navigate("/wareHouse");
+    //   }
+    // }, [usertype]);
 
     return !!token;
   } catch (error) {
