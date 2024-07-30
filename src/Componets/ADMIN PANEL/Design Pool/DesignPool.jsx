@@ -88,6 +88,27 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
     //   console.error("Error moving selected designs:", error);
     // }
   };
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        !event.target.closest(".download-options") &&
+        !event.target.closest(".download-button")
+      ) {
+        setShowDownloadOptions(false);
+      }
+      if (
+        !event.target.closest(".move-options") &&
+        !event.target.closest(".move-button")
+      ) {
+        setShowMoveOptions(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   console.log("selectedDesign", selectedDesign);
 

@@ -9,6 +9,7 @@ import {
   LIKE_DESIGN,
   STOCK_ORDER,
   UNVOTED_LIST_VOTERS,
+  UNVOTED_VOTERS_LIST,
   USER_RESPONSE_UPDATING,
   VOTED_LIST_LIKED,
   VOTERS_CUSTOMIZATION_LIST,
@@ -58,7 +59,7 @@ export const create_customization = async (
 
 export const all_Designs_items = async (setIsLoading, setData) => {
   try {
-    const response = await apiService.get(ALL_DESIGNS);
+    const response = await apiService.get(UNVOTED_VOTERS_LIST);
     if (checkApiStatus(response)) {
       setData(response.data.results.data);
     }

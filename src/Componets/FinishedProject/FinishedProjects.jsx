@@ -76,6 +76,12 @@ const FinishedProjects = (props) => {
       },
     });
   };
+  const truncateText = (text, maxLength) => {
+    if (text.length > maxLength) {
+      return text.slice(0, maxLength) + '...';
+    }
+    return text;
+  };
 
   console.log("props?.finishedProjectData", props?.finishedProjectData);
 
@@ -160,7 +166,7 @@ const FinishedProjects = (props) => {
             >
               <img src={folderimg} alt="" />
 
-              <p>{item.name}</p>
+              <p className="text-truncate">{truncateText(item.name, 10)}</p>
             </div>
           ))}
         </div>
