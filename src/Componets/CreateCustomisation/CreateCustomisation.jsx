@@ -204,25 +204,11 @@ const CreateCustomisation = ({
         "string.min": `Mobile number must be exactly 10 digits`,
         "string.max": `Mobile number must be exactly 10 digits`,
       }),
-      chooseOutlet: Joi.alternatives().try(
-        Joi.number().integer().positive(), // if ID is a number
-        Joi.string().min(1) // if ID is a string
-      ).required().messages({
-        "any.required": ` cannot be an empty field`,
-        "string.empty": ` cannot be an empty field`,
-        "number.base": `Choose Outlet must be a valid number`,
-        "number.integer": `Choose Outlet must be an integer`,
-        "number.positive": `Choose Outlet must be a positive number`
+      chooseOutlet: Joi.required().messages({
+        "string.empty": `cannot be  empty`,
       }),
-    productType:  Joi.alternatives().try(
-      Joi.number().integer().positive(), // if ID is a number
-      Joi.string().min(1) // if ID is a string
-    ).required().messages({
-      "any.required": ` cannot be an empty feild`,
-      "string.empty": `cannot be an empty feild`,
-      "number.base": `Product Type must be a valid number`,
-      "number.integer": `Product Type must be an integer`,
-      "number.positive": `Product Type must be a positive number`
+    productType: Joi.required().messages({
+      "string.empty": `cannot be  empty`,
     }),
     modelPrevioslyMade: Joi.string().required().messages({
       "string.empty": `cannot be empty`,
@@ -235,15 +221,8 @@ const CreateCustomisation = ({
       }),
       // Otherwise, it's optional
     }),
-    metalType:Joi.alternatives().try(
-      Joi.number().integer().positive(), // if ID is a number
-      Joi.string().min(1) // if ID is a string
-    ).required().messages({
-      "any.required": ` cannot be empty`,
-      "string.empty": `cannot be empty`,
-      "number.base": `Metal Type must be a valid number`,
-      "number.integer": `Metal Type must be an integer`,
-      "number.positive": `Metal Type must be a positive number`
+    metalType:Joi.required().messages({
+      "string.empty": `cannot be  empty`,
     }),
     weight: Joi.string().required().messages({
       "string.empty": `cannot be  empty`,
@@ -278,15 +257,8 @@ const CreateCustomisation = ({
     height: Joi.string().required().messages({
       "string.empty": `cannot be  empty`,
     }),
-    diamond_type:Joi.alternatives().try(
-      Joi.number().integer().positive(), // if ID is a number
-      Joi.string().min(1) // if ID is a string
-    ).required().messages({
-      "any.required": ` cannot be empty`,
-      "string.empty": `cannot be empty`,
-      "number.base": `Diamond Type must be a valid number`,
-      "number.integer": `Diamond Type must be an integer`,
-      "number.positive": `Diamond Type must be a positive number`
+    diamond_type:Joi.required().messages({
+      "string.empty": `cannot be  empty`,
     }),
     length_of_item: Joi.string().required().messages({
       "string.empty": `cannot be  empty`,
