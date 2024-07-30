@@ -56,7 +56,7 @@ const WorkDoneTable = ({ sidebarExpanded}) => {
   };
 
   const formatDate = (dateString) => {
-    const months = [
+const months = [
       "January", "February", "March", "April", "May", "June", 
       "July", "August", "September", "October", "November", "December"
     ];
@@ -99,7 +99,7 @@ const WorkDoneTable = ({ sidebarExpanded}) => {
               {workTableData.map((item, index) => (
                 <tr className="table_row">
                   <td style={{ borderLeft: "none" }}>{index + 1}</td>
-                  <td style={{ borderLeft: "none" }}>{formatDate (item.created_at)}</td>
+<td style={{ borderLeft: "none" }}>{formatDate(item.created_at)}</td>
                   <td style={{ borderLeft: "none" }}>{item.productID}</td>
 
                   <td style={{ borderLeft: "none" }}>

@@ -72,6 +72,7 @@ const CentalHub = ({
     setUploadInstructionsVisibleRender(true);
     onClose();
     setErrorMessage("");
+    setErrors("")
     setImages({
       normal: null,
       threeD: null,
@@ -208,7 +209,7 @@ const CentalHub = ({
         <div className="modalContainer" style={{ position: "relative" }}>
           <Modal
             open={open}
-            onClose={onClose}
+            onClose={() => handleCancelButton()}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
             style={{ position: "absolute", right: "0px" }}
@@ -224,8 +225,7 @@ const CentalHub = ({
                     Upload file
                   </span>
                   <button
-                    onClick={() => handleCloseModal()}
-                    // onClose={onClose}
+onClick={() => handleCancelButton()}
                     style={{
                       position: "absolute",
                       top: 15,

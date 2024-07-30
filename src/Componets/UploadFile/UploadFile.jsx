@@ -71,10 +71,6 @@ const UploadFile = ({
       setErrors("Please upload at least one image.");
       return;
     }
-    if (!file) {
-      setErrors("Please upload  2.DM File.");
-      return;
-    }
     const formData = new FormData();
     formData.append("designcode", id);
     formData.append("name", id);
@@ -174,7 +170,7 @@ const UploadFile = ({
                         ))}
                       </div>
                     </div>
-                    <div className="addButton_Container">
+                    {/* <div className="addButton_Container">
                       <span className="title_1">Upload 2.DM File </span>
                       <div className="dashed_imageContainer">
                         <div className="dashedImage">
@@ -189,7 +185,6 @@ const UploadFile = ({
                               }}
                             />
                           )}
-                          {/* <div  style={{ position: "relative" }}> */}
                           <label>
                             <img
                               src={plusICon}
@@ -203,16 +198,14 @@ const UploadFile = ({
                             />
                             <input
                               type="file"
-                              // accept=".3dm"
                               accept="image/png, image/jpeg"
                               style={{ display: "none" }}
                               onChange={handleFileUpload}
                             />
                           </label>
-                          {/* </div> */}
                         </div>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                   <div className="upload_DMFile"></div>
                   {errors && (

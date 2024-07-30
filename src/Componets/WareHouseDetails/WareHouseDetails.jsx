@@ -150,6 +150,9 @@ const WareHouseDetails = ({ sidebarExpanded }) => {
           <div className="imageWarehouspart1" style={{ overflow: "hidden" }}>
             <img src={customizationwarehouseData.image} />
             <img src={customizationwarehouseData.image2} />
+            <img src={customizationwarehouseData.image3} />
+            <img src={customizationwarehouseData.image4} />
+            <img src={customizationwarehouseData.image5} />
           </div>
         </div>
         <div className="wareHouse_basicDetails">
@@ -178,7 +181,7 @@ const WareHouseDetails = ({ sidebarExpanded }) => {
                   <p>{customizationwarehouseData.metal_type}</p>
                 </div>
                 <div className="A1_text">
-                  <p>Dimond Type</p>
+                  <p>Diamond Type</p>
                   <p>{customizationwarehouseData.diamond_type}</p>
                 </div>
                 <div className="A1_text">
@@ -283,7 +286,7 @@ const WareHouseDetails = ({ sidebarExpanded }) => {
                   />
                 </div>
                 <div className="A1_text">
-                  <p>Dimond Type</p>
+                  <p>Diamond Type</p>
                   {/* <input
                     type="number"
                     className="actualDetails_input"

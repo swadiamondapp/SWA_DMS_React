@@ -108,6 +108,11 @@ const ScanWarehouse = ({ sidebarExpanded }) => {
     }
   };
 
+  const formatDate = (dateString) => {
+    const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+    return new Date(dateString).toLocaleDateString('en-GB', options);
+  };
+
   console.log("scanTableData", scanTableData);
   console.log("clickedProductIds", clickedProductIds);
 
@@ -205,7 +210,7 @@ const ScanWarehouse = ({ sidebarExpanded }) => {
                     <td style={{ borderLeft: "none" }}>
                       {item.Productdetails?.designcode}
                     </td>
-                    <td style={{ borderLeft: "none" }}>{item.created_at}</td>
+                    <td style={{ borderLeft: "none" }}>{formatDate(item.created_at)}</td>
                     <td style={{ borderLeft: "none" }}>
                       {item.Productdetails.product_category}
                     </td>
