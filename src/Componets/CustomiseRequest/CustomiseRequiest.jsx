@@ -279,11 +279,11 @@ const CustomiseRequest = ({
                     </div>
                     <div className="lineCR"></div>
                     <div style={{ marginBottom: "5px" }}>
-                      <span className="basic-Details-title">Metel Details</span>
+                      <span className="basic-Details-title">Metal Details</span>
                     </div>
                     <div className="subTitle-metal">
                       <div className="ProductInformation">
-                        <span>Metel type</span>
+                        <span>Metal type</span>
                         <span>
                           {findMetalNameById(Number(dataToDisplay.metal_type))}
                         </span>
@@ -366,6 +366,8 @@ const CustomiseRequest = ({
                         </>
                       )}
 
+                      { dataToDisplay.status !== "Rejected" &&(
+                        <>
                       {dataToDisplay.status === "Updated" ||
                       dataToDisplay.status === "Confirmed" ? (
                         <span>Already Updated</span>
@@ -379,6 +381,8 @@ const CustomiseRequest = ({
                           edit <img src={editIcon} alt="" />
                         </button>
                       )}
+                      </>
+                    )}
                     </div>
                   </div>
                 </div>

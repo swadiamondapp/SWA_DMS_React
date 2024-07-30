@@ -18,7 +18,7 @@ const VotorsPanal = ({ sidebarExpanded }) => {
   }, []);
 
   const handleLikeClicks = (id) => {
-    like_design(setIsLoading, id, setData);
+    like_design(setIsLoading, id, setData,setVotedList);
     setAnimate((prev) => ({ ...prev, [id]: true }));
     setTimeout(() => {
       setAnimate((prev) => ({ ...prev, [id]: false })); // Reset the animation state after it completes

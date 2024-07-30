@@ -32,7 +32,11 @@ import {
   whstatusDataUpadate,
 } from "../ApiMasters/ApiMasters";
 import { useLocation } from "react-router-dom";
-import { centralHubnewScanProductStatusUpdate, newScanProductStatusUpdate } from "../../ScanComponentWarehouse/ApiScan/ApiScan";
+import {
+  centralHubnewScanProductStatusUpdate,
+  newScanProductStatusUpdate,
+} from "../../ScanComponentWarehouse/ApiScan/ApiScan";
+import SuccessModal from "../../SuccessModal/SuccessModal";
 
 const style = {
   position: "absolute",
@@ -59,6 +63,8 @@ const MastersModal = ({
   status,
   clickedProductIds,
   setScanTableData,
+  setSuccessModalOpen,
+  setSuccessMessage
 }) => {
   const location = useLocation();
   const [errors, setErrors] = useState("");
@@ -335,7 +341,9 @@ const MastersModal = ({
         setScanTableData,
         setErrors,
         setChStatusId,
-        setOpen
+        setOpen,
+        setSuccessModalOpen,
+        setSuccessMessage
       );
     } catch (error) {
       console.log("error", error);
@@ -620,7 +628,7 @@ const MastersModal = ({
                       labelId="demo-simple-select-autowidth-label"
                       id="demo-simple-select-autowidth"
                       value={statusId}
-                      onChange={(e) => setStatusId(e.target.value)} 
+                      onChange={(e) => setStatusId(e.target.value)}
                       autoWidth
                       label="Status"
                     >
@@ -635,7 +643,10 @@ const MastersModal = ({
                     </Select>
                   </FormControl>
                 </div>
-                <button className="scan_update_btn" onClick={handleUpdateProductStatus}>
+                <button
+                  className="scan_update_btn"
+                  onClick={handleUpdateProductStatus}
+                >
                   Update
                 </button>
               </div>
@@ -658,7 +669,7 @@ const MastersModal = ({
                       labelId="demo-simple-select-autowidth-label"
                       id="demo-simple-select-autowidth"
                       value={cHstatusId}
-                      onChange={(e) => setChStatusId(e.target.value)} 
+                      onChange={(e) => setChStatusId(e.target.value)}
                       autoWidth
                       label="Status"
                     >
@@ -673,7 +684,10 @@ const MastersModal = ({
                     </Select>
                   </FormControl>
                 </div>
-                <button className="scan_update_btn" onClick={handleUpdateCentralStatus}>
+                <button
+                  className="scan_update_btn"
+                  onClick={handleUpdateCentralStatus}
+                >
                   Update
                 </button>
               </div>
@@ -684,12 +698,13 @@ const MastersModal = ({
             <span style={{ color: "red", fontSize: "10px" }}>{errors}</span>
           )}
           {location.pathname !== "/newscanmodule" &&
-          location.pathname !== "/centralhubscan" && (
-            <div className="modal_btns">
-              <button onClick={handleClose}>Cancel</button>
-              <button onClick={handleCreatedata}>{btnName}</button>
-            </div>
-          )}
+            location.pathname !== "/centralhubscan" && (
+              <div className="modal_btns">
+                <button onClick={handleClose}>Cancel</button>
+                <button onClick={handleCreatedata}>{btnName}</button>
+              </div>
+            )}
+
         </Box>
       </Modal>
     </div>

@@ -79,6 +79,7 @@ const AdminBasicDetailsModal = ({
   setAssignmentFolder,
   setSelectedAssignment,
   getSelectedDesign,
+  recallListDesigners
 }) => {
   const [adminUploadedItemId, setAdminUploadedItemId] = useState([]);
   const [ ImageSingleError, setImageSingleError] = useState("")
@@ -459,7 +460,8 @@ const AdminBasicDetailsModal = ({
       setUploadedImage,
       setAssignedDesignerId,
       setSearchDesigner,
-      setAllDesigners
+      setAllDesigners,
+      recallListDesigners
     );
   };
 
