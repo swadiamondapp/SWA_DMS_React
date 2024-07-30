@@ -57,6 +57,10 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
   const toggleRadioButtons = () => {
     setShowRadioButtons(!showRadioButtons);
     setSelectButtonLabel(showRadioButtons ? "Select" : "Unselect");
+    if (showRadioButtons) {
+      // If toggling to "Unselect", clear the selected designs
+      setSelectedAssignment([])
+    }
   };
   const toggleDownloadOptions = () => {
     setShowDownloadOptions(!showDownloadOptions);

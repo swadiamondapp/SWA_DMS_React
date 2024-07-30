@@ -195,7 +195,7 @@
                         }}
                       />
                     </div>
-                    <div className="DOTSBTNS">
+                    {/* <div className="DOTSBTNS">
                       <BsThreeDotsVertical
                         className="Action_dots"
                         onClick={() =>
@@ -204,13 +204,13 @@
                           )
                         }
                       />
-                      {/* {showEditDelete === index && (
+                      {showEditDelete === index && (
                         <div className="Edit_delete_btn_user">
                           <p className="Edit_btn_user">Edit</p>
                           <p className="Delete_btn_user">Delete</p>
                         </div>
-                      )} */}
-                    </div>
+                      )}
+                    </div> */}
                   </div>
                 </td>
               </tr>

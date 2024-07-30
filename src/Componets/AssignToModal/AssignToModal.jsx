@@ -121,6 +121,7 @@ const AssignToModal = ({
     setSelectButtonLabel("Select");
     setShowRadioButtons(false);
     setAssignedStatus({});
+    setCurrentlyAssignedUser(null)
   };
   console.log(assignToCadId, "assignToCadId====>");
   console.log(selectedDesign, "selectedDesign====>Modal");

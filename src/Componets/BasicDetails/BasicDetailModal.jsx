@@ -155,8 +155,10 @@ const BasicDetailModal = ({
       "array.min": `SKU field must contain at least one item.`,
       "any.required": `SKU field is required and cannot be empty.`,
     }),
-    productCategory: Joi.required().messages({
-      "string.empty": `cannot be empty`,
+    productCategory: Joi.array().min(1).required().messages({
+      'array.base': 'cannot be empty',
+      'array.empty': 'Product category cannot be empty',
+      'array.min': 'Product category cannot be empty',
     }),
     length: Joi.string().required().messages({
       "string.empty": ` cannot be empty`,
@@ -167,30 +169,44 @@ const BasicDetailModal = ({
     height: Joi.string().required().messages({
       "string.empty": `cannot be empty`,
     }),
-    typeOfMetal: Joi.required().messages({
+    typeOfMetal: Joi.array().min(1).required().messages({
+      'array.base': 'cannot be empty',
+      'array.empty': 'Product category cannot be empty',
+      'array.min': 'Product category cannot be empty',
+    }),
+    diamondType: Joi.array().min(1).required().messages({
+      'array.base': 'cannot be empty',
+      'array.empty': 'Product category cannot be empty',
+      'array.min': 'Product category cannot be empty',
+    }),
+    approxDiamondWeight: Joi.string().custom((value, helpers) => {
+      if (value === "0") {
+        return helpers.message("cannot be zero");
+      }
+      return value;
+    }).required().messages({
       "string.empty": `cannot be empty`,
     }),
-    diamondType: Joi.required().messages({
+    approxMetalWeights: Joi.string().custom((value, helpers) => {
+      if (value === "0") {
+        return helpers.message("cannot be zero");
+      }
+      return value;
+    }).required().messages({
       "string.empty": `cannot be empty`,
-    }),
-    approxDiamondWeight: Joi.number().required().messages({
-      "number.base": "cannot be empty",
-      "number.empty": "cannot be empty",
-      "any.required": "Field is required",
-    }),
-    approxMetalWeights: Joi.number().required().messages({
-      "number.base": "cannot be empty",
-      "string.empty": `cannot be empty`,
-      "any.required": `cannot be empty`, 
     }),
     approxMRP: Joi.number().required().messages({
-      "string.empty": `cannot be empty`,
+      'number.base': 'Approximate MRP must be a number',
+      'number.empty': 'Approximate MRP cannot be empty', // Handles cases where it is empty but should be a number
+      'any.required': 'cannot be empty', // Handles cases where the field is missing
     }),
     tag: Joi.array().items(Joi.required()).min(1).required().messages({
      "array.min": "At least one tag is required",
     }),
-    findings: Joi.required().messages({
-      "string.empty": `cannot be empty`,
+    findings:Joi.array().min(1).required().messages({
+      'array.base': 'cannot be empty',
+      'array.empty': 'Product category cannot be empty',
+      'array.min': 'Product category cannot be empty',
     }),
     notes: Joi.string().messages({
       "string.empty": `cannot be empty`,
@@ -276,7 +292,10 @@ const BasicDetailModal = ({
           setShowAssignmentModal,
           setMovedItemsId,
           setFormData,
-          getSelectedDesign
+          getSelectedDesign,
+          ()=>{
+            setCalculationData([])
+          }
         );
       }
       // setShowAssignmentModal(true);
@@ -379,7 +398,7 @@ const BasicDetailModal = ({
         SelectedMetalId,
         setCalculationData
       );
-      setShowMrp(CalculationData?.calculated_mrp)
+      // setShowMrp(CalculationData?.calculated_mrp)
     }
   };
   useEffect(() => {
@@ -409,7 +428,7 @@ const BasicDetailModal = ({
 
   useEffect(() => {
     if (CalculationData) {
-      setShowMrp(CalculationData.calculated_mrp);
+      // setShowMrp(CalculationData.calculated_mrp);
       setFormData(prevFormData => ({
         ...prevFormData,
         approxMRP: CalculationData.calculated_mrp,
@@ -449,6 +468,7 @@ const BasicDetailModal = ({
         notes: "",
       }
     )
+    setErrors({})
 
 
   }
@@ -644,7 +664,7 @@ const BasicDetailModal = ({
                         />
                         <div>
                           {errors.typeOfMetal && (
-                            <span className="error_select_p">
+                            <span className="error_input_p">
                               {errors.typeOfMetal}
                             </span>
                           )}
@@ -680,7 +700,7 @@ const BasicDetailModal = ({
                         />
                         <div>
                           {errors.diamondType && (
-                            <span className="error_select_p">
+                            <span className="error_input_p">
                               {errors.diamondType}
                             </span>
                           )}
@@ -711,7 +731,7 @@ const BasicDetailModal = ({
                     <div className="approxMetel">
                       <div>
                         <label htmlFor="" className="label-text">
-                          Approx metel .weight
+                          Approx metal weight
                         </label>
                         <input
                           type="number"

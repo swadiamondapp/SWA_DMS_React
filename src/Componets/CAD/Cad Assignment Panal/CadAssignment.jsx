@@ -237,7 +237,8 @@ const CadAssignment = ({
                       className="Download_btn_hub"
                       style={{ background: "#006E7F" }}
                       onClick={() => {
-                        onButtonClick(item.item_id);
+                        onButtonClick(item.item_id); 
+                        handleDownload(item.design_image)
                       }}
                       disabled={designList.some(
                         (d) => d.timer_status === "on-going"
