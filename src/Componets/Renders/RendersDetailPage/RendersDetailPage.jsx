@@ -33,6 +33,14 @@ const RendersDetailPage = ({ folderDetails, sidebarExpanded }) => {
   .catch(error => console.error('Error downloading the image:', error));
   };
 
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+    setImages({ 
+      normal: null, 
+      threeD: null 
+    });
+  };
+
   return (
     <>
       {folderDetails?.map((item) => (

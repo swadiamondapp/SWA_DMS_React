@@ -35,6 +35,10 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
   const toggleRadioButtons = () => {
     setShowRadioButtons(!showRadioButtons);
     setSelectButtonLabel(showRadioButtons ? "Select" : "Unselect");
+    if (showRadioButtons) {
+      // If toggling to "Unselect", clear the selected designs
+      setSelectedDesigns([]);
+    }
   };
   const toggleDownloadOptions = () => {
     setShowDownloadOptions(!showDownloadOptions);

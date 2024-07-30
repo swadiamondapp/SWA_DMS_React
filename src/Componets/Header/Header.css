@@ -99,10 +99,14 @@ z-index: 999;
 }
 .headerImageDesinger {
   display: flex; 
-  gap:7px;
+  gap:8px;
   justify-content: center;
   align-items: center;
+  font-family: "Gilroy medium";
 }
 .headerDesingerImage img{
-width: 20px;
+width: 28px;
+border-radius: 32px;
+height: 28px;
+
 }

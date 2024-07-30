@@ -80,9 +80,8 @@ export const centralFolderDetails = async (Id, setCentralFolderDetails) => {
 export const generateSloteNumber = async (setIsLoading, setGeneratSloteNum) => {
   try {
     const response = await apiService.post(GENERATE_SLOT_NUMBER);
-    if (checkApiStatus(response)) {
+if (checkApiStatus(response)) {
       console.log("successfully created");
-
       setGeneratSloteNum(response.data.results);
     }
   } catch (error) {

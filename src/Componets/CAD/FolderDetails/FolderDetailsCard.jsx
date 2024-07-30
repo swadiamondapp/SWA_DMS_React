@@ -23,8 +23,8 @@ const FolderDetailsCard = ({
     content: printRef.current,
   });
 
-  const handleDownload = (imageUrl) => {
-    fetch(imageUrl, {
+const handleDownload = (imageUrl) => {
+    fetch("https://dmstestapi.zinfog.in/media/designs/zinfog_bug_1_5AmzUMA.png", {
       method: 'GET',
       mode: 'cors'
   })

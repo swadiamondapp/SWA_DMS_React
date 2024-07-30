@@ -42,7 +42,8 @@ const DesignBtn = ({
   handleCreatedFolder,
   handleSortByDesigner,
   handleSortByAdmin,
-  handleSortByAll
+  handleSortByAll,
+
 }) => {
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);

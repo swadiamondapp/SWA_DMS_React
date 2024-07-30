@@ -9,7 +9,8 @@
   margin-top: 25px;
 }
 .votors_btns {
-  margin-bottom: 15px;
+  /* margin-bottom: 15px; */
+  margin-top: 20px;
 }
 .status_votors {
   display: flex;
