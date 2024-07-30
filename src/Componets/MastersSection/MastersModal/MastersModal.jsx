@@ -64,7 +64,11 @@ const MastersModal = ({
   clickedProductIds,
   setScanTableData,
   setSuccessModalOpen,
-  setSuccessMessage
+  setSuccessMessage,
+  setClickedProductIds,
+  // setSuccessModalOpen,
+  // setSuccessMessage
+
 }) => {
   const location = useLocation();
   const [errors, setErrors] = useState("");
@@ -323,7 +327,10 @@ const MastersModal = ({
         setScanTableData,
         setErrors,
         setStatusId,
-        setOpen
+        setOpen,
+        setClickedProductIds,
+        setSuccessModalOpen,
+        setSuccessMessage
       );
     } catch (error) {
       console.log("error", error);
@@ -343,7 +350,8 @@ const MastersModal = ({
         setChStatusId,
         setOpen,
         setSuccessModalOpen,
-        setSuccessMessage
+        setSuccessMessage,
+        setClickedProductIds
       );
     } catch (error) {
       console.log("error", error);

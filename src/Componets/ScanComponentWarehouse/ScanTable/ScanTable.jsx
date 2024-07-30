@@ -4,7 +4,7 @@ import searchimg from "../../../assets/search.png";
 import ThreeDot from "../../../assets/three.png";
 import ScanModal from "../ScanModal/ScanModal";
 import searchblue from "../../../assets/bluesearch.png";
-import { MenuItem, Select } from "@mui/material";
+import { CircularProgress, MenuItem, Select } from "@mui/material";
 import {
   scan_list_datas,
   scan_list_search,
@@ -18,7 +18,7 @@ import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import { BsFillCaretDownFill } from "react-icons/bs";
 import { BiSolidUpArrow } from "react-icons/bi";
 
-const ScanTable = ({ sidebarExpanded}) => {
+const ScanTable = ({ sidebarExpanded }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [scanTableData, setScanTableData] = useState([]);
   const [status, setstatus] = useState([]);
@@ -49,26 +49,26 @@ const ScanTable = ({ sidebarExpanded}) => {
 
   const handleSearch = async () => {
     setIsLoading(true);
-    if(searchListId === ""){
-      setError("Enter slot ID")
+    if (searchListId === "") {
+      setError("Enter slot ID");
       setTimeout(() => {
         setError("");
       }, 3000);
-    }else{
-    try {
-      await scan_list_search(
-        setIsLoading,
-        searchListId,
-        setScanTableData,
-        setsearchListId,
-        setError
-      );
-    } catch (error) {
-      console.error("Error searching scan list:", error);
-    } finally {
-      setIsLoading(false);
+    } else {
+      try {
+        await scan_list_search(
+          setIsLoading,
+          searchListId,
+          setScanTableData,
+          setsearchListId,
+          setError
+        );
+      } catch (error) {
+        console.error("Error searching scan list:", error);
+      } finally {
+        setIsLoading(false);
+      }
     }
-  }
   };
 
   // const handleFilterSearch = (event) => {
@@ -83,7 +83,7 @@ const ScanTable = ({ sidebarExpanded}) => {
 
   const handleFilterSearch = async (event) => {
     const { value } = event.target;
-    setFilterSearchId(value.toUpperCase()); 
+    setFilterSearchId(value.toUpperCase());
 
     await scanSearchFilter(value.toUpperCase(), setScanTableData);
   };
@@ -102,8 +102,8 @@ const ScanTable = ({ sidebarExpanded}) => {
   };
 
   const formatDate = (dateString) => {
-    const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
-    return new Date(dateString).toLocaleDateString('en-GB', options);
+    const options = { day: "2-digit", month: "2-digit", year: "numeric" };
+    return new Date(dateString).toLocaleDateString("en-GB", options);
   };
 
   const handleKeyPress = (event) => {
@@ -116,60 +116,91 @@ const ScanTable = ({ sidebarExpanded}) => {
   console.log("data", scanTableData);
 
   return (
-       <div className="scantable_main"  style={{ marginLeft: sidebarExpanded ? "225px" : "130px" }}>
+    <div
+      className="scantable_main"
+      style={{ marginLeft: sidebarExpanded ? "225px" : "130px" }}
+    >
       <div className="scantable_main_search">
-          <div className="Search_User">
-            <input
-              className="searchblue_border"
-              type="text"
-              name="slot_id"
-              placeholder="Search"
-              value={filterSearchId}
-              onChange={handleFilterSearch}
-            />
-            <img className="searchblue" src={searchblue} alt="" />
-          </div>
-          {/* {error && (
+        <div className="Search_User">
+          <input
+            className="searchblue_border"
+            type="text"
+            name="slot_id"
+            placeholder="Search"
+            value={filterSearchId}
+            onChange={handleFilterSearch}
+          />
+          <img className="searchblue" src={searchblue} alt="" />
+        </div>
+        {/* {error && (
             <span style={{ color: "red", fontSize: "10px" }}>{error}</span>
           )} */}
 
-          <div className="secton_search" style={{flexDirection:"column",alignItems:"start"}}>
+        <div
+          className="secton_search"
+          style={{ flexDirection: "column", alignItems: "start" }}
+        >
           <div className="Search_User">
-          <input
-            type="text"
-            name="slot_id"
-            placeholder="Scan Product ID"
-            value={searchListId}
-            onChange={handleInputChange}
-            onKeyPress={handleKeyPress}
-          />
-          <img onClick={handleSearch} src={searchimg} alt="" />
+            <input
+              type="text"
+              name="slot_id"
+              placeholder="Scan Product ID"
+              value={searchListId}
+              onChange={handleInputChange}
+              onKeyPress={handleKeyPress}
+            />
+            <img onClick={handleSearch} src={searchimg} alt="" />
+          </div>
+          {error && (
+            <span style={{ color: "red", fontSize: "10px" }}>{error}</span>
+          )}
         </div>
-        {error && <span style={{color:"red",fontSize:"10px"}}>{error}</span>}
-          </div>
-          </div>
-      
+      </div>
+
       <div className="ScanTable">
         <div className="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th style={{ borderLeft: "none" }}>Sl No</th>
-                <th>Created Date</th>
-                <th style={{ width: "40%" }}>Product ID</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {scanTableData.map((item, index) => (
-                <tr className="table_row">
-                  <td style={{ borderLeft: "none" }}>{index + 1}</td>
-                  <td style={{ borderLeft: "none" }}>{formatDate(item.created_at)}</td>
-                  <td style={{ borderLeft: "none" }}>{item.finisheditem.designcode}</td>
+          {isLoading === true ? (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                background:"none  "
+              }}
+            >
+              <CircularProgress
+                size={50} // Set the desired size
+                sx={{
+                  color: "#126e72",
+                  padding: "8px 10px",
+                  width: "35px",
+                }}
+              />
+            </div>
+          ) : (
+            <table>
+              <thead>
+                <tr>
+                  <th style={{ borderLeft: "none" }}>Sl No</th>
+                  <th>Created Date</th>
+                  <th style={{ width: "40%" }}>Product ID</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {scanTableData.map((item, index) => (
+                  <tr className="table_row">
+                    <td style={{ borderLeft: "none" }}>{index + 1}</td>
+                    <td style={{ borderLeft: "none" }}>
+                      {formatDate(item.created_at)}
+                    </td>
+                    <td style={{ borderLeft: "none" }}>
+                      {item.finisheditem.designcode}
+                    </td>
 
-                  <td style={{ borderLeft: "none" }}>
-                    {/* <select
+                    <td style={{ borderLeft: "none" }}>
+                      {/* <select
                       className="scan_select"
                       value={item?.slot?.status?.id}
                       onChange={(e) =>
@@ -187,40 +218,49 @@ const ScanTable = ({ sidebarExpanded}) => {
                         </option>
                       ))}
                     </select> */}
-                    {/* <span className="scan_select_span">{item.status}</span> */}
-                    <span className="scan_select_span">Recived</span>
-                  </td>
+                      {/* <span className="scan_select_span">{item.status}</span> */}
+                      <span className="scan_select_span">Recived</span>
+                    </td>
 
-                  <td style={{ borderLeft: "none" }}>
-                    <div className="scan_btn_div">
-                      {/* <button
+                    <td style={{ borderLeft: "none" }}>
+                      <div className="scan_btn_div">
+                        {/* <button
                         className="btn_scan"
                         onClick={() => handleopenModal(item.finisheditem.finisheditem_id)}
                       >
                         <IoEye className="btn_scan_img1" />
                       </button> */}
-                      <button className="btn_scan">
-                        <img
-                          className="btn_scan_img2"
-                          src={ThreeDot}
-                          alt=""
-                          srcset=""
-                        />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                        <button className="btn_scan">
+                          <img
+                            className="btn_scan_img2"
+                            src={ThreeDot}
+                            alt=""
+                            srcset=""
+                          />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
       </div>
-      {scanTableData.length === 0 && (
-              <div className="" style={{width:"100%",height:"200px",display:"flex",alignItems:"center",justifyContent:"center"}}>
-
-                <span>No Data Found</span>
-              </div>
-            )}
+      {scanTableData.length === 0 && isLoading !== true && (
+        <div
+          className=""
+          style={{
+            width: "100%",
+            height: "200px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <span>No Data Found</span>
+        </div>
+      )}
 
       {openModal && (
         <ScanModal
@@ -229,7 +269,6 @@ const ScanTable = ({ sidebarExpanded}) => {
         />
       )}
     </div>
-    
   );
 };
 

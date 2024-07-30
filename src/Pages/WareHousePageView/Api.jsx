@@ -471,10 +471,12 @@ export const create_customizaion_warehouse = async (
 // ....WREHOUSE scan table..
 
 export const scan_list_datas = async (setIsLoading, setScanTableData) => {
+  setIsLoading(true)
   try {
     const response = await apiService.get(SCAN_TABLE_LIST);
     if (checkApiStatus(response)) {
       setScanTableData(response.data.results.data);
+      setIsLoading(false)
     }
   } catch (error) {
     console.log(error);
@@ -691,19 +693,16 @@ export const wareHouseEditBasicDetails = async (
   setErrors,
   navigate
 ) => {
+  debugger
   try {
     const body = {
       metal_type: [actualFormData.typeOfMetal],
-      // metal_type: [5],
-
       weight: actualFormData.weight,
       size: actualFormData.size,
       width: actualFormData.width,
       height: actualFormData.height,
       length_of_item: actualFormData.length,
       diamond_type: [actualFormData.diamondType],
-      // diamond_type: [7],
-
       diamond_weight: actualFormData.approxDiamondWeight,
       actual_price: actualFormData.actualPrice,
       notes: actualFormData.notes,
@@ -711,7 +710,7 @@ export const wareHouseEditBasicDetails = async (
     console.log(body, "formBody");
     const response = await apiService.patch(
       `${EDIT_DETAIL_VIEW_WAREHOUSE}${userWareHouseId}`,
-      body
+      actualFormData
     );
     if (response.data.results.status_code === 200) {
       setSuccessMessage("Updated Successfully");

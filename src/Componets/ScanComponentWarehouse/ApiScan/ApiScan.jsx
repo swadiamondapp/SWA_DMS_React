@@ -63,7 +63,10 @@ export const newScanProductStatusUpdate = async (
   setScanTableData,
   setError,
   setStatusId,
-  setOpen
+  setOpen,
+  setClickedProductIds,
+  setSuccessModalOpen,
+  setSuccessMessage
 ) => {
   debugger;
   try {
@@ -79,9 +82,15 @@ export const newScanProductStatusUpdate = async (
     if (response.data.results.status_code === 200) {
       warehoueScanTable(setScanTableData);
       setStatusId("");
-      alert("Status Updated");
+      // alert("Status Updated");
+      setSuccessModalOpen(true);
+      setSuccessMessage("Status Updated");
       setError("");
       setOpen(false);
+      setClickedProductIds([]);
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1000);
     }
   } catch (error) {
     console.log(error);
@@ -218,7 +227,8 @@ export const centralHubnewScanProductStatusUpdate = async (
   setChStatusId,
   setOpen,
   setSuccessModalOpen,
-  setSuccessMessage
+  setSuccessMessage,
+  setClickedProductIds
 ) => {
   debugger;
   try {
@@ -235,6 +245,7 @@ export const centralHubnewScanProductStatusUpdate = async (
       centralHubScanTable(setScanTableData);
       setSuccessModalOpen(true);
       setSuccessMessage("Status updated Successfully");
+      setClickedProductIds([])
       setTimeout(() => {
         setSuccessModalOpen(false);
       }, 1600);
