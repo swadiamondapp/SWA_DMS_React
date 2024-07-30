@@ -71,9 +71,9 @@ const CentralhubScanModule = ({ sidebarExpanded }) => {
     setIsLoading(true);
     if (searchListId === "") {
       setError("Enter slot ID");
-      setTimeout(()=>{
+      setTimeout(() => {
         setError("");
-    },3000)
+      }, 3000);
     } else {
       try {
         await CentralHubnewScanProductScan(
@@ -95,7 +95,7 @@ const CentralhubScanModule = ({ sidebarExpanded }) => {
 
   const handleFilterSearch = async (event) => {
     const { value } = event.target;
-    setFilterSearchId(value.toUpperCase()); 
+    setFilterSearchId(value.toUpperCase());
 
     await centralhubScanSearchFilter(value.toUpperCase(), setScanTableData);
   };
@@ -114,8 +114,8 @@ const CentralhubScanModule = ({ sidebarExpanded }) => {
   };
 
   const formatDate = (dateString) => {
-    const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
-    return new Date(dateString).toLocaleDateString('en-GB', options);
+    const options = { day: "2-digit", month: "2-digit", year: "numeric" };
+    return new Date(dateString).toLocaleDateString("en-GB", options);
   };
 
   console.log("central hub scanTableData", scanTableData);
@@ -186,6 +186,7 @@ const CentralhubScanModule = ({ sidebarExpanded }) => {
                       type="checkbox"
                       onChange={handleHeaderCheckboxChange}
                       checked={
+                        scanTableData.length > 0 &&
                         clickedProductIds.length === scanTableData.length
                       }
                     />
@@ -215,12 +216,14 @@ const CentralhubScanModule = ({ sidebarExpanded }) => {
                     <td style={{ borderLeft: "none" }}>
                       {item.Productdetails?.designcode}
                     </td>
-                    <td style={{ borderLeft: "none" }}>{formatDate(item.created_at)}</td>
+                    <td style={{ borderLeft: "none" }}>
+                      {formatDate(item.created_at)}
+                    </td>
                     <td style={{ borderLeft: "none" }}>
                       {item.Productdetails.product_category}
                     </td>
                     <td style={{ borderLeft: "none" }}>
-                      {item.Productdetails.status}
+                      {item.status}
                     </td>
                     <td style={{ borderLeft: "none" }}>
                       {item.Productdetails.approx_metal_weight} GM
@@ -239,18 +242,26 @@ const CentralhubScanModule = ({ sidebarExpanded }) => {
             </table>
           </div>
           <SuccessModal
-          successModalOpen={successModalOpen}
-          handleOpen={handleOpen}
-          handleClose={handleClose}
-          successMessage={successMessage}
-        />
+            successModalOpen={successModalOpen}
+            handleOpen={handleOpen}
+            handleClose={handleClose}
+            successMessage={successMessage}
+          />
         </div>
-            {scanTableData.length === 0 && (
-              <div className="" style={{width:"100%",height:"200px",display:"flex",alignItems:"center",justifyContent:"center"}}>
-
-                <span>No Data Found</span>
-              </div>
-            )}
+        {scanTableData.length === 0 && (
+          <div
+            className=""
+            style={{
+              width: "100%",
+              height: "200px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <span>No Data Found</span>
+          </div>
+        )}
 
         {open && (
           <MastersModal
@@ -263,7 +274,8 @@ const CentralhubScanModule = ({ sidebarExpanded }) => {
             clickedProductIds={clickedProductIds}
             setScanTableData={setScanTableData}
             setSuccessModalOpen={setSuccessModalOpen}
-            setSuccessMessage={setSuccessMessage}           
+            setSuccessMessage={setSuccessMessage}
+            setClickedProductIds={setClickedProductIds}
           />
         )}
       </div>

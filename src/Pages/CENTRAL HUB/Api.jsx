@@ -23,10 +23,12 @@ export const list_slot_central_hub = async (setIsLoading, setData) => {
   }
 };
 export const centralTransfer = async (setIsLoading, setTransferData) => {
+  setIsLoading(true)
   try {
     const response = await apiService.get(CENTRAL_HUB_TRANSFER);
     if (checkApiStatus(response)) {
       setTransferData(response.data.results.data);
+      setIsLoading(false)
     }
   } catch (error) {
     console.log(error);
@@ -93,7 +95,6 @@ export const transferScanSearchFilter = async (
   searchListId,
   setTableData,
 ) => {
-  debugger
   try {
     let endpoint = `${CENTRAL_HUB_TRANSFER}`;
 

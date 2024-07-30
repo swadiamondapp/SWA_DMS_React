@@ -113,6 +113,15 @@ const ScanWarehouse = ({ sidebarExpanded }) => {
     return new Date(dateString).toLocaleDateString('en-GB', options);
   };
 
+  const [statusUpdated, setStatusUpdated] = useState(false);
+
+  const handleStatusUpdate = () => {
+    // Your status update logic
+    setClickedProductIds([]);
+    setStatusUpdated(true);
+    setTimeout(() => setStatusUpdated(false), 100); // Optional: Reset the flag if needed
+  };
+
   console.log("scanTableData", scanTableData);
   console.log("clickedProductIds", clickedProductIds);
 
@@ -181,6 +190,7 @@ const ScanWarehouse = ({ sidebarExpanded }) => {
                       type="checkbox"
                       onChange={handleHeaderCheckboxChange}
                       checked={
+                        scanTableData.length > 0 &&
                         clickedProductIds.length === scanTableData.length
                       }
                     />
@@ -215,7 +225,7 @@ const ScanWarehouse = ({ sidebarExpanded }) => {
                       {item.Productdetails.product_category}
                     </td>
                     <td style={{ borderLeft: "none" }}>
-                      {item.Productdetails.status}
+                      {item.status}
                     </td>
                     <td style={{ borderLeft: "none" }}>
                       {item.Productdetails.approx_metal_weight} GM
@@ -265,6 +275,9 @@ const ScanWarehouse = ({ sidebarExpanded }) => {
             status={status}
             clickedProductIds={clickedProductIds}
             setScanTableData={setScanTableData}
+            setClickedProductIds={setClickedProductIds}
+            setSuccessModalOpen={setSuccessModalOpen}
+            setSuccessMessage={setSuccessMessage}
           />
         )}
       </div>

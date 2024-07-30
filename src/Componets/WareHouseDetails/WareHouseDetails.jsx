@@ -139,7 +139,7 @@ const WareHouseDetails = ({ sidebarExpanded }) => {
   };
   const filterOption = (input, option) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
-
+  
   return (
     <>
       <div
@@ -282,7 +282,7 @@ const WareHouseDetails = ({ sidebarExpanded }) => {
                       value: item.id,
                       label: item.metal_name,
                     }))}
-                    value={actualFormData.typeOfMetal}
+                    value={customizationwarehouseData.metal_type}
                   />
                 </div>
                 <div className="A1_text">
@@ -312,7 +312,7 @@ const WareHouseDetails = ({ sidebarExpanded }) => {
                       value: item.id,
                       label: item.name,
                     }))}
-                    value={actualFormData.diamondType || undefined}
+                    value={customizationwarehouseData.diamond_type|| undefined}
                   />
                 </div>
                 <div className="A1_text">

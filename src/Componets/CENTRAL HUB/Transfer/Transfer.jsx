@@ -22,6 +22,7 @@ import closeButton from "../../../assets/closeButton.svg";
 import searchimg from "../../../assets/search.png";
 import bluesearch from "../../../assets/bluesearch.png";
 import SuccessModal from "../../SuccessModal/SuccessModal";
+import { CircularProgress } from "@mui/material";
 
 const Transfer = ({ sidebarExpanded }) => {
   const [showEditDelete, setShowEditDelete] = useState(null);
@@ -76,8 +77,8 @@ const Transfer = ({ sidebarExpanded }) => {
   };
   console.log(slotView, "slotView");
   console.log(userId, "slotView");
-  console.log(Data, "center==============>");
-  console.log(TransferData, "TransferData");
+  // console.log(Data, "center==============>");
+  // console.log(TransferData, "TransferData");
   const sortedData = Data.sort((a, b) => a.id - b.id);
   const sortedTransfer = Data.sort((a, b) => a.id - b.id);
 
@@ -132,9 +133,15 @@ const Transfer = ({ sidebarExpanded }) => {
   const handleFilterSearch = async (event) => {
     const { value } = event.target;
     setFilterSearchId(value.toUpperCase());
-
-    await transferScanSearchFilter(value.toUpperCase(), setTransferData);
+  
+    if (value === "") {
+      // Fetch all data or reset the TransferData state when the search input is cleared
+      centralTransfer(setIsLoading, setTransferData);
+    } else {
+      await transferScanSearchFilter(value.toUpperCase(), setTransferData);
+    }
   };
+  
 
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
@@ -142,7 +149,7 @@ const Transfer = ({ sidebarExpanded }) => {
     }
   };
 
-  console.log(transferStatus, "transferStatus");
+
   console.log(CentralHubStatus, "CentralHubStatus");
   return (
     <div
@@ -204,6 +211,25 @@ const Transfer = ({ sidebarExpanded }) => {
       </div>
       {/* table */}
       <div className="">
+
+      {isLoading === true ? (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <CircularProgress
+                size={50} // Set the desired size
+                sx={{
+                  color: "#126e72",
+                  padding: "8px 10px",
+                  width: "35px",
+                }}
+              />
+            </div>
+          ) : (
         <table style={{ width: "100%" }}>
           <thead>
             <tr style={{ color: "#455173" }}>
@@ -216,7 +242,7 @@ const Transfer = ({ sidebarExpanded }) => {
             </tr>
           </thead>
           <tbody>
-            {TransferData.map((item, index) => (
+            {TransferData?.map((item, index) => (
               <tr key={index} style={{ color: "#2E364C" }}>
                 <td className="serialNumber_cell">{index + 1}</td>
                 <td style={{ width: "25%" }}>{formatDate(item.created_at)}</td>
@@ -369,9 +395,11 @@ const Transfer = ({ sidebarExpanded }) => {
             </Box>
           </Modal>
         </table>
+        )}
       </div>
 
-      {TransferData.length === 0 && (
+      {TransferData.length === 0 &&
+       isLoading !== true && (
         <div
           className=""
           style={{

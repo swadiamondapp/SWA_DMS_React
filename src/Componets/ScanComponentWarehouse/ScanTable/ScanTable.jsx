@@ -4,7 +4,7 @@ import searchimg from "../../../assets/search.png";
 import ThreeDot from "../../../assets/three.png";
 import ScanModal from "../ScanModal/ScanModal";
 import searchblue from "../../../assets/bluesearch.png";
-import { MenuItem, Select } from "@mui/material";
+import { CircularProgress, MenuItem, Select } from "@mui/material";
 import {
   scan_list_datas,
   scan_list_search,
@@ -159,29 +159,48 @@ const ScanTable = ({ sidebarExpanded }) => {
 
       <div className="ScanTable">
         <div className="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th style={{ borderLeft: "none" }}>Sl No</th>
-                <th>Created Date</th>
-                <th style={{ width: "40%" }}>Product ID</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {scanTableData.map((item, index) => (
-                <tr className="table_row">
-                  <td style={{ borderLeft: "none" }}>{index + 1}</td>
-                  <td style={{ borderLeft: "none" }}>
-                    {formatDate(item.created_at)}
-                  </td>
-                  <td style={{ borderLeft: "none" }}>
-                    {item.finisheditem.designcode}
-                  </td>
+{isLoading === true ? (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                background:"none  "
+              }}
+            >
+              <CircularProgress
+                size={50} // Set the desired size
+                sx={{
+                  color: "#126e72",
+                  padding: "8px 10px",
+                  width: "35px",
+                }}
+              />
+            </div>
+          ) : (
+            <table>
+              <thead>
+                <tr>
+                  <th style={{ borderLeft: "none" }}>Sl No</th>
+                  <th>Created Date</th>
+                  <th style={{ width: "40%" }}>Product ID</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {scanTableData.map((item, index) => (
+                  <tr className="table_row">
+                    <td style={{ borderLeft: "none" }}>{index + 1}</td>
+                    <td style={{ borderLeft: "none" }}>
+                      {formatDate(item.created_at)}
+                    </td>
+                    <td style={{ borderLeft: "none" }}>
+                      {item.finisheditem.designcode}
+                    </td>
 
-                  <td style={{ borderLeft: "none" }}>
-                    {/* <select
+                    <td style={{ borderLeft: "none" }}>
+                      {/* <select
                       className="scan_select"
                       value={item?.slot?.status?.id}
                       onChange={(e) =>
@@ -199,35 +218,36 @@ const ScanTable = ({ sidebarExpanded }) => {
                         </option>
                       ))}
                     </select> */}
-                    {/* <span className="scan_select_span">{item.status}</span> */}
-                    <span className="scan_select_span">Recived</span>
-                  </td>
+                      {/* <span className="scan_select_span">{item.status}</span> */}
+                      <span className="scan_select_span">Recived</span>
+                    </td>
 
-                  <td style={{ borderLeft: "none" }}>
-                    <div className="scan_btn_div">
-                      {/* <button
+                    <td style={{ borderLeft: "none" }}>
+                      <div className="scan_btn_div">
+                        {/* <button
                         className="btn_scan"
                         onClick={() => handleopenModal(item.finisheditem.finisheditem_id)}
                       >
                         <IoEye className="btn_scan_img1" />
                       </button> */}
-                      <button className="btn_scan">
-                        <img
-                          className="btn_scan_img2"
-                          src={ThreeDot}
-                          alt=""
-                          srcset=""
-                        />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                        <button className="btn_scan">
+                          <img
+                            className="btn_scan_img2"
+                            src={ThreeDot}
+                            alt=""
+                            srcset=""
+                          />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
       </div>
-      {scanTableData.length === 0 && (
+{scanTableData.length === 0 && isLoading !== true && (
         <div
           className=""
           style={{
