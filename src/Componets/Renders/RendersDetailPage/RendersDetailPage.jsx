@@ -16,12 +16,21 @@ const RendersDetailPage = ({ folderDetails, sidebarExpanded }) => {
   });
 
   const handleDownload = (imageUrl) => {
-    const link = document.createElement("a");
-    link.href = imageUrl;
-    link.setAttribute("download", "");
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    fetch(imageUrl, {
+      method: 'GET',
+      mode: 'cors'
+  })
+  .then(response => response.blob())
+  .then(blob => {
+      const blobUrl = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.download = 'downloaded_image.jpg';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+  })
+  .catch(error => console.error('Error downloading the image:', error));
   };
 
   return (
