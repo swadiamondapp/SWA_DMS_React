@@ -40,6 +40,14 @@ const RendersDetailPage = ({ folderDetails, sidebarExpanded }) => {
       threeD: null 
     });
   };
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const year = date.getFullYear();
+  
+    return `${day} ${month} ${year}`;
+  };
 
   return (
     <>
@@ -52,7 +60,7 @@ const RendersDetailPage = ({ folderDetails, sidebarExpanded }) => {
           <div className="Detail_Card">
             <img src={item.file_2d} alt="" />
             <span>
-              POSTED ON: <b>{item.created_at.split("T")[0]} </b>
+              POSTED ON:   <b>{formatDate(item.created_at)}</b>
             </span>
             <button onClick={() => handleDownload(item.file_2d)}>
               DOWNLOAD <img className="img_detail" src={download} alt="" />
@@ -61,7 +69,7 @@ const RendersDetailPage = ({ folderDetails, sidebarExpanded }) => {
           <div className="Detail_Card">
             <img src={item.file_3d} alt="" />
             <span>
-              POSTED ON: <b> {item.created_at.split("T")[0]} </b>
+              POSTED ON: <b> {formatDate(item.created_at.split("T")[0])} </b>
             </span>
             <ReactToPrint
               trigger={() => (

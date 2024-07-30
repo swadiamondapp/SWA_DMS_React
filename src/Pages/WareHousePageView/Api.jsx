@@ -695,8 +695,8 @@ export const wareHouseEditBasicDetails = async (
   try {
     const body = {
       metal_type: [actualFormData.typeOfMetal],
-      weight: actualFormData.weight,
-      size: actualFormData.size,
+      weight: actualFormData.approxWeight,
+      // size: actualFormData.size,
       width: actualFormData.width,
       height: actualFormData.height,
       length_of_item: actualFormData.length,
@@ -708,7 +708,7 @@ export const wareHouseEditBasicDetails = async (
     console.log(body, "formBody");
     const response = await apiService.patch(
       `${EDIT_DETAIL_VIEW_WAREHOUSE}${userWareHouseId}`,
-      actualFormData
+      body
     );
     if (response.data.results.status_code === 200) {
       setSuccessMessage("Updated Successfully");
