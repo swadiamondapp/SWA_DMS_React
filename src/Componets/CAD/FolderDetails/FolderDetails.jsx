@@ -55,7 +55,7 @@ const FolderDetails = () => {
     formData.append("designcode", productCode);
     formData.append("file_2d", images.normal);
     formData.append("file_3d", images.threeD);
-    
+
     reUploadFile(
       setIsLoading,
       formData,
@@ -72,7 +72,6 @@ const FolderDetails = () => {
       }
     );
   };
-  
 
   console.log("imagesName--->", imagesName);
 
@@ -103,6 +102,7 @@ const FolderDetails = () => {
         folderDetails={folderDetails[0]}
         reUpload={true}
         imagesName={imagesName}
+        isLoading={isLoading}
       />
       <SuccessModal
         successModalOpen={successModalOpen}
