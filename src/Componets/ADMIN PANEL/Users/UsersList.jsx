@@ -6,6 +6,7 @@ import { Modal, Select } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { message, Upload } from "antd";
 import ImgCrop from "antd-img-crop";
+import { CircularProgress } from "@mui/material";
 import UserEm from "../../../assets/userEmpty.png";
 import Joi from "joi";
 import {
@@ -18,7 +19,6 @@ import {
 } from "./Api";
 import UlaodImag from "../../../assets/upi.png";
 import SuccessModal from "../../SuccessModal/SuccessModal";
-import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import DeleteConfirmationModal from "../../ConfirmationModal/DeleteConfirmationModal";
 
@@ -69,6 +69,7 @@ const UsersList = ({
   SearchedNamesGet,
   userList,
   setUserList,
+  IsLoading,
 }) => {
   // create modal
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -624,20 +625,41 @@ const UsersList = ({
         </div>
         {/* create modal */}
         <div className="Users_Table_List">
-          <table style={{ width: "100%" }}>
-            <thead>
-              <tr style={{ color: "#455173" }}>
-                <th>Date</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Password</th>
-                <th>Desigination</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {userList.length > 0 ? (
+          {IsLoading ? (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <CircularProgress
+                size={70} // Set the desired size
+                sx={{
+                  color: "#126e72",
+                  padding: "8px 10px",
+                  width: "35px",
+                  marginTop: "100px",
+                  marginLeft: "100px",
+                }}
+              />
+            </div>
+          ) : userList == "" ? (
+            "No Data found"
+          ) : (
+            <table style={{ width: "100%" }}>
+              <thead>
+                <tr style={{ color: "#455173" }}>
+                  <th>Date</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Password</th>
+                  <th>Designation</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
                 <>
                   {userList?.map((item, index) => (
                     <tr key={index} style={{ color: "#2E364C" }}>
@@ -755,17 +777,9 @@ const UsersList = ({
                     </tr>
                   ))}
                 </>
-              ) : (
-                <>
-                  <tr>
-                    <td colSpan="8" style={{ textAlign: "center" }}>
-                      No users found.
-                    </td>
-                  </tr>
-                </>
-              )}
-            </tbody>
-          </table>
+              </tbody>
+            </table>
+          )}
         </div>
         <SuccessModal
           successModalOpen={successModalOpen}
