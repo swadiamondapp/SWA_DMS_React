@@ -215,15 +215,15 @@ const CreateCustomisation = ({
         "number.positive": `Choose Outlet must be a positive number`
       }),
     productType:  Joi.alternatives().try(
-        Joi.number().integer().positive(), // if ID is a number
-        Joi.string().min(1) // if ID is a string
-      ).required().messages({
-        "any.required": ` cannot be an empty feild`,
-        "string.empty": `cannot be an empty feild`,
-        "number.base": `Product Type must be a valid number`,
-        "number.integer": `Product Type must be an integer`,
-        "number.positive": `Product Type must be a positive number`
-      }),
+      Joi.number().integer().positive(), // if ID is a number
+      Joi.string().min(1) // if ID is a string
+    ).required().messages({
+      "any.required": ` cannot be an empty feild`,
+      "string.empty": `cannot be an empty feild`,
+      "number.base": `Product Type must be a valid number`,
+      "number.integer": `Product Type must be an integer`,
+      "number.positive": `Product Type must be a positive number`
+    }),
     modelPrevioslyMade: Joi.string().required().messages({
       "string.empty": `cannot be empty`,
     }),
@@ -466,76 +466,76 @@ const CreateCustomisation = ({
     dataToDisplaytomodal?.image5,
   ];
 
-  useEffect(() => {
-    // Find the first field with an error
-    const firstErrorField = Object.keys(errors).find((key) => errors[key]);
+  // useEffect(() => {
+  //   // Find the first field with an error
+  //   const firstErrorField = Object.keys(errors).find((key) => errors[key]);
 
-    // Scroll to the first error field if it exists
-    switch (firstErrorField) {
-      case 'sallerName':
-        sallerNameRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        break;
-      case 'mobileNumber':
-        mobileNumberRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        break;
-      case 'chooseOutlet':
-        chooseOutletRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        break;
-      case 'productType':
-        productTypeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        break;
-      case 'modelPrevioslyMade':
-        modelPrevioslyMadeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        break;
-      case 'prevMadeSKU':
-        prevMadeSKURef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        break;
-      case 'metalType':
-        metalTypeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        break;
-      case 'weight':
-        weightRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        break;
-      case 'size':
-        sizeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        break;
-      case 'width':
-        widthRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        break;
-      case 'length_of_item':
-        lengthOfItemRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        break;
-      case 'height':
-        heightRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        break;
-      case 'diamond_type':
-        diamondTypeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        break;
-      case 'diamondWeight':
-        diamondWeightRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        break;
-      case 'numberOfDiamonds':
-        numberOfDiamondsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        break;
-      case 'diamondClarity':
-        diamondClarityRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        break;
-      case 'diamondColor':
-        diamondColorRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        break;
-      case 'Budget':
-        budgetRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        break;
-      case 'swaProductSKU':
-        swaProductSKURef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        break;
-      case 'notes':
-        notesRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        break;
-      default:
-        break;
-    }
-  }, [errors]);
+  //   // Scroll to the first error field if it exists
+  //   switch (firstErrorField) {
+  //     case 'sallerName':
+  //       sallerNameRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  //       break;
+  //     case 'mobileNumber':
+  //       mobileNumberRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  //       break;
+  //     case 'chooseOutlet':
+  //       chooseOutletRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  //       break;
+  //     case 'productType':
+  //       productTypeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  //       break;
+  //     case 'modelPrevioslyMade':
+  //       modelPrevioslyMadeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  //       break;
+  //     case 'prevMadeSKU':
+  //       prevMadeSKURef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  //       break;
+  //     case 'metalType':
+  //       metalTypeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  //       break;
+  //     case 'weight':
+  //       weightRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  //       break;
+  //     case 'size':
+  //       sizeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  //       break;
+  //     case 'width':
+  //       widthRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  //       break;
+  //     case 'length_of_item':
+  //       lengthOfItemRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  //       break;
+  //     case 'height':
+  //       heightRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  //       break;
+  //     case 'diamond_type':
+  //       diamondTypeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  //       break;
+  //     case 'diamondWeight':
+  //       diamondWeightRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  //       break;
+  //     case 'numberOfDiamonds':
+  //       numberOfDiamondsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  //       break;
+  //     case 'diamondClarity':
+  //       diamondClarityRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  //       break;
+  //     case 'diamondColor':
+  //       diamondColorRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  //       break;
+  //     case 'Budget':
+  //       budgetRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  //       break;
+  //     case 'swaProductSKU':
+  //       swaProductSKURef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  //       break;
+  //     case 'notes':
+  //       notesRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // }, [errors]);
 
   
   return (
