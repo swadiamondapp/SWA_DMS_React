@@ -67,7 +67,7 @@ const Header = ({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
+console.log(userImage,"userImagge")
   const handleSearchWithName = (event) => {
     setSearchWithName(event.target.value, "nameSarch");
   };
