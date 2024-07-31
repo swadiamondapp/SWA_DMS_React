@@ -330,7 +330,7 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
             <div className="horizontal_line_sidebar"></div>
             <div className="lin_container"></div>
               <img src={pack} alt="" />
-              {sidebarExpanded && <p>Received </p>}
+              {sidebarExpanded && <p>Recieved </p>}
             </div>
           </Link>
           <Link to="/workdone">

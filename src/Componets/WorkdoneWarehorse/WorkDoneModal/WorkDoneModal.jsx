@@ -112,8 +112,16 @@ const WorkDoneModal = ({ setOpen, clickedProductId }) => {
                     <div className="workdone_modal_sub">
                       {product?.basic_details?.assignment?.findings.map(
                         (item) => (
-                          <span>{item.find_name} ,</span>
-                        )
+                          <span
+                            style={{
+                              background: "lightgray",
+                              padding: "3px 5px",
+                              borderRadius: "10px",
+                            }}
+                          >
+                            {item.find_name} ,
+                          </span>
+                            )
                       )}
                     </div>
                   </>

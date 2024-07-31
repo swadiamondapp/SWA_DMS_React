@@ -63,8 +63,10 @@ gap: 10px;
     width: 100%;
     display: flex;
     justify-content: end;
+    align-items: end;
     padding-top: 30px !important;
     padding-bottom: 30px !important;
+    flex-direction: column;
 }
 .update_btn button{
 width: 30%;
