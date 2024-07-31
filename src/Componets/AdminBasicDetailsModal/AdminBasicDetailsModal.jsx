@@ -1348,13 +1348,13 @@ const AdminBasicDetailsModal = ({
                     <tr>
                       <td className="calculationType">Net Weight</td>
                       <td className="calculatedAmount">
-                        {CalculationData?.net_weight?.toFixed(2)}
+                        {CalculationData?.net_weight}
                       </td>
                     </tr>
                     <tr>
                       <td className="calculationType">Metal Cost</td>
                       <td className="calculatedAmount">
-                        {CalculationData.metal_cost?.toFixed(2)}
+                        {CalculationData.metal_cost}
                        
                       </td>
                     </tr>
@@ -1367,31 +1367,31 @@ const AdminBasicDetailsModal = ({
                     <tr>
                       <td className="calculationType">Manufacturing Cost</td>
                       <td className="calculatedAmount">
-                        {CalculationData?.manufacturing_cost?.toFixed(2)}
+                        {CalculationData?.manufacturing_cost}
                       </td>
                     </tr>
                     <tr>
                       <td className="calculationType">GST</td>
                       <td className="calculatedAmount">
-                        {CalculationData?.gst?.toFixed(2)}
+                        {CalculationData?.gst}
                       </td>
                     </tr>
                     <tr>
                       <td className="calculationType">Production Cost</td>
                       <td className="calculatedAmount">
-                        {CalculationData?.production_cost?.toFixed(2)}
+                        {CalculationData?.production_cost}
                       </td>
                     </tr>
                     <tr>
                       <td className="calculationType">Value Add</td>
                       <td className="calculatedAmount">
-                        {CalculationData?.value_additions?.toFixed(2)}
+                        {CalculationData?.value_additions}
                       </td>
                     </tr>
                     <tr>
                       <td className="calculationType">Calculated MRP</td>
                       <td className="calculatedAmount">
-                        {CalculationData?.calculated_mrp?.toFixed(2)}
+                        {CalculationData?.calculated_mrp}
                       </td>
                     </tr>
                   </tbody>

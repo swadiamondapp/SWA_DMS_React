@@ -98,10 +98,19 @@ const DesignerDetailView = (props) => {
     return `${day}-${monthName}-${year}`;
   };
 
-  const sortedItems =
-    props.folderDetails?.assignment_items?.sort((a, b) =>
-      a.items_status === "ALLOCATED" ? 1 : -1
-    ) || [];
+  // const sortedItems =
+  //   props.folderDetails?.assignment_items?.sort((a, b) =>
+  //     a.items_status === "ALLOCATED" ? 1 : -1
+  //   ) || [];
+    // const sortedItems =
+    // props.folderDetails?.assignment_items?.sort((a, b) => {
+    //   if (a.items_status === b.items_status) {
+    //     return 0; // Keep original order if status is the same
+    //   }
+    //   return a.items_status === "ALLOCATED" ? 1 : -1;
+    // }) || [];
+  // console.log(sortedItems, "sorted");
+    console.log(props.folderDetails.assignment_items,"sorted")
   return (
     <div
       className="DesignerAssignmentPanel"
@@ -126,7 +135,7 @@ const DesignerDetailView = (props) => {
         <div className="Parent_NewDesign">
           <div className="Card_Design_Parent" style={{ marginTop: "50px" }}>
             {props.folderDetails &&
-              sortedItems.map((item) => (
+              props.folderDetails?.assignment_items?.map((item) => (
                 <div
                   className="New_Design_card"
                   // style={{
