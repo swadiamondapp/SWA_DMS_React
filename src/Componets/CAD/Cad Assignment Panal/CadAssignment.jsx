@@ -107,7 +107,7 @@ const CadAssignment = ({
             <div>
               <p className="D__fileUpload">Submit design</p>
               <p className="D__fileUpload2">
-                Upload your finished file as png and 2.dm file format
+                Upload your finished file as png and 3.dm file format
               </p>
             </div>
             <div className="File____uploadbtn">
@@ -183,14 +183,11 @@ const CadAssignment = ({
                         : "notstarted"
                     }
                   >
-                    {item.timer_status
-                      .replace("-", "") // Remove hyphen
-                      .charAt(0) // Get the first character
-                      .toUpperCase() + // Capitalize the first character
-                      item.timer_status
-                        .replace("-", "") // Remove hyphen again for the rest of the string
-                        .slice(1) // Get the rest of the string
-                        .toLowerCase()}
+                    {item.timer_status === "Completed"
+                      ? "Completed"
+                      : item.timer_status === "on-going"
+                      ? "On Going"
+                      : "Not Started"}
                   </span>
                   {item.timer_status === "Completed" ? (
                     <button
@@ -237,8 +234,8 @@ const CadAssignment = ({
                       className="Download_btn_hub"
                       style={{ background: "#006E7F" }}
                       onClick={() => {
-                        onButtonClick(item.item_id); 
-                        handleDownload(item.design_image)
+                        onButtonClick(item.item_id);
+                        handleDownload(item.design_image);
                       }}
                       disabled={designList.some(
                         (d) => d.timer_status === "on-going"
