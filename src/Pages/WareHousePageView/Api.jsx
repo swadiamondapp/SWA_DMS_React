@@ -473,12 +473,12 @@ export const create_customizaion_warehouse = async (
 // ....WREHOUSE scan table..
 
 export const scan_list_datas = async (setIsLoading, setScanTableData) => {
-  setIsLoading(true)
+  setIsLoading(true);
   try {
     const response = await apiService.get(SCAN_TABLE_LIST);
     if (checkApiStatus(response)) {
       setScanTableData(response.data.results.data);
-      setIsLoading(false)
+      setIsLoading(false);
     }
   } catch (error) {
     console.log(error);
@@ -511,18 +511,25 @@ export const scan_list_search = async (
   searchListId,
   setScanTableData,
   setsearchListId,
-  setError
+  setError,
+  setSuccessModalOpen,
+  setSuccessMessage
 ) => {
+  debugger
   try {
     const body = {
       finisheditem_id: searchListId,
     };
-
     const response = await apiService.post(SCAN_TABLE_SLOTID_SEARCH, body);
-    if (response.data.results.status_code === 200) {
-      scan_list_datas(setIsLoading, setScanTableData);
+    if (checkApiStatus(response)) {
+      scan_list_datas( setIsLoading,setScanTableData);
       setsearchListId("");
-      alert("Item Added");
+      setSuccessMessage("Scanned Successfully");
+      setSuccessModalOpen(true);
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1700);
+      // alert("Item Added");
       setError("");
     }
     if (response.data.results.status_code === 206) {
@@ -691,7 +698,7 @@ export const wareHouseEditBasicDetails = async (
   setErrors,
   navigate
 ) => {
-  debugger
+  debugger;
   try {
     const body = {
       metal_type: actualFormData.typeOfMetal,
