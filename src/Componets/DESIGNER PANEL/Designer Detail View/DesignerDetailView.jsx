@@ -15,7 +15,6 @@ const DesignerDetailView = (props) => {
   const location = useLocation();
   const query = new URLSearchParams(location.search);
   const folderName = query.get("name");
-  console.log(folderName, "folderName=12===>");
 
   const card = [
     {
@@ -100,11 +99,14 @@ const DesignerDetailView = (props) => {
   };
 
   const sortedItems =
-  props.folderDetails?.assignment_items?.sort((a, b) =>
-    a.items_status === "ALLOCATED" ? 1 : -1
-  ) || [];
+    props.folderDetails?.assignment_items?.sort((a, b) =>
+      a.items_status === "ALLOCATED" ? 1 : -1
+    ) || [];
   return (
-    <div className="DesignerAssignmentPanel"  style={{paddingLeft:props.sidebarExpanded? "225px":"130px"}}>
+    <div
+      className="DesignerAssignmentPanel"
+      style={{ paddingLeft: props.sidebarExpanded ? "225px" : "130px" }}
+    >
       <DesignBtn
         toggleDownloadOptions={toggleDownloadOptions}
         selectButtonLabel={selectButtonLabel}
@@ -122,7 +124,7 @@ const DesignerDetailView = (props) => {
       />
       <div className="DesignerAssignment___panel_Cards">
         <div className="Parent_NewDesign">
-          <div className="Card_Design_Parent" style={{marginTop:"50px"}}>
+          <div className="Card_Design_Parent" style={{ marginTop: "50px" }}>
             {props.folderDetails &&
               sortedItems.map((item) => (
                 <div
