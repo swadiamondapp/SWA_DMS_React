@@ -1,17 +1,23 @@
 import React, { useState, useRef } from "react";
 import { Stage, Layer, Rect, Arrow, Text, Image } from "react-konva";
 import useImage from "use-image";
-import viewImage from "../../assets/wh_img.png";
 import arrowbtn from "../../assets/arrowbtn.png";
 import dlt10 from "../../assets/dlt10.png";
-import message from "../../assets/message.png";
 import prev from "../../assets/prev.png";
 import textAdd from "../../assets/text.png";
 import rectangle from "../../assets/rectangle.png";
 import undo from "../../assets/undo.png";
 import "./AnnotationCanvas.css";
+import { editedImageUpload } from "../ADMIN PANEL/Design Pool/Api";
+import { TfiSave } from "react-icons/tfi";
 
-const AnnotationCanvas = ({selectedDesign}) => {
+const AnnotationCanvas = ({
+  selectedDesign,
+  setSuccessModalOpen,
+  setSuccessMessage,
+  setanotationModal,
+  setData
+}) => {
   const [shapesHistory, setShapesHistory] = useState([]);
   const [undoneShapes, setUndoneShapes] = useState([]);
   const [currentShape, setCurrentShape] = useState(null);
@@ -19,23 +25,20 @@ const AnnotationCanvas = ({selectedDesign}) => {
   const [image, setImage] = useState(selectedDesign.image);
   const [text, setText] = useState("");
   const stageRef = useRef(null);
-  const [loadedImage] = useImage(image);
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.onload = () => {
-      setImage(reader.result);
-    };
-    reader.readAsDataURL(file);
-  };
+  const [loadedImage] = useImage(image, "Anonymous");
+  const [editedImage, setEditedImage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+ 
+  const [updateImage,setUpadateImage]= useState({
+    image:editedImage
+  })
 
   const handleMouseDown = (e) => {
     if (action === "arrow") {
       setCurrentShape({
         type: "arrow",
         points: [e.evt.layerX, e.evt.layerY, e.evt.layerX, e.evt.layerY],
-        text: "", 
+        text: "",
       });
     } else if (action === "rect") {
       setCurrentShape({
@@ -46,7 +49,7 @@ const AnnotationCanvas = ({selectedDesign}) => {
         height: 0,
       });
     } else if (action === "text") {
-      setText(""); // Clear previous text input
+      setText("");
       setCurrentShape({
         type: "text",
         x: e.evt.layerX,
@@ -81,7 +84,6 @@ const AnnotationCanvas = ({selectedDesign}) => {
   const handleMouseUp = () => {
     if (currentShape) {
       if (currentShape.type === "text") {
-        // Text annotation case
         if (text.trim() !== "") {
           const newText = {
             ...currentShape,
@@ -93,7 +95,7 @@ const AnnotationCanvas = ({selectedDesign}) => {
         setShapesHistory([...shapesHistory, currentShape]);
       }
       setCurrentShape(null);
-      setUndoneShapes([]); 
+      setUndoneShapes([]);
     }
   };
 
@@ -115,15 +117,6 @@ const AnnotationCanvas = ({selectedDesign}) => {
     }
   };
 
-  const getTextWidth = (text, fontSize) => {
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
-    context.font = `${fontSize}px Arial`;
-    const width = context.measureText(text).width;
-    return width;
-  };
-  
-
   const handleDelete = () => {
     setShapesHistory([]);
     setUndoneShapes([]);
@@ -135,8 +128,70 @@ const AnnotationCanvas = ({selectedDesign}) => {
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
-      handleMouseUp(); 
+      handleMouseUp();
     }
+  };
+
+  // Function to capture the canvas as an image and store it in the state
+  // const captureCanvasAsImage = () => {
+  //   if (stageRef.current) {
+  //     const uri = stageRef.current.toDataURL();
+  //     setEditedImage(uri);
+  //   }
+  // };
+
+  const captureCanvasAsImage = () => {
+    try {
+      if (stageRef.current) {
+        const uri = stageRef.current.toDataURL();
+        setEditedImage(uri);
+        console.log(uri);
+      }
+    } catch (error) {
+      console.error("Error capturing the canvas as an image:", error);
+    }
+  };
+
+
+
+  const handleUploadEditedImage = async () => {
+    captureCanvasAsImage();
+    if (!editedImage) {
+      console.error("No edited image to upload.");
+      return;
+    }
+    try {
+      const formData = new FormData();
+      formData.append('image', editedImage); 
+
+      console.log("formDataaa",formData)
+  
+      setIsLoading(true);
+      await editedImageUpload(
+        setIsLoading,
+        editedImage,
+        selectedDesign.id,
+        setSuccessModalOpen,
+        setSuccessMessage,
+        setanotationModal,
+        setData,
+        formData
+      );
+    } catch (error) {
+      console.error("Error uploading the edited image:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+
+  console.log("editedImageeee", editedImage);
+
+  const getTextWidth = (text, fontSize) => {
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+    context.font = `${fontSize}px Arial`;
+    return context.measureText(text).width;
   };
 
   const renderShapes = () => {
@@ -160,18 +215,18 @@ const AnnotationCanvas = ({selectedDesign}) => {
             <Rect
               x={shape.x}
               y={shape.y}
-              width={getTextWidth(shape.text, 11) + 10} 
-              height={20} 
+              width={getTextWidth(shape.text, 11) + 10}
+              height={20}
               fill="#E6E6E6"
             />
             <Text
               x={shape.x}
-              y={shape.y} 
+              y={shape.y}
               text={shape.text}
               fontSize={11}
               fill="black"
               align="center"
-              padding={5} 
+              padding={5}
             />
           </React.Fragment>
         );
@@ -181,9 +236,14 @@ const AnnotationCanvas = ({selectedDesign}) => {
   };
 
   return (
-    <div style={{ width: "100%", position: "relative", height: "440px",
-      marginTop:"20px"
-     }}>
+    <div
+      style={{
+        width: "100%",
+        position: "relative",
+        height: "440px",
+        marginTop: "20px",
+      }}
+    >
       <Stage
         width={470}
         height={400}
@@ -194,15 +254,8 @@ const AnnotationCanvas = ({selectedDesign}) => {
       >
         <Layer>
           {loadedImage && (
-            <Image
-              image={loadedImage}
-              x={0}
-              y={0}
-              width={470} 
-              height={400} 
-            />
+            <Image image={loadedImage} x={0} y={0} width={470} height={400} />
           )}
-
           {renderShapes()}
           {currentShape && currentShape.type === "arrow" && (
             <Arrow points={currentShape.points} stroke="black" />
@@ -223,7 +276,6 @@ const AnnotationCanvas = ({selectedDesign}) => {
               text={text}
               fontSize={10}
               fill="red"
-              // style={{background}}
             />
           )}
         </Layer>
@@ -232,7 +284,6 @@ const AnnotationCanvas = ({selectedDesign}) => {
         className="annotation_buttons"
         style={{ position: "absolute", bottom: "0px", left: "4%" }}
       >
-        {/* <input type="file" onChange={handleFileChange} /> */}
         <button onClick={() => setAction("arrow")}>
           <img
             style={{ width: "16px", height: "15px" }}
@@ -275,8 +326,10 @@ const AnnotationCanvas = ({selectedDesign}) => {
             alt="delete"
           />
         </button>
+        <button onClick={handleUploadEditedImage}>
+          <TfiSave style={{ fontSize: "15px", marginTop: "2px" }} />
+        </button>
       </div>
-      {/* Text input for annotations */}
       {currentShape && currentShape.type === "text" && (
         <div
           style={{

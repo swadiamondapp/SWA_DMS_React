@@ -694,13 +694,12 @@ export const wareHouseEditBasicDetails = async (
   debugger
   try {
     const body = {
-      metal_type: [actualFormData.typeOfMetal],
+      metal_type: actualFormData.typeOfMetal,
       weight: actualFormData.approxWeight,
-      // size: actualFormData.size,
       width: actualFormData.width,
       height: actualFormData.height,
       length_of_item: actualFormData.length,
-      diamond_type: [actualFormData.diamondType],
+      diamond_type: actualFormData.diamondType,
       diamond_weight: actualFormData.approxDiamondWeight,
       actual_price: actualFormData.actualPrice,
       notes: actualFormData.notes,

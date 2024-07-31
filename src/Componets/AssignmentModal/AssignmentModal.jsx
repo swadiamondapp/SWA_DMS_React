@@ -92,6 +92,7 @@ const AssignmentModal = ({
   const handleCloseCreateModal = () => {
     ToCloseCreatefolder(false);
     setError("");
+    setFolderName("")
   };
 
   const handleChange = (event) => {
@@ -108,6 +109,7 @@ const AssignmentModal = ({
           <Modal
             title=""
             open={open}
+            // onClose={()=>ToCloseCreatefolder(false)}
             onCancel={handleCloseCreateModal}
             centered
             width={300}

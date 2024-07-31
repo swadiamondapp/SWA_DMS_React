@@ -98,7 +98,6 @@ const FinishedProjects = (props) => {
 
         <div
           className="Design_FileUpload"
-          onClick={() => setUploadModalOpen(true)}
         >
           {uploadInstructionsVisible ? (
             <>
@@ -106,8 +105,8 @@ const FinishedProjects = (props) => {
                 <p className="D__fileUpload">Submit design</p>
                 <p className="D__fileUpload2">Upload your finished Projects</p>
               </div>
-              <div className="File____uploadbtn">
-                <button>
+              <div className="File____uploadbtn"  onClick={() => setUploadModalOpen(true)}>
+                <button >
                   Upload File{" "}
                   <LiaCloudUploadAltSolid style={{ fontSize: "22px" }} />
                 </button>
