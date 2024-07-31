@@ -177,3 +177,4 @@ const DesignerDetailView = (props) => {
 };
 
 export default DesignerDetailView;
+
