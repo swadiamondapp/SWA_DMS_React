@@ -78,7 +78,9 @@ const ScanWarehouse = ({ sidebarExpanded }) => {
           searchListId,
           setScanTableData,
           setsearchListId,
-          setError
+          setError,
+          setSuccessModalOpen,
+          setSuccessMessage
         );
       } catch (error) {
         console.error("Error searching scan list:", error);
@@ -169,14 +171,16 @@ const ScanWarehouse = ({ sidebarExpanded }) => {
                   onChange={handleInputChange}
                   onKeyPress={handleKeyPress}
                 />
-                <img onClick={handleSearch} src={searchimg} alt="" />
+                <img onKeyPress={handleKeyPress} src={searchimg} alt="" />
               </div>
               {error && (
                 <span style={{ color: "red", fontSize: "10px" }}>{error}</span>
               )}
             </div>
             <div className="Create_user">
-              <button onClick={openModal}>Change WH Status</button>
+              <button
+              disabled={clickedProductIds.length === 0}
+              onClick={openModal}>Change WH Status</button>
             </div>
           </div>
         </div>

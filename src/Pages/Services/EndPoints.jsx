@@ -14,6 +14,8 @@ export const ASSIGNMENT_SORTBY_ADMIN = "assigned-design/?uploaduser=ADMIN";
 export const MOVE_TO_ASSIGNMENT = "move-design/";
 export const LIST_ASSIGNMENT_PANEL = "assigned-design/";
 export const LIST_ASSIGNMENT_FOLDER = "getlist-folder/";
+export const UPDATE_DESIGNPOOL_IMAGE= "update/design/";
+
 // export const FOLDER_DETAIL_API = "folder-detail/";
 export const FOLDER_DETAIL_API = "cad/list/folder-items/";
 export const VOTERS_CUSTOMIZATION_LIST = "list-all-customization/";

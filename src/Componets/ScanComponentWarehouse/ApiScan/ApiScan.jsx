@@ -29,7 +29,9 @@ export const newScanProductScan = async (
   searchListId,
   setScanTableData,
   setsearchListId,
-  setError
+  setError,
+  setSuccessModalOpen,
+  setSuccessMessage
 ) => {
   try {
     const body = {
@@ -40,7 +42,12 @@ export const newScanProductScan = async (
     if (response.data.results.status_code === 200) {
       warehoueScanTable(setScanTableData);
       setsearchListId("");
-      alert("Item Added");
+      setSuccessMessage("Item Added Successfully");
+      setSuccessModalOpen(true);
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1600);
+      // alert("Item Added");
       setError("");
     }
     if (response.data.results.status_code === 206) {
@@ -190,7 +197,9 @@ export const CentralHubnewScanProductScan = async (
   searchListId,
   setScanTableData,
   setsearchListId,
-  setError
+  setError,
+  setSuccessModalOpen,
+  setSuccessMessage
 ) => {
   try {
     const body = {
@@ -204,16 +213,28 @@ export const CentralHubnewScanProductScan = async (
     if (response.data.results.status_code === 200) {
       centralHubScanTable(setScanTableData);
       setsearchListId("");
-      alert("Item Added");
+      setSuccessMessage("Item Added Successfully");
+      setSuccessModalOpen(true);
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1600);
+      // alert("Item Added");
       setError("");
     }
     if (response.data.results.status_code === 206) {
       setError(response.data.results.message);
       setsearchListId("");
     }
+    if (response.data.results.status_code === 206) {
+      setError(response.data.results.message);
+      setsearchListId("");
+    }
+    if (response.data.results.status_code === 204) {
+      setError(response.data.results.message);
+      setsearchListId("");
+    }
   } catch (error) {
     console.log(error);
-    alert("Item Not Found");
     setError("");
     setsearchListId("");
   }
@@ -245,7 +266,7 @@ export const centralHubnewScanProductStatusUpdate = async (
       centralHubScanTable(setScanTableData);
       setSuccessModalOpen(true);
       setSuccessMessage("Status updated Successfully");
-      setClickedProductIds([])
+      setClickedProductIds([]);
       setTimeout(() => {
         setSuccessModalOpen(false);
       }, 1600);

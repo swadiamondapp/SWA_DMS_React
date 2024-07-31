@@ -113,7 +113,14 @@ const Transfer = ({ sidebarExpanded }) => {
     const { value } = event.target;
     console.log(value, itemId, "acscas");
 
-    changeCentralHubStatus(itemId, setIsLoading, value, setTransferData);
+    changeCentralHubStatus(
+      itemId,
+      setIsLoading,
+      value,
+      setTransferData,
+      setSuccessModalOpen,
+      setSuccessMessage
+    );
 
     setTransferStatus(value);
   };
@@ -133,7 +140,7 @@ const Transfer = ({ sidebarExpanded }) => {
   const handleFilterSearch = async (event) => {
     const { value } = event.target;
     setFilterSearchId(value.toUpperCase());
-  
+
     if (value === "") {
       // Fetch all data or reset the TransferData state when the search input is cleared
       centralTransfer(setIsLoading, setTransferData);
@@ -141,14 +148,12 @@ const Transfer = ({ sidebarExpanded }) => {
       await transferScanSearchFilter(value.toUpperCase(), setTransferData);
     }
   };
-  
 
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
       handleTransferScan();
     }
   };
-
 
   console.log(CentralHubStatus, "CentralHubStatus");
   return (
@@ -211,79 +216,83 @@ const Transfer = ({ sidebarExpanded }) => {
       </div>
       {/* table */}
       <div className="">
-
-      {isLoading === true ? (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
+        {isLoading === true ? (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <CircularProgress
+              size={50} // Set the desired size
+              sx={{
+                color: "#126e72",
+                padding: "8px 10px",
+                width: "35px",
               }}
-            >
-              <CircularProgress
-                size={50} // Set the desired size
-                sx={{
-                  color: "#126e72",
-                  padding: "8px 10px",
-                  width: "35px",
-                }}
-              />
-            </div>
-          ) : (
-        <table style={{ width: "100%" }}>
-          <thead>
-            <tr style={{ color: "#455173" }}>
-              <th style={{ width: "6%" }}>SL NO</th>
-              <th className="created_date">Created on</th>
-              <th style={{ width: "25%" }}>Slot ID</th>
-              <th style={{}}>Product Category</th>
-              <th>Weight</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {TransferData?.map((item, index) => (
-              <tr key={index} style={{ color: "#2E364C" }}>
-                <td className="serialNumber_cell">{index + 1}</td>
-                <td style={{ width: "25%" }}>{formatDate(item.created_at)}</td>
-                <td className="slot_cell">{item.finisheditem.designcode}</td>
-                <td className="slot_cell">
-                  {item.finisheditem.product_category}
-                </td>
-                <td className="slot_cell">
-                  {item.finisheditem.approx_metal_weight} GM
-                </td>
-                <td className="actions-cell">
-                  <div className="parentSlotS">
-                    <div
-                      className="EYEBTN"
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "15px",
-                      }}
-                    >
-                      <div>
-                        <select
-                          className="scan_select_Central"
-                          name="centralStatus"
-                          id="centralHubStatus"
-                          value={item.status}
-                          onChange={(event) =>
-                            handleStatusChange(event, item.id)
-                          }
-                          style={{
-                            backgroundColor:
-                              item.status === "Created" ? "#23A064" : "#0464D5",
-                            color: item.status === "Created" ? "white" : "#fff",
-                          }}
-                        >
-                          <option value="Created">Created</option>
-                          <option value="Transfered">Transfered</option>
-                        </select>
-                      </div>
+            />
+          </div>
+        ) : (
+          <table style={{ width: "100%" }}>
+            <thead>
+              <tr style={{ color: "#455173" }}>
+                <th style={{ width: "6%" }}>SL NO</th>
+                <th className="created_date">Created on</th>
+                <th style={{ width: "25%" }}>Product ID</th>
+                <th style={{}}>Product Category</th>
+                <th>Weight</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {TransferData?.map((item, index) => (
+                <tr key={index} style={{ color: "#2E364C" }}>
+                  <td className="serialNumber_cell">{index + 1}</td>
+                  <td style={{ width: "25%" }}>
+                    {formatDate(item.created_at)}
+                  </td>
+                  <td className="slot_cell">{item.finisheditem.designcode}</td>
+                  <td className="slot_cell">
+                    {item.finisheditem.product_category}
+                  </td>
+                  <td className="slot_cell">
+                    {item.finisheditem.approx_metal_weight} GM
+                  </td>
+                  <td className="actions-cell">
+                    <div className="parentSlotS">
+                      <div
+                        className="EYEBTN"
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "15px",
+                        }}
+                      >
+                        <div>
+                          <select
+                            className="scan_select_Central"
+                            name="centralStatus"
+                            id="centralHubStatus"
+                            value={item.status}
+                            onChange={(event) =>
+                              handleStatusChange(event, item.id)
+                            }
+                            style={{
+                              backgroundColor:
+                                item.status === "Created"
+                                  ? "#23A064"
+                                  : "#0464D5",
+                              color:
+                                item.status === "Created" ? "white" : "#fff",
+                            }}
+                          >
+                            <option value="Created">Created</option>
+                            <option value="Transfered">Transfered</option>
+                          </select>
+                        </div>
 
-                      {/* <div>
+                        {/* <div>
                         <IoEye
                           onClick={() => handleEyeButton(item.id)}
                           style={{
@@ -294,8 +303,8 @@ const Transfer = ({ sidebarExpanded }) => {
                           }}
                         />
                       </div> */}
-                    </div>
-                    {/* <div className="DOTSBTNS">
+                      </div>
+                      {/* <div className="DOTSBTNS">
                       <BsThreeDotsVertical
                         className="Action_dots"
                         onClick={() =>
@@ -305,51 +314,54 @@ const Transfer = ({ sidebarExpanded }) => {
                         }
                       />
                     </div> */}
-                  </div>
-                </td>
-              </tr>
-            ))}
-            <></>
-          </tbody>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+              <></>
+            </tbody>
 
-          <Modal open={printSlotModalOpen} onClose={handlePrintSlotModalClose}>
-            <Box sx={printSlotOpen}>
-              <Typography id="modal-modal-title" variant="h6" component="h2">
-                <div
-                  className="headerModal"
-                  style={{ background: "#F2F2F2", padding: "5px 10px" }}
-                >
-                  <span className="assignTitle" style={{ fontSize: "15px" }}>
-                    Slot List
-                  </span>
-                  <button
-                    className="slotPrintButton"
-                    onClick={() => handlePrintButton()}
+            <Modal
+              open={printSlotModalOpen}
+              onClose={handlePrintSlotModalClose}
+            >
+              <Box sx={printSlotOpen}>
+                <Typography id="modal-modal-title" variant="h6" component="h2">
+                  <div
+                    className="headerModal"
+                    style={{ background: "#F2F2F2", padding: "5px 10px" }}
                   >
-                    <img
-                      src={printIcon}
-                      style={{ marginRight: "5px" }}
-                      alt=""
-                    />
-                    Print
-                  </button>
-                </div>
-              </Typography>
+                    <span className="assignTitle" style={{ fontSize: "15px" }}>
+                      Slot List
+                    </span>
+                    <button
+                      className="slotPrintButton"
+                      onClick={() => handlePrintButton()}
+                    >
+                      <img
+                        src={printIcon}
+                        style={{ marginRight: "5px" }}
+                        alt=""
+                      />
+                      Print
+                    </button>
+                  </div>
+                </Typography>
 
-              <Typography>
-                <div className="print_slot_modal_container">
-                  <div className="Slote_Container">
-                    <table class="">
-                      <thead>
-                        <tr>
-                          <th class="column-header">Product ID</th>
-                          <th class="column-header">Created date</th>
-                          <th class="column-header">Product Category</th>
-                          <th class="column-header">Weight</th>
-                        </tr>
-                      </thead>
-                      <tbody className="tbodyy">
-                        {/* {slotView.map((item, index) => (
+                <Typography>
+                  <div className="print_slot_modal_container">
+                    <div className="Slote_Container">
+                      <table class="">
+                        <thead>
+                          <tr>
+                            <th class="column-header">Product ID</th>
+                            <th class="column-header">Created date</th>
+                            <th class="column-header">Product Category</th>
+                            <th class="column-header">Weight</th>
+                          </tr>
+                        </thead>
+                        <tbody className="tbodyy">
+                          {/* {slotView.map((item, index) => (
                           <tr key={index}>
                             <td class="table-cell">{item.slotnumber}</td>
                             <td class="table-cell">{item.created_at}</td>
@@ -357,49 +369,48 @@ const Transfer = ({ sidebarExpanded }) => {
                             <td class="table-cell">16 Gram</td>
                           </tr>
                         ))} */}
-                        <tr>
-                          <td class="table-cell">SWA34R56</td>
-                          <td class="table-cell">12-02-23</td>
-                          <td class="table-cell">Bangles</td>
-                          <td class="table-cell">16 Gram</td>
-                        </tr>
-                        <tr>
-                          <td class="table-cell">SWA34R56</td>
-                          <td class="table-cell">12-02-23</td>
-                          <td class="table-cell">Bangles</td>
-                          <td class="table-cell">16 Gram</td>
-                        </tr>
-                        <tr>
-                          <td class="table-cell">SWA34R56</td>
-                          <td class="table-cell">12-02-23</td>
-                          <td class="table-cell">Bangles</td>
-                          <td class="table-cell">16 Gram</td>
-                        </tr>
-                        <tr>
-                          <td class="table-cell">SWA34R56</td>
-                          <td class="table-cell">12-02-23</td>
-                          <td class="table-cell">Bangles</td>
-                          <td class="table-cell">16 Gram</td>
-                        </tr>
-                        <tr className="lastrow">
-                          <td class="table-cell">SWA34R56</td>
-                          <td class="table-cell">12-02-23</td>
-                          <td class="table-cell">Bangles</td>
-                          <td class="table-cell">16 Gram</td>
-                        </tr>
-                      </tbody>
-                    </table>
+                          <tr>
+                            <td class="table-cell">SWA34R56</td>
+                            <td class="table-cell">12-02-23</td>
+                            <td class="table-cell">Bangles</td>
+                            <td class="table-cell">16 Gram</td>
+                          </tr>
+                          <tr>
+                            <td class="table-cell">SWA34R56</td>
+                            <td class="table-cell">12-02-23</td>
+                            <td class="table-cell">Bangles</td>
+                            <td class="table-cell">16 Gram</td>
+                          </tr>
+                          <tr>
+                            <td class="table-cell">SWA34R56</td>
+                            <td class="table-cell">12-02-23</td>
+                            <td class="table-cell">Bangles</td>
+                            <td class="table-cell">16 Gram</td>
+                          </tr>
+                          <tr>
+                            <td class="table-cell">SWA34R56</td>
+                            <td class="table-cell">12-02-23</td>
+                            <td class="table-cell">Bangles</td>
+                            <td class="table-cell">16 Gram</td>
+                          </tr>
+                          <tr className="lastrow">
+                            <td class="table-cell">SWA34R56</td>
+                            <td class="table-cell">12-02-23</td>
+                            <td class="table-cell">Bangles</td>
+                            <td class="table-cell">16 Gram</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
-                </div>
-              </Typography>
-            </Box>
-          </Modal>
-        </table>
+                </Typography>
+              </Box>
+            </Modal>
+          </table>
         )}
       </div>
 
-      {TransferData.length === 0 &&
-       isLoading !== true && (
+      {TransferData.length === 0 && isLoading !== true && (
         <div
           className=""
           style={{

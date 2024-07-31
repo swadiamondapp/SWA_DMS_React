@@ -215,7 +215,7 @@ const WareHouseDetails = ({ sidebarExpanded }) => {
                       value={formData.length}
                       onChange={handleInput}
                     />
-                    mm
+                    
                   </div>
                 </div>
                 <div className="A1_text">

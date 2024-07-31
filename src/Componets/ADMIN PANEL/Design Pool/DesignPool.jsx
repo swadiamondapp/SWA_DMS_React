@@ -16,6 +16,7 @@ import LottieAnimation from "../../../LottiAnimation";
 import BasicDetailModal from "../../BasicDetails/BasicDetailModal";
 import { CircularProgress } from "@mui/material";
 import AnnotationModalDesignPool from "./AnnotationModalDesignPool/AnnotationModalDesignPool";
+import SuccessModal from "../../SuccessModal/SuccessModal";
 
 const DesignPool = ({ sidebarExpanded, setData, Data }) => {
   const [showRadioButtons, setShowRadioButtons] = useState(false);
@@ -29,6 +30,9 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
   const [open, setIsOpen] = useState(false);
   const [anotationModal, setanotationModal] = useState(false);
   const [selectedDesign, setSelectedDesign] = useState(null);
+
+  const [successMessage, setSuccessMessage] = useState("");
+  const [successModalOpen, setSuccessModalOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -197,7 +201,10 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
             {Data.map((item, index) => (
               <>
                 <div className="New_Design_card" key={item.id}>
-                  <div className="Card_img" style={{ marginTop:"12px",height: "170px" }}>
+                  <div
+                    className="Card_img"
+                    style={{ marginTop: "12px", height: "170px" }}
+                  >
                     <img
                       src={item.image}
                       alt="image"
@@ -242,8 +249,18 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
               setanotationModal={setanotationModal}
               anotationModal={anotationModal}
               selectedDesign={selectedDesign}
+              setSuccessModalOpen={setSuccessModalOpen}
+              setSuccessMessage={setSuccessMessage}
+              setData={setData}
             />
           )}
+
+          <SuccessModal
+            successModalOpen={successModalOpen}
+            // handleOpen={handleOpen}
+            // handleClose={handleClose}
+            successMessage={successMessage}
+          />
 
           {/* unvoted design */}
           <div className="Parent_unvoted">

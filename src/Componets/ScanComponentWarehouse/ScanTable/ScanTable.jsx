@@ -17,6 +17,7 @@ import { IoEye } from "react-icons/io5";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import { BsFillCaretDownFill } from "react-icons/bs";
 import { BiSolidUpArrow } from "react-icons/bi";
+import SuccessModal from "../../SuccessModal/SuccessModal";
 
 const ScanTable = ({ sidebarExpanded }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -30,6 +31,9 @@ const ScanTable = ({ sidebarExpanded }) => {
 
   const [clickedProductId, setclickedProductId] = useState("");
   const [filterSearchId, setFilterSearchId] = useState("");
+
+  const [successModalOpen, setSuccessModalOpen] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
   // console.log("iId",clickedProductId)
 
@@ -61,7 +65,9 @@ const ScanTable = ({ sidebarExpanded }) => {
           searchListId,
           setScanTableData,
           setsearchListId,
-          setError
+          setError,
+          setSuccessModalOpen,
+          setSuccessMessage
         );
       } catch (error) {
         console.error("Error searching scan list:", error);
@@ -149,7 +155,7 @@ const ScanTable = ({ sidebarExpanded }) => {
               onChange={handleInputChange}
               onKeyPress={handleKeyPress}
             />
-            <img onClick={handleSearch} src={searchimg} alt="" />
+            <img onKeyPress={handleKeyPress} src={searchimg} alt="" />
           </div>
           {error && (
             <span style={{ color: "red", fontSize: "10px" }}>{error}</span>
@@ -159,13 +165,13 @@ const ScanTable = ({ sidebarExpanded }) => {
 
       <div className="ScanTable">
         <div className="table-container">
-{isLoading === true ? (
+          {isLoading === true ? (
             <div
               style={{
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                background:"none  "
+                background: "none  ",
               }}
             >
               <CircularProgress
@@ -189,7 +195,7 @@ const ScanTable = ({ sidebarExpanded }) => {
                 </tr>
               </thead>
               <tbody>
-                {scanTableData.map((item, index) => (
+                {scanTableData?.map((item, index) => (
                   <tr className="table_row">
                     <td style={{ borderLeft: "none" }}>{index + 1}</td>
                     <td style={{ borderLeft: "none" }}>
@@ -247,7 +253,7 @@ const ScanTable = ({ sidebarExpanded }) => {
           )}
         </div>
       </div>
-{scanTableData.length === 0 && isLoading !== true && (
+      {scanTableData.length === 0 && isLoading !== true && (
         <div
           className=""
           style={{
@@ -268,6 +274,11 @@ const ScanTable = ({ sidebarExpanded }) => {
           clickedProductId={clickedProductId}
         />
       )}
+
+      <SuccessModal
+        successModalOpen={successModalOpen}
+        successMessage={successMessage}
+      />
     </div>
   );
 };

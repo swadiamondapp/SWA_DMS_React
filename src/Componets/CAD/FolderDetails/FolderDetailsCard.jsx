@@ -58,6 +58,8 @@ const handleDownload = (imageUrl) => {
     return `${day} ${month} ${year}`;
   }
 
+  console.log("folderDetails?.file_3d",folderDetails?.file_3d)
+
   return (
     <div className="ParentCad" style={{ paddingLeft: sidebarExpanded ? "225px" : "130px" }}>
       <div className="Design_FileUpload">
@@ -124,6 +126,7 @@ const handleDownload = (imageUrl) => {
               <div className="Card_Details">
                 <div className="Card_img" style={{ borderBottom: "0px", minHeight: "140px" }}>
                   <img src={folderDetails?.file_3d} alt="" />
+                  {/* <ThreeDViewer modelUrl={folderDetails?.file_3d} /> */}
                 </div>
                 <div className="Card_Details_Inner_cad_Hub">
                   <p className="Hub_head" style={{ fontSize: "13px", padding: "5px 0px" }}>

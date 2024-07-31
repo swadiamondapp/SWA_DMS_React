@@ -109,6 +109,7 @@ const AssignmentModal = ({
           <Modal
             title=""
             open={open}
+            // onClose={()=>ToCloseCreatefolder(false)}
             onCancel={handleCloseCreateModal}
             centered
             width={300}

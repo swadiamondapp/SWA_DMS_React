@@ -23,12 +23,12 @@ export const list_slot_central_hub = async (setIsLoading, setData) => {
   }
 };
 export const centralTransfer = async (setIsLoading, setTransferData) => {
-  setIsLoading(true)
+  setIsLoading(true);
   try {
     const response = await apiService.get(CENTRAL_HUB_TRANSFER);
     if (checkApiStatus(response)) {
       setTransferData(response.data.results.data);
-      setIsLoading(false)
+      setIsLoading(false);
     }
   } catch (error) {
     console.log(error);
@@ -82,7 +82,7 @@ export const centralFolderDetails = async (Id, setCentralFolderDetails) => {
 export const generateSloteNumber = async (setIsLoading, setGeneratSloteNum) => {
   try {
     const response = await apiService.post(GENERATE_SLOT_NUMBER);
-if (checkApiStatus(response)) {
+    if (checkApiStatus(response)) {
       console.log("successfully created");
       setGeneratSloteNum(response.data.results);
     }
@@ -91,10 +91,7 @@ if (checkApiStatus(response)) {
   }
 };
 
-export const transferScanSearchFilter = async (
-  searchListId,
-  setTableData,
-) => {
+export const transferScanSearchFilter = async (searchListId, setTableData) => {
   try {
     let endpoint = `${CENTRAL_HUB_TRANSFER}`;
 
@@ -131,14 +128,15 @@ export const scanSloteTransfer = async (
     if (response.data.results.status_code === 200) {
       setSuccessMessage("Scanned Successfully");
       setSuccessModalOpen(true);
-      setError("")
+      setError("");
       setTimeout(() => {
         setSuccessModalOpen(false);
       }, 1600);
       centralTransfer(setIsLoading, setTransferData);
       setTransferScan("");
-    } if (response.data.results.status_code === 206) {
-      setError(response.data.results.message)
+    }
+    if (response.data.results.status_code === 206) {
+      setError(response.data.results.message);
       setTimeout(() => {
         setError("");
       }, 3000);
@@ -162,8 +160,14 @@ export const listCentralHubStatus = async (
   }
 };
 
-export const changeCentralHubStatus = async (itemId, setIsLoading, value,setTransferData) => {
-  debugger
+export const changeCentralHubStatus = async (
+  itemId,
+  setIsLoading,
+  value,
+  setTransferData,
+  setSuccessModalOpen,
+  setSuccessMessage
+) => {
   try {
     const body = {
       status: value,
@@ -174,12 +178,12 @@ export const changeCentralHubStatus = async (itemId, setIsLoading, value,setTran
     );
     if (checkApiStatus(response)) {
       centralTransfer(setIsLoading, setTransferData);
-      // setSuccessMessage("Status Updated Successfully");
-      // setSuccessModalOpen(true);
-      // setTimeout(() => {
-      //   setSuccessModalOpen(false);
-      // }, 1600);
-      alert("Status Updated Successfully")
+      setSuccessMessage("Status Updated Successfully");
+      setSuccessModalOpen(true);
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1600);
+      // alert("Status Updated Successfully")
     }
   } catch (error) {
     console.error("Error moving designs:", error);

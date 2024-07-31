@@ -81,7 +81,9 @@ const CentralhubScanModule = ({ sidebarExpanded }) => {
           searchListId,
           setScanTableData,
           setsearchListId,
-          setError
+          setError,
+          setSuccessModalOpen,
+          setSuccessMessage
         );
       } catch (error) {
         console.error("Error searching scan list:", error);
@@ -172,7 +174,9 @@ const CentralhubScanModule = ({ sidebarExpanded }) => {
               )}
             </div>
             <div className="Create_user">
-              <button onClick={openModal}>Change CH Status</button>
+              <button
+               disabled={clickedProductIds.length === 0}
+              onClick={openModal}>Change CH Status</button>
             </div>
           </div>
         </div>
