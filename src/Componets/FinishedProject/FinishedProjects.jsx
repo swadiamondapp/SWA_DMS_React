@@ -166,7 +166,8 @@ const FinishedProjects = (props) => {
             >
               <img src={folderimg} alt="" />
 
-              <p className="text-truncate">{truncateText(item.name, 10)}</p>
+              <p className="text-truncate" >{truncateText(item.name, 10)}</p>
+              <span className="text-truncate_hover" >{item.name}</span>
             </div>
           ))}
         </div>
