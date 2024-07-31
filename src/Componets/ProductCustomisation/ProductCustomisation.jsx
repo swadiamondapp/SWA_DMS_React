@@ -99,8 +99,19 @@ const ProductCustomisation = ({
     }
   };
 
+
+
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    onClose()
+    setSelectedValues({
+      size: "",
+      type: "",
+      colour: "",
+      notes:""
+    })
+    setErrors({})
+  };
 
   const onChange = (value) => {
     console.log(`selected ${value}`);
@@ -119,7 +130,7 @@ const ProductCustomisation = ({
         <div className="modalContainer" style={{ position: "relative" }}>
           <Modal
             open={open}
-            onClose={onClose}
+            onClose={handleClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
             style={{ position: "absolute", right: "0px" }}
@@ -135,7 +146,7 @@ const ProductCustomisation = ({
                     Product Customization
                   </span>
                   <button
-                    onClick={onClose}
+                    onClick={handleClose}
                     style={{
                       position: "absolute",
                       top: 15,

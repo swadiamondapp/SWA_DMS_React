@@ -191,8 +191,8 @@ const CreateCustomisation = ({
 
   const schema = Joi.object({
     sallerName: Joi.string().required().messages({
-      "string.empty": `salesMan feild cannot be empty`,
-      "string.pattern.base": "SalesMan Name cannot contain numbers.",
+      "string.empty": `cannot be empty`,
+      "string.pattern.base": "cannot contain numbers.",
     }),
     mobileNumber: Joi.string()
       .pattern(/^\d{10}$/)
@@ -204,11 +204,23 @@ const CreateCustomisation = ({
         "string.min": `Mobile number must be exactly 10 digits`,
         "string.max": `Mobile number must be exactly 10 digits`,
       }),
-    chooseOutlet: Joi.required().messages({
-      "string.empty": `choose Outlet cannot be an empty feild`,
+    chooseOutlet: Joi.any().required().custom((value, helpers) => {
+      if (value === '' || value === null || value === undefined) {
+        return helpers.error("any.empty");
+      }
+      return value;
+    }).messages({
+      "any.required": "cannot be empty",
+      "any.empty": "cannot be empty"
     }),
-    productType: Joi.required().messages({
-      "string.empty": `Product Type cannot be an empty feild`,
+    productType: Joi.any().required().custom((value, helpers) => {
+      if (value === '' || value === null || value === undefined) {
+        return helpers.error("any.empty");
+      }
+      return value;
+    }).messages({
+      "any.required": "cannot be empty",
+      "any.empty": "cannot be empty"
     }),
     modelPrevioslyMade: Joi.string().required().messages({
       "string.empty": `cannot be empty`,
@@ -221,8 +233,14 @@ const CreateCustomisation = ({
       }),
       // Otherwise, it's optional
     }),
-    metalType: Joi.required().messages({
-      "string.empty": `Metal Type cannot be empty`,
+    metalType: Joi.any().required().custom((value, helpers) => {
+      if (value === '' || value === null || value === undefined) {
+        return helpers.error("any.empty");
+      }
+      return value;
+    }).messages({
+      "any.required": "cannot be empty",
+      "any.empty": "cannot be empty"
     }),
     weight: Joi.string().required().messages({
       "string.empty": `cannot be  empty`,
@@ -257,8 +275,14 @@ const CreateCustomisation = ({
     height: Joi.string().required().messages({
       "string.empty": `cannot be  empty`,
     }),
-    diamond_type: Joi.required().messages({
-      "string.empty": `cannot be  empty`,
+    diamond_type:Joi.any().required().custom((value, helpers) => {
+      if (value === '' || value === null || value === undefined) {
+        return helpers.error("any.empty");
+      }
+      return value;
+    }).messages({
+      "any.required": "cannot be empty",
+      "any.empty": "cannot be empty"
     }),
     length_of_item: Joi.string().required().messages({
       "string.empty": `cannot be  empty`,
@@ -513,6 +537,29 @@ const handleCloseButton =()=> {
   // setErrorMessage([])
   setImageError("")
   setErrors({})
+  setFormData({
+    sallerName: "",
+    mobileNumber: "",
+    chooseOutlet: "",
+    productType: "",
+    modelPrevioslyMade: "",
+    prevMadeSKU: "",
+    metalType: "",
+    weight: "",
+    size: "",
+    width: "",
+    height: "",
+    diamond_type: "",
+    length_of_item: "",
+    diamondWeight: "",
+    numberOfDiamonds: "",
+    diamondClarity: "",
+    diamondColor: "",
+    Budget: "",
+    swaProductSKU: "",
+    notes: "",
+  })
+  setImages(Array(5).fill(""))
 }
   
   return (
@@ -521,7 +568,7 @@ const handleCloseButton =()=> {
         <div className="modalContainer" style={{ position: "relative" }}>
           <Modal
             open={open}
-            onClose={onClose}
+            onClose={handleCloseButton }
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
             style={{ position: "absolute", right: "0px" }}

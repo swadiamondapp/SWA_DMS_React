@@ -92,6 +92,7 @@ const AssignmentModal = ({
   const handleCloseCreateModal = () => {
     ToCloseCreatefolder(false);
     setError("");
+    setFolderName("")
   };
 
   const handleChange = (event) => {

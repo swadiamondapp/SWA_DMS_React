@@ -30,7 +30,7 @@ const DesignBtn = ({
   assignToCadId,
   list_id,
   setFolderDetails,
-  list_designer_folderDetails,
+  list_designer_folderDetails_new,
   setSelectedAssignment,
   setIsOpen,
   open,
@@ -214,7 +214,7 @@ const DesignBtn = ({
         selectedDesign={selectedDesign}
         setSelectedDesigns={setSelectedDesigns}
         list_id={list_id}
-        list_designer_folderDetails={list_designer_folderDetails}
+        list_designer_folderDetails_new={list_designer_folderDetails_new}
         setSelectedAssignment={setSelectedAssignment}
         setSelectButtonLabel={setSelectButtonLabel}
         setShowRadioButtons={setShowRadioButtons}

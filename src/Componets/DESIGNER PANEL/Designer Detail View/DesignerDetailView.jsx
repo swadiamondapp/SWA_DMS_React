@@ -118,7 +118,7 @@ const DesignerDetailView = (props) => {
         selectedDesign={selectedAssignment}
         setSelectedAssignment={setSelectedAssignment}
         list_id={props.id}
-        list_designer_folderDetails={props.list_designer_folderDetails}
+        list_designer_folderDetails_new={props.list_designer_folderDetails_new}
         setSelectButtonLabel={setSelectButtonLabel}
         setShowRadioButtons={setShowRadioButtons}
       />

@@ -117,7 +117,7 @@
 }
 .error_select {
   position: absolute;
-  color: rgb(218, 39, 39);
+  color: red;
   bottom: -26px;
   left: 0;
   /* background: #e7edf4; */
