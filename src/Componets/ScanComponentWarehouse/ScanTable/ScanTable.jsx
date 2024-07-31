@@ -52,7 +52,7 @@ const ScanTable = ({ sidebarExpanded }) => {
   };
 
   const handleSearch = async () => {
-    setIsLoading(true);
+    // setIsLoading(true);
     if (searchListId === "") {
       setError("Enter slot ID");
       setTimeout(() => {
@@ -155,7 +155,7 @@ const ScanTable = ({ sidebarExpanded }) => {
               onChange={handleInputChange}
               onKeyPress={handleKeyPress}
             />
-            <img onKeyPress={handleKeyPress} src={searchimg} alt="" />
+            <img onClick={handleSearch} src={searchimg} alt="" />
           </div>
           {error && (
             <span style={{ color: "red", fontSize: "10px" }}>{error}</span>
@@ -225,7 +225,7 @@ const ScanTable = ({ sidebarExpanded }) => {
                       ))}
                     </select> */}
                       {/* <span className="scan_select_span">{item.status}</span> */}
-                      <span className="scan_select_span">Recived</span>
+                      <span className="scan_select_span">Recieved</span>
                     </td>
 
                     <td style={{ borderLeft: "none" }}>

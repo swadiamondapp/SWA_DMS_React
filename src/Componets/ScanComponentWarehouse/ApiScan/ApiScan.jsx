@@ -199,7 +199,8 @@ export const CentralHubnewScanProductScan = async (
   setsearchListId,
   setError,
   setSuccessModalOpen,
-  setSuccessMessage
+  setSuccessMessage,
+  callback
 ) => {
   try {
     const body = {
@@ -218,8 +219,10 @@ export const CentralHubnewScanProductScan = async (
       setTimeout(() => {
         setSuccessModalOpen(false);
       }, 1600);
-      // alert("Item Added");
-      setError("");
+      setTimeout(() => {
+        setError("");
+      }, 1600);
+
     }
     if (response.data.results.status_code === 206) {
       setError(response.data.results.message);

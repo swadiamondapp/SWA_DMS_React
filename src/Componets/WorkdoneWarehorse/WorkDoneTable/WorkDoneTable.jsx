@@ -10,31 +10,40 @@ import {
   workDone_list_datas,
   workDone_list_search,
 } from "../../../Pages/WareHousePageView/Api";
+import SuccessModal from "../../SuccessModal/SuccessModal";
 
-const WorkDoneTable = ({ sidebarExpanded}) => {
+const WorkDoneTable = ({ sidebarExpanded }) => {
   const [open, setOpen] = useState(false);
   const [openLeftbar, setOpenLeftbar] = useState(false);
   const [workTableData, setworkTableData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [searchListId, setsearchListId] = useState("");
   const [clickedProductId, setclickedProductId] = useState("");
+  const [error, setError] = useState("");
+  const [successModalOpen, setSuccessModalOpen] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
     workDone_list_datas(setIsLoading, setworkTableData);
   }, []);
 
   const handleInputChange = (event) => {
-    setsearchListId(event.target.value);
+    setsearchListId(event.target.value.toUpperCase());
   };
 
   const handleSearch = async () => {
-    setIsLoading(true);
+    if (searchListId === "") {
+      setError("Please Enter a Product Id");
+    }
     try {
       await workDone_list_search(
         setIsLoading,
         searchListId,
         setworkTableData,
-        setsearchListId
+        setsearchListId,
+        setError,
+        setSuccessModalOpen,
+        setSuccessMessage
       );
     } catch (error) {
       console.error("Error searching scan list:", error);
@@ -56,21 +65,41 @@ const WorkDoneTable = ({ sidebarExpanded}) => {
   };
 
   const formatDate = (dateString) => {
-const months = [
-      "January", "February", "March", "April", "May", "June", 
-      "July", "August", "September", "October", "November", "December"
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
     ];
-  
+
     const date = new Date(dateString);
     const day = date.getDate();
     const month = months[date.getMonth()];
     const year = date.getFullYear();
-  
+
     return `${day} ${month} ${year}`;
   };
 
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleSearch();
+    }
+  };
+
+  console.log("eroor", error);
   return (
-    <div className="scantable_main"  style={{ marginLeft: sidebarExpanded ? "225px" : "130px" }}>
+    <div
+      className="scantable_main"
+      style={{ marginLeft: sidebarExpanded ? "225px" : "130px" }}
+    >
       <div className="Search_Admin scan_search">
         <div className="Search_User">
           <input
@@ -79,9 +108,15 @@ const months = [
             placeholder="Scan Product ID"
             value={searchListId}
             onChange={handleInputChange}
+            onKeyPress={handleKeyPress}
           />
           <img onClick={handleSearch} src={searchimg} alt="" />
         </div>
+        {error && (
+          <p style={{ color: "red", fontSize: "10px", marginTop: "3px" }}>
+            {error}
+          </p>
+        )}
       </div>
       <div className="ScanTable">
         <div className="table-container">
@@ -99,7 +134,9 @@ const months = [
               {workTableData.map((item, index) => (
                 <tr className="table_row">
                   <td style={{ borderLeft: "none" }}>{index + 1}</td>
-<td style={{ borderLeft: "none" }}>{formatDate(item.created_at)}</td>
+                  <td style={{ borderLeft: "none" }}>
+                    {formatDate(item.created_at)}
+                  </td>
                   <td style={{ borderLeft: "none" }}>{item.productID}</td>
 
                   <td style={{ borderLeft: "none" }}>
@@ -148,8 +185,16 @@ const months = [
         <WorkdoneEditModal
           setOpenLeftbar={setOpenLeftbar}
           clickedProductId={clickedProductId}
+          setSuccessMessage={setSuccessMessage}
+          setSuccessModalOpen={setSuccessModalOpen}
+
         />
       )}
+
+      <SuccessModal
+        successModalOpen={successModalOpen}
+        successMessage={successMessage}
+      />
     </div>
   );
 };

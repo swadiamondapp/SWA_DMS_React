@@ -515,14 +515,14 @@ export const scan_list_search = async (
   setSuccessModalOpen,
   setSuccessMessage
 ) => {
-  debugger
+  debugger;
   try {
     const body = {
       finisheditem_id: searchListId,
     };
     const response = await apiService.post(SCAN_TABLE_SLOTID_SEARCH, body);
     if (checkApiStatus(response)) {
-      scan_list_datas( setIsLoading,setScanTableData);
+      scan_list_datas(setIsLoading, setScanTableData);
       setsearchListId("");
       setSuccessMessage("Scanned Successfully");
       setSuccessModalOpen(true);
@@ -611,7 +611,10 @@ export const workDone_list_search = async (
   setIsLoading,
   searchListId,
   setworkTableData,
-  setsearchListId
+  setsearchListId,
+  setError,
+  setSuccessModalOpen,
+  setSuccessMessage
 ) => {
   debugger;
   try {
@@ -623,7 +626,19 @@ export const workDone_list_search = async (
     if (checkApiStatus(response)) {
       workDone_list_datas(setIsLoading, setworkTableData);
       setsearchListId("");
-      alert("Product Added");
+      setError("");
+      setSuccessMessage("Product Added Successfully");
+      setSuccessModalOpen(true);
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1700);
+      // alert("Product Added");
+    }
+    if (response.data.results.status_code === 206) {
+      setError(response.data.results.message);
+      setTimeout(() => {
+        setError("");
+      }, 1700);
     }
   } catch (error) {
     console.log(error);
@@ -650,7 +665,9 @@ export const workDone_table_product_detail = async (
 export const workDone_table_product_update = async (
   pId,
   formData,
-  setOpenLeftbar
+  setOpenLeftbar,
+  setSuccessModalOpen,
+  setSuccessMessage
 ) => {
   debugger;
   try {
@@ -660,8 +677,12 @@ export const workDone_table_product_update = async (
       formData
     );
 
-    if (response.data.results.status_code === 200) {
-      alert("Data Updated Successfully");
+    if (checkApiStatus(response)) {
+      setSuccessModalOpen(true);
+      setSuccessMessage("Data Updated Successfully");
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1700);
       setOpenLeftbar(false);
     }
   } catch (error) {

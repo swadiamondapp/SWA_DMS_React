@@ -83,7 +83,10 @@ const CentralhubScanModule = ({ sidebarExpanded }) => {
           setsearchListId,
           setError,
           setSuccessModalOpen,
-          setSuccessMessage
+          setSuccessMessage,
+          setTimeout(() => {
+            setError("");
+          }, 3000)
         );
       } catch (error) {
         console.error("Error searching scan list:", error);

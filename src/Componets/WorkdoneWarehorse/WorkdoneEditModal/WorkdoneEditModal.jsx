@@ -17,8 +17,14 @@ import {
   finding_table_data,
   tag_table_data,
 } from "../../MastersSection/ApiMasters/ApiMasters";
+import SuccessModal from "../../SuccessModal/SuccessModal";
 
-const WorkdoneEditModal = ({ setOpenLeftbar, clickedProductId }) => {
+const WorkdoneEditModal = ({
+  setOpenLeftbar,
+  clickedProductId,
+  setSuccessModalOpen,
+  setSuccessMessage,
+}) => {
   const [formData, setFormData] = useState({
     length: "",
     width: "",
@@ -35,7 +41,11 @@ const WorkdoneEditModal = ({ setOpenLeftbar, clickedProductId }) => {
   const [diamonType, setDiamondType] = useState([]);
   const [findings, setFindings] = useState([]);
   const [tags, setTags] = useState([]);
+  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  // const [successModalOpen, setSuccessModalOpen] = useState(false);
+  // const [successMessage, setSuccessMessage] = useState("");
 
   const handleClose = () => {
     setOpenLeftbar(false);
@@ -90,9 +100,30 @@ const WorkdoneEditModal = ({ setOpenLeftbar, clickedProductId }) => {
   }, []);
 
   const handleProductUpdate = async (pId) => {
+    if (
+      formData.length ||
+      formData.width ||
+      formData.height ||
+      formData.type_of_metal ||
+      formData.diamond_type ||
+      formData.approx_diamond_weight ||
+      formData.findings ||
+      formData.approx_metal_weight ||
+      formData.tag ||
+      formData.notes === ""
+    ) {
+      setError("Please Fill all fields");
+    }
+
     console.log("edit id", pId);
     try {
-      await workDone_table_product_update(pId, formData, setOpenLeftbar);
+      await workDone_table_product_update(
+        pId,
+        formData,
+        setOpenLeftbar,
+        setSuccessModalOpen,
+        setSuccessMessage
+      );
     } catch (error) {
       console.error("Error updated successfully:", error);
     } finally {
@@ -404,6 +435,17 @@ const WorkdoneEditModal = ({ setOpenLeftbar, clickedProductId }) => {
                   />
                 </div>
                 <div className="update_btn">
+                  {error && (
+                    <p
+                      style={{
+                        fontSize: "10px",
+                        color: "red",
+                        marginBottom: "12px",
+                      }}
+                    >
+                      {error}
+                    </p>
+                  )}
                   <button
                     onClick={() =>
                       handleProductUpdate(
@@ -419,6 +461,10 @@ const WorkdoneEditModal = ({ setOpenLeftbar, clickedProductId }) => {
           </>
         ))}
       </div>
+      {/* <SuccessModal
+          successModalOpen={successModalOpen}
+          successMessage={successMessage}
+        /> */}
     </>
   );
 };
