@@ -13,6 +13,7 @@ import {
   LIST_ASSIGN_TO_LIST_ITEMS,
   UNASSIGN_CAD_DESIGNERS,
   UNASSIGN_TO_CAD,
+  LIST_FOLDER_DETAILS_DESIGNER,
 } from "../../../Pages/Services/EndPoints";
 
 export const list_designer_folderDetails = async (
@@ -23,6 +24,23 @@ export const list_designer_folderDetails = async (
   try {
     const response = await apiService.get(
       `${ASSIGNMENT_PANEL_DETAILS_PAGE}${id}`
+    );
+    if (checkApiStatus(response)) {
+      setFolderDetails(response.data.results.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const list_designer_folderDetails_new = async (
+  setIsLoading,
+  setFolderDetails,
+  id
+) => {
+  try {
+    const response = await apiService.get(
+      `${LIST_FOLDER_DETAILS_DESIGNER}${id}`
     );
     if (checkApiStatus(response)) {
       setFolderDetails(response.data.results.data);
@@ -54,11 +72,12 @@ export const assign_to_cad = async (
   assignToCadId,
   userId,
   selectedDesign,
-  list_designer_folderDetails,
+  list_designer_folderDetails_new,
   setSuccessMessage,
   setSuccessModalOpen
 ) => {
   try {
+    debugger
     setIsLoading(true);
     const body = {
       folder: assignToCadId,
@@ -69,7 +88,7 @@ export const assign_to_cad = async (
     console.log(selectedDesign, " selectedDesign");
     const response = await apiService.post(ASSIGN_TO_CAD, body);
     if (checkApiStatus(response)) {
-      list_designer_folderDetails();
+      list_designer_folderDetails_new();
       setSuccessMessage("Item Assigned Successfully");
       setSuccessModalOpen(true);
       setTimeout(() => {
@@ -89,7 +108,7 @@ export const unAssignCadDesigner = async (
   assignToCadId,
   userId,
   selectedDesign,
-  list_designer_folderDetails,
+  list_designer_folderDetails_new,
   setSuccessMessage,
   setSuccessModalOpen
 ) => {
@@ -102,7 +121,7 @@ export const unAssignCadDesigner = async (
     console.log(body, "body====>Unsss");
     const response = await apiService.patch(`${UNASSIGN_CAD_DESIGNERS}`, body);
     if (checkApiStatus(response)) {
-      list_designer_folderDetails();
+      list_designer_folderDetails_new();
       setSuccessMessage("Item Unassigned Successfully");
       setSuccessModalOpen(true);
       setTimeout(() => {

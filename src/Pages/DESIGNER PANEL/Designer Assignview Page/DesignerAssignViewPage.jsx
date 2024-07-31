@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import Sidebar from "../../../Componets/Sidebar/Sidebar";
 import Header from "../../../Componets/Header/Header";
 import DesignerDetailView from "../../../Componets/DESIGNER PANEL/Designer Detail View/DesignerDetailView";
-import { list_designer_folderDetails } from "../../../Componets/DESIGNER PANEL/Designer Detail View/Api";
+import { list_designer_folderDetails, list_designer_folderDetails_new } from "../../../Componets/DESIGNER PANEL/Designer Detail View/Api";
 
 const DesignerAssignViewPage = () => {
   const { id } = useParams();
@@ -13,14 +13,14 @@ const DesignerAssignViewPage = () => {
 
 
   useEffect(() => {
-    list_designer_folderDetails(setIsLoading, setFolderDetails, id);
+    list_designer_folderDetails_new(setIsLoading, setFolderDetails, id);
   }, []);
 
   return (
     <div className="DesignerDashboardPage">
       <Sidebar sidebarExpanded={sidebarExpanded}  setSidebarExpanded={ setSidebarExpanded} />
       <Header sidebarExpanded={sidebarExpanded}  />
-      <DesignerDetailView folderDetails={folderDetails} id={id} list_designer_folderDetails={()=>{list_designer_folderDetails(setIsLoading, setFolderDetails, id)}} sidebarExpanded={sidebarExpanded} />
+      <DesignerDetailView folderDetails={folderDetails} id={id} list_designer_folderDetails_new={()=>{list_designer_folderDetails_new(setIsLoading, setFolderDetails, id)}} sidebarExpanded={sidebarExpanded} />
     </div>
   );
 };

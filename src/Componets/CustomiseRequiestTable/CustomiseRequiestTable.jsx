@@ -18,6 +18,8 @@ import ReactToPrint, { useReactToPrint } from "react-to-print";
 import { LuPrinter } from "react-icons/lu";
 import ScanTablePrint from "../ScanComponentWarehouse/ScanTablePrint/ScanTablePrint";
 import CustomizationListDataPrint from "./CustomizationListDataPrint";
+import { choose_outlet_drop_down } from "../ADMIN PANEL/Api_dropDown";
+import { product_category_basicDetails } from "../Assignment Panel/Api";
 
 const data = [
   {
@@ -73,6 +75,8 @@ const CustomizationTable = (props) => {
   const [successModalOpen, setSuccessModalOpen] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [DeleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
+  const [outLetDropDown, setOutLetDropDown] = useState([]);
+  const [ProudctCategory, setListProductCategory] = useState([""]);
   const [userId, setUserId] = useState([]);
 
   const [Data, setData] = useState([]);
@@ -82,7 +86,6 @@ const CustomizationTable = (props) => {
   );
   const [CustomizationListData, setCustomizationListData] = useState([]);
   const [printItem, setPrintItem] = useState(null);
-
 
   const dropdownRefs = useRef([]);
 
@@ -155,12 +158,26 @@ const CustomizationTable = (props) => {
     }
   };
 
-  const handlePrint  = useReactToPrint({
+  const handlePrint = useReactToPrint({
     content: printRef.current,
   });
 
   const handlePrintClick = (item) => {
-    setPrintItem(item); 
+    setPrintItem(item);
+  };
+  useEffect(() => {
+    choose_outlet_drop_down(setOutLetDropDown);
+
+    product_category_basicDetails(setListProductCategory);
+  }, []);
+
+  const findOutLetNameByID = (id) => {
+    const item = outLetDropDown.find((entry) => entry.id === id);
+    return item ? item.name : "Not Found";
+  };
+  const productCategoryByID = (id) => {
+    const item = ProudctCategory.find((entry) => entry.id === id);
+    return item ? item.name : "Not Found";
   };
 
   console.log("printItem", printItem);
@@ -233,12 +250,15 @@ const CustomizationTable = (props) => {
                   >
                     <td>{item.created_at}</td>
                     <td>{item.customizationcode}</td>
-                    <td>{item.outlet}</td>
+                    <td>{findOutLetNameByID(Number(item.outlet))}</td>
                     <td>{item.mobile_number}</td>
-                    <td>{item.product_type}</td>
+                    <td> {productCategoryByID(Number(item.product_type))}</td>
 
-                    <td>
-                      <button className="PrintButton_CT"  onClick={() => handlePrintClick(item)}>
+                    <td style={{width:'15%'}}>
+                      <button
+                        className="PrintButton_CT"
+                        onClick={() => handlePrintClick(item)}
+                      >
                         <ReactToPrint
                           trigger={() => (
                             <div className="scan_list">

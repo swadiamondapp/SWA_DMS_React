@@ -36,7 +36,7 @@ const AssignToModal = ({
   selectedDesign,
   setFolderDetails,
   list_id,
-  list_designer_folderDetails,
+  list_designer_folderDetails_new,
   setSelectedAssignment,
   setSelectButtonLabel,
   setShowRadioButtons,
@@ -75,7 +75,7 @@ const AssignToModal = ({
       userId,
       selectedDesign,
       list_id,
-      list_designer_folderDetails,
+      list_designer_folderDetails_new,
       setAssignBtnText
     );
   };
@@ -91,7 +91,7 @@ const AssignToModal = ({
         assignToCadId,
         userId,
         selectedDesign,
-        list_designer_folderDetails,
+        list_designer_folderDetails_new,
         setSuccessMessage,
         setSuccessModalOpen
       );
@@ -103,7 +103,7 @@ const AssignToModal = ({
         assignToCadId,
         userId,
         selectedDesign,
-        list_designer_folderDetails,
+        list_designer_folderDetails_new,
         setSuccessMessage,
         setSuccessModalOpen
       );
@@ -136,7 +136,7 @@ const AssignToModal = ({
           <Modal
             open={open}
             // onClose={handleClose}
-            onClose={onClose}
+            onClose={handleOnCLose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
             style={{ position: "absolute", right: "0px" }}

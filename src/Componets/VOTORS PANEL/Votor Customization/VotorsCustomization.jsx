@@ -11,6 +11,8 @@ import {
 import DeleteConfirmationModal from "../../ConfirmationModal/DeleteConfirmationModal";
 import SuccessModal from "../../SuccessModal/SuccessModal";
 import CircularProgress from "@mui/material/CircularProgress";
+import { choose_outlet_drop_down } from "../../ADMIN PANEL/Api_dropDown";
+import { product_category_basicDetails } from "../../Assignment Panel/Api";
 
 const VotorsCustomization = ({ sidebarExpanded }) => {
   const [showEditDelete, setShowEditDelete] = useState(null);
@@ -23,6 +25,8 @@ const VotorsCustomization = ({ sidebarExpanded }) => {
   const [DeleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [outLetDropDown, setOutLetDropDown] = useState([]);
+  const [ProudctCategory, setListProductCategory] = useState([""]);
   const [DeleteID, setDeleteId] = useState("");
   const [refresh, setRefresh] = useState(false);
   const dropdownRef = useRef(null);
@@ -82,159 +86,190 @@ const VotorsCustomization = ({ sidebarExpanded }) => {
     confirVotersStatus(setIsLoading, userId, setData);
   };
 
+  useEffect(() => {
+    choose_outlet_drop_down(setOutLetDropDown);
+
+    product_category_basicDetails(setListProductCategory);
+  }, []);
+  const findOutLetNameByID = (id) => {
+    const item = outLetDropDown.find((entry) => entry.id === id);
+    return item ? item.name : "Not Found";
+  };
+  const productCategoryByID = (id) => {
+    const item = ProudctCategory.find((entry) => entry.id === id);
+    return item ? item.name : "Not Found";
+  };
   return (
     <>
       <div className="votors_btns">
         <DesignBtn votersSetData={setData} />
       </div>
-    <div
-      className="ParentVotors"
-      style={{ paddingLeft: sidebarExpanded ? "225px" : "130px" }}
-    >
-      <div className="VotorsCustomizationTable">
-        {isLoading ? (
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <CircularProgress
-              size={100} // Set the desired size
-              sx={{
-                color: "#126e72",
-                padding: "8px 10px",
-                width: "35px",
+      <div
+        className="ParentVotors"
+        style={{ paddingLeft: sidebarExpanded ? "225px" : "130px" }}
+      >
+        <div className="VotorsCustomizationTable">
+          {isLoading ? (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
               }}
-            />
-          </div>
-        ) : (
-          <div className="Users_Table_List">
-            <table style={{ width: "100%" }}>
-              <thead>
-                <tr style={{ color: "#455173" }}>
-                  <th style={{ borderRight: "0.5px solid #E7EDF4" }}>
-                    Created Date
-                  </th>
-                  <th style={{ borderRight: "0.5px solid #E7EDF4" }}>
-                    Customization ID
-                  </th>
-                  <th style={{ borderRight: "0.5px solid #E7EDF4" }}>Outlet</th>
-                  <th style={{ borderRight: "0.5px solid #E7EDF4" }}>
-                    Mobile number
-                  </th>
-                  <th style={{ borderRight: "0.5px solid #E7EDF4" }}>
-                    Product type
-                  </th>
-                  <th></th>
-                  <th>Status</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {Data.map((item, index) => (
-                  <tr key={index} style={{ color: "#2E364C" }}>
-                    <td>{item.created_at}</td>
-                    <td>{item.customizationcode}</td>
-                    <td>{item.outlet}</td>
-                    <td>
-                      <div className="view_password">{item.mobile_number}</div>
-                    </td>
-                    <td>{item.product_type}</td>
-                    {/* <td>
+            >
+              <CircularProgress
+                size={100} // Set the desired size
+                sx={{
+                  color: "#126e72",
+                  padding: "8px 10px",
+                  width: "35px",
+                }}
+              />
+            </div>
+          ) : (
+            <div className="Users_Table_List">
+              <table style={{ width: "100%" }}>
+                <thead>
+                  <tr style={{ color: "#455173" }}>
+                    <th style={{ borderRight: "0.5px solid #E7EDF4" }}>
+                      Created Date
+                    </th>
+                    <th style={{ borderRight: "0.5px solid #E7EDF4" }}>
+                      Customization ID
+                    </th>
+                    <th style={{ borderRight: "0.5px solid #E7EDF4" }}>
+                      Outlet
+                    </th>
+                    <th style={{ borderRight: "0.5px solid #E7EDF4" }}>
+                      Mobile number
+                    </th>
+                    <th style={{ borderRight: "0.5px solid #E7EDF4" }}>
+                      Product type
+                    </th>
+                    <th></th>
+                    <th>Status</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {Data.map((item, index) => (
+                    <tr key={index} style={{ color: "#2E364C" }}>
+                      <td>{item.created_at}</td>
+                      <td>{item.customizationcode}</td>
+                      <td>{findOutLetNameByID(Number(item.outlet))}</td>
+                      <td>
+                        <div className="view_password">
+                          {item.mobile_number}
+                        </div>
+                      </td>
+                      <td>
+                        {" "}
+                        {productCategoryByID(
+                          Number(item.product_type)
+                        )}
+                      </td>
+                      {/* <td>
                     <div className="active_sendmail">
                       <button className="sendmail_btn">Send Mail</button>
                     </div>
                   </td> */}
-                    <td>
-                      {item.status === "Updated" && (
-                        <button
-                          className={item.customer_response === "Confirmed"? "requested_btn": "votersConfirm_btn"}
-                          onClick={() => handleConfirmButton(item.id)}
-                        >
-                        {item.customer_response === "Confirmed"? "Confirmed" : "Confirm"}
-                        </button>
-                      )}
-                    </td>
-                    <td style={{ position: "relative" }}>
-                      <div className="status_votors">
-                        {/* <button className="requested_btn">Requested</button> */}
-                        <button className="updated_btn">{item.status}</button>
-                        {/* <button className="votersConfirm_btn">{item.status}</button> */}
+                      <td>
+                        {item.status === "Updated" && (
+                          <button
+                            className={
+                              item.customer_response === "Confirmed"
+                                ? "requested_btn"
+                                : "votersConfirm_btn"
+                            }
+                            onClick={() => handleConfirmButton(item.id)}
+                          >
+                            {item.customer_response === "Confirmed"
+                              ? "Confirmed"
+                              : "Confirm"}
+                          </button>
+                        )}
+                      </td>
+                      <td style={{ position: "relative" }}>
+                        <div className="status_votors">
+                          {/* <button className="requested_btn">Requested</button> */}
+                          <button className="updated_btn">{item.status}</button>
+                          {/* <button className="votersConfirm_btn">{item.status}</button> */}
 
-                        <IoEye
-                          style={{
-                            color: "#A7BED7",
-                            fontSize: "18px",
-                            cursor: "pointer",
-                          }}
-                          onClick={() => handleEyeClick(item.id)}
-                        />
-                        <BsThreeDotsVertical
-                          className="Action_dots"
-                          onClick={() =>
-                            setShowEditDelete(
-                              showEditDelete === index ? null : index
-                            )
-                          }
-                        />
-                      </div>
+                          <IoEye
+                            style={{
+                              color: "#A7BED7",
+                              fontSize: "18px",
+                              cursor: "pointer",
+                            }}
+                            onClick={() => handleEyeClick(item.id)}
+                          />
+                          <BsThreeDotsVertical
+                            className="Action_dots"
+                            onClick={() =>
+                              setShowEditDelete(
+                                showEditDelete === index ? null : index
+                              )
+                            }
+                          />
+                        </div>
 
-                      {showEditDelete === index && (
-                        <div ref={dropdownRef} className="Edit_delete_btn_user">
-                          {/* <p
+                        {showEditDelete === index && (
+                          <div
+                            ref={dropdownRef}
+                            className="Edit_delete_btn_user"
+                          >
+                            {/* <p
                           className="Edit_btn_user"
                           onClick={() => handleEditCustomization(item.id)}
                         >
                           Edit
                         </p> */}
-                          <p
-                            className="Delete_btn_user"
-                            onClick={() => handleDeleteCustomization(item.id)}
-                          >
-                            Delete
-                          </p>
-                        </div>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+                            <p
+                              className="Delete_btn_user"
+                              onClick={() => handleDeleteCustomization(item.id)}
+                            >
+                              Delete
+                            </p>
+                          </div>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+        <CustomiseRequest
+          open={IsModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          userId={userId}
+          setData={setData}
+        />
+        <DeleteConfirmationModal
+          DeleteConfirmationOpen={DeleteConfirmationOpen}
+          handleDeleteClose={handleDeleteClose}
+          setDeleteConfirmationOpen={setDeleteConfirmationOpen}
+          handleDeleteOpen={handleDeleteOpen}
+          isLoading={isLoading}
+          deleteFunction={() => {
+            delete_customization(
+              setIsLoading,
+              setData,
+              DeleteID,
+              setDeleteConfirmationOpen,
+              setSuccessMessage,
+              setSuccessModalOpen
+            );
+          }}
+        />
+        <SuccessModal
+          successModalOpen={successModalOpen}
+          handleOpen={handleOpen}
+          handleClose={handleClose}
+          successMessage={successMessage}
+        />
       </div>
-      <CustomiseRequest
-        open={IsModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        userId={userId}
-        setData={setData}
-      />
-      <DeleteConfirmationModal
-        DeleteConfirmationOpen={DeleteConfirmationOpen}
-        handleDeleteClose={handleDeleteClose}
-        setDeleteConfirmationOpen={setDeleteConfirmationOpen}
-        handleDeleteOpen={handleDeleteOpen}
-        isLoading={isLoading}
-        deleteFunction={() => {
-          delete_customization(
-            setIsLoading,
-            setData,
-            DeleteID,
-            setDeleteConfirmationOpen,
-            setSuccessMessage,
-            setSuccessModalOpen
-          );
-        }}
-      />
-      <SuccessModal
-        successModalOpen={successModalOpen}
-        handleOpen={handleOpen}
-        handleClose={handleClose}
-        successMessage={successMessage}
-      />
-    </div>
     </>
   );
 };

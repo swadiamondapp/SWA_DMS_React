@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./DesignerAssignmentPanel.css";
 import { useLocation, Link } from "react-router-dom";
 import folderimg from "../../../assets/folder.png";
-import { list_designer_folder } from "./Api";
+import { list_designer_folder, list_designer_folder_new } from "./Api";
 import { useNavigate } from 'react-router-dom';
 
 const DesignerAssignmentPanel = ({sidebarExpanded}) => {
@@ -10,7 +10,7 @@ const DesignerAssignmentPanel = ({sidebarExpanded}) => {
   const [designerFolder, setDesignerFolder] = useState([]);
 
   useEffect(() => {
-    list_designer_folder(setIsLoading, setDesignerFolder);
+    list_designer_folder_new(setIsLoading, setDesignerFolder);
   }, []);
   console.log(designerFolder, "folderName");
   const navigate = useNavigate();
