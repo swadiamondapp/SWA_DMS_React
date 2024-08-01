@@ -75,7 +75,6 @@ export const newScanProductStatusUpdate = async (
   setSuccessModalOpen,
   setSuccessMessage
 ) => {
-  debugger;
   try {
     const body = {
       transfer_id: clickedProductIds,
@@ -108,7 +107,6 @@ export const newScanProductStatusUpdate = async (
 };
 
 export const newScanSearchFilter = async (searchListId, setTableData) => {
-  debugger;
   try {
     let endpoint = `${NEW_SCAN_LIST}`;
 
@@ -172,7 +170,6 @@ export const centralhubScanSearchFilter = async (
   searchListId,
   setTableData
 ) => {
-  debugger;
   try {
     let endpoint = `${CENTRALHUB_NEW_SCAN_LIST}`;
 
@@ -254,7 +251,6 @@ export const centralHubnewScanProductStatusUpdate = async (
   setSuccessMessage,
   setClickedProductIds
 ) => {
-  debugger;
   try {
     const body = {
       transfer_id: clickedProductIds,

@@ -157,7 +157,7 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
         {/* new design section */}
         <div className="Parent_NewDesign">
           <h3 className="HeadNewdesign">New design</h3>
-          {Data.length === 0 && (
+          {isLoading && (
             <div
               style={{
                 display: "flex",
@@ -166,13 +166,25 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
               }}
             >
               <CircularProgress
-                size={50} // Set the desired size
+                size={50} 
                 sx={{
                   color: "#126e72",
                   padding: "8px 10px",
                   width: "35px",
                 }}
               />
+            </div>
+          )}
+
+          {isLoading !== true && Data.length === 0 && (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <span style={{ marginTop: "100px" }}>No Data Found</span>
             </div>
           )}
 

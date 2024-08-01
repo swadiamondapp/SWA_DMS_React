@@ -486,7 +486,6 @@ export const scan_list_datas = async (setIsLoading, setScanTableData) => {
 };
 
 export const scanSearchFilter = async (searchListId, setTableData) => {
-  debugger;
   try {
     let endpoint = `${SCAN_TABLE_LIST}`;
 
@@ -515,7 +514,6 @@ export const scan_list_search = async (
   setSuccessModalOpen,
   setSuccessMessage
 ) => {
-  debugger;
   try {
     const body = {
       finisheditem_id: searchListId,
@@ -616,7 +614,6 @@ export const workDone_list_search = async (
   setSuccessModalOpen,
   setSuccessMessage
 ) => {
-  debugger;
   try {
     const body = {
       product_id: searchListId,
@@ -669,7 +666,6 @@ export const workDone_table_product_update = async (
   setSuccessModalOpen,
   setSuccessMessage
 ) => {
-  debugger;
   try {
     // setIsLoading(true);
     const response = await apiService.patch(
@@ -695,7 +691,7 @@ export const customizationApprove = async (
   setCustomizationListData
 ) => {
   try {
-    debugger;
+
     const response = await apiService.patch(
       `${WORKDONE_CUSTOMIZATION_APPROVE}${approveId}/`
     );
@@ -719,7 +715,6 @@ export const wareHouseEditBasicDetails = async (
   setErrors,
   navigate
 ) => {
-  debugger;
   try {
     const body = {
       metal_type: actualFormData.typeOfMetal,

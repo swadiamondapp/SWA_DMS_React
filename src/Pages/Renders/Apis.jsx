@@ -53,7 +53,6 @@ export const createFinsishedProjects = async (
   setErrors
 ) => {
   try {
-    debugger
     setIsLoading(true);
     const response = await apiService.post(CREATE_FINISHED_PROJECTS, data);
     if (checkApiStatus(response)) {

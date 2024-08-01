@@ -14,12 +14,15 @@ import {
 
 export const all_Designs = async (setIsLoading, setData) => {
   try {
-    const response = await apiService.get(`${ALL_DESIGNS}/?not_assigned=true`);
+    setIsLoading(true)
+    const response = await apiService.get(`${ALL_DESIGNS}?not_assigned=true`);
     if (checkApiStatus(response)) {
       setData(response.data.results.data);
     }
   } catch (error) {
     console.log(error);
+  }finally{
+    setIsLoading(false)
   }
 };
 
@@ -120,7 +123,6 @@ export const editedImageUpload = async (
   setData,
   formData
 ) => {
-  // debugger
   try {
     const response = await apiService.patch(
       `${UPDATE_DESIGNPOOL_IMAGE}${selectImageId}`,
