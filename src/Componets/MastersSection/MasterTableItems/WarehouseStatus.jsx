@@ -22,13 +22,14 @@ const WarehouseStatus = () => {
     name: "",
     order: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const openModal = () => {
     setOpen(!open);
   };
 
   useEffect(() => {
-    whstatusTableData(setTableData);
+    whstatusTableData(setTableData,setIsLoading);
   }, []);
 
   const handleOpen = () => {
@@ -46,11 +47,11 @@ const WarehouseStatus = () => {
   const handleInputChange = async (event) => {
     const { value } = event.target;
     setsearchListId(value);
-    await searchWhsatusItems(value, setTableData);
+    await searchWhsatusItems(value, setTableData,setIsLoading);
   };
 
   useEffect(() => {
-    searchWhsatusItems(searchListId, setTableData, setErrors);
+    searchWhsatusItems(searchListId, setTableData, setIsLoading);
   }, [searchListId]);
 
   const handleEdit = (itemId) => {
@@ -65,15 +66,6 @@ const WarehouseStatus = () => {
   };
 
   console.log("table data", tableData);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (tableData.length === 0) {
-      setTimeout(() => {
-        setLoading(false);
-      }, 2000);
-    }
-  }, [tableData]);
 
 
   return (
@@ -97,7 +89,7 @@ const WarehouseStatus = () => {
             </div>
           </div>
         </div>
-        {tableData.length === 0 && loading === true ? (
+        {isLoading === true ? (
         <div
           style={{
             display: 'flex',
@@ -163,7 +155,7 @@ const WarehouseStatus = () => {
               ))}
             </tbody>
           </table>
-          {tableData.length === 0 && !loading && (
+          {tableData.length === 0 && !isLoading && (
           <div
             className=""
             style={{
@@ -199,6 +191,7 @@ const WarehouseStatus = () => {
           setInputData={setInputData}
           setSuccessModalOpen={setSuccessModalOpen}
           setSuccessMessage={setSuccessMessage}
+          setIsLoading={setIsLoading}
         />
       )}
 
@@ -213,7 +206,8 @@ const WarehouseStatus = () => {
               deleteId,
               setDeleteConfirmationOpen,
               setSuccessMessage,
-              setSuccessModalOpen
+              setSuccessModalOpen,
+              setIsLoading
             );
           }}
         />

@@ -29,13 +29,14 @@ const TagTable = () => {
     image: "",
   });
   const [selectedImage, setSelectedImage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const openModal = () => {
     setOpen(!open);
   };
 
   useEffect(() => {
-    tag_table_data(setTableData);
+    tag_table_data(setTableData,setIsLoading);
   }, []);
 
   const handleDeleteOpen = (userId) => {
@@ -53,11 +54,11 @@ const TagTable = () => {
   const handleInputChange = async (event) => {
     const { value } = event.target;
     setsearchListId(value);
-    await search_tag_data(value, setTableData);
+    await search_tag_data(value, setTableData,setIsLoading);
   };
 
   useEffect(() => {
-    search_tag_data(searchListId, setTableData, setErrors);
+    search_tag_data(searchListId, setTableData, setIsLoading);
   }, [searchListId]);
 
   const handleEdit = (itemId) => {
@@ -74,15 +75,6 @@ const TagTable = () => {
 
   console.log("selectedImage", selectedImage);
 
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (tableData.length === 0) {
-      setTimeout(() => {
-        setLoading(false);
-      }, 2000);
-    }
-  }, [tableData]);
 
 
   return (
@@ -109,7 +101,7 @@ const TagTable = () => {
           </div>
         </div>
 
-        {tableData.length === 0 && loading === true ? (
+        { isLoading === true ? (
         <div
           style={{
             display: 'flex',
@@ -197,7 +189,7 @@ const TagTable = () => {
             </tbody>
           </table>
 
-          {tableData.length === 0 && !loading && (
+          {tableData.length === 0 &&  (
             <div
               className=""
               style={{
@@ -235,6 +227,7 @@ const TagTable = () => {
           selectedImage={selectedImage}
           setSuccessModalOpen={setSuccessModalOpen}
           setSuccessMessage={setSuccessMessage}
+          setIsLoading={setIsLoading}
         />
       )}
 
@@ -249,7 +242,8 @@ const TagTable = () => {
               deleteId,
               setDeleteConfirmationOpen,
               setSuccessMessage,
-              setSuccessModalOpen
+              setSuccessModalOpen,
+              setIsLoading
             );
           }}
         />

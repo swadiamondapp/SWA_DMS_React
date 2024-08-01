@@ -67,6 +67,7 @@ const MastersModal = ({
   setClickedProductIds,
   // setSuccessModalOpen,
   // setSuccessMessage
+  setIsLoading
 
 }) => {
   const location = useLocation();
@@ -101,7 +102,8 @@ const MastersModal = ({
             setInputData,
             inputData.id,
             setSuccessModalOpen,
-            setSuccessMessage
+            setSuccessMessage,
+            setIsLoading
           );
         } else {
           finding_table_data_create(
@@ -111,7 +113,8 @@ const MastersModal = ({
             handleClose,
             setInputData,
             setSuccessModalOpen,
-            setSuccessMessage
+            setSuccessMessage,
+            setIsLoading
           );
         }
       }
@@ -135,7 +138,8 @@ const MastersModal = ({
             inputData.id,
             selectedImage,
             setSuccessModalOpen,
-            setSuccessMessage
+            setSuccessMessage,
+            setIsLoading
           );
         } else {
           const formData = new FormData();
@@ -151,7 +155,8 @@ const MastersModal = ({
             setInputData,
             setSelectedImage,
             setSuccessModalOpen,
-            setSuccessMessage
+            setSuccessMessage,
+            setIsLoading
           );
         }
       }
@@ -168,7 +173,8 @@ const MastersModal = ({
             setInputData,
             inputData.id,
             setSuccessModalOpen,
-            setSuccessMessage
+            setSuccessMessage,
+            setIsLoading
           );
         } else {
           metalDataCreate(
@@ -178,7 +184,8 @@ const MastersModal = ({
             handleClose,
             setInputData,
             setSuccessModalOpen,
-            setSuccessMessage
+            setSuccessMessage,
+            setIsLoading
           );
         }
       }
@@ -195,7 +202,8 @@ const MastersModal = ({
             setInputData,
             inputData.id,
             setSuccessModalOpen,
-            setSuccessMessage
+            setSuccessMessage,
+            setIsLoading
           );
         } else {
           diamondDataCreate(
@@ -205,7 +213,8 @@ const MastersModal = ({
             handleClose,
             setInputData,
             setSuccessModalOpen,
-            setSuccessMessage
+            setSuccessMessage,
+            setIsLoading
           );
         }
       }
@@ -227,7 +236,8 @@ const MastersModal = ({
             setInputData,
             inputData.id,
             setSuccessModalOpen,
-            setSuccessMessage
+            setSuccessMessage,
+            setIsLoading
           );
         } else {
           valueaddDataCreate(
@@ -237,7 +247,8 @@ const MastersModal = ({
             handleClose,
             setInputData,
             setSuccessModalOpen,
-            setSuccessMessage
+            setSuccessMessage,
+            setIsLoading
           );
         }
       }
@@ -254,7 +265,8 @@ const MastersModal = ({
             setInputData,
             inputData.id,
             setSuccessModalOpen,
-            setSuccessMessage
+            setSuccessMessage,
+            setIsLoading
           );
         } else {
           whstatusDataCreate(
@@ -264,7 +276,8 @@ const MastersModal = ({
             handleClose,
             setInputData,
             setSuccessModalOpen,
-            setSuccessMessage
+            setSuccessMessage,
+            setIsLoading
           );
         }
       }
@@ -281,7 +294,8 @@ const MastersModal = ({
             setInputData,
             inputData.id,
             setSuccessModalOpen,
-            setSuccessMessage
+            setSuccessMessage,
+            setIsLoading
           );
         } else {
           centralStatusDataCreate(
@@ -291,7 +305,8 @@ const MastersModal = ({
             handleClose,
             setInputData,
             setSuccessModalOpen,
-            setSuccessMessage
+            setSuccessMessage,
+            setIsLoading
           );
         }
       }
@@ -308,7 +323,8 @@ const MastersModal = ({
             setInputData,
             inputData.id,
             setSuccessModalOpen,
-            setSuccessMessage
+            setSuccessMessage,
+            setIsLoading
           );
         } else {
           categoryDataCreate(
@@ -318,7 +334,8 @@ const MastersModal = ({
             handleClose,
             setInputData,
             setSuccessModalOpen,
-            setSuccessMessage
+            setSuccessMessage,
+            setIsLoading
           );
         }
       }
@@ -335,7 +352,8 @@ const MastersModal = ({
             setInputData,
             inputData.id,
             setSuccessModalOpen,
-            setSuccessMessage
+            setSuccessMessage,
+            setIsLoading
           );
         } else {
           outletDataCreate(
@@ -345,7 +363,8 @@ const MastersModal = ({
             handleClose,
             setInputData,
             setSuccessModalOpen,
-            setSuccessMessage
+            setSuccessMessage,
+            setIsLoading
           );
         }
       }

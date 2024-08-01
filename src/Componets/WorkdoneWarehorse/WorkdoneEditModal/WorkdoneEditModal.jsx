@@ -113,10 +113,10 @@ const WorkdoneEditModal = ({
       formData.notes === ""
     ) {
       setError("Please Fill all fields");
+      setTimeout(()=>{
+        setError("")
+      },1500)
     }
-    setTimeout(()=>{
-      setError("")
-    },1500)
 
     console.log("edit id", pId);
     try {
@@ -137,8 +137,8 @@ const WorkdoneEditModal = ({
   useEffect(() => {
     metal_type_dropdown_basicDetails(setMetalTypeDropDown);
     diamond_type_dropdown_basicDetails(setDiamondType);
-    finding_table_data(setFindings);
-    tag_table_data(setTags);
+    finding_table_data(setFindings,setIsLoading);
+    tag_table_data(setTags,setIsLoading);
   }, []);
 
   const onSearch = (value) => {

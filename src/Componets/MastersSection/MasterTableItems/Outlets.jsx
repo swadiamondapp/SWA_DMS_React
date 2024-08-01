@@ -22,13 +22,15 @@ const Outlets = () => {
     name: "",
     place:""
   });
+  const [isLoading, setIsLoading] = useState(false);
+
 
   const openModal = () => {
     setOpen(!open);
   };
 
   useEffect(() => {
-    outletTableData(setTableData);
+    outletTableData(setTableData,setIsLoading);
   }, []);
 
   const handleOpen = () => {
@@ -46,11 +48,11 @@ const Outlets = () => {
   const handleInputChange = async (event) => {
     const { value } = event.target;
     setsearchListId(value);
-   await searchOutletItems(value, setTableData);
+   await searchOutletItems(value, setTableData,setIsLoading);
   };
 
   useEffect(() => {
-    searchOutletItems(searchListId, setTableData, setErrors);
+    searchOutletItems(searchListId, setTableData, setIsLoading);
   }, [searchListId]);
 
   const handleEdit = (itemId) => {
@@ -64,15 +66,6 @@ const Outlets = () => {
     );
   };
  console.log("tabledata" , tableData)
- const [loading, setLoading] = useState(true);
-
- useEffect(() => {
-   if (tableData.length === 0) {
-     setTimeout(() => {
-       setLoading(false);
-     }, 2000);
-   }
- }, [tableData]);
 
 
   return (
@@ -96,7 +89,7 @@ const Outlets = () => {
             </div>
           </div>
         </div>
-        {tableData.length === 0 && loading === true ? (
+        {isLoading === true ? (
         <div
           style={{
             display: 'flex',
@@ -162,7 +155,7 @@ const Outlets = () => {
               ))}
             </tbody>
           </table>
-          {tableData.length === 0 && !loading && (
+          {tableData.length === 0 && !isLoading && (
           <div
             className=""
             style={{
@@ -198,6 +191,7 @@ const Outlets = () => {
           setInputData={setInputData}
           setSuccessModalOpen={setSuccessModalOpen}
           setSuccessMessage={setSuccessMessage}
+          setIsLoading={setIsLoading}
         />
       )}
 
@@ -212,7 +206,8 @@ const Outlets = () => {
               deleteId,
               setDeleteConfirmationOpen,
               setSuccessMessage,
-              setSuccessModalOpen
+              setSuccessModalOpen,
+              setIsLoading
             );
           }}
         />
