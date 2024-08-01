@@ -68,6 +68,16 @@ const TableItems = () => {
 
   console.log("tableData", tableData);
 
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (tableData.length === 0) {
+      setTimeout(() => {
+        setLoading(false);
+      }, 2000);
+    }
+  }, [tableData]);
+
   return (
     <>
       <div className="masetrs_section">
@@ -92,25 +102,25 @@ const TableItems = () => {
           </div>
         </div>
 
-        {isLoading === true ? (
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <CircularProgress
-                  size={50}
-                  sx={{
-                    color: "#126e72",
-                    padding: "8px 10px",
-                    width: "35px",
-                  }}
-                />
-              </div>
-            ) : (
-
+        {tableData.length === 0 && loading === true ? (
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '200px',
+          }}
+        >
+          <CircularProgress
+            size={50}
+            sx={{
+              color: '#126e72',
+              padding: '8px 10px',
+              width: '35px',
+            }}
+          />
+        </div>
+      ) : (
         <div className="table-container">
           <table className="table_borderleft">
             <thead>
@@ -159,7 +169,7 @@ const TableItems = () => {
             ))}
           </table>
 
-          {isLoading === false && tableData.length === 0 && (
+          {tableData.length === 0 && !loading &&(
             <div
               className=""
               style={{
@@ -174,7 +184,7 @@ const TableItems = () => {
             </div>
           )}
         </div>
-        )}
+)}
         <SuccessModal
           successModalOpen={successModalOpen}
           handleOpen={handleOpen}

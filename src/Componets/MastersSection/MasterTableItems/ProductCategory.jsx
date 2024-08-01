@@ -6,6 +6,7 @@ import MastersModal from "../MastersModal/MastersModal";
 import { categoryTableData, deleteCategoryData, searchCategoryItems } from "../ApiMasters/ApiMasters";
 import DeleteConfirmationModal from "../../ConfirmationModal/DeleteConfirmationModal";
 import SuccessModal from "../../SuccessModal/SuccessModal";
+import { CircularProgress } from "@mui/material";
 
 const ProductCategory = () => {
   const [open, setOpen] = useState(false);
@@ -62,6 +63,16 @@ const ProductCategory = () => {
   // };
 
   console.log("table data", tableData);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (tableData.length === 0) {
+      setTimeout(() => {
+        setLoading(false);
+      }, 2000);
+    }
+  }, [tableData]);
+
 
   return (
     <>
@@ -84,7 +95,25 @@ const ProductCategory = () => {
             </div>
           </div>
         </div>
-
+        {tableData.length === 0 && loading === true ? (
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '200px',
+          }}
+        >
+          <CircularProgress
+            size={50}
+            sx={{
+              color: '#126e72',
+              padding: '8px 10px',
+              width: '35px',
+            }}
+          />
+        </div>
+      ) : (
         <div className="table-container">
           <table className="table_borderleft">
             <thead>
@@ -120,7 +149,7 @@ const ProductCategory = () => {
               ))}
             </tbody>
           </table>
-          {tableData.length === 0 && (
+          {tableData.length === 0 && !loading && (
           <div
             className=""
             style={{
@@ -135,6 +164,7 @@ const ProductCategory = () => {
           </div>
         )}
         </div>
+      )}
         <SuccessModal
           successModalOpen={successModalOpen}
           handleOpen={handleOpen}

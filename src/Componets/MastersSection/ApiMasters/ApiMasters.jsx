@@ -52,7 +52,6 @@ import {
 
 export const finding_table_data = async (setTableData) => {
   try {
-    // setIsLoading(true)
     const response = await apiService.get(MASTERS_FINDING_DATAS);
     if (checkApiStatus(response)) {
       setTableData(response.data.results.data);
@@ -60,9 +59,6 @@ export const finding_table_data = async (setTableData) => {
   } catch (error) {
     console.log(error);
   }
-  // finally{
-  //   setIsLoading(false)
-  // }
 };
 
 export const finding_table_data_create = async (
