@@ -304,7 +304,7 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
             </div>
           )}
 
-          {isLoading === false && Data.length === 0 ? (
+          {isLoading === false && Data.length === 0 && assignmentFolder.length === 0 ? (
             <div
               style={{
                 display: "flex",
