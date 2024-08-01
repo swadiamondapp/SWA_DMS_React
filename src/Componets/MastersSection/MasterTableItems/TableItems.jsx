@@ -11,6 +11,7 @@ import {
 } from "../ApiMasters/ApiMasters";
 import DeleteConfirmationModal from "../../ConfirmationModal/DeleteConfirmationModal";
 import SuccessModal from "../../SuccessModal/SuccessModal";
+import { CircularProgress } from "@mui/material";
 
 const TableItems = () => {
   const [open, setOpen] = useState(false);
@@ -26,6 +27,7 @@ const TableItems = () => {
     find_name: "",
     priority: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const openModal = () => {
     setOpen(!open);
@@ -51,11 +53,8 @@ const TableItems = () => {
     const { value } = event.target;
     setsearchListId(value);
 
-    await search_finding_data(value,setTableData);
+    await search_finding_data(value, setTableData);
   };
-
-
-
 
   useEffect(() => {
     search_finding_data(searchListId, setTableData, setErrors);
@@ -67,7 +66,7 @@ const TableItems = () => {
     setInputData(selectedItem || { find_name: "", priority: "" });
   };
 
-  console.log("errors -----", errors);
+  console.log("tableData", tableData);
 
   return (
     <>
@@ -93,6 +92,25 @@ const TableItems = () => {
           </div>
         </div>
 
+        {isLoading === true ? (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <CircularProgress
+                  size={50}
+                  sx={{
+                    color: "#126e72",
+                    padding: "8px 10px",
+                    width: "35px",
+                  }}
+                />
+              </div>
+            ) : (
+
         <div className="table-container">
           <table className="table_borderleft">
             <thead>
@@ -103,11 +121,12 @@ const TableItems = () => {
                 <th>Action</th>
               </tr>
             </thead>
-            <tbody className="table_border_left">
-              {(filteredData.length > 0 && searchListId !== ""
+            {/* {(filteredData.length > 0 && searchListId !== ""
                 ? filteredData
-                : tableData
-              ).map((item, index) => (
+                : tableData */}
+            {/* ) */}
+            {tableData?.map((item, index) => (
+              <tbody className="table_border_left">
                 <tr key={item.id} className="table_row">
                   <td style={{ borderLeft: "none" }}>{index + 1}</td>
                   <td>
@@ -135,26 +154,27 @@ const TableItems = () => {
                     </div>
                   </td>
                 </tr>
-              ))}
-
-              {errors && <span style={{ color: "red" }}>{errors}</span>}
-            </tbody>
+                {errors && <span style={{ color: "red" }}>{errors}</span>}
+              </tbody>
+            ))}
           </table>
-          {tableData.length === 0 && (
-          <div
-            className=""
-            style={{
-              width: "100%",
-              height: "200px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <span>No Data Found</span>
-          </div>
-        )}
+
+          {isLoading === false && tableData.length === 0 && (
+            <div
+              className=""
+              style={{
+                width: "100%",
+                height: "200px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <span>No Data Found</span>
+            </div>
+          )}
         </div>
+        )}
         <SuccessModal
           successModalOpen={successModalOpen}
           handleOpen={handleOpen}
@@ -173,6 +193,8 @@ const TableItems = () => {
           setTableData={setTableData}
           inputData={inputData}
           setInputData={setInputData}
+          setSuccessModalOpen={setSuccessModalOpen}
+          setSuccessMessage={setSuccessMessage}
         />
       )}
 

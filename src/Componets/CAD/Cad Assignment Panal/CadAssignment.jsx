@@ -6,12 +6,14 @@ import { LiaCloudUploadAltSolid } from "react-icons/lia";
 import { useLocation, Link } from "react-router-dom";
 import folderimg from "../../../assets/folder.png";
 import { list_assigned_cad_design } from "../Api";
+import { CircularProgress } from "@mui/material";
 const CadAssignment = ({
   designList,
   onButtonClick,
   timer,
   setIsModalOpen,
   sidebarExpanded,
+  isLoadingMain
 }) => {
   const navigate = useNavigate();
   const [uploadInstructionsVisible, setUploadInstructionsVisible] =
@@ -144,6 +146,43 @@ const CadAssignment = ({
 
       {/* cad folder */}
       <div className="CadFolder">
+        {isLoadingMain && (
+       <div
+         style={{
+           display: "flex",
+           justifyContent: "center",
+           alignItems: "center",
+           marginTop: "50px",
+           width: "100%",
+           height: "100%",
+           // background:"red"
+         }}
+       >
+         <CircularProgress
+           size={50} // Set the desired size
+           sx={{
+             color: "#126e72",
+             padding: "8px 10px",
+             width: "35px",
+           }}
+         />
+       </div>
+     )}
+
+     {isLoadingMain === false && designList.length === 0 && (
+       <div
+         style={{
+           display: "flex",
+           justifyContent: "center",
+           alignItems: "center",
+          //  background:"red",
+           width:"100%"
+         }}
+       >
+         <span style={{ marginTop: "100px" }}>No Data Found</span>
+       </div>
+     )}
+        
         <div
           className="Parent_Folder_section_Designer"
           style={{

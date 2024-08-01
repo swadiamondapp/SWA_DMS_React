@@ -59,7 +59,7 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
     setSelectButtonLabel(showRadioButtons ? "Select" : "Unselect");
     if (showRadioButtons) {
       // If toggling to "Unselect", clear the selected designs
-      setSelectedAssignment([])
+      setSelectedAssignment([]);
     }
   };
   const toggleDownloadOptions = () => {
@@ -285,7 +285,7 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
         />
 
         <div className="Assignment_panel_section">
-          {Data.length === 0 || assignmentFolder.length === 0 ? (
+          {isLoading && (
             <div
               style={{
                 display: "flex",
@@ -301,6 +301,18 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
                   width: "35px",
                 }}
               />
+            </div>
+          )}
+
+          {isLoading === false && Data.length === 0 ? (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <span style={{marginTop:"100px"}}>No Data Found</span>
             </div>
           ) : (
             <>
@@ -433,7 +445,7 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
         setAdminBasicModalOpen={setAdminBasicModalOpen}
         onClose={handleCloseAdminModal}
         selectedDesignCode={selectedDesignCode}
-        recallListDesigners={()=>  list_assignment_panel(setIsLoading, setData)}
+        recallListDesigners={() => list_assignment_panel(setIsLoading, setData)}
       />
 
       <AssignmentModal

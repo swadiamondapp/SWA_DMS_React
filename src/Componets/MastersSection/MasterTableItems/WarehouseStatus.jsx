@@ -167,6 +167,8 @@ const WarehouseStatus = () => {
           setTableData={setTableData}
           inputData={inputData}
           setInputData={setInputData}
+          setSuccessModalOpen={setSuccessModalOpen}
+          setSuccessMessage={setSuccessMessage}
         />
       )}
 

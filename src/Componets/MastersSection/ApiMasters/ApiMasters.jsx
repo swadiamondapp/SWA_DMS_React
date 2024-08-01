@@ -52,6 +52,7 @@ import {
 
 export const finding_table_data = async (setTableData) => {
   try {
+    // setIsLoading(true)
     const response = await apiService.get(MASTERS_FINDING_DATAS);
     if (checkApiStatus(response)) {
       setTableData(response.data.results.data);
@@ -59,6 +60,9 @@ export const finding_table_data = async (setTableData) => {
   } catch (error) {
     console.log(error);
   }
+  // finally{
+  //   setIsLoading(false)
+  // }
 };
 
 export const finding_table_data_create = async (
@@ -66,7 +70,9 @@ export const finding_table_data_create = async (
   setErrors,
   setTableData,
   handleClose,
-  setInputData
+  setInputData,
+  setSuccessModalOpen,
+  setSuccessMessage
 ) => {
   try {
     const response = await apiService.post(MASTERS_FINDING_CREATE, inputData);
@@ -74,7 +80,11 @@ export const finding_table_data_create = async (
       finding_table_data(setTableData);
       handleClose();
       setInputData({});
-      alert("Item added successfully");
+      setSuccessModalOpen(true);
+      setSuccessMessage("Item added successfully");
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1700);
     } else if (
       response.data.results &&
       response.data.results.status_code === 206
@@ -143,7 +153,9 @@ export const finding_data_upadate = async (
   setTableData,
   handleClose,
   setInputData,
-  itemId
+  itemId,
+  setSuccessModalOpen,
+  setSuccessMessage
 ) => {
   try {
     const body = {
@@ -157,15 +169,14 @@ export const finding_data_upadate = async (
     );
     if (response.data.results.status_code === 200) {
       finding_table_data(setTableData);
-      // onClose();
-      // setSuccessMessage("Edited SuccessFully");
-      // setSuccessModalOpen(true);
-      // setTimeout(() => {
-      //   setSuccessModalOpen(false);
-      // }, 1600);
+      setSuccessModalOpen(true);
+      setSuccessMessage("Item Updated successfully");
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1700);
       handleClose();
       setInputData({});
-      alert("Item Updated Successfully");
+      // alert("Item Updated Successfully");
     } else if (
       response.data.results &&
       response.data.results.status_code === 206
@@ -246,8 +257,11 @@ export const tag_table_data_create = async (
   setTableData,
   handleClose,
   setInputData,
-  setSelectedImage
+  setSelectedImage,
+  setSuccessModalOpen,
+  setSuccessMessage
 ) => {
+  debugger;
   try {
     console.log("api formData", formData);
     const response = await apiService.post(TAG_ITEM_CREATE, formData);
@@ -257,7 +271,11 @@ export const tag_table_data_create = async (
       handleClose();
       setInputData({});
       setSelectedImage(null);
-      alert("Item added successfully");
+      setSuccessModalOpen(true);
+      setSuccessMessage("Item added successfully");
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1700);
     } else if (
       response.data.results &&
       response.data.results.status_code === 206
@@ -278,7 +296,9 @@ export const tag_data_upadate = async (
   handleClose,
   setInputData,
   itemId,
-  selectedImage
+  selectedImage,
+  setSuccessModalOpen,
+  setSuccessMessage
 ) => {
   try {
     // const body = {
@@ -293,15 +313,13 @@ export const tag_data_upadate = async (
     );
     if (checkApiStatus(response)) {
       tag_table_data(setTableData);
-      // onClose();
-      // setSuccessMessage("Edited SuccessFully");
-      // setSuccessModalOpen(true);
-      // setTimeout(() => {
-      //   setSuccessModalOpen(false);
-      // }, 1600);
+      setSuccessModalOpen(true);
+      setSuccessMessage("Item Updated successfully");
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1700);
       handleClose();
       setInputData({});
-      alert("Item Updated Successfully");
     } else if (
       response.data.results &&
       response.data.results.status_code === 206
@@ -331,15 +349,23 @@ export const metalDataCreate = async (
   setErrors,
   setTableData,
   handleClose,
-  setInputData
+  setInputData,
+  setSuccessModalOpen,
+  setSuccessMessage
 ) => {
+  debugger;
   try {
     const response = await apiService.post(METAL_ITEM_CREATE, inputData);
     if (checkApiStatus(response)) {
       metalTableData(setTableData);
       handleClose();
       setInputData({});
-      alert("item added Successfully");
+      setSuccessModalOpen(true);
+      setSuccessMessage("Item added successfully");
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1700);
+      // alert("item added Successfully");
     }
   } catch (error) {
     console.log(error);
@@ -403,7 +429,9 @@ export const metalDataUpadate = async (
   setTableData,
   handleClose,
   setInputData,
-  itemId
+  itemId,
+  setSuccessModalOpen,
+  setSuccessMessage
 ) => {
   try {
     const body = {
@@ -418,15 +446,14 @@ export const metalDataUpadate = async (
     );
     if (response.data.results.status_code === 200) {
       metalTableData(setTableData);
-      // onClose();
-      // setSuccessMessage("Edited SuccessFully");
-      // setSuccessModalOpen(true);
-      // setTimeout(() => {
-      //   setSuccessModalOpen(false);
-      // }, 1600);
+      setSuccessModalOpen(true);
+      setSuccessMessage("Item Updated successfully");
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1700);
       handleClose();
       setInputData({});
-      alert("Item Updated Successfully");
+      // alert("Item Updated Successfully");
     }
   } catch (error) {
     console.error("Error moving designs:", error);
@@ -451,7 +478,9 @@ export const diamondDataCreate = async (
   setErrors,
   setTableData,
   handleClose,
-  setInputData
+  setInputData,
+  setSuccessModalOpen,
+  setSuccessMessage
 ) => {
   try {
     const response = await apiService.post(DIAMOND_ITEM_CREATE, inputData);
@@ -459,7 +488,11 @@ export const diamondDataCreate = async (
       diamondTableData(setTableData);
       handleClose();
       setInputData({});
-      alert("item added Successfully");
+      setSuccessModalOpen(true);
+      setSuccessMessage("Item added successfully");
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1700);
     }
   } catch (error) {
     console.log(error);
@@ -523,7 +556,9 @@ export const diamondDataUpadate = async (
   setTableData,
   handleClose,
   setInputData,
-  itemId
+  itemId,
+  setSuccessModalOpen,
+  setSuccessMessage
 ) => {
   try {
     const body = {
@@ -537,15 +572,14 @@ export const diamondDataUpadate = async (
     );
     if (response.data.results.status_code === 200) {
       diamondTableData(setTableData);
-      // onClose();
-      // setSuccessMessage("Edited SuccessFully");
-      // setSuccessModalOpen(true);
-      // setTimeout(() => {
-      //   setSuccessModalOpen(false);
-      // }, 1600);
+      setSuccessModalOpen(true);
+      setSuccessMessage("Item Updated successfully");
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1700);
       handleClose();
       setInputData({});
-      alert("Item Updated Successfully");
+      // alert("Item Updated Successfully");
     }
   } catch (error) {
     console.error("Error moving designs:", error);
@@ -570,7 +604,9 @@ export const valueaddDataCreate = async (
   setErrors,
   setTableData,
   handleClose,
-  setInputData
+  setInputData,
+  setSuccessModalOpen,
+  setSuccessMessage
 ) => {
   try {
     const response = await apiService.post(VALUEADD_ITEM_CREATE, inputData);
@@ -578,7 +614,17 @@ export const valueaddDataCreate = async (
       valueaddTableData(setTableData);
       handleClose();
       setInputData({});
-      alert("item added Successfully");
+      setSuccessModalOpen(true);
+      setSuccessMessage("Item added successfully");
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1700);
+    }
+    if (response.data.results.status_code === 403) {
+      setErrors(response.data.results.message);
+      setTimeout(() => {
+        setErrors("")
+      }, 1700);
     }
   } catch (error) {
     console.log(error);
@@ -642,7 +688,9 @@ export const valueaddDataUpadate = async (
   setTableData,
   handleClose,
   setInputData,
-  itemId
+  itemId,
+  setSuccessModalOpen,
+  setSuccessMessage
 ) => {
   try {
     const body = {
@@ -658,15 +706,13 @@ export const valueaddDataUpadate = async (
     );
     if (response.data.results.status_code === 200) {
       valueaddTableData(setTableData);
-      // onClose();
-      // setSuccessMessage("Edited SuccessFully");
-      // setSuccessModalOpen(true);
-      // setTimeout(() => {
-      //   setSuccessModalOpen(false);
-      // }, 1600);
+      setSuccessModalOpen(true);
+      setSuccessMessage("Item Updated successfully");
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1700);
       handleClose();
       setInputData({});
-      alert("Item Updated Successfully");
     }
   } catch (error) {
     console.error("Error moving designs:", error);
@@ -691,7 +737,9 @@ export const whstatusDataCreate = async (
   setErrors,
   setTableData,
   handleClose,
-  setInputData
+  setInputData,
+  setSuccessModalOpen,
+  setSuccessMessage
 ) => {
   try {
     const response = await apiService.post(WHSTATUS_ITEM_CREATE, inputData);
@@ -699,7 +747,11 @@ export const whstatusDataCreate = async (
       whstatusTableData(setTableData);
       handleClose();
       setInputData({});
-      alert("item added Successfully");
+      setSuccessModalOpen(true);
+      setSuccessMessage("Item added successfully");
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1700);
     } else if (
       response.data.results &&
       response.data.results.status_code === 206
@@ -767,7 +819,9 @@ export const whstatusDataUpadate = async (
   setTableData,
   handleClose,
   setInputData,
-  itemId
+  itemId,
+  setSuccessModalOpen,
+  setSuccessMessage
 ) => {
   try {
     const body = {
@@ -780,15 +834,13 @@ export const whstatusDataUpadate = async (
     );
     if (response.data.results.status_code === 200) {
       whstatusTableData(setTableData);
-      // onClose();
-      // setSuccessMessage("Edited SuccessFully");
-      // setSuccessModalOpen(true);
-      // setTimeout(() => {
-      //   setSuccessModalOpen(false);
-      // }, 1600);
+      setSuccessModalOpen(true);
+      setSuccessMessage("Item Updated successfully");
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1700);
       handleClose();
       setInputData({});
-      alert("Item Updated Successfully");
     } else if (
       response.data.results &&
       response.data.results.status_code === 206
@@ -818,7 +870,9 @@ export const centralStatusDataCreate = async (
   setErrors,
   setTableData,
   handleClose,
-  setInputData
+  setInputData,
+  setSuccessModalOpen,
+  setSuccessMessage
 ) => {
   try {
     const response = await apiService.post(CENTRAL_ITEM_CREATE, inputData);
@@ -826,7 +880,11 @@ export const centralStatusDataCreate = async (
       centralStatusTableData(setTableData);
       handleClose();
       setInputData({});
-      alert("item added Successfully");
+      setSuccessModalOpen(true);
+      setSuccessMessage("Item added successfully");
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1700);
     } else if (
       response.data.results &&
       response.data.results.status_code === 206
@@ -895,7 +953,9 @@ export const centralStatusDataUpadate = async (
   setTableData,
   handleClose,
   setInputData,
-  itemId
+  itemId,
+  setSuccessModalOpen,
+  setSuccessMessage
 ) => {
   try {
     const body = {
@@ -910,15 +970,13 @@ export const centralStatusDataUpadate = async (
     );
     if (response.data.results.status_code === 200) {
       centralStatusTableData(setTableData);
-      // onClose();
-      // setSuccessMessage("Edited SuccessFully");
-      // setSuccessModalOpen(true);
-      // setTimeout(() => {
-      //   setSuccessModalOpen(false);
-      // }, 1600);
+      setSuccessModalOpen(true);
+      setSuccessMessage("Item Updated successfully");
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1700);
       handleClose();
       setInputData({});
-      alert("Item Updated Successfully");
     } else if (
       response.data.results &&
       response.data.results.status_code === 206
@@ -948,7 +1006,9 @@ export const categoryDataCreate = async (
   setErrors,
   setTableData,
   handleClose,
-  setInputData
+  setInputData,
+  setSuccessModalOpen,
+  setSuccessMessage
 ) => {
   try {
     const response = await apiService.post(CATEGORY_ITEM_CREATE, inputData);
@@ -956,7 +1016,11 @@ export const categoryDataCreate = async (
       categoryTableData(setTableData);
       handleClose();
       setInputData({});
-      alert("item added Successfully");
+      setSuccessModalOpen(true);
+      setSuccessMessage("Item added successfully");
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1700);
     } else if (
       response.data.results &&
       response.data.results.status_code === 206
@@ -1024,7 +1088,9 @@ export const categoryDataUpadate = async (
   setTableData,
   handleClose,
   setInputData,
-  itemId
+  itemId,
+  setSuccessModalOpen,
+  setSuccessMessage
 ) => {
   try {
     const body = {
@@ -1037,15 +1103,13 @@ export const categoryDataUpadate = async (
     );
     if (response.data.results.status_code === 200) {
       categoryTableData(setTableData);
-      // onClose();
-      // setSuccessMessage("Edited SuccessFully");
-      // setSuccessModalOpen(true);
-      // setTimeout(() => {
-      //   setSuccessModalOpen(false);
-      // }, 1600);
+      setSuccessModalOpen(true);
+      setSuccessMessage("Item Updated successfully");
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1700);
       handleClose();
       setInputData({});
-      alert("Item Updated Successfully");
     }
   } catch (error) {
     console.error("Error moving designs:", error);
@@ -1070,7 +1134,9 @@ export const outletDataCreate = async (
   setErrors,
   setTableData,
   handleClose,
-  setInputData
+  setInputData,
+  setSuccessModalOpen,
+  setSuccessMessage
 ) => {
   try {
     const response = await apiService.post(OUTLET_ITEM_CREATE, inputData);
@@ -1078,7 +1144,11 @@ export const outletDataCreate = async (
       outletTableData(setTableData);
       handleClose();
       setInputData({});
-      alert("item added Successfully");
+      setSuccessModalOpen(true);
+      setSuccessMessage("Item added successfully");
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1700);
     }
   } catch (error) {
     console.log(error);
@@ -1141,7 +1211,9 @@ export const outletDataUpadate = async (
   setTableData,
   handleClose,
   setInputData,
-  itemId
+  itemId,
+  setSuccessModalOpen,
+  setSuccessMessage
 ) => {
   try {
     const body = {
@@ -1155,15 +1227,13 @@ export const outletDataUpadate = async (
     );
     if (response.data.results.status_code === 200) {
       outletTableData(setTableData);
-      // onClose();
-      // setSuccessMessage("Edited SuccessFully");
-      // setSuccessModalOpen(true);
-      // setTimeout(() => {
-      //   setSuccessModalOpen(false);
-      // }, 1600);
+      setSuccessModalOpen(true);
+      setSuccessMessage("Item Updated successfully");
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1700);
       handleClose();
       setInputData({});
-      alert("Item Updated Successfully");
     }
   } catch (error) {
     console.error("Error moving designs:", error);

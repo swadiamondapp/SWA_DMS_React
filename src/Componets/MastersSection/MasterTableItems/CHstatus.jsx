@@ -40,6 +40,11 @@ const CHstatus = () => {
   };
   const handleClose = () => {
     setSuccessModalOpen(false);
+    setInputData({
+      name: "",
+      order: "",
+      status: "active",
+    });
   };
 
   const handleDeleteOpen = (itemId) => {
@@ -50,7 +55,7 @@ const CHstatus = () => {
   const handleInputChange = async (event) => {
     const { value } = event.target;
     setsearchListId(value);
-    await searchCentralItems(value, setTableData );
+    await searchCentralItems(value, setTableData);
   };
 
   useEffect(() => {
@@ -145,25 +150,27 @@ const CHstatus = () => {
             </tbody>
           </table>
           {tableData.length === 0 && (
-          <div
-            className=""
-            style={{
-              width: "100%",
-              height: "200px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <span>No Data Found</span>
-          </div>
-        )}
+            <div
+              className=""
+              style={{
+                width: "100%",
+                height: "200px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <span>No Data Found</span>
+            </div>
+          )}
         </div>
         <SuccessModal
           successModalOpen={successModalOpen}
           handleOpen={handleOpen}
           handleClose={handleClose}
           successMessage={successMessage}
+          setSuccessModalOpen={setSuccessModalOpen}
+          setSuccessMessage={setSuccessMessage}
         />
       </div>
 
@@ -177,6 +184,8 @@ const CHstatus = () => {
           setTableData={setTableData}
           inputData={inputData}
           setInputData={setInputData}
+          setSuccessModalOpen={setSuccessModalOpen}
+          setSuccessMessage={setSuccessMessage}
         />
       )}
 

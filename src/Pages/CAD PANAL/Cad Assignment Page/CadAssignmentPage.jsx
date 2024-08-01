@@ -138,6 +138,7 @@ const CadAssignmentPage = () => {
         timer={timer}
         setIsModalOpen={setIsModalOpen}
         sidebarExpanded={sidebarExpanded}
+        isLoadingMain={isLoading}
       />
       <CentalHub
         open={isModalOpen}

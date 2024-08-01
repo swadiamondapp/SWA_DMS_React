@@ -167,19 +167,19 @@ const TagTable = () => {
           </table>
 
           {tableData.length === 0 && (
-          <div
-            className=""
-            style={{
-              width: "100%",
-              height: "200px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <span>No Data Found</span>
-          </div>
-        )}
+            <div
+              className=""
+              style={{
+                width: "100%",
+                height: "200px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <span>No Data Found</span>
+            </div>
+          )}
         </div>
         <SuccessModal
           successModalOpen={successModalOpen}
@@ -201,6 +201,8 @@ const TagTable = () => {
           setInputData={setInputData}
           setSelectedImage={setSelectedImage}
           selectedImage={selectedImage}
+          setSuccessModalOpen={setSuccessModalOpen}
+          setSuccessMessage={setSuccessMessage}
         />
       )}
 
