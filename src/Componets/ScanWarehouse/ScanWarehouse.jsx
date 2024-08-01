@@ -171,7 +171,7 @@ const ScanWarehouse = ({ sidebarExpanded }) => {
                   onChange={handleInputChange}
                   onKeyPress={handleKeyPress}
                 />
-                <img onKeyPress={handleKeyPress} src={searchimg} alt="" />
+                <img onClick={handleSearch} src={searchimg} alt="" />
               </div>
               {error && (
                 <span style={{ color: "red", fontSize: "10px" }}>{error}</span>

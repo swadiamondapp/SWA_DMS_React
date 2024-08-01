@@ -114,6 +114,9 @@ const WorkdoneEditModal = ({
     ) {
       setError("Please Fill all fields");
     }
+    setTimeout(()=>{
+      setError("")
+    },1500)
 
     console.log("edit id", pId);
     try {
@@ -151,12 +154,12 @@ const WorkdoneEditModal = ({
       <div
         className="edit_opcity"
         data-aos="fade-left"
-        style={{ overflow: "hidden" }}
+        style={{ overflow: "hidden" , position:"fixed",height:"100vh"}}
       ></div>
       <div
         className="leftbar"
         data-aos="fade-left"
-        style={{ overflow: "hidden" }}
+        style={{ overflow: "hidden" ,position:"fixed",height:"100vh" }}
       >
         {clickedProducts.map((product) => (
           <>
