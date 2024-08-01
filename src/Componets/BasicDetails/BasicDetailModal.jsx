@@ -394,8 +394,8 @@ const BasicDetailModal = ({
       basic_calculation(
         setIsLoadingCalculation,
         formData,
-        SelectedDiamondId,
         SelectedMetalId,
+        SelectedDiamondId,
         setCalculationData
       );
       // setShowMrp(CalculationData?.calculated_mrp)
