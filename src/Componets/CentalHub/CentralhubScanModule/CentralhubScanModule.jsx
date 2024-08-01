@@ -33,7 +33,7 @@ const CentralhubScanModule = ({ sidebarExpanded }) => {
   const [deleteId, setDeleteId] = useState("");
 
   useEffect(() => {
-    centralStatusTableData(setStatus);
+    centralStatusTableData(setStatus,setIsLoading);
     centralHubScanTable(setScanTableData);
   }, []);
 
@@ -70,7 +70,7 @@ const CentralhubScanModule = ({ sidebarExpanded }) => {
   const handleSearch = async () => {
     setIsLoading(true);
     if (searchListId === "") {
-      setError("Enter slot ID");
+      setError("Enter Product ID");
       setTimeout(() => {
         setError("");
       }, 3000);

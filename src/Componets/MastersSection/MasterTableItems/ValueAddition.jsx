@@ -29,12 +29,14 @@ const ValueAddition = () => {
     value: "",
   });
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const openModal = () => {
     setOpen(!open);
   };
 
   useEffect(() => {
-    valueaddTableData(setTableData);
+    valueaddTableData(setTableData,setIsLoading);
   }, []);
 
   const handleOpen = () => {
@@ -52,11 +54,11 @@ const ValueAddition = () => {
   const handleInputChange = async (event) => {
     const { value } = event.target;
     setsearchListId(value);
-    await searchValueaddItems(value, setTableData);
+    await searchValueaddItems(value, setTableData,setIsLoading);
   };
 
   useEffect(() => {
-    searchValueaddItems(searchListId, setTableData, setErrors);
+    searchValueaddItems(searchListId, setTableData, setIsLoading);
   }, [searchListId]);
 
   const handleEdit = (itemId) => {
@@ -73,16 +75,6 @@ const ValueAddition = () => {
   };
 
   console.log("table data", tableData);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (tableData.length === 0) {
-      setTimeout(() => {
-        setLoading(false);
-      }, 2000);
-    }
-  }, [tableData]);
-
 
   return (
     <>
@@ -108,7 +100,7 @@ const ValueAddition = () => {
           </div>
         </div>
 
-        {tableData.length === 0 && loading === true ? (
+        { isLoading === true ? (
         <div
           style={{
             display: 'flex',
@@ -180,7 +172,7 @@ const ValueAddition = () => {
               ))}
             </tbody>
           </table>
-          {tableData.length === 0 && !loading && (
+          {tableData.length === 0 && !isLoading && (
           <div
             className=""
             style={{
@@ -216,6 +208,7 @@ const ValueAddition = () => {
           setInputData={setInputData}
           setSuccessModalOpen={setSuccessModalOpen}
           setSuccessMessage={setSuccessMessage}
+          setIsLoading={setIsLoading}
         />
       )}
 
@@ -230,7 +223,8 @@ const ValueAddition = () => {
               deleteId,
               setDeleteConfirmationOpen,
               setSuccessMessage,
-              setSuccessModalOpen
+              setSuccessModalOpen,
+              setIsLoading
             );
           }}
         />

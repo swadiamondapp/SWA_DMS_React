@@ -26,13 +26,14 @@ const DiamondType = () => {
     name: "",
     price: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const openModal = () => {
     setOpen(!open);
   };
 
   useEffect(() => {
-    diamondTableData(setTableData);
+    diamondTableData(setTableData, setIsLoading);
   }, []);
 
   const handleOpen = () => {
@@ -50,11 +51,11 @@ const DiamondType = () => {
   const handleInputChange = async (event) => {
     const { value } = event.target;
     setsearchListId(value);
-    await searchDiamondItems(value, setTableData);
+    await searchDiamondItems(value, setTableData, setIsLoading);
   };
 
   useEffect(() => {
-    searchDiamondItems(searchListId, setTableData, setErrors);
+    searchDiamondItems(searchListId, setTableData, setIsLoading);
   }, [searchListId]);
 
   const handleEdit = (itemId) => {
@@ -67,19 +68,8 @@ const DiamondType = () => {
       }
     );
   };
- 
-  console.log("table data",tableData)
 
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (tableData.length === 0) {
-      setTimeout(() => {
-        setLoading(false);
-      }, 2000);
-    }
-  }, [tableData]);
-
+  console.log("table data", tableData);
 
   return (
     <>
@@ -105,90 +95,90 @@ const DiamondType = () => {
           </div>
         </div>
 
-        {tableData.length === 0 && loading === true ? (
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: '200px',
-          }}
-        >
-          <CircularProgress
-            size={50}
-            sx={{
-              color: '#126e72',
-              padding: '8px 10px',
-              width: '35px',
-            }}
-          />
-        </div>
-      ) : (
-        <div className="table-container">
-          <table className="table_borderleft">
-            <thead>
-              <tr>
-                <th>Sl No</th>
-                <th className="wide-column">Diamond Name</th>
-                <th>Price</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {(filteredData.length > 0 && searchListId !== ""
-                ? filteredData
-                : tableData
-              ).map((item, index) => (
-                <tr className="table_row">
-                  <td>{index + 1}</td>
-                  <td>{item.name}</td>
-                  <td>₹ {item.price}</td>
-                  <td>
-                    <div className="btn_td">
-                      <button
-                        className="btn_section"
-                        onClick={() => handleEdit(item.id)}
-                      >
-                        <img
-                          className="btn_section_img"
-                          src={editicon}
-                          alt=""
-                          srcset=""
-                        />
-                      </button>
-                      <button
-                        className="btn_section2"
-                        onClick={() => handleDeleteOpen(item.id)}
-                      >
-                        <img
-                          className="btn_section_img"
-                          src={dlticon}
-                          alt=""
-                          srcset=""
-                        />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          {tableData.length === 0 && (
+        {isLoading === true ? (
           <div
-            className=""
             style={{
-              width: "100%",
-              height: "200px",
               display: "flex",
-              alignItems: "center",
               justifyContent: "center",
+              alignItems: "center",
+              height: "200px",
             }}
           >
-            <span>No Data Found</span>
+            <CircularProgress
+              size={50}
+              sx={{
+                color: "#126e72",
+                padding: "8px 10px",
+                width: "35px",
+              }}
+            />
+          </div>
+        ) : (
+          <div className="table-container">
+            <table className="table_borderleft">
+              <thead>
+                <tr>
+                  <th>Sl No</th>
+                  <th className="wide-column">Diamond Name</th>
+                  <th>Price</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {(filteredData.length > 0 && searchListId !== ""
+                  ? filteredData
+                  : tableData
+                ).map((item, index) => (
+                  <tr className="table_row">
+                    <td>{index + 1}</td>
+                    <td>{item.name}</td>
+                    <td>₹ {item.price}</td>
+                    <td>
+                      <div className="btn_td">
+                        <button
+                          className="btn_section"
+                          onClick={() => handleEdit(item.id)}
+                        >
+                          <img
+                            className="btn_section_img"
+                            src={editicon}
+                            alt=""
+                            srcset=""
+                          />
+                        </button>
+                        <button
+                          className="btn_section2"
+                          onClick={() => handleDeleteOpen(item.id)}
+                        >
+                          <img
+                            className="btn_section_img"
+                            src={dlticon}
+                            alt=""
+                            srcset=""
+                          />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            {tableData.length === 0 && !isLoading && (
+              <div
+                className=""
+                style={{
+                  width: "100%",
+                  height: "200px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <span>No Data Found</span>
+              </div>
+            )}
           </div>
         )}
-        </div>
-      )}
         <SuccessModal
           successModalOpen={successModalOpen}
           handleOpen={handleOpen}
@@ -209,6 +199,7 @@ const DiamondType = () => {
           setInputData={setInputData}
           setSuccessModalOpen={setSuccessModalOpen}
           setSuccessMessage={setSuccessMessage}
+          setIsLoading={setIsLoading}
         />
       )}
 
@@ -223,7 +214,8 @@ const DiamondType = () => {
               deleteId,
               setDeleteConfirmationOpen,
               setSuccessMessage,
-              setSuccessModalOpen
+              setSuccessModalOpen,
+              setIsLoading
             );
           }}
         />

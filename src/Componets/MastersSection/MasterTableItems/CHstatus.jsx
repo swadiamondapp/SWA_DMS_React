@@ -27,13 +27,14 @@ const CHstatus = () => {
     order: "",
     status: "active",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const openModal = () => {
     setOpen(!open);
   };
 
   useEffect(() => {
-    centralStatusTableData(setTableData);
+    centralStatusTableData(setTableData,setIsLoading);
   }, []);
 
   const handleOpen = () => {
@@ -56,11 +57,11 @@ const CHstatus = () => {
   const handleInputChange = async (event) => {
     const { value } = event.target;
     setsearchListId(value);
-    await searchCentralItems(value, setTableData);
+    await searchCentralItems(value, setTableData,setIsLoading);
   };
 
   useEffect(() => {
-    searchCentralItems(searchListId, setTableData, setErrors);
+    searchCentralItems(searchListId, setTableData, setIsLoading);
   }, [searchListId]);
 
   const handleEdit = (itemId) => {
@@ -76,15 +77,6 @@ const CHstatus = () => {
   };
 
   console.log("table data", tableData);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (tableData.length === 0) {
-      setTimeout(() => {
-        setLoading(false);
-      }, 2000);
-    }
-  }, [tableData]);
 
 
   return (
@@ -111,7 +103,7 @@ const CHstatus = () => {
           </div>
         </div>
 
-        {tableData.length === 0 && loading === true ? (
+        {isLoading === true ? (
         <div
           style={{
             display: 'flex',
@@ -179,7 +171,7 @@ const CHstatus = () => {
               ))}
             </tbody>
           </table>
-          {tableData.length === 0 && !loading && (
+          {tableData.length === 0 && !isLoading && (
             <div
               className=""
               style={{
@@ -217,6 +209,7 @@ const CHstatus = () => {
           setInputData={setInputData}
           setSuccessModalOpen={setSuccessModalOpen}
           setSuccessMessage={setSuccessMessage}
+          setIsLoading={setIsLoading}
         />
       )}
 
@@ -231,7 +224,8 @@ const CHstatus = () => {
               deleteId,
               setDeleteConfirmationOpen,
               setSuccessMessage,
-              setSuccessModalOpen
+              setSuccessModalOpen,
+              setIsLoading
             );
           }}
         />

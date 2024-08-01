@@ -30,7 +30,7 @@ const ScanWarehouse = ({ sidebarExpanded }) => {
   const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
-    whstatusTableData(setStatus);
+    whstatusTableData(setStatus,setIsLoading);
     warehoueScanTable(setScanTableData);
   }, []);
 
@@ -67,7 +67,7 @@ const ScanWarehouse = ({ sidebarExpanded }) => {
   const handleSearch = async () => {
     setIsLoading(true);
     if (searchListId === "") {
-      setError("Enter slot ID");
+      setError("Enter Product ID");
       setTimeout(() => {
         setError("");
       }, 3000);

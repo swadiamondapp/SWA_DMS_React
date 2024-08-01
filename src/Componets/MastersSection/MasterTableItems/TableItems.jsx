@@ -34,7 +34,7 @@ const TableItems = () => {
   };
 
   useEffect(() => {
-    finding_table_data(setTableData);
+    finding_table_data(setTableData, setIsLoading);
   }, []);
 
   const handleDeleteOpen = (userId) => {
@@ -53,11 +53,11 @@ const TableItems = () => {
     const { value } = event.target;
     setsearchListId(value);
 
-    await search_finding_data(value, setTableData);
+    await search_finding_data(value, setTableData,setIsLoading);
   };
 
   useEffect(() => {
-    search_finding_data(searchListId, setTableData, setErrors);
+    search_finding_data(searchListId, setTableData, setIsLoading);
   }, [searchListId]);
 
   const handleEdit = (itemId) => {
@@ -67,16 +67,6 @@ const TableItems = () => {
   };
 
   console.log("tableData", tableData);
-
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (tableData.length === 0) {
-      setTimeout(() => {
-        setLoading(false);
-      }, 2000);
-    }
-  }, [tableData]);
 
   return (
     <>
@@ -102,7 +92,7 @@ const TableItems = () => {
           </div>
         </div>
 
-        {tableData.length === 0 && loading === true ? (
+        { isLoading === true ? (
         <div
           style={{
             display: 'flex',
@@ -169,7 +159,7 @@ const TableItems = () => {
             ))}
           </table>
 
-          {tableData.length === 0 && !loading &&(
+          {tableData.length === 0 && (
             <div
               className=""
               style={{
@@ -205,6 +195,7 @@ const TableItems = () => {
           setInputData={setInputData}
           setSuccessModalOpen={setSuccessModalOpen}
           setSuccessMessage={setSuccessMessage}
+          setIsLoading={setIsLoading}
         />
       )}
 
@@ -219,7 +210,8 @@ const TableItems = () => {
               deleteId,
               setDeleteConfirmationOpen,
               setSuccessMessage,
-              setSuccessModalOpen
+              setSuccessModalOpen,
+              setIsLoading
             );
           }}
         />
