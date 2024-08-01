@@ -254,7 +254,7 @@ const CustomizationTable = (props) => {
                     <td>{item.mobile_number}</td>
                     <td> {productCategoryByID(Number(item.product_type))}</td>
 
-                    <td style={{width:'15%'}}>
+                    <td style={{width:'23%'}}>
                       <button
                         className="PrintButton_CT"
                         onClick={() => handlePrintClick(item)}
