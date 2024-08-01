@@ -509,6 +509,7 @@ console.log(SelectedMetalId,SelectedDiamondId,"SelectedMetalId")
       notes: "",
     });
     setErrors({})
+    setCalculationData([])
   };
   const handleSearchDesigners = (event) => {
     const value = event.target.value;

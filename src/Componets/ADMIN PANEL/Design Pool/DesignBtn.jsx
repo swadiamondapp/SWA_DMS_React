@@ -43,6 +43,13 @@ const DesignBtn = ({
   handleSortByDesigner,
   handleSortByAdmin,
   handleSortByAll,
+  selectedImages,
+  setSelectedImages,
+  setAllSelected,
+  setShowDownloadOptions,
+  selectAllDesigns
+  
+
 
 }) => {
   const location = useLocation();
@@ -69,6 +76,38 @@ const DesignBtn = ({
     setSort(!sort);
   };
 
+  const handleDownloadMultiple = (imageUrls) => {
+    imageUrls.forEach((imageUrl, index) => {
+      fetch(imageUrl, {
+        method: 'GET',
+        mode: 'cors'
+      })
+      .then(response => response.blob())
+      .then(blob => {
+        const blobUrl = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = blobUrl;
+        // Use index or extract the image name from the URL to create a unique file name
+        link.download = `downloaded_image_${index}.jpg`; 
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      })
+      .catch(error => console.error('Error downloading the image:', error));
+    });
+    setSelectedImages([])
+    setAllSelected([])
+    setSelectedDesigns([])
+
+    setSelectButtonLabel("Select")
+    setShowRadioButtons(false)
+    setShowDownloadOptions(false)
+  };
+
+  // const handleAllDownload = ()=> {
+  //   handleDownloadMultiple(selectedImages)
+  // }
+
   return (
     <div style={location.pathname === "/unassigneddesigner" ? { marginTop: "18px" } : {}}>
 
@@ -85,15 +124,16 @@ const DesignBtn = ({
           location.pathname !== "/votorscustomization" &&
           location.pathname !== "/finishedProject" &&
           location.pathname !== "/unassigneddesigner" &&
-          location.pathname !== `/designerassignview/${id}` && (
+          location.pathname !== `/designerassignview/${id}` &&  (
+
             <div className="Download_ParentD">
               <button className="D_downlodBtn" onClick={toggleDownloadOptions}>
                 Download <TbDownload />
               </button>
               {showDownloadOptions && (
                 <div className="Download_Sub">
-                  <p>All</p>
-                  <p>Selected</p>
+                  <p >All</p>
+                  <p onClick={()=> handleDownloadMultiple(selectedImages)}>Selected</p>
                 </div>
               )}
             </div>
