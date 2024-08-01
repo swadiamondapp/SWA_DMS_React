@@ -182,7 +182,9 @@ const AdminBasicDetailsModal = ({
       "string.empty": `cannot be empty`,
     }),
     approxMRP: Joi.number().required().messages({
-      "string.empty": `cannot be empty`,
+      'number.base': 'Approximate MRP must be a number',
+      'number.empty': 'cannot be empty', // Handles cases where it is empty but should be a number
+      'any.required': 'cannot be empty',
     }),
     tag:  Joi.array().min(1).required().messages({
       'array.base': 'cannot be empty',
@@ -506,6 +508,7 @@ const AdminBasicDetailsModal = ({
       tag: "",
       notes: "",
     });
+    setErrors({})
   };
   const handleSearchDesigners = (event) => {
     const value = event.target.value;
@@ -1194,6 +1197,7 @@ const AdminBasicDetailsModal = ({
                                   className="next-button"
                                   type="submit"
                                   onClick={() => handleNextClick()}
+                                  style={{marginBottom:"10px"}}
                                 >
                                   Next
                                 </button>

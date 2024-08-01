@@ -21,6 +21,13 @@ const DesignerAssignmentPanel = ({sidebarExpanded}) => {
     });
   };
 
+  const truncateText = (text, maxLength) => {
+    if (text.length > maxLength) {
+      return text.slice(0, maxLength) + '...';
+    }
+    return text;
+  };
+
   return (
     <div className="DesignerAssignmentPanel" style={{paddingLeft:sidebarExpanded? "225px":"130px"}}>
       <div className="Parent_Folder_section_Designer">
@@ -32,7 +39,8 @@ const DesignerAssignmentPanel = ({sidebarExpanded}) => {
                 <img src={folderimg} alt={item.name} />
               {/* </Link> */}
 
-              <p>{item.name}</p>
+              <p className="text-truncate" >{truncateText(item.name, 10)}</p>
+              <span className="text-truncate_hover" >{item.name}</span>
             </div>
           ))}
         </div>
