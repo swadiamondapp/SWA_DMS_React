@@ -135,7 +135,7 @@ const AdminBasicDetailsModal = ({
     tag: "",
     notes: "",
   });
-
+console.log(SelectedMetalId,SelectedDiamondId,"SelectedMetalId")
   const schema = Joi.object({
     SKU: Joi.required().messages({
       "array.min": `SKU field must contain at least one item.`,
@@ -387,8 +387,8 @@ const AdminBasicDetailsModal = ({
       basic_calculation(
         setIsLoadingCalculation,
         formData,
-        SelectedDiamondId,
         SelectedMetalId,
+        SelectedDiamondId,
         setCalculationData
       );
     }
@@ -423,7 +423,7 @@ const AdminBasicDetailsModal = ({
       setFormData(prevFormData => ({
         ...prevFormData,
         approxMRP: CalculationData.calculated_mrp,
-      }));
+      })); 
     }
   }, [CalculationData]);
 
