@@ -120,7 +120,7 @@ export const editedImageUpload = async (
   setData,
   formData
 ) => {
-  debugger
+  // debugger
   try {
     const response = await apiService.patch(
       `${UPDATE_DESIGNPOOL_IMAGE}${selectImageId}`,

@@ -211,7 +211,7 @@ export const CentralHubnewScanProductScan = async (
       CENTRALHUB_NEW_SCAN_PRODUCTSCAN,
       body
     );
-    if (response.data.results.status_code === 200) {
+    if (checkApiStatus(response)) {
       centralHubScanTable(setScanTableData);
       setsearchListId("");
       setSuccessMessage("Item Added Successfully");
@@ -228,14 +228,14 @@ export const CentralHubnewScanProductScan = async (
       setError(response.data.results.message);
       setsearchListId("");
     }
-    if (response.data.results.status_code === 206) {
-      setError(response.data.results.message);
-      setsearchListId("");
-    }
-    if (response.data.results.status_code === 204) {
-      setError(response.data.results.message);
-      setsearchListId("");
-    }
+    // if (response.data.results.status_code === 206) {
+    //   setError(response.data.results.message);
+    //   setsearchListId("");
+    // }
+    // if (response.data.results.status_code === 204) {
+    //   setError(response.data.results.message);
+    //   setsearchListId("");
+    // }
   } catch (error) {
     console.log(error);
     setError("");
