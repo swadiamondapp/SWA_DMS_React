@@ -225,7 +225,7 @@ export const CentralHubnewScanProductScan = async (
 
     }
     if (response.data.results.status_code === 206) {
-      setError(response.data.results);
+      setError(response.data.results.message);
       setsearchListId("");
     }
     // if (response.data.results.status_code === 206) {

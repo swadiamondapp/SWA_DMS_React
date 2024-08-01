@@ -16,7 +16,7 @@ const AnnotationCanvas = ({
   setSuccessModalOpen,
   setSuccessMessage,
   setanotationModal,
-  setData
+  setData,
 }) => {
   const [shapesHistory, setShapesHistory] = useState([]);
   const [undoneShapes, setUndoneShapes] = useState([]);
@@ -28,10 +28,10 @@ const AnnotationCanvas = ({
   const [loadedImage] = useImage(image, "Anonymous");
   const [editedImage, setEditedImage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
- 
-  const [updateImage,setUpadateImage]= useState({
-    image:editedImage
-  })
+
+  const [updateImage, setUpadateImage] = useState({
+    image: editedImage,
+  });
 
   const handleMouseDown = (e) => {
     if (action === "arrow") {
@@ -140,36 +140,41 @@ const AnnotationCanvas = ({
   //   }
   // };
 
-  const captureCanvasAsImage = () => {
-    try {
-      if (stageRef.current) {
-        const uri = stageRef.current.toDataURL();
-        setEditedImage(uri);
-        console.log(uri);
-      }
-    } catch (error) {
-      console.error("Error capturing the canvas as an image:", error);
-    }
-  };
-
-
+  // const captureCanvasAsImage = () => {
+  //   try {
+  //     if (stageRef.current) {
+  //       const uri = stageRef.current.toDataURL();
+  //       setEditedImage(uri);
+  //       console.log(uri);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error capturing the canvas as an image:", error);
+  //   }
+  // };
 
   const handleUploadEditedImage = async () => {
-    captureCanvasAsImage();
-    if (!editedImage) {
+    if (!stageRef.current) return;
+
+    const uri = stageRef.current.toDataURL();
+    setEditedImage(uri);
+
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    if (!uri) {
       console.error("No edited image to upload.");
       return;
     }
+
     try {
       const formData = new FormData();
-      formData.append('image', editedImage); 
+      formData.append("image", uri);
 
-      console.log("formDataaa",formData)
-  
+      console.log("formDataaa", formData);
+
       setIsLoading(true);
       await editedImageUpload(
         setIsLoading,
-        editedImage,
+        uri,
         selectedDesign.id,
         setSuccessModalOpen,
         setSuccessMessage,
@@ -183,7 +188,6 @@ const AnnotationCanvas = ({
       setIsLoading(false);
     }
   };
-  
 
   console.log("editedImageeee", editedImage);
 
