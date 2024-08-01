@@ -43,11 +43,14 @@ const WareHouse = (props) => {
   const toggleMoveOptions = () => {
     setShowMoveOptions(!showMoveOptions);
   };
-  
+
   console.log(props.DesignWareHouse, "wareHouse===>");
   return (
     <div>
-      <div className="Parent_DesignView" style={{paddingLeft:props.sidebarExpanded? "225px":"130px"}}>
+      <div
+        className="Parent_DesignView"
+        style={{ paddingLeft: props.sidebarExpanded ? "225px" : "130px" }}
+      >
         {/* <div className="DesignPool_btns">
           <div className="Download_ParentD">
             <button className="D_downlodBtn" onClick={toggleDownloadOptions}>
@@ -138,7 +141,7 @@ const WareHouse = (props) => {
                         <p>{item.created_at}</p>
                       </div>
                       <div className="Inner_Right">
-                        <p>0</p>
+                        <p>{item.likes_count}</p>
                       </div>
                     </div>
                   </div>

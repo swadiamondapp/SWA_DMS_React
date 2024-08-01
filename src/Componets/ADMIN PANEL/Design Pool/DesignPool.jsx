@@ -33,6 +33,8 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
 
   const [successMessage, setSuccessMessage] = useState("");
   const [successModalOpen, setSuccessModalOpen] = useState(false);
+  const [selectedImages, setSelectedImages] = useState([]);
+  const [allSelected, setAllSelected] = useState(false);
 
   const navigate = useNavigate();
 
@@ -63,12 +65,15 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
 
   console.log(Data, "datat========d==>");
   console.log(selectedDesigns, "selectedDesigns");
+  console.log(selectedImages,"selectedImages")
 
-  const handleCheckboxChange = (designcode) => {
+  const handleCheckboxChange = (designcode,image) => {
     if (selectedDesigns.includes(designcode)) {
       setSelectedDesigns(selectedDesigns.filter((item) => item !== designcode));
+      setSelectedImages(selectedImages.filter(img => img !== image));
     } else {
       setSelectedDesigns([...selectedDesigns, designcode]);
+      setSelectedImages([...selectedImages, image]);
     }
   };
 
@@ -114,7 +119,21 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
   //   };
   // }, []);
 
+
+  const selectAllDesigns = () => {
+    if (allSelected) {
+      setSelectedDesigns([]);
+      setSelectedImages([]);
+    } else {
+      setSelectedDesigns(Data.map((item) => item.designcode));
+      setSelectedImages(Data.map((item) => item.image));
+    }
+    setAllSelected(!allSelected);
+  };
+
+
   console.log("selectedDesign", selectedDesign);
+  console.log("imageData", Data);
 
   return (
     <div>
@@ -173,6 +192,13 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
           open={open}
           setData={setData}
           setShowRadioButtons={setShowRadioButtons}
+          selectedImages={selectedImages}
+          setSelectedImages={ setSelectedImages}
+          setAllSelected={setAllSelected}
+          setShowDownloadOptions={setShowDownloadOptions}
+          selectAllDesigns={selectAllDesigns}
+          
+        
         />
         {/* new design section */}
         {/* new design section */}
@@ -233,7 +259,7 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
                       id={item.designcode}
                       name="fav_language"
                       value={item.designcode}
-                      onChange={() => handleCheckboxChange(item.designcode)}
+                      onChange={() => handleCheckboxChange(item.designcode,item.image)}
                       // checked={selectedDesigns[item.designcode]}
                       checked={selectedDesigns.includes(item.designcode)}
                     ></input>

@@ -469,7 +469,8 @@ const BasicDetailModal = ({
       }
     )
     setErrors({})
-
+    
+    setCalculationData([])
 
   }
   

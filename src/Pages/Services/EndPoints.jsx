@@ -38,7 +38,7 @@ export const LIST_ALL_CUSTOMIZATION_DESIGNS =
   "list-all-customization/?orderstatus=true";
 export const SEND_MAIL = "send-email/";
 export const LIST_WAREHOUSE_DESIGNS = "list-all-design/";
-export const LIST_LAST_VOTED_DESIGN = "design-list/?likes_count_min=1";
+export const LIST_LAST_VOTED_DESIGN = "design-list/?likes_count_min=0";
 export const CUSTOMIZATION_LIST_BY_ID_WAREHOUSE = "customizeddesign/detail/";
 export const EDIT_CUTOMIZATIONS_WAREHOUSE = "edit-customizations";
 export const REJECT_WAREHOUSE = "reject/customizations/";

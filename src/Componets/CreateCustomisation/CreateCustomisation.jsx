@@ -120,6 +120,7 @@ const CreateCustomisation = ({
   const budgetRef = useRef(null);
   const swaProductSKURef = useRef(null);
   const notesRef = useRef(null);
+  const imageRef = useRef(null)
   const [formData, setFormData] = useState({
     sallerName: "",
     mobileNumber: "",
@@ -328,10 +329,10 @@ const CreateCustomisation = ({
       ...prevState,
       [name]: value,
     }));
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      [name]: "", // Clear the error for the current input field
-    }));
+    setErrors({});
+    if (ImageError) {
+      setImageError("")
+    }
   };
 
   const handleOpen = () => setOpen(true);
@@ -462,76 +463,79 @@ const CreateCustomisation = ({
     dataToDisplaytomodal?.image5,
   ];
 
-  // useEffect(() => {
-  //   // Find the first field with an error
-  //   const firstErrorField = Object.keys(errors).find((key) => errors[key]);
+  useEffect(() => {
+    // Find the first field with an error
+    const firstErrorField = Object.keys(errors).find((key) => errors[key]) || (ImageError && 'ImageError');
 
-  //   // Scroll to the first error field if it exists
-  //   switch (firstErrorField) {
-  //     case 'sallerName':
-  //       sallerNameRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  //       break;
-  //     case 'mobileNumber':
-  //       mobileNumberRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  //       break;
-  //     case 'chooseOutlet':
-  //       chooseOutletRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  //       break;
-  //     case 'productType':
-  //       productTypeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  //       break;
-  //     case 'modelPrevioslyMade':
-  //       modelPrevioslyMadeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  //       break;
-  //     case 'prevMadeSKU':
-  //       prevMadeSKURef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  //       break;
-  //     case 'metalType':
-  //       metalTypeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  //       break;
-  //     case 'weight':
-  //       weightRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  //       break;
-  //     case 'size':
-  //       sizeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  //       break;
-  //     case 'width':
-  //       widthRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  //       break;
-  //     case 'length_of_item':
-  //       lengthOfItemRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  //       break;
-  //     case 'height':
-  //       heightRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  //       break;
-  //     case 'diamond_type':
-  //       diamondTypeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  //       break;
-  //     case 'diamondWeight':
-  //       diamondWeightRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  //       break;
-  //     case 'numberOfDiamonds':
-  //       numberOfDiamondsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  //       break;
-  //     case 'diamondClarity':
-  //       diamondClarityRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  //       break;
-  //     case 'diamondColor':
-  //       diamondColorRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  //       break;
-  //     case 'Budget':
-  //       budgetRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  //       break;
-  //     case 'swaProductSKU':
-  //       swaProductSKURef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  //       break;
-  //     case 'notes':
-  //       notesRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  // }, [errors]);
+    // Scroll to the first error field if it exists
+    switch (firstErrorField) {
+      case 'sallerName':
+        sallerNameRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        break;
+      case 'mobileNumber':
+        mobileNumberRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        break;
+      case 'chooseOutlet':
+        chooseOutletRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        break;
+      case 'productType':
+        productTypeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        break;
+      case 'modelPrevioslyMade':
+        modelPrevioslyMadeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        break;
+      case 'prevMadeSKU':
+        prevMadeSKURef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        break;
+      case 'metalType':
+        metalTypeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        break;
+      case 'weight':
+        weightRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        break;
+      case 'size':
+        sizeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        break;
+      case 'width':
+        widthRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        break;
+      case 'length_of_item':
+        lengthOfItemRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        break;
+      case 'height':
+        heightRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        break;
+      case 'diamond_type':
+        diamondTypeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        break;
+      case 'diamondWeight':
+        diamondWeightRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        break;
+      case 'numberOfDiamonds':
+        numberOfDiamondsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        break;
+      case 'diamondClarity':
+        diamondClarityRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        break;
+      case 'diamondColor':
+        diamondColorRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        break;
+      case 'Budget':
+        budgetRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        break;
+      case 'swaProductSKU':
+        swaProductSKURef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        break;
+      case 'notes':
+        notesRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        break;
+        case 'ImageError': // Add this case for image errors
+        imageRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        break;
+      default:
+        break;
+    }
+  }, [errors]);
 const handleCloseButton =()=> {
   onClose()
   // setErrorMessage([])
@@ -938,6 +942,7 @@ const handleCloseButton =()=> {
                         <div
                           className="uploadImageContainer"
                           style={{ position: "relative" }}
+                          ref={imageRef}
                         >
                           <div className="rightw">
                             <div
@@ -987,8 +992,8 @@ const handleCloseButton =()=> {
                           )}
                         </div>
                       )}
-                      <div className="parant_relative"   ref={metalTypeRef}>
-                        <label htmlFor="" className="label_text">
+                      <div className="parant_relative"   >
+                        <label htmlFor="" className="label_text" ref={metalTypeRef}>
                           Metal Type
                         </label>
                         <Select
@@ -1026,7 +1031,7 @@ const handleCloseButton =()=> {
                           type="number"
                           className="input_feild"
                           name="weight"
-                    
+                          ref={weightRef}
                           value={formData.weight}
                           onChange={handleInput}
                         />
@@ -1042,7 +1047,7 @@ const handleCloseButton =()=> {
                           type="text"
                           className="input_feild"
                           name="size"
-                        
+                        ref={sizeRef}
                           value={formData.size}
                           onChange={handleInput}
                         />
@@ -1058,7 +1063,7 @@ const handleCloseButton =()=> {
                           type="number"
                           className="input_feild"
                           name="width"
-                      
+                      ref={widthRef}
                           value={formData.width}
                           onChange={handleInput}
                         />
@@ -1074,7 +1079,7 @@ const handleCloseButton =()=> {
                           type="number"
                           className="input_feild"
                           name="length_of_item"
-                          
+                          ref={lengthOfItemRef}
                           value={formData.length_of_item}
                           onChange={handleInput}
                         />
@@ -1092,7 +1097,7 @@ const handleCloseButton =()=> {
                           type="number"
                           className="input_feild"
                           name="height"
-                        
+                        ref={heightRef}
                           value={formData.height}
                           onChange={handleInput}
                         />
@@ -1101,7 +1106,7 @@ const handleCloseButton =()=> {
                         )}
                       </div>
                       <div className="parant_relative">
-                        <label htmlFor="" className="label_text">
+                        <label htmlFor="" className="label_text" ref={diamondTypeRef}>
                           Diamond Type
                         </label>
                         <Select
@@ -1139,7 +1144,7 @@ const handleCloseButton =()=> {
                           type="number"
                           className="input_feild"
                           name="diamondWeight"
-                         
+                         ref={diamondWeightRef}
                           value={formData.diamondWeight}
                           onChange={handleInput}
                         />
@@ -1157,7 +1162,7 @@ const handleCloseButton =()=> {
                           type="number"
                           className="input_feild"
                           name="numberOfDiamonds"
-                        
+                        ref={numberOfDiamondsRef}
                           value={formData.numberOfDiamonds}
                           onChange={handleInput}
                         />
@@ -1168,7 +1173,7 @@ const handleCloseButton =()=> {
                         )}
                       </div>
                       <div className="parant_relative">
-                        <label htmlFor="" className="label_text">
+                        <label htmlFor="" className="label_text" ref={diamondClarityRef}>
                           Diamond Clarity
                         </label>
                         <Select
@@ -1195,7 +1200,7 @@ const handleCloseButton =()=> {
                         )}
                       </div>{" "}
                       <div className="parant_relative">
-                        <label htmlFor="" className="label_text">
+                        <label htmlFor="" className="label_text" ref={diamondColorRef}>
                           Diamond Colour
                         </label>
                         <Select
@@ -1229,7 +1234,7 @@ const handleCloseButton =()=> {
                           type="number"
                           className="input_feild"
                           name="Budget"
-                         
+                         ref={budgetRef}
                           value={formData.Budget}
                           onChange={handleInput}
                         />
@@ -1245,6 +1250,7 @@ const handleCloseButton =()=> {
                           type="text"
                           className="input_feild"
                           name="swaProductSKU"
+                          ref={swaProductSKURef}
                           value={formData.swaProductSKU}
                           onChange={handleInput}
                         />
@@ -1259,7 +1265,7 @@ const handleCloseButton =()=> {
                         <textarea
                           className="textArea"
                           name="notes"
-                       
+                       ref={notesRef}
                           value={formData.notes}
                           onChange={handleInput}
                           id=""
