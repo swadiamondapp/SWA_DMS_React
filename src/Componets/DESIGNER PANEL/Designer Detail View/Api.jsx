@@ -77,7 +77,7 @@ export const assign_to_cad = async (
   setSuccessModalOpen
 ) => {
   try {
-    debugger
+ 
     setIsLoading(true);
     const body = {
       folder: assignToCadId,
