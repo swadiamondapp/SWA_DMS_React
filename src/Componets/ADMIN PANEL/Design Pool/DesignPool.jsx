@@ -119,6 +119,34 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
   //   };
   // }, []);
 
+  const handleDownloadMultiple = async (imageData) => {
+    for (const { image, designcode } of imageData) {
+      try {
+        const response = await fetch(image, {
+          method: "GET",
+          mode: "cors",
+        });
+        const blob = await response.blob();
+        const blobUrl = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = blobUrl;
+        link.download = `designPool_${designcode}.jpg`; // Use design code in filename
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } catch (error) {
+        console.error("Error downloading the image:", error);
+      }
+    }
+    // Optionally reset selections after download
+    setSelectedImages([]);
+    setAllSelected(false);
+    setSelectedDesigns([]);
+    setSelectButtonLabel("Select");
+    setShowRadioButtons(false);
+    setShowDownloadOptions(false);
+  };
+
 
   const selectAllDesigns = () => {
     if (allSelected) {
@@ -127,6 +155,7 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
     } else {
       setSelectedDesigns(Data.map((item) => item.designcode));
       setSelectedImages(Data.map((item) => item.image));
+      handleDownloadMultiple(Data.map((item) => ({ image: item.image, designcode: item.designcode })));
     }
     setAllSelected(!allSelected);
   };

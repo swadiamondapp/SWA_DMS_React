@@ -171,10 +171,12 @@
   border-bottom: 0.5px solid #ededece0;
   padding: 12px 0px;
   padding-top: 0px;
+  cursor: pointer;
 }
 .Download_Sub p:nth-child(2) {
   padding: 12px 0px;
   padding-bottom: 0px;
+  cursor: pointer;
 }
 .Parent_MoveTo {
   position: relative;
