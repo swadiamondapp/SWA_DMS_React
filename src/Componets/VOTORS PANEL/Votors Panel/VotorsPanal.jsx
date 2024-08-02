@@ -78,15 +78,9 @@ const VotorsPanal = ({ sidebarExpanded }) => {
                       style={{ borderRadius: "4px" }}
                       onClick={() => handleLikeClicks(item.id)}
                     >
-                      {item.likes_count === 0 ? (
-                        <p style={{ padding: "8px 18px" }}>
+                     <p style={{ padding: "8px 18px" }}>
                           <FaRegThumbsUp size={20} />
                         </p>
-                      ) : (
-                        <p style={{ padding: "8px 18px" }}>
-                          <FaThumbsUp size={20} />
-                        </p>
-                      )}
                       {/* <p style={{ padding: "8px 18px" }}>{item.likes_count}</p> */}
                     </div>
                   </div>
@@ -112,13 +106,18 @@ const VotorsPanal = ({ sidebarExpanded }) => {
                           <p>{item.created_at}</p>
                         </div>
                         <div
-                          className="Inner_Right"
-                          style={{ borderRadius: "4px" }}
-                        >
-                          <p className="jello" style={{ padding: "8px 18px" }}>
-                            {item.likes_count}
-                          </p>
-                        </div>
+                      // className="Inner_Right"
+                      className={`Inner_Right ${
+                        animate[item.id] ? "wobble" : ""
+                      }`}
+                      style={{ borderRadius: "4px" }}
+                      onClick={() => handleLikeClicks(item.id)}
+                    >
+                      <p style={{ padding: "8px 18px" }}>
+                          <FaThumbsUp size={20} />
+                        </p>
+                      {/* <p style={{ padding: "8px 18px" }}>{item.likes_count}</p> */}
+                    </div>
                       </div>
                     </div>
                   </div>

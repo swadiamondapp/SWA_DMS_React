@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useRef ,useEffect} from "react";
 import { TbDownload } from "react-icons/tb";
 import { MdViewModule, MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { LuArrowUpDown } from "react-icons/lu";
@@ -47,7 +47,9 @@ const DesignBtn = ({
   setSelectedImages,
   setAllSelected,
   setShowDownloadOptions,
-  selectAllDesigns
+  selectAllDesigns,
+  downRefff,
+  assignmentDownRef
   
 
 
@@ -58,6 +60,7 @@ const DesignBtn = ({
   const [isModalOpenCreateCutomize, setIsCreateCustomizeModalOpen] =
     useState(false);
   const [sort, setSort] = useState(false);
+
 
   // const [createFolderModal, setcreateFolderModal] = useState(false);
 
@@ -76,6 +79,7 @@ const DesignBtn = ({
     setSort(!sort);
   };
 
+
   const handleDownloadMultiple = (imageUrls) => {
     imageUrls.forEach((imageUrl, index) => {
       fetch(imageUrl, {
@@ -88,7 +92,7 @@ const DesignBtn = ({
         const link = document.createElement('a');
         link.href = blobUrl;
         // Use index or extract the image name from the URL to create a unique file name
-        link.download = `downloaded_image_${index}.jpg`; 
+        link.download = `design_pool_${index}.jpg`; 
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -127,7 +131,7 @@ const DesignBtn = ({
           location.pathname !== "/unassigneddesigner" &&
           location.pathname !== `/designerassignview/${id}` &&  (
 
-            <div className="Download_ParentD">
+            <div className="Download_ParentD" ref={downRefff}>
               <button className="D_downlodBtn" onClick={toggleDownloadOptions}>
                 Download <TbDownload />
               </button>
@@ -157,7 +161,7 @@ const DesignBtn = ({
           location.pathname !== "/votorscustomization" &&
           location.pathname !== `/designerassignview/${id}` &&
           location.pathname !== "/finishedProject" && (
-            <div className="Parent_MoveTo">
+            <div className="Parent_MoveTo" ref={assignmentDownRef}>
               <button className="D_moveBtn" onClick={toggleMoveOptions}>
                 Move to <MdOutlineKeyboardArrowDown />
               </button>

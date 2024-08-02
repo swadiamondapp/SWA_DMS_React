@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import "./DesignPool.css";
 import like from "../../../assets/like.png";
 import ring from "../../../assets/ring.png";
@@ -35,6 +35,9 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
   const [successModalOpen, setSuccessModalOpen] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
   const [allSelected, setAllSelected] = useState(false);
+  const dropdownRef = useRef(null);
+  const assignmentDownRef = useRef(null) // Ref for the dropdown element
+  const clickedInsideRef = useRef(false);
 
   const navigate = useNavigate();
 
@@ -97,27 +100,28 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
     //   console.error("Error moving selected designs:", error);
     // }
   };
-  // useEffect(() => {
-  //   const handleClickOutside = (event) => {
-  //     if (
-  //       !event.target.closest(".download-options") &&
-  //       !event.target.closest(".download-button")
-  //     ) {
-  //       setShowDownloadOptions(false);
-  //     }
-  //     if (
-  //       !event.target.closest(".move-options") &&
-  //       !event.target.closest(".move-button")
-  //     ) {
-  //       setShowMoveOptions(false);
-  //     }
-  //   };
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        // Click occurred outside the dropdown
+        setShowDownloadOptions(false);
+      }
+      if (assignmentDownRef.current && !assignmentDownRef.current.contains(event.target)) {
+        // Click occurred outside the dropdown
+        setShowMoveOptions(false);
+      }
 
-  //   document.addEventListener("mousedown", handleClickOutside);
-  //   return () => {
-  //     document.removeEventListener("mousedown", handleClickOutside);
-  //   };
-  // }, []);
+    };
+
+    // Add a click event listener to the document
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      // Clean up the event listener on component unmount
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+  
 
   const handleDownloadMultiple = async (imageData) => {
     for (const { image, designcode } of imageData) {
@@ -226,6 +230,8 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
           setAllSelected={setAllSelected}
           setShowDownloadOptions={setShowDownloadOptions}
           selectAllDesigns={selectAllDesigns}
+          downRefff={dropdownRef}
+          assignmentDownRef={assignmentDownRef}
           
         
         />
