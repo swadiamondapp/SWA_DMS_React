@@ -629,13 +629,12 @@ export const workDone_list_search = async (
       setTimeout(() => {
         setSuccessModalOpen(false);
       }, 1700);
-      // alert("Product Added");
     }
     if (response.data.results.status_code === 206) {
       setError(response.data.results.message);
       setTimeout(() => {
         setError("");
-      }, 1700);
+      }, 3000);
     }
   } catch (error) {
     console.log(error);
@@ -688,7 +687,9 @@ export const workDone_table_product_update = async (
 export const customizationApprove = async (
   setIsLoading,
   approveId,
-  setCustomizationListData
+  setCustomizationListData,
+  setSuccessModalOpen,
+  setSuccessMessage
 ) => {
   try {
 
@@ -697,7 +698,11 @@ export const customizationApprove = async (
     );
     if (checkApiStatus(response)) {
       customizaztion_list_wareHouse(setIsLoading, setCustomizationListData);
-      alert("Approved Successfully");
+      setSuccessModalOpen(true);
+      setSuccessMessage("Approved Successfully");
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1700);
     }
   } catch (error) {
     console.error("Update Failed", error);
