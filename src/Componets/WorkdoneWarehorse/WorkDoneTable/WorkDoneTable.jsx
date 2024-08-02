@@ -33,7 +33,11 @@ const WorkDoneTable = ({ sidebarExpanded }) => {
 
   const handleSearch = async () => {
     if (searchListId === "") {
-      setError("Please Enter a Product Id");
+      setError("Enter a Product Id");
+      setTimeout(() => {
+        setError("");
+      }, 3000);
+      return
     }
     try {
       await workDone_list_search(
@@ -47,9 +51,7 @@ const WorkDoneTable = ({ sidebarExpanded }) => {
       );
     } catch (error) {
       console.error("Error searching scan list:", error);
-    } finally {
-      setIsLoading(false);
-    }
+    } 
   };
 
   console.log("workTableData", workTableData);
