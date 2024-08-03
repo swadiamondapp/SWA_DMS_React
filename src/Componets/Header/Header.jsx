@@ -208,6 +208,9 @@ console.log(userImage,"userImagge")
                 {location.pathname === "/unassigneddesigner" && (
                   <h3>Assigned to</h3>
                 )}
+                {location.pathname === "/statusPage" && (
+                  <h3>Status</h3>
+                )}
 
                 {location.pathname === "/slot" && <h3>Slot</h3>}
                 {leftHeader && <h3>{leftHeader}</h3>}
@@ -269,6 +272,7 @@ console.log(userImage,"userImagge")
                   location.pathname !== "/wareHouse" &&
                   location.pathname !== "/scan" &&
                   location.pathname !== "/designpool" &&
+                  location.pathname !== "/statusPage" &&
                   location.pathname !== "/centralhubscan" &&
                   location.pathname !== `/centralfolderdetails/${id}` &&
                   location.pathname !== `/assignmentview/${assignmentId}` && (

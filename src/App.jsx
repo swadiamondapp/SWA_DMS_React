@@ -62,6 +62,7 @@ import WorkDone from "./Componets/WorkdoneWarehorse/WorkDone/WorkDone";
 import RendersDetailing from "./Pages/RendersDetailing/RendersDetailing";
 import ScanModule from "./Pages/ScanModule/ScanModule";
 import CentralHubScan from "./Componets/CentalHub/CentralHubScan/CentralHubScan";
+import StatusPage from "./Pages/StatusPage/StatusPage";
 
 function App() {
   return (
@@ -85,6 +86,10 @@ function App() {
             <Route
               path="/designerassign"
               element={<DesignerAsignmentPanelPage />}
+            />
+            <Route
+              path="/statusPage"
+              element={<StatusPage />}
             />
             <Route
               path="/designerassignview/:id"

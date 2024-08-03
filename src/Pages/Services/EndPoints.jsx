@@ -184,3 +184,6 @@ export const VOTED_LIST_LIKED = "myliked-list/?likes_min=0"
 export const UNVOTED_VOTERS_LIST = "list-all-design/?likes_count=0"
 export const LIST_FOLDER_DESIGNER = "designer/getlist-folder/"
 export const LIST_FOLDER_DETAILS_DESIGNER = "designer/folder-detail/"
+
+
+export const PRODUCT_TRACKING = "product/tracking"
