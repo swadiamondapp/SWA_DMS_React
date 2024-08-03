@@ -535,6 +535,7 @@ const UsersList = ({
                       name="phoneNumber"
                       value={formData.phoneNumber}
                       onChange={handleInput}
+                      onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
                     />
                     {ErrorMessages?.reason?.phone_number && (
                       <span className="error">

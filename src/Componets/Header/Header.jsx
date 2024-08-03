@@ -67,7 +67,7 @@ const Header = ({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-console.log(userImage,"userImagge")
+  console.log(userImage, "userImagge");
   const handleSearchWithName = (event) => {
     setSearchWithName(event.target.value, "nameSarch");
   };
@@ -101,10 +101,10 @@ console.log(userImage,"userImagge")
                   {basicDetails.timer_status
                     .replace("-", "")
                     .charAt(0)
-                    .toUpperCase() + 
+                    .toUpperCase() +
                     basicDetails.timer_status
-                      .replace("-", "") 
-                      .slice(1) 
+                      .replace("-", "")
+                      .slice(1)
                       .toLowerCase()}
                 </span>
               </div>
@@ -299,26 +299,27 @@ console.log(userImage,"userImagge")
                   </div>
                 )}
 
-{headerDetails?.paper_design &&
-headerDetails.paper_design.designer_img !== "N/A" &&
-headerDetails.paper_design.designer_name !== "N/A" ? (
-  <div className="headerImageDesinger">
-    <div>
-      <span>Assigned to : </span>{" "}
-    </div>
-    <div className="headerDesingerImage">
-      <img
-        src={headerDetails.paper_design.designer_img}
-        alt={
-          headerDetails.paper_design.designer_name || "Designer Image"
-        }
-      />
-    </div>
-    <div>
-      <span>{headerDetails.paper_design.designer_name}</span>
-    </div>
-  </div>
-) : null}
+                {headerDetails?.paper_design &&
+                headerDetails.paper_design.designer_img !== "N/A" &&
+                headerDetails.paper_design.designer_name !== "N/A" ? (
+                  <div className="headerImageDesinger">
+                    <div>
+                      <span>Assigned to : </span>{" "}
+                    </div>
+                    <div className="headerDesingerImage">
+                      <img
+                        src={headerDetails.paper_design.designer_img}
+                        alt={
+                          headerDetails.paper_design.designer_name ||
+                          "Designer Image"
+                        }
+                      />
+                    </div>
+                    <div>
+                      <span>{headerDetails.paper_design.designer_name}</span>
+                    </div>
+                  </div>
+                ) : null}
 
                 <div className="Profile_Admin" onClick={handleLogout}>
                   {userImage ===

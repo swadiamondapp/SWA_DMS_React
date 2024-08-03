@@ -586,6 +586,7 @@ const BasicDetailModal = ({
                           name="length"
                           value={formData.length}
                           onChange={handleInput}
+                          onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
                         />
                         <div>
                           {errors.length && (
@@ -605,6 +606,7 @@ const BasicDetailModal = ({
                           name="width"
                           value={formData.width}
                           onChange={handleInput}
+                          onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
                         />
                         <div>
                           {errors.width && (
@@ -624,6 +626,7 @@ const BasicDetailModal = ({
                           name="height"
                           value={formData.height}
                           onChange={handleInput}
+                          onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
                         />
                         <div>
                           {errors.height && (
@@ -719,6 +722,7 @@ const BasicDetailModal = ({
                           name="approxDiamondWeight"
                           value={formData.approxDiamondWeight}
                           onChange={handleInput}
+                          onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
                         />
                         <div>
                           {errors.approxDiamondWeight && (
@@ -740,6 +744,7 @@ const BasicDetailModal = ({
                           name="approxMetalWeights"
                           value={formData.approxMetalWeights}
                           onChange={handleInput}
+                          onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
                         />
                         <div>
                           {errors.approxMetalWeights && (
@@ -759,6 +764,7 @@ const BasicDetailModal = ({
                           name="approxMRP"
                           value={formData.approxMRP}
                           onChange={handleInput}
+                          
                           readOnly
                         />
                         {IsLoadingCalculation ? (

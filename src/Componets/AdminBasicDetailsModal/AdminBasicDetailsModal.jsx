@@ -868,6 +868,7 @@ console.log(SelectedMetalId,SelectedDiamondId,"SelectedMetalId")
                                     name="length"
                                     value={formData.length}
                                     onChange={handleInput}
+                                    onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
                                   />
                                   <div>
                                     {errors.length && (
@@ -887,6 +888,7 @@ console.log(SelectedMetalId,SelectedDiamondId,"SelectedMetalId")
                                     name="width"
                                     value={formData.width}
                                     onChange={handleInput}
+                                    onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
                                   />
                                   <div>
                                     {errors.width && (
@@ -906,6 +908,7 @@ console.log(SelectedMetalId,SelectedDiamondId,"SelectedMetalId")
                                     name="height"
                                     value={formData.height}
                                     onChange={handleInput}
+                                    onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
                                   />
                                   <div>
                                     {errors.height && (
@@ -1000,6 +1003,7 @@ console.log(SelectedMetalId,SelectedDiamondId,"SelectedMetalId")
                                     name="approxDiamondWeight"
                                     value={formData.approxDiamondWeight}
                                     onChange={handleInput}
+                                    onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
                                   />
                                   <div>
                                     {errors.approxDiamondWeight && (
@@ -1021,6 +1025,7 @@ console.log(SelectedMetalId,SelectedDiamondId,"SelectedMetalId")
                                     name="approxMetalWeights"
                                     value={formData.approxMetalWeights}
                                     onChange={handleInput}
+                                    onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
                                   />
                                   <div>
                                     {errors.approxMetalWeights && (
@@ -1040,6 +1045,7 @@ console.log(SelectedMetalId,SelectedDiamondId,"SelectedMetalId")
                                     name="approxMRP"
                                     value={formData.approxMRP}
                                     onChange={handleInput}
+                                    
                                     readOnly
                                   />
                                   {IsLoadingCalculation ? (
