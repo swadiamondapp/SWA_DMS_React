@@ -11,6 +11,7 @@ import CreateCustomisation from "../../CreateCustomisation/CreateCustomisation";
 import { move_to_folder } from "../../Assignment Panel/Api";
 import { useParams } from "react-router-dom";
 import AssignmentModal from "../../AssignmentModal/AssignmentModal";
+import { View } from "@react-three/drei";
 
 const DesignBtn = ({
   votersSetData,
@@ -47,9 +48,10 @@ const DesignBtn = ({
   setSelectedImages,
   setAllSelected,
   setShowDownloadOptions,
-  selectAllDesigns
-  
-
+  selectAllDesigns,
+  setGrid,
+  setDetail,
+  setTiles
 
 }) => {
   const location = useLocation();
@@ -58,6 +60,7 @@ const DesignBtn = ({
   const [isModalOpenCreateCutomize, setIsCreateCustomizeModalOpen] =
     useState(false);
   const [sort, setSort] = useState(false);
+  const [view, setView] = useState(false);
 
   // const [createFolderModal, setcreateFolderModal] = useState(false);
 
@@ -74,6 +77,28 @@ const DesignBtn = ({
 
   const handleSort = () => {
     setSort(!sort);
+  };
+
+  const handleView = () => {  
+    setView(!view);
+  };
+
+  const gridView = () => {  
+    setGrid(true);
+    setDetail(false)
+    setTiles(false)
+  };
+
+  const detailView = () => {  
+    setGrid(false);
+    setDetail(true)
+    setTiles(false)
+  };
+
+  const tileView = () => {  
+    setGrid(false);
+    setDetail(false)
+    setTiles(true)
   };
 
   const handleDownloadMultiple = (imageUrls) => {
@@ -203,9 +228,17 @@ const DesignBtn = ({
         {location.pathname !== "/votorscustomization" &&
         location.pathname !== "/assignmentpanel" &&
         location.pathname !== "/unassigneddesigner" &&
-        location.pathname !== "/designpool" && (
-          <button className="D_View_Sort_Filter">
+        location.pathname !== "/designpool" && 
+        location.pathname === "/designdashboard" && (
+          <button className="D_View_Sort_Filter" onClick={handleView} style={{position:"relative"}}>
             <MdViewModule /> View
+            {view && (
+              <div className="sortData" style={{left:"-20px"}}>
+                <span onClick={gridView}>Grid</span>
+                <span onClick={detailView}>Details</span>
+                <span onClick={tileView}>Tiles</span>
+              </div>
+            )}
           </button>
         )}
 

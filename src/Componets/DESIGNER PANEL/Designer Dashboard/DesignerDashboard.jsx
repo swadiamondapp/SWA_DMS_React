@@ -3,6 +3,8 @@ import "./DesignerDashboard.css";
 import { LiaCloudUploadAltSolid } from "react-icons/lia";
 import DesignBtn from "../../ADMIN PANEL/Design Pool/DesignBtn";
 import ring from "../../../assets/ring.png";
+import img1 from "../../../assets/img1.png";
+import img2 from "../../../assets/img2.png";
 import { list_uploaded_designs, upload_designs_items } from "./Api";
 import { CircularProgress } from "@mui/material";
 
@@ -15,6 +17,10 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
   const [uploadedDesigns, setUploadedDesigns] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [uploadImage, setUploadImage] = useState([]);
+
+  const [grid, setGrid] = useState(true);
+  const [detail, setDetail] = useState(false);
+  const [tiles, setTiles] = useState(false);
 
   const toggleRadioButtons = () => {
     setShowRadioButtons(!showRadioButtons);
@@ -106,10 +112,13 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
             toggleMoveOptions={toggleMoveOptions}
             showDownloadOptions={showDownloadOptions}
             showMoveOptions={showMoveOptions}
+            setGrid={setGrid}
+            setDetail={setDetail}
+            setTiles={setTiles}
           />
           <div className="DesignerDashboardcard">
             <h3 className="HeadNewdesign">Uploaded</h3>
-            <div className="Card_Design_Parent">
+           
               {isLoading ? (
                 <div
                   style={{
@@ -135,25 +144,73 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
                 </div>
               ) : (
                 <>
-                  {uploadedDesigns.map((item, index) => (
-                    <div className="New_Design_card" key={index}>
-                      <div className="Card_img">
-                        <img src={item.image} alt="" />
+                  {grid && (
+                    <>
+                     <div className="Card_Design_Parent">
+                      {uploadedDesigns.map((item, index) => (
+                        <div className="New_Design_card" key={index}>
+                          <div className="Card_img">
+                            <img src={item.image} alt="" />
+                          </div>
+                          <div className="Card_Details_Designer">
+                            <h3>ID : {item.designcode}</h3>
+                            <div className="Card_Details_Inner">
+                              <div className="Inner_Left">
+                                <p>{item.name}</p>
+                                <p>{item.created_at}</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
                       </div>
-                      <div className="Card_Details_Designer">
-                        <h3>ID : {item.designcode}</h3>
-                        <div className="Card_Details_Inner">
-                          <div className="Inner_Left">
+                    </>
+                  )}
+
+                  {detail && (
+                    <>
+                     <div className="Card_Design_Parent">
+                      {uploadedDesigns.map((item, index) => (
+                        <div className="New_Design_card_deatail" key={index}>
+                          <img
+                            className="Card_img_deatail"
+                            src={item.image}
+                            alt=""
+                          />
+                          <div className="Card_Designer_deatail">
+                            <h3>ID : {item.designcode}</h3>
                             <p>{item.name}</p>
                             <p>{item.created_at}</p>
                           </div>
                         </div>
+                      ))}
                       </div>
-                    </div>
-                  ))}
+                    </>
+                  )}
+
+                  {tiles &&( 
+                  <>
+                   <div className="Card_Design_Parent2">
+                   {uploadedDesigns.map((item, index) => (
+                        <div className="New_Design_card_deatail2" key={index}>
+                          <img
+                            className="Card_img_deatail2"
+                            src={img1}
+                            alt=""
+                          />
+                          <div className="Card_Designer_deatail2">
+                            <h3>ID : {item.designcode}</h3>
+                            {/* <p>{item.name}</p>
+                            <p>{item.created_at}</p> */}
+                          </div>
+                        </div>
+                      ))}
+                      </div>
+                  </>
+                  )}
                 </>
               )}
-            </div>
+            
           </div>
         </div>
       </div>
