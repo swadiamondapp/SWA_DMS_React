@@ -213,10 +213,11 @@ const CadAssignment = ({
                 <div className="Card_Details_Inner_cad_Hub">
                   <h3>ID : {item.design_code}</h3>
                   <p>POSTED ON: {item.created_at}</p>
-                  <span
+                  <div
+                  style={{padding:"4px 10px"}}
                     className={
                       item.timer_status === "Completed"
-                        ? "completed"
+                        ? "complete"
                         : item.timer_status === "on-going"
                         ? "ongoing"
                         : "notstarted"
@@ -227,7 +228,7 @@ const CadAssignment = ({
                       : item.timer_status === "on-going"
                       ? "On Going"
                       : "Not Started"}
-                  </span>
+                  </div>
                   {item.timer_status === "Completed" ? (
                     <button
                       className="Download_btn_hub"

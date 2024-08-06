@@ -13,7 +13,7 @@ export const productTracking = async (setIsLoading, productId, setSteppretDta,se
         setSteppretDta(response.data.results)
       }
       if (response.data.results.status_code === 404) {
-        setError(response.data.results.message)
+        setError(response.data.results.error)
         setTimeout(() => {
             setError("");
           }, 2300);

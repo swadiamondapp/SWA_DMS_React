@@ -274,6 +274,7 @@ console.log(userImage,"userImagge")
                   location.pathname !== "/designpool" &&
                   location.pathname !== "/statusPage" &&
                   location.pathname !== "/centralhubscan" &&
+                  location.pathname !== "/otherlogin" &&
                   location.pathname !== `/centralfolderdetails/${id}` &&
                   location.pathname !== `/assignmentview/${assignmentId}` && (
                     <div className="Search_Admin">

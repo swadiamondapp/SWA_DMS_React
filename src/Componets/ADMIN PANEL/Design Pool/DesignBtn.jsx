@@ -229,6 +229,7 @@ const DesignBtn = ({
         location.pathname !== "/assignmentpanel" &&
         location.pathname !== "/unassigneddesigner" &&
         location.pathname !== "/designpool" && 
+        location.pathname === "/renderCard" && 
         location.pathname === "/designdashboard" && (
           <button className="D_View_Sort_Filter" onClick={handleView} style={{position:"relative"}}>
             <MdViewModule /> View

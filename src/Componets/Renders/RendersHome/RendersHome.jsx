@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./RendersHome.css";
 import view from "../../../assets/view.png";
 import sort from "../../../assets/sort.png";
@@ -7,8 +7,14 @@ import folderimg from "../../../assets/folder.png";
 import { Link, useNavigate } from "react-router-dom";
 import DesignBtn from "../../ADMIN PANEL/Design Pool/DesignBtn";
 import { CircularProgress } from "@mui/material";
+import { MdViewModule } from "react-icons/md";
 
 const RendersHome = ({ designListData, sidebarExpanded }) => {
+  const [view, setView] = useState(false);
+  const [grid, setGrid] = useState(true);
+  const [detail, setDetail] = useState(false);
+  const [tiles, setTiles] = useState(false);
+
   const navigate = useNavigate();
 
   const handleFolderClick = (item) => {
@@ -18,6 +24,26 @@ const RendersHome = ({ designListData, sidebarExpanded }) => {
       },
     });
   };
+  const handleView = () => {  
+    setView(!view);
+  };
+  const gridView = () => {  
+    setGrid(true);
+    setDetail(false)
+    setTiles(false)
+  };
+
+  const detailView = () => {  
+    setGrid(false);
+    setDetail(true)
+    setTiles(false)
+  };
+
+  const tileView = () => {  
+    setGrid(false);
+    setDetail(false)
+    setTiles(true)
+  };
 
   return (
     <div
@@ -25,10 +51,16 @@ const RendersHome = ({ designListData, sidebarExpanded }) => {
       style={{ marginLeft: sidebarExpanded ? "218px" : "120px" }}
     >
       <div className="RendersHome_butns">
-        <button>
-          <img className="RendersHome_img" src={view} alt="" srcset="" />
-          View
-        </button>
+      <button className="D_View_Sort_Filter" onClick={handleView} style={{position:"relative"}}>
+            <MdViewModule /> View
+            {view && (
+              <div className="sortData" style={{left:"-20px"}}>
+                <span onClick={gridView}>Grid</span>
+                <span onClick={detailView}>Details</span>
+                <span onClick={tileView}>Tiles</span>
+              </div>
+            )}
+          </button>
         <button>
           {" "}
           <img className="RendersHome_img" src={sort} alt="" srcset="" /> Sort
@@ -61,6 +93,8 @@ const RendersHome = ({ designListData, sidebarExpanded }) => {
         className="RendersHome_folders"
         style={{ width: sidebarExpanded ? "100%" : "110%" }}
       >
+        {grid && (
+          <>
         {designListData.map((item) => (
           <div className="folderCard_parent">
             <div
@@ -73,6 +107,42 @@ const RendersHome = ({ designListData, sidebarExpanded }) => {
             </div>
           </div>
         ))}
+        </>
+      )}
+        {tiles && (
+          <>
+        {designListData.map((item) => (
+          <div className="folderCard_parent">
+            <div
+              className="folder__card"
+              style={{display:"flex"}}
+              key={item.id}
+              onClick={() => handleFolderClick(item)}
+            >
+              <img src={folderimg} alt="" style={{width:"26px"}}/>
+              <p className="folder_name" style={{fontSize:"9px"}}>{item.name}</p>
+            </div>
+          </div>
+        ))}
+        </>
+      )}
+        {detail && (
+          <>
+        {designListData.map((item) => (
+          <div className="folderCard_parent">
+            <div
+              className="folder__card"
+              style={{display:"flex"}}
+              key={item.id}
+              onClick={() => handleFolderClick(item)}
+            >
+              <img src={folderimg} alt="" style={{width:"40px"}}/>
+              <p className="folder_name" style={{fontSize:"11px"}}>{item.name}</p>
+            </div>
+          </div>
+        ))}
+        </>
+      )}
       </div>
     </div>
   );

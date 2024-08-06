@@ -96,7 +96,7 @@
 }
 .dropdown-container {
   width: 150px;
-  height: 190px;
+  height: auto;
   background-color: white;
   position: absolute;
   top: 73px;
@@ -151,7 +151,7 @@
     display: flex;
     flex-direction: column;
     /* align-items: center; */
-    justify-content: center;
+    /* justify-content: center; */
   }
   .vertical-connector {
     width: 1px;

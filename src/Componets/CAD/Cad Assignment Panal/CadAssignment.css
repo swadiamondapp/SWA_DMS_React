@@ -20,13 +20,14 @@
   align-items: center;
   justify-content: center;
 }
-.completed {
+.complete {
   background: #23a0642b;
   color: #23a064;
   font-weight: 500;
   padding: 5px;
   border-radius: 15px;
 }
+
 .ongoing {
   background: #ffa90026;
   color: #ffa900;
