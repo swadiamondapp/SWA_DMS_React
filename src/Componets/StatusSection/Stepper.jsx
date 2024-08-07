@@ -151,6 +151,7 @@ const Stepper = () => {
                     style={{
                       position: "relative",
                       backgroundColor: isActive ? "#00474d" : "inherit",
+                      cursor: step.id === 7 || step.id === 9 || step.id === 5 ? "pointer" : ""
                     }}
                   >
                     {isActive ? (
