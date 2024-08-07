@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./DesignPool.css";
 import like from "../../../assets/like.png";
 import ring from "../../../assets/ring.png";
@@ -8,6 +8,7 @@ import {
   unvoted_design,
   moveSelectedDesign,
   designPoolSearchById,
+  deleteItemFromDesignPool,
 } from "./Api";
 import { MOVE_TO_ASSIGNMENT } from "../../../Pages/Services/EndPoints";
 import { apiService } from "../../../Pages/Services/ApiInstants";
@@ -17,8 +18,10 @@ import BasicDetailModal from "../../BasicDetails/BasicDetailModal";
 import { CircularProgress } from "@mui/material";
 import AnnotationModalDesignPool from "./AnnotationModalDesignPool/AnnotationModalDesignPool";
 import SuccessModal from "../../SuccessModal/SuccessModal";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import DeleteConfirmationModal from "../../ConfirmationModal/DeleteConfirmationModal";
 
-const DesignPool = ({ sidebarExpanded, setData, Data }) => {
+const DesignPool = ({ sidebarExpanded, setData, Data}) => {
   const [showRadioButtons, setShowRadioButtons] = useState(false);
   const [selectButtonLabel, setSelectButtonLabel] = useState("Select");
   const [showDownloadOptions, setShowDownloadOptions] = useState(false);
@@ -35,18 +38,27 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
   const [successModalOpen, setSuccessModalOpen] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
   const [allSelected, setAllSelected] = useState(false);
-  const dropdownRef = useRef(null);
-  const assignmentDownRef = useRef(null) // Ref for the dropdown element
+  const [activeCardId, setActiveCardId] = useState(null);
+  const [IdOfDeleteDesignPool, setIdOfDeleteDesignPool] = useState();
+  const [DeleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
+  const [showOverlay, setShowOverlay] = useState(false);
+  const [SelectedIdsForDelet,setSelectedIdsForDelet] = useState([])
+  const assignmentDownRef = useRef(null); // Ref for the dropdown element
   const clickedInsideRef = useRef(false);
 
   const navigate = useNavigate();
-
+  const dropdownRefDD = useRef(null);
+  const dropdownRef = useRef(null);
+  const dotsRef = useRef(null);
   const toggleRadioButtons = () => {
     setShowRadioButtons(!showRadioButtons);
     setSelectButtonLabel(showRadioButtons ? "Select" : "Unselect");
     if (showRadioButtons) {
       // If toggling to "Unselect", clear the selected designs
       setSelectedDesigns([]);
+    }
+    if (SelectedIdsForDelet) {
+      setSelectedIdsForDelet([])
     }
   };
   const toggleDownloadOptions = () => {
@@ -67,16 +79,18 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
   }, []);
 
   console.log(Data, "datat========d==>");
-  console.log(selectedDesigns, "selectedDesigns");
-  console.log(selectedImages,"selectedImages")
+  console.log(SelectedIdsForDelet, "selectedDesignsasdf");
+  console.log(selectedImages, "selectedImages");
 
-  const handleCheckboxChange = (designcode,image) => {
+  const handleCheckboxChange = (designcode, image,id) => {
     if (selectedDesigns.includes(designcode)) {
       setSelectedDesigns(selectedDesigns.filter((item) => item !== designcode));
-      setSelectedImages(selectedImages.filter(img => img !== image));
+      setSelectedImages(selectedImages.filter((img) => img !== image));
+      setSelectedIdsForDelet(SelectedIdsForDelet.filter((item) => item !== id));
     } else {
       setSelectedDesigns([...selectedDesigns, designcode]);
       setSelectedImages([...selectedImages, image]);
+      setSelectedIdsForDelet([...SelectedIdsForDelet,id])
     }
   };
 
@@ -102,15 +116,32 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
   };
   useEffect(() => {
     const handleClickOutside = (event) => {
+      if (
+        dropdownRefDD.current &&
+        !dropdownRefDD.current.contains(event.target)
+      ) {
+        setActiveCardId(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+  useEffect(() => {
+    const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         // Click occurred outside the dropdown
         setShowDownloadOptions(false);
       }
-      if (assignmentDownRef.current && !assignmentDownRef.current.contains(event.target)) {
+      if (
+        assignmentDownRef.current &&
+        !assignmentDownRef.current.contains(event.target)
+      ) {
         // Click occurred outside the dropdown
         setShowMoveOptions(false);
       }
-
     };
 
     // Add a click event listener to the document
@@ -121,7 +152,6 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-  
 
   const handleDownloadMultiple = async (imageData) => {
     for (const { image, designcode } of imageData) {
@@ -151,7 +181,6 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
     setShowDownloadOptions(false);
   };
 
-
   const selectAllDesigns = () => {
     if (allSelected) {
       setSelectedDesigns([]);
@@ -159,14 +188,59 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
     } else {
       setSelectedDesigns(Data.map((item) => item.designcode));
       setSelectedImages(Data.map((item) => item.image));
-      handleDownloadMultiple(Data.map((item) => ({ image: item.image, designcode: item.designcode })));
+      handleDownloadMultiple(
+        Data.map((item) => ({ image: item.image, designcode: item.designcode }))
+      );
     }
     setAllSelected(!allSelected);
   };
 
-
   console.log("selectedDesign", selectedDesign);
   console.log("imageData", Data);
+
+  const handleDeleteClose = () => {
+    setDeleteConfirmationOpen(false);
+    setSelectedIdsForDelet([])
+  };
+  const handleDeleteOpen = () => {
+    setDeleteConfirmationOpen(true);
+  };
+
+  const toggleDeleteMoveButtons = (id) => {
+    if (activeCardId === id) {
+      setActiveCardId(null);
+      setShowOverlay(false);
+    } else {
+      setActiveCardId(id);
+      setShowOverlay(true);
+    }
+  };
+  const delteItemsFromDesignPool = (item) => {
+    setIdOfDeleteDesignPool(item);
+    // setDeleteConfirmationOpen(true);
+    // deleteItemFromAssignmentPanel(
+    //   setIsLoading,
+    //   IdOfDeleteAssignment,
+    //   setData,
+    //   setSuccessModalOpen,
+    //   setSuccessMessage,
+    //   setActiveCardId
+    // );
+    // deleteItemFromDesignPool(
+    //   setIsLoading,
+    //   SelectedIdsForDelet,
+    //   setSuccessModalOpen,
+    //   setSuccessMessage,
+    //   setDeleteConfirmationOpen
+    // );
+  };
+
+  const handleDeleteSingle = (item) => {
+    setSelectedIdsForDelet([item])
+    setIdOfDeleteDesignPool(item);
+     setDeleteConfirmationOpen(true);
+  
+  };
 
   return (
     <div>
@@ -226,19 +300,20 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
           setData={setData}
           setShowRadioButtons={setShowRadioButtons}
           selectedImages={selectedImages}
-          setSelectedImages={ setSelectedImages}
+          setSelectedImages={setSelectedImages}
           setAllSelected={setAllSelected}
           setShowDownloadOptions={setShowDownloadOptions}
           selectAllDesigns={selectAllDesigns}
           downRefff={dropdownRef}
           assignmentDownRef={assignmentDownRef}
-          
-        
+          delteItemsFromDesignPool={delteItemsFromDesignPool}
+          setDeleteConfirmationOpen={setDeleteConfirmationOpen}
+          SelectedIdsForDelet={SelectedIdsForDelet}
         />
         {/* new design section */}
         {/* new design section */}
         <div className="Parent_NewDesign">
-          <h3 className="HeadNewdesign">New design</h3>
+          <h3 className="HeadNewdesign">New design ( {Data.length} )</h3>
           {Data.length === 0 && (
             <div
               style={{
@@ -264,7 +339,7 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
                 <div className="New_Design_card" key={item.id}>
                   <div
                     className="Card_img"
-                    style={{ marginTop: "12px", height: "170px" }}
+                    style={{ marginTop: "12px", height: "170px",cursor:'pointer' }}
                   >
                     <img
                       src={item.image}
@@ -294,11 +369,33 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
                       id={item.designcode}
                       name="fav_language"
                       value={item.designcode}
-                      onChange={() => handleCheckboxChange(item.designcode,item.image)}
-                      // checked={selectedDesigns[item.designcode]}
+                      onChange={() =>
+                        handleCheckboxChange(item.designcode, item.image,item.id)
+                      }
+                   
                       checked={selectedDesigns.includes(item.designcode)}
                     ></input>
                   )}
+                  {/* {!showRadioButtons && location.pathname === "/designpool" && (
+                    <div
+                      onClick={() => toggleDeleteMoveButtons(item.id)}
+                      ref={dotsRef}
+                    >
+                      <BsThreeDotsVertical
+                        className="A_dots"
+                        style={{ fontSize: "20px" }}
+                      />
+                    </div>
+                  )} */}
+                  {/* {activeCardId === item.id && (
+                    <div
+                      className="Dots_Delete_DesignPool_btns"
+                      ref={dropdownRefDD}
+                    >
+                      <p onClick={() => handleDeleteSingle(item.id)}>Delete</p>
+                     
+                    </div>
+                  )} */}
                   {/* radio btn */}
                 </div>
               </>
@@ -325,7 +422,9 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
 
           {/* unvoted design */}
           <div className="Parent_unvoted">
-            <h3 className="HeadNewdesign">Unvoted</h3>
+            <h3 className="HeadNewdesign">
+              Unvoted (&nbsp; {unvotedData.length}&nbsp; )
+            </h3>
             <div className="Card_Design_Parent">
               {unvotedData.map((item) => (
                 <div className="New_Design_card">
@@ -354,6 +453,31 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
         </div>
         {/* new design section */}
       </div>
+      <DeleteConfirmationModal
+      DeleteConfirmationOpen={DeleteConfirmationOpen}
+      handleDeleteClose={handleDeleteClose}
+      setDeleteConfirmationOpen={setDeleteConfirmationOpen}
+      handleDeleteOpen={handleDeleteOpen}
+      isLoading={isLoading}
+      
+      deleteFunction={() => {
+        deleteItemFromDesignPool(
+          setIsLoading,
+          SelectedIdsForDelet,
+          setSuccessModalOpen,
+          setSuccessMessage,
+          setDeleteConfirmationOpen,
+          setData,
+          setSelectedDesigns,
+          setShowRadioButtons,
+          setSelectButtonLabel,
+          setSelectedIdsForDelet
+
+          
+        
+        );
+      }}
+      />
       <BasicDetailModal />
     </div>
   );

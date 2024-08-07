@@ -56,7 +56,7 @@ const VotorsPanal = ({ sidebarExpanded }) => {
     >
       <div className="VotorsPanelsection">
         <div className="Parent_NewDesign">
-          <h3 className="HeadNewdesign">Newly added</h3>
+          <h3 className="HeadNewdesign">Newly added (&nbsp;{Data.length}&nbsp;)</h3>
           <div className="Card_Design_Parent">
             {Data.map((item) => (
               <div className="New_Design_card">
@@ -91,7 +91,7 @@ const VotorsPanal = ({ sidebarExpanded }) => {
           {/* Last voted design */}
           <div className="lastvoted">
             <div className="Parent_unvoted">
-              <h3 className="HeadNewdesign">Last voted</h3>
+              <h3 className="HeadNewdesign">Last voted (&nbsp;{votedList.length}&nbsp;)</h3>
               <div className="Card_Design_Parent">
                 {votedList.map((item) => (
                   <div className="New_Design_card">

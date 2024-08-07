@@ -51,6 +51,7 @@ const Header = ({
   const { assignmentId, folderNameAssignmentView } = location.state || {};
   const { assignmentFolderName } = location.state || {};
   const { folderName } = location.state || {};
+  const { detailsViewFolderName} = location.state || {};
   console.log("header===>FolderName", folderName);
 
   useEffect(() => {
@@ -208,6 +209,9 @@ const Header = ({
                 {location.pathname === "/unassigneddesigner" && (
                   <h3>Assigned to</h3>
                 )}
+                {location.pathname === `/assignmentviewsAll/${id}` && (
+                  <h3>{detailsViewFolderName}</h3>
+                )}
 
                 {location.pathname === "/slot" && <h3>Slot</h3>}
                 {leftHeader && <h3>{leftHeader}</h3>}
@@ -271,7 +275,8 @@ const Header = ({
                   location.pathname !== "/designpool" &&
                   location.pathname !== "/centralhubscan" &&
                   location.pathname !== `/centralfolderdetails/${id}` &&
-                  location.pathname !== `/assignmentview/${assignmentId}` && (
+                  location.pathname !== `/assignmentview/${assignmentId}` &&
+                  location.pathname !== `/assignmentviewsAll/${id}` && (
                     <div className="Search_Admin">
                       <div className="Search_User">
                         <input

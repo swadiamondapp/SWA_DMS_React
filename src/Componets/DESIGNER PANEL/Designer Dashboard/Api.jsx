@@ -37,6 +37,30 @@ export const upload_designs_items = async (setIsLoading, uploadImage,setData) =>
   }
 };
 
+export const upload_multiple_designs_items = async (setIsLoading, fileList) => {
+  try {
+    setIsLoading(true)
+    const formData = new FormData();
+    fileList.forEach((file, index) => {
+      formData.append(`image${index + 1}`, file.originFileObj);
+    });
+    const body = formData
+    console.log(body,"body")
+    const response = await apiService.post(LIST_UPLOAD_DESIGN, body);
+    const res = response.data.results.status_code === 200
+    if (response.data.results.status_code === 200) {
+      console.log(response.data.results.message,"success")
+      list_uploaded_designs(setIsLoading, setData)
+      
+    }
+    return res
+  } catch (error) {
+    console.error("Error moving designs:", error);
+  }finally {
+    setIsLoading(false)
+  }
+};
+
 
 export const list_all_cad_users = async (setIsLoading, setData) => {
   try {

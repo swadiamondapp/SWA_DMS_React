@@ -49,6 +49,7 @@ const schema = Joi.object({
     "any.required": "You should select a role",
     "number.base": "You should select a role", // Additional message for non-number values
   }),
+  userPassword: Joi.allow(),
 });
 
 const validateForm = (data) => {
@@ -86,12 +87,15 @@ const UsersList = ({
   const [showPassword, setShowPassword] = useState({});
   const [successDeleteMessage, setSuccessDeleteMessage] = useState("");
   const [DeleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
+  const [ShowUserPassword, setShowUserPassword] = useState([]);
+  const [UserPasswordFromModal,showUserPasswordFromModal] = useState(false)
   const dropdownRef = useRef(null);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phoneNumber: "",
     selectedRole: "",
+    userPassword: "",
   });
 
   useEffect(() => {
@@ -109,7 +113,7 @@ const UsersList = ({
     };
   }, []);
 
-  console.log("imageUrl===>", ErrorMessages);
+  console.log("ShowUserPassword", ShowUserPassword);
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -178,6 +182,10 @@ const UsersList = ({
       data.append("phone_number", formData.phoneNumber);
       data.append("usertype", formData.selectedRole);
       data.append("status", "ACTIVE");
+      
+      if (modalTitle === "Edit User") {
+        data.append("pass_word", formData.userPassword);
+      }
       // If there's an uploaded image, append it to the FormData
       // Append image if it exists
       const fileInput = document.querySelector(".avatar-uploader");
@@ -196,7 +204,8 @@ const UsersList = ({
           userIdToEdit,
           setIsModalOpen,
           setSuccessModalOpen,
-          setSuccessMessage
+          setSuccessMessage,
+          showUserPasswordFromModal
         );
       } else {
         await user_create(
@@ -263,6 +272,7 @@ const UsersList = ({
       email: "",
       phoneNumber: "",
       selectedRole: "",
+      userPassword: "",
     });
   };
 
@@ -274,6 +284,8 @@ const UsersList = ({
     setIsModalOpen(false);
     setErrorMessages(null);
     setErrors({});
+    setShowUserPassword([]);
+    showUserPasswordFromModal(false)
   };
   // create modal
   // select box
@@ -323,6 +335,7 @@ const UsersList = ({
   const hendleEdit = (user) => {
     console.log("usereditid", user);
     if (user) {
+      setShowUserPassword(user.Password);
       setIsModalOpen(true);
       setShowEditDelete(null);
       setErrors({});
@@ -334,6 +347,7 @@ const UsersList = ({
         email: user.email,
         phoneNumber: user.phone_number,
         selectedRole: parseInt(user.usertype),
+        userPassword: user.Password,
       });
       console.log("mm????", user.usertype);
       setImageUrl(user.image);
@@ -400,7 +414,10 @@ const UsersList = ({
     user_activating(setIsLoading, user.id, statusPayload, setUserList);
   };
 
-  console.log(toggleStates, "toggleState");
+  console.log(formData, "toggleState");
+  const togglePassVisibility = () => {
+    showUserPasswordFromModal((prevShowPassword) => !prevShowPassword);
+  };
 
   // update_user(setIsLoading, data, setUserList ,"70");
   return (
@@ -535,7 +552,15 @@ const UsersList = ({
                       name="phoneNumber"
                       value={formData.phoneNumber}
                       onChange={handleInput}
-                      onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
+                      onFocus={(e) =>
+                        e.target.addEventListener(
+                          "wheel",
+                          function (e) {
+                            e.preventDefault();
+                          },
+                          { passive: false }
+                        )
+                      }
                     />
                     {ErrorMessages?.reason?.phone_number && (
                       <span className="error">
@@ -564,6 +589,40 @@ const UsersList = ({
                       <span className="error">{errors.email}</span>
                     )}
                   </div>
+                  {modalTitle === "Edit User" && (
+                    <div className="create_form_field">
+                      <div className="ParantPasswordContainer">
+                        <label htmlFor="">Password</label>
+                        <input
+                          type={UserPasswordFromModal ? 'text' : 'password'}
+                          className="inputFeild"
+                          name="userPassword"
+                          value={formData.userPassword}
+                          onChange={handleInput}
+                        />
+                      </div>
+                        <div className="childPasswordConteiner">
+                          <IoEye
+                            style={{
+                              color: "#455173",
+                              cursor: "pointer",
+                              opacity: UserPasswordFromModal? 0.5 : 1,
+                              marginRight: "25px",
+                            }}
+                            onClick={togglePassVisibility}
+                          />
+                        </div>
+
+                      {/* {ErrorMessages?.reason?.email && (
+                      <span className="error">
+                        {ErrorMessages?.reason?.email}
+                      </span>
+                    )} */}
+                      {errors.userPassword && (
+                        <span className="error">{errors.userPassword}</span>
+                      )}
+                    </div>
+                  )}
                   <div className="parant_relative">
                     <label htmlFor="">Role</label>
                     <Select

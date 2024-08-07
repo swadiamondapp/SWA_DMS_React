@@ -59,7 +59,7 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
     setSelectButtonLabel(showRadioButtons ? "Select" : "Unselect");
     if (showRadioButtons) {
       // If toggling to "Unselect", clear the selected designs
-      setSelectedAssignment([])
+      setSelectedAssignment([]);
     }
   };
   const toggleDownloadOptions = () => {
@@ -161,7 +161,7 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
   const handleDrawModal = (item) => {
     // setOpenDesignPool(true);
     setModalDetails(item);
-    setFolderDetialViewID(item.id);
+    // setFolderDetialViewID(item.id);
   };
   const handleAdminBasicModal = () => {
     setAdminBasicModalOpen(true);
@@ -175,7 +175,16 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
     setcreateFolderModal(true);
   };
 
-  const handleForlderDetailsVeiw = () => {};
+  const handleForlderDetailsVeiw = (item,designCode) => {
+    navigate(`/assignmentviewsAll/${item.id}`, {
+      state: {
+        // folderNameAssignmentView: item.paper_design.designcode,
+        // assignmentId: props.id,
+        detailsViewFolderName: designCode,
+      
+      },
+    });
+  };
 
   console.log(selectedDesignCode, "selectedDesignCode");
 
@@ -304,13 +313,16 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
             </div>
           ) : (
             <>
-              <h3 className="HeadNewdesign">Selected</h3>
+              <h3 className="HeadNewdesign">
+                Selected (&nbsp; {Data.length}&nbsp; )
+              </h3>
               <div className="Card_Design_Parent">
                 {Data.map((dataItem, dataIndex) =>
                   dataItem?.items?.map((item, itemIndex) => {
                     const paperDesign = item?.paper_design;
                     const itemId = item?.id;
                     const createdAt = item?.created_at;
+                    const updatedAt = item?.updated_at;
                     const designer = paperDesign?.designer;
                     const designCode = paperDesign?.designcode;
                     const image = paperDesign?.image;
@@ -327,7 +339,7 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
                       >
                         <div
                           className="Card_img"
-                          onClick={() => handleForlderDetailsVeiw(item.id)}
+                          onClick={() => handleForlderDetailsVeiw(item,designCode)}
                         >
                           <img
                             src={image}
@@ -341,7 +353,8 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
                           <div className="Card_Details_Inner">
                             <div className="Inner_Left">
                               <p>{designer}</p>
-                              <p>{formatDate(createdAt)}</p>
+                              <p><span className="dateUpdate_fix">created at : </span>{formatDate(createdAt)}</p>
+                              <p><span className="dateUpdate_fix"> updated at : </span>{formatDate(updatedAt)}</p>
                             </div>
                             <div className="Inner_Right">
                               <p>
@@ -433,7 +446,7 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
         setAdminBasicModalOpen={setAdminBasicModalOpen}
         onClose={handleCloseAdminModal}
         selectedDesignCode={selectedDesignCode}
-        recallListDesigners={()=>  list_assignment_panel(setIsLoading, setData)}
+        recallListDesigners={() => list_assignment_panel(setIsLoading, setData)}
       />
 
       <AssignmentModal

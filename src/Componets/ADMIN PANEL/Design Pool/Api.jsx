@@ -10,6 +10,7 @@ import {
   LIST_ASSIGNMENT_FOLDER,
   DESIGNPOOL_SEARCHBY_ID,
   UPDATE_DESIGNPOOL_IMAGE,
+  DELETE_ITEM_FROM_DESIGNPOOL,
 } from "../../../Pages/Services/EndPoints";
 
 export const all_Designs = async (setIsLoading, setData) => {
@@ -120,11 +121,11 @@ export const editedImageUpload = async (
   setData,
   formData
 ) => {
-  debugger
+  debugger;
   try {
     const response = await apiService.patch(
       `${UPDATE_DESIGNPOOL_IMAGE}${selectImageId}`,
-      formData, 
+      formData
       // {
       //   headers: {
       //     'Content-Type': 'multipart/form-data',
@@ -145,3 +146,44 @@ export const editedImageUpload = async (
   }
 };
 
+export const deleteItemFromDesignPool = async (
+  setIsLoading,
+  SelectedIdsForDelet,
+  setSuccessModalOpen,
+  setSuccessMessage,
+  setDeleteConfirmationOpen,
+  setData,
+  setSelectedDesigns,
+  setShowRadioButtons,
+  setSelectButtonLabel,
+  setSelectedIdsForDelet
+) => {
+  
+  try {
+    const body = {
+      design_id: SelectedIdsForDelet
+    }
+
+    setIsLoading(true);
+    console.log(body,"bodyofDelteeee")
+    const response = await apiService.patch(DELETE_ITEM_FROM_DESIGNPOOL,body);
+    if (checkApiStatus(response)) {
+      setSuccessMessage("item Deleted Successfully");
+      setSuccessModalOpen(true);
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+        setDeleteConfirmationOpen(false);
+      }, 1600);
+      all_Designs(setIsLoading, setData);
+      // setActiveCardId([]);
+      setSelectedDesigns([])
+      setShowRadioButtons(false)
+      setSelectButtonLabel("Select")
+      setSelectedIdsForDelet([])
+    }
+  } catch (error) {
+    console.error("Error moving designs:", error);
+  } finally {
+    setIsLoading(false);
+  }
+};

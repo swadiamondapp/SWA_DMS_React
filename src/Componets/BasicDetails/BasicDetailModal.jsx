@@ -660,6 +660,7 @@ const BasicDetailModal = ({
                             width: "100%",
                             zIndex: "9999999",
                             background: "#006E7F1A",
+                            cursor:'pointer'
                           }}
                           options={metalTypeDropDown.map((item) => ({
                             value: item.id,
@@ -696,6 +697,7 @@ const BasicDetailModal = ({
                             width: "100%",
                             zIndex: 999999999,
                             background: "#006E7F1A",
+                            cursor:'pointer'
                           }}
                           options={diamonType.map((item) => ({
                             value: item.id,
@@ -764,7 +766,7 @@ const BasicDetailModal = ({
                           name="approxMRP"
                           value={formData.approxMRP}
                           onChange={handleInput}
-                          
+
                           readOnly
                         />
                         {IsLoadingCalculation ? (

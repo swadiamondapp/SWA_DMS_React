@@ -316,3 +316,11 @@ input:checked + .slider:before {
   min-width: 100px;
   padding-top: 8px;
 }
+.ParantPasswordContainer {
+position: relative;
+}
+.childPasswordConteiner {
+position: absolute;
+right: 0px;
+bottom: 10px;
+}

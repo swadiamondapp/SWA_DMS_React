@@ -38,6 +38,8 @@ const DesignPoolView = () => {
         sidebarExpanded={sidebarExpanded}
         setData={setData}
         Data={Data}
+        
+       
       />
     </div>
   );
