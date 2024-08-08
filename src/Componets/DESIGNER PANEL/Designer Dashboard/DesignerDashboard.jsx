@@ -182,7 +182,7 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
             </div>
           </div>
         </div>
-        <MultipleImageUpload open={multipleImageModalOpen} onClose={()=> setMultipleImageModalOpen(false)} previewImages={previewImages}  handleFileSelect={handleFileSelect}/>
+        <MultipleImageUpload open={multipleImageModalOpen} onClose={()=> setMultipleImageModalOpen(false)} previewImages={previewImages}  handleFileSelect={handleFileSelect} setUploadedDesigns={setUploadedDesigns} setMultipleImageModalOpen={setMultipleImageModalOpen}/>
       </div>
     </div>
   );

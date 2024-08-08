@@ -21,7 +21,7 @@ import SuccessModal from "../../SuccessModal/SuccessModal";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import DeleteConfirmationModal from "../../ConfirmationModal/DeleteConfirmationModal";
 
-const DesignPool = ({ sidebarExpanded, setData, Data}) => {
+const DesignPool = ({ sidebarExpanded, setData, Data }) => {
   const [showRadioButtons, setShowRadioButtons] = useState(false);
   const [selectButtonLabel, setSelectButtonLabel] = useState("Select");
   const [showDownloadOptions, setShowDownloadOptions] = useState(false);
@@ -42,7 +42,7 @@ const DesignPool = ({ sidebarExpanded, setData, Data}) => {
   const [IdOfDeleteDesignPool, setIdOfDeleteDesignPool] = useState();
   const [DeleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
-  const [SelectedIdsForDelet,setSelectedIdsForDelet] = useState([])
+  const [SelectedIdsForDelet, setSelectedIdsForDelet] = useState([]);
   const assignmentDownRef = useRef(null); // Ref for the dropdown element
   const clickedInsideRef = useRef(false);
 
@@ -58,7 +58,7 @@ const DesignPool = ({ sidebarExpanded, setData, Data}) => {
       setSelectedDesigns([]);
     }
     if (SelectedIdsForDelet) {
-      setSelectedIdsForDelet([])
+      setSelectedIdsForDelet([]);
     }
   };
   const toggleDownloadOptions = () => {
@@ -79,10 +79,12 @@ const DesignPool = ({ sidebarExpanded, setData, Data}) => {
   }, []);
 
   console.log(Data, "datat========d==>");
-  console.log(SelectedIdsForDelet, "selectedDesignsasdf");
+
+  console.log(SelectedIdsForDelet, "selectedImages");
+  console.log(selectedDesigns, "selectedImages");
   console.log(selectedImages, "selectedImages");
 
-  const handleCheckboxChange = (designcode, image,id) => {
+  const handleCheckboxChange = (designcode, image, id) => {
     if (selectedDesigns.includes(designcode)) {
       setSelectedDesigns(selectedDesigns.filter((item) => item !== designcode));
       setSelectedImages(selectedImages.filter((img) => img !== image));
@@ -90,7 +92,7 @@ const DesignPool = ({ sidebarExpanded, setData, Data}) => {
     } else {
       setSelectedDesigns([...selectedDesigns, designcode]);
       setSelectedImages([...selectedImages, image]);
-      setSelectedIdsForDelet([...SelectedIdsForDelet,id])
+      setSelectedIdsForDelet([...SelectedIdsForDelet, id]);
     }
   };
 
@@ -195,12 +197,12 @@ const DesignPool = ({ sidebarExpanded, setData, Data}) => {
     setAllSelected(!allSelected);
   };
 
-  console.log("selectedDesign", selectedDesign);
+  console.log("selectedDesign====>", selectedDesign);
   console.log("imageData", Data);
 
   const handleDeleteClose = () => {
     setDeleteConfirmationOpen(false);
-    setSelectedIdsForDelet([])
+    // setSelectedIdsForDelet([]);
   };
   const handleDeleteOpen = () => {
     setDeleteConfirmationOpen(true);
@@ -236,10 +238,9 @@ const DesignPool = ({ sidebarExpanded, setData, Data}) => {
   };
 
   const handleDeleteSingle = (item) => {
-    setSelectedIdsForDelet([item])
+    setSelectedIdsForDelet([item]);
     setIdOfDeleteDesignPool(item);
-     setDeleteConfirmationOpen(true);
-  
+    setDeleteConfirmationOpen(true);
   };
 
   return (
@@ -339,7 +340,11 @@ const DesignPool = ({ sidebarExpanded, setData, Data}) => {
                 <div className="New_Design_card" key={item.id}>
                   <div
                     className="Card_img"
-                    style={{ marginTop: "12px", height: "170px",cursor:'pointer' }}
+                    style={{
+                      marginTop: "12px",
+                      height: "170px",
+                      cursor: "pointer",
+                    }}
                   >
                     <img
                       src={item.image}
@@ -370,9 +375,12 @@ const DesignPool = ({ sidebarExpanded, setData, Data}) => {
                       name="fav_language"
                       value={item.designcode}
                       onChange={() =>
-                        handleCheckboxChange(item.designcode, item.image,item.id)
+                        handleCheckboxChange(
+                          item.designcode,
+                          item.image,
+                          item.id
+                        )
                       }
-                   
                       checked={selectedDesigns.includes(item.designcode)}
                     ></input>
                   )}
@@ -454,29 +462,26 @@ const DesignPool = ({ sidebarExpanded, setData, Data}) => {
         {/* new design section */}
       </div>
       <DeleteConfirmationModal
-      DeleteConfirmationOpen={DeleteConfirmationOpen}
-      handleDeleteClose={handleDeleteClose}
-      setDeleteConfirmationOpen={setDeleteConfirmationOpen}
-      handleDeleteOpen={handleDeleteOpen}
-      isLoading={isLoading}
-      
-      deleteFunction={() => {
-        deleteItemFromDesignPool(
-          setIsLoading,
-          SelectedIdsForDelet,
-          setSuccessModalOpen,
-          setSuccessMessage,
-          setDeleteConfirmationOpen,
-          setData,
-          setSelectedDesigns,
-          setShowRadioButtons,
-          setSelectButtonLabel,
-          setSelectedIdsForDelet
-
-          
-        
-        );
-      }}
+        DeleteConfirmationOpen={DeleteConfirmationOpen}
+        handleDeleteClose={handleDeleteClose}
+        setDeleteConfirmationOpen={setDeleteConfirmationOpen}
+        handleDeleteOpen={handleDeleteOpen}
+        isLoading={isLoading}
+        setSelectedIdsForDelet={setSelectedIdsForDelet}
+        deleteFunction={() => {
+          deleteItemFromDesignPool(
+            setIsLoading,
+            SelectedIdsForDelet,
+            setSuccessModalOpen,
+            setSuccessMessage,
+            setDeleteConfirmationOpen,
+            setData,
+            setSelectedDesigns,
+            setShowRadioButtons,
+            setSelectButtonLabel,
+            setSelectedIdsForDelet
+          );
+        }}
       />
       <BasicDetailModal />
     </div>

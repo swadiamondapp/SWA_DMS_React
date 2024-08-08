@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import "./Sidebar.css";
 import logo from "../../assets/logo.png";
 import userimg from "../../assets/user.png";
@@ -38,6 +38,16 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
   const toggleSidebar = () => {
     setSidebarExpanded(!sidebarExpanded);
   };
+
+  useEffect(()=> {
+    if (sidebarExpanded) {
+      localStorage.setItem("sidebarExpandtrueOrNot",sidebarExpanded)
+    }
+    else {
+      localStorage.setItem("sidebarExpandtrueOrNot",sidebarExpanded)
+    }
+  },[])
+  console.log(sidebarExpanded,"sidebarExpandedsidebar")
   console.log(activeLink,"currentLocation")
   const renderLinks = () => {
     if (usertype === "ADMIN") {

@@ -12,7 +12,12 @@ import {
   product_category_basicDetails,
   tag_List_basicDetails,
 } from "../Assignment Panel/Api";
-import { upload_designs_items, upload_multiple_designs_items } from "../DESIGNER PANEL/Designer Dashboard/Api";
+import {
+  upload_designs_items,
+  upload_multiple_designs_items,
+} from "../DESIGNER PANEL/Designer Dashboard/Api";
+import SuccessModal from "../SuccessModal/SuccessModal";
+import { CircularProgress } from "@mui/material";
 
 const style = {
   position: "absolute",
@@ -42,6 +47,8 @@ const MultipleImageUpload = ({
   open,
   previewImages,
   handleFileSelect,
+  setUploadedDesigns,
+  setMultipleImageModalOpen,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   //   const [images, setImages] = useState(Array(initialImageSlots).fill(null));
@@ -52,6 +59,8 @@ const MultipleImageUpload = ({
   const [selectedTags, setSelectedTags] = useState([]);
   const [errors, setErrors] = useState({});
   const [fileList, setFileList] = useState([]);
+  const [successModalOpen, setSuccessModalOpen] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
   console.log(fileList, "uploadedImage");
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
@@ -111,8 +120,15 @@ const MultipleImageUpload = ({
   }, [selectedTags]);
 
   const handleUploadImages = () => {
-    upload_multiple_designs_items(setIsLoading, fileList);
-  }
+    upload_multiple_designs_items(
+      setIsLoading,
+      fileList,
+      setUploadedDesigns,
+      setSuccessModalOpen,
+      setSuccessMessage,
+      handleclose
+    );
+  };
 
   return (
     <div>
@@ -175,14 +191,15 @@ const MultipleImageUpload = ({
                   </div>
                 </div> */}
                 <div className="modalContaer_multipleImageUpload">
-                  <div style={{marginLeft:"6px"}}>
+                  <div style={{ marginLeft: "6px" }}>
                     <Upload
                       listType="picture-card"
                       fileList={fileList}
                       onPreview={handlePreview}
                       onChange={handleChange}
-                      accept="image/*"
+                      accept="image/jpeg, image/jpg, image/png"
                       multiple
+                      beforeUpload={() => false}
                     >
                       {uploadButton}
                     </Upload>
@@ -274,7 +291,28 @@ const MultipleImageUpload = ({
                       >
                         Cancel
                       </button>
-                      <button className="upload_of_multiModal" onClick={handleUploadImages}>Upload</button>
+                      {isLoading ? (
+                           <button
+                           className="upload_of_multiModal"
+                          //  onClick={handleUploadImages}
+                         >
+                              <CircularProgress
+                           size={20} // Set the desired size
+                           sx={{
+                             color: "#fff",
+                             padding: "10px 20px",
+                             width: "35px",
+                           }}
+                         />
+                         </button>
+                      ) : (
+                        <button
+                          className="upload_of_multiModal"
+                          onClick={handleUploadImages}
+                        >
+                          Upload
+                        </button>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -283,6 +321,10 @@ const MultipleImageUpload = ({
           </Modal>
         </div>
       </div>
+      <SuccessModal
+        successModalOpen={successModalOpen}
+        successMessage={successMessage}
+      />
     </div>
   );
 };

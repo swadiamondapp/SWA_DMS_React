@@ -6,8 +6,11 @@ import "./Users.css";
 import { searchNamesAdmin } from "./Api";
 import { list_all_users } from "../../Componets/ADMIN PANEL/Users/Api";
 
+
 const Users = () => {
+  
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
+ 
   const [SearchWithName, setSearchWithName] = useState("");
   const [Data, setData] = useState([]);
   const [IsLoading, setIsLoading] = useState(false);
@@ -23,6 +26,7 @@ const Users = () => {
   const SearchedNamesGet = Data.filter((item) =>
     item.name.toLowerCase().includes(SearchWithName.toLowerCase())
   );
+ 
   console.log(Data, "searchedData");
   return (
     <div className="Parent_Userlist">

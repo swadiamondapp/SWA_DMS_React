@@ -9,17 +9,18 @@ import {
 } from "../../Componets/ADMIN PANEL/Design Pool/Api";
 
 const DesignPoolView = () => {
+
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
   const [Data, setData] = useState([]);
   const [searchListId, setsearchListId] = useState("");
 
-
   const handleInputChange = async (event) => {
     const { value } = event.target;
-    setsearchListId(value.toUpperCase()); 
+    setsearchListId(value.toUpperCase());
 
     await designPoolSearchById(value.toUpperCase(), setData);
   };
+
 
   console.log(searchListId, "searchListId");
 
@@ -38,8 +39,6 @@ const DesignPoolView = () => {
         sidebarExpanded={sidebarExpanded}
         setData={setData}
         Data={Data}
-        
-       
       />
     </div>
   );
