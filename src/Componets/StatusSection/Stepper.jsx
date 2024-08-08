@@ -55,29 +55,47 @@ const Stepper = () => {
     { id: 4, title: "CAD assigned" },
     { id: 5, title: "CAD finished" },
     { id: 6, title: "Slotted" },
-    { id: 7, title: "CentralHub" },
+    { id: 7, title: "Central Hub status" },
     { id: 8, title: "Transferred to warehouse" },
-    { id: 9, title: "Warehouse" },
+    { id: 9, title: "Warehouse status" },
     { id: 10, title: "Work done", text: "Workdone" },
   ];
 
   const status = steppretDta?.Tracking_data?.status_message || "";
 
-  //   const subStatus = [
-  //     { id: 1, title: "Status1" },
-  //     { id: 2, title: "Status2" },
-  //     { id: 3, title: "Status3" },
-  //   ];
-  const status2 = steppretDta?.Tracking_data?.status_details?.status || "";
+  const status2 =
+    Array.isArray(
+      steppretDta?.Tracking_data?.status_details?.ch_status_history
+    ) &&
+    steppretDta?.Tracking_data?.status_details?.ch_status_history.length > 0
+      ? steppretDta.Tracking_data.status_details.ch_status_history[0]
+          ?.current_status
+      : {};
 
-  //   const WHStatus = [
-  //     { id: 1, title: "Status1" },
-  //     { id: 2, title: "Status2" },
-  //     { id: 3, title: "Status3" },
-  //   ];
-  const warehouse = steppretDta?.Tracking_data?.status_details?.wh_status || "";
+  const warehouse =
+    Array.isArray(
+      steppretDta?.Tracking_data?.status_details?.warehouse_status_history
+    ) &&
+    steppretDta?.Tracking_data?.status_details?.warehouse_status_history
+      .length > 0
+      ? steppretDta.Tracking_data.status_details.warehouse_status_history[0]
+          ?.current_status
+      : {};
+
   const rederDate =
     steppretDta?.Tracking_data?.status_details?.render_uploaded_at || "";
+
+  const FormatedRenderDate = rederDate
+    ? new Date(rederDate).toLocaleDateString("en-US", {
+        weekday: "long",
+        // year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        hour12: true,
+      })
+    : "";
 
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [dropdownVisible2, setDropdownVisible2] = useState(false);
@@ -101,11 +119,65 @@ const Stepper = () => {
     centralStatusTableData(setcHdata, setIsLoading);
   }, []);
 
-  console.log("productId", productId);
-  console.log("steppretDta", steppretDta);
-  console.log("wHdata", wHdata);
-  console.log("cHdata", cHdata);
-  console.log("rederDate", rederDate);
+  const formatDate = (isoString) => {
+    const date = new Date(isoString);
+
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    const formattedDate = `${day}/${month}/${year}`;
+
+    let hours = date.getHours();
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const ampm = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    const formattedTime = `${String(hours).padStart(
+      2,
+      "0"
+    )}:${minutes} ${ampm}`;
+
+    return { formattedDate, formattedTime };
+  };
+
+  const { formattedDate, formattedTime } = formatDate(
+    Array.isArray(
+      steppretDta?.Tracking_data?.status_details?.ch_status_history
+    ) &&
+      steppretDta?.Tracking_data?.status_details?.ch_status_history.length > 0
+      ? steppretDta.Tracking_data.status_details.ch_status_history[0]
+          ?.updated_at
+      : ""
+  );
+
+  const wareHouseDate = (isoString) => {
+    const date = new Date(isoString);
+
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    const WHDate = `${day}/${month}/${year}`;
+
+    let hours = date.getHours();
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const ampm = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    const WHTime = `${String(hours).padStart(2, "0")}:${minutes} ${ampm}`;
+
+    return { WHDate, WHTime };
+  };
+
+  const { WHDate, WHTime } = wareHouseDate(
+    Array.isArray(
+      steppretDta?.Tracking_data?.status_details?.warehouse_status_history
+    ) &&
+      steppretDta?.Tracking_data?.status_details?.warehouse_status_history
+        .length > 0
+      ? steppretDta.Tracking_data.status_details.warehouse_status_history[0]
+          ?.updated_at
+      : ""
+  );
 
   return (
     <>
@@ -141,9 +213,8 @@ const Stepper = () => {
                   className="step-wrapper"
                   onClick={() =>
                     (step.id === 7 && toggleDropdown()) ||
-                    (step.id === 9 && toggleDropdown2())(
-                      step.id === 5 && toggleDropdown3()
-                    )
+                    (step.id === 9 && toggleDropdown2()) ||
+                    (step.id === 5 && toggleDropdown3())
                   }
                 >
                   <div
@@ -151,7 +222,10 @@ const Stepper = () => {
                     style={{
                       position: "relative",
                       backgroundColor: isActive ? "#00474d" : "inherit",
-                      cursor: step.id === 7 || step.id === 9 || step.id === 5 ? "pointer" : ""
+                      cursor:
+                        step.id === 7 || step.id === 9 || step.id === 5
+                          ? "pointer"
+                          : "",
                     }}
                   >
                     {isActive ? (
@@ -196,9 +270,58 @@ const Stepper = () => {
                     {step.id === 7 && dropdownVisible && (
                       <div
                         className="dropdown-container"
-                        style={{ marginTop: "30px" }}
+                        style={{ marginTop: "40px" }}
                       >
                         {cHdata?.map((sub, index) => {
+                          const chStatusHistory =
+                            Array.isArray(
+                              steppretDta?.Tracking_data?.status_details
+                                ?.ch_status_history
+                            ) &&
+                            steppretDta?.Tracking_data?.status_details
+                              ?.ch_status_history.length > 0
+                              ? steppretDta.Tracking_data.status_details
+                                  .ch_status_history[0]
+                              : {};
+
+                          const matchedStatus =
+                            chStatusHistory?.previous_status?.find(
+                              (status) => status.status === sub.name
+                            );
+
+                          const isCurrentStatus =
+                            chStatusHistory?.current_status === sub.name;
+
+                          const formattedDate = isCurrentStatus
+                            ? new Date(
+                                chStatusHistory?.updated_at
+                              ).toLocaleDateString("en-US", {
+                                weekday: "long",
+                                day: "numeric",
+                                month: "long",
+                                // year: 'numeric',
+                              })
+                            : matchedStatus
+                            ? new Date(
+                                matchedStatus.changed_at
+                              ).toLocaleDateString("en-US", {
+                                weekday: "long",
+                                day: "numeric",
+                                month: "long",
+                                // year: 'numeric',
+                              })
+                            : null;
+
+                          const formattedTime = isCurrentStatus
+                            ? new Date(
+                                chStatusHistory?.updated_at
+                              ).toLocaleTimeString()
+                            : matchedStatus
+                            ? new Date(
+                                matchedStatus.changed_at
+                              ).toLocaleTimeString()
+                            : null;
+
                           const Active =
                             cHdata.findIndex((s) => s.name === status2) >=
                             index;
@@ -221,7 +344,16 @@ const Stepper = () => {
                                     </span>
                                   )}
 
-                                  <div className="step-heading">
+                                  <div
+                                    className="step-heading"
+                                    style={{
+                                      // width: "180px",
+                                      width: "150px",
+                                      paddingLeft: "10px",
+                                      display: "flex",
+                                      flexDirection: "column",
+                                    }}
+                                  >
                                     <span
                                       style={{
                                         color: "black",
@@ -229,6 +361,9 @@ const Stepper = () => {
                                       }}
                                     >
                                       {sub.name}
+                                    </span>
+                                    <span style={{ fontSize: "10px" }}>
+                                      {formattedDate} {formattedTime}
                                     </span>
                                   </div>
                                 </div>
@@ -251,14 +386,64 @@ const Stepper = () => {
                     {step.id === 9 && dropdownVisible2 && (
                       <div
                         className="dropdown-container"
-                        style={{ marginTop: "30px" }}
+                        style={{ marginTop: "40px" }}
                       >
                         {wHdata?.map((sub, index) => {
+                          const warehouseStatusHistory =
+                            Array.isArray(
+                              steppretDta?.Tracking_data?.status_details
+                                ?.warehouse_status_history
+                            ) &&
+                            steppretDta?.Tracking_data?.status_details
+                              ?.warehouse_status_history.length > 0
+                              ? steppretDta.Tracking_data.status_details
+                                  .warehouse_status_history[0]
+                              : {};
+
+                          const matchedStatus =
+                            warehouseStatusHistory?.previous_status?.find(
+                              (status) => status.status === sub.name
+                            );
+
+                          const isCurrentStatus =
+                            warehouseStatusHistory?.current_status === sub.name;
+
+                          const WHDate = isCurrentStatus
+                            ? new Date(
+                                warehouseStatusHistory?.updated_at
+                              ).toLocaleDateString("en-US", {
+                                weekday: "long",
+                                day: "numeric",
+                                month: "long",
+                                // year: 'numeric',
+                              })
+                            : matchedStatus
+                            ? new Date(
+                                matchedStatus.changed_at
+                              ).toLocaleDateString("en-US", {
+                                weekday: "long",
+                                day: "numeric",
+                                month: "long",
+                                // year: 'numeric',
+                              })
+                            : null;
+
+                          const WHTime = isCurrentStatus
+                            ? new Date(
+                                warehouseStatusHistory?.updated_at
+                              ).toLocaleTimeString()
+                            : matchedStatus
+                            ? new Date(
+                                matchedStatus.changed_at
+                              ).toLocaleTimeString()
+                            : null;
+
                           const Active =
                             wHdata.findIndex((s) => s.name === warehouse) >=
                             index;
+
                           return (
-                            <div className="vertical-stepper">
+                            <div className="vertical-stepper" key={index}>
                               <React.Fragment>
                                 <div className="vertical-step">
                                   {Active ? (
@@ -276,7 +461,16 @@ const Stepper = () => {
                                     </span>
                                   )}
 
-                                  <div className="step-heading">
+                                  <div
+                                    className="step-heading"
+                                    style={{
+                                      display: "flex",
+                                      flexDirection: "column",
+                                      width: "150px",
+                                      // background:"green",
+                                      paddingLeft: "10px",
+                                    }}
+                                  >
                                     <span
                                       style={{
                                         color: "black",
@@ -285,6 +479,16 @@ const Stepper = () => {
                                     >
                                       {sub.name}
                                     </span>
+                                    {WHDate && (
+                                      <span
+                                        style={{
+                                          fontSize: "10px",
+                                          width: "auto",
+                                        }}
+                                      >
+                                        {WHDate} {WHTime}
+                                      </span>
+                                    )}
                                   </div>
                                 </div>
                                 {index < wHdata.length - 1 && (
@@ -308,9 +512,9 @@ const Stepper = () => {
                         <div
                           className="dropdown-container"
                           style={{
-                            marginTop: "30px",
+                            marginTop: "40px",
                             height: "50px",
-                            width: "250px",
+                            width: "210px",
                           }}
                         >
                           <div className="vertical-stepper">
@@ -331,7 +535,12 @@ const Stepper = () => {
                               )}
 
                               <div
-                                style={{ width: "180px",display:"flex",flexDirection:"column" }}
+                                style={{
+                                  width: "160px",
+                                  display: "flex",
+                                  flexDirection: "column",
+                                  paddingLeft: "6px",
+                                }}
                                 className="step-heading"
                               >
                                 <span
@@ -344,7 +553,11 @@ const Stepper = () => {
                                 >
                                   Rendering Finished Projects
                                 </span>
-                                <span style={{fontSize:"12px",marginTop:"5px"}}>{rederDate}</span>
+                                <span
+                                  style={{ fontSize: "11px", marginTop: "5px" }}
+                                >
+                                  {FormatedRenderDate}
+                                </span>
                               </div>
                             </div>
                           </div>

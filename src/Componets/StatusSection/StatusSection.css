@@ -94,7 +94,7 @@
   display: none;
 }
 .dropdown-container {
-  width: 150px;
+  width: auto;
   height: auto;
   background-color: white;
   position: absolute;
@@ -120,13 +120,13 @@
   .vertical-step {
     display: flex;
     align-items: center;
-    gap: 18px;
+    /* gap: 18px; */
     width: auto;
   }
   
   .vertical-step-number {
-    width: 25px;
-    height: 25px;
+    width: 27px !important;
+    height: 27px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -137,23 +137,24 @@
     color: #333;
   }
   .dropdown-container {
-    margin-top: 8px;
+    margin-top: 18px;
     /* position: absolute; */
     top: 100%;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 2;
+    /* z-index: 999; */
     background-color: #fff;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
     display: flex;
     flex-direction: column;
+    /* z-index: 99; */
     /* align-items: center; */
     /* justify-content: center; */
   }
   .vertical-connector {
-    width: 1px;
+    width: 2px;
     height: 36px;
     background-color: #f5f5f5;
     margin-left: 12px; 
