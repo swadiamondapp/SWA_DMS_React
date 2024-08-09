@@ -51,7 +51,10 @@ const DesignBtn = ({
   selectAllDesigns,
   setGrid,
   setDetail,
-  setTiles
+  setTiles,
+  grid,
+  detail,
+  tiles
 
 }) => {
   const location = useLocation();
@@ -229,15 +232,15 @@ const DesignBtn = ({
         location.pathname !== "/assignmentpanel" &&
         location.pathname !== "/unassigneddesigner" &&
         location.pathname !== "/designpool" && 
-        location.pathname === "/renderCard" && 
+        // location.pathname === "/renderCard" && 
         location.pathname === "/designdashboard" && (
           <button className="D_View_Sort_Filter" onClick={handleView} style={{position:"relative"}}>
             <MdViewModule /> View
             {view && (
               <div className="sortData" style={{left:"-20px"}}>
-                <span onClick={gridView}>Grid</span>
-                <span onClick={detailView}>Details</span>
-                <span onClick={tileView}>Tiles</span>
+               <span className={ grid === true ? "setcolor" : "" } onClick={gridView}>Grid</span>
+                <span className={ detail === true ? "setcolor2" : "" } onClick={detailView}>Details</span>
+                <span className={ tiles === true ? "setcolor3" : "" } onClick={tileView}>Tiles</span>
               </div>
             )}
           </button>

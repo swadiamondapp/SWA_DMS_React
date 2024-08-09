@@ -14,7 +14,7 @@ import loginzimg from "../../assets/loginz.png";
 import scan from "../../assets/scan.png";
 import done from "../../assets/done.png";
 import pack from "../../assets/pack.png";
-import track from "../../assets/location.png";
+import track from "../../assets/status.png";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import AssignmentModal from "../AssignmentModal/AssignmentModal";
 import BasicDetailModal from "../BasicDetails/BasicDetailModal";
@@ -94,7 +94,7 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
             <div className="Links">
             <div className="horizontal_line_sidebar"></div>
             <div className="lin_container"></div>
-              <img src={track} alt="" style={{width:"23px",height:"23px"}} />
+              <img src={track} alt="" style={{width:"22px",height:"22px"}} />
               {sidebarExpanded && <p>Status</p>}
             </div>
           </Link>
@@ -149,7 +149,7 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
             <div className="Links">
             <div className="horizontal_line_sidebar"></div>
             <div className="lin_container"></div>
-              <img src={track} alt="" style={{width:"23px",height:"23px"}} />
+              <img src={track} alt="" style={{width:"22px",height:"22px"}} />
               {sidebarExpanded && <p>Status</p>}
             </div>
           </Link>
@@ -196,7 +196,7 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
             <div className="Links">
             <div className="horizontal_line_sidebar"></div>
             <div className="lin_container"></div>
-              <img src={track} alt="" style={{width:"23px",height:"23px"}} />
+              <img src={track} alt="" style={{width:"22px",height:"22px"}} />
               {sidebarExpanded && <p>Status</p>}
             </div>
           </Link>
@@ -283,7 +283,7 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
             <div className="Links">
             <div className="horizontal_line_sidebar"></div>
             <div className="lin_container"></div>
-              <img src={track} alt="" style={{width:"23px",height:"23px"}} />
+              <img src={track} alt="" style={{width:"22px",height:"22px"}} />
               {sidebarExpanded && <p>Status</p>}
             </div>
           </Link>
@@ -386,7 +386,7 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
             <div className="Links">
             <div className="horizontal_line_sidebar"></div>
             <div className="lin_container"></div>
-              <img src={track} alt="" style={{width:"23px",height:"23px"}} />
+              <img src={track} alt="" style={{width:"22px",height:"22px"}} />
               {sidebarExpanded && <p>Status</p>}
             </div>
           </Link>

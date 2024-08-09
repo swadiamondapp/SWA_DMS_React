@@ -403,7 +403,7 @@ const WorkdoneEditModal = ({
                 <div className="workdone_modal">
                   <span>Tags</span>
 
-                  <div className="workdone_modal_sub">
+                  {/* <div className="workdone_modal_sub"> */}
                     <Select
                       mode="multiple"
                       showSearch
@@ -412,14 +412,15 @@ const WorkdoneEditModal = ({
                       onChange={(value) => handleSelectChange2(value, "tag")}
                       onSearch={onSearch}
                       filterOption={filterOption}
-                      style={{ width: "100%", background: "none" }}
+                      // style={{ width: "100%", background: "none" }}
+                      style={{ width: "50%" }}
                       options={tags.map((item) => ({
                         value: item.id,
                         label: item.name,
                       }))}
                       value={formData.tag}
                     />
-                  </div>
+                  {/* </div> */}
                 </div>
                 {/* <div className="workdone_modal">
                   <span>Actual Price</span>

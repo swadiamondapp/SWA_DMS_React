@@ -55,9 +55,9 @@ const RendersHome = ({ designListData, sidebarExpanded }) => {
             <MdViewModule /> View
             {view && (
               <div className="sortData" style={{left:"-20px"}}>
-                <span onClick={gridView}>Grid</span>
-                <span onClick={detailView}>Details</span>
-                <span onClick={tileView}>Tiles</span>
+                <span className={ grid === true ? "setcolor" : "" } onClick={gridView}>Grid</span>
+                <span className={ detail === true ? "setcolor2" : "" } onClick={detailView}>Details</span>
+                <span className={ tiles === true ? "setcolor3" : "" } onClick={tileView}>Tiles</span>
               </div>
             )}
           </button>
@@ -80,7 +80,7 @@ const RendersHome = ({ designListData, sidebarExpanded }) => {
               }}
             >
               <CircularProgress
-                size={50} // Set the desired size
+                size={50}
                 sx={{
                   color: "#126e72",
                   padding: "8px 10px",
@@ -115,7 +115,7 @@ const RendersHome = ({ designListData, sidebarExpanded }) => {
           <div className="folderCard_parent">
             <div
               className="folder__card"
-              style={{display:"flex"}}
+              style={{display:"flex",width:"110px"}}
               key={item.id}
               onClick={() => handleFolderClick(item)}
             >
@@ -132,7 +132,7 @@ const RendersHome = ({ designListData, sidebarExpanded }) => {
           <div className="folderCard_parent">
             <div
               className="folder__card"
-              style={{display:"flex"}}
+              style={{display:"flex",width:"140px"}}
               key={item.id}
               onClick={() => handleFolderClick(item)}
             >
