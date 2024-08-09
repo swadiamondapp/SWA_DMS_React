@@ -17,7 +17,6 @@ import {
   upload_multiple_designs_items,
 } from "../DESIGNER PANEL/Designer Dashboard/Api";
 import SuccessModal from "../SuccessModal/SuccessModal";
-import { CircularProgress } from "@mui/material";
 
 const style = {
   position: "absolute",
@@ -48,7 +47,7 @@ const MultipleImageUpload = ({
   previewImages,
   handleFileSelect,
   setUploadedDesigns,
-  setMultipleImageModalOpen,
+  setMultipleImageModalOpen
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   //   const [images, setImages] = useState(Array(initialImageSlots).fill(null));
@@ -291,28 +290,14 @@ const MultipleImageUpload = ({
                       >
                         Cancel
                       </button>
-                      {isLoading ? (
-                           <button
-                           className="upload_of_multiModal"
-                          //  onClick={handleUploadImages}
-                         >
-                              <CircularProgress
-                           size={20} // Set the desired size
-                           sx={{
-                             color: "#fff",
-                             padding: "10px 20px",
-                             width: "35px",
-                           }}
-                         />
-                         </button>
-                      ) : (
-                        <button
-                          className="upload_of_multiModal"
-                          onClick={handleUploadImages}
-                        >
-                          Upload
-                        </button>
-                      )}
+                      
+                      <button
+                        className="upload_of_multiModal"
+                        onClick={handleUploadImages}
+                        disabled={fileList.length === 0}
+                      >
+                        Upload
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -323,6 +308,7 @@ const MultipleImageUpload = ({
       </div>
       <SuccessModal
         successModalOpen={successModalOpen}
+     
         successMessage={successMessage}
       />
     </div>
