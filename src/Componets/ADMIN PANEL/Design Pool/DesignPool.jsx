@@ -310,6 +310,7 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
           delteItemsFromDesignPool={delteItemsFromDesignPool}
           setDeleteConfirmationOpen={setDeleteConfirmationOpen}
           SelectedIdsForDelet={SelectedIdsForDelet}
+          setSelectedIdsForDelet={ setSelectedIdsForDelet}
         />
         {/* new design section */}
         {/* new design section */}

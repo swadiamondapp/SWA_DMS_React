@@ -52,7 +52,8 @@ const DesignBtn = ({
   assignmentDownRef,
   delteItemsFromDesignPool,
   setDeleteConfirmationOpen,
-  SelectedIdsForDelet
+  SelectedIdsForDelet,
+  setSelectedIdsForDelet
 }) => {
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -285,6 +286,7 @@ const DesignBtn = ({
         setSelectedDesigns={setSelectedDesigns}
         setShowRadioButtons={setShowRadioButtons}
         setSelectButtonLabel={setSelectButtonLabel}
+        setSelectedIdsForDelet={ setSelectedIdsForDelet}
       />
       <AssignToModal
         open={isModalOpenAssign}

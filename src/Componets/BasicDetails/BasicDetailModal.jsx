@@ -70,7 +70,8 @@ const BasicDetailModal = ({
   folderIdA,
   designId,
   basicDetails,
-  updateEditFunction
+  updateEditFunction,
+  setSelectedIdsForDelet
 }) => {
   // create modal
 
@@ -200,15 +201,17 @@ const BasicDetailModal = ({
       'number.empty': 'Approximate MRP cannot be empty', // Handles cases where it is empty but should be a number
       'any.required': 'cannot be empty', // Handles cases where the field is missing
     }),
-    tag: Joi.array().items(Joi.required()).min(1).required().messages({
-     "array.min": "At least one tag is required",
+    tag: Joi.array().allow(null).allow('').messages({
+      "array.base": "cannot be empty",
+      "array.empty": "cannot be empty",
+      "array.min": " cannot be empty",
     }),
-    findings:Joi.array().min(1).required().messages({
-      'array.base': 'cannot be empty',
-      'array.empty': 'Product category cannot be empty',
-      'array.min': 'Product category cannot be empty',
+    findings: Joi.array().allow(null).allow('').messages({
+      "array.base": "cannot be empty",
+      "array.empty": " cannot be empty",
+      "array.min": "cannot be empty",
     }),
-    notes: Joi.string().messages({
+    notes: Joi.string().allow("").messages({
       "string.empty": `cannot be empty`,
     }),
   });
@@ -295,7 +298,9 @@ const BasicDetailModal = ({
           getSelectedDesign,
           ()=>{
             setCalculationData([])
-          }
+          },
+          setSelectedIdsForDelet
+
         );
       }
       // setShowAssignmentModal(true);
@@ -451,6 +456,7 @@ const BasicDetailModal = ({
     setSelectedDesigns([]);
     setShowRadioButtons(false);
     setSelectButtonLabel("Select");
+    setSelectedIdsForDelet([])
     setFormData(
       {
         SKU: "",
