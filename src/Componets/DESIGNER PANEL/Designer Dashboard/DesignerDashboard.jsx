@@ -1,12 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import "./DesignerDashboard.css";
 import { LiaCloudUploadAltSolid } from "react-icons/lia";
 import DesignBtn from "../../ADMIN PANEL/Design Pool/DesignBtn";
 import ring from "../../../assets/ring.png";
+import img1 from "../../../assets/img1.png";
+import img2 from "../../../assets/img2.png";
+import {
+  list_uploaded_designs,
+  upload_designs_items,
+  uplodedDesignPagination,
+} from "./Api";
+import { CircularProgress, Pagination } from "@mui/material";
+import LazyLoad from "react-lazy-load";
 import { list_uploaded_designs, upload_designs_items } from "./Api";
 import { CircularProgress } from "@mui/material";
 import MultipleImageUpload from "../../MultipleImageUploadModal/MultipleImageUpload";
 import { useLocation, Link, useNavigate } from "react-router-dom";
+
 const DesignerDashboard = ({ sidebarExpanded }) => {
   const [uploadInstructionsVisible, setUploadInstructionsVisible] =
     useState(true);
@@ -14,11 +24,16 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
   const [showMoveOptions, setShowMoveOptions] = useState(false);
   const [selectButtonLabel, setSelectButtonLabel] = useState("Select");
   const [uploadedDesigns, setUploadedDesigns] = useState([]);
+  const [currentItems, setCurrentItems] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [uploadImage, setUploadImage] = useState([]);
-  const [previewImages, setPreviewImages] = useState([]);
+const [previewImages, setPreviewImages] = useState([]);
   const [multipleImageModalOpen,setMultipleImageModalOpen] = useState(false)
   const navigate = useNavigate();
+  const [grid, setGrid] = useState(true);
+  const [detail, setDetail] = useState(false);
+  const [tiles, setTiles] = useState(false);
+  
   const toggleRadioButtons = () => {
     setShowRadioButtons(!showRadioButtons);
     setSelectButtonLabel(showRadioButtons ? "Select" : "Unselect");
@@ -36,22 +51,17 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
   // const handleFileUpload = async (event) => {
   //   const file = event.target.files[0];
 
-  //   if (file) {
-  //     // Display the new image immediately
-  //     const newImage = {
-  //       image: URL.createObjectURL(file),
-  //       designcode: "Loading...",
-  //       name: "Uploading...",
-  //       created_at: new Date().toLocaleString(),
-  //     };
-  //     setUploadedDesigns((prevDesigns) => [newImage, ...prevDesigns]);
+//     if (file) {
+//       const newImage = {
+//         image: URL.createObjectURL(file),
+//         designcode: "Loading...",
+//         name: "Uploading...",
+//         created_at: new Date().toLocaleString(),
+//       };
+//       setUploadedDesigns((prevDesigns) => [newImage, ...prevDesigns]);
 
-  //     // Upload the image and refresh the list
-  //     // await upload_designs_items(setIsLoading, file, setUploadedDesigns);
-  //     // await list_uploaded_designs(setIsLoading, setUploadedDesigns);
-  //   }
-  // };
-
+//       await upload_designs_items(setIsLoading, file, setUploadedDesigns);
+//       await list_uploaded_designs(setIsLoading, setUploadedDesigns);
   const handleFileUpload = (event) => {
     const files = Array.from(event.target.files); // Get the list of selected files
     const previews = files.map((file) => ({
@@ -72,11 +82,35 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
     }
   };
 
+  // useEffect(() => {
+  //   list_uploaded_designs(setIsLoading, setUploadedDesigns);
+  // }, []);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // useEffect(() => {
+  //   uplodedDesignPagination(setIsLoading, setCurrentItems, currentPage);
+  // }, [currentPage]);
+
+  const fetchDesigns = useCallback(async () => {
+    await uplodedDesignPagination(setIsLoading, setCurrentItems, currentPage);
+  }, [currentPage]);
+
   useEffect(() => {
     list_uploaded_designs(setIsLoading, setUploadedDesigns);
   }, []);
 
- 
+ useEffect(() => {
+    fetchDesigns();
+  }, [fetchDesigns]);
+
+  // const itemsPerPage = 10;
+  // const indexOfLastItem = currentPage * itemsPerPage;
+  // const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  // const currentItems = uploadedDesigns.slice(indexOfFirstItem, indexOfLastItem);
+
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+  };
 
   console.log("uploadImage-->", uploadedDesigns);
 
@@ -132,57 +166,121 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
             toggleMoveOptions={toggleMoveOptions}
             showDownloadOptions={showDownloadOptions}
             showMoveOptions={showMoveOptions}
+            setGrid={setGrid}
+            setDetail={setDetail}
+            setTiles={setTiles}
+            grid={grid}
+            detail={detail}
+            tiles={tiles}
           />
           <div className="DesignerDashboardcard">
-            <h3 className="HeadNewdesign">Uploaded (&nbsp;{uploadedDesigns.length}&nbsp;)</h3>
-            <div className="Card_Design_Parent">
-              {isLoading ? (
-                <div
-                  style={{
-                    position: "fixed",
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    // backgroundColor: "rgba(255, 255, 255, 0.8)",
-                    // zIndex: 9999,
+<h3 className="HeadNewdesign">Uploaded (&nbsp;{uploadedDesigns.length}&nbsp;)</h3>
+
+            {isLoading ? (
+              <div
+                style={{
+                  position: "fixed",
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <CircularProgress
+                  size={60}
+                  sx={{
+                    color: "#000000",
+                    // padding: "8px 10px",
+                    marginLeft: "15%",
                   }}
-                >
-                  <CircularProgress
-                    size={60}
-                    sx={{
-                      color: "#000000",
-                      padding: "8px 10px",
-                    }}
-                  />
-                </div>
-              ) : (
-                <>
-                  {uploadedDesigns.map((item, index) => (
-                    <div className="New_Design_card" key={index}>
-                      <div className="Card_img" >
-                        <img src={item.image} alt="" />
-                      </div>
-                      <div className="Card_Details_Designer">
-                        <h3>ID : {item.designcode}</h3>
-                        <div className="Card_Details_Inner">
-                          <div className="Inner_Left">
+                />
+              </div>
+            ) : (
+              <>
+                {grid && (
+                  <>
+                    <div className="Card_Design_Parent">
+                      {currentItems.map((item, index) => (
+                        <div className="New_Design_card" key={index}>
+                          <div className="Card_img">
+                            <LazyLoad height={200} offset={100}>
+                              <img src={item.image} alt="" />
+                            </LazyLoad>
+                          </div>
+                          <div className="Card_Details_Designer">
+                            <h3>ID : {item.designcode}</h3>
+                            <div className="Card_Details_Inner">
+                              <div className="Inner_Left">
+                                <p>{item.name}</p>
+                                <p>{item.created_at}</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                )}
+
+                {detail && (
+                  <>
+                    <div className="Card_Design_Parent">
+                      {currentItems.map((item, index) => (
+                        <div className="New_Design_card_deatail" key={index}>
+                          <LazyLoad height={50} offset={90}>
+                          <img
+                            className="Card_img_deatail"
+                            src={item.image}
+                            alt=""
+                          />
+                          </LazyLoad>
+                          <div className="Card_Designer_deatail">
+                            <h3>ID : {item.designcode}</h3>
                             <p>{item.name}</p>
                             <p>{item.created_at}</p>
                           </div>
                         </div>
-                      </div>
+                      ))}
                     </div>
-                  ))}
-                </>
-              )}
-            </div>
+                  </>
+                )}
+
+                {tiles && (
+                  <>
+                    <div className="Card_Design_Parent2">
+                      {currentItems.map((item, index) => (
+                        <div className="New_Design_card_deatail2" key={index}>
+                          <img
+                            className="Card_img_deatail2"
+                            src={img1}
+                            alt=""
+                          />
+                          <div className="Card_Designer_deatail2">
+                            <h3>ID : {item.designcode}</h3>
+                            {/* <p>{item.name}</p>
+                            <p>{item.created_at}</p> */}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </>
+            )}
           </div>
         </div>
-        <MultipleImageUpload open={multipleImageModalOpen} onClose={()=> setMultipleImageModalOpen(false)} previewImages={previewImages}  handleFileSelect={handleFileSelect} setUploadedDesigns={setUploadedDesigns} setMultipleImageModalOpen={setMultipleImageModalOpen}/>
+<MultipleImageUpload open={multipleImageModalOpen} onClose={()=> setMultipleImageModalOpen(false)} previewImages={previewImages}  handleFileSelect={handleFileSelect} setUploadedDesigns={setUploadedDesigns} setMultipleImageModalOpen={setMultipleImageModalOpen}/>
+          <div className="pagination">
+          <Pagination
+            count={Math.ceil(uploadedDesigns.length / 20)}
+            page={currentPage}
+            onChange={handlePageChange}
+            color="primary"
+          />
+        </div>
       </div>
     </div>
   );

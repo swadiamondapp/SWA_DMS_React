@@ -104,6 +104,7 @@ const FinishedProjects = (props) => {
 
         <div
           className="Design_FileUpload"
+          style={{marginTop:"10px"}}
         >
           {uploadInstructionsVisible ? (
             <>

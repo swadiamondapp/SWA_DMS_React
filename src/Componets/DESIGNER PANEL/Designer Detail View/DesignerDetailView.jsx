@@ -114,7 +114,7 @@ const DesignerDetailView = (props) => {
   //   return a.items_status === "ALLOCATED" ? 1 : -1;
   // }) || [];
   // console.log(sortedItems, "sorted");
-  const handleDetailsView = (item) => {
+const handleDetailsView = (item) => {
     navigate(`/assignmentviewsAll/${item.item_id}`, {
       state: {
         // folderNameAssignmentView: item.paper_design.designcode,
@@ -123,7 +123,6 @@ const DesignerDetailView = (props) => {
       },
     });
   };
-  console.log(selectedAssignment, "selectedAssignmentselectedAssignment");
   return (
     <div
       className="DesignerAssignmentPanel"
@@ -171,14 +170,30 @@ const DesignerDetailView = (props) => {
                   </div>
                   <div className="Card_Details">
                     <h3>ID : {item.paper_design.designcode}</h3>
+                    
                     <div className="Card_Details_Inner">
                       <div className="Inner_Left">
                         <p>{item.paper_design.designer_name}</p>
                         <p>{formatDate(item.paper_design.created_at)}</p>
                       </div>
                     </div>
-                  </div>
-                  {/* radio btn */}
+                    <div
+                       style={{ padding: "4px 10px",marginTop:"10px",display:"flex",justifyContent:"center" }}
+                          className={
+                            item.working_status === "Completed"
+                              ? "complete"
+                              : item.working_status === "on-going"
+                              ? "ongoing"
+                              : "notstarted"
+                          }
+                        >
+                          {item.working_status === "Completed"
+                            ? "Completed"
+                            : item.working_status === "on-going"
+                            ? "On Going"
+                            : "Not Started"}
+                        </div>
+                  </div> 
 
                   {showRadioButtons && (
                     <input
@@ -191,7 +206,6 @@ const DesignerDetailView = (props) => {
                       disabled={item.items_status === "ALLOCATED"}
                     ></input>
                   )}
-                  {/* radio btn */}
                 </div>
               ))}
           </div>

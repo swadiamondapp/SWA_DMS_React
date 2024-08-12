@@ -38,36 +38,53 @@ input[type="number"]::-webkit-inner-spin-button {
   display: none !important;
 }
 
-.create_modal_parent, :where(.css-dev-only-do-not-override-1ae8k9u).ant-select-outlined:not( .ant-select-customize-input ) .ant-select-selector {
+/* .create_modal_parent,
+:where(.css-dev-only-do-not-override-1ae8k9u).ant-select-outlined:not(
+    .ant-select-customize-input
+  )
+  .ant-select-selector {
   color: #006e7f !important;
   border: none !important;
+} */
+
+.modal-Content
+  :where(.css-dev-only-do-not-override-1ae8k9u).ant-select-outlined:not(
+    .ant-select-customize-input
+  )
+  .ant-select-selector {
+  color: black !important;
+  border: 1px solid lightgray !important;
+  border-radius: 9px !important;
+  background: transparent !important;
 }
 
-:where(.css-dev-only-do-not-override-1ae8k9u).ant-select-outlined:not( .ant-select-customize-input ) .ant-select-selector {
+:where(.css-dev-only-do-not-override-1ae8k9u).ant-select-outlined:not(
+    .ant-select-customize-input
+  )
+  .ant-select-selector {
   padding: 5px 15px;
   border-radius: 4px !important;
   /* color: #006e7f1a !important; */
 }
 
-.workdone_modal .rti--container{
-  background: transparent!important;
-  border: none!important;
+.workdone_modal .rti--container {
+  background: transparent !important;
+  border: none !important;
   width: 200px !important;
 }
 
-.konvajs-content{
-  width: 100%!important;
+.konvajs-content {
+  width: 100% !important;
   height: 400px !important;
   /* background: green; */
   overflow: hidden !important;
 }
-.konvajs-content canvas{ 
+.konvajs-content canvas {
   margin-top: 10px !important;
   /* width: 2160px!important; */
   /* height: 800px !important; */
   box-shadow: none !important;
-  
-} 
+}
 
 /* .annotationmodal :where(.css-dev-only-do-not-override-1ae8k9u).ant-modal .ant-modal-content{
   background: transparent!important;

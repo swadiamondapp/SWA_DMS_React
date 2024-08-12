@@ -14,6 +14,7 @@ import loginzimg from "../../assets/loginz.png";
 import scan from "../../assets/scan.png";
 import done from "../../assets/done.png";
 import pack from "../../assets/pack.png";
+import track from "../../assets/status.png";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import AssignmentModal from "../AssignmentModal/AssignmentModal";
 import BasicDetailModal from "../BasicDetails/BasicDetailModal";
@@ -103,6 +104,14 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
               {sidebarExpanded && <p>Other logins</p>}
             </div>
           </Link>
+          <Link to="/statusPage">
+            <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={track} alt="" style={{width:"22px",height:"22px"}} />
+              {sidebarExpanded && <p>Status</p>}
+            </div>
+          </Link>
           {/* Admin Panel */}
         </>
       );
@@ -150,6 +159,14 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
               {sidebarExpanded && <p>Assigned To</p>}
             </div>
           </Link>
+          <Link to="/statusPage">
+            <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={track} alt="" style={{width:"22px",height:"22px"}} />
+              {sidebarExpanded && <p>Status</p>}
+            </div>
+          </Link>
           {/* For Designer Module */}
         </>
       );
@@ -187,6 +204,14 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
             <div className="lin_container"></div>
               <img src={galleryimg} alt="" />
               {sidebarExpanded && <p>Gallery</p>}
+            </div>
+          </Link>
+          <Link to="/statusPage">
+            <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={track} alt="" style={{width:"22px",height:"22px"}} />
+              {sidebarExpanded && <p>Status</p>}
             </div>
           </Link>
           {/* For Votors Panel */}
@@ -266,6 +291,14 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
             <div className="lin_container"></div>
               <img src={scan} alt="" />
               {sidebarExpanded && <p>Scan </p>}
+            </div>
+          </Link>
+          <Link to="/statusPage">
+            <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={track} alt="" style={{width:"22px",height:"22px"}} />
+              {sidebarExpanded && <p>Status</p>}
             </div>
           </Link>
           {/* CENTRAL HUB SIDEBAR */}
@@ -363,7 +396,14 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
               {sidebarExpanded && <p>Scan </p>}
             </div>
           </Link>
-
+          <Link to="/statusPage">
+            <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={track} alt="" style={{width:"22px",height:"22px"}} />
+              {sidebarExpanded && <p>Status</p>}
+            </div>
+          </Link>
           {/* WAREHOUSE PANEL SIDEBAR */}
         </>
       );

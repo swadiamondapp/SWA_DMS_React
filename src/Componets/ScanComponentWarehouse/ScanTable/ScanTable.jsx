@@ -126,8 +126,8 @@ const ScanTable = ({ sidebarExpanded }) => {
 
   return (
     <div
-      className="scantable_main"
-      style={{ marginLeft: sidebarExpanded ? "225px" : "130px" }}
+      className=""
+      style={{ marginLeft: sidebarExpanded ? "225px" : "130px",marginTop:"30px",display:"flex",flexDirection:"column",gap:"20px" }}
     >
       <div className="scantable_main_search">
         <div className="Search_User">

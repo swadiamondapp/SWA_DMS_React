@@ -209,8 +209,11 @@ const Header = ({
                 {location.pathname === "/unassigneddesigner" && (
                   <h3>Assigned to</h3>
                 )}
+
                 {location.pathname === `/assignmentviewsAll/${id}` && (
-                  <h3>{detailsViewFolderName}</h3>
+                  <h3>{detailsViewFolderName}</h3>)}
+                {location.pathname === "/statusPage" && (
+                  <h3>Status</h3>
                 )}
 
                 {location.pathname === "/slot" && <h3>Slot</h3>}
@@ -273,7 +276,9 @@ const Header = ({
                   location.pathname !== "/wareHouse" &&
                   location.pathname !== "/scan" &&
                   location.pathname !== "/designpool" &&
+                  location.pathname !== "/statusPage" &&
                   location.pathname !== "/centralhubscan" &&
+                  location.pathname !== "/otherlogin" &&
                   location.pathname !== `/centralfolderdetails/${id}` &&
                   location.pathname !== `/assignmentview/${assignmentId}` &&
                   location.pathname !== `/assignmentviewsAll/${id}` && (

@@ -289,6 +289,7 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
           handleSortByDesigner={handleSortByDesigner}
           handleSortByAdmin={handleSortByAdmin}
           handleSortByAll={handleSortByAll}
+          assignmentFolder={assignmentFolder}
           // setcreateFolderModal={setcreateFolderModal}
           // handleCreateFolderModal
         />
@@ -313,7 +314,9 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
             </div>
           )}
 
-          {isLoading === false && Data.length === 0 && assignmentFolder.length === 0 ? (
+          {isLoading === false &&
+          Data.length === 0 &&
+          assignmentFolder.length === 0 ? (
             <div
               style={{
                 display: "flex",
@@ -321,7 +324,7 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
                 alignItems: "center",
               }}
             >
-              <span style={{marginTop:"100px"}}>No Data Found</span>
+              <span style={{ marginTop: "100px" }}>No Data Found</span>
             </div>
           ) : (
             <>
@@ -478,6 +481,7 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
         ToCloseCreatefolder={setcreateFolderModal}
         setShowRadioButtons={setShowRadioButtons}
         setSelectButtonLabel={setSelectButtonLabel}
+        assignmentFolder={assignmentFolder}
       />
 
       <SuccessModal

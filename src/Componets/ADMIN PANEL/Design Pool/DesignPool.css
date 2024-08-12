@@ -81,6 +81,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 30px;
+  margin-top: 30px;
 }
 .Card_img {
   display: flex;
@@ -246,3 +247,14 @@ border-radius: 0px 0px  20px 20px !important;
   color: #455173;
   padding-bottom: 5px;
 }
+.setcolor{
+  background-color: #0566d433;
+  border-radius: 20px 20px 0px 0px !important;
+}
+.setcolor2{
+  background-color: #0566d433;
+}
+.setcolor3{
+  background-color: #0566d433;
+  border-radius: 0px 0px  20px 20px !important;
+  }
