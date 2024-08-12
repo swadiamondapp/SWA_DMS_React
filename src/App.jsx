@@ -63,6 +63,7 @@ import RendersDetailing from "./Pages/RendersDetailing/RendersDetailing";
 import ScanModule from "./Pages/ScanModule/ScanModule";
 import CentralHubScan from "./Componets/CentalHub/CentralHubScan/CentralHubScan";
 import StatusPage from "./Pages/StatusPage/StatusPage";
+import NewSlotPrint from "./Componets/CENTRAL HUB/Slot/NewSlotPrint";
 
 function App() {
   return (
@@ -72,6 +73,7 @@ function App() {
           <Route element={<PrivateRoute />}>
             <Route path="/" element={<Users />} />
             <Route path="/otherlogin" element={<OtherLoginPage />} />
+            <Route path="/NewSlotPrint" element={<NewSlotPrint />} />
             <Route
               path="/assignmentview/:id"
               element={<AssignmentViewPage />}
@@ -87,10 +89,7 @@ function App() {
               path="/designerassign"
               element={<DesignerAsignmentPanelPage />}
             />
-            <Route
-              path="/statusPage"
-              element={<StatusPage />}
-            />
+            <Route path="/statusPage" element={<StatusPage />} />
             <Route
               path="/designerassignview/:id"
               element={<DesignerAssignViewPage />}

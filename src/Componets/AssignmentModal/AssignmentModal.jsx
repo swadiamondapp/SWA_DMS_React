@@ -30,6 +30,7 @@ const AssignmentModal = ({
   setcreateFolderModal,
   setShowRadioButtons,
   setSelectButtonLabel,
+  assignmentFolder,
 }) => {
   // create modal
 
@@ -40,8 +41,15 @@ const AssignmentModal = ({
   const [successMessage, setSuccessMessage] = useState("");
   const [error, setError] = useState("");
 
+  const [create, setCreate] = useState(false);
+
   const handleOpen = () => {
     setSuccessModalOpen(true);
+  };
+
+  const handleAlredyExist = () => {
+    setCreate(!create);
+    setFolderName("");
   };
 
   const handleCreateButton = () => {
@@ -92,14 +100,23 @@ const AssignmentModal = ({
   const handleCloseCreateModal = () => {
     ToCloseCreatefolder(false);
     setError("");
-    setFolderName("")
+    setFolderName("");
   };
 
   const handleChange = (event) => {
     setFolderName(event.target.value);
   };
+
+  const onSearch = (value) => {
+    console.log("search:", value);
+  };
+  const filterOption = (input, option) =>
+    (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
+
   console.log(error, "error");
   console.log(selectedAssignment, "selectedAssignment infolder");
+  console.log(assignmentFolder, "assignmentFolder");
+  console.log(folderName, "folderName");
 
   return (
     <div className="create_folder">
@@ -122,18 +139,53 @@ const AssignmentModal = ({
                 <label htmlFor="" className="label-title">
                   Folder Name
                 </label>
-                <input
-                  className="inputFeildt"
-                  type="text"
-                  placeholder=""
-                  value={folderName}
-                  onChange={handleChange}
-                />
+                {!create && (
+                  <input
+                    className="inputFeildt"
+                    type="text"
+                    placeholder=""
+                    value={folderName}
+                    onChange={handleChange}
+                  />
+                )}
+                {create && (
+                  <Select
+                    showSearch
+                    placeholder="-Select-"
+                    optionFilterProp="children"
+                    value={folderName}
+                    onChange={(value) => setFolderName(value)}
+                    onSearch={onSearch}
+                    filterOption={filterOption}
+                    style={{
+                      // width: "100%",
+                      // zIndex: "9999999",
+                      backgroundColor: "white",
+                      borderRadius: "19px",
+                    }}
+                    options={assignmentFolder?.map((item) => ({
+                      value: item.name,
+                      label: item.name,
+                    }))}
+                  />
+                )}
                 {error && (
                   <p style={{ fontSize: "10px", color: "red" }}>{error}</p>
                 )}
+
+                <span
+                  style={{
+                    fontSize: "11px",
+                    marginTop: "10px",
+                    marginLeft: "140px",
+                    color: "#04344D",
+                  }}
+                  onClick={handleAlredyExist}
+                >
+                  {create ? "Create new Folder" : "Add to Existing folder"}
+                </span>
                 <button className="button-create" onClick={handleCreateButton}>
-                  Create
+                  {create ? "Move to the Folder" : "Create"}
                 </button>
               </div>
             </div>
