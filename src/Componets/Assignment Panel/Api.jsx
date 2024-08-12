@@ -29,12 +29,15 @@ import {
 
 export const list_assignment_panel = async (setIsLoading, setData) => {
   try {
+    setIsLoading(true)
     const response = await apiService.get(LIST_ASSIGNMENT_PANEL);
     if (checkApiStatus(response)) {
       setData(response.data.results.data);
     }
   } catch (error) {
     console.log(error);
+  }finally{
+    setIsLoading(false)
   }
 };
 
@@ -373,7 +376,6 @@ export const editBasicDetails = async (
 //     console.log(body, "move_TO_ASSINGG");
 //     const response = await apiService.post(ASSIGNMENT_MOVE, body);
 //     if (response?.data?.results?.status_code === 200) {
-//     debugger
 //       setAdminUploadedItemId(response.data.results.data);
 //       setSuccessMessage("Moved to Assignment Successfully");
 //       setSuccessModalOpen(true);

@@ -101,21 +101,24 @@ const WorkdoneEditModal = ({
 
   const handleProductUpdate = async (pId) => {
     if (
-      formData.length ||
-      formData.width ||
-      formData.height ||
-      formData.type_of_metal ||
-      formData.diamond_type ||
-      formData.approx_diamond_weight ||
-      formData.findings ||
-      formData.approx_metal_weight ||
-      formData.tag ||
-      formData.notes === ""
+      !formData.length ||
+      !formData.width ||
+      !formData.height ||
+      !formData.type_of_metal ||
+      !formData.diamond_type ||
+      !formData.approx_diamond_weight ||
+      !formData.findings ||
+      !formData.approx_metal_weight ||
+      !formData.tag ||
+      !formData.notes
     ) {
-      setError("Please Fill all fields");
+      setError("Please fill all fields");
+      setTimeout(() => {
+        setError("");
+      }, 1500);
+      return;
     }
 
-    console.log("edit id", pId);
     try {
       await workDone_table_product_update(
         pId,
@@ -125,17 +128,18 @@ const WorkdoneEditModal = ({
         setSuccessMessage
       );
     } catch (error) {
-      console.error("Error updated successfully:", error);
+      console.error("Error updating product:", error);
     } finally {
       // setIsLoading(false);
     }
   };
 
+
   useEffect(() => {
     metal_type_dropdown_basicDetails(setMetalTypeDropDown);
     diamond_type_dropdown_basicDetails(setDiamondType);
-    finding_table_data(setFindings);
-    tag_table_data(setTags);
+    finding_table_data(setFindings,setIsLoading);
+    tag_table_data(setTags,setIsLoading);
   }, []);
 
   const onSearch = (value) => {
@@ -151,12 +155,12 @@ const WorkdoneEditModal = ({
       <div
         className="edit_opcity"
         data-aos="fade-left"
-        style={{ overflow: "hidden" }}
+        style={{ overflow: "hidden" , position:"fixed",height:"100vh"}}
       ></div>
       <div
         className="leftbar"
         data-aos="fade-left"
-        style={{ overflow: "hidden" }}
+        style={{ overflow: "hidden" ,position:"fixed",height:"100vh" }}
       >
         {clickedProducts.map((product) => (
           <>

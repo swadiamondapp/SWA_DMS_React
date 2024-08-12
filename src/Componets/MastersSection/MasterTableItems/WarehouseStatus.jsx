@@ -6,6 +6,7 @@ import MastersModal from "../MastersModal/MastersModal";
 import DeleteConfirmationModal from "../../ConfirmationModal/DeleteConfirmationModal";
 import { deleteWhsatusData, searchWhsatusItems, whstatusTableData } from "../ApiMasters/ApiMasters";
 import SuccessModal from "../../SuccessModal/SuccessModal";
+import { CircularProgress } from "@mui/material";
 
 const WarehouseStatus = () => {
   const [open, setOpen] = useState(false);
@@ -21,13 +22,14 @@ const WarehouseStatus = () => {
     name: "",
     order: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const openModal = () => {
     setOpen(!open);
   };
 
   useEffect(() => {
-    whstatusTableData(setTableData);
+    whstatusTableData(setTableData,setIsLoading);
   }, []);
 
   const handleOpen = () => {
@@ -45,11 +47,11 @@ const WarehouseStatus = () => {
   const handleInputChange = async (event) => {
     const { value } = event.target;
     setsearchListId(value);
-    await searchWhsatusItems(value, setTableData);
+    await searchWhsatusItems(value, setTableData,setIsLoading);
   };
 
   useEffect(() => {
-    searchWhsatusItems(searchListId, setTableData, setErrors);
+    searchWhsatusItems(searchListId, setTableData, setIsLoading);
   }, [searchListId]);
 
   const handleEdit = (itemId) => {
@@ -64,6 +66,7 @@ const WarehouseStatus = () => {
   };
 
   console.log("table data", tableData);
+
 
   return (
     <>
@@ -86,7 +89,25 @@ const WarehouseStatus = () => {
             </div>
           </div>
         </div>
-
+        {isLoading === true ? (
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '200px',
+          }}
+        >
+          <CircularProgress
+            size={50}
+            sx={{
+              color: '#126e72',
+              padding: '8px 10px',
+              width: '35px',
+            }}
+          />
+        </div>
+      ) : (
         <div className="table-container">
           <table className="table_borderleft">
             <thead>
@@ -134,7 +155,7 @@ const WarehouseStatus = () => {
               ))}
             </tbody>
           </table>
-          {tableData.length === 0 && (
+          {tableData.length === 0 && !isLoading && (
           <div
             className=""
             style={{
@@ -149,6 +170,7 @@ const WarehouseStatus = () => {
           </div>
         )}
         </div>
+        )}
         <SuccessModal
           successModalOpen={successModalOpen}
           handleOpen={handleOpen}
@@ -167,6 +189,9 @@ const WarehouseStatus = () => {
           setTableData={setTableData}
           inputData={inputData}
           setInputData={setInputData}
+          setSuccessModalOpen={setSuccessModalOpen}
+          setSuccessMessage={setSuccessMessage}
+          setIsLoading={setIsLoading}
         />
       )}
 
@@ -181,7 +206,8 @@ const WarehouseStatus = () => {
               deleteId,
               setDeleteConfirmationOpen,
               setSuccessMessage,
-              setSuccessModalOpen
+              setSuccessModalOpen,
+              setIsLoading
             );
           }}
         />

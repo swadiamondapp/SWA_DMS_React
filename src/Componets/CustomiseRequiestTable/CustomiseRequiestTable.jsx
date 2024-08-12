@@ -152,7 +152,7 @@ const CustomizationTable = (props) => {
   const handleApprove = async (aId) => {
     try {
       setApproveId(aId);
-      await customizationApprove(setIsLoading, aId, setCustomizationListData);
+      await customizationApprove(setIsLoading, aId, setCustomizationListData,setSuccessModalOpen,setSuccessMessage);
     } catch (error) {
       console.error("Approve Failed", error);
     }

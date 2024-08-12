@@ -6,6 +6,7 @@ import MastersModal from "../MastersModal/MastersModal";
 import DeleteConfirmationModal from "../../ConfirmationModal/DeleteConfirmationModal";
 import SuccessModal from "../../SuccessModal/SuccessModal";
 import { deleteOutletData, outletTableData, searchOutletItems } from "../ApiMasters/ApiMasters";
+import { CircularProgress } from "@mui/material";
 
 const Outlets = () => {
   const [open, setOpen] = useState(false);
@@ -21,13 +22,15 @@ const Outlets = () => {
     name: "",
     place:""
   });
+  const [isLoading, setIsLoading] = useState(false);
+
 
   const openModal = () => {
     setOpen(!open);
   };
 
   useEffect(() => {
-    outletTableData(setTableData);
+    outletTableData(setTableData,setIsLoading);
   }, []);
 
   const handleOpen = () => {
@@ -45,11 +48,11 @@ const Outlets = () => {
   const handleInputChange = async (event) => {
     const { value } = event.target;
     setsearchListId(value);
-   await searchOutletItems(value, setTableData);
+   await searchOutletItems(value, setTableData,setIsLoading);
   };
 
   useEffect(() => {
-    searchOutletItems(searchListId, setTableData, setErrors);
+    searchOutletItems(searchListId, setTableData, setIsLoading);
   }, [searchListId]);
 
   const handleEdit = (itemId) => {
@@ -63,6 +66,7 @@ const Outlets = () => {
     );
   };
  console.log("tabledata" , tableData)
+
 
   return (
     <>
@@ -85,7 +89,25 @@ const Outlets = () => {
             </div>
           </div>
         </div>
-
+        {isLoading === true ? (
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '200px',
+          }}
+        >
+          <CircularProgress
+            size={50}
+            sx={{
+              color: '#126e72',
+              padding: '8px 10px',
+              width: '35px',
+            }}
+          />
+        </div>
+      ) : (
         <div className="table-container">
           <table className="table_borderleft">
             <thead>
@@ -133,7 +155,7 @@ const Outlets = () => {
               ))}
             </tbody>
           </table>
-          {tableData.length === 0 && (
+          {tableData.length === 0 && !isLoading && (
           <div
             className=""
             style={{
@@ -148,6 +170,7 @@ const Outlets = () => {
           </div>
         )}
         </div>
+      )}
         <SuccessModal
           successModalOpen={successModalOpen}
           handleOpen={handleOpen}
@@ -166,6 +189,9 @@ const Outlets = () => {
           setTableData={setTableData}
           inputData={inputData}
           setInputData={setInputData}
+          setSuccessModalOpen={setSuccessModalOpen}
+          setSuccessMessage={setSuccessMessage}
+          setIsLoading={setIsLoading}
         />
       )}
 
@@ -180,7 +206,8 @@ const Outlets = () => {
               deleteId,
               setDeleteConfirmationOpen,
               setSuccessMessage,
-              setSuccessModalOpen
+              setSuccessModalOpen,
+              setIsLoading
             );
           }}
         />

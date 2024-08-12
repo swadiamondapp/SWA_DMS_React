@@ -24,29 +24,49 @@ const FinishedProducts = ({ sidebarExpanded }) => {
     >
       <div
         className="CadAssignmentCard"
-        style={{ display: "flex", gap:"15px" ,flexWrap:"wrap",alignItems:"center"}}
+        style={{
+          display: "flex",
+          gap: "15px",
+          flexWrap: "wrap",
+          alignItems: "center",
+        }}
       >
-        {finishedProjects?.length === 0 && (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                marginTop:"50px",
-                width:"100%",
-                height:"100%"
+        {isLoading && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: "50px",
+              width: "100%",
+              height: "100%",
+            }}
+          >
+            <CircularProgress
+              size={50} // Set the desired size
+              sx={{
+                color: "#126e72",
+                padding: "8px 10px",
+                width: "35px",
               }}
-            >
-              <CircularProgress
-                size={50} // Set the desired size
-                sx={{
-                  color: "#126e72",
-                  padding: "8px 10px",
-                  width: "35px",
-                }}
-              />
-            </div>
-          )}
+            />
+          </div>
+        )}
+
+        {isLoading === false && finishedProjects.length === 0 && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              // background:"red",
+              width:"100%"
+            }}
+          >
+            <span style={{ marginTop: "100px" }}>No Data Found</span>
+          </div>
+        )}
+
         {finishedProjects &&
           finishedProjects.map((item) => (
             <div className="folderCard_parent">

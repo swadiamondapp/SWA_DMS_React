@@ -11,6 +11,7 @@ import {
 } from "../ApiMasters/ApiMasters";
 import DeleteConfirmationModal from "../../ConfirmationModal/DeleteConfirmationModal";
 import SuccessModal from "../../SuccessModal/SuccessModal";
+import { CircularProgress } from "@mui/material";
 
 const TagTable = () => {
   const [open, setOpen] = useState(false);
@@ -28,13 +29,14 @@ const TagTable = () => {
     image: "",
   });
   const [selectedImage, setSelectedImage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const openModal = () => {
     setOpen(!open);
   };
 
   useEffect(() => {
-    tag_table_data(setTableData);
+    tag_table_data(setTableData,setIsLoading);
   }, []);
 
   const handleDeleteOpen = (userId) => {
@@ -52,11 +54,11 @@ const TagTable = () => {
   const handleInputChange = async (event) => {
     const { value } = event.target;
     setsearchListId(value);
-    await search_tag_data(value, setTableData);
+    await search_tag_data(value, setTableData,setIsLoading);
   };
 
   useEffect(() => {
-    search_tag_data(searchListId, setTableData, setErrors);
+    search_tag_data(searchListId, setTableData, setIsLoading);
   }, [searchListId]);
 
   const handleEdit = (itemId) => {
@@ -72,6 +74,8 @@ const TagTable = () => {
   };
 
   console.log("selectedImage", selectedImage);
+
+
 
   return (
     <>
@@ -97,6 +101,25 @@ const TagTable = () => {
           </div>
         </div>
 
+        { isLoading === true ? (
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '200px',
+          }}
+        >
+          <CircularProgress
+            size={50}
+            sx={{
+              color: '#126e72',
+              padding: '8px 10px',
+              width: '35px',
+            }}
+          />
+        </div>
+      ) : (
         <div className="table-container">
           <table className="table_borderleft">
             <thead>
@@ -166,21 +189,22 @@ const TagTable = () => {
             </tbody>
           </table>
 
-          {tableData.length === 0 && (
-          <div
-            className=""
-            style={{
-              width: "100%",
-              height: "200px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <span>No Data Found</span>
-          </div>
-        )}
+          {tableData.length === 0 &&  (
+            <div
+              className=""
+              style={{
+                width: "100%",
+                height: "200px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <span>No Data Found</span>
+            </div>
+          )}
         </div>
+      )}
         <SuccessModal
           successModalOpen={successModalOpen}
           handleOpen={handleOpen}
@@ -201,6 +225,9 @@ const TagTable = () => {
           setInputData={setInputData}
           setSelectedImage={setSelectedImage}
           selectedImage={selectedImage}
+          setSuccessModalOpen={setSuccessModalOpen}
+          setSuccessMessage={setSuccessMessage}
+          setIsLoading={setIsLoading}
         />
       )}
 
@@ -215,7 +242,8 @@ const TagTable = () => {
               deleteId,
               setDeleteConfirmationOpen,
               setSuccessMessage,
-              setSuccessModalOpen
+              setSuccessModalOpen,
+              setIsLoading
             );
           }}
         />

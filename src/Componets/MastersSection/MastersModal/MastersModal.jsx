@@ -36,7 +36,6 @@ import {
   centralHubnewScanProductStatusUpdate,
   newScanProductStatusUpdate,
 } from "../../ScanComponentWarehouse/ApiScan/ApiScan";
-import SuccessModal from "../../SuccessModal/SuccessModal";
 
 const style = {
   position: "absolute",
@@ -68,6 +67,7 @@ const MastersModal = ({
   setClickedProductIds,
   // setSuccessModalOpen,
   // setSuccessMessage
+  setIsLoading
 
 }) => {
   const location = useLocation();
@@ -77,6 +77,7 @@ const MastersModal = ({
 
   const handleClose = () => {
     setOpen(false);
+    setInputData({})
   };
 
   const handleInputData = (e) => {
@@ -99,7 +100,10 @@ const MastersModal = ({
             setTableData,
             handleClose,
             setInputData,
-            inputData.id
+            inputData.id,
+            setSuccessModalOpen,
+            setSuccessMessage,
+            setIsLoading
           );
         } else {
           finding_table_data_create(
@@ -107,7 +111,10 @@ const MastersModal = ({
             setErrors,
             setTableData,
             handleClose,
-            setInputData
+            setInputData,
+            setSuccessModalOpen,
+            setSuccessMessage,
+            setIsLoading
           );
         }
       }
@@ -129,7 +136,10 @@ const MastersModal = ({
             handleClose,
             setInputData,
             inputData.id,
-            selectedImage
+            selectedImage,
+            setSuccessModalOpen,
+            setSuccessMessage,
+            setIsLoading
           );
         } else {
           const formData = new FormData();
@@ -143,7 +153,10 @@ const MastersModal = ({
             setTableData,
             handleClose,
             setInputData,
-            setSelectedImage
+            setSelectedImage,
+            setSuccessModalOpen,
+            setSuccessMessage,
+            setIsLoading
           );
         }
       }
@@ -158,7 +171,10 @@ const MastersModal = ({
             setTableData,
             handleClose,
             setInputData,
-            inputData.id
+            inputData.id,
+            setSuccessModalOpen,
+            setSuccessMessage,
+            setIsLoading
           );
         } else {
           metalDataCreate(
@@ -166,7 +182,10 @@ const MastersModal = ({
             setErrors,
             setTableData,
             handleClose,
-            setInputData
+            setInputData,
+            setSuccessModalOpen,
+            setSuccessMessage,
+            setIsLoading
           );
         }
       }
@@ -181,7 +200,10 @@ const MastersModal = ({
             setTableData,
             handleClose,
             setInputData,
-            inputData.id
+            inputData.id,
+            setSuccessModalOpen,
+            setSuccessMessage,
+            setIsLoading
           );
         } else {
           diamondDataCreate(
@@ -189,7 +211,10 @@ const MastersModal = ({
             setErrors,
             setTableData,
             handleClose,
-            setInputData
+            setInputData,
+            setSuccessModalOpen,
+            setSuccessMessage,
+            setIsLoading
           );
         }
       }
@@ -209,7 +234,10 @@ const MastersModal = ({
             setTableData,
             handleClose,
             setInputData,
-            inputData.id
+            inputData.id,
+            setSuccessModalOpen,
+            setSuccessMessage,
+            setIsLoading
           );
         } else {
           valueaddDataCreate(
@@ -217,7 +245,10 @@ const MastersModal = ({
             setErrors,
             setTableData,
             handleClose,
-            setInputData
+            setInputData,
+            setSuccessModalOpen,
+            setSuccessMessage,
+            setIsLoading
           );
         }
       }
@@ -232,7 +263,10 @@ const MastersModal = ({
             setTableData,
             handleClose,
             setInputData,
-            inputData.id
+            inputData.id,
+            setSuccessModalOpen,
+            setSuccessMessage,
+            setIsLoading
           );
         } else {
           whstatusDataCreate(
@@ -240,7 +274,10 @@ const MastersModal = ({
             setErrors,
             setTableData,
             handleClose,
-            setInputData
+            setInputData,
+            setSuccessModalOpen,
+            setSuccessMessage,
+            setIsLoading
           );
         }
       }
@@ -255,7 +292,10 @@ const MastersModal = ({
             setTableData,
             handleClose,
             setInputData,
-            inputData.id
+            inputData.id,
+            setSuccessModalOpen,
+            setSuccessMessage,
+            setIsLoading
           );
         } else {
           centralStatusDataCreate(
@@ -263,7 +303,10 @@ const MastersModal = ({
             setErrors,
             setTableData,
             handleClose,
-            setInputData
+            setInputData,
+            setSuccessModalOpen,
+            setSuccessMessage,
+            setIsLoading
           );
         }
       }
@@ -278,7 +321,10 @@ const MastersModal = ({
             setTableData,
             handleClose,
             setInputData,
-            inputData.id
+            inputData.id,
+            setSuccessModalOpen,
+            setSuccessMessage,
+            setIsLoading
           );
         } else {
           categoryDataCreate(
@@ -286,7 +332,10 @@ const MastersModal = ({
             setErrors,
             setTableData,
             handleClose,
-            setInputData
+            setInputData,
+            setSuccessModalOpen,
+            setSuccessMessage,
+            setIsLoading
           );
         }
       }
@@ -301,7 +350,10 @@ const MastersModal = ({
             setTableData,
             handleClose,
             setInputData,
-            inputData.id
+            inputData.id,
+            setSuccessModalOpen,
+            setSuccessMessage,
+            setIsLoading
           );
         } else {
           outletDataCreate(
@@ -309,7 +361,10 @@ const MastersModal = ({
             setErrors,
             setTableData,
             handleClose,
-            setInputData
+            setInputData,
+            setSuccessModalOpen,
+            setSuccessMessage,
+            setIsLoading
           );
         }
       }
@@ -553,7 +608,7 @@ const MastersModal = ({
               <div className="inp1 inp_2nd">
                 <label htmlFor="">Order</label>
                 <input
-                  type="text"
+                  type="number"
                   name="order"
                   value={inputData.order || ""}
                   onChange={handleInputData}
@@ -576,7 +631,7 @@ const MastersModal = ({
               <div className="inp1 inp_2nd">
                 <label htmlFor="">Order</label>
                 <input
-                  type="text"
+                  type="number"
                   name="order"
                   value={inputData.order || ""}
                   onChange={handleInputData}
