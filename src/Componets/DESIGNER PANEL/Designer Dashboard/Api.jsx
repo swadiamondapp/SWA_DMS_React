@@ -3,7 +3,7 @@ import {
   checkApiStatus,
 } from "../../../Pages/Services/ApiInstants";
 import { setToLocalstorage } from "../../../Pages/Utils/Common";
-import { LIST_ALL_CAD_DESIGNERS, LIST_ALL_USER, LIST_UPLOAD_DESIGN } from "../../../Pages/Services/EndPoints";
+import { LIST_ALL_CAD_DESIGNERS, LIST_ALL_USER, LIST_UPLOAD_DESIGN, UPLOAD_MULTIPLE_IMAGES } from "../../../Pages/Services/EndPoints";
 
 export const list_uploaded_designs = async (setIsLoading, setData) => {
   try {
@@ -27,6 +27,38 @@ export const upload_designs_items = async (setIsLoading, uploadImage,setData) =>
     if (response.data.results.status_code === 200) {
       console.log(response.data.results.message,"success")
       list_uploaded_designs(setIsLoading, setData)
+      
+    }
+    return res
+  } catch (error) {
+    console.error("Error moving designs:", error);
+  }finally {
+    setIsLoading(false)
+  }
+};
+
+export const upload_multiple_designs_items = async (setIsLoading, fileList,setUploadedDesigns,setSuccessModalOpen, setSuccessMessage,handleclose) => {
+  try {
+
+    setIsLoading(true)
+    const formData = new FormData();
+    fileList.forEach((file, index) => {
+      formData.append(`image${index+1}`, file.originFileObj);
+      console.log(file.originFileObj,"uploaedImageweew")
+    });
+    const body = formData
+    console.log(body,"body==>Upload")
+    const response = await apiService.post(UPLOAD_MULTIPLE_IMAGES, body);
+    const res = response.data.results.status_code === 200
+    if (response.data.results.status_code === 200) {
+      console.log(response.data.results.message,"success")
+      list_uploaded_designs(setIsLoading, setUploadedDesigns)
+      setSuccessMessage("Uploaded Successfully");
+      setSuccessModalOpen(true);
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1600);
+      handleclose()
       
     }
     return res

@@ -102,3 +102,10 @@
   width: 15px;
   height: 15px;
 }
+.activeLinks .lin_container {
+  display: block; /* Show the container on hover */
+  z-index: -1
+}
+.activeLinks .horizontal_line_sidebar {
+  display: block; /* Show the horizontal line on hover */
+}

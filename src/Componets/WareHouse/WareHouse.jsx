@@ -91,7 +91,7 @@ const WareHouse = (props) => {
         {/* new design section */}
         {/* new design section */}
         <div className="Parent_NewDesign">
-          <h3 className="HeadNewdesign">Newly added</h3>
+          <h3 className="HeadNewdesign">Newly added (&nbsp;{props.DesignWareHouse?.length}&nbsp;)</h3>
           <div className="Card_Design_Parent">
             {props.DesignWareHouse.map((item) => (
               <div className="New_Design_card">
@@ -126,7 +126,7 @@ const WareHouse = (props) => {
           </div>
           {/* unvoted design */}
           <div className="Parent_unvoted">
-            <h3 className="HeadNewdesign">Last Voted</h3>
+            <h3 className="HeadNewdesign">Last Voted (&nbsp;{props.LastVotedDesign?.length}&nbsp;)</h3>
             <div className="Card_Design_Parent">
               {props.LastVotedDesign.map((item) => (
                 <div className="New_Design_card">

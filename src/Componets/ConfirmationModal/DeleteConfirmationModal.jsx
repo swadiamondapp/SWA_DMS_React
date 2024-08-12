@@ -25,6 +25,7 @@ const DeleteConfirmationModal = ({
   handleDeleteClose,
   deleteFunction,
   setDeleteConfirmationOpen,
+  setSelectedIdsForDelet
   // isLoading,
   // deleteId,
 }) => {
@@ -47,6 +48,7 @@ const DeleteConfirmationModal = ({
 
   const handleDeleteModalButton = () => {
     deleteFunction();
+    // setSelectedIdsForDelet([])
   };
   const handlCancelButton = () => {
     setDeleteConfirmationOpen(false);

@@ -39,6 +39,7 @@ const CustomizedOrder = ({ sidebarExpanded }) => {
       className="DesignerAssignmentPanel"
       style={{ paddingLeft: sidebarExpanded ? "225px" : "130px" }}
     >
+       {/* <h3 className="HeadNewdesign">Customized Order (&nbsp;{customizationDesign.length}&nbsp;)</h3> */}
       <div className="CustomizedOrderParent">
         <div className="Parent_NewDesign">
           {isLoading ? (

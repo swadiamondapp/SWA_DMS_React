@@ -1,67 +1,68 @@
-.RendersDetailPage{
-    /* padding: 10px 0px 0px 10px; */
-    /* background-color: white; */
-    height: auto;
-    /* width: 82%; */
-    margin-left: 218px;
-    margin-top: 20px;
-    border-radius: 10px;
-    font-family: "Gilroy reguler";
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
+.RendersDetailPage {
+  /* padding: 10px 0px 0px 10px; */
+  /* background-color: white; */
+  height: auto;
+  /* width: 82%; */
+  margin-left: 218px;
+  margin-top: 20px;
+  border-radius: 10px;
+  font-family: "Gilroy reguler";
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
 }
-.Detail_Card{
-    width: 220px;
-    height: 240px;
-    background-color: white;
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px;
+.Detail_Card {
+  width: 220px;
+  height: 240px;
+  background-color: white;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
 }
-.Detail_Card img{
-    width: 90%;
-    height: 158.11px;
-    /* object-fit: cover; */
-    background-size: contain;
+.Detail_Card img {
+  width: 90%;
+  height: 158.11px;
+  /* object-fit: cover; */
+  background-size: contain;
 }
-.Detail_Card span{
-font-size: 10px;
-color: #455173;
+.Detail_Card span {
+  font-size: 10px;
+  color: #455173;
 }
-.Detail_Card button{
-background-color: #2B2B2B;
-color: white;
-border: none;
-outline: none;
-width: 80%;
-height: 30px;
-display: flex;
-align-items: center;
-justify-content: center;
-gap: 8px;
-border-radius: 4px;
-font-size: 13px;
+.Detail_Card button {
+  background-color: #2b2b2b;
+  color: white;
+  border: none;
+  outline: none;
+  width: 80%;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 4px;
+  font-size: 13px;
 }
-.img_detail{
-    width: 14.92px !important;
-    height: 14.92px !important;
+.img_detail {
+  width: 14.92px !important;
+  height: 14.92px !important;
 }
-.Detail_Card_print{
-    background-color: #2B2B2B;
-color: white;
-border: none;
-outline: none;
-width: 80%;
-height: 30px;
-display: flex;
-align-items: center;
-justify-content: center;
-gap: 8px;
-border-radius: 4px;
-font-size: 13px;
-    background-color: #126E72 !important;
+.Detail_Card_print {
+  background-color: #2b2b2b;
+  color: white;
+  border: none;
+  outline: none;
+  width: 80%;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 4px;
+  font-size: 13px;
+  background-color: #126e72 !important;
+  cursor: pointer;
 }
