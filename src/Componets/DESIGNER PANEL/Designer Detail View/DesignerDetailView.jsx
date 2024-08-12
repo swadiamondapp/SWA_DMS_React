@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./DesignerDetailView.css";
 import DesignBtn from "../../ADMIN PANEL/Design Pool/DesignBtn";
 import ring from "../../../assets/ring.png";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { list_designer_folderDetails } from "./Api";
 
 const DesignerDetailView = (props) => {
@@ -12,6 +12,7 @@ const DesignerDetailView = (props) => {
   const [showMoveOptions, setShowMoveOptions] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedAssignment, setSelectedAssignment] = useState([]);
+  const navigate = useNavigate();
   const location = useLocation();
   const query = new URLSearchParams(location.search);
   const folderName = query.get("name");
@@ -42,8 +43,8 @@ const DesignerDetailView = (props) => {
   const toggleRadioButtons = () => {
     setShowRadioButtons(!showRadioButtons);
     setSelectButtonLabel(showRadioButtons ? "Select" : "Unselect");
-    if (selectedAssignment>0) {
-      setSelectedAssignment([])
+    if (selectedAssignment > 0) {
+      setSelectedAssignment([]);
     }
   };
   const toggleDownloadOptions = () => {
@@ -113,6 +114,15 @@ const DesignerDetailView = (props) => {
   //   return a.items_status === "ALLOCATED" ? 1 : -1;
   // }) || [];
   // console.log(sortedItems, "sorted");
+const handleDetailsView = (item) => {
+    navigate(`/assignmentviewsAll/${item.item_id}`, {
+      state: {
+        // folderNameAssignmentView: item.paper_design.designcode,
+        // assignmentId: props.id,
+        detailsViewFolderName: item.paper_design.designcode,
+      },
+    });
+  };
   return (
     <div
       className="DesignerAssignmentPanel"
@@ -145,8 +155,11 @@ const DesignerDetailView = (props) => {
                   //     item.items_status === "ALLOCATED" ? "none" : "block",
                   // }}
                 >
-                  {console.log("folderDetails?", item.paper_design.image)}
-                  <div className="Card_img">
+                  {console.log("itemeeeeeee", item)}
+                  <div
+                    className="Card_img"
+                    onClick={() => handleDetailsView(item)}
+                  >
                     <img
                       src={item.paper_design.image}
                       style={{

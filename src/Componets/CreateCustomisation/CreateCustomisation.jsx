@@ -120,7 +120,7 @@ const CreateCustomisation = ({
   const budgetRef = useRef(null);
   const swaProductSKURef = useRef(null);
   const notesRef = useRef(null);
-  const imageRef = useRef(null)
+  const imageRef = useRef(null);
   const [formData, setFormData] = useState({
     sallerName: "",
     mobileNumber: "",
@@ -205,24 +205,30 @@ const CreateCustomisation = ({
         "string.min": `Mobile number must be exactly 10 digits`,
         "string.max": `Mobile number must be exactly 10 digits`,
       }),
-    chooseOutlet: Joi.any().required().custom((value, helpers) => {
-      if (value === '' || value === null || value === undefined) {
-        return helpers.error("any.empty");
-      }
-      return value;
-    }).messages({
-      "any.required": "cannot be empty",
-      "any.empty": "cannot be empty"
-    }),
-    productType: Joi.any().required().custom((value, helpers) => {
-      if (value === '' || value === null || value === undefined) {
-        return helpers.error("any.empty");
-      }
-      return value;
-    }).messages({
-      "any.required": "cannot be empty",
-      "any.empty": "cannot be empty"
-    }),
+    chooseOutlet: Joi.any()
+      .required()
+      .custom((value, helpers) => {
+        if (value === "" || value === null || value === undefined) {
+          return helpers.error("any.empty");
+        }
+        return value;
+      })
+      .messages({
+        "any.required": "cannot be empty",
+        "any.empty": "cannot be empty",
+      }),
+    productType: Joi.any()
+      .required()
+      .custom((value, helpers) => {
+        if (value === "" || value === null || value === undefined) {
+          return helpers.error("any.empty");
+        }
+        return value;
+      })
+      .messages({
+        "any.required": "cannot be empty",
+        "any.empty": "cannot be empty",
+      }),
     modelPrevioslyMade: Joi.string().required().messages({
       "string.empty": `cannot be empty`,
     }),
@@ -234,15 +240,18 @@ const CreateCustomisation = ({
       }),
       // Otherwise, it's optional
     }),
-    metalType: Joi.any().required().custom((value, helpers) => {
-      if (value === '' || value === null || value === undefined) {
-        return helpers.error("any.empty");
-      }
-      return value;
-    }).messages({
-      "any.required": "cannot be empty",
-      "any.empty": "cannot be empty"
-    }),
+    metalType: Joi.any()
+      .required()
+      .custom((value, helpers) => {
+        if (value === "" || value === null || value === undefined) {
+          return helpers.error("any.empty");
+        }
+        return value;
+      })
+      .messages({
+        "any.required": "cannot be empty",
+        "any.empty": "cannot be empty",
+      }),
     weight: Joi.string().required().messages({
       "string.empty": `cannot be  empty`,
     }),
@@ -276,15 +285,18 @@ const CreateCustomisation = ({
     height: Joi.string().required().messages({
       "string.empty": `cannot be  empty`,
     }),
-    diamond_type:Joi.any().required().custom((value, helpers) => {
-      if (value === '' || value === null || value === undefined) {
-        return helpers.error("any.empty");
-      }
-      return value;
-    }).messages({
-      "any.required": "cannot be empty",
-      "any.empty": "cannot be empty"
-    }),
+    diamond_type: Joi.any()
+      .required()
+      .custom((value, helpers) => {
+        if (value === "" || value === null || value === undefined) {
+          return helpers.error("any.empty");
+        }
+        return value;
+      })
+      .messages({
+        "any.required": "cannot be empty",
+        "any.empty": "cannot be empty",
+      }),
     length_of_item: Joi.string().required().messages({
       "string.empty": `cannot be  empty`,
     }),
@@ -294,7 +306,7 @@ const CreateCustomisation = ({
 
   const handleSubmitButton = (e) => {
     e.preventDefault();
-  
+
     // Validate form data using Joi schema
     const { error } = schema.validate(formData, {
       abortEarly: false,
@@ -320,7 +332,6 @@ const CreateCustomisation = ({
     // if (firstErrorField && inputRefs[firstErrorField] && inputRefs[firstErrorField].current) {
     //   inputRefs[firstErrorField].current.scrollIntoView({ behavior: 'smooth', block: 'center' });
     // }
-
   };
 
   const handleInput = (e) => {
@@ -331,7 +342,7 @@ const CreateCustomisation = ({
     }));
     setErrors({});
     if (ImageError) {
-      setImageError("")
+      setImageError("");
     }
   };
 
@@ -392,9 +403,7 @@ const CreateCustomisation = ({
 
   console.log(ErrorMessage, "asdfkd");
   const handleCreateSubmitCustomization = () => {
-
-
-    const hasAtLeastOneImage = images.some(img => img); // Check if there's at least one image
+    const hasAtLeastOneImage = images.some((img) => img); // Check if there's at least one image
 
     if (!hasAtLeastOneImage) {
       setImageError("At least one image is required.");
@@ -465,114 +474,179 @@ const CreateCustomisation = ({
 
   useEffect(() => {
     // Find the first field with an error
-    const firstErrorField = Object.keys(errors).find((key) => errors[key]) || (ImageError && 'ImageError');
+    const firstErrorField =
+      Object.keys(errors).find((key) => errors[key]) ||
+      (ImageError && "ImageError");
 
     // Scroll to the first error field if it exists
     switch (firstErrorField) {
-      case 'sallerName':
-        sallerNameRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      case "sallerName":
+        sallerNameRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
         break;
-      case 'mobileNumber':
-        mobileNumberRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      case "mobileNumber":
+        mobileNumberRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
         break;
-      case 'chooseOutlet':
-        chooseOutletRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      case "chooseOutlet":
+        chooseOutletRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
         break;
-      case 'productType':
-        productTypeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      case "productType":
+        productTypeRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
         break;
-      case 'modelPrevioslyMade':
-        modelPrevioslyMadeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      case "modelPrevioslyMade":
+        modelPrevioslyMadeRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
         break;
-      case 'prevMadeSKU':
-        prevMadeSKURef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      case "prevMadeSKU":
+        prevMadeSKURef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
         break;
-      case 'metalType':
-        metalTypeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      case "metalType":
+        metalTypeRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
         break;
-      case 'weight':
-        weightRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      case "weight":
+        weightRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
         break;
-      case 'size':
-        sizeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      case "size":
+        sizeRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
         break;
-      case 'width':
-        widthRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      case "width":
+        widthRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
         break;
-      case 'length_of_item':
-        lengthOfItemRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      case "length_of_item":
+        lengthOfItemRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
         break;
-      case 'height':
-        heightRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      case "height":
+        heightRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
         break;
-      case 'diamond_type':
-        diamondTypeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      case "diamond_type":
+        diamondTypeRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
         break;
-      case 'diamondWeight':
-        diamondWeightRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      case "diamondWeight":
+        diamondWeightRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
         break;
-      case 'numberOfDiamonds':
-        numberOfDiamondsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      case "numberOfDiamonds":
+        numberOfDiamondsRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
         break;
-      case 'diamondClarity':
-        diamondClarityRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      case "diamondClarity":
+        diamondClarityRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
         break;
-      case 'diamondColor':
-        diamondColorRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      case "diamondColor":
+        diamondColorRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
         break;
-      case 'Budget':
-        budgetRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      case "Budget":
+        budgetRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
         break;
-      case 'swaProductSKU':
-        swaProductSKURef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      case "swaProductSKU":
+        swaProductSKURef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
         break;
-      case 'notes':
-        notesRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      case "notes":
+        notesRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
         break;
-        case 'ImageError': // Add this case for image errors
-        imageRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      case "ImageError": // Add this case for image errors
+        imageRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
         break;
       default:
         break;
     }
   }, [errors]);
-const handleCloseButton =()=> {
-  onClose()
-  // setErrorMessage([])
-  setImageError("")
-  setErrors({})
-  setFormData({
-    sallerName: "",
-    mobileNumber: "",
-    chooseOutlet: "",
-    productType: "",
-    modelPrevioslyMade: "",
-    prevMadeSKU: "",
-    metalType: "",
-    weight: "",
-    size: "",
-    width: "",
-    height: "",
-    diamond_type: "",
-    length_of_item: "",
-    diamondWeight: "",
-    numberOfDiamonds: "",
-    diamondClarity: "",
-    diamondColor: "",
-    Budget: "",
-    swaProductSKU: "",
-    notes: "",
-  })
-  setImages(Array(5).fill(""))
-}
-  
+  const handleCloseButton = () => {
+    onClose();
+    // setErrorMessage([])
+    setImageError("");
+    setErrors({});
+    setFormData({
+      sallerName: "",
+      mobileNumber: "",
+      chooseOutlet: "",
+      productType: "",
+      modelPrevioslyMade: "",
+      prevMadeSKU: "",
+      metalType: "",
+      weight: "",
+      size: "",
+      width: "",
+      height: "",
+      diamond_type: "",
+      length_of_item: "",
+      diamondWeight: "",
+      numberOfDiamonds: "",
+      diamondClarity: "",
+      diamondColor: "",
+      Budget: "",
+      swaProductSKU: "",
+      notes: "",
+    });
+    setImages(Array(5).fill(""));
+  };
+
   return (
     <div>
       <div className="">
         <div className="modalContainer" style={{ position: "relative" }}>
           <Modal
             open={open}
-            onClose={handleCloseButton }
+            onClose={handleCloseButton}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
             style={{ position: "absolute", right: "0px" }}
@@ -626,22 +700,34 @@ const handleCloseButton =()=> {
                         )}
                       </div>
                       <div className="parant_relative">
-                        <label htmlFor="" className="label_text"   ref={mobileNumberRef} >
+                        <label
+                          htmlFor=""
+                          className="label_text"
+                          ref={mobileNumberRef}
+                        >
                           Mobile Number
                         </label>
                         <input
                           type="number"
                           className="input_feild"
                           name="mobileNumber"
-                         
                           value={formData.mobileNumber}
                           onChange={handleInput}
+                          onFocus={(e) =>
+                            e.target.addEventListener(
+                              "wheel",
+                              function (e) {
+                                e.preventDefault();
+                              },
+                              { passive: false }
+                            )
+                          }
                         />
                         {errors.mobileNumber && (
                           <p className="error_input">{errors.mobileNumber}</p>
                         )}
                       </div>
-                      <div className="parant_relative"   ref={chooseOutletRef}>
+                      <div className="parant_relative" ref={chooseOutletRef}>
                         <label htmlFor="" className="label_text">
                           Choose Outlet
                         </label>
@@ -649,7 +735,6 @@ const handleCloseButton =()=> {
                           showSearch
                           placeholder="-Select-"
                           optionFilterProp="children"
-                         
                           onChange={(value) =>
                             setFormData((prevState) => ({
                               ...prevState,
@@ -664,7 +749,6 @@ const handleCloseButton =()=> {
                             label: item.name,
                           }))}
                           value={formData.chooseOutlet || undefined}
-                          
                         />
                         {errors.chooseOutlet && (
                           <span className="error_select">
@@ -684,7 +768,6 @@ const handleCloseButton =()=> {
                           showSearch
                           placeholder="-Select-"
                           optionFilterProp="children"
-                      
                           onChange={(value) =>
                             setFormData((prevState) => ({
                               ...prevState,
@@ -714,14 +797,13 @@ const handleCloseButton =()=> {
                         style={{ marginTop: "5px" }}
                         ref={modelPrevioslyMadeRef}
                       >
-                        <label htmlFor="" className="label_text" >
+                        <label htmlFor="" className="label_text">
                           Model previously made
                         </label>
                         <Select
                           showSearch
                           placeholder="-Select-"
                           optionFilterProp="children"
-                         
                           onChange={(value) =>
                             setFormData((prevState) => ({
                               ...prevState,
@@ -770,9 +852,17 @@ const handleCloseButton =()=> {
                           type="number"
                           className="input_feild"
                           name="prevMadeSKU"
-                       
                           value={formData.prevMadeSKU}
                           onChange={handleInput}
+                          onFocus={(e) =>
+                            e.target.addEventListener(
+                              "wheel",
+                              function (e) {
+                                e.preventDefault();
+                              },
+                              { passive: false }
+                            )
+                          }
                         />
                         {errors.prevMadeSKU && (
                           <span className="error_input">
@@ -987,20 +1077,23 @@ const handleCloseButton =()=> {
                               </div>
                             </div>
                           </div>
-                          {ImageError&& (
+                          {ImageError && (
                             <span className="error_select">{ImageError}</span>
                           )}
                         </div>
                       )}
-                      <div className="parant_relative"   >
-                        <label htmlFor="" className="label_text" ref={metalTypeRef}>
+                      <div className="parant_relative">
+                        <label
+                          htmlFor=""
+                          className="label_text"
+                          ref={metalTypeRef}
+                        >
                           Metal Type
                         </label>
                         <Select
                           showSearch
                           placeholder="-Select-"
                           optionFilterProp="children"
-                         
                           onChange={(value) =>
                             setFormData((prevState) => ({
                               ...prevState,
@@ -1034,6 +1127,15 @@ const handleCloseButton =()=> {
                           ref={weightRef}
                           value={formData.weight}
                           onChange={handleInput}
+                          onFocus={(e) =>
+                            e.target.addEventListener(
+                              "wheel",
+                              function (e) {
+                                e.preventDefault();
+                              },
+                              { passive: false }
+                            )
+                          }
                         />
                         {errors.weight && (
                           <span className="error_select">{errors.weight}</span>
@@ -1047,9 +1149,18 @@ const handleCloseButton =()=> {
                           type="text"
                           className="input_feild"
                           name="size"
-                        ref={sizeRef}
+                          ref={sizeRef}
                           value={formData.size}
                           onChange={handleInput}
+                          onFocus={(e) =>
+                            e.target.addEventListener(
+                              "wheel",
+                              function (e) {
+                                e.preventDefault();
+                              },
+                              { passive: false }
+                            )
+                          }
                         />
                         {errors.size && (
                           <span className="error_select">{errors.size}</span>
@@ -1063,9 +1174,18 @@ const handleCloseButton =()=> {
                           type="number"
                           className="input_feild"
                           name="width"
-                      ref={widthRef}
+                          ref={widthRef}
                           value={formData.width}
                           onChange={handleInput}
+                          onFocus={(e) =>
+                            e.target.addEventListener(
+                              "wheel",
+                              function (e) {
+                                e.preventDefault();
+                              },
+                              { passive: false }
+                            )
+                          }
                         />
                         {errors.width && (
                           <span className="error_select">{errors.width}</span>
@@ -1082,6 +1202,7 @@ const handleCloseButton =()=> {
                           ref={lengthOfItemRef}
                           value={formData.length_of_item}
                           onChange={handleInput}
+                          onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
                         />
                         {errors.length_of_item && (
                           <span className="error_select">
@@ -1097,23 +1218,27 @@ const handleCloseButton =()=> {
                           type="number"
                           className="input_feild"
                           name="height"
-                        ref={heightRef}
+                          ref={heightRef}
                           value={formData.height}
                           onChange={handleInput}
+                          onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
                         />
                         {errors.height && (
                           <span className="error_select">{errors.height}</span>
                         )}
                       </div>
                       <div className="parant_relative">
-                        <label htmlFor="" className="label_text" ref={diamondTypeRef}>
+                        <label
+                          htmlFor=""
+                          className="label_text"
+                          ref={diamondTypeRef}
+                        >
                           Diamond Type
                         </label>
                         <Select
                           showSearch
                           placeholder="-Select-"
                           optionFilterProp="children"
-                    
                           onChange={(value) =>
                             setFormData((prevState) => ({
                               ...prevState,
@@ -1144,9 +1269,10 @@ const handleCloseButton =()=> {
                           type="number"
                           className="input_feild"
                           name="diamondWeight"
-                         ref={diamondWeightRef}
+                          ref={diamondWeightRef}
                           value={formData.diamondWeight}
                           onChange={handleInput}
+                          onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
                         />
                         {errors.diamondWeight && (
                           <span className="error_input">
@@ -1162,9 +1288,10 @@ const handleCloseButton =()=> {
                           type="number"
                           className="input_feild"
                           name="numberOfDiamonds"
-                        ref={numberOfDiamondsRef}
+                          ref={numberOfDiamondsRef}
                           value={formData.numberOfDiamonds}
                           onChange={handleInput}
+                          onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
                         />
                         {errors.numberOfDiamonds && (
                           <span className="error_input">
@@ -1173,14 +1300,17 @@ const handleCloseButton =()=> {
                         )}
                       </div>
                       <div className="parant_relative">
-                        <label htmlFor="" className="label_text" ref={diamondClarityRef}>
+                        <label
+                          htmlFor=""
+                          className="label_text"
+                          ref={diamondClarityRef}
+                        >
                           Diamond Clarity
                         </label>
                         <Select
                           showSearch
                           placeholder="-Select-"
                           optionFilterProp="children"
-                         
                           onChange={(value) =>
                             setFormData((prevState) => ({
                               ...prevState,
@@ -1200,14 +1330,17 @@ const handleCloseButton =()=> {
                         )}
                       </div>{" "}
                       <div className="parant_relative">
-                        <label htmlFor="" className="label_text" ref={diamondColorRef}>
+                        <label
+                          htmlFor=""
+                          className="label_text"
+                          ref={diamondColorRef}
+                        >
                           Diamond Colour
                         </label>
                         <Select
                           showSearch
                           placeholder="-Select-"
                           optionFilterProp="children"
-                      
                           onChange={(value) =>
                             setFormData((prevState) => ({
                               ...prevState,
@@ -1234,9 +1367,10 @@ const handleCloseButton =()=> {
                           type="number"
                           className="input_feild"
                           name="Budget"
-                         ref={budgetRef}
+                          ref={budgetRef}
                           value={formData.Budget}
                           onChange={handleInput}
+                          onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
                         />
                         {errors.Budget && (
                           <span className="error_input">{errors.Budget}</span>
@@ -1265,7 +1399,7 @@ const handleCloseButton =()=> {
                         <textarea
                           className="textArea"
                           name="notes"
-                       ref={notesRef}
+                          ref={notesRef}
                           value={formData.notes}
                           onChange={handleInput}
                           id=""

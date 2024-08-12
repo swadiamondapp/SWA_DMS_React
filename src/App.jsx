@@ -63,6 +63,7 @@ import RendersDetailing from "./Pages/RendersDetailing/RendersDetailing";
 import ScanModule from "./Pages/ScanModule/ScanModule";
 import CentralHubScan from "./Componets/CentalHub/CentralHubScan/CentralHubScan";
 import StatusPage from "./Pages/StatusPage/StatusPage";
+import AssignmentDetailsViewsAllPageView from "./Pages/AssignmentDetailsViewsAllPage/AssignmentDetailsViewsAllPageView";
 
 function App() {
   return (
@@ -75,6 +76,10 @@ function App() {
             <Route
               path="/assignmentview/:id"
               element={<AssignmentViewPage />}
+            />
+             <Route
+              path="/assignmentviewsAll/:id"
+              element={<AssignmentDetailsViewsAllPageView />}
             />
             <Route path="/designpool" element={<DesignPoolView />} />
             <Route path="/assignmentpanel" element={<AssignmentPanalPage />} />

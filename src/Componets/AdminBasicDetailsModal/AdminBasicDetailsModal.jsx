@@ -79,10 +79,10 @@ const AdminBasicDetailsModal = ({
   setAssignmentFolder,
   setSelectedAssignment,
   getSelectedDesign,
-  recallListDesigners
+  recallListDesigners,
 }) => {
   const [adminUploadedItemId, setAdminUploadedItemId] = useState([]);
-  const [ ImageSingleError, setImageSingleError] = useState("")
+  const [ImageSingleError, setImageSingleError] = useState("");
   const [uploadedImage, setUploadedImage] = useState(null);
   const [uploadedFileName, setUploadedFileName] = useState("");
   const [AdminUploadedImageFile, setAdminUploadedImageFile] = useState(false);
@@ -116,7 +116,7 @@ const AdminBasicDetailsModal = ({
   const [openAdminFolder, setOpenAdminFolder] = useState(false);
   const [AdminBasicItemId, setAdminBasicItemId] = useState(null);
   const [SearchDesigners, setSearchDesigner] = useState("");
-  const [showMrp,setShowMrp] = useState([])
+  const [showMrp, setShowMrp] = useState([]);
 
   const [ItemMovedToAssignment, setItemMovedToAssignment] = useState([]);
   console.log(AssignDesignerModalOpen, "AssignDesignerModalOpen");
@@ -135,16 +135,16 @@ const AdminBasicDetailsModal = ({
     tag: "",
     notes: "",
   });
-console.log(SelectedMetalId,SelectedDiamondId,"SelectedMetalId")
+  console.log(SelectedMetalId, SelectedDiamondId, "SelectedMetalId");
   const schema = Joi.object({
     SKU: Joi.required().messages({
       "array.min": `SKU field must contain at least one item.`,
       "any.required": `SKU field is required and cannot be empty.`,
     }),
-    productCategory:  Joi.array().min(1).required().messages({
-      'array.base': 'cannot be empty',
-      'array.empty': 'cannot be empty',
-      'array.min': 'cannot be empty',
+    productCategory: Joi.array().min(1).required().messages({
+      "array.base": "cannot be empty",
+      "array.empty": "cannot be empty",
+      "array.min": "cannot be empty",
     }),
     length: Joi.string().required().messages({
       "string.empty": ` cannot be empty`,
@@ -155,48 +155,54 @@ console.log(SelectedMetalId,SelectedDiamondId,"SelectedMetalId")
     height: Joi.string().required().messages({
       "string.empty": `cannot be empty`,
     }),
-    typeOfMetal:  Joi.array().min(1).required().messages({
-      'array.base': 'cannot be empty',
-      'array.empty': ' cannot be empty',
-      'array.min': ' cannot be empty',
+    typeOfMetal: Joi.array().min(1).required().messages({
+      "array.base": "cannot be empty",
+      "array.empty": " cannot be empty",
+      "array.min": " cannot be empty",
     }),
-    diamondType:  Joi.array().min(1).required().messages({
-      'array.base': 'cannot be empty',
-      'array.empty': ' cannot be empty',
-      'array.min': ' cannot be empty',
+    diamondType: Joi.array().min(1).required().messages({
+      "array.base": "cannot be empty",
+      "array.empty": " cannot be empty",
+      "array.min": " cannot be empty",
     }),
-    approxDiamondWeight: Joi.string().custom((value, helpers) => {
-      if (value === "0") {
-        return helpers.message("cannot be zero");
-      }
-      return value;
-    }).required().messages({
-      "string.empty": `cannot be empty`,
-    }),
-    approxMetalWeights: Joi.string().custom((value, helpers) => {
-      if (value === "0") {
-        return helpers.message("cannot be zero");
-      }
-      return value;
-    }).required().messages({
-      "string.empty": `cannot be empty`,
-    }),
+    approxDiamondWeight: Joi.string()
+      .custom((value, helpers) => {
+        if (value === "0") {
+          return helpers.message("cannot be zero");
+        }
+        return value;
+      })
+      .required()
+      .messages({
+        "string.empty": `cannot be empty`,
+      }),
+    approxMetalWeights: Joi.string()
+      .custom((value, helpers) => {
+        if (value === "0") {
+          return helpers.message("cannot be zero");
+        }
+        return value;
+      })
+      .required()
+      .messages({
+        "string.empty": `cannot be empty`,
+      }),
     approxMRP: Joi.number().required().messages({
-      'number.base': 'Approximate MRP must be a number',
-      'number.empty': 'cannot be empty', // Handles cases where it is empty but should be a number
-      'any.required': 'cannot be empty',
+      "number.base": "Approximate MRP must be a number",
+      "number.empty": "cannot be empty", // Handles cases where it is empty but should be a number
+      "any.required": "cannot be empty",
     }),
-    tag:  Joi.array().min(1).required().messages({
-      'array.base': 'cannot be empty',
-      'array.empty': 'cannot be empty',
-      'array.min': ' cannot be empty',
+    tag: Joi.array().allow(null).allow('').messages({
+      "array.base": "cannot be empty",
+      "array.empty": "cannot be empty",
+      "array.min": " cannot be empty",
     }),
-    findings:  Joi.array().min(1).required().messages({
-      'array.base': 'cannot be empty',
-      'array.empty': ' cannot be empty',
-      'array.min': 'cannot be empty',
+    findings: Joi.array().allow(null).allow('').messages({
+      "array.base": "cannot be empty",
+      "array.empty": " cannot be empty",
+      "array.min": "cannot be empty",
     }),
-    notes: Joi.string().messages({
+    notes: Joi.string().allow("").messages({
       "string.empty": `cannot be empty`,
     }),
   });
@@ -343,7 +349,7 @@ console.log(SelectedMetalId,SelectedDiamondId,"SelectedMetalId")
   const handleUploadAdminImageClick = () => {
     if (uploadedImage === null) {
       setImageSingleError("Please upload an image");
-      return; 
+      return;
     }
     upload_admin_image_assignment(
       setAdminUploadedImageIds,
@@ -420,10 +426,10 @@ console.log(SelectedMetalId,SelectedDiamondId,"SelectedMetalId")
   useEffect(() => {
     if (CalculationData) {
       setShowMrp(CalculationData.calculated_mrp);
-      setFormData(prevFormData => ({
+      setFormData((prevFormData) => ({
         ...prevFormData,
         approxMRP: CalculationData.calculated_mrp,
-      })); 
+      }));
     }
   }, [CalculationData]);
 
@@ -490,9 +496,12 @@ console.log(SelectedMetalId,SelectedDiamondId,"SelectedMetalId")
   };
   const handleCloseButton = () => {
     onClose();
-    setUploadedImage(null);
+    setAssignDesignerModalOpen(false);
     setAdminBasicDetailsOpen(false);
-    setImageSingleError("")
+    setUploadedImage(null);
+    setAssignedDesignerId(null);
+    setSearchDesigner("");
+    setImageSingleError("");
     setFormData({
       SKU: [],
       productCategory: "",
@@ -508,8 +517,8 @@ console.log(SelectedMetalId,SelectedDiamondId,"SelectedMetalId")
       tag: "",
       notes: "",
     });
-    setErrors({})
-    setCalculationData([])
+    setErrors({});
+    setCalculationData([]);
   };
   const handleSearchDesigners = (event) => {
     const value = event.target.value;
@@ -868,6 +877,15 @@ console.log(SelectedMetalId,SelectedDiamondId,"SelectedMetalId")
                                     name="length"
                                     value={formData.length}
                                     onChange={handleInput}
+                                    onFocus={(e) =>
+                                      e.target.addEventListener(
+                                        "wheel",
+                                        function (e) {
+                                          e.preventDefault();
+                                        },
+                                        { passive: false }
+                                      )
+                                    }
                                   />
                                   <div>
                                     {errors.length && (
@@ -887,6 +905,15 @@ console.log(SelectedMetalId,SelectedDiamondId,"SelectedMetalId")
                                     name="width"
                                     value={formData.width}
                                     onChange={handleInput}
+                                    onFocus={(e) =>
+                                      e.target.addEventListener(
+                                        "wheel",
+                                        function (e) {
+                                          e.preventDefault();
+                                        },
+                                        { passive: false }
+                                      )
+                                    }
                                   />
                                   <div>
                                     {errors.width && (
@@ -906,6 +933,15 @@ console.log(SelectedMetalId,SelectedDiamondId,"SelectedMetalId")
                                     name="height"
                                     value={formData.height}
                                     onChange={handleInput}
+                                    onFocus={(e) =>
+                                      e.target.addEventListener(
+                                        "wheel",
+                                        function (e) {
+                                          e.preventDefault();
+                                        },
+                                        { passive: false }
+                                      )
+                                    }
                                   />
                                   <div>
                                     {errors.height && (
@@ -1000,6 +1036,15 @@ console.log(SelectedMetalId,SelectedDiamondId,"SelectedMetalId")
                                     name="approxDiamondWeight"
                                     value={formData.approxDiamondWeight}
                                     onChange={handleInput}
+                                    onFocus={(e) =>
+                                      e.target.addEventListener(
+                                        "wheel",
+                                        function (e) {
+                                          e.preventDefault();
+                                        },
+                                        { passive: false }
+                                      )
+                                    }
                                   />
                                   <div>
                                     {errors.approxDiamondWeight && (
@@ -1021,6 +1066,15 @@ console.log(SelectedMetalId,SelectedDiamondId,"SelectedMetalId")
                                     name="approxMetalWeights"
                                     value={formData.approxMetalWeights}
                                     onChange={handleInput}
+                                    onFocus={(e) =>
+                                      e.target.addEventListener(
+                                        "wheel",
+                                        function (e) {
+                                          e.preventDefault();
+                                        },
+                                        { passive: false }
+                                      )
+                                    }
                                   />
                                   <div>
                                     {errors.approxMetalWeights && (
@@ -1198,7 +1252,7 @@ console.log(SelectedMetalId,SelectedDiamondId,"SelectedMetalId")
                                   className="next-button"
                                   type="submit"
                                   onClick={() => handleNextClick()}
-                                  style={{marginBottom:"10px"}}
+                                  style={{ marginBottom: "10px" }}
                                 >
                                   Next
                                 </button>
@@ -1212,75 +1266,73 @@ console.log(SelectedMetalId,SelectedDiamondId,"SelectedMetalId")
                     <>
                       <div className="title_upload_container">
                         <div>
-
-                        <p>Upload File</p>
-                        <div className="upload_admin_image">
-                          {uploadedImage ? (
-                            <div className="image_contianer_upload">
-                              <img
-                                src={uploadedImage}
-                                alt="Uploaded"
-                                style={{ width: "80%", marginBottom: "10px" }}
-                              />
-                              <div>
-                                <div
-                                  style={{
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    gap: "5px",
-                                  }}
-                                >
-                                  {uploadedFileName}
-                                  <button
-                                    className="delete_uploaded_image"
-                                    onClick={handleImageRemove}
+                          <p>Upload File</p>
+                          <div className="upload_admin_image">
+                            {uploadedImage ? (
+                              <div className="image_contianer_upload">
+                                <img
+                                  src={uploadedImage}
+                                  alt="Uploaded"
+                                  style={{ width: "80%", marginBottom: "10px" }}
+                                />
+                                <div>
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      justifyContent: "center",
+                                      alignItems: "center",
+                                      gap: "5px",
+                                    }}
                                   >
-                                    <img src={DeleteICon} alt="" />
-                                  </button>
+                                    {uploadedFileName}
+                                    <button
+                                      className="delete_uploaded_image"
+                                      onClick={handleImageRemove}
+                                    >
+                                      <img src={DeleteICon} alt="" />
+                                    </button>
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                          ) : (
-                            <div style={{ textAlign: "center" }}>
-                              <div>
-                                <p>PNG/JPEG</p>
+                            ) : (
+                              <div style={{ textAlign: "center" }}>
+                                <div>
+                                  <p>PNG/JPEG</p>
+                                </div>
+                                <input
+                                  type="file"
+                                  accept="image/jpeg, image/png, image/jpg"
+                                  onChange={handleImageUpload}
+                                  style={{ display: "none" }}
+                                  id="upload-input"
+                                />
+                                <div className="dragText">
+                                  Drag & Drop or{" "}
+                                  <label
+                                    htmlFor="upload-input"
+                                    style={{
+                                      color: "#0464D5",
+                                      fontSize: "13px",
+                                      padding: "0px 5px",
+                                    }}
+                                  >
+                                    choose File
+                                  </label>
+                                  to upload{" "}
+                                </div>
                               </div>
-                              <input
-                                type="file"
-                                accept="image/jpeg, image/png, image/jpg"
-                                onChange={handleImageUpload}
-                                style={{ display: "none" }}
-                                id="upload-input"
-                              />
-                              <div className="dragText">
-                                Drag & Drop or{" "}
-                                <label
-                                  htmlFor="upload-input"
-                                  style={{
-                                    color: "#0464D5",
-                                    fontSize: "13px",
-                                    padding: "0px 5px",
-                                  }}
-                                >
-                                  choose File
-                                </label>
-                                to upload{" "}
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                        <div style={{position:'relative'}}>
-                       {ImageSingleError && (
-                            <span className="error_select">
-                              {ImageSingleError}
-                            </span>
-                          )}
-                       </div>
+                            )}
+                          </div>
+                          <div style={{ position: "relative" }}>
+                            {ImageSingleError && (
+                              <span className="error_select">
+                                {ImageSingleError}
+                              </span>
+                            )}
+                          </div>
                         </div>
 
                         <div>
-                     
                           {!AdminBasicDetailsOpen && (
                             <div
                               style={{
@@ -1360,7 +1412,6 @@ console.log(SelectedMetalId,SelectedDiamondId,"SelectedMetalId")
                       <td className="calculationType">Metal Cost</td>
                       <td className="calculatedAmount">
                         {CalculationData.metal_cost}
-                       
                       </td>
                     </tr>
                     <tr>

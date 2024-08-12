@@ -127,6 +127,12 @@ const WareHouseDetails = ({ sidebarExpanded }) => {
     return item ? item.name : "Not found";
   };
 
+  const handleOnWheel = (e) => {
+    // if not use preventDefault, it is working 
+    e.preventDefault();
+    // The blur event fires when an element has lost focus. The event does not bubble, 
+    inputElem.current.blur();
+  };
   return (
     <>
       <div
@@ -214,6 +220,7 @@ const WareHouseDetails = ({ sidebarExpanded }) => {
                       name="length"
                       value={formData.length}
                       onChange={handleInput}
+                      onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
                     />
                     
                   </div>
@@ -226,6 +233,7 @@ const WareHouseDetails = ({ sidebarExpanded }) => {
                     name="width"
                     value={formData.width}
                     onChange={handleInput}
+                    onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
                   />
                 </div>
                 <div className="A1_text">
@@ -233,6 +241,7 @@ const WareHouseDetails = ({ sidebarExpanded }) => {
                   <input
                     type="number"
                     className="actualDetails_input"
+                    onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
                     name="height"
                     value={formData.height}
                     onChange={handleInput}
@@ -290,6 +299,7 @@ const WareHouseDetails = ({ sidebarExpanded }) => {
                     name="approxDiamondWeight"
                     value={formData.approxDiamondWeight}
                     onChange={handleInput}
+                    onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
                   />
                 </div>
                 <div className="A1_text">
@@ -300,6 +310,7 @@ const WareHouseDetails = ({ sidebarExpanded }) => {
                     name="approxWeight"
                     value={formData.approxWeight}
                     onChange={handleInput}
+                    onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
                   />
                 </div>
                 <div className="A1_text" style={{ position: "relative" }}>
@@ -314,6 +325,7 @@ const WareHouseDetails = ({ sidebarExpanded }) => {
                       name="actualPrice"
                       value={formData.actualPrice}
                       onChange={handleInput}
+                      onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
                     />
                   </p>
                 </div>

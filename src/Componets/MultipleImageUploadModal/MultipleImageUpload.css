@@ -1,0 +1,46 @@
+.addButton_Container {
+  flex-wrap: wrap;
+}
+.UploadFileSelectConteainer {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.multiImageUploadButtons {
+  display: flex;
+  justify-content: flex-end;
+}
+.multiImageConatainer {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.cancel_of_multiModal {
+  border: 1px solid rgba(224, 225, 225, 1);
+  border-radius: 4px;
+  background: transparent;
+
+  padding: 10px 30px;
+
+  color: rgba(153, 153, 153, 1);
+}
+.upload_of_multiModal {
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  padding: 10px 30px;
+  background: rgba(4, 100, 213, 1);
+
+  color: #fff;
+}
+.modalContaer_multipleImageUpload {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 100%;
+    gap:80px
+    /* gap:100px */
+    
+}

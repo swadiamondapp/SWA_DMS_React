@@ -181,9 +181,10 @@ export const UNASSIGN_CAD_DESIGNERS = "delete/assignedtocad/"
 export const UNASSIGN_TO_CAD = "delete/assigntocad/"
 export const UNVOTED_LIST_VOTERS = "myliked-list/?likes_count=0"
 export const VOTED_LIST_LIKED = "myliked-list/?likes_min=0"
-export const UNVOTED_VOTERS_LIST = "list-all-design/?likes_count=0"
+export const UNVOTED_VOTERS_LIST = "list-all-design/?other_voter_liked=true"
 export const LIST_FOLDER_DESIGNER = "designer/getlist-folder/"
 export const LIST_FOLDER_DETAILS_DESIGNER = "designer/folder-detail/"
-
-
 export const PRODUCT_TRACKING = "product/tracking"
+export const DELETE_ITEM_FROM_DESIGNPOOL = "designs/delete/"
+export const ALL_ITEMS_DETAILS_VIEW = "assignment/item/"
+export const UPLOAD_MULTIPLE_IMAGES = "upload-design/"

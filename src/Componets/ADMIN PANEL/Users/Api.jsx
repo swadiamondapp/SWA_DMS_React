@@ -107,9 +107,11 @@ export const update_user = async (
   userId,
   setIsModalOpen,
   setSuccessModalOpen,
-  setSuccessMessage
+  setSuccessMessage,
+  showUserPasswordFromModal
 ) => {
   try {
+    console.log(formData,"apiBodyFormData")
     const response = await apiService.put(`${EDIT_USER}${userId}/`, formData, {
       headers: {
         "Content-Type": "multipart/form-data", // Ensure the content type is correct
@@ -124,6 +126,7 @@ export const update_user = async (
       setTimeout(() => {
         setSuccessModalOpen(false);
       }, 1600);
+      showUserPasswordFromModal(false)
     }
     if (checkApiStatus(response)) {
       //   setData(response.data.results.data);

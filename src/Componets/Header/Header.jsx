@@ -51,6 +51,7 @@ const Header = ({
   const { assignmentId, folderNameAssignmentView } = location.state || {};
   const { assignmentFolderName } = location.state || {};
   const { folderName } = location.state || {};
+  const { detailsViewFolderName} = location.state || {};
   console.log("header===>FolderName", folderName);
 
   useEffect(() => {
@@ -67,7 +68,7 @@ const Header = ({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-console.log(userImage,"userImagge")
+  console.log(userImage, "userImagge");
   const handleSearchWithName = (event) => {
     setSearchWithName(event.target.value, "nameSarch");
   };
@@ -101,10 +102,10 @@ console.log(userImage,"userImagge")
                   {basicDetails.timer_status
                     .replace("-", "")
                     .charAt(0)
-                    .toUpperCase() + 
+                    .toUpperCase() +
                     basicDetails.timer_status
-                      .replace("-", "") 
-                      .slice(1) 
+                      .replace("-", "")
+                      .slice(1)
                       .toLowerCase()}
                 </span>
               </div>
@@ -211,6 +212,8 @@ console.log(userImage,"userImagge")
                 {location.pathname === "/statusPage" && (
                   <h3>Status</h3>
                 )}
+                 {location.pathname === `/assignmentviewsAll/${id}` && (
+                  <h3>{detailsViewFolderName}</h3>)}
 
                 {location.pathname === "/slot" && <h3>Slot</h3>}
                 {leftHeader && <h3>{leftHeader}</h3>}
@@ -276,7 +279,8 @@ console.log(userImage,"userImagge")
                   location.pathname !== "/centralhubscan" &&
                   location.pathname !== "/otherlogin" &&
                   location.pathname !== `/centralfolderdetails/${id}` &&
-                  location.pathname !== `/assignmentview/${assignmentId}` && (
+                  location.pathname !== `/assignmentview/${assignmentId}` &&
+                  location.pathname !== `/assignmentviewsAll/${id}` && (
                     <div className="Search_Admin">
                       <div className="Search_User">
                         <input
@@ -304,26 +308,27 @@ console.log(userImage,"userImagge")
                   </div>
                 )}
 
-{headerDetails?.paper_design &&
-headerDetails.paper_design.designer_img !== "N/A" &&
-headerDetails.paper_design.designer_name !== "N/A" ? (
-  <div className="headerImageDesinger">
-    <div>
-      <span>Assigned to : </span>{" "}
-    </div>
-    <div className="headerDesingerImage">
-      <img
-        src={headerDetails.paper_design.designer_img}
-        alt={
-          headerDetails.paper_design.designer_name || "Designer Image"
-        }
-      />
-    </div>
-    <div>
-      <span>{headerDetails.paper_design.designer_name}</span>
-    </div>
-  </div>
-) : null}
+                {headerDetails?.paper_design &&
+                headerDetails.paper_design.designer_img !== "N/A" &&
+                headerDetails.paper_design.designer_name !== "N/A" ? (
+                  <div className="headerImageDesinger">
+                    <div>
+                      <span>Assigned to : </span>{" "}
+                    </div>
+                    <div className="headerDesingerImage">
+                      <img
+                        src={headerDetails.paper_design.designer_img}
+                        alt={
+                          headerDetails.paper_design.designer_name ||
+                          "Designer Image"
+                        }
+                      />
+                    </div>
+                    <div>
+                      <span>{headerDetails.paper_design.designer_name}</span>
+                    </div>
+                  </div>
+                ) : null}
 
                 <div className="Profile_Admin" onClick={handleLogout}>
                   {userImage ===
