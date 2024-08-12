@@ -132,9 +132,10 @@ const DesignBtn = ({
     setShowDownloadOptions(false)
   };
 
-  // const handleAllDownload = ()=> {
-  //   handleDownloadMultiple(selectedImages)
-  // }
+  const handleAllDownload = ()=> {
+    selectAllDesigns()
+
+  }
 
   return (
     <div style={location.pathname === "/unassigneddesigner" ? { marginTop: "18px" } : {}}>
@@ -160,7 +161,7 @@ const DesignBtn = ({
               </button>
               {showDownloadOptions && (
                 <div className="Download_Sub">
-                  <p >All</p>
+                  <p onClick={handleAllDownload}>All</p>
                   <p onClick={()=> handleDownloadMultiple(selectedImages)}>Selected</p>
                 </div>
               )}
