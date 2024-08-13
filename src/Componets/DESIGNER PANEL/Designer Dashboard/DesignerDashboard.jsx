@@ -13,7 +13,6 @@ import {
   upload_designs_items,
   uplodedDesignPagination,
 } from "./Api";
-
 import MultipleImageUpload from "../../MultipleImageUploadModal/MultipleImageUpload";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 const DesignerDashboard = ({ sidebarExpanded }) => {
@@ -283,7 +282,7 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
           handleFileSelect={handleFileSelect}
           setUploadedDesigns={setUploadedDesigns}
           setMultipleImageModalOpen={setMultipleImageModalOpen}
-          upDateUploadImagesView= {()=>  uplodedDesignPagination(setIsLoading, setCurrentItems, currentPage)}
+upDateUploadImagesView= {()=>  uplodedDesignPagination(setIsLoading, setCurrentItems, currentPage)}
         />
         <div className="pagination">
           <Pagination
