@@ -30,7 +30,7 @@ const ScanWarehouse = ({ sidebarExpanded }) => {
   const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
-    whstatusTableData(setStatus);
+    whstatusTableData(setStatus,setIsLoading);
     warehoueScanTable(setScanTableData);
   }, []);
 
@@ -67,7 +67,7 @@ const ScanWarehouse = ({ sidebarExpanded }) => {
   const handleSearch = async () => {
     setIsLoading(true);
     if (searchListId === "") {
-      setError("Enter slot ID");
+      setError("Enter Product ID");
       setTimeout(() => {
         setError("");
       }, 3000);
@@ -130,8 +130,8 @@ const ScanWarehouse = ({ sidebarExpanded }) => {
   return (
     <>
       <div
-        className="scantable_main"
-        style={{ marginLeft: sidebarExpanded ? "225px" : "130px" }}
+        className=""
+        style={{ marginLeft: sidebarExpanded ? "225px" : "130px" ,marginTop:"30px",display:"flex",flexDirection:"column",gap:"20px"}}
       >
         <div className="scantable_main_search">
           <div className="Search_User">
@@ -171,7 +171,7 @@ const ScanWarehouse = ({ sidebarExpanded }) => {
                   onChange={handleInputChange}
                   onKeyPress={handleKeyPress}
                 />
-                <img onKeyPress={handleKeyPress} src={searchimg} alt="" />
+                <img onClick={handleSearch} src={searchimg} alt="" />
               </div>
               {error && (
                 <span style={{ color: "red", fontSize: "10px" }}>{error}</span>

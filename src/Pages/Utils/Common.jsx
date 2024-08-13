@@ -73,3 +73,4 @@ export const truncateString = (str, maxLength) => {
   }
   return str;
 };
+

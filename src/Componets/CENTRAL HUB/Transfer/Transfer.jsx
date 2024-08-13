@@ -87,7 +87,7 @@ const Transfer = ({ sidebarExpanded }) => {
   };
   const handleTransferScan = () => {
     if (TransferScan === "") {
-      setError("Enter slot ID");
+      setError("Enter Product ID");
       setTimeout(() => {
         setError("");
       }, 3000);
@@ -142,7 +142,6 @@ const Transfer = ({ sidebarExpanded }) => {
     setFilterSearchId(value.toUpperCase());
 
     if (value === "") {
-      // Fetch all data or reset the TransferData state when the search input is cleared
       centralTransfer(setIsLoading, setTransferData);
     } else {
       await transferScanSearchFilter(value.toUpperCase(), setTransferData);

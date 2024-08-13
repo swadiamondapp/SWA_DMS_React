@@ -6,12 +6,14 @@ import { LiaCloudUploadAltSolid } from "react-icons/lia";
 import { useLocation, Link } from "react-router-dom";
 import folderimg from "../../../assets/folder.png";
 import { list_assigned_cad_design } from "../Api";
+import { CircularProgress } from "@mui/material";
 const CadAssignment = ({
   designList,
   onButtonClick,
   timer,
   setIsModalOpen,
   sidebarExpanded,
+  isLoadingMain
 }) => {
   const navigate = useNavigate();
   const [uploadInstructionsVisible, setUploadInstructionsVisible] =
@@ -107,7 +109,7 @@ const CadAssignment = ({
             <div>
               <p className="D__fileUpload">Submit design</p>
               <p className="D__fileUpload2">
-                Upload your finished file as png and 2.dm file format
+                Upload your finished file as png and 3.dm file format
               </p>
             </div>
             <div className="File____uploadbtn">
@@ -144,6 +146,43 @@ const CadAssignment = ({
 
       {/* cad folder */}
       <div className="CadFolder">
+        {isLoadingMain && (
+       <div
+         style={{
+           display: "flex",
+           justifyContent: "center",
+           alignItems: "center",
+           marginTop: "50px",
+           width: "100%",
+           height: "100%",
+           // background:"red"
+         }}
+       >
+         <CircularProgress
+           size={50} // Set the desired size
+           sx={{
+             color: "#126e72",
+             padding: "8px 10px",
+             width: "35px",
+           }}
+         />
+       </div>
+     )}
+
+     {isLoadingMain === false && designList.length === 0 && (
+       <div
+         style={{
+           display: "flex",
+           justifyContent: "center",
+           alignItems: "center",
+          //  background:"red",
+           width:"100%"
+         }}
+       >
+         <span style={{ marginTop: "100px" }}>No Data Found</span>
+       </div>
+     )}
+        
         <div
           className="Parent_Folder_section_Designer"
           style={{
@@ -174,24 +213,22 @@ const CadAssignment = ({
                 <div className="Card_Details_Inner_cad_Hub">
                   <h3>ID : {item.design_code}</h3>
                   <p>POSTED ON: {item.created_at}</p>
-                  <span
+                  <div
+                  style={{padding:"4px 10px"}}
                     className={
                       item.timer_status === "Completed"
-                        ? "completed"
+                        ? "complete"
                         : item.timer_status === "on-going"
                         ? "ongoing"
                         : "notstarted"
                     }
                   >
-                    {item.timer_status
-                      .replace("-", "") // Remove hyphen
-                      .charAt(0) // Get the first character
-                      .toUpperCase() + // Capitalize the first character
-                      item.timer_status
-                        .replace("-", "") // Remove hyphen again for the rest of the string
-                        .slice(1) // Get the rest of the string
-                        .toLowerCase()}
-                  </span>
+                    {item.timer_status === "Completed"
+                      ? "Completed"
+                      : item.timer_status === "on-going"
+                      ? "On Going"
+                      : "Not Started"}
+                  </div>
                   {item.timer_status === "Completed" ? (
                     <button
                       className="Download_btn_hub"
@@ -237,8 +274,8 @@ const CadAssignment = ({
                       className="Download_btn_hub"
                       style={{ background: "#006E7F" }}
                       onClick={() => {
-                        onButtonClick(item.item_id); 
-                        handleDownload(item.design_image)
+                        onButtonClick(item.item_id);
+                        handleDownload(item.design_image);
                       }}
                       disabled={designList.some(
                         (d) => d.timer_status === "on-going"

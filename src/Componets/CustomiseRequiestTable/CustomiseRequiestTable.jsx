@@ -152,7 +152,7 @@ const CustomizationTable = (props) => {
   const handleApprove = async (aId) => {
     try {
       setApproveId(aId);
-      await customizationApprove(setIsLoading, aId, setCustomizationListData);
+      await customizationApprove(setIsLoading, aId, setCustomizationListData,setSuccessModalOpen,setSuccessMessage);
     } catch (error) {
       console.error("Approve Failed", error);
     }
@@ -254,7 +254,7 @@ const CustomizationTable = (props) => {
                     <td>{item.mobile_number}</td>
                     <td> {productCategoryByID(Number(item.product_type))}</td>
 
-                    <td style={{width:'23%'}}>
+                    <td style={{width:'23%'}} >
                       <button
                         className="PrintButton_CT"
                         onClick={() => handlePrintClick(item)}
@@ -262,7 +262,7 @@ const CustomizationTable = (props) => {
                         <ReactToPrint
                           trigger={() => (
                             <div className="scan_list">
-                              <LuPrinter /> Print
+                              <LuPrinter style={{fontSize:"14px"}} /> Print
                             </div>
                           )}
                           content={() => printRef.current}

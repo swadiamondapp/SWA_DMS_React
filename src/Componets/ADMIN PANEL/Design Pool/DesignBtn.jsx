@@ -11,6 +11,7 @@ import CreateCustomisation from "../../CreateCustomisation/CreateCustomisation";
 import { move_to_folder } from "../../Assignment Panel/Api";
 import { useParams } from "react-router-dom";
 import AssignmentModal from "../../AssignmentModal/AssignmentModal";
+import { View } from "@react-three/drei";
 
 const DesignBtn = ({
   votersSetData,
@@ -48,6 +49,13 @@ const DesignBtn = ({
   setAllSelected,
   setShowDownloadOptions,
   selectAllDesigns,
+setGrid,
+  setDetail,
+  setTiles,
+  grid,
+  detail,
+  tiles,
+  assignmentFolder,
   downRefff,
   assignmentDownRef,
   delteItemsFromDesignPool,
@@ -61,6 +69,7 @@ const DesignBtn = ({
   const [isModalOpenCreateCutomize, setIsCreateCustomizeModalOpen] =
     useState(false);
   const [sort, setSort] = useState(false);
+  const [view, setView] = useState(false);
 
   // const [createFolderModal, setcreateFolderModal] = useState(false);
 
@@ -79,6 +88,28 @@ const DesignBtn = ({
     setSort(!sort);
   };
 
+  const handleView = () => {
+    setView(!view);
+  };
+
+  const gridView = () => {
+    setGrid(true);
+    setDetail(false);
+    setTiles(false);
+  };
+
+  const detailView = () => {
+    setGrid(false);
+    setDetail(true);
+    setTiles(false);
+  };
+
+  const tileView = () => {
+    setGrid(false);
+    setDetail(false);
+    setTiles(true);
+  };
+
   const handleDownloadMultiple = (imageUrls) => {
     imageUrls.forEach((imageUrl, index) => {
       fetch(imageUrl, {
@@ -91,7 +122,7 @@ const DesignBtn = ({
           const link = document.createElement("a");
           link.href = blobUrl;
           // Use index or extract the image name from the URL to create a unique file name
-          link.download = `design_pool_${index}.jpg`;
+link.download = `design_pool_${index}.jpg`;
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
@@ -125,8 +156,7 @@ const DesignBtn = ({
         {location.pathname === "/unassigneddesigner" && (
           <h4 style={{ marginRight: "59%" }}>Not Started Assignements</h4>
         )}
-
-        <div
+<div
           className=""
           style={{
             display: "flex",
@@ -182,7 +212,6 @@ const DesignBtn = ({
                 {selectButtonLabel}
               </button>
             )}
-
           {location.pathname !== "/assignmentpanel" &&
             location.pathname !== "/designdashboard" &&
             location.pathname === "/designpool" &&
@@ -192,7 +221,7 @@ const DesignBtn = ({
             location.pathname !== "/votorscustomization" &&
             location.pathname !== `/designerassignview/${id}` &&
             location.pathname !== "/finishedProject" && (
-              <div className="Parent_MoveTo" ref={assignmentDownRef}>
+<div className="Parent_MoveTo" ref={assignmentDownRef}>
                 <button className="D_moveBtn" onClick={toggleMoveOptions}>
                   Move to <MdOutlineKeyboardArrowDown />
                 </button>
@@ -235,16 +264,42 @@ const DesignBtn = ({
                 </button>
               </div>
             )}
-
-          {location.pathname !== "/votorscustomization" &&
+{location.pathname !== "/votorscustomization" &&
             location.pathname !== "/assignmentpanel" &&
             location.pathname !== "/unassigneddesigner" &&
-            location.pathname !== "/designpool" && (
-              <button className="D_View_Sort_Filter">
+            location.pathname !== "/designpool" &&
+            // location.pathname === "/renderCard" &&
+            location.pathname === "/designdashboard" && (
+              <button
+                className="D_View_Sort_Filter"
+                onClick={handleView}
+                style={{ position: "relative" }}
+              >
                 <MdViewModule /> View
+                {view && (
+                  <div className="sortData" style={{ left: "-20px" }}>
+                    <span
+                      className={grid === true ? "setcolor" : ""}
+                      onClick={gridView}
+                    >
+                      Grid
+                    </span>
+                    <span
+                      className={detail === true ? "setcolor2" : ""}
+                      onClick={detailView}
+                    >
+                      Details
+                    </span>
+                    <span
+                      className={tiles === true ? "setcolor3" : ""}
+                      onClick={tileView}
+                    >
+                      Tiles
+                    </span>
+                  </div>
+                )}
               </button>
             )}
-
           {location.pathname === "/assignmentpanel" && (
             <button
               onClick={handleSort}

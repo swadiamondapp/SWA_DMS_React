@@ -10,6 +10,7 @@ import {
 } from "../ApiMasters/ApiMasters";
 import DeleteConfirmationModal from "../../ConfirmationModal/DeleteConfirmationModal";
 import SuccessModal from "../../SuccessModal/SuccessModal";
+import { CircularProgress } from "@mui/material";
 
 const CHstatus = () => {
   const [open, setOpen] = useState(false);
@@ -26,13 +27,14 @@ const CHstatus = () => {
     order: "",
     status: "active",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const openModal = () => {
     setOpen(!open);
   };
 
   useEffect(() => {
-    centralStatusTableData(setTableData);
+    centralStatusTableData(setTableData,setIsLoading);
   }, []);
 
   const handleOpen = () => {
@@ -40,6 +42,11 @@ const CHstatus = () => {
   };
   const handleClose = () => {
     setSuccessModalOpen(false);
+    setInputData({
+      name: "",
+      order: "",
+      status: "active",
+    });
   };
 
   const handleDeleteOpen = (itemId) => {
@@ -50,11 +57,11 @@ const CHstatus = () => {
   const handleInputChange = async (event) => {
     const { value } = event.target;
     setsearchListId(value);
-    await searchCentralItems(value, setTableData );
+    await searchCentralItems(value, setTableData,setIsLoading);
   };
 
   useEffect(() => {
-    searchCentralItems(searchListId, setTableData, setErrors);
+    searchCentralItems(searchListId, setTableData, setIsLoading);
   }, [searchListId]);
 
   const handleEdit = (itemId) => {
@@ -70,6 +77,7 @@ const CHstatus = () => {
   };
 
   console.log("table data", tableData);
+
 
   return (
     <>
@@ -95,6 +103,25 @@ const CHstatus = () => {
           </div>
         </div>
 
+        {isLoading === true ? (
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '200px',
+          }}
+        >
+          <CircularProgress
+            size={50}
+            sx={{
+              color: '#126e72',
+              padding: '8px 10px',
+              width: '35px',
+            }}
+          />
+        </div>
+      ) : (
         <div className="table-container">
           <table className="table_borderleft">
             <thead>
@@ -144,26 +171,29 @@ const CHstatus = () => {
               ))}
             </tbody>
           </table>
-          {tableData.length === 0 && (
-          <div
-            className=""
-            style={{
-              width: "100%",
-              height: "200px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <span>No Data Found</span>
-          </div>
-        )}
+          {tableData.length === 0 && !isLoading && (
+            <div
+              className=""
+              style={{
+                width: "100%",
+                height: "200px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <span>No Data Found</span>
+            </div>
+          )}
         </div>
+        )}
         <SuccessModal
           successModalOpen={successModalOpen}
           handleOpen={handleOpen}
           handleClose={handleClose}
           successMessage={successMessage}
+          setSuccessModalOpen={setSuccessModalOpen}
+          setSuccessMessage={setSuccessMessage}
         />
       </div>
 
@@ -177,6 +207,9 @@ const CHstatus = () => {
           setTableData={setTableData}
           inputData={inputData}
           setInputData={setInputData}
+          setSuccessModalOpen={setSuccessModalOpen}
+          setSuccessMessage={setSuccessMessage}
+          setIsLoading={setIsLoading}
         />
       )}
 
@@ -191,7 +224,8 @@ const CHstatus = () => {
               deleteId,
               setDeleteConfirmationOpen,
               setSuccessMessage,
-              setSuccessModalOpen
+              setSuccessModalOpen,
+              setIsLoading
             );
           }}
         />

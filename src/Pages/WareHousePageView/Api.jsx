@@ -486,7 +486,6 @@ export const scan_list_datas = async (setIsLoading, setScanTableData) => {
 };
 
 export const scanSearchFilter = async (searchListId, setTableData) => {
-  debugger;
   try {
     let endpoint = `${SCAN_TABLE_LIST}`;
 
@@ -515,7 +514,6 @@ export const scan_list_search = async (
   setSuccessModalOpen,
   setSuccessMessage
 ) => {
-  debugger;
   try {
     const body = {
       finisheditem_id: searchListId,
@@ -616,7 +614,6 @@ export const workDone_list_search = async (
   setSuccessModalOpen,
   setSuccessMessage
 ) => {
-  debugger;
   try {
     const body = {
       product_id: searchListId,
@@ -632,13 +629,12 @@ export const workDone_list_search = async (
       setTimeout(() => {
         setSuccessModalOpen(false);
       }, 1700);
-      // alert("Product Added");
     }
     if (response.data.results.status_code === 206) {
       setError(response.data.results.message);
       setTimeout(() => {
         setError("");
-      }, 1700);
+      }, 3000);
     }
   } catch (error) {
     console.log(error);
@@ -669,7 +665,6 @@ export const workDone_table_product_update = async (
   setSuccessModalOpen,
   setSuccessMessage
 ) => {
-  debugger;
   try {
     // setIsLoading(true);
     const response = await apiService.patch(
@@ -692,16 +687,22 @@ export const workDone_table_product_update = async (
 export const customizationApprove = async (
   setIsLoading,
   approveId,
-  setCustomizationListData
+  setCustomizationListData,
+  setSuccessModalOpen,
+  setSuccessMessage
 ) => {
   try {
-    debugger;
+
     const response = await apiService.patch(
       `${WORKDONE_CUSTOMIZATION_APPROVE}${approveId}/`
     );
     if (checkApiStatus(response)) {
       customizaztion_list_wareHouse(setIsLoading, setCustomizationListData);
-      alert("Approved Successfully");
+      setSuccessModalOpen(true);
+      setSuccessMessage("Approved Successfully");
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1700);
     }
   } catch (error) {
     console.error("Update Failed", error);
@@ -719,7 +720,6 @@ export const wareHouseEditBasicDetails = async (
   setErrors,
   navigate
 ) => {
-  debugger;
   try {
     const body = {
       metal_type: actualFormData.typeOfMetal,

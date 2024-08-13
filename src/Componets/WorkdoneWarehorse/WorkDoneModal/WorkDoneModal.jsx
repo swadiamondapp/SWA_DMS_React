@@ -119,7 +119,7 @@ const WorkDoneModal = ({ setOpen, clickedProductId }) => {
                               borderRadius: "10px",
                             }}
                           >
-                            {item.find_name} ,
+                            {item.find_name}
                           </span>
                             )
                       )}

@@ -33,7 +33,11 @@ const WorkDoneTable = ({ sidebarExpanded }) => {
 
   const handleSearch = async () => {
     if (searchListId === "") {
-      setError("Please Enter a Product Id");
+      setError("Enter a Product Id");
+      setTimeout(() => {
+        setError("");
+      }, 3000);
+      return
     }
     try {
       await workDone_list_search(
@@ -47,9 +51,7 @@ const WorkDoneTable = ({ sidebarExpanded }) => {
       );
     } catch (error) {
       console.error("Error searching scan list:", error);
-    } finally {
-      setIsLoading(false);
-    }
+    } 
   };
 
   console.log("workTableData", workTableData);
@@ -96,9 +98,10 @@ const WorkDoneTable = ({ sidebarExpanded }) => {
 
   console.log("eroor", error);
   return (
+    // <div className="" style={{width:"100%"}}>
     <div
-      className="scantable_main"
-      style={{ marginLeft: sidebarExpanded ? "225px" : "130px" }}
+      className=""
+      style={{ marginLeft: sidebarExpanded ? "225px" : "130px",marginTop:"30px",display:"flex",flexDirection:"column",gap:"20px" }}
     >
       <div className="Search_Admin scan_search">
         <div className="Search_User">
@@ -118,8 +121,8 @@ const WorkDoneTable = ({ sidebarExpanded }) => {
           </p>
         )}
       </div>
-      <div className="ScanTable">
-        <div className="table-container">
+      <div className="ScanTable" >
+        <div className="table-container" style={{width:"100%"}}>
           <table>
             <thead>
               <tr>
@@ -177,6 +180,19 @@ const WorkDoneTable = ({ sidebarExpanded }) => {
           </table>
         </div>
       </div>
+      {workTableData.length === 0 && (
+        <div
+          style={{
+            width: "100%",
+            height: "200px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <span>No Data Found</span>
+        </div>
+      )}
 
       {open && (
         <WorkDoneModal clickedProductId={clickedProductId} setOpen={setOpen} />
@@ -187,7 +203,6 @@ const WorkDoneTable = ({ sidebarExpanded }) => {
           clickedProductId={clickedProductId}
           setSuccessMessage={setSuccessMessage}
           setSuccessModalOpen={setSuccessModalOpen}
-
         />
       )}
 
@@ -196,6 +211,7 @@ const WorkDoneTable = ({ sidebarExpanded }) => {
         successMessage={successMessage}
       />
     </div>
+    // </div>
   );
 };
 

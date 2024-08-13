@@ -54,7 +54,7 @@ const ScanTable = ({ sidebarExpanded }) => {
   const handleSearch = async () => {
     // setIsLoading(true);
     if (searchListId === "") {
-      setError("Enter slot ID");
+      setError("Enter Product ID");
       setTimeout(() => {
         setError("");
       }, 3000);
@@ -90,8 +90,11 @@ const ScanTable = ({ sidebarExpanded }) => {
   const handleFilterSearch = async (event) => {
     const { value } = event.target;
     setFilterSearchId(value.toUpperCase());
-
+    if (value === "") {
+      scan_list_datas(setIsLoading, setScanTableData);
+    } else {
     await scanSearchFilter(value.toUpperCase(), setScanTableData);
+    }
   };
 
   const handleStatusChange = async (slotId, selectedStatusId) => {
@@ -123,8 +126,8 @@ const ScanTable = ({ sidebarExpanded }) => {
 
   return (
     <div
-      className="scantable_main"
-      style={{ marginLeft: sidebarExpanded ? "225px" : "130px" }}
+      className=""
+      style={{ marginLeft: sidebarExpanded ? "225px" : "130px",marginTop:"30px",display:"flex",flexDirection:"column",gap:"20px" }}
     >
       <div className="scantable_main_search">
         <div className="Search_User">

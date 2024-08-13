@@ -249,6 +249,7 @@ const CentalHub = ({
                 <div className="uploadContiner">
                   <div className="uploadImageContainerr">
                     <div
+                    style={{cursor:"pointer"}}
                       className="left"
                       onClick={() =>
                         document.getElementById("fileInputImage").click()
@@ -280,6 +281,7 @@ const CentalHub = ({
                       />
                     </div>
                     <div
+                    style={{cursor:"pointer"}}
                       className="right"
                       onClick={() =>
                         document.getElementById("fileInput3D").click()

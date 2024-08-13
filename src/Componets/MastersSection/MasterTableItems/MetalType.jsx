@@ -10,6 +10,7 @@ import {
   metalTableData,
   searchMetalItems,
 } from "../ApiMasters/ApiMasters";
+import { CircularProgress } from "@mui/material";
 
 const MetalType = () => {
   const [open, setOpen] = useState(false);
@@ -26,13 +27,14 @@ const MetalType = () => {
     price: "",
     making_cost: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const openModal = () => {
     setOpen(!open);
   };
 
   useEffect(() => {
-    metalTableData(setTableData);
+    metalTableData(setTableData,setIsLoading);
   }, []);
 
   const handleOpen = () => {
@@ -50,11 +52,11 @@ const MetalType = () => {
   const handleInputChange = async (event) => {
     const { value } = event.target;
     setsearchListId(value);
-    await searchMetalItems(value, setTableData);
+    await searchMetalItems(value, setTableData,setIsLoading);
   };
 
   useEffect(() => {
-    searchMetalItems(searchListId, setTableData, setErrors);
+    searchMetalItems(searchListId, setTableData, setIsLoading);
   }, [searchListId]);
 
   const handleEdit = (itemId) => {
@@ -70,6 +72,7 @@ const MetalType = () => {
   };
 
   console.log(searchListId, "searchListId");
+
 
   return (
     <>
@@ -95,6 +98,25 @@ const MetalType = () => {
           </div>
         </div>
 
+        {isLoading === true ? (
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '200px',
+          }}
+        >
+          <CircularProgress
+            size={50}
+            sx={{
+              color: '#126e72',
+              padding: '8px 10px',
+              width: '35px',
+            }}
+          />
+        </div>
+      ) : (
         <div className="table-container">
           <table className="table_borderleft">
             <thead>
@@ -146,7 +168,7 @@ const MetalType = () => {
               ))}
             </tbody>
           </table>
-          {tableData.length === 0 && (
+          {tableData.length === 0 && !isLoading  && (
             <div
               className=""
               style={{
@@ -161,6 +183,7 @@ const MetalType = () => {
             </div>
           )}
         </div>
+      )}
         <SuccessModal
           successModalOpen={successModalOpen}
           handleOpen={handleOpen}
@@ -179,6 +202,9 @@ const MetalType = () => {
           setTableData={setTableData}
           inputData={inputData}
           setInputData={setInputData}
+          setSuccessModalOpen={setSuccessModalOpen}
+          setSuccessMessage={setSuccessMessage}
+          setIsLoading={setIsLoading}
         />
       )}
 
@@ -193,7 +219,8 @@ const MetalType = () => {
               deleteId,
               setDeleteConfirmationOpen,
               setSuccessMessage,
-              setSuccessModalOpen
+              setSuccessModalOpen,
+              setIsLoading
             );
           }}
         />

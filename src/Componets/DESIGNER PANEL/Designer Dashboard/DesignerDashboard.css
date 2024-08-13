@@ -59,3 +59,69 @@
   font-family: "Gilroy medium";
   
 }
+
+.New_Design_card {
+  border: 0.5px solid #f9f7f0;
+  background: #fff;
+  border-radius: 4px;
+  padding: 15px 12px;
+  position: relative;
+}
+.Card_Design_Parent {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 30px;
+}
+
+.New_Design_card_deatail{
+  display: flex;
+  align-items: center;
+  padding: 0px 10px;
+  gap: 20px;
+  background-color: white;
+  height: 60px;
+  width: auto;
+}
+.Card_img_deatail{
+ width: 50px;
+ height: 50px;
+}
+.Card_Designer_deatail{
+}
+.Card_Designer_deatail h3{
+  font-size: 12px;
+}
+.Card_Designer_deatail p{
+  font-size: 10px;
+}
+
+.Card_Design_Parent2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  gap: 15px;
+  margin-top: 30px;
+}
+.New_Design_card_deatail2{
+  display: flex;
+  align-items: center;
+  padding: 0px 6px;
+  gap: 20px;
+  background-color: white;
+  height: 30px;
+  width: 150px;
+}
+.Card_img_deatail2{
+ width: 25px;
+ height: 25px;
+}
+.Card_Designer_deatail2 h3{
+  font-size: 11px;
+}
+.pagination{
+  width: 100%;
+  padding: 10px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+  margin-top: 100px;   
+}
