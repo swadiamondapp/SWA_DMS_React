@@ -12,6 +12,8 @@ import { move_to_folder } from "../../Assignment Panel/Api";
 import { useParams } from "react-router-dom";
 import AssignmentModal from "../../AssignmentModal/AssignmentModal";
 import { View } from "@react-three/drei";
+import DesignerFilterModal from "../../DesignerFilterModal/DesignerFilterModal";
+// import DesignerFilterModal from "../../DesignerFilterModal/DesignerFilterModal";
 
 const DesignBtn = ({
   votersSetData,
@@ -49,7 +51,7 @@ const DesignBtn = ({
   setAllSelected,
   setShowDownloadOptions,
   selectAllDesigns,
-setGrid,
+  setGrid,
   setDetail,
   setTiles,
   grid,
@@ -61,7 +63,9 @@ setGrid,
   delteItemsFromDesignPool,
   setDeleteConfirmationOpen,
   SelectedIdsForDelet,
-  setSelectedIdsForDelet
+  setSelectedIdsForDelet,
+  openFilterModal,
+  setOpenFilterModal,
 }) => {
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -122,7 +126,7 @@ setGrid,
           const link = document.createElement("a");
           link.href = blobUrl;
           // Use index or extract the image name from the URL to create a unique file name
-link.download = `design_pool_${index}.jpg`;
+          link.download = `design_pool_${index}.jpg`;
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
@@ -145,6 +149,11 @@ link.download = `design_pool_${index}.jpg`;
     // delteItemsFromDesignPool()
     setDeleteConfirmationOpen(true);
   };
+  const handleFilderModal = () => {
+    setOpenFilterModal(true);
+  };
+
+  console.log(openFilterModal,"openFilterModal")
 
   return (
     <div
@@ -156,7 +165,7 @@ link.download = `design_pool_${index}.jpg`;
         {location.pathname === "/unassigneddesigner" && (
           <h4 style={{ marginRight: "59%" }}>Not Started Assignements</h4>
         )}
-<div
+        <div
           className=""
           style={{
             display: "flex",
@@ -221,7 +230,7 @@ link.download = `design_pool_${index}.jpg`;
             location.pathname !== "/votorscustomization" &&
             location.pathname !== `/designerassignview/${id}` &&
             location.pathname !== "/finishedProject" && (
-<div className="Parent_MoveTo" ref={assignmentDownRef}>
+              <div className="Parent_MoveTo" ref={assignmentDownRef}>
                 <button className="D_moveBtn" onClick={toggleMoveOptions}>
                   Move to <MdOutlineKeyboardArrowDown />
                 </button>
@@ -264,7 +273,7 @@ link.download = `design_pool_${index}.jpg`;
                 </button>
               </div>
             )}
-{location.pathname !== "/votorscustomization" &&
+          {location.pathname !== "/votorscustomization" &&
             location.pathname !== "/assignmentpanel" &&
             location.pathname !== "/unassigneddesigner" &&
             location.pathname !== "/designpool" &&
@@ -316,10 +325,12 @@ link.download = `design_pool_${index}.jpg`;
               )}
             </button>
           )}
+          {location.pathname === "/designdashboard" && (
+            <button className="D_View_Sort_Filter" onClick={handleFilderModal}>
+              <RiFilter3Line /> Filter
+            </button>
+          )}
 
-          <button className="D_View_Sort_Filter">
-            <RiFilter3Line /> Filter
-          </button>
           {location.pathname === "/votorscustomization" && (
             <button
               className="D_downlodBtn"
@@ -341,7 +352,7 @@ link.download = `design_pool_${index}.jpg`;
         setSelectedDesigns={setSelectedDesigns}
         setShowRadioButtons={setShowRadioButtons}
         setSelectButtonLabel={setSelectButtonLabel}
-        setSelectedIdsForDelet={ setSelectedIdsForDelet}
+        setSelectedIdsForDelet={setSelectedIdsForDelet}
       />
       <AssignToModal
         open={isModalOpenAssign}
@@ -362,6 +373,8 @@ link.download = `design_pool_${index}.jpg`;
         }}
         votersSetData={votersSetData}
       />
+
+    
 
       {/* <AssignmentModal
       open={openAdminFolder}
