@@ -47,7 +47,8 @@ const MultipleImageUpload = ({
   previewImages,
   handleFileSelect,
   setUploadedDesigns,
-  setMultipleImageModalOpen
+  setMultipleImageModalOpen,
+  upDateUploadImagesView
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   //   const [images, setImages] = useState(Array(initialImageSlots).fill(null));
@@ -122,7 +123,7 @@ const MultipleImageUpload = ({
     upload_multiple_designs_items(
       setIsLoading,
       fileList,
-      setUploadedDesigns,
+      upDateUploadImagesView,
       setSuccessModalOpen,
       setSuccessMessage,
       handleclose

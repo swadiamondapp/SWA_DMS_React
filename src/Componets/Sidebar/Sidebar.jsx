@@ -277,14 +277,6 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
               {sidebarExpanded && <p>Slot</p>}
             </div>
           </Link>
-          <Link to="/centralhubtransfer">
-            <div className={`Links ${activeLink === "/centralhubtransfer" ? "activeLinks" : ""}`}>
-            <div className="horizontal_line_sidebar"></div>
-            <div className="lin_container"></div>
-              <img src={Tranfer} alt="" />
-              {sidebarExpanded && <p>Transfer</p>}
-            </div>
-          </Link>
           <Link to="/centralhubscan">
             <div className={`Links ${activeLink === "/centralhubscan" ? "activeLinks" : ""}`}>
             <div className="horizontal_line_sidebar"></div>
@@ -293,6 +285,15 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
               {sidebarExpanded && <p>Scan </p>}
             </div>
           </Link>
+          <Link to="/centralhubtransfer">
+            <div className={`Links ${activeLink === "/centralhubtransfer" ? "activeLinks" : ""}`}>
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={Tranfer} alt="" />
+              {sidebarExpanded && <p>Transfer</p>}
+            </div>
+          </Link>
+          
           <Link to="/statusPage">
             <div className="Links">
             <div className="horizontal_line_sidebar"></div>
@@ -380,14 +381,6 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
               {sidebarExpanded && <p>Recieved </p>}
             </div>
           </Link>
-          <Link to="/workdone">
-            <div className={`Links ${activeLink === "/workdone" ? "activeLinks" : ""}`}>
-            <div className="horizontal_line_sidebar"></div>
-            <div className="lin_container"></div>
-              <img src={done} alt="" />
-              {sidebarExpanded && <p>Work Done </p>}
-            </div>
-          </Link>
           <Link to="/newscanmodule">
             <div className={`Links ${activeLink === "/newscanmodule" ? "activeLinks" : ""}`}>
             <div className="horizontal_line_sidebar"></div>
@@ -396,6 +389,15 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
               {sidebarExpanded && <p>Scan </p>}
             </div>
           </Link>
+          <Link to="/workdone">
+            <div className={`Links ${activeLink === "/workdone" ? "activeLinks" : ""}`}>
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={done} alt="" />
+              {sidebarExpanded && <p>Work Done </p>}
+            </div>
+          </Link>
+        
           <Link to="/statusPage">
             <div className="Links">
             <div className="horizontal_line_sidebar"></div>

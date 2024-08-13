@@ -310,12 +310,12 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
           delteItemsFromDesignPool={delteItemsFromDesignPool}
           setDeleteConfirmationOpen={setDeleteConfirmationOpen}
           SelectedIdsForDelet={SelectedIdsForDelet}
-          setSelectedIdsForDelet={ setSelectedIdsForDelet}
+          setSelectedIdsForDelet={setSelectedIdsForDelet}
         />
         {/* new design section */}
         {/* new design section */}
         <div className="Parent_NewDesign">
-<h3 className="HeadNewdesign">New design</h3>
+          <h3 className="HeadNewdesign">New design (&nbsp; {Data.length}&nbsp; )</h3>
           {isLoading && (
             <div
               style={{
@@ -325,7 +325,7 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
               }}
             >
               <CircularProgress
-                size={50} 
+                size={50}
                 sx={{
                   color: "#126e72",
                   padding: "8px 10px",
