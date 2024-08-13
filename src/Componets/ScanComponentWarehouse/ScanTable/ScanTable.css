@@ -93,7 +93,7 @@
 
 .completed_wd{
     width: 55%;
-    height: 26px;
+    /* height: 26px; */
     border-radius: 200px;
     outline: none;
     border: none;
@@ -104,6 +104,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 6px 10px;
 }
 .scan_select_span{
   background-color: #23a064;

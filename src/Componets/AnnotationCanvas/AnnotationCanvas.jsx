@@ -1,11 +1,13 @@
 import React, { useState, useRef } from "react";
-import { Stage, Layer, Rect, Arrow, Text, Image } from "react-konva";
+import { Stage, Layer, Rect, Arrow, Text, Image, Line } from "react-konva";
 import useImage from "use-image";
 import arrowbtn from "../../assets/arrowbtn.png";
 import dlt10 from "../../assets/dlt10.png";
 import prev from "../../assets/prev.png";
 import textAdd from "../../assets/text.png";
 import rectangle from "../../assets/rectangle.png";
+import pencil from "../../assets/pencil.png";
+import pencil2 from "../../assets/drawing.png";
 import undo from "../../assets/undo.png";
 import "./AnnotationCanvas.css";
 import { editedImageUpload } from "../ADMIN PANEL/Design Pool/Api";
@@ -28,6 +30,7 @@ const AnnotationCanvas = ({
   const [loadedImage] = useImage(image, "Anonymous");
   const [editedImage, setEditedImage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [drawingPath, setDrawingPath] = useState([]);
 
   const [updateImage, setUpadateImage] = useState({
     image: editedImage,
@@ -55,12 +58,14 @@ const AnnotationCanvas = ({
         x: e.evt.layerX,
         y: e.evt.layerY,
       });
+    } else if (action === "draw") {
+      setDrawingPath([[e.evt.layerX, e.evt.layerY]]);
     }
   };
 
   const handleMouseMove = (e) => {
-    if (!currentShape) return;
-    if (currentShape.type === "arrow") {
+    if (!currentShape && action !== "draw") return;
+    if (currentShape?.type === "arrow") {
       const newShape = {
         ...currentShape,
         points: [
@@ -71,13 +76,16 @@ const AnnotationCanvas = ({
         ],
       };
       setCurrentShape(newShape);
-    } else if (currentShape.type === "rect") {
+    } else if (currentShape?.type === "rect") {
       const newShape = {
         ...currentShape,
         width: e.evt.layerX - currentShape.x,
         height: e.evt.layerY - currentShape.y,
       };
       setCurrentShape(newShape);
+    } else if (action === "draw" && drawingPath.length > 0) {
+      const newPath = drawingPath.concat([[e.evt.layerX, e.evt.layerY]]);
+      setDrawingPath(newPath);
     }
   };
 
@@ -95,6 +103,10 @@ const AnnotationCanvas = ({
         setShapesHistory([...shapesHistory, currentShape]);
       }
       setCurrentShape(null);
+      setUndoneShapes([]);
+    } else if (action === "draw") {
+      setShapesHistory([...shapesHistory, { type: "draw", path: drawingPath }]);
+      setDrawingPath([]);
       setUndoneShapes([]);
     }
   };
@@ -132,45 +144,40 @@ const AnnotationCanvas = ({
     }
   };
 
-  // Function to capture the canvas as an image and store it in the state
-  // const captureCanvasAsImage = () => {
-  //   if (stageRef.current) {
-  //     const uri = stageRef.current.toDataURL();
-  //     setEditedImage(uri);
-  //   }
-  // };
-
-  // const captureCanvasAsImage = () => {
-  //   try {
-  //     if (stageRef.current) {
-  //       const uri = stageRef.current.toDataURL();
-  //       setEditedImage(uri);
-  //       console.log(uri);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error capturing the canvas as an image:", error);
-  //   }
-  // };
-
   const handleUploadEditedImage = async () => {
     if (!stageRef.current) return;
-
+  
+    const originalWidth = stageRef.current.width();
+    const originalHeight = stageRef.current.height();
+    
+    const scaleFactor = 2; 
+    stageRef.current.width(originalWidth * scaleFactor);
+    stageRef.current.height(originalHeight * scaleFactor);
+    stageRef.current.scale({ x: scaleFactor, y: scaleFactor });
+  
+    // Redraw the stage at the higher resolution
+    stageRef.current.draw();
+  
+    // Get the data URL (higher resolution)
     const uri = stageRef.current.toDataURL();
+  
+    // Reset the stage to original size
+    stageRef.current.width(originalWidth);
+    stageRef.current.height(originalHeight);
+    stageRef.current.scale({ x: 1, y: 1 });
+    stageRef.current.draw();
+  
     setEditedImage(uri);
-
-    await new Promise((resolve) => setTimeout(resolve, 0));
-
+  
     if (!uri) {
       console.error("No edited image to upload.");
       return;
     }
-
+  
     try {
       const formData = new FormData();
       formData.append("image", uri);
-
-      console.log("formDataaa", formData);
-
+  
       setIsLoading(true);
       await editedImageUpload(
         setIsLoading,
@@ -188,8 +195,7 @@ const AnnotationCanvas = ({
       setIsLoading(false);
     }
   };
-
-  console.log("editedImageeee", editedImage);
+  
 
   const getTextWidth = (text, fontSize) => {
     const canvas = document.createElement("canvas");
@@ -234,6 +240,8 @@ const AnnotationCanvas = ({
             />
           </React.Fragment>
         );
+      } else if (shape.type === "draw") {
+        return <Line key={i} points={shape.path.flat()} stroke="black" />;
       }
       return null;
     });
@@ -282,6 +290,9 @@ const AnnotationCanvas = ({
               fill="red"
             />
           )}
+          {drawingPath.length > 0 && (
+            <Line points={drawingPath.flat()} stroke="black" />
+          )}
         </Layer>
       </Stage>
       <div
@@ -307,6 +318,13 @@ const AnnotationCanvas = ({
             style={{ width: "16px", height: "16px" }}
             src={textAdd}
             alt="text"
+          />
+        </button>
+        <button onClick={() => setAction("draw")}>
+          <img
+            style={{ width: "17px", height: "17px" }}
+            src={pencil2}
+            alt="draw"
           />
         </button>
         <button onClick={handleUndo}>

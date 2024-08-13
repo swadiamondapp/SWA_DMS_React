@@ -16,6 +16,20 @@ export const list_uploaded_designs = async (setIsLoading, setData) => {
   }
 };
 
+export const uplodedDesignPagination = async (setIsLoading, setData,currentPage) => {
+  setIsLoading(true)
+  try {
+    const response = await apiService.get(`${LIST_UPLOAD_DESIGN}?page=${currentPage}`);
+    if (checkApiStatus(response)) {
+      setData(response.data.results.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }finally{
+    setIsLoading(false)
+  }
+};
+
 export const upload_designs_items = async (setIsLoading, uploadImage,setData) => {
   try {
     setIsLoading(true)

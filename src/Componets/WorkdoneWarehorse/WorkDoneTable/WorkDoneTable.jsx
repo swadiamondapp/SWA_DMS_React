@@ -98,9 +98,10 @@ const WorkDoneTable = ({ sidebarExpanded }) => {
 
   console.log("eroor", error);
   return (
+    // <div className="" style={{width:"100%"}}>
     <div
-      className="scantable_main"
-      style={{ marginLeft: sidebarExpanded ? "225px" : "130px" }}
+      className=""
+      style={{ marginLeft: sidebarExpanded ? "225px" : "130px",marginTop:"30px",display:"flex",flexDirection:"column",gap:"20px" }}
     >
       <div className="Search_Admin scan_search">
         <div className="Search_User">
@@ -120,8 +121,8 @@ const WorkDoneTable = ({ sidebarExpanded }) => {
           </p>
         )}
       </div>
-      <div className="ScanTable">
-        <div className="table-container">
+      <div className="ScanTable" >
+        <div className="table-container" style={{width:"100%"}}>
           <table>
             <thead>
               <tr>
@@ -210,6 +211,7 @@ const WorkDoneTable = ({ sidebarExpanded }) => {
         successMessage={successMessage}
       />
     </div>
+    // </div>
   );
 };
 

@@ -81,6 +81,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 30px;
+  margin-top: 30px;
 }
 .Card_img {
   display: flex;
@@ -228,4 +229,15 @@ background-color: #0566d433;
 .sortData span:nth-child(3):hover{
 background-color: #0566d433;
 border-radius: 0px 0px  20px 20px !important;
+}
+.setcolor{
+  background-color: #0566d433;
+  border-radius: 20px 20px 0px 0px !important;
+}
+.setcolor2{
+  background-color: #0566d433;
+}
+.setcolor3{
+  background-color: #0566d433;
+  border-radius: 0px 0px  20px 20px !important;
 }

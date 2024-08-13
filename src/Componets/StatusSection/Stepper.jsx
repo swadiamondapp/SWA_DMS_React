@@ -1,0 +1,588 @@
+import React, { useEffect, useState } from "react";
+import "./StatusSection.css";
+import { productTracking } from "./ApiStepper";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import {
+  centralStatusTableData,
+  whstatusTableData,
+} from "../MastersSection/ApiMasters/ApiMasters";
+
+const Stepper = () => {
+  const [productId, setProductId] = useState("");
+  const [steppretDta, setSteppretDta] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [wHdata, setwHdata] = useState();
+  const [cHdata, setcHdata] = useState();
+
+  const handleChange = (e) => {
+    const value = e.target.value.toUpperCase();
+    setProductId(value);
+  };
+
+  const handleTrackProduct = async () => {
+    if (productId === "") {
+      setError("Enter Product Id");
+      setTimeout(() => {
+        setError("");
+      }, 1600);
+      return;
+    }
+    try {
+      await productTracking(setIsLoading, productId, setSteppretDta, setError);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleTrackProduct();
+    }
+  };
+
+  useEffect(() => {
+    AOS.init({
+      duration: 500,
+    });
+  }, []);
+
+  const section = [
+    { id: 1, title: "Design pool" },
+    { id: 2, title: "Selected" },
+    { id: 3, title: "Folder Created" },
+    { id: 4, title: "CAD assigned" },
+    { id: 5, title: "CAD finished" },
+    { id: 6, title: "Slotted" },
+    { id: 7, title: "Central Hub status" },
+    { id: 8, title: "Transferred to warehouse" },
+    { id: 9, title: "Warehouse status" },
+    { id: 10, title: "Work done", text: "Workdone" },
+  ];
+
+  const status = steppretDta?.Tracking_data?.status_message || "";
+
+  const status2 =
+    Array.isArray(
+      steppretDta?.Tracking_data?.status_details?.ch_status_history
+    ) &&
+    steppretDta?.Tracking_data?.status_details?.ch_status_history.length > 0
+      ? steppretDta.Tracking_data.status_details.ch_status_history[0]
+          ?.current_status
+      : {};
+
+  const warehouse =
+    Array.isArray(
+      steppretDta?.Tracking_data?.status_details?.warehouse_status_history
+    ) &&
+    steppretDta?.Tracking_data?.status_details?.warehouse_status_history
+      .length > 0
+      ? steppretDta.Tracking_data.status_details.warehouse_status_history[0]
+          ?.current_status
+      : {};
+
+  const rederDate =
+    steppretDta?.Tracking_data?.status_details?.render_uploaded_at || "";
+
+  const FormatedRenderDate = rederDate
+    ? new Date(rederDate).toLocaleDateString("en-US", {
+        weekday: "long",
+        // year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        hour12: true,
+      })
+    : "";
+
+  const [dropdownVisible, setDropdownVisible] = useState(false);
+  const [dropdownVisible2, setDropdownVisible2] = useState(false);
+  const [dropdownVisible3, setDropdownVisible3] = useState(false);
+
+  const toggleDropdown = () => {
+    setDropdownVisible(!dropdownVisible);
+  };
+  const toggleDropdown2 = () => {
+    setDropdownVisible2(!dropdownVisible2);
+  };
+  const toggleDropdown3 = () => {
+    setDropdownVisible3(!dropdownVisible3);
+  };
+
+  useEffect(() => {
+    whstatusTableData(setwHdata, setIsLoading);
+  }, []);
+
+  useEffect(() => {
+    centralStatusTableData(setcHdata, setIsLoading);
+  }, []);
+
+  const formatDate = (isoString) => {
+    const date = new Date(isoString);
+
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    const formattedDate = `${day}/${month}/${year}`;
+
+    let hours = date.getHours();
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const ampm = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    const formattedTime = `${String(hours).padStart(
+      2,
+      "0"
+    )}:${minutes} ${ampm}`;
+
+    return { formattedDate, formattedTime };
+  };
+
+  const { formattedDate, formattedTime } = formatDate(
+    Array.isArray(
+      steppretDta?.Tracking_data?.status_details?.ch_status_history
+    ) &&
+      steppretDta?.Tracking_data?.status_details?.ch_status_history.length > 0
+      ? steppretDta.Tracking_data.status_details.ch_status_history[0]
+          ?.updated_at
+      : ""
+  );
+
+  const wareHouseDate = (isoString) => {
+    const date = new Date(isoString);
+
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    const WHDate = `${day}/${month}/${year}`;
+
+    let hours = date.getHours();
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const ampm = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    const WHTime = `${String(hours).padStart(2, "0")}:${minutes} ${ampm}`;
+
+    return { WHDate, WHTime };
+  };
+
+  const { WHDate, WHTime } = wareHouseDate(
+    Array.isArray(
+      steppretDta?.Tracking_data?.status_details?.warehouse_status_history
+    ) &&
+      steppretDta?.Tracking_data?.status_details?.warehouse_status_history
+        .length > 0
+      ? steppretDta.Tracking_data.status_details.warehouse_status_history[0]
+          ?.updated_at
+      : ""
+  );
+
+  return (
+    <>
+      <div className="">
+        <div className="staus_search">
+          <input
+            type="text"
+            name="search"
+            placeholder="Enter Product Id"
+            value={productId}
+            onChange={handleChange}
+            onKeyPress={handleKeyPress}
+          />
+          <button onClick={handleTrackProduct}>Track</button>
+        </div>
+        {error && (
+          <span style={{ color: "red", fontSize: "10px" }}>{error}</span>
+        )}
+      </div>
+
+      <div className="stepper-container" style={{ marginTop: "3%" }}>
+        <h3 style={{ marginBottom: "50px" }}>
+          {steppretDta?.Tracking_data?.product_ID || ""}
+        </h3>
+        <div className="stepper">
+          {section.map((step, index) => {
+            const isActive =
+              section.findIndex((s) => s.title === status) >= index;
+            return (
+              <React.Fragment key={step.id}>
+                <div
+                  data-aos="fade-left"
+                  className="step-wrapper"
+                  onClick={() =>
+                    (step.id === 7 && toggleDropdown()) ||
+                    (step.id === 9 && toggleDropdown2()) ||
+                    (step.id === 5 && toggleDropdown3())
+                  }
+                >
+                  <div
+                    className="step"
+                    style={{
+                      position: "relative",
+                      backgroundColor: isActive ? "#00474d" : "inherit",
+                      cursor:
+                        step.id === 7 || step.id === 9 || step.id === 5
+                          ? "pointer"
+                          : "",
+                    }}
+                  >
+                    {isActive ? (
+                      <span style={{ color: "white" }}>&#10003;</span>
+                    ) : (
+                      <span className="step-number">{step.id}</span>
+                    )}
+
+                    <div
+                      className="step-heading"
+                      style={{
+                        width: "100px",
+                        position: "absolute",
+                        top: "45px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {step.title === "Transfered to WH" ? (
+                        <span
+                          style={{
+                            color: "black",
+                            fontSize: "13px",
+                            textAlign: "center",
+                          }}
+                        >
+                          Transfered to Warhouse
+                        </span>
+                      ) : (
+                        <span
+                          style={{
+                            color: "black",
+                            fontSize: "13px",
+                            textAlign: "center",
+                          }}
+                        >
+                          {step.title}
+                        </span>
+                      )}
+                    </div>
+                    {step.id === 7 && dropdownVisible && (
+                      <div
+                        className="dropdown-container"
+                        style={{ marginTop: "40px" }}
+                      >
+                        {cHdata?.map((sub, index) => {
+                          const chStatusHistory =
+                            Array.isArray(
+                              steppretDta?.Tracking_data?.status_details
+                                ?.ch_status_history
+                            ) &&
+                            steppretDta?.Tracking_data?.status_details
+                              ?.ch_status_history.length > 0
+                              ? steppretDta.Tracking_data.status_details
+                                  .ch_status_history[0]
+                              : {};
+
+                          const matchedStatus =
+                            chStatusHistory?.previous_status?.find(
+                              (status) => status.status === sub.name
+                            );
+
+                          const isCurrentStatus =
+                            chStatusHistory?.current_status === sub.name;
+
+                          const formattedDate = isCurrentStatus
+                            ? new Date(
+                                chStatusHistory?.updated_at
+                              ).toLocaleDateString("en-US", {
+                                weekday: "long",
+                                day: "numeric",
+                                month: "long",
+                                // year: 'numeric',
+                              })
+                            : matchedStatus
+                            ? new Date(
+                                matchedStatus.changed_at
+                              ).toLocaleDateString("en-US", {
+                                weekday: "long",
+                                day: "numeric",
+                                month: "long",
+                                // year: 'numeric',
+                              })
+                            : null;
+
+                          const formattedTime = isCurrentStatus
+                            ? new Date(
+                                chStatusHistory?.updated_at
+                              ).toLocaleTimeString()
+                            : matchedStatus
+                            ? new Date(
+                                matchedStatus.changed_at
+                              ).toLocaleTimeString()
+                            : null;
+
+                          const Active =
+                            cHdata.findIndex((s) => s.name === status2) >=
+                            index;
+                          return (
+                            <div className="vertical-stepper">
+                              <React.Fragment>
+                                <div className="vertical-step">
+                                  {Active ? (
+                                    <span
+                                      className={`vertical-step-number ${
+                                        Active ? "vertical-step-complete" : ""
+                                      } `}
+                                      style={{ color: Active ? "white" : "" }}
+                                    >
+                                      &#10003;
+                                    </span>
+                                  ) : (
+                                    <span className="vertical-step-number">
+                                      &#10003;
+                                    </span>
+                                  )}
+
+                                  <div
+                                    className="step-heading"
+                                    style={{
+                                      // width: "180px",
+                                      width: "150px",
+                                      paddingLeft: "10px",
+                                      display: "flex",
+                                      flexDirection: "column",
+                                    }}
+                                  >
+                                    <span
+                                      style={{
+                                        color: "black",
+                                        fontSize: "13px",
+                                      }}
+                                    >
+                                      {sub.name}
+                                    </span>
+                                    <span style={{ fontSize: "10px" }}>
+                                      {formattedDate} {formattedTime}
+                                    </span>
+                                  </div>
+                                </div>
+                                {index < cHdata.length - 1 && (
+                                  <div
+                                    className="vertical-connector"
+                                    style={{
+                                      backgroundColor: Active
+                                        ? "#002427"
+                                        : "#ddd",
+                                    }}
+                                  />
+                                )}
+                              </React.Fragment>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                    {step.id === 9 && dropdownVisible2 && (
+                      <div
+                        className="dropdown-container"
+                        style={{ marginTop: "40px" }}
+                      >
+                        {wHdata?.map((sub, index) => {
+                          const warehouseStatusHistory =
+                            Array.isArray(
+                              steppretDta?.Tracking_data?.status_details
+                                ?.warehouse_status_history
+                            ) &&
+                            steppretDta?.Tracking_data?.status_details
+                              ?.warehouse_status_history.length > 0
+                              ? steppretDta.Tracking_data.status_details
+                                  .warehouse_status_history[0]
+                              : {};
+
+                          const matchedStatus =
+                            warehouseStatusHistory?.previous_status?.find(
+                              (status) => status.status === sub.name
+                            );
+
+                          const isCurrentStatus =
+                            warehouseStatusHistory?.current_status === sub.name;
+
+                          const WHDate = isCurrentStatus
+                            ? new Date(
+                                warehouseStatusHistory?.updated_at
+                              ).toLocaleDateString("en-US", {
+                                weekday: "long",
+                                day: "numeric",
+                                month: "long",
+                                // year: 'numeric',
+                              })
+                            : matchedStatus
+                            ? new Date(
+                                matchedStatus.changed_at
+                              ).toLocaleDateString("en-US", {
+                                weekday: "long",
+                                day: "numeric",
+                                month: "long",
+                                // year: 'numeric',
+                              })
+                            : null;
+
+                          const WHTime = isCurrentStatus
+                            ? new Date(
+                                warehouseStatusHistory?.updated_at
+                              ).toLocaleTimeString()
+                            : matchedStatus
+                            ? new Date(
+                                matchedStatus.changed_at
+                              ).toLocaleTimeString()
+                            : null;
+
+                          const Active =
+                            wHdata.findIndex((s) => s.name === warehouse) >=
+                            index;
+
+                          return (
+                            <div className="vertical-stepper" key={index}>
+                              <React.Fragment>
+                                <div className="vertical-step">
+                                  {Active ? (
+                                    <span
+                                      className={`vertical-step-number ${
+                                        Active ? "vertical-step-complete" : ""
+                                      } `}
+                                      style={{ color: Active ? "white" : "" }}
+                                    >
+                                      &#10003;
+                                    </span>
+                                  ) : (
+                                    <span className="vertical-step-number">
+                                      &#10003;
+                                    </span>
+                                  )}
+
+                                  <div
+                                    className="step-heading"
+                                    style={{
+                                      display: "flex",
+                                      flexDirection: "column",
+                                      width: "150px",
+                                      // background:"green",
+                                      paddingLeft: "10px",
+                                    }}
+                                  >
+                                    <span
+                                      style={{
+                                        color: "black",
+                                        fontSize: "13px",
+                                      }}
+                                    >
+                                      {sub.name}
+                                    </span>
+                                    {WHDate && (
+                                      <span
+                                        style={{
+                                          fontSize: "10px",
+                                          width: "auto",
+                                        }}
+                                      >
+                                        {WHDate} {WHTime}
+                                      </span>
+                                    )}
+                                  </div>
+                                </div>
+                                {index < wHdata.length - 1 && (
+                                  <div
+                                    className="vertical-connector"
+                                    style={{
+                                      backgroundColor: Active
+                                        ? "#002427"
+                                        : "#ddd",
+                                    }}
+                                  />
+                                )}
+                              </React.Fragment>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                    {step.id === 5 && dropdownVisible3 && (
+                      <>
+                        <div
+                          className="dropdown-container"
+                          style={{
+                            marginTop: "40px",
+                            height: "50px",
+                            width: "210px",
+                          }}
+                        >
+                          <div className="vertical-stepper">
+                            <div className="vertical-step">
+                              {rederDate ? (
+                                <span
+                                  className={`vertical-step-number ${
+                                    rederDate ? "vertical-step-complete" : ""
+                                  } `}
+                                  style={{ color: rederDate ? "white" : "" }}
+                                >
+                                  &#10003;
+                                </span>
+                              ) : (
+                                <span className="vertical-step-number">
+                                  &#10003;
+                                </span>
+                              )}
+
+                              <div
+                                style={{
+                                  width: "160px",
+                                  display: "flex",
+                                  flexDirection: "column",
+                                  paddingLeft: "6px",
+                                }}
+                                className="step-heading"
+                              >
+                                <span
+                                  style={{
+                                    color: "black",
+                                    width: "190px",
+                                    fontSize: "13px",
+                                    // background:"red"
+                                  }}
+                                >
+                                  Rendering Finished Projects
+                                </span>
+                                <span
+                                  style={{ fontSize: "11px", marginTop: "5px" }}
+                                >
+                                  {FormatedRenderDate}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </div>
+                {index < section.length - 1 && (
+                  <div
+                    data-aos="fade-left"
+                    className="connector"
+                    style={{
+                      backgroundColor: isActive ? "#00474d" : "#ddd",
+                      height: "3px",
+                    }}
+                  />
+                )}
+              </React.Fragment>
+            );
+          })}
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default Stepper;

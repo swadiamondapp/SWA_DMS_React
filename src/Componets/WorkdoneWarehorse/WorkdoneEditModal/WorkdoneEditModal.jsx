@@ -231,7 +231,7 @@ const WorkdoneEditModal = ({
                         {product?.basic_details?.assignment?.findings.map(
                           (item) => (
                             <span className="tag_covering">
-                              {item.find_name} ,
+                              {item.find_name}
                             </span>
                           )
                         )}
@@ -269,7 +269,7 @@ const WorkdoneEditModal = ({
             </div>
 
             <div className="Edit_detail">
-              <div className="edit_height">
+              {/* <div className="edit_height"> */}
                 <div className="master_modal ">
                   <h3>Actual details</h3>
                   <button
@@ -287,30 +287,33 @@ const WorkdoneEditModal = ({
                 <div className="workdone_modal">
                   <span>Length</span>
                   <input
-                    type="text"
+                    type="number"
                     onChange={handleInput}
                     value={formData.length}
                     name="length"
+                    onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
                     required
                   />
                 </div>
                 <div className="workdone_modal">
                   <span>Width</span>
                   <input
-                    type="text"
+                    type="number"
                     onChange={handleInput}
                     value={formData.width}
                     name="width"
+                    onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
                     required
                   />
                 </div>
                 <div className="workdone_modal">
                   <span>Height</span>
                   <input
-                    type="text"
+                    type="number"
                     onChange={handleInput}
                     value={formData.height}
                     name="height"
+                    onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
                     required
                   />
                 </div>
@@ -360,10 +363,11 @@ const WorkdoneEditModal = ({
                 <div className="workdone_modal">
                   <span>APPROX DIAMOND WEIGHT</span>
                   <input
-                    type="text"
+                    type="number"
                     onChange={handleInput}
                     value={formData.approx_diamond_weight}
                     name="approx_diamond_weight"
+                    onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
                     required
                   />
                 </div>
@@ -388,17 +392,18 @@ const WorkdoneEditModal = ({
                 <div className="workdone_modal">
                   <span>Approx weight</span>
                   <input
-                    type="text"
+                    type="number"
                     onChange={handleInput}
                     value={formData.approx_metal_weight}
                     name="approx_metal_weight"
+                    onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
                     required
                   />
                 </div>
                 <div className="workdone_modal">
                   <span>Tags</span>
 
-                  <div className="workdone_modal_sub">
+                  {/* <div className="workdone_modal_sub"> */}
                     <Select
                       mode="multiple"
                       showSearch
@@ -407,14 +412,15 @@ const WorkdoneEditModal = ({
                       onChange={(value) => handleSelectChange2(value, "tag")}
                       onSearch={onSearch}
                       filterOption={filterOption}
-                      style={{ width: "100%", background: "none" }}
+                      // style={{ width: "100%", background: "none" }}
+                      style={{ width: "50%" }}
                       options={tags.map((item) => ({
                         value: item.id,
                         label: item.name,
                       }))}
                       value={formData.tag}
                     />
-                  </div>
+                  {/* </div> */}
                 </div>
                 {/* <div className="workdone_modal">
                   <span>Actual Price</span>
@@ -460,7 +466,7 @@ const WorkdoneEditModal = ({
                     Update
                   </button>
                 </div>
-              </div>
+              {/* </div> */}
             </div>
           </>
         ))}
