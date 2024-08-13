@@ -13,7 +13,6 @@ import {
   upload_designs_items,
   uplodedDesignPagination,
 } from "./Api";
-
 import MultipleImageUpload from "../../MultipleImageUploadModal/MultipleImageUpload";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import DesignerFilterModal from "../../DesignerFilterModal/DesignerFilterModal";
