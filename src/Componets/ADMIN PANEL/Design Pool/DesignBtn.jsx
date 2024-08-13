@@ -12,6 +12,8 @@ import { move_to_folder } from "../../Assignment Panel/Api";
 import { useParams } from "react-router-dom";
 import AssignmentModal from "../../AssignmentModal/AssignmentModal";
 import { View } from "@react-three/drei";
+import DesignerFilterModal from "../../DesignerFilterModal/DesignerFilterModal";
+// import DesignerFilterModal from "../../DesignerFilterModal/DesignerFilterModal";
 
 const DesignBtn = ({
   votersSetData,
@@ -62,6 +64,8 @@ const DesignBtn = ({
   setDeleteConfirmationOpen,
   SelectedIdsForDelet,
   setSelectedIdsForDelet,
+openFilterModal,
+  setOpenFilterModal,
   filter,
   setFilter,
 }) => {
@@ -155,6 +159,11 @@ const DesignBtn = ({
     // delteItemsFromDesignPool()
     setDeleteConfirmationOpen(true);
   };
+  const handleFilderModal = () => {
+    setOpenFilterModal(true);
+  };
+
+  console.log(openFilterModal,"openFilterModal")
 
   return (
     <div
@@ -326,11 +335,15 @@ const DesignBtn = ({
               )}
             </button>
           )}
+          {location.pathname === "/designdashboard" && (
+            <button className="D_View_Sort_Filter" onClick={handleFilderModal}>
+              <RiFilter3Line /> Filter
+            </button>
+          )}
 
-          <button className="D_View_Sort_Filter" onClick={handleFilter}>
+<button className="D_View_Sort_Filter" onClick={handleFilter}>
             <RiFilter3Line /> Filter
           </button>
-
           {location.pathname === "/votorscustomization" && (
             <button
               className="D_downlodBtn"
@@ -373,6 +386,8 @@ const DesignBtn = ({
         }}
         votersSetData={votersSetData}
       />
+
+    
 
       {/* <AssignmentModal
       open={openAdminFolder}
