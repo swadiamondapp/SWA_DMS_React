@@ -132,9 +132,10 @@ const DesignBtn = ({
     setShowDownloadOptions(false);
   };
 
-  // const handleAllDownload = ()=> {
-  //   handleDownloadMultiple(selectedImages)
-  // }
+  const handleAllDownload = ()=> {
+    selectAllDesigns()
+
+  }
 
   return (
     <div
@@ -172,23 +173,22 @@ const DesignBtn = ({
                   Download <TbDownload />
                 </button>
                 {showDownloadOptions && (
-                  <div className="Download_Sub">
-                    <p>All</p>
-                    <p onClick={() => handleDownloadMultiple(selectedImages)}>
-                      Selected
-                    </p>
-                  </div>
-                )}
-              </div>
-            )}
-          {location.pathname !== "/designdashboard" &&
-            location.pathname !== "/votorscustomization" &&
-            location.pathname !== "/unassigneddesigner" &&
-            location.pathname !== "/finishedProject" && (
-              <button className="D_selectBtn" onClick={toggleRadioButtons}>
-                {selectButtonLabel}
-              </button>
-            )}
+                <div className="Download_Sub">
+                  <p onClick={handleAllDownload}>All</p>
+                  <p onClick={()=> handleDownloadMultiple(selectedImages)}>Selected</p>
+                </div>
+              )}
+            </div>
+          )}
+        {location.pathname !== "/designdashboard" &&
+          location.pathname !== "/votorscustomization" &&
+          location.pathname !== "/unassigneddesigner" &&
+          location.pathname !== "/finishedProject" && (
+            <button className="D_selectBtn" onClick={toggleRadioButtons}>
+              {selectButtonLabel}
+            </button>
+          )}
+
 
           {location.pathname !== "/assignmentpanel" &&
             location.pathname !== "/designdashboard" &&

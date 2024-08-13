@@ -42,6 +42,9 @@ const DesignerDetailView = (props) => {
   const toggleRadioButtons = () => {
     setShowRadioButtons(!showRadioButtons);
     setSelectButtonLabel(showRadioButtons ? "Select" : "Unselect");
+    if (selectedAssignment>0) {
+      setSelectedAssignment([])
+    }
   };
   const toggleDownloadOptions = () => {
     setShowDownloadOptions(!showDownloadOptions);
@@ -110,7 +113,6 @@ const DesignerDetailView = (props) => {
   //   return a.items_status === "ALLOCATED" ? 1 : -1;
   // }) || [];
   // console.log(sortedItems, "sorted");
-  console.log(props.folderDetails.assignment_items, "sorted");
   return (
     <div
       className="DesignerAssignmentPanel"
