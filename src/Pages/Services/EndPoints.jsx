@@ -188,3 +188,5 @@ export const DELETE_ITEM_FROM_DESIGNPOOL = "designs/delete/"
 export const ALL_ITEMS_DETAILS_VIEW = "assignment/item/"
 export const UPLOAD_MULTIPLE_IMAGES = "upload-design/"
 export const PRODUCT_TRACKING = "product/tracking"
+
+
