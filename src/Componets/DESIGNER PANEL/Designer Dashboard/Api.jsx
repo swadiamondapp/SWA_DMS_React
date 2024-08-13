@@ -51,7 +51,7 @@ export const upload_designs_items = async (setIsLoading, uploadImage,setData) =>
   }
 };
 
-export const upload_multiple_designs_items = async (setIsLoading, fileList,setUploadedDesigns,setSuccessModalOpen, setSuccessMessage,handleclose) => {
+export const upload_multiple_designs_items = async (setIsLoading, fileList, upDateUploadImagesView,setSuccessModalOpen, setSuccessMessage,handleclose) => {
   try {
 
     setIsLoading(true)
@@ -66,7 +66,7 @@ export const upload_multiple_designs_items = async (setIsLoading, fileList,setUp
     const res = response.data.results.status_code === 200
     if (response.data.results.status_code === 200) {
       console.log(response.data.results.message,"success")
-      list_uploaded_designs(setIsLoading, setUploadedDesigns)
+      upDateUploadImagesView()
       setSuccessMessage("Uploaded Successfully");
       setSuccessModalOpen(true);
       setTimeout(() => {

@@ -5,13 +5,14 @@ import DesignBtn from "../../ADMIN PANEL/Design Pool/DesignBtn";
 import ring from "../../../assets/ring.png";
 import img1 from "../../../assets/img1.png";
 import img2 from "../../../assets/img2.png";
+
+import { CircularProgress, Pagination } from "@mui/material";
+import LazyLoad from "react-lazy-load";
 import {
   list_uploaded_designs,
   upload_designs_items,
   uplodedDesignPagination,
 } from "./Api";
-import { CircularProgress, Pagination } from "@mui/material";
-import LazyLoad from "react-lazy-load";
 import MultipleImageUpload from "../../MultipleImageUploadModal/MultipleImageUpload";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 const DesignerDashboard = ({ sidebarExpanded }) => {
@@ -281,6 +282,7 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
           handleFileSelect={handleFileSelect}
           setUploadedDesigns={setUploadedDesigns}
           setMultipleImageModalOpen={setMultipleImageModalOpen}
+upDateUploadImagesView= {()=>  uplodedDesignPagination(setIsLoading, setCurrentItems, currentPage)}
         />
         <div className="pagination">
           <Pagination
