@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "https://dmsapi.swa.co/dms/";
+const BASE_URL = "https://livedmsapi.swa.co/dms/";
 
 export const apiService = axios.create({
   baseURL: BASE_URL,
