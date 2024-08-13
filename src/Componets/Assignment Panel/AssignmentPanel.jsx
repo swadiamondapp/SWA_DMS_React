@@ -22,6 +22,8 @@ import AssignmentModal from "../AssignmentModal/AssignmentModal";
 import SuccessModal from "../SuccessModal/SuccessModal";
 import DeleteConfirmationModal from "../ConfirmationModal/DeleteConfirmationModal";
 import { CircularProgress } from "@mui/material";
+import AdminFilter from "../AdminFilter/AdminFilter";
+
 // import { useLocation, useNavigate } from "react-router-dom";
 
 const AssignmentPanel = ({ sidebarExpanded }) => {
@@ -49,6 +51,8 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
 
   const [createFolderModal, setcreateFolderModal] = useState(false);
   const [IdOfDeleteAssignment, setIdOfDeleteAssignment] = useState([]);
+
+  const [filter, setFilter] = useState(false);
 
   const location = useLocation();
   const dotsRef = useRef(null);
@@ -155,13 +159,8 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
     setOpenDesignPool(false);
   };
 
-  console.log(Data, "assignmentDatatat");
-  console.log(selectedAssignment, "selecte==================>");
-  console.log(modalDetails, "modalDetails");
   const handleDrawModal = (item) => {
-    // setOpenDesignPool(true);
     setModalDetails(item);
-    // setFolderDetialViewID(item.id);
   };
   const handleAdminBasicModal = () => {
     setAdminBasicModalOpen(true);
@@ -175,18 +174,14 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
     setcreateFolderModal(true);
   };
 
-  const handleForlderDetailsVeiw = (item,designCode) => {
+  const handleForlderDetailsVeiw = (item, designCode) => {
     navigate(`/assignmentviewsAll/${item.id}`, {
       state: {
-        // folderNameAssignmentView: item.paper_design.designcode,
-        // assignmentId: props.id,
         detailsViewFolderName: designCode,
-      
       },
     });
   };
 
-  console.log(selectedDesignCode, "selectedDesignCode");
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -242,7 +237,24 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
     list_assignment_panel(setIsLoading, setData);
   };
 
-  console.log("handleSortByDesigner", Data);
+  // const handleFilter = async () => {
+  //   try {
+  //     await filterAdminDesigns(
+  //       setIsLoading,
+  //       startDate,
+  //       endDate,
+  //       filterTag,
+  //       filterCategory,
+  //       filterDesigner,
+  //       setData
+  //     );
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  console.log("Data",Data)
+
 
   return (
     <div
@@ -290,6 +302,8 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
           handleSortByAdmin={handleSortByAdmin}
           handleSortByAll={handleSortByAll}
           assignmentFolder={assignmentFolder}
+          filter={filter}
+          setFilter={setFilter}
           // setcreateFolderModal={setcreateFolderModal}
           // handleCreateFolderModal
         />
@@ -315,8 +329,7 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
           )}
 
           {isLoading === false &&
-          Data.length === 0 &&
-          assignmentFolder.length === 0 ? (
+          Data.length === 0 ? (
             <div
               style={{
                 display: "flex",
@@ -354,7 +367,9 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
                       >
                         <div
                           className="Card_img"
-                          onClick={() => handleForlderDetailsVeiw(item,designCode)}
+                          onClick={() =>
+                            handleForlderDetailsVeiw(item, designCode)
+                          }
                         >
                           <img
                             src={image}
@@ -368,8 +383,19 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
                           <div className="Card_Details_Inner">
                             <div className="Inner_Left">
                               <p>{designer}</p>
-                              <p><span className="dateUpdate_fix">created at : </span>{formatDate(createdAt)}</p>
-                              <p><span className="dateUpdate_fix"> updated at : </span>{formatDate(updatedAt)}</p>
+                              <p>
+                                <span className="dateUpdate_fix">
+                                  created at :{" "}
+                                </span>
+                                {formatDate(createdAt)}
+                              </p>
+                              <p>
+                                <span className="dateUpdate_fix">
+                                  {" "}
+                                  updated at :{" "}
+                                </span>
+                                {formatDate(updatedAt)}
+                              </p>
                             </div>
                             <div className="Inner_Right">
                               <p>
@@ -506,6 +532,10 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
           );
         }}
       />
+
+      {filter && (
+        <AdminFilter filter={filter} setFilter={setFilter} setData={setData} />
+      )}
     </div>
   );
 };

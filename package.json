@@ -30,6 +30,7 @@
     "jspdf": "^2.5.1",
     "konva": "^9.3.11",
     "lottie-web": "^5.12.2",
+    "moment": "^2.30.1",
     "multiselect-react-dropdown": "^2.0.25",
     "otp-input-react": "^0.3.0",
     "react": "^18.2.0",

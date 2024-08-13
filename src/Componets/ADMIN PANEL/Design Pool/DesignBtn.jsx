@@ -64,8 +64,10 @@ const DesignBtn = ({
   setDeleteConfirmationOpen,
   SelectedIdsForDelet,
   setSelectedIdsForDelet,
-  openFilterModal,
+openFilterModal,
   setOpenFilterModal,
+  filter,
+  setFilter,
 }) => {
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -92,6 +94,14 @@ const DesignBtn = ({
     setSort(!sort);
   };
 
+    
+  const handleFilter = () => {
+    setFilter(true);
+  };
+
+ 
+
+  
   const handleView = () => {
     setView(!view);
   };
@@ -331,6 +341,9 @@ const DesignBtn = ({
             </button>
           )}
 
+<button className="D_View_Sort_Filter" onClick={handleFilter}>
+            <RiFilter3Line /> Filter
+          </button>
           {location.pathname === "/votorscustomization" && (
             <button
               className="D_downlodBtn"
