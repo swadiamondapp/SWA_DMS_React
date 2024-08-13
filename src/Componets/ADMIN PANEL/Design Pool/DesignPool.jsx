@@ -20,6 +20,7 @@ import AnnotationModalDesignPool from "./AnnotationModalDesignPool/AnnotationMod
 import SuccessModal from "../../SuccessModal/SuccessModal";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import DeleteConfirmationModal from "../../ConfirmationModal/DeleteConfirmationModal";
+import AdminFilter from "../../AdminFilter/AdminFilter";
 
 const DesignPool = ({ sidebarExpanded, setData, Data }) => {
   const [showRadioButtons, setShowRadioButtons] = useState(false);
@@ -45,6 +46,8 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
   const [SelectedIdsForDelet, setSelectedIdsForDelet] = useState([]);
   const assignmentDownRef = useRef(null); // Ref for the dropdown element
   const clickedInsideRef = useRef(false);
+
+  const [filter, setFilter] = useState(false);
 
   const navigate = useNavigate();
   const dropdownRefDD = useRef(null);
@@ -197,8 +200,8 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
     setAllSelected(!allSelected);
   };
 
-  console.log("selectedDesign====>", selectedDesign);
-  console.log("imageData", Data);
+  // console.log("selectedDesign====>", selectedDesign);
+  // console.log("imageData", Data);
 
   const handleDeleteClose = () => {
     setDeleteConfirmationOpen(false);
@@ -242,6 +245,8 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
     setIdOfDeleteDesignPool(item);
     setDeleteConfirmationOpen(true);
   };
+
+  console.log("filter----", filter);
 
   return (
     <div>
@@ -311,11 +316,15 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
           setDeleteConfirmationOpen={setDeleteConfirmationOpen}
           SelectedIdsForDelet={SelectedIdsForDelet}
           setSelectedIdsForDelet={setSelectedIdsForDelet}
+          filter={filter}
+          setFilter={setFilter}
         />
         {/* new design section */}
         {/* new design section */}
         <div className="Parent_NewDesign">
-          <h3 className="HeadNewdesign">New design (&nbsp; {Data.length}&nbsp; )</h3>
+          <h3 className="HeadNewdesign">
+            New design (&nbsp; {Data.length}&nbsp; )
+          </h3>
           {isLoading && (
             <div
               style={{
@@ -325,6 +334,8 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
               }}
             >
               <CircularProgress
+                filter={filter}
+                setFilter={setFilter}
                 size={50}
                 sx={{
                   color: "#126e72",
@@ -497,6 +508,8 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
         }}
       />
       <BasicDetailModal />
+
+      {filter && <AdminFilter filter={filter} setFilter={setFilter}  setData={setData}/>}
     </div>
   );
 };

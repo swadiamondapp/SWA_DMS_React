@@ -29,19 +29,22 @@ import {
 
 export const list_assignment_panel = async (setIsLoading, setData) => {
   try {
-    setIsLoading(true)
+    setIsLoading(true);
     const response = await apiService.get(LIST_ASSIGNMENT_PANEL);
     if (checkApiStatus(response)) {
       setData(response.data.results.data);
     }
   } catch (error) {
     console.log(error);
-  }finally{
-    setIsLoading(false)
+  } finally {
+    setIsLoading(false);
   }
 };
 
-export const sort_assignmentpanel_bydesigner = async (setIsLoading, setData) => {
+export const sort_assignmentpanel_bydesigner = async (
+  setIsLoading,
+  setData
+) => {
   try {
     const response = await apiService.get(ASSIGNMENT_SORTBY_DESIGNER);
     if (checkApiStatus(response)) {
@@ -61,9 +64,6 @@ export const sort_assignmentpanel_byadmin = async (setIsLoading, setData) => {
     console.log(error);
   }
 };
-
-
-
 
 export const list_folderDetails = async (
   setIsLoading,
@@ -112,10 +112,8 @@ export const move_to_folder = async (
   setError,
   setShowRadioButtons,
   setSelectButtonLabel
-
 ) => {
   try {
-
     const body = {
       folder_data: {
         name: folderName,
@@ -134,17 +132,16 @@ export const move_to_folder = async (
         setSuccessModalOpen(false);
       }, 1600);
       setFolderName("");
-     
+
       setSelectedAssignment([]);
-      setError('')
-      setShowRadioButtons(false)
-      setSelectButtonLabel("Select")
+      setError("");
+      setShowRadioButtons(false);
+      setSelectButtonLabel("Select");
     }
-if(response.data.results.status_code === 206){
-      setError(response.data.results.message)
+    if (response.data.results.status_code === 206) {
+      setError(response.data.results.message);
     }
-  } 
-  catch (error) {
+  } catch (error) {
     console.error("Error moving designs:", error);
   }
   // catch (error) {
@@ -229,9 +226,7 @@ export const move_to_assignment = async (
   setFormData,
   getSelectedDesign,
   callBack,
-  setSelectedIdsForDelet,
-  
-  
+  setSelectedIdsForDelet
 ) => {
   try {
     const body = {
@@ -268,25 +263,23 @@ export const move_to_assignment = async (
       setSelectButtonLabel("Select");
       // setShowAssignmentModal(true);
       setMovedItemsId(response?.data?.results?.data);
-      setFormData(
-        {
-          SKU: "",
-          productCategory: "",
-          length: "",
-          width: "",
-          height: "",
-          typeOfMetal: "",
-          diamondType: "",
-          approxDiamondWeight: "",
-          findings: "",
-          approxMetalWeights: "",
-          approxMRP: "",
-          tag: [],
-          notes: "",
-        }
-      )
-      callBack()
-      setSelectedIdsForDelet([])
+      setFormData({
+        SKU: "",
+        productCategory: "",
+        length: "",
+        width: "",
+        height: "",
+        typeOfMetal: "",
+        diamondType: "",
+        approxDiamondWeight: "",
+        findings: "",
+        approxMetalWeights: "",
+        approxMRP: "",
+        tag: [],
+        notes: "",
+      });
+      callBack();
+      setSelectedIdsForDelet([]);
     }
   } catch (error) {
     console.error("Error moving designs:", error);
@@ -330,7 +323,7 @@ export const editBasicDetails = async (
       setTimeout(() => {
         setSuccessModalOpen(false);
       }, 1600);
-      updateEditFunction()
+      updateEditFunction();
     }
   } catch (error) {
     console.error("Error moving designs:", error);
@@ -595,7 +588,7 @@ export const assign_to_designers = async (
       setAssignedDesignerId(null);
       setSearchDesigner("");
       list_all_designers(setAllDesigners);
-      recallListDesigners()
+      recallListDesigners();
     }
   } catch (error) {
     // setSelectedAssignment([])
@@ -653,7 +646,7 @@ export const moveSingleItemToDesignPool = async (
   setActiveCardId
 ) => {
   try {
-    setIsLoading(true)
+    setIsLoading(true);
     const response = await apiService.delete(
       `${MOVE_SINGLE_ITEM_TO_DESIGNPOOL}${item}/`
     );
@@ -668,8 +661,8 @@ export const moveSingleItemToDesignPool = async (
     }
   } catch (error) {
     console.error("Error moving designs:", error);
-  }finally {
-    setIsLoading(false)
+  } finally {
+    setIsLoading(false);
   }
 };
 export const deleteItemFromAssignmentPanel = async (
@@ -682,7 +675,7 @@ export const deleteItemFromAssignmentPanel = async (
   setDeleteConfirmationOpen
 ) => {
   try {
-    setIsLoading(true)
+    setIsLoading(true);
     const response = await apiService.delete(
       `${DELETE_ITEM_FROM_ASSIGNMENT_PANEL}${item}/`
     );
@@ -698,8 +691,8 @@ export const deleteItemFromAssignmentPanel = async (
     }
   } catch (error) {
     console.error("Error moving designs:", error);
-  }finally {
-    setIsLoading(false)
+  } finally {
+    setIsLoading(false);
   }
 };
 
@@ -715,6 +708,38 @@ export const listDesignersByName = async (
     );
     if (checkApiStatus(response)) {
       setAllDesigners(response?.data?.results?.data);
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+export const filterAdminDesigns = async (
+  setIsLoading,
+  startDate,
+  endDate,
+  filterTag,
+  filterCategory,
+  filterDesigner,
+  setData
+) => {
+  debugger
+  try {
+    setIsLoading(true);
+
+    let apiUrl = `${LIST_ASSIGNMENT_PANEL}?date_from=${
+      startDate ? startDate : ""
+    }&date_to=${endDate ? endDate : ""}&tags=${
+      filterTag ? filterTag : ""
+    }&product_type=${filterCategory ? filterCategory : ""}&designer=${
+      filterDesigner ? filterDesigner : ""
+    }`;
+
+    const response = await apiService.get(apiUrl);
+    if (checkApiStatus(response)) {
+      setData(response?.data?.results?.data);
     }
   } catch (error) {
     console.log(error);
