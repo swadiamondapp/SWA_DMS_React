@@ -12,8 +12,6 @@ import {
 } from "./Api";
 import { CircularProgress, Pagination } from "@mui/material";
 import LazyLoad from "react-lazy-load";
-import { list_uploaded_designs, upload_designs_items } from "./Api";
-import { CircularProgress } from "@mui/material";
 import MultipleImageUpload from "../../MultipleImageUploadModal/MultipleImageUpload";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 const DesignerDashboard = ({ sidebarExpanded }) => {
@@ -26,13 +24,13 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
   const [currentItems, setCurrentItems] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [uploadImage, setUploadImage] = useState([]);
-const [previewImages, setPreviewImages] = useState([]);
-  const [multipleImageModalOpen,setMultipleImageModalOpen] = useState(false)
+  const [previewImages, setPreviewImages] = useState([]);
+  const [multipleImageModalOpen, setMultipleImageModalOpen] = useState(false);
   const navigate = useNavigate();
   const [grid, setGrid] = useState(true);
   const [detail, setDetail] = useState(false);
   const [tiles, setTiles] = useState(false);
-  
+
   const toggleRadioButtons = () => {
     setShowRadioButtons(!showRadioButtons);
     setSelectButtonLabel(showRadioButtons ? "Select" : "Unselect");
@@ -50,7 +48,7 @@ const [previewImages, setPreviewImages] = useState([]);
   // const handleFileUpload = async (event) => {
   //   const file = event.target.files[0];
 
-//   if (file) {
+  //   if (file) {
   //     // Display the new image immediately
   //     const newImage = {
   //       image: URL.createObjectURL(file),
@@ -74,7 +72,7 @@ const [previewImages, setPreviewImages] = useState([]);
     })); // Create image previews using Object URLs
 
     setPreviewImages(previews);
-    setMultipleImageModalOpen(true) // Update state with previews
+    setMultipleImageModalOpen(true); // Update state with previews
   };
   const handleFileSelect = (index, event) => {
     const file = event.target.files[0]; // Get the new file
@@ -103,7 +101,7 @@ const [previewImages, setPreviewImages] = useState([]);
     list_uploaded_designs(setIsLoading, setUploadedDesigns);
   }, []);
 
-useEffect(() => {
+  useEffect(() => {
     fetchDesigns();
   }, [fetchDesigns]);
 
@@ -134,7 +132,7 @@ useEffect(() => {
               <div className="File____uploadbtn">
                 <button
                   // onClick={() => document.getElementById("fileInput").click()}
-                  onClick={()=> setMultipleImageModalOpen(true)}
+                  onClick={() => setMultipleImageModalOpen(true)}
                 >
                   Upload File{" "}
                   <LiaCloudUploadAltSolid style={{ fontSize: "22px" }} />
@@ -178,7 +176,7 @@ useEffect(() => {
             tiles={tiles}
           />
           <div className="DesignerDashboardcard">
- <h3 className="HeadNewdesign">Uploaded</h3>
+            <h3 className="HeadNewdesign">Uploaded</h3>
 
             {isLoading ? (
               <div
@@ -235,11 +233,11 @@ useEffect(() => {
                       {currentItems.map((item, index) => (
                         <div className="New_Design_card_deatail" key={index}>
                           <LazyLoad height={50} offset={90}>
-                          <img
-                            className="Card_img_deatail"
-                            src={item.image}
-                            alt=""
-                          />
+                            <img
+                              className="Card_img_deatail"
+                              src={item.image}
+                              alt=""
+                            />
                           </LazyLoad>
                           <div className="Card_Designer_deatail">
                             <h3>ID : {item.designcode}</h3>
@@ -276,7 +274,14 @@ useEffect(() => {
             )}
           </div>
         </div>
-<MultipleImageUpload open={multipleImageModalOpen} onClose={()=> setMultipleImageModalOpen(false)} previewImages={previewImages}  handleFileSelect={handleFileSelect} setUploadedDesigns={setUploadedDesigns} setMultipleImageModalOpen={setMultipleImageModalOpen}/>
+        <MultipleImageUpload
+          open={multipleImageModalOpen}
+          onClose={() => setMultipleImageModalOpen(false)}
+          previewImages={previewImages}
+          handleFileSelect={handleFileSelect}
+          setUploadedDesigns={setUploadedDesigns}
+          setMultipleImageModalOpen={setMultipleImageModalOpen}
+        />
         <div className="pagination">
           <Pagination
             count={Math.ceil(uploadedDesigns.length / 20)}
