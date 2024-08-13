@@ -12,7 +12,10 @@ import {
 } from "./Api";
 import { CircularProgress, Pagination } from "@mui/material";
 import LazyLoad from "react-lazy-load";
-
+import { list_uploaded_designs, upload_designs_items } from "./Api";
+import { CircularProgress } from "@mui/material";
+import MultipleImageUpload from "../../MultipleImageUploadModal/MultipleImageUpload";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 const DesignerDashboard = ({ sidebarExpanded }) => {
   const [uploadInstructionsVisible, setUploadInstructionsVisible] =
     useState(true);
@@ -23,11 +26,13 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
   const [currentItems, setCurrentItems] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [uploadImage, setUploadImage] = useState([]);
-
+const [previewImages, setPreviewImages] = useState([]);
+  const [multipleImageModalOpen,setMultipleImageModalOpen] = useState(false)
+  const navigate = useNavigate();
   const [grid, setGrid] = useState(true);
   const [detail, setDetail] = useState(false);
   const [tiles, setTiles] = useState(false);
-
+  
   const toggleRadioButtons = () => {
     setShowRadioButtons(!showRadioButtons);
     setSelectButtonLabel(showRadioButtons ? "Select" : "Unselect");
@@ -42,20 +47,42 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
   const formData = new FormData();
   formData.append("image", uploadImage);
 
-  const handleFileUpload = async (event) => {
-    const file = event.target.files[0];
+  // const handleFileUpload = async (event) => {
+  //   const file = event.target.files[0];
 
+//   if (file) {
+  //     // Display the new image immediately
+  //     const newImage = {
+  //       image: URL.createObjectURL(file),
+  //       designcode: "Loading...",
+  //       name: "Uploading...",
+  //       created_at: new Date().toLocaleString(),
+  //     };
+  //     setUploadedDesigns((prevDesigns) => [newImage, ...prevDesigns]);
+
+  //     // Upload the image and refresh the list
+  //     // await upload_designs_items(setIsLoading, file, setUploadedDesigns);
+  //     // await list_uploaded_designs(setIsLoading, setUploadedDesigns);
+  //   }
+  // };
+
+  const handleFileUpload = (event) => {
+    const files = Array.from(event.target.files); // Get the list of selected files
+    const previews = files.map((file) => ({
+      previewUrl: URL.createObjectURL(file),
+      file,
+    })); // Create image previews using Object URLs
+
+    setPreviewImages(previews);
+    setMultipleImageModalOpen(true) // Update state with previews
+  };
+  const handleFileSelect = (index, event) => {
+    const file = event.target.files[0]; // Get the new file
+    const updatedImages = [...previewImages]; // Create a copy of the current images
     if (file) {
-      const newImage = {
-        image: URL.createObjectURL(file),
-        designcode: "Loading...",
-        name: "Uploading...",
-        created_at: new Date().toLocaleString(),
-      };
-      setUploadedDesigns((prevDesigns) => [newImage, ...prevDesigns]);
-
-      await upload_designs_items(setIsLoading, file, setUploadedDesigns);
-      await list_uploaded_designs(setIsLoading, setUploadedDesigns);
+      const previewUrl = URL.createObjectURL(file); // Create a new preview URL
+      updatedImages[index] = { previewUrl, file }; // Update the specific image
+      setPreviewImages(updatedImages); // Update state
     }
   };
 
@@ -76,7 +103,7 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
     list_uploaded_designs(setIsLoading, setUploadedDesigns);
   }, []);
 
-  useEffect(() => {
+useEffect(() => {
     fetchDesigns();
   }, [fetchDesigns]);
 
@@ -106,7 +133,8 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
               </div>
               <div className="File____uploadbtn">
                 <button
-                  onClick={() => document.getElementById("fileInput").click()}
+                  // onClick={() => document.getElementById("fileInput").click()}
+                  onClick={()=> setMultipleImageModalOpen(true)}
                 >
                   Upload File{" "}
                   <LiaCloudUploadAltSolid style={{ fontSize: "22px" }} />
@@ -150,7 +178,7 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
             tiles={tiles}
           />
           <div className="DesignerDashboardcard">
-            <h3 className="HeadNewdesign">Uploaded</h3>
+ <h3 className="HeadNewdesign">Uploaded</h3>
 
             {isLoading ? (
               <div
@@ -248,6 +276,7 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
             )}
           </div>
         </div>
+<MultipleImageUpload open={multipleImageModalOpen} onClose={()=> setMultipleImageModalOpen(false)} previewImages={previewImages}  handleFileSelect={handleFileSelect} setUploadedDesigns={setUploadedDesigns} setMultipleImageModalOpen={setMultipleImageModalOpen}/>
         <div className="pagination">
           <Pagination
             count={Math.ceil(uploadedDesigns.length / 20)}

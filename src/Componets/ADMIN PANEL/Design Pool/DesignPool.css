@@ -116,11 +116,21 @@
 .Inner_Left p:nth-child(1) {
   font-weight: 400;
   color: #455173;
+  padding-top: 5px;
   padding-bottom: 5px;
+  font-size: 12px;
 }
 .Inner_Left p:nth-child(2) {
+  font-weight: 400;
   color: #455173;
-  font-size: 14px;
+  padding-bottom: 5px;
+  font-size: 12px;
+}
+.Inner_Left p:nth-child(3) {
+  font-weight: 400;
+  color: #455173;
+  padding-bottom: 5px;
+  font-size: 12px;
 }
 .Card_Details_Inner {
   display: flex;
@@ -230,6 +240,14 @@ background-color: #0566d433;
 background-color: #0566d433;
 border-radius: 0px 0px  20px 20px !important;
 }
+.dateUpdate_fix {
+  font-weight: 600;
+  font-size: 10px;
+  font-family: "Gilroy medium";
+  font-weight: 400;
+  color: #455173;
+  padding-bottom: 5px;
+}
 .setcolor{
   background-color: #0566d433;
   border-radius: 20px 20px 0px 0px !important;
@@ -240,4 +258,5 @@ border-radius: 0px 0px  20px 20px !important;
 .setcolor3{
   background-color: #0566d433;
   border-radius: 0px 0px  20px 20px !important;
+
 }

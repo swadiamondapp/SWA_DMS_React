@@ -70,7 +70,8 @@ const BasicDetailModal = ({
   folderIdA,
   designId,
   basicDetails,
-  updateEditFunction
+  updateEditFunction,
+  setSelectedIdsForDelet
 }) => {
   // create modal
 
@@ -200,15 +201,17 @@ const BasicDetailModal = ({
       'number.empty': 'Approximate MRP cannot be empty', // Handles cases where it is empty but should be a number
       'any.required': 'cannot be empty', // Handles cases where the field is missing
     }),
-    tag: Joi.array().items(Joi.required()).min(1).required().messages({
-     "array.min": "At least one tag is required",
+    tag: Joi.array().allow(null).allow('').messages({
+      "array.base": "cannot be empty",
+      "array.empty": "cannot be empty",
+      "array.min": " cannot be empty",
     }),
-    findings:Joi.array().min(1).required().messages({
-      'array.base': 'cannot be empty',
-      'array.empty': 'Product category cannot be empty',
-      'array.min': 'Product category cannot be empty',
+    findings: Joi.array().allow(null).allow('').messages({
+      "array.base": "cannot be empty",
+      "array.empty": " cannot be empty",
+      "array.min": "cannot be empty",
     }),
-    notes: Joi.string().messages({
+    notes: Joi.string().allow("").messages({
       "string.empty": `cannot be empty`,
     }),
   });
@@ -295,7 +298,9 @@ const BasicDetailModal = ({
           getSelectedDesign,
           ()=>{
             setCalculationData([])
-          }
+          },
+          setSelectedIdsForDelet
+
         );
       }
       // setShowAssignmentModal(true);
@@ -451,6 +456,7 @@ const BasicDetailModal = ({
     setSelectedDesigns([]);
     setShowRadioButtons(false);
     setSelectButtonLabel("Select");
+    setSelectedIdsForDelet([])
     setFormData(
       {
         SKU: "",
@@ -586,6 +592,7 @@ const BasicDetailModal = ({
                           name="length"
                           value={formData.length}
                           onChange={handleInput}
+                          onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
                         />
                         <div>
                           {errors.length && (
@@ -605,6 +612,7 @@ const BasicDetailModal = ({
                           name="width"
                           value={formData.width}
                           onChange={handleInput}
+                          onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
                         />
                         <div>
                           {errors.width && (
@@ -624,6 +632,7 @@ const BasicDetailModal = ({
                           name="height"
                           value={formData.height}
                           onChange={handleInput}
+                          onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
                         />
                         <div>
                           {errors.height && (
@@ -657,6 +666,7 @@ const BasicDetailModal = ({
                             width: "100%",
                             zIndex: "9999999",
                             background: "#006E7F1A",
+                            cursor:'pointer'
                           }}
                           options={metalTypeDropDown.map((item) => ({
                             value: item.id,
@@ -693,6 +703,7 @@ const BasicDetailModal = ({
                             width: "100%",
                             zIndex: 999999999,
                             background: "#006E7F1A",
+                            cursor:'pointer'
                           }}
                           options={diamonType.map((item) => ({
                             value: item.id,
@@ -719,6 +730,7 @@ const BasicDetailModal = ({
                           name="approxDiamondWeight"
                           value={formData.approxDiamondWeight}
                           onChange={handleInput}
+                          onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
                         />
                         <div>
                           {errors.approxDiamondWeight && (
@@ -740,6 +752,7 @@ const BasicDetailModal = ({
                           name="approxMetalWeights"
                           value={formData.approxMetalWeights}
                           onChange={handleInput}
+                          onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
                         />
                         <div>
                           {errors.approxMetalWeights && (
@@ -759,6 +772,7 @@ const BasicDetailModal = ({
                           name="approxMRP"
                           value={formData.approxMRP}
                           onChange={handleInput}
+
                           readOnly
                         />
                         {IsLoadingCalculation ? (

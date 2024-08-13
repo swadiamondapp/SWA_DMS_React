@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { TbDownload } from "react-icons/tb";
 import { MdViewModule, MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { LuArrowUpDown } from "react-icons/lu";
@@ -49,13 +49,19 @@ const DesignBtn = ({
   setAllSelected,
   setShowDownloadOptions,
   selectAllDesigns,
-  setGrid,
+setGrid,
   setDetail,
   setTiles,
   grid,
   detail,
   tiles,
   assignmentFolder,
+  downRefff,
+  assignmentDownRef,
+  delteItemsFromDesignPool,
+  setDeleteConfirmationOpen,
+  SelectedIdsForDelet,
+  setSelectedIdsForDelet
 }) => {
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -116,7 +122,7 @@ const DesignBtn = ({
           const link = document.createElement("a");
           link.href = blobUrl;
           // Use index or extract the image name from the URL to create a unique file name
-          link.download = `downloaded_image_${index}.jpg`;
+link.download = `design_pool_${index}.jpg`;
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
@@ -132,10 +138,13 @@ const DesignBtn = ({
     setShowDownloadOptions(false);
   };
 
-  const handleAllDownload = ()=> {
-    selectAllDesigns()
-
-  }
+  const handleAllDownload = () => {
+    selectAllDesigns();
+  };
+  const handleDesignPoolDelet = () => {
+    // delteItemsFromDesignPool()
+    setDeleteConfirmationOpen(true);
+  };
 
   return (
     <div
@@ -147,8 +156,7 @@ const DesignBtn = ({
         {location.pathname === "/unassigneddesigner" && (
           <h4 style={{ marginRight: "59%" }}>Not Started Assignements</h4>
         )}
-
-        <div
+<div
           className=""
           style={{
             display: "flex",
@@ -158,6 +166,19 @@ const DesignBtn = ({
             top: "-10px",
           }}
         >
+          {location.pathname === "/designpool" &&
+            SelectedIdsForDelet.length > 0 && (
+              <div className="Download_ParentD">
+                <button
+                  className="D_downlodBtn"
+                  style={{ background: "red" }}
+                  onClick={handleDesignPoolDelet}
+                >
+                  Delete
+                </button>
+              </div>
+            )}
+
           {location.pathname !== "/assignmentpanel" &&
             location.pathname !== "/designdashboard" &&
             location.pathname !== "/designerassignview" &&
@@ -165,7 +186,7 @@ const DesignBtn = ({
             location.pathname !== "/finishedProject" &&
             location.pathname !== "/unassigneddesigner" &&
             location.pathname !== `/designerassignview/${id}` && (
-              <div className="Download_ParentD">
+              <div className="Download_ParentD" ref={downRefff}>
                 <button
                   className="D_downlodBtn"
                   onClick={toggleDownloadOptions}
@@ -173,23 +194,24 @@ const DesignBtn = ({
                   Download <TbDownload />
                 </button>
                 {showDownloadOptions && (
-                <div className="Download_Sub">
-                  <p onClick={handleAllDownload}>All</p>
-                  <p onClick={()=> handleDownloadMultiple(selectedImages)}>Selected</p>
-                </div>
-              )}
-            </div>
-          )}
-        {location.pathname !== "/designdashboard" &&
-          location.pathname !== "/votorscustomization" &&
-          location.pathname !== "/unassigneddesigner" &&
-          location.pathname !== "/finishedProject" && (
-            <button className="D_selectBtn" onClick={toggleRadioButtons}>
-              {selectButtonLabel}
-            </button>
-          )}
+                  <div className="Download_Sub">
+                    <p onClick={handleAllDownload}>All</p>
+                    <p onClick={() => handleDownloadMultiple(selectedImages)}>
+                      Selected
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
 
-
+          {location.pathname !== "/designdashboard" &&
+            location.pathname !== "/votorscustomization" &&
+            location.pathname !== "/unassigneddesigner" &&
+            location.pathname !== "/finishedProject" && (
+              <button className="D_selectBtn" onClick={toggleRadioButtons}>
+                {selectButtonLabel}
+              </button>
+            )}
           {location.pathname !== "/assignmentpanel" &&
             location.pathname !== "/designdashboard" &&
             location.pathname === "/designpool" &&
@@ -199,7 +221,7 @@ const DesignBtn = ({
             location.pathname !== "/votorscustomization" &&
             location.pathname !== `/designerassignview/${id}` &&
             location.pathname !== "/finishedProject" && (
-              <div className="Parent_MoveTo">
+<div className="Parent_MoveTo" ref={assignmentDownRef}>
                 <button className="D_moveBtn" onClick={toggleMoveOptions}>
                   Move to <MdOutlineKeyboardArrowDown />
                 </button>
@@ -242,8 +264,7 @@ const DesignBtn = ({
                 </button>
               </div>
             )}
-
-          {location.pathname !== "/votorscustomization" &&
+{location.pathname !== "/votorscustomization" &&
             location.pathname !== "/assignmentpanel" &&
             location.pathname !== "/unassigneddesigner" &&
             location.pathname !== "/designpool" &&
@@ -279,7 +300,6 @@ const DesignBtn = ({
                 )}
               </button>
             )}
-
           {location.pathname === "/assignmentpanel" && (
             <button
               onClick={handleSort}
@@ -321,6 +341,7 @@ const DesignBtn = ({
         setSelectedDesigns={setSelectedDesigns}
         setShowRadioButtons={setShowRadioButtons}
         setSelectButtonLabel={setSelectButtonLabel}
+        setSelectedIdsForDelet={ setSelectedIdsForDelet}
       />
       <AssignToModal
         open={isModalOpenAssign}

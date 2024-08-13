@@ -5,8 +5,10 @@ import print from "../../../assets/printer.png";
 import ReactToPrint, { useReactToPrint } from "react-to-print";
 import { LuPrinter } from "react-icons/lu";
 import RendersProductPrint from "../RendersProductPrint/RendersProductPrint";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 
 const RendersDetailPage = ({ folderDetails, sidebarExpanded }) => {
+  const navigate = useNavigate();
   console.log("folderDetails", folderDetails);
 
   const printRef = useRef();
@@ -48,6 +50,15 @@ const RendersDetailPage = ({ folderDetails, sidebarExpanded }) => {
   
     return `${day} ${month} ${year}`;
   };
+  const handleForlderDetailsVeiw = (id,designCode) => {
+    navigate(`/assignmentviewsAll/${id}`, {
+      state: {
+      
+        detailsViewFolderName: designCode,
+      
+      },
+    });
+  };
 
   return (
     <>
@@ -57,7 +68,7 @@ const RendersDetailPage = ({ folderDetails, sidebarExpanded }) => {
           key={item.id}
           style={{ marginLeft: sidebarExpanded ? "218px" : "120px" }}
         >
-          <div className="Detail_Card">
+          <div className="Detail_Card" onClick={() => handleForlderDetailsVeiw(item.id,item.designCode)}>
             <img src={item.file_2d} alt="" />
             <span>
               POSTED ON:   <b>{formatDate(item.created_at)}</b>

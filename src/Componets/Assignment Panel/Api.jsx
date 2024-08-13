@@ -228,7 +228,8 @@ export const move_to_assignment = async (
   setMovedItemsId,
   setFormData,
   getSelectedDesign,
-  callBack
+  callBack,
+  setSelectedIdsForDelet,
   
   
 ) => {
@@ -285,6 +286,7 @@ export const move_to_assignment = async (
         }
       )
       callBack()
+      setSelectedIdsForDelet([])
     }
   } catch (error) {
     console.error("Error moving designs:", error);

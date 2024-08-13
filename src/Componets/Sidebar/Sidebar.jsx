@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import "./Sidebar.css";
 import logo from "../../assets/logo.png";
 import userimg from "../../assets/user.png";
@@ -28,14 +28,28 @@ import SlotView from "../SlotVIew/SlotView";
 import SlotCreation from "../SlotCreation/SlotCreation";
 import CustomiseRequest from "../CustomiseRequest/CustomiseRequiest";
 import DesignPools from "../DesignPoolExtended/DesignPools";
+import { useParams } from "react-router-dom";
 
 const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
   // const [sidebarExpanded, setSidebarExpanded] = useState(true);
+  const { id } = useParams();
+  const location = useLocation();
+  const [activeLink, setActiveLink] = useState(location.pathname)
   const usertype = localStorage.getItem("Usertype");
   const toggleSidebar = () => {
     setSidebarExpanded(!sidebarExpanded);
   };
-  const location = useLocation();
+
+  useEffect(()=> {
+    if (sidebarExpanded) {
+      localStorage.setItem("sidebarExpandtrueOrNot",sidebarExpanded)
+    }
+    else {
+      localStorage.setItem("sidebarExpandtrueOrNot",sidebarExpanded)
+    }
+  },[])
+  console.log(sidebarExpanded,"sidebarExpandedsidebar")
+  console.log(activeLink,"currentLocation")
   const renderLinks = () => {
     if (usertype === "ADMIN") {
       return (
@@ -43,7 +57,7 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
           {/* Admin Panel */}
 
           <Link to="/">
-            <div className="Links">
+            <div className={`Links ${activeLink === "/" ? "activeLinks" : ""}`}>
               <div className="horizontal_line_sidebar"></div>
               <div className="lin_container"></div>
               <img src={userimg} alt="" />
@@ -51,7 +65,7 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
             </div>
           </Link>
           <Link to="/designpool">
-            <div className="Links">
+            <div className={`Links ${activeLink === "/designpool" ? "activeLinks" : ""}`}>
             <div className="horizontal_line_sidebar"></div>
             <div className="lin_container"></div>
               <img src={designimg} alt="" />
@@ -59,7 +73,7 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
             </div>
           </Link>
           <Link to='/masterspage/findings'>
-          <div className="Links">
+          <div className={`Links ${activeLink === "/masterspage/findings" ? "activeLinks" : ""}`}>
           <div className="horizontal_line_sidebar"></div>
           <div className="lin_container"></div>
             <img src={mastersimg} alt="" />
@@ -67,7 +81,7 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
           </div>
           </Link>
           <Link to="/assignmentpanel">
-            <div className="Links">
+            <div className={`Links ${activeLink === "/assignmentpanel" ? "activeLinks" : ""}`}>
             <div className="horizontal_line_sidebar"></div>
             <div className="lin_container"></div>
               <img src={assignmentimg} alt="" />
@@ -75,7 +89,7 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
             </div>
           </Link>
           <Link to="/chat">
-            <div className="Links">
+            <div className={`Links ${activeLink === "/chat" ? "activeLinks" : ""}`}>
             <div className="horizontal_line_sidebar"></div>
             <div className="lin_container"></div>
               <img src={chatboximg} alt="" />
@@ -83,7 +97,7 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
             </div>
           </Link>
           <Link to="/otherlogin">
-            <div className="Links">
+            <div className={`Links ${activeLink === "/otherlogin" ? "activeLinks" : ""}`}>
             <div className="horizontal_line_sidebar"></div>
             <div className="lin_container"></div>
               <img src={loginzimg} alt="" />
@@ -106,7 +120,7 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
         <>
           {/* For Designer Module */}
           <Link to="/designdashboard">
-            <div className="Links">
+            <div className={`Links ${activeLink === "/designdashboard" ? "activeLinks" : ""}`}>
             <div className="horizontal_line_sidebar"></div>
             <div className="lin_container"></div>
               <img src={userimg} alt="" />
@@ -114,7 +128,7 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
             </div>
           </Link>
           <Link to="/designerassign">
-            <div className="Links">
+            <div className={`Links ${activeLink === "/designerassign" || activeLink===`/designerassignview/${id}` ? "activeLinks" : ""}`}>
             <div className="horizontal_line_sidebar"></div>
             <div className="lin_container"></div>
               <img src={assignmentimg} alt="" />
@@ -122,7 +136,7 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
             </div>
           </Link>
           <Link to="/chat">
-            <div className="Links">
+            <div className={`Links ${activeLink === "/chat" ? "activeLinks" : ""}`}>
             <div className="horizontal_line_sidebar"></div>
             <div className="lin_container"></div>
               <img src={chatboximg} alt="" />
@@ -130,7 +144,7 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
             </div>
           </Link>
           <Link to="/Customizedorder">
-            <div className="Links">
+            <div className={`Links ${activeLink === "/Customizedorder" ? "activeLinks" : ""}`}>
             <div className="horizontal_line_sidebar"></div>
             <div className="lin_container"></div>
               <img src={customeimg} alt="" />
@@ -138,7 +152,7 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
             </div>
           </Link>
           <Link to="/unassigneddesigner">
-            <div className="Links">
+            <div className={`Links ${activeLink === "/unassigneddesigner" ? "activeLinks" : ""}`}>
             <div className="horizontal_line_sidebar"></div>
             <div className="lin_container"></div>
               <img src={sideStar} alt="" />
@@ -161,7 +175,7 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
         <>
           {/* For Votors Panel */}
           <Link to="/votorspanal">
-            <div className="Links">
+            <div className={`Links ${activeLink === "/votorspanal" ? "activeLinks" : ""}`}>
             <div className="horizontal_line_sidebar"></div>
             <div className="lin_container"></div>
               <img src={userimg} alt="" />
@@ -169,7 +183,7 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
             </div>
           </Link>
           <Link to="/chat">
-            <div className="Links">
+            <div className={`Links ${activeLink === "/chat" ? "activeLinks" : ""}`}>
             <div className="horizontal_line_sidebar"></div>
             <div className="lin_container"></div>
               <img src={chatboximg} alt="" />
@@ -177,7 +191,7 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
             </div>
           </Link>
           <Link to="/votorscustomization">
-            <div className="Links">
+            <div className={`Links ${activeLink === "/votorscustomization" ? "activeLinks" : ""}`}>
             <div className="horizontal_line_sidebar"></div>
             <div className="lin_container"></div>
               <img src={customeimg} alt="" />
@@ -185,7 +199,7 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
             </div>
           </Link>
           <Link to="/gallery">
-            <div className="Links">
+            <div className={`Links ${activeLink === "/gallery" ? "activeLinks" : ""}`}>
             <div className="horizontal_line_sidebar"></div>
             <div className="lin_container"></div>
               <img src={galleryimg} alt="" />
@@ -208,7 +222,7 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
         <>
           {/* CAD PANEL SIDEBAR */}
           <Link to="/CadAssignment">
-            <div className="Links">
+            <div className={`Links ${activeLink === "/CadAssignment" ? "activeLinks" : ""}`}>
             <div className="horizontal_line_sidebar"></div>
             <div className="lin_container"></div>
               <img src={userimg} alt="" />
@@ -216,7 +230,7 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
             </div>
           </Link>
           <Link to="/chat">
-            <div className="Links">
+            <div className={`Links ${activeLink === "/chat" ? "activeLinks" : ""}`}>
             <div className="horizontal_line_sidebar"></div>
             <div className="lin_container"></div>
               <img src={chatboximg} alt="" />
@@ -224,7 +238,7 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
             </div>
           </Link>
           <Link to="/FinishedProduct">
-            <div className="Links">
+            <div className={`Links ${activeLink === "/FinishedProduct" || activeLink===`/folderdetails/${id}` ? "activeLinks" : ""}`}>
             <div className="horizontal_line_sidebar"></div>
             <div className="lin_container"></div>
               <img src={customeimg} alt="" />
@@ -240,7 +254,7 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
           {" "}
           {/* CENTRAL HUB SIDEBAR */}
           <Link to="/centralDashboard">
-            <div className="Links">
+          <div className={`Links ${activeLink === "/centralDashboard" || activeLink===`/centralfolderdetails/${id}` ? "activeLinks" : ""}`}>
             <div className="horizontal_line_sidebar"></div>
             <div className="lin_container"></div>
               <img src={userimg} alt="" />
@@ -248,7 +262,7 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
             </div>
           </Link>
           <Link to="/chat">
-            <div className="Links">
+            <div className={`Links ${activeLink === "/chat" ? "activeLinks" : ""}`}>
             <div className="horizontal_line_sidebar"></div>
             <div className="lin_container"></div>
               <img src={chatboximg} alt="" />
@@ -256,7 +270,7 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
             </div>
           </Link>
           <Link to="/slot">
-            <div className="Links">
+            <div className={`Links ${activeLink === "/slot" ? "activeLinks" : ""}`}>
             <div className="horizontal_line_sidebar"></div>
             <div className="lin_container"></div>
               <img src={sideStar} alt="" />
@@ -264,7 +278,7 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
             </div>
           </Link>
           <Link to="/centralhubtransfer">
-            <div className="Links">
+            <div className={`Links ${activeLink === "/centralhubtransfer" ? "activeLinks" : ""}`}>
             <div className="horizontal_line_sidebar"></div>
             <div className="lin_container"></div>
               <img src={Tranfer} alt="" />
@@ -272,7 +286,7 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
             </div>
           </Link>
           <Link to="/centralhubscan">
-            <div className="Links">
+            <div className={`Links ${activeLink === "/centralhubscan" ? "activeLinks" : ""}`}>
             <div className="horizontal_line_sidebar"></div>
             <div className="lin_container"></div>
               <img src={scan} alt="" />
@@ -295,7 +309,7 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
         <>
           {/* RENDERS PANEL SIDEVAR */}
           <Link to="/renderCard">
-            <div className="Links">
+            <div className={`Links ${activeLink === "/renderCard" || activeLink===`/rendersdetailing/${id}` ? "activeLinks" : ""}`}>
             <div className="horizontal_line_sidebar"></div>
             <div className="lin_container"></div>
               <img src={userimg} alt="" />
@@ -303,7 +317,7 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
             </div>
           </Link>
           <Link to="/finishedProject">
-            <div className="Links">
+            <div className={`Links ${activeLink === "/finishedProject" || activeLink === `/finished/${id}` ? "activeLinks" : ""}`}>
             <div className="horizontal_line_sidebar"></div>
             <div className="lin_container"></div>
               <img src={customeimg} alt="" />
@@ -311,7 +325,7 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
             </div>
           </Link>
           <Link to="/chat">
-            <div className="Links">
+            <div className={`Links ${activeLink === "/chat" ? "activeLinks" : ""}`}>
             <div className="horizontal_line_sidebar"></div>
             <div className="lin_container"></div>
               <img src={chatboximg} alt="" />
@@ -327,7 +341,7 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
         <>
           {/* WAREHOUSE PANEL SIDEBAR */}
           <Link to="/wareHouse">
-            <div className="Links">
+            <div className={`Links ${activeLink === "/wareHouse" ? "activeLinks" : ""}`}>
             <div className="horizontal_line_sidebar"></div>
             <div className="lin_container"></div>
               <img src={userimg} alt="" />
@@ -335,7 +349,7 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
             </div>
           </Link>
           <Link to="/chat">
-            <div className="Links">
+            <div className={`Links ${activeLink === "/chat" ? "activeLinks" : ""}`}>
             <div className="horizontal_line_sidebar"></div>
             <div className="lin_container"></div>
               <img src={chatboximg} alt="" />
@@ -343,7 +357,7 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
             </div>
           </Link>
           <Link to="/customRequestTable">
-            <div className="Links">
+            <div className={`Links ${activeLink === "/customRequestTable" ? "activeLinks" : ""}`}>
             <div className="horizontal_line_sidebar"></div>
             <div className="lin_container"></div>
               <img src={customeimg} alt="" />
@@ -359,7 +373,7 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
             </div>
           </Link> */}
           <Link to="/scan">
-            <div className="Links">
+            <div className={`Links ${activeLink === "/scan" ? "activeLinks" : ""}`}>
             <div className="horizontal_line_sidebar"></div>
             <div className="lin_container"></div>
               <img src={pack} alt="" />
@@ -367,7 +381,7 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
             </div>
           </Link>
           <Link to="/workdone">
-            <div className="Links">
+            <div className={`Links ${activeLink === "/workdone" ? "activeLinks" : ""}`}>
             <div className="horizontal_line_sidebar"></div>
             <div className="lin_container"></div>
               <img src={done} alt="" />
@@ -375,7 +389,7 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
             </div>
           </Link>
           <Link to="/newscanmodule">
-            <div className="Links">
+            <div className={`Links ${activeLink === "/newscanmodule" ? "activeLinks" : ""}`}>
             <div className="horizontal_line_sidebar"></div>
             <div className="lin_container"></div>
               <img src={scan} alt="" />

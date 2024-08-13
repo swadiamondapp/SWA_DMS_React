@@ -62,6 +62,7 @@ import WorkDone from "./Componets/WorkdoneWarehorse/WorkDone/WorkDone";
 import RendersDetailing from "./Pages/RendersDetailing/RendersDetailing";
 import ScanModule from "./Pages/ScanModule/ScanModule";
 import CentralHubScan from "./Componets/CentalHub/CentralHubScan/CentralHubScan";
+import AssignmentDetailsViewsAllPageView from "./Pages/AssignmentDetailsViewsAllPage/AssignmentDetailsViewsAllPageView";
 import StatusPage from "./Pages/StatusPage/StatusPage";
 import NewSlotPrint from "./Componets/CENTRAL HUB/Slot/NewSlotPrint";
 
@@ -77,6 +78,10 @@ function App() {
             <Route
               path="/assignmentview/:id"
               element={<AssignmentViewPage />}
+            />
+             <Route
+              path="/assignmentviewsAll/:id"
+              element={<AssignmentDetailsViewsAllPageView />}
             />
             <Route path="/designpool" element={<DesignPoolView />} />
             <Route path="/assignmentpanel" element={<AssignmentPanalPage />} />
