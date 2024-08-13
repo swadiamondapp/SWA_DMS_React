@@ -115,6 +115,7 @@
 .Inner_Left p:nth-child(1) {
   font-weight: 400;
   color: #455173;
+  padding-top: 5px;
   padding-bottom: 5px;
   font-size: 12px;
 }
