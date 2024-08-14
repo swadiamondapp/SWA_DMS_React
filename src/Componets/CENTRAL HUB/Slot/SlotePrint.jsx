@@ -3,6 +3,7 @@ import "./SlotePrint.css";
 import qr from "../../../assets/qr.png";
 import ring from "../../../assets/ringa.png";
 import cross from "../../../assets/cross.png";
+import QRCodeGenerator from "../../QRCodeGenerator/QRCodeGenerator";
 
 const SlotePrint = forwardRef(({ slotView }, ref) => {
   const formatDate = (isoString) => {
@@ -65,12 +66,7 @@ const SlotePrint = forwardRef(({ slotView }, ref) => {
                     <span>Metal Type : {design.metal_type}</span>
                   </div>
                   <div className="print_qr">
-                    <img
-                      style={{ width: "50px", height: "50px" }}
-                      src={qr}
-                      alt=""
-                      srcset=""
-                    />
+                    <QRCodeGenerator value={design.designcode} />
                   </div>
                 </div>
                 <div className="img_section">
