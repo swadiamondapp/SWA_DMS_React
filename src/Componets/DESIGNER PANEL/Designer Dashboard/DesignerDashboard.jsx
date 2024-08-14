@@ -15,7 +15,7 @@ import {
 } from "./Api";
 import MultipleImageUpload from "../../MultipleImageUploadModal/MultipleImageUpload";
 import { useLocation, Link, useNavigate } from "react-router-dom";
-import DesignerFilterModal from "../../DesignerFilterModal/DesignerFilterModal";
+// import DesignerFilterModal from "../../DesignerFilterModal/DesignerFilterModal";
 const DesignerDashboard = ({ sidebarExpanded }) => {
   const [uploadInstructionsVisible, setUploadInstructionsVisible] =
     useState(true);
@@ -28,7 +28,7 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
   const [uploadImage, setUploadImage] = useState([]);
   const [previewImages, setPreviewImages] = useState([]);
   const [multipleImageModalOpen, setMultipleImageModalOpen] = useState(false);
-  const [openFilterModal, setOpenFilterModal] = useState(false);
+
 
   const navigate = useNavigate();
   const [grid, setGrid] = useState(true);
@@ -178,8 +178,7 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
             grid={grid}
             detail={detail}
             tiles={tiles}
-            openFilterModal={openFilterModal}
-            setOpenFilterModal={setOpenFilterModal}
+      
           />
           <div className="DesignerDashboardcard">
             <h3 className="HeadNewdesign">Uploaded</h3>
@@ -300,13 +299,7 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
           />
         </div>
       </div>
-      {openFilterModal && (
-        <DesignerFilterModal
-          open={openFilterModal}
-          onClose={() => setOpenFilterModal(false)}
-          setOpenFilterModal={setOpenFilterModal}
-        />
-      )}
+   
     </div>
   );
 };

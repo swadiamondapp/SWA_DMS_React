@@ -64,7 +64,7 @@ const DesignBtn = ({
   setDeleteConfirmationOpen,
   SelectedIdsForDelet,
   setSelectedIdsForDelet,
-openFilterModal,
+  openFilterModal,
   setOpenFilterModal,
   filter,
   setFilter,
@@ -94,14 +94,10 @@ openFilterModal,
     setSort(!sort);
   };
 
-    
   const handleFilter = () => {
     setFilter(true);
   };
 
- 
-
-  
   const handleView = () => {
     setView(!view);
   };
@@ -163,7 +159,7 @@ openFilterModal,
     setOpenFilterModal(true);
   };
 
-  console.log(openFilterModal,"openFilterModal")
+
 
   return (
     <div
@@ -335,13 +331,13 @@ openFilterModal,
               )}
             </button>
           )}
-          {location.pathname === "/designdashboard" && (
+          {location.pathname === `/designerassignview/${id}` && (
             <button className="D_View_Sort_Filter" onClick={handleFilderModal}>
-              <RiFilter3Line /> Filter
+              <RiFilter3Line /> Filterr
             </button>
           )}
 
-<button className="D_View_Sort_Filter" onClick={handleFilter}>
+          <button className="D_View_Sort_Filter" onClick={handleFilter}>
             <RiFilter3Line /> Filter
           </button>
           {location.pathname === "/votorscustomization" && (
@@ -386,8 +382,6 @@ openFilterModal,
         }}
         votersSetData={votersSetData}
       />
-
-    
 
       {/* <AssignmentModal
       open={openAdminFolder}
