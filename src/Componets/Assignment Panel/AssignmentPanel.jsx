@@ -53,6 +53,7 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
   const [IdOfDeleteAssignment, setIdOfDeleteAssignment] = useState([]);
 
   const [filter, setFilter] = useState(false);
+  const [activeFilter, setActiveFilter] = useState('');
 
   const location = useLocation();
   const dotsRef = useRef(null);
@@ -229,12 +230,15 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
 
   const handleSortByDesigner = () => {
     sort_assignmentpanel_bydesigner(setIsLoading, setData);
+    setActiveFilter("designer")
   };
   const handleSortByAdmin = () => {
     sort_assignmentpanel_byadmin(setIsLoading, setData);
+    setActiveFilter("admin")
   };
   const handleSortByAll = () => {
     list_assignment_panel(setIsLoading, setData);
+    setActiveFilter("all")
   };
 
   // const handleFilter = async () => {
@@ -304,6 +308,7 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
           assignmentFolder={assignmentFolder}
           filter={filter}
           setFilter={setFilter}
+          activeFilter={activeFilter}
           // setcreateFolderModal={setcreateFolderModal}
           // handleCreateFolderModal
         />

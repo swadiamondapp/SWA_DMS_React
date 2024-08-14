@@ -64,6 +64,7 @@ const DesignBtn = ({
   setSelectedIdsForDelet,
   filter,
   setFilter,
+  activeFilter
 }) => {
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -318,11 +319,26 @@ const DesignBtn = ({
             >
               <LuArrowUpDown /> Sort
               {sort && (
-                <div className="sortData">
-                  <span onClick={handleSortByAll}>All</span>
-                  <span onClick={handleSortByDesigner}>Designer added</span>
-                  <span onClick={handleSortByAdmin}>Admin added</span>
-                </div>
+               <div className="sortData">
+               <span
+                 className={activeFilter === 'all' ? 'setcolor' : ''}
+                 onClick={handleSortByAll}
+               >
+                 All
+               </span>
+               <span
+                 className={activeFilter === 'designer' ? 'setcolor2' : ''}
+                 onClick={handleSortByDesigner}
+               >
+                 Designer added
+               </span>
+               <span
+                 className={activeFilter === 'admin' ? 'setcolor3' : ''}
+                 onClick={handleSortByAdmin}
+               >
+                 Admin added
+               </span>
+             </div>
               )}
             </button>
           )}
