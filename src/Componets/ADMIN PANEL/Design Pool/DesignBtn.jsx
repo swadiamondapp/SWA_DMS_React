@@ -68,6 +68,7 @@ const DesignBtn = ({
   setOpenFilterModal,
   filter,
   setFilter,
+  activeFilter,
 }) => {
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -158,8 +159,6 @@ const DesignBtn = ({
   const handleFilderModal = () => {
     setOpenFilterModal(true);
   };
-
-
 
   return (
     <div
@@ -324,9 +323,24 @@ const DesignBtn = ({
               <LuArrowUpDown /> Sort
               {sort && (
                 <div className="sortData">
-                  <span onClick={handleSortByAll}>All</span>
-                  <span onClick={handleSortByDesigner}>Designer added</span>
-                  <span onClick={handleSortByAdmin}>Admin added</span>
+                  <span
+                    className={activeFilter === "all" ? "setcolor" : ""}
+                    onClick={handleSortByAll}
+                  >
+                    All
+                  </span>
+                  <span
+                    className={activeFilter === "designer" ? "setcolor2" : ""}
+                    onClick={handleSortByDesigner}
+                  >
+                    Designer added
+                  </span>
+                  <span
+                    className={activeFilter === "admin" ? "setcolor3" : ""}
+                    onClick={handleSortByAdmin}
+                  >
+                    Admin added
+                  </span>
                 </div>
               )}
             </button>
@@ -336,10 +350,11 @@ const DesignBtn = ({
               <RiFilter3Line /> Filterr
             </button>
           )}
-
-          <button className="D_View_Sort_Filter" onClick={handleFilter}>
-            <RiFilter3Line /> Filter
-          </button>
+{location.pathname === "/assignmentpanel" && (
+            <button className="D_View_Sort_Filter" onClick={handleFilter}>
+              <RiFilter3Line /> Filter
+            </button>
+          )}
           {location.pathname === "/votorscustomization" && (
             <button
               className="D_downlodBtn"
