@@ -1,0 +1,15 @@
+.edit_fields{
+    width: 100%;
+    display: flex;
+    font-size: 12px;
+    /* padding-bottom: 10px; */
+    justify-content: space-between;
+    /* background-color: red; */
+    padding-bottom: 10px;
+    gap: 10px;
+}
+.edit_fields_span{
+    font-size: 14px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}

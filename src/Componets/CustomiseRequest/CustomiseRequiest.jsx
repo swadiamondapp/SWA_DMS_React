@@ -328,7 +328,12 @@ const CustomiseRequest = ({
                     <div className="subTitle-metal">
                       <div className="ProductInformation">
                         <span>Budget</span>
-                        <span>{Math.floor(dataToDisplay.budget)}</span>
+                        <span>
+                          {" "}
+                          {dataToDisplay.actual_price === 0
+                            ? Math.floor(dataToDisplay.budget)
+                            : Math.floor(dataToDisplay.actual_price)}
+                        </span>
                       </div>
                       <div className="ProductInformation">
                         <span>SWA Product SKU</span>
@@ -388,7 +393,7 @@ const CustomiseRequest = ({
                             >
                               edit <img src={editIcon} alt="" />
                             </button>
-                           )} 
+                          )}
                         </>
                       )}
                     </div>
