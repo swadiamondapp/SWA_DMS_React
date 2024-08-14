@@ -8,6 +8,7 @@ import { tag_table_data } from "../MastersSection/ApiMasters/ApiMasters";
 import {
   filterAdminDesigns,
   list_all_designers,
+  list_assignment_panel,
   product_category_basicDetails,
 } from "../Assignment Panel/Api";
 import { list_uploaded_designs } from "../DESIGNER PANEL/Designer Dashboard/Api";
@@ -15,13 +16,34 @@ import moment from "moment";
 
 const { RangePicker } = DatePicker;
 
-const AdminFilter = ({ filter, setFilter, setData }) => {
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [filterTag, setFilterTag] = useState("");
-  const [filterCategory, setFilterCategory] = useState("");
-  const [filterDesigner, setfilterDesigner] = useState("");
-
+const AdminFilter = ({
+  filter,
+  setFilter,
+  setData,
+  startDate,
+  setStartDate,
+  endDate,
+  setEndDate,
+  filterTag,
+  setFilterTag,
+  filterCategory,
+  setFilterCategory,
+  filterDesigner,
+  setFilterDesigner,
+  filterMaxPrice,
+  setFilterMaxPrice,
+  filterMinPrice,
+  setFilterMinPrice,
+  setDd,
+  dd,
+}) => {
+  // const [startDate, setStartDate] = useState("");
+  // const [endDate, setEndDate] = useState("");
+  // const [filterTag, setFilterTag] = useState("");
+  // const [filterCategory, setFilterCategory] = useState("");
+  // const [filterDesigner, setFilterDesigner] = useState("");
+  // const [filterMaxPrice, setFilterMaxPrice] = useState("");
+  // const [filterMinPrice, setFilterMinPrice] = useState("");
 
   const [tags, setTags] = useState([]);
   const [productCategory, setProductCategory] = useState([]);
@@ -40,6 +62,25 @@ const AdminFilter = ({ filter, setFilter, setData }) => {
       duration: 500,
     });
   }, []);
+
+  // useEffect(() => {
+  //   if (filter) {
+  //     const { startDate, endDate, tag, category, designer } = filter;
+
+  //     if (startDate && endDate) {
+  //       setStartDate(startDate);
+  //       setEndDate(endDate);
+  //     } else {
+  //       setStartDate("");
+  //       setEndDate("");
+  //     }
+
+  //     setFilterTag(tag || "");
+  //     setFilterCategory(category || "");
+  //     setFilterDesigner(designer || "");
+  //   }
+  // }, [filter]);
+
   const handleFilterClose = () => {
     setFilter(false);
   };
@@ -47,21 +88,30 @@ const AdminFilter = ({ filter, setFilter, setData }) => {
   const onSearch = (value) => {
     console.log("search:", value);
   };
+
   const filterOption = (input, option) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
 
-  const onDateChange = (dates) => {
-    if (dates) {
-      const formattedStartDate = dates[0].format("YYYY-MM-DD");
-      const formattedEndDate = dates[1].format("YYYY-MM-DD");
+  // const handleChange = (dates) => {
+  //   const [start, end] = dates;
+  //   setStartDate(start);
+  //   setEndDate(end);
+  //   console.log("Selected dates: ", { start, end });
+  // };
 
-      setStartDate(formattedStartDate);
-      setEndDate(formattedEndDate);
-    } else {
-      setStartDate(null);
-      setEndDate(null);
+  const handleChange = (values) => {
+    if (values) {
+      const [start, end] = values;
+      setDd(values);
+      const formattedStart = start.format("YYYY-MM-DD");
+      const formattedEnd = end.format("YYYY-MM-DD");
+      setStartDate(formattedStart);
+      setEndDate(formattedEnd);
+      console.log("Formatted dates: ", values);
     }
   };
+
+  console.log("dd", dd);
 
   const handleFilter = async () => {
     try {
@@ -72,17 +122,32 @@ const AdminFilter = ({ filter, setFilter, setData }) => {
         filterTag,
         filterCategory,
         filterDesigner,
-        setData
+        setData,
+        filterMaxPrice,
+        filterMinPrice,
+        setFilter
       );
     } catch (error) {
       console.log(error);
     }
   };
 
-
-
-  console.log("startDate", startDate);
-  console.log("designers", designers);
+  const handleClear = async () => {
+    try {
+      await list_assignment_panel(setIsLoading, setData);
+      setStartDate("");
+      setEndDate("");
+      setFilterCategory("");
+      setFilterTag("");
+      setFilterDesigner("");
+      setFilterMaxPrice("");
+      setFilterMinPrice("");
+      setDd("");
+      setFilter(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -118,7 +183,7 @@ const AdminFilter = ({ filter, setFilter, setData }) => {
               className="btn_close"
               src={close}
               alt=""
-              srcset=""
+              srcSet=""
             />
           </button>
         </div>
@@ -133,14 +198,16 @@ const AdminFilter = ({ filter, setFilter, setData }) => {
         >
           <span className="edit_fields_span">Select From Date & End Date</span>
           <RangePicker
+            onChange={handleChange}
             style={{
               width: "70%",
               height: "40px",
             }}
             size={12}
-            onChange={onDateChange}
+            value={dd}
           />
         </div>
+
         <div className="productCategory">
           <label htmlFor="" className="edit_fields_span">
             Product Category
@@ -154,7 +221,7 @@ const AdminFilter = ({ filter, setFilter, setData }) => {
             onSearch={onSearch}
             filterOption={filterOption}
             style={{
-              width:"99%",
+              width: "99%",
               height: "40px",
               zIndex: "9999999",
               background: "#006E7F1A",
@@ -164,7 +231,6 @@ const AdminFilter = ({ filter, setFilter, setData }) => {
               value: tag.id,
             }))}
           />
-          <div></div>
         </div>
 
         <div
@@ -184,7 +250,7 @@ const AdminFilter = ({ filter, setFilter, setData }) => {
               placeholder="-Select-"
               optionFilterProp="children"
               value={filterDesigner}
-              onChange={(value) => setfilterDesigner(value)}
+              onChange={(value) => setFilterDesigner(value)}
               onSearch={onSearch}
               filterOption={filterOption}
               style={{
@@ -193,12 +259,13 @@ const AdminFilter = ({ filter, setFilter, setData }) => {
                 zIndex: "9999999",
                 background: "#006E7F1A",
               }}
-              options={designers.map((tag) => ({
-                label: tag.name,
-                value: tag.name,
+              options={designers.map((designer) => ({
+                label: designer.name,
+                value: designer.name,
               }))}
             />
           </div>
+
           <div className="productCategory" style={{ width: "48%" }}>
             <label htmlFor="" className="edit_fields_span">
               Tags
@@ -225,53 +292,85 @@ const AdminFilter = ({ filter, setFilter, setData }) => {
           </div>
         </div>
 
-        <div className="productCategory" style={{ width: "48%" }}>
-          <label htmlFor="" className="edit_fields_span">
-            Price Range
-          </label>
-          <Select
-            showSearch
-            placeholder="-Select-"
-            optionFilterProp="children"
-            // value={formData.productCategory}
-            // onChange={(value) =>
-            //   setFormData((prevState) => ({
-            //     ...prevState,
-            //     productCategory: [value],
-            //   }))
-            // }
-            // onSearch={onSearch}
-            // filterOption={filterOption}
-            style={{
-              width: "100%",
-              height: "40px",
-              zIndex: "9999999",
-              background: "#006E7F1A",
-            }}
-            // options={ProudctCategory.map((tag) => ({
-            //   label: tag.name,
-            //   value: tag.id,
-            // }))}
-          />
-        </div>
-
-        <button
+        <div
+          className=""
           style={{
             width: "100%",
-            height: "40px",
-            backgroundColor: "black",
-            color: "white",
-            fontSize: "20px",
             display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            borderRadius: "8px",
-            marginTop: "100px",
+            justifyContent: "space-between",
           }}
-          onClick={handleFilter}
         >
-          Filter
-        </button>
+          <div className="productCategory" style={{ width: "48%" }}>
+            <label htmlFor="" className="edit_fields_span">
+              Above Price Range
+            </label>
+            <input
+              value={filterMaxPrice}
+              onChange={(e) => setFilterMaxPrice(e.target.value)}
+              className="filter_input"
+              type="text"
+            />
+          </div>
+
+          <div
+            className="productCategory"
+            style={{ width: "48%", flexDirection: "column" }}
+          >
+            <label htmlFor="" className="edit_fields_span">
+              Below Price Range
+            </label>
+            <input
+              value={filterMinPrice}
+              onChange={(e) => setFilterMinPrice(e.target.value)}
+              className="filter_input"
+              type="text"
+            />
+          </div>
+        </div>
+
+        <div
+          className=""
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+          <button
+            style={{
+              width: "49%",
+              height: "40px",
+              backgroundColor: "black",
+              color: "white",
+              fontSize: "20px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: "8px",
+              marginTop: "100px",
+            }}
+            onClick={handleFilter}
+          >
+            Filter
+          </button>
+          <button
+            style={{
+              width: "49%",
+              height: "40px",
+              backgroundColor: "black",
+              color: "white",
+              fontSize: "20px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: "8px",
+              marginTop: "100px",
+            }}
+            onClick={handleClear}
+          >
+            Clear
+          </button>
+        </div>
       </div>
     </>
   );
