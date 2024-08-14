@@ -20,7 +20,7 @@ const DesignerAssignViewPage = () => {
     <div className="DesignerDashboardPage">
       <Sidebar sidebarExpanded={sidebarExpanded}  setSidebarExpanded={ setSidebarExpanded} />
       <Header sidebarExpanded={sidebarExpanded}  />
-      <DesignerDetailView folderDetails={folderDetails} id={id} list_designer_folderDetails_new={()=>{list_designer_folderDetails_new(setIsLoading, setFolderDetails, id)}} sidebarExpanded={sidebarExpanded} />
+      <DesignerDetailView folderDetails={folderDetails} id={id} list_designer_folderDetails_new={()=>{list_designer_folderDetails_new(setIsLoading, setFolderDetails, id)}} sidebarExpanded={sidebarExpanded} setFolderDetails={setFolderDetails} onClearCall={()=>  list_designer_folderDetails_new(setIsLoading, setFolderDetails, id)}/>
     </div>
   );
 };
