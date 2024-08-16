@@ -95,6 +95,7 @@ function App() {
               element={<DesignerAsignmentPanelPage />}
             />
             <Route path="/statusPage" element={<StatusPage />} />
+            <Route path="/statusPage/:id" element={<StatusPage />} />
             <Route
               path="/designerassignview/:id"
               element={<DesignerAssignViewPage />}

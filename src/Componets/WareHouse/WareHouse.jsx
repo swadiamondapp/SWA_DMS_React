@@ -2,9 +2,14 @@ import React, { useState } from "react";
 import "../../Componets/ADMIN PANEL/Design Pool/DesignPool.css";
 import like from "../../assets/like.png";
 import ring from "../../assets/ring.png";
+import { useNavigate } from "react-router-dom";
 // import DesignBtn from "../../ADMIN PANEL/Design Pool/DesignBtn";
 
 const WareHouse = (props) => {
+ 
+  const navigate = useNavigate();
+  
+
   const [showRadioButtons, setShowRadioButtons] = useState(false);
   const [selectButtonLabel, setSelectButtonLabel] = useState("Select");
   const [showDownloadOptions, setShowDownloadOptions] = useState(false);
@@ -32,6 +37,15 @@ const WareHouse = (props) => {
       date: "12 june 2023",
     },
   ];
+
+  const handleTrack = (item, designCode) => {
+    navigate(`/statusPage/${item.id}`, {
+      state: {
+        code: designCode,
+      },
+    });
+  };
+
 
   const toggleRadioButtons = () => {
     setShowRadioButtons(!showRadioButtons);
@@ -91,7 +105,9 @@ const WareHouse = (props) => {
         {/* new design section */}
         {/* new design section */}
         <div className="Parent_NewDesign">
-          <h3 className="HeadNewdesign">Newly added (&nbsp;{props.DesignWareHouse?.length}&nbsp;)</h3>
+          <h3 className="HeadNewdesign">
+            Newly added (&nbsp;{props.DesignWareHouse?.length}&nbsp;)
+          </h3>
           <div className="Card_Design_Parent">
             {props.DesignWareHouse.map((item) => (
               <div className="New_Design_card">
@@ -100,13 +116,38 @@ const WareHouse = (props) => {
                 </div>
                 <div className="Card_Details">
                   <h3>ID : {item.designcode}</h3>
+                  <div className="">
+                    <span style={{ color: "#23A064" }}>Status :</span>
+                    <span>{item.current_status || ""}</span>
+                  </div>
                   <div className="Card_Details_Inner">
                     <div className="Inner_Left">
                       <p>{item.user_name}</p>
                       <p>{item.created_at}</p>
                     </div>
+                    <div className="" style={{display:"flex",width:"auto",gap:"10px"}}>
+                    <button
+                      style={{
+                        padding: "7px 10px ",
+                        borderRadius: "4px",
+                        color: "white",
+                        backgroundColor: "#0464D5",
+                        border: "none",
+                        fontSize:"15px",
+                        fontWeight:"900"
+
+                      }}
+                      onClick={() =>
+                        handleTrack(item, item.designcode)
+                      }
+                      
+                    >
+                      Track
+                    </button>
+                    {console.log(item.designcode,"codeee")}
                     <div className="Inner_Right">
                       <p>{item.likes_count}</p>
+                    </div>
                     </div>
                   </div>
                 </div>
@@ -126,7 +167,9 @@ const WareHouse = (props) => {
           </div>
           {/* unvoted design */}
           <div className="Parent_unvoted">
-            <h3 className="HeadNewdesign">Last Voted (&nbsp;{props.LastVotedDesign?.length}&nbsp;)</h3>
+            <h3 className="HeadNewdesign">
+              Last Voted (&nbsp;{props.LastVotedDesign?.length}&nbsp;)
+            </h3>
             <div className="Card_Design_Parent">
               {props.LastVotedDesign.map((item) => (
                 <div className="New_Design_card">
