@@ -24,7 +24,7 @@
   position: absolute;
   top: 48px;
   right: 0%;
-z-index: 999;
+z-index: 9999;
 }
 .log_out__btns button {
   background: #fff;

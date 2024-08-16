@@ -3,16 +3,18 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import close from "../../assets/close.png";
 import "./AdminFilter.css";
-import { DatePicker, Select } from "antd";
+import { DatePicker, Select, Spin } from "antd";
 import { tag_table_data } from "../MastersSection/ApiMasters/ApiMasters";
 import {
   filterAdminDesigns,
   list_all_designers,
+  list_all_designers_get,
   list_assignment_panel,
   product_category_basicDetails,
 } from "../Assignment Panel/Api";
 import { list_uploaded_designs } from "../DESIGNER PANEL/Designer Dashboard/Api";
 import moment from "moment";
+import { CircularProgress } from "@mui/material";
 
 const { RangePicker } = DatePicker;
 
@@ -49,12 +51,13 @@ const AdminFilter = ({
   const [productCategory, setProductCategory] = useState([]);
   const [designers, setDesigners] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [error,setError] = useState("")
 
   useEffect(() => {
     product_category_basicDetails(setProductCategory);
     tag_table_data(setTags, setIsLoading);
     list_uploaded_designs(setIsLoading, setDesigners);
-    list_all_designers(setDesigners);
+    list_all_designers_get(setIsLoading,setDesigners);
   }, []);
 
   useEffect(() => {
@@ -95,7 +98,7 @@ const AdminFilter = ({
   // const handleChange = (dates) => {
   //   const [start, end] = dates;
   //   setStartDate(start);
-  //   setEndDate(end);
+  //   setEndDate(end);false
   //   console.log("Selected dates: ", { start, end });
   // };
 
@@ -107,11 +110,9 @@ const AdminFilter = ({
       const formattedEnd = end.format("YYYY-MM-DD");
       setStartDate(formattedStart);
       setEndDate(formattedEnd);
-      console.log("Formatted dates: ", values);
     }
   };
 
-  console.log("dd", dd);
 
   const handleFilter = async () => {
     try {
@@ -125,12 +126,14 @@ const AdminFilter = ({
         setData,
         filterMaxPrice,
         filterMinPrice,
-        setFilter
+        setFilter,
+        setError
       );
     } catch (error) {
       console.log(error);
     }
   };
+  
 
   const handleClear = async () => {
     try {
@@ -147,7 +150,10 @@ const AdminFilter = ({
     } catch (error) {
       console.log(error);
     }
-  };
+  }; 
+
+
+  console.log(isLoading,"isLoading")
 
   return (
     <>
@@ -230,6 +236,7 @@ const AdminFilter = ({
               label: tag.name,
               value: tag.id,
             }))}
+            notFoundContent={ isLoading && <CircularProgress style={{width:"100px"}}/> }
           />
         </div>
 
@@ -245,7 +252,7 @@ const AdminFilter = ({
             <label htmlFor="" className="edit_fields_span">
               Designer Wise
             </label>
-            <Select
+            {/* <Select
               showSearch
               placeholder="-Select-"
               optionFilterProp="children"
@@ -263,7 +270,31 @@ const AdminFilter = ({
                 label: designer.name,
                 value: designer.name,
               }))}
-            />
+            /> */}
+
+<Select
+      showSearch
+      placeholder="-Select-"
+      optionFilterProp="children"
+      value={filterDesigner}
+      onChange={(value) => setFilterDesigner(value)}
+      onSearch={onSearch}
+      filterOption={filterOption}
+      style={{
+        width: '100%',
+        height: '40px',
+        zIndex: '9999999',
+        background: '#006E7F1A',
+      }}
+      notFoundContent={!isLoading ? "Nithin" : null}
+    >
+      {designers.map((designer) => (
+        <Option key={designer.name} value={designer.name}>
+          {designer.name}
+        </Option>
+      ))}
+    </Select>
+            
           </div>
 
           <div className="productCategory" style={{ width: "48%" }}>
@@ -327,7 +358,7 @@ const AdminFilter = ({
             />
           </div>
         </div>
-
+         { error && <span style={{color:"red",fontSize:"19px"}}>{error}</span>}
         <div
           className=""
           style={{

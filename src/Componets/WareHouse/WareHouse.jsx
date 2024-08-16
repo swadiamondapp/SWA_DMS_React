@@ -116,7 +116,7 @@ const WareHouse = (props) => {
                 </div>
                 <div className="Card_Details">
                   <h3>ID : {item.designcode}</h3>
-                  <div className="">
+                  <div className="" style={{display:"flex",gap:"5px"}}>
                     <span style={{ color: "#23A064" }}>Status :</span>
                     <span>{item.current_status || ""}</span>
                   </div>
@@ -144,7 +144,6 @@ const WareHouse = (props) => {
                     >
                       Track
                     </button>
-                    {console.log(item.designcode,"codeee")}
                     <div className="Inner_Right">
                       <p>{item.likes_count}</p>
                     </div>

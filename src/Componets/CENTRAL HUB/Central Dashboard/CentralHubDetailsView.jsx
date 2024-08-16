@@ -7,9 +7,12 @@ import CentralHubImagePrint from "../CentralHubImagePrint/CentralHubImagePrint";
 import ReactToPrint, { useReactToPrint } from "react-to-print";
 import { LuPrinter } from "react-icons/lu";
 import Base64Downloader from "react-base64-downloader";
+import { useNavigate } from "react-router-dom";
 
 const CentralHubDetailsView = ({ CentralFolderDetails, sidebarExpanded }) => {
-  const [imageBlobConverted,setImageBlobConverted] = useState([])
+
+  const navigate = useNavigate()
+  const [imageBlobConverted, setImageBlobConverted] = useState([]);
   const base64 =
     "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjEuNv1OCegAAAAMSURBVBhXY/jPYAwAAzQBM849AKsAAAAASUVORK5CYII=";
 
@@ -30,27 +33,35 @@ const CentralHubDetailsView = ({ CentralFolderDetails, sidebarExpanded }) => {
 
   const handleDownload = (imageUrl) => {
     fetch(imageUrl, {
-      method: 'GET',
-      mode: 'cors'
-  })
-  .then(response => response.blob())
-  .then(blob => {
-      const blobUrl = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = blobUrl;
-      link.download = 'downloaded_image.jpg';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-  })
-  .catch(error => console.error('Error downloading the image:', error));
+      method: "GET",
+      mode: "cors",
+    })
+      .then((response) => response.blob())
+      .then((blob) => {
+        const blobUrl = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = blobUrl;
+        link.download = "downloaded_image.jpg";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      })
+      .catch((error) => console.error("Error downloading the image:", error));
   };
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
-    setImages({ 
-      normal: null, 
-      threeD: null 
+    setImages({
+      normal: null,
+      threeD: null,
+    });
+  };
+
+  const handleTrack = (item, designCode) => {
+    navigate(`/statusPage/${item.id}`, {
+      state: {
+        code: designCode,
+      },
     });
   };
   //   console.log(CentralFolderDetails, "cetasdlfkje");
@@ -78,6 +89,26 @@ const CentralHubDetailsView = ({ CentralFolderDetails, sidebarExpanded }) => {
                     >
                       posted on : {formatDate(item.created_at)}
                     </p>
+
+                    <div className="" style={{ display: "flex", gap: "5px",justifyContent:"space-between",width:"100%"}}>
+                      <span style={{ color: "#23A064" }}>Status :</span>
+                      <span>{item.current_status || ""}</span>
+
+                      <button
+                        style={{
+                          padding: "7px 10px ",
+                          borderRadius: "4px",
+                          color: "white",
+                          backgroundColor: "#0464D5",
+                          border: "none",
+                          fontSize: "15px",
+                          fontWeight: "900",
+                        }}
+                        onClick={() => handleTrack(item, item.designcode)}
+                      >
+                        Track
+                      </button>
+                    </div>
 
                     <button
                       className="Download_btn_hub"

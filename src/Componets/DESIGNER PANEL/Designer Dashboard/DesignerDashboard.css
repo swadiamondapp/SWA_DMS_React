@@ -93,7 +93,8 @@
   display: flex !important;
   flex-direction: column !important;
   justify-content: space-between;
-  height: 90vh;
+  height: auto;
+  gap: 5px;
   /* background-color: yellow !important; */
 }
 .Card_Design_Parent {
@@ -128,7 +129,8 @@
   display: grid;
   grid-template-columns: 1fr ;
   gap: 15px;
-  margin-top: 30px;
+  /* margin-top: 30px; */
+  /* height: 90vh; */
 }
 .Card_Design_Parent3{
   display: grid;
@@ -160,4 +162,8 @@
   align-items: center;
   justify-content: center; 
   margin-top: 100px;   
+}
+
+.parent_border{
+  border-bottom: .5px solid gray;
 }
