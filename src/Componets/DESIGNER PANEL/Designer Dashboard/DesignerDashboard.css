@@ -130,7 +130,7 @@
   grid-template-columns: 1fr ;
   gap: 15px;
   /* margin-top: 30px; */
-  height: 90vh;
+  /* height: 90vh; */
 }
 .Card_Design_Parent3{
   display: grid;
@@ -164,6 +164,6 @@
   margin-top: 100px;   
 }
 
-.fixed-top-container {
-   
+.parent_border{
+  border-bottom: .5px solid gray;
 }

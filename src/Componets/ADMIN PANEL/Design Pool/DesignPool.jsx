@@ -361,7 +361,7 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
           <div className="Card_Design_Parent">
             {Data.map((item, index) => (
               <>
-                <div className="" key={item.id}>
+                <div className="New_Design_card" key={item.id}>
                   <div
                     className="Card_img"
                     style={{

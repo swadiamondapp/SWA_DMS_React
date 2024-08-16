@@ -109,12 +109,9 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
     fetchDesigns();
   }, [fetchDesigns]);
 
-
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
   };
-
-
 
   const handleTrack = (item, designCode) => {
     navigate(`/statusPage/${item.id}`, {
@@ -124,7 +121,6 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
     });
   };
 
-
   console.log("uploadImage-->", uploadedDesigns);
 
   return (
@@ -133,46 +129,60 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
         className="DesignerDashboard"
         style={{ paddingLeft: sidebarExpanded ? "225px" : "130px" }}
       >
-        <div className="" style={{display:"flex",flexDirection:"column",gap:"15px",position:"sticky",width: '100%',top:"0px",zIndex:"99",backgroundColor:"#F6F5F1",height:"150px"}}>
-        <div className="Design_FileUpload" style={{marginTop:"20px"}} >
-          {uploadInstructionsVisible ? (
-            <>
-              <div>
-                <p className="D__fileUpload">Upload file</p>
-                <p className="D__fileUpload2">you can upload file here </p>
+        <div
+          className=""
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "15px",
+            position: "sticky",
+            width: "100%",
+            top: "0px",
+            zIndex: "99",
+            backgroundColor: "#F6F5F1",
+            height: "160px",
+            paddingBottom:"10px"
+          }}
+        >
+          <div className="Design_FileUpload" style={{ marginTop: "20px" }}>
+            {uploadInstructionsVisible ? (
+              <>
+                <div>
+                  <p className="D__fileUpload">Upload file</p>
+                  <p className="D__fileUpload2">you can upload file here </p>
+                </div>
+                <div className="File____uploadbtn">
+                  <button
+                    // onClick={() => document.getElementById("fileInput").click()}
+                    onClick={() => setMultipleImageModalOpen(true)}
+                  >
+                    Upload File{" "}
+                    <LiaCloudUploadAltSolid style={{ fontSize: "22px" }} />
+                  </button>
+                </div>
+              </>
+            ) : (
+              <div className="De__file">
+                <p>File uploaded successfully!</p>
+                <div className="File____uploadbtn">
+                  <button>
+                    Upload Image
+                    <LiaCloudUploadAltSolid style={{ fontSize: "22px" }} />
+                  </button>
+                </div>
               </div>
-              <div className="File____uploadbtn">
-                <button
-                  // onClick={() => document.getElementById("fileInput").click()}
-                  onClick={() => setMultipleImageModalOpen(true)}
-                >
-                  Upload File{" "}
-                  <LiaCloudUploadAltSolid style={{ fontSize: "22px" }} />
-                </button>
-              </div>
-            </>
-          ) : (
-            <div className="De__file">
-              <p>File uploaded successfully!</p>
-              <div className="File____uploadbtn">
-                <button>
-                  Upload Image
-                  <LiaCloudUploadAltSolid style={{ fontSize: "22px" }} />
-                </button>
-              </div>
-            </div>
-          )}
+            )}
 
-          <input
-            id="fileInput"
-            type="file"
-            accept="image/*"
-            multiple
-            style={{ display: "none" }}
-            onChange={handleFileUpload}
-          />
-        </div>
-        <DesignBtn
+            <input
+              id="fileInput"
+              type="file"
+              accept="image/*"
+              multiple
+              style={{ display: "none" }}
+              onChange={handleFileUpload}
+            />
+          </div>
+          <DesignBtn
             toggleDownloadOptions={toggleDownloadOptions}
             selectButtonLabel={selectButtonLabel}
             toggleRadioButtons={toggleRadioButtons}
@@ -188,10 +198,9 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
             openFilterModal={openFilterModal}
             setOpenFilterModal={setOpenFilterModal}
           />
-        </div>    
+        </div>
 
-        <div className="Uploaded___list"  >
-         
+        <div className="Uploaded___list">
           <div className="DesignerDashboardcard">
             <h3 className="HeadNewdesign">Uploaded</h3>
 
@@ -342,10 +351,7 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
                             {/* <LazyLoad height={900} offset={100}>
                              </LazyLoad> */}
                           </div>
-                          <div
-                            className=""
-                            style={{ width: "100%", border: ".5px solid gray" }}
-                          ></div>
+                          <div className="parent_border" style={{ width: "100%" }}></div>
                           <div className="Card_Details_Designer_3">
                             <h3>ID : {item.designcode}</h3>
                             <div
@@ -398,14 +404,6 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
             uplodedDesignPagination(setIsLoading, setCurrentItems, currentPage)
           }
         />
-        <div className="pagination">
-          <Pagination
-            count={Math.ceil(uploadedDesigns.length / 20)}
-            page={currentPage}
-            onChange={handlePageChange}
-            color="primary"
-          />
-        </div>
       </div>
       {openFilterModal && (
         <DesignerFilterModal
@@ -414,6 +412,15 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
           setOpenFilterModal={setOpenFilterModal}
         />
       )}
+
+      <div className="pagination">
+        <Pagination
+          count={Math.ceil(uploadedDesigns.length / 20)}
+          page={currentPage}
+          onChange={handlePageChange}
+          color="primary"
+        />
+      </div>
     </div>
   );
 };
