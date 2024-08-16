@@ -190,5 +190,9 @@ export const DELETE_ITEM_FROM_DESIGNPOOL = "designs/delete/"
 export const ALL_ITEMS_DETAILS_VIEW = "assignment/item/"
 export const UPLOAD_MULTIPLE_IMAGES = "upload-design/"
 export const PRODUCT_TRACKING = "product/tracking"
+export const DESIGNER_STATUS_BASED_FILTER = "designer/folder-detail/526/?item_status=GROUPED"
+export const DESIGNER_CATEGORY_FILTER = "designer/folder-detail/"
+export const DESIGNER_TAG_BASED_FILTER = "designer/folder-detail/526/?tag_ids=54"
+export const DESIGNER_DATE_RANGE_FILTER = "designer/folder-detail/"
 
 

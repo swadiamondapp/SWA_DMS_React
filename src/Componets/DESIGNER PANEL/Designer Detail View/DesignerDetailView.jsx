@@ -4,6 +4,7 @@ import DesignBtn from "../../ADMIN PANEL/Design Pool/DesignBtn";
 import ring from "../../../assets/ring.png";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { list_designer_folderDetails } from "./Api";
+import DesignerFilterModal from "../../DesignerFilterModal/DesignerFilterModal";
 
 const DesignerDetailView = (props) => {
   const [showRadioButtons, setShowRadioButtons] = useState(false);
@@ -12,6 +13,7 @@ const DesignerDetailView = (props) => {
   const [showMoveOptions, setShowMoveOptions] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedAssignment, setSelectedAssignment] = useState([]);
+  const [openFilterModal, setOpenFilterModal] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const query = new URLSearchParams(location.search);
@@ -114,7 +116,7 @@ const DesignerDetailView = (props) => {
   //   return a.items_status === "ALLOCATED" ? 1 : -1;
   // }) || [];
   // console.log(sortedItems, "sorted");
-const handleDetailsView = (item) => {
+  const handleDetailsView = (item) => {
     navigate(`/assignmentviewsAll/${item.item_id}`, {
       state: {
         // folderNameAssignmentView: item.paper_design.designcode,
@@ -142,6 +144,8 @@ const handleDetailsView = (item) => {
         list_designer_folderDetails_new={props.list_designer_folderDetails_new}
         setSelectButtonLabel={setSelectButtonLabel}
         setShowRadioButtons={setShowRadioButtons}
+        openFilterModal={openFilterModal}
+        setOpenFilterModal={setOpenFilterModal}
       />
       <div className="DesignerAssignment___panel_Cards">
         <div className="Parent_NewDesign">
@@ -170,7 +174,7 @@ const handleDetailsView = (item) => {
                   </div>
                   <div className="Card_Details">
                     <h3>ID : {item.paper_design.designcode}</h3>
-                    
+
                     <div className="Card_Details_Inner">
                       <div className="Inner_Left">
                         <p>{item.paper_design.designer_name}</p>
@@ -178,22 +182,27 @@ const handleDetailsView = (item) => {
                       </div>
                     </div>
                     <div
-                       style={{ padding: "4px 10px",marginTop:"10px",display:"flex",justifyContent:"center" }}
-                          className={
-                            item.working_status === "Completed"
-                              ? "complete"
-                              : item.working_status === "on-going"
-                              ? "ongoing"
-                              : "notstarted"
-                          }
-                        >
-                          {item.working_status === "Completed"
-                            ? "Completed"
-                            : item.working_status === "on-going"
-                            ? "On Going"
-                            : "Not Started"}
-                        </div>
-                  </div> 
+                      style={{
+                        padding: "4px 10px",
+                        marginTop: "10px",
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
+                      className={
+                        item.working_status === "Completed"
+                          ? "complete"
+                          : item.working_status === "on-going"
+                          ? "ongoing"
+                          : "notstarted"
+                      }
+                    >
+                      {item.working_status === "Completed"
+                        ? "Completed"
+                        : item.working_status === "on-going"
+                        ? "On Going"
+                        : "Not Started"}
+                    </div>
+                  </div>
 
                   {showRadioButtons && (
                     <input
@@ -210,6 +219,15 @@ const handleDetailsView = (item) => {
               ))}
           </div>
         </div>
+      {openFilterModal && (
+        <DesignerFilterModal
+          open={openFilterModal}
+          onClose={() => setOpenFilterModal(false)}
+          setOpenFilterModal={setOpenFilterModal}
+          setFolderDetails={props.setFolderDetails}
+          onClearCall={props.onClearCall}
+        />
+      )}
       </div>
     </div>
   );

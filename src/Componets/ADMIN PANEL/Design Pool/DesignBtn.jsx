@@ -160,8 +160,6 @@ const DesignBtn = ({
     setOpenFilterModal(true);
   };
 
-  console.log(openFilterModal, "openFilterModal");
-
   return (
     <div
       style={
@@ -347,12 +345,12 @@ const DesignBtn = ({
               )}
             </button>
           )}
-          {location.pathname === "/designdashboard" && (
+          {location.pathname === `/designerassignview/${id}` && (
             <button className="D_View_Sort_Filter" onClick={handleFilderModal}>
-              <RiFilter3Line /> Filter
+              <RiFilter3Line /> Filterr
             </button>
           )}
-          {location.pathname === "/assignmentpanel" && (
+{location.pathname === "/assignmentpanel" && (
             <button className="D_View_Sort_Filter" onClick={handleFilter}>
               <RiFilter3Line /> Filter
             </button>
