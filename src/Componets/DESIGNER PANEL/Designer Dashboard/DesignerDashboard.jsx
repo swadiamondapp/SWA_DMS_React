@@ -404,13 +404,7 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
           }
         />
       </div>
-{openFilterModal && (
-        <DesignerFilterModal
-          open={openFilterModal}
-          onClose={() => setOpenFilterModal(false)}
-          setOpenFilterModal={setOpenFilterModal}
-        />
-      )}
+
 
       <div className="pagination">
         <Pagination
