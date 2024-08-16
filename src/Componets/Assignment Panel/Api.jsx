@@ -728,7 +728,6 @@ export const filterAdminDesigns = async (
   filterMinPrice,
   setFilter
 ) => {
-  debugger;
   try {
     setIsLoading(true);
 
