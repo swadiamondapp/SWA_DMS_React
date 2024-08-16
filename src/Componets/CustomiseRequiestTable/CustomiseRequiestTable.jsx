@@ -180,6 +180,14 @@ const CustomizationTable = (props) => {
     return item ? item.name : "Not Found";
   };
 
+  const onLoadWareHousePrint = (wareHouseId) => {
+    customization_details_view_warehouse(
+      setIsLoading,
+      setCustomizationWareHouseData,
+      wareHouseId
+    );
+  }
+
   console.log("printItem", printItem);
 
   return (
@@ -257,7 +265,7 @@ const CustomizationTable = (props) => {
                     <td style={{width:'23%'}} >
                       <button
                         className="PrintButton_CT"
-                        onClick={() => handlePrintClick(item)}
+                        // onClick={() => handlePrintClick(item)}
                       >
                         <ReactToPrint
                           trigger={() => (
@@ -266,13 +274,14 @@ const CustomizationTable = (props) => {
                             </div>
                           )}
                           content={() => printRef.current}
+                          onBeforeGetContent={()=>onLoadWareHousePrint(item.id)}
                         />
                       </button>
 
                       <div style={{ display: "none" }}>
                         <CustomizationListDataPrint
                           ref={printRef}
-                          dataToDisplay={printItem}
+                          dataToDisplay={CustomizationWareHouseData}
                         />
                       </div>
 

@@ -2,7 +2,7 @@ import React from "react";
 import "./StatusSection.css";
 import Stepper from "./Stepper";
 
-const StatusSection = ({ sidebarExpanded }) => {    
+const StatusSection = ({ sidebarExpanded,code }) => {    
 
   return (
     <div
@@ -13,7 +13,7 @@ const StatusSection = ({ sidebarExpanded }) => {
       }}
     >
       <div className="status_stepper">
-        <Stepper />
+        <Stepper code={code}/>
       </div>
     </div>
   );

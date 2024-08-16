@@ -64,10 +64,11 @@ const DesignBtn = ({
   setDeleteConfirmationOpen,
   SelectedIdsForDelet,
   setSelectedIdsForDelet,
-openFilterModal,
+  openFilterModal,
   setOpenFilterModal,
   filter,
   setFilter,
+  activeFilter,
 }) => {
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -94,14 +95,10 @@ openFilterModal,
     setSort(!sort);
   };
 
-    
   const handleFilter = () => {
     setFilter(true);
   };
 
- 
-
-  
   const handleView = () => {
     setView(!view);
   };
@@ -162,8 +159,6 @@ openFilterModal,
   const handleFilderModal = () => {
     setOpenFilterModal(true);
   };
-
-  console.log(openFilterModal,"openFilterModal")
 
   return (
     <div
@@ -328,22 +323,38 @@ openFilterModal,
               <LuArrowUpDown /> Sort
               {sort && (
                 <div className="sortData">
-                  <span onClick={handleSortByAll}>All</span>
-                  <span onClick={handleSortByDesigner}>Designer added</span>
-                  <span onClick={handleSortByAdmin}>Admin added</span>
+                  <span
+                    className={activeFilter === "all" ? "setcolor" : ""}
+                    onClick={handleSortByAll}
+                  >
+                    All
+                  </span>
+                  <span
+                    className={activeFilter === "designer" ? "setcolor2" : ""}
+                    onClick={handleSortByDesigner}
+                  >
+                    Designer added
+                  </span>
+                  <span
+                    className={activeFilter === "admin" ? "setcolor3" : ""}
+                    onClick={handleSortByAdmin}
+                  >
+                    Admin added
+                  </span>
                 </div>
               )}
             </button>
           )}
-          {location.pathname === "/designdashboard" && (
+          {location.pathname === `/designerassignview/${id}` && (
             <button className="D_View_Sort_Filter" onClick={handleFilderModal}>
+              <RiFilter3Line /> Filterr
+            </button>
+          )}
+{location.pathname === "/assignmentpanel" && (
+            <button className="D_View_Sort_Filter" onClick={handleFilter}>
               <RiFilter3Line /> Filter
             </button>
           )}
-
-<button className="D_View_Sort_Filter" onClick={handleFilter}>
-            <RiFilter3Line /> Filter
-          </button>
           {location.pathname === "/votorscustomization" && (
             <button
               className="D_downlodBtn"
@@ -386,8 +397,6 @@ openFilterModal,
         }}
         votersSetData={votersSetData}
       />
-
-    
 
       {/* <AssignmentModal
       open={openAdminFolder}

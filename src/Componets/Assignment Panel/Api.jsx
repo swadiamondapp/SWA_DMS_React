@@ -723,9 +723,11 @@ export const filterAdminDesigns = async (
   filterTag,
   filterCategory,
   filterDesigner,
-  setData
+  setData,
+  filterMaxPrice,
+  filterMinPrice,
+  setFilter
 ) => {
-  debugger
   try {
     setIsLoading(true);
 
@@ -735,11 +737,14 @@ export const filterAdminDesigns = async (
       filterTag ? filterTag : ""
     }&product_type=${filterCategory ? filterCategory : ""}&designer=${
       filterDesigner ? filterDesigner : ""
+    }&price_below=${filterMinPrice ? filterMinPrice : ""}&price_above=${
+      filterMaxPrice ? filterMaxPrice : ""
     }`;
 
     const response = await apiService.get(apiUrl);
     if (checkApiStatus(response)) {
       setData(response?.data?.results?.data);
+      setFilter(false)
     }
   } catch (error) {
     console.log(error);

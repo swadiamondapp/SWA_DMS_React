@@ -53,6 +53,16 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
   const [IdOfDeleteAssignment, setIdOfDeleteAssignment] = useState([]);
 
   const [filter, setFilter] = useState(false);
+  const [activeFilter, setActiveFilter] = useState("");
+
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [filterTag, setFilterTag] = useState("");
+  const [filterCategory, setFilterCategory] = useState("");
+  const [filterDesigner, setFilterDesigner] = useState("");
+  const [filterMaxPrice, setFilterMaxPrice] = useState("");
+  const [filterMinPrice, setFilterMinPrice] = useState("");
+  const [dd,setDd]= useState()
 
   const location = useLocation();
   const dotsRef = useRef(null);
@@ -182,7 +192,6 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
     });
   };
 
-
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const day = String(date.getDate()).padStart(2, "0");
@@ -229,12 +238,15 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
 
   const handleSortByDesigner = () => {
     sort_assignmentpanel_bydesigner(setIsLoading, setData);
+    setActiveFilter("designer");
   };
   const handleSortByAdmin = () => {
     sort_assignmentpanel_byadmin(setIsLoading, setData);
+    setActiveFilter("admin");
   };
   const handleSortByAll = () => {
     list_assignment_panel(setIsLoading, setData);
+    setActiveFilter("all");
   };
 
   // const handleFilter = async () => {
@@ -253,8 +265,7 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
   //   }
   // };
 
-  console.log("Data",Data)
-
+  console.log("Data", Data);
 
   return (
     <div
@@ -304,6 +315,7 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
           assignmentFolder={assignmentFolder}
           filter={filter}
           setFilter={setFilter}
+          activeFilter={activeFilter}
           // setcreateFolderModal={setcreateFolderModal}
           // handleCreateFolderModal
         />
@@ -328,28 +340,28 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
             </div>
           )}
 
-          {isLoading === false &&
-          Data.length === 0 ? (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <span style={{ marginTop: "100px" }}>No Data Found</span>
-            </div>
-          ) : (
-            <>
-              <h3 className="HeadNewdesign">
-                Selected (&nbsp; {Data.length}&nbsp; )
-              </h3>
+          <>
+            <h3 className="HeadNewdesign">
+              Selected (&nbsp; {Data.length}&nbsp; )
+            </h3>
+
+            {!isLoading && Data.length === 0 ? (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <span style={{ marginTop: "100px" }}>No Data Found</span>
+              </div>
+            ) : (
               <div className="Card_Design_Parent">
                 {Data.map((dataItem, dataIndex) =>
                   dataItem?.items?.map((item, itemIndex) => {
                     const paperDesign = item?.paper_design;
                     const itemId = item?.id;
-                    const createdAt = item?.created_at;
+                    const createdAt = item?.paper_design?.uploaded_date;
                     const updatedAt = item?.updated_at;
                     const designer = paperDesign?.designer;
                     const designCode = paperDesign?.designcode;
@@ -448,32 +460,32 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
                   })
                 )}
               </div>
+            )}
 
-              <div className="Parent_Folder_section">
-                <h3 className="HeadNewdesign">Folders</h3>
-                <div className="folderCard_parent">
-                  {assignmentFolder.map((item) => (
-                    <div
-                      className="folder__card"
-                      key={item.id}
-                      onClick={() => handleFolderNaviate(item)}
-                    >
-                      {/* <Link
+            <div className="Parent_Folder_section">
+              <h3 className="HeadNewdesign">Folders</h3>
+              <div className="folderCard_parent">
+                {assignmentFolder.map((item) => (
+                  <div
+                    className="folder__card"
+                    key={item.id}
+                    onClick={() => handleFolderNaviate(item)}
+                  >
+                    {/* <Link
                   to={`/assignmentpaneldetailsview/${
                     item.id
                   }?name=${encodeURIComponent(item.name)}`}
                 > */}
-                      <img src={folderimg} alt="" />
-                      {/* </Link> */}
-                      <p style={{ wordWrap: "break-word", maxWidth: "100px" }}>
-                        {item.name}
-                      </p>
-                    </div>
-                  ))}
-                </div>
+                    <img src={folderimg} alt="" />
+                    {/* </Link> */}
+                    <p style={{ wordWrap: "break-word", maxWidth: "100px" }}>
+                      {item.name}
+                    </p>
+                  </div>
+                ))}
               </div>
-            </>
-          )}
+            </div>
+          </>
         </div>
       </div>
       <DesignPools
@@ -534,7 +546,27 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
       />
 
       {filter && (
-        <AdminFilter filter={filter} setFilter={setFilter} setData={setData} />
+        <AdminFilter
+          filter={filter}
+          setFilter={setFilter}
+          setData={setData}
+          startDate={startDate}
+          setStartDate={setStartDate}
+          endDate={endDate}
+          setEndDate={setEndDate}
+          filterTag={filterTag}
+          setFilterTag={setFilterTag}
+          filterCategory={filterCategory}
+          setFilterCategory={setFilterCategory}
+          filterDesigner={filterDesigner}
+          setFilterDesigner={setFilterDesigner}
+          filterMaxPrice={filterMaxPrice}
+          setFilterMaxPrice={setFilterMaxPrice}
+          filterMinPrice={filterMinPrice}
+          setFilterMinPrice={setFilterMinPrice}
+          setDd={setDd}
+          dd={dd}
+        />
       )}
     </div>
   );

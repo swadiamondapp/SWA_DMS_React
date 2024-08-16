@@ -45,19 +45,35 @@
 .Uploaded___list {
   margin-top: 25px;
 }
-.Card_Details_Designer {
+.Card_Details_Designer{
   padding-top: 15px;
   font-family: "Gilroy medium";
   display: flex ;
   flex-direction: column;
   /* justify-content:space-between !important; */
   /* background-color: red; */
-  height: 100%;
+  /* height: 100%; */
+  /* background-color: red; */
 }
 .Card_Details_Designer h3 {
   font-size: 12px;
   font-family: "Gilroy medium";
   
+}
+.Card_Details_Designer_3 {
+  /* padding-top: 15px; */
+  font-family: "Gilroy medium";
+  display: flex ;
+  flex-direction: column;
+  /* justify-content:space-between !important; */
+  /* background-color: red; */
+  /* height: 100%; */
+  /* position: absolute; */
+  /* background-color: red; */
+}
+.Card_Details_Designer_3 h3 {
+  font-size: 15px;
+  font-family: "Gilroy medium";
 }
 
 .New_Design_card {
@@ -66,6 +82,19 @@
   border-radius: 4px;
   padding: 15px 12px;
   position: relative;
+}
+
+.New_Design_card_3 {
+  border: 0.5px solid #f9f7f0;
+  background: #fff;
+  border-radius: 4px;
+  padding: 15px 12px;
+  /* position: relative; */
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between;
+  height: 90vh;
+  /* background-color: yellow !important; */
 }
 .Card_Design_Parent {
   display: grid;
@@ -97,10 +126,17 @@
 
 .Card_Design_Parent2 {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr ;
   gap: 15px;
   margin-top: 30px;
 }
+.Card_Design_Parent3{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 15px;
+  margin-top: 30px;
+}
+
 .New_Design_card_deatail2{
   display: flex;
   align-items: center;

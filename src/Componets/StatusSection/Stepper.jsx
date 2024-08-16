@@ -8,8 +8,8 @@ import {
   whstatusTableData,
 } from "../MastersSection/ApiMasters/ApiMasters";
 
-const Stepper = () => {
-  const [productId, setProductId] = useState("");
+const Stepper = ({ code }) => {
+  const [productId, setProductId] = useState(code || "");
   const [steppretDta, setSteppretDta] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -21,7 +21,13 @@ const Stepper = () => {
     setProductId(value);
   };
 
-  const handleTrackProduct = async () => {
+  useEffect(() => {
+    if (code) {
+      handleTrackProduct(code);
+    }
+  }, [code]);
+
+  const handleTrackProduct = async (productCode) => {
     if (productId === "") {
       setError("Enter Product Id");
       setTimeout(() => {
@@ -179,19 +185,56 @@ const Stepper = () => {
       : ""
   );
 
+  const formatDateTrack = (isoString) => {
+    if (!isoString) return "";
+
+    const date = new Date(isoString);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
+
+  const getFormattedDate = (stepId, dates) => {
+    switch (stepId) {
+      case 1:
+        return formatDateTrack(dates?.design_pool);
+      case 2:
+        return formatDateTrack(dates?.selected);
+      case 3:
+        return formatDateTrack(dates?.folder_created);
+      case 4:
+        return formatDateTrack(dates?.cad_assigned);
+      case 5:
+        return formatDateTrack(dates?.cad_finished);
+      case 6:
+        return formatDateTrack(dates?.cad_finished);
+      case 8:
+        return formatDateTrack(dates?.transfer_to_warehouse);
+      case 10:
+        return formatDateTrack(dates?.workdone);
+      default:
+        return ""; 
+    }
+  };
+  
+
   return (
     <>
       <div className="">
         <div className="staus_search">
+          {/* Search Input */}
           <input
             type="text"
             name="search"
             placeholder="Enter Product Id"
             value={productId}
-            onChange={handleChange}
-            onKeyPress={handleKeyPress}
+            onChange={(e) => setProductId(e.target.value.toUpperCase())}
+            onKeyPress={(e) => {
+              if (e.key === "Enter") handleTrackProduct(productId);
+            }}
           />
-          <button onClick={handleTrackProduct}>Track</button>
+          <button onClick={() => handleTrackProduct(productId)}>Track</button>
         </div>
         {error && (
           <span style={{ color: "red", fontSize: "10px" }}>{error}</span>
@@ -206,6 +249,7 @@ const Stepper = () => {
           {section.map((step, index) => {
             const isActive =
               section.findIndex((s) => s.title === status) >= index;
+            const dates = steppretDta?.Tracking_data?.status_dates[0];
             return (
               <React.Fragment key={step.id}>
                 <div
@@ -243,6 +287,7 @@ const Stepper = () => {
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
+                        flexDirection: "column",
                       }}
                     >
                       {step.title === "Transfered to WH" ? (
@@ -266,6 +311,15 @@ const Stepper = () => {
                           {step.title}
                         </span>
                       )}
+                      <span
+                        style={{
+                          color: "black",
+                          fontSize: "13px",
+                          textAlign: "center",
+                        }}
+                      >
+                        {getFormattedDate(step.id, dates)}
+                      </span>
                     </div>
                     {step.id === 7 && dropdownVisible && (
                       <div

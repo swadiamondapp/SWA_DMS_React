@@ -17,6 +17,7 @@ import {
   upload_multiple_designs_items,
 } from "../DESIGNER PANEL/Designer Dashboard/Api";
 import SuccessModal from "../SuccessModal/SuccessModal";
+import { CircularProgress } from "@mui/material";
 
 const style = {
   position: "absolute",
@@ -24,7 +25,7 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 480,
-  height: "80%",
+  height: "60%",
   bgcolor: "background.paper",
   border: "none",
   boxShadow: 24,
@@ -214,7 +215,7 @@ const MultipleImageUpload = ({
                     )}
 
                     <div className="UploadFileSelectConteainer">
-                      <div className="uploadProductCategory">
+                      {/* <div className="uploadProductCategory">
                         <label htmlFor="" className="label-text">
                           Product Category
                         </label>
@@ -249,8 +250,8 @@ const MultipleImageUpload = ({
                             </span>
                           )}
                         </div>
-                      </div>
-                      <div className="uploadTagsCategory">
+                      </div> */}
+                      {/* <div className="uploadTagsCategory">
                         <label htmlFor="" className="label-text">
                           Tags
                         </label>
@@ -280,7 +281,8 @@ const MultipleImageUpload = ({
                             <span className="error_input_p">{errors.tag}</span>
                           )}
                         </div>
-                      </div>
+                      </div> */}
+                      <div></div>
                     </div>
                   </div>
                   <div className="multiImageUploadButtons">
@@ -297,7 +299,8 @@ const MultipleImageUpload = ({
                         onClick={handleUploadImages}
                         disabled={fileList.length === 0}
                       >
-                        Upload
+                      {isLoading? <CircularProgress size={16} sx={{ color: "#fff" }} /> : "Upload"}
+                      
                       </button>
                     </div>
                   </div>

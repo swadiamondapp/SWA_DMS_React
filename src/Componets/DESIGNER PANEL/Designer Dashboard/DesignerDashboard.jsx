@@ -15,7 +15,7 @@ import {
 } from "./Api";
 import MultipleImageUpload from "../../MultipleImageUploadModal/MultipleImageUpload";
 import { useLocation, Link, useNavigate } from "react-router-dom";
-import DesignerFilterModal from "../../DesignerFilterModal/DesignerFilterModal";
+// import DesignerFilterModal from "../../DesignerFilterModal/DesignerFilterModal";
 const DesignerDashboard = ({ sidebarExpanded }) => {
   const [uploadInstructionsVisible, setUploadInstructionsVisible] =
     useState(true);
@@ -28,7 +28,7 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
   const [uploadImage, setUploadImage] = useState([]);
   const [previewImages, setPreviewImages] = useState([]);
   const [multipleImageModalOpen, setMultipleImageModalOpen] = useState(false);
-  const [openFilterModal, setOpenFilterModal] = useState(false);
+
 
   const navigate = useNavigate();
   const [grid, setGrid] = useState(true);
@@ -178,8 +178,7 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
             grid={grid}
             detail={detail}
             tiles={tiles}
-            openFilterModal={openFilterModal}
-            setOpenFilterModal={setOpenFilterModal}
+      
           />
           <div className="DesignerDashboardcard">
             <h3 className="HeadNewdesign">Uploaded</h3>
@@ -210,71 +209,78 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
               <>
                 {grid && (
                   <>
-                    <div className="Card_Design_Parent">
-                      {currentItems.map((item, index) => (
-                        <div className="New_Design_card" key={index}>
-                          <div className="Card_img">
-                            <LazyLoad height={200} offset={100}>
-                              <img src={item.image} alt="" />
-                            </LazyLoad>
-                          </div>
-                          <div className="Card_Details_Designer">
-                            <h3>ID : {item.designcode}</h3>
-                            <div className="Card_Details_Inner">
-                              <div className="Inner_Left">
-                                <p>{item.name}</p>
-                                <p>{item.created_at}</p>
-                              </div>
+                  <div className="Card_Design_Parent">
+                    {currentItems.map((item, index) => (
+                      <div className="New_Design_card" key={index}>
+                        <div className="Card_img">
+                          <LazyLoad height={200} offset={100}>
+                            <img src={item.image} alt="" />
+                          </LazyLoad>
+                        </div>
+                        <div className="Card_Details_Designer">
+                          <h3>ID : {item.designcode}</h3>
+                          <div className="Card_Details_Inner">
+                            <div className="Inner_Left">
+                              <p>{item.name}</p>
+                              <p>{item.created_at}</p>
                             </div>
                           </div>
                         </div>
-                      ))}
-                    </div>
-                  </>
+                      </div>
+                    ))}
+                  </div>
+                </>
                 )}
 
                 {detail && (
-                  <>
-                    <div className="Card_Design_Parent">
-                      {currentItems.map((item, index) => (
-                        <div className="New_Design_card_deatail" key={index}>
-                          <LazyLoad height={50} offset={90}>
-                            <img
-                              className="Card_img_deatail"
-                              src={item.image}
-                              alt=""
-                            />
-                          </LazyLoad>
-                          <div className="Card_Designer_deatail">
-                            <h3>ID : {item.designcode}</h3>
-                            <p>{item.name}</p>
-                            <p>{item.created_at}</p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </>
+                   <>
+                   <div className="Card_Design_Parent3">
+                     {currentItems.map((item, index) => (
+                       <div className="New_Design_card" key={index}>
+                         <div className="Card_img">
+                           <LazyLoad height={200} offset={100}>
+                             <img src={item.image} alt="" />
+                           </LazyLoad>
+                         </div>
+                         <div className="Card_Details_Designer">
+                           <h3>ID : {item.designcode}</h3>
+                           <div className="Card_Details_Inner">
+                             <div className="Inner_Left">
+                               <p>{item.name}</p>
+                               <p>{item.created_at}</p>
+                             </div>
+                           </div>
+                         </div>
+                       </div>
+                     ))}
+                   </div>
+                 </>
                 )}
 
                 {tiles && (
-                  <>
-                    <div className="Card_Design_Parent2">
-                      {currentItems.map((item, index) => (
-                        <div className="New_Design_card_deatail2" key={index}>
-                          <img
-                            className="Card_img_deatail2"
-                            src={img1}
-                            alt=""
-                          />
-                          <div className="Card_Designer_deatail2">
-                            <h3>ID : {item.designcode}</h3>
-                            {/* <p>{item.name}</p>
-                            <p>{item.created_at}</p> */}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </>
+                     <>
+                     <div className="Card_Design_Parent2">
+                       {currentItems.map((item, index) => (
+                         <div className="New_Design_card_3"  key={index}>
+                           <div className="" style={{width:"100%",height:"70vh",display:"flex",alignItems:"center",justifyContent:"center"}}>
+                               <img style={{backgroundSize:"contain",width:"90%",height:"100%"}} src={item.image} alt="" />
+                             {/* <LazyLoad height={900} offset={100}>
+                             </LazyLoad> */}
+                           </div>
+                           <div className="" style={{width:"100%",border:".5px solid gray"}}></div>
+                           <div className="Card_Details_Designer_3">
+                           <h3>ID : {item.designcode}</h3>
+                           <div className="Card_Details_Inner">
+                             <div className="Inner_Left">
+                               <p>{item.name}</p>
+                               <p>{item.created_at}</p>
+                             </div>
+                           </div>
+                         </div>
+                         </div>
+                       ))}
+                     </div>
+                   </>
                 )}
               </>
             )}
@@ -300,13 +306,7 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
           />
         </div>
       </div>
-      {openFilterModal && (
-        <DesignerFilterModal
-          open={openFilterModal}
-          onClose={() => setOpenFilterModal(false)}
-          setOpenFilterModal={setOpenFilterModal}
-        />
-      )}
+   
     </div>
   );
 };
