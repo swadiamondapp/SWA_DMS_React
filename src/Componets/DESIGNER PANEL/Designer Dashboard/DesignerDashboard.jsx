@@ -109,14 +109,21 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
     fetchDesigns();
   }, [fetchDesigns]);
 
-  // const itemsPerPage = 10;
-  // const indexOfLastItem = currentPage * itemsPerPage;
-  // const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  // const currentItems = uploadedDesigns.slice(indexOfFirstItem, indexOfLastItem);
 
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
   };
+
+
+
+  const handleTrack = (item, designCode) => {
+    navigate(`/statusPage/${item.id}`, {
+      state: {
+        code: designCode,
+      },
+    });
+  };
+
 
   console.log("uploadImage-->", uploadedDesigns);
 
@@ -126,7 +133,8 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
         className="DesignerDashboard"
         style={{ paddingLeft: sidebarExpanded ? "225px" : "130px" }}
       >
-        <div className="Design_FileUpload">
+        <div className="" style={{display:"flex",flexDirection:"column",gap:"15px",position:"sticky",width: '100%',top:"0px",zIndex:"99",backgroundColor:"#F6F5F1",height:"150px"}}>
+        <div className="Design_FileUpload" style={{marginTop:"20px"}} >
           {uploadInstructionsVisible ? (
             <>
               <div>
@@ -164,8 +172,7 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
             onChange={handleFileUpload}
           />
         </div>
-        <div className="Uploaded___list">
-          <DesignBtn
+        <DesignBtn
             toggleDownloadOptions={toggleDownloadOptions}
             selectButtonLabel={selectButtonLabel}
             toggleRadioButtons={toggleRadioButtons}
@@ -181,6 +188,10 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
             openFilterModal={openFilterModal}
             setOpenFilterModal={setOpenFilterModal}
           />
+        </div>    
+
+        <div className="Uploaded___list"  >
+         
           <div className="DesignerDashboardcard">
             <h3 className="HeadNewdesign">Uploaded</h3>
 
@@ -210,78 +221,167 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
               <>
                 {grid && (
                   <>
-                  <div className="Card_Design_Parent">
-                    {currentItems.map((item, index) => (
-                      <div className="New_Design_card" key={index}>
-                        <div className="Card_img">
-                          <LazyLoad height={200} offset={100}>
-                            <img src={item.image} alt="" />
-                          </LazyLoad>
-                        </div>
-                        <div className="Card_Details_Designer">
-                          <h3>ID : {item.designcode}</h3>
-                          <div className="Card_Details_Inner">
-                            <div className="Inner_Left">
-                              <p>{item.name}</p>
-                              <p>{item.created_at}</p>
+                    <div className="Card_Design_Parent">
+                      {currentItems.map((item, index) => (
+                        <div className="New_Design_card" key={index}>
+                          <div className="Card_img">
+                            <LazyLoad height={200} offset={100}>
+                              <img src={item.image} alt="" />
+                            </LazyLoad>
+                          </div>
+                          <div className="Card_Details_Designer">
+                            <h3>ID : {item.designcode}</h3>
+                            <div
+                              className=""
+                              style={{ display: "flex", gap: "5px" }}
+                            >
+                              <span style={{ color: "#23A064" }}>Status :</span>
+                              <span>{item.current_status || ""}</span>
+                            </div>
+                            <div className="Card_Details_Inner">
+                              <div className="Inner_Left">
+                                <p>{item.name}</p>
+                                <p>{item.created_at}</p>
+                              </div>
+                              <button
+                                style={{
+                                  padding: "7px 10px ",
+                                  borderRadius: "4px",
+                                  color: "white",
+                                  backgroundColor: "#0464D5",
+                                  border: "none",
+                                  fontSize: "15px",
+                                  fontWeight: "900",
+                                }}
+                                onClick={() =>
+                                  handleTrack(item, item.designcode)
+                                }
+                              >
+                                Track
+                              </button>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
-                </>
+                      ))}
+                    </div>
+                  </>
                 )}
 
                 {detail && (
-                   <>
-                   <div className="Card_Design_Parent3">
-                     {currentItems.map((item, index) => (
-                       <div className="New_Design_card" key={index}>
-                         <div className="Card_img">
-                           <LazyLoad height={200} offset={100}>
-                             <img src={item.image} alt="" />
-                           </LazyLoad>
-                         </div>
-                         <div className="Card_Details_Designer">
-                           <h3>ID : {item.designcode}</h3>
-                           <div className="Card_Details_Inner">
-                             <div className="Inner_Left">
-                               <p>{item.name}</p>
-                               <p>{item.created_at}</p>
-                             </div>
-                           </div>
-                         </div>
-                       </div>
-                     ))}
-                   </div>
-                 </>
+                  <>
+                    <div className="Card_Design_Parent3">
+                      {currentItems.map((item, index) => (
+                        <div className="New_Design_card" key={index}>
+                          <div className="Card_img">
+                            <LazyLoad height={200} offset={100}>
+                              <img src={item.image} alt="" />
+                            </LazyLoad>
+                          </div>
+                          <div className="Card_Details_Designer">
+                            <div
+                              className=""
+                              style={{ display: "flex", gap: "5px" }}
+                            >
+                              <span style={{ color: "#23A064" }}>Status :</span>
+                              <span>{item.current_status || ""}</span>
+                            </div>
+                            <h3>ID : {item.designcode}</h3>
+                            <div className="Card_Details_Inner">
+                              <div className="Inner_Left">
+                                <p>{item.name}</p>
+                                <p>{item.created_at}</p>
+                              </div>
+                              <button
+                                style={{
+                                  padding: "7px 10px ",
+                                  borderRadius: "4px",
+                                  color: "white",
+                                  backgroundColor: "#0464D5",
+                                  border: "none",
+                                  fontSize: "15px",
+                                  fontWeight: "900",
+                                }}
+                                onClick={() =>
+                                  handleTrack(item, item.designcode)
+                                }
+                              >
+                                Track
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </>
                 )}
 
                 {tiles && (
-                     <>
-                     <div className="Card_Design_Parent2">
-                       {currentItems.map((item, index) => (
-                         <div className="New_Design_card_3"  key={index}>
-                           <div className="" style={{width:"100%",height:"70vh",display:"flex",alignItems:"center",justifyContent:"center"}}>
-                               <img style={{backgroundSize:"contain",width:"90%",height:"100%"}} src={item.image} alt="" />
-                             {/* <LazyLoad height={900} offset={100}>
+                  <>
+                    <div className="Card_Design_Parent2">
+                      {currentItems.map((item, index) => (
+                        <div className="New_Design_card_3" key={index}>
+                          <div
+                            className=""
+                            style={{
+                              width: "100%",
+                              height: "70vh",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                            }}
+                          >
+                            <img
+                              style={{
+                                backgroundSize: "contain",
+                                width: "90%",
+                                height: "100%",
+                              }}
+                              src={item.image}
+                              alt=""
+                            />
+                            {/* <LazyLoad height={900} offset={100}>
                              </LazyLoad> */}
-                           </div>
-                           <div className="" style={{width:"100%",border:".5px solid gray"}}></div>
-                           <div className="Card_Details_Designer_3">
-                           <h3>ID : {item.designcode}</h3>
-                           <div className="Card_Details_Inner">
-                             <div className="Inner_Left">
-                               <p>{item.name}</p>
-                               <p>{item.created_at}</p>
-                             </div>
-                           </div>
-                         </div>
-                         </div>
-                       ))}
-                     </div>
-                   </>
+                          </div>
+                          <div
+                            className=""
+                            style={{ width: "100%", border: ".5px solid gray" }}
+                          ></div>
+                          <div className="Card_Details_Designer_3">
+                            <h3>ID : {item.designcode}</h3>
+                            <div
+                              className=""
+                              style={{ display: "flex", gap: "5px" }}
+                            >
+                              <span style={{ color: "#23A064" }}>Status :</span>
+                              <span>{item.current_status || ""}</span>
+                            </div>
+                            <div className="Card_Details_Inner">
+                              <div className="Inner_Left">
+                                <p>{item.name}</p>
+                                <p>{item.created_at}</p>
+                                <button
+                                  style={{
+                                    padding: "7px 10px ",
+                                    borderRadius: "4px",
+                                    color: "white",
+                                    backgroundColor: "#0464D5",
+                                    border: "none",
+                                    fontSize: "15px",
+                                    fontWeight: "900",
+                                  }}
+                                  onClick={() =>
+                                    handleTrack(item, item.designcode)
+                                  }
+                                >
+                                  Track
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </>
                 )}
               </>
             )}

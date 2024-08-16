@@ -62,7 +62,7 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
   const [filterDesigner, setFilterDesigner] = useState("");
   const [filterMaxPrice, setFilterMaxPrice] = useState("");
   const [filterMinPrice, setFilterMinPrice] = useState("");
-  const [dd,setDd]= useState()
+  const [dd, setDd] = useState();
 
   const location = useLocation();
   const dotsRef = useRef(null);
@@ -249,27 +249,19 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
     setActiveFilter("all");
   };
 
-  // const handleFilter = async () => {
-  //   try {
-  //     await filterAdminDesigns(
-  //       setIsLoading,
-  //       startDate,
-  //       endDate,
-  //       filterTag,
-  //       filterCategory,
-  //       filterDesigner,
-  //       setData
-  //     );
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  const handleTrack = (item, designCode) => {
+    navigate(`/statusPage/${item.id}`, {
+      state: {
+        code: designCode,
+      },
+    });
+  };
 
   console.log("Data", Data);
 
   return (
     <div
-      className="Parent_AssignmentView"
+    className={`Parent_AssignmentView ${filter ? 'no-scroll' : ''}`}
       style={{ paddingLeft: sidebarExpanded ? "225px" : "130px" }}
     >
       <div className="AssignmentPanel_FileUpload" style={{ padding: "10px" }}>
@@ -392,6 +384,13 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
                         </div>
                         <div className="Card_Details">
                           <h3>ID : {designCode}</h3>
+                          <div
+                            className=""
+                            style={{ display: "flex", gap: "5px" }}
+                          >
+                            <span style={{ color: "#23A064" }}>Status :</span>
+                            <span>{item.current_status || ""}</span>
+                          </div>
                           <div className="Card_Details_Inner">
                             <div className="Inner_Left">
                               <p>{designer}</p>
@@ -409,11 +408,34 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
                                 {formatDate(updatedAt)}
                               </p>
                             </div>
-                            <div className="Inner_Right">
-                              <p>
-                                {likesCount}
-                                <img src={like} alt="Likes" />
-                              </p>
+                            <div
+                              className=""
+                              style={{
+                                display: "flex",
+                                width: "auto",
+                                gap: "10px",
+                              }}
+                            >
+                              <button
+                                style={{
+                                  padding: "7px 10px ",
+                                  borderRadius: "4px",
+                                  color: "white",
+                                  backgroundColor: "#0464D5",
+                                  border: "none",
+                                  fontSize: "15px",
+                                  fontWeight: "900",
+                                }}
+                                onClick={() => handleTrack(item, designCode)}
+                              >
+                                Track
+                              </button>
+                              <div className="Inner_Right">
+                                <p>
+                                  {likesCount}
+                                  <img src={like} alt="Likes" />
+                                </p>
+                              </div>
                             </div>
                           </div>
                         </div>

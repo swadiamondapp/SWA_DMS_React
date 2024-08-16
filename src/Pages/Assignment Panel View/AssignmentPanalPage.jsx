@@ -7,7 +7,7 @@ import "./AssignmentPanelPage.css";
 const AssignmentPanalPage = () => {
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
   return (
-    <div className="Parent_AssignmentpanalPage">
+    <div className="Parent_AssignmentpanalPage" >
       <Sidebar sidebarExpanded={sidebarExpanded} setSidebarExpanded={setSidebarExpanded} />
       <Header sidebarExpanded={sidebarExpanded}  />
       <AssignmentPanel  sidebarExpanded={sidebarExpanded} />
