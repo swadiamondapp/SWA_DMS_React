@@ -557,6 +557,7 @@ export const list_all_designers_get = async (setIsLoading,setAllDesigners) => {
     setIsLoading(true)
     const response = await apiService.get(LIST_ALL_DESIGNERS);
     if (checkApiStatus(response)) {
+      console.log(response,"response_de")
       setAllDesigners(response?.data?.results?.data);
     }
   } catch (error) {

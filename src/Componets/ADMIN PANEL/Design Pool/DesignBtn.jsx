@@ -278,6 +278,7 @@ const DesignBtn = ({
                 </button>
               </div>
             )}
+
           {location.pathname !== "/votorscustomization" &&
             location.pathname !== "/assignmentpanel" &&
             location.pathname !== "/unassigneddesigner" &&
@@ -314,6 +315,17 @@ const DesignBtn = ({
                 )}
               </button>
             )}
+
+          {location.pathname === "/designdashboard" && (
+            <button
+              //  onClick={handleSort}
+              className="D_View_Sort_Filter"
+              style={{ position: "relative" }}
+            >
+              <LuArrowUpDown /> Sort
+            </button>
+          )}
+
           {location.pathname === "/assignmentpanel" && (
             <button
               onClick={handleSort}
@@ -345,12 +357,18 @@ const DesignBtn = ({
               )}
             </button>
           )}
-          {location.pathname === `/designerassignview/${id}` && (
-            <button className="D_View_Sort_Filter" onClick={handleFilderModal}>
-              <RiFilter3Line /> Filterr
+          {location.pathname === `/designdashboard` && (
+            <button className="D_View_Sort_Filter" >
+              <RiFilter3Line /> Filter
             </button>
           )}
-{location.pathname === "/assignmentpanel" && (
+
+          {location.pathname === `/designerassignview/${id}` && (
+            <button className="D_View_Sort_Filter" onClick={handleFilderModal}>
+              <RiFilter3Line /> Filter
+            </button>
+          )}
+          {location.pathname === "/assignmentpanel" && (
             <button className="D_View_Sort_Filter" onClick={handleFilter}>
               <RiFilter3Line /> Filter
             </button>

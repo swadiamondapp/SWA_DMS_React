@@ -56,7 +56,6 @@ const AdminFilter = ({
   useEffect(() => {
     product_category_basicDetails(setProductCategory);
     tag_table_data(setTags, setIsLoading);
-    list_uploaded_designs(setIsLoading, setDesigners);
     list_all_designers_get(setIsLoading,setDesigners);
   }, []);
 
@@ -154,6 +153,7 @@ const AdminFilter = ({
 
 
   console.log(isLoading,"isLoading")
+  console.log(designers,"designers")
 
   return (
     <>
