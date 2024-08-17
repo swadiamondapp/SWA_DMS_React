@@ -15,6 +15,8 @@ import scan from "../../assets/scan.png";
 import done from "../../assets/done.png";
 import pack from "../../assets/pack.png";
 import track from "../../assets/status.png";
+import cad from "../../assets/cad1.png";
+import render from "../../assets/render.png";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import AssignmentModal from "../AssignmentModal/AssignmentModal";
 import BasicDetailModal from "../BasicDetails/BasicDetailModal";
@@ -102,6 +104,22 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
             <div className="lin_container"></div>
               <img src={loginzimg} alt="" />
               {sidebarExpanded && <p>Other logins</p>}
+            </div>
+          </Link>
+          <Link to="/caduploaded">
+            <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={cad} alt="" style={{width:"19px",height:"19px"}} />
+              {sidebarExpanded && <p>CAD Uploaded</p>}
+            </div>
+          </Link>
+          <Link to="/rendersuploaded">
+            <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={render} alt="" style={{width:"19px",height:"19px"}} />
+              {sidebarExpanded && <p>Renders Uploaded</p>}
             </div>
           </Link>
           <Link to="/statusPage">
