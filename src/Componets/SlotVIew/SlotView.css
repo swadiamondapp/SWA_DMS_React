@@ -1,0 +1,76 @@
+.Slote_Container {
+}
+.tHead {
+  border: 1px solid #e7edf4;
+}
+.single-border {
+  border-collapse: collapse;
+}
+
+.single-border th,
+.single-border td {
+  border-bottom: 0.5px solid #e7edf4;
+  border-right: 0.5px solid #e7edf4;
+  padding: 5px 5px;
+}
+
+.single-border .column-header {
+}
+
+.single-border .table-cell {
+  text-align: center;
+}
+
+.custom-table th:last-child,
+.custom-table td:last-child {
+  border-right: none;
+  /* Remove right border */
+}
+
+.lastrow td {
+  border-bottom: none;
+}
+.single-border td:last-child {
+  padding-right: 30px;
+}
+.column-header {
+  font-size: 12px;
+  font-family: "Gilroy medium";
+  color: #455173;
+  font-weight: 600;
+}
+.table-cell {
+  font-family: "Gilroy medium";
+  font-size: 14px;
+  font-weight: 400;
+  color: #2e364c;
+}
+.overLayButton_cht {
+  background: none;
+  border: none;
+  /* position: absolute; */
+  /* right: 460px;
+    top: 160px; */
+  color: #ffff;
+  display: flex;
+  gap: 5px;
+  /* width: 50% !important;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center; */
+  background-color: "red" !important;
+  margin-left: 80% !important;
+  margin-bottom: 10px;
+}
+
+.overParant {
+  position: relative;
+}
+.modal_cht {
+  position: relative;
+}
+.mainContaier {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}

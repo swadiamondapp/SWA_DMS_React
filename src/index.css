@@ -1,0 +1,96 @@
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  padding: 0px;
+  box-sizing: border-box;
+  background: #f6f5f1;
+}
+a {
+  text-decoration: none;
+}
+@font-face {
+  font-family: "Gilroy bold";
+  src: url(./assets/Gilroy-Bold.ttf);
+}
+@font-face {
+  font-family: "Gilroy medium";
+  src: url(./assets/Gilroy-Medium.ttf);
+}
+@font-face {
+  font-family: "Gilroy reguler";
+  src: url(./assets/Gilroy-Regular.ttf);
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.ant-select-dropdown {
+  z-index: 1700 !important;
+}
+.ant-modal-footer {
+  display: none !important;
+}
+
+/* .create_modal_parent,
+:where(.css-dev-only-do-not-override-1ae8k9u).ant-select-outlined:not(
+    .ant-select-customize-input
+  )
+  .ant-select-selector {
+  color: #006e7f !important;
+  border: none !important;
+} */
+
+.modal-Content
+  :where(.css-dev-only-do-not-override-1ae8k9u).ant-select-outlined:not(
+    .ant-select-customize-input
+  )
+  .ant-select-selector {
+  color: black !important;
+  border: 1px solid lightgray !important;
+  border-radius: 9px !important;
+  background: transparent !important;
+}
+
+:where(.css-dev-only-do-not-override-1ae8k9u).ant-select-outlined:not(
+    .ant-select-customize-input
+  )
+  .ant-select-selector {
+  padding: 5px 15px;
+  border-radius: 4px !important;
+  /* color: #006e7f1a !important; */
+}
+
+.workdone_modal .rti--container {
+  background: transparent !important;
+  border: none !important;
+  width: 200px !important;
+}
+
+.konvajs-content {
+  width: 100% !important;
+  height: 400px !important;
+  /* background: green; */
+  overflow: hidden !important;
+}
+.konvajs-content canvas {
+  margin-top: 10px !important;
+  /* width: 2160px!important; */
+  /* height: 800px !important; */
+  box-shadow: none !important;
+}
+
+/* .annotationmodal :where(.css-dev-only-do-not-override-1ae8k9u).ant-modal .ant-modal-content{
+  background: transparent!important;
+  box-shadow: none!important;
+} */
+
+.css-13xfq8m-MuiTabPanel-root{
+  padding: 0px !important;
+}

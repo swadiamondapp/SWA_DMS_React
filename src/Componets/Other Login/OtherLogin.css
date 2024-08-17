@@ -1,0 +1,30 @@
+.Parent_OtherLogin {
+  padding-left: 225px;
+  padding-top: 20px;
+}
+.other_logins {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  padding-top: 15px;
+}
+.login_card {
+  background: #fff;
+  box-shadow: 0px 4px 4px 0px #0304040d;
+  padding: 20px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: "Gilroy medium";
+}
+.LoginWithImg {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.LogedDtae {
+  font-size: 14px;
+}

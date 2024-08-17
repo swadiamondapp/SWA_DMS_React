@@ -1,0 +1,61 @@
+.Parent_WareHouseDetailsPage {
+  padding: 10px 25px 10px 10px;
+}
+.Parant_WareHouseDetails {
+  display: grid;
+  grid-template-columns: 0.5fr 1fr 1fr;
+  gap: 10px;
+  padding-left: 225px;
+  padding-top: 20px;
+}
+.wareHouseImageConatainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-end;
+  gap: 10px;
+}
+.imageWarehouspart1 img{
+  width: 100%;
+  object-fit: cover;
+  margin-top: 3px;
+  border-radius:4px;
+}
+.A1_text p {
+  font-size: 14px;
+}
+.wareHouse_basicDetails {
+}
+.wareHouse_actualDetails {
+}
+.actualDetailsButtonContiner {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-top: 30px;
+}
+.actualDetailsButtonContiner button {
+  background: #2b2b2b;
+  border-radius: 8px;
+  padding: 12px 50px;
+  color: #fff;
+}
+.actualDetails_input {
+  border: none;
+  font-size: 14px;
+  padding: 6px 0px;
+  outline: none;
+}
+.error_input_p_warehouse {
+  position: absolute;
+  right: 20px;
+  color: red;
+  font-size: 10px;
+  background: transparent;
+  padding: 2px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  margin-left: 0px;
+  /* bottom: -20px; */
+  margin-top: 2px;
+}

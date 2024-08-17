@@ -1,0 +1,457 @@
+import React, { useState,useEffect } from "react";
+import "./Sidebar.css";
+import logo from "../../assets/logo.png";
+import userimg from "../../assets/user.png";
+import designimg from "../../assets/design.png";
+import mastersimg from "../../assets/masters.png";
+import assignmentimg from "../../assets/assignment.png";
+import chatboximg from "../../assets/chatbox.png";
+import customeimg from "../../assets/custome.png";
+import sideStar from "../../assets/sideStar.png";
+import Tranfer from "../../assets/transfer.png";
+import galleryimg from "../../assets/gallery.png";
+import loginzimg from "../../assets/loginz.png";
+import scan from "../../assets/scan.png";
+import done from "../../assets/done.png";
+import pack from "../../assets/pack.png";
+import track from "../../assets/status.png";
+import cad from "../../assets/cad1.png";
+import render from "../../assets/render.png";
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
+import AssignmentModal from "../AssignmentModal/AssignmentModal";
+import BasicDetailModal from "../BasicDetails/BasicDetailModal";
+import AssignToModal from "../AssignToModal/AssignToModal";
+import CreateCustomisation from "../CreateCustomisation/CreateCustomisation";
+import ProductCustomisation from "../ProductCustomisation/ProductCustomisation";
+import CentalHub from "../CentalHub/CentalHub";
+import UploadFile from "../UploadFile/UploadFile";
+import { useLocation, Link } from "react-router-dom";
+import SlotView from "../SlotVIew/SlotView";
+import SlotCreation from "../SlotCreation/SlotCreation";
+import CustomiseRequest from "../CustomiseRequest/CustomiseRequiest";
+import DesignPools from "../DesignPoolExtended/DesignPools";
+import { useParams } from "react-router-dom";
+
+const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
+  // const [sidebarExpanded, setSidebarExpanded] = useState(true);
+  const { id } = useParams();
+  const location = useLocation();
+  const [activeLink, setActiveLink] = useState(location.pathname)
+  const usertype = localStorage.getItem("Usertype");
+  const toggleSidebar = () => {
+    setSidebarExpanded(!sidebarExpanded);
+  };
+
+  useEffect(()=> {
+    if (sidebarExpanded) {
+      localStorage.setItem("sidebarExpandtrueOrNot",sidebarExpanded)
+    }
+    else {
+      localStorage.setItem("sidebarExpandtrueOrNot",sidebarExpanded)
+    }
+  },[])
+  console.log(sidebarExpanded,"sidebarExpandedsidebar")
+  console.log(activeLink,"currentLocation")
+  const renderLinks = () => {
+    if (usertype === "ADMIN") {
+      return (
+        <>
+          {/* Admin Panel */}
+
+          <Link to="/">
+            <div className={`Links ${activeLink === "/" ? "activeLinks" : ""}`}>
+              <div className="horizontal_line_sidebar"></div>
+              <div className="lin_container"></div>
+              <img src={userimg} alt="" />
+              {sidebarExpanded && <p>Users</p>}
+            </div>
+          </Link>
+          <Link to="/designpool">
+            <div className={`Links ${activeLink === "/designpool" ? "activeLinks" : ""}`}>
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={designimg} alt="" />
+              {sidebarExpanded && <p>Design pool</p>}
+            </div>
+          </Link>
+          <Link to='/masterspage/findings'>
+          <div className={`Links ${activeLink === "/masterspage/findings" ? "activeLinks" : ""}`}>
+          <div className="horizontal_line_sidebar"></div>
+          <div className="lin_container"></div>
+            <img src={mastersimg} alt="" />
+            {sidebarExpanded && <p>Masters</p>}
+          </div>
+          </Link>
+          <Link to="/assignmentpanel">
+            <div className={`Links ${activeLink === "/assignmentpanel" ? "activeLinks" : ""}`}>
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={assignmentimg} alt="" />
+              {sidebarExpanded && <p>Assignment panel</p>}
+            </div>
+          </Link>
+          <Link to="/chat">
+            <div className={`Links ${activeLink === "/chat" ? "activeLinks" : ""}`}>
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={chatboximg} alt="" />
+              {sidebarExpanded && <p>Chat box</p>}
+            </div>
+          </Link>
+          <Link to="/otherlogin">
+            <div className={`Links ${activeLink === "/otherlogin" ? "activeLinks" : ""}`}>
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={loginzimg} alt="" />
+              {sidebarExpanded && <p>Other logins</p>}
+            </div>
+          </Link>
+          <Link to="/caduploaded">
+            <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={cad} alt="" style={{width:"19px",height:"19px"}} />
+              {sidebarExpanded && <p>CAD Uploaded</p>}
+            </div>
+          </Link>
+          <Link to="/rendersuploaded">
+            <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={render} alt="" style={{width:"19px",height:"19px"}} />
+              {sidebarExpanded && <p>Renders Uploaded</p>}
+            </div>
+          </Link>
+          <Link to="/statusPage">
+            <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={track} alt="" style={{width:"22px",height:"22px"}} />
+              {sidebarExpanded && <p>Status</p>}
+            </div>
+          </Link>
+          {/* Admin Panel */}
+        </>
+      );
+    } else if (usertype === "DESIGNER") {
+      return (
+        <>
+          {/* For Designer Module */}
+          <Link to="/designdashboard">
+            <div className={`Links ${activeLink === "/designdashboard" ? "activeLinks" : ""}`}>
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={userimg} alt="" />
+              {sidebarExpanded && <p>Dashboard</p>}
+            </div>
+          </Link>
+          <Link to="/designerassign">
+            <div className={`Links ${activeLink === "/designerassign" || activeLink===`/designerassignview/${id}` ? "activeLinks" : ""}`}>
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={assignmentimg} alt="" />
+              {sidebarExpanded && <p>Assign</p>}
+            </div>
+          </Link>
+          <Link to="/chat">
+            <div className={`Links ${activeLink === "/chat" ? "activeLinks" : ""}`}>
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={chatboximg} alt="" />
+              {sidebarExpanded && <p>Chat box</p>}
+            </div>
+          </Link>
+          <Link to="/Customizedorder">
+            <div className={`Links ${activeLink === "/Customizedorder" ? "activeLinks" : ""}`}>
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={customeimg} alt="" />
+              {sidebarExpanded && <p>Customized Order</p>}
+            </div>
+          </Link>
+          <Link to="/unassigneddesigner">
+            <div className={`Links ${activeLink === "/unassigneddesigner" ? "activeLinks" : ""}`}>
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={sideStar} alt="" />
+              {sidebarExpanded && <p>Assigned To</p>}
+            </div>
+          </Link>
+          <Link to="/statusPage">
+            <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={track} alt="" style={{width:"22px",height:"22px"}} />
+              {sidebarExpanded && <p>Status</p>}
+            </div>
+          </Link>
+          {/* For Designer Module */}
+        </>
+      );
+    } else if (usertype === "VOTERS") {
+      return (
+        <>
+          {/* For Votors Panel */}
+          <Link to="/votorspanal">
+            <div className={`Links ${activeLink === "/votorspanal" ? "activeLinks" : ""}`}>
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={userimg} alt="" />
+              {sidebarExpanded && <p>voters panel</p>}
+            </div>
+          </Link>
+          <Link to="/chat">
+            <div className={`Links ${activeLink === "/chat" ? "activeLinks" : ""}`}>
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={chatboximg} alt="" />
+              {sidebarExpanded && <p>Chat box</p>}
+            </div>
+          </Link>
+          <Link to="/votorscustomization">
+            <div className={`Links ${activeLink === "/votorscustomization" ? "activeLinks" : ""}`}>
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={customeimg} alt="" />
+              {sidebarExpanded && <p>Customization</p>}
+            </div>
+          </Link>
+          <Link to="/gallery">
+            <div className={`Links ${activeLink === "/gallery" ? "activeLinks" : ""}`}>
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={galleryimg} alt="" />
+              {sidebarExpanded && <p>Gallery</p>}
+            </div>
+          </Link>
+          <Link to="/statusPage">
+            <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={track} alt="" style={{width:"22px",height:"22px"}} />
+              {sidebarExpanded && <p>Status</p>}
+            </div>
+          </Link>
+          {/* For Votors Panel */}
+        </>
+      );
+    } else if (usertype === "CAD") {
+      return (
+        <>
+          {/* CAD PANEL SIDEBAR */}
+          <Link to="/CadAssignment">
+            <div className={`Links ${activeLink === "/CadAssignment" ? "activeLinks" : ""}`}>
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={userimg} alt="" />
+              {sidebarExpanded && <p>Assignments</p>}
+            </div>
+          </Link>
+          <Link to="/chat">
+            <div className={`Links ${activeLink === "/chat" ? "activeLinks" : ""}`}>
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={chatboximg} alt="" />
+              {sidebarExpanded && <p>Chat box</p>}
+            </div>
+          </Link>
+          <Link to="/FinishedProduct">
+            <div className={`Links ${activeLink === "/FinishedProduct" || activeLink===`/folderdetails/${id}` ? "activeLinks" : ""}`}>
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={customeimg} alt="" />
+              {sidebarExpanded && <p>Finished project</p>}
+            </div>
+          </Link>
+          {/* CAD PANEL SIDEBAR */}
+        </>
+      );
+    } else if (usertype === "CENTRAL HUB") {
+      return (
+        <>
+          {" "}
+          {/* CENTRAL HUB SIDEBAR */}
+          <Link to="/centralDashboard">
+          <div className={`Links ${activeLink === "/centralDashboard" || activeLink===`/centralfolderdetails/${id}` ? "activeLinks" : ""}`}>
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={userimg} alt="" />
+              {sidebarExpanded && <p>Dashboard</p>}
+            </div>
+          </Link>
+          <Link to="/chat">
+            <div className={`Links ${activeLink === "/chat" ? "activeLinks" : ""}`}>
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={chatboximg} alt="" />
+              {sidebarExpanded && <p>Chat box</p>}
+            </div>
+          </Link>
+          <Link to="/slot">
+            <div className={`Links ${activeLink === "/slot" ? "activeLinks" : ""}`}>
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={sideStar} alt="" />
+              {sidebarExpanded && <p>Slot</p>}
+            </div>
+          </Link>
+          <Link to="/centralhubscan">
+            <div className={`Links ${activeLink === "/centralhubscan" ? "activeLinks" : ""}`}>
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={scan} alt="" />
+              {sidebarExpanded && <p>Scan </p>}
+            </div>
+          </Link>
+          <Link to="/centralhubtransfer">
+            <div className={`Links ${activeLink === "/centralhubtransfer" ? "activeLinks" : ""}`}>
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={Tranfer} alt="" />
+              {sidebarExpanded && <p>Transfer</p>}
+            </div>
+          </Link>
+          
+          <Link to="/statusPage">
+            <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={track} alt="" style={{width:"22px",height:"22px"}} />
+              {sidebarExpanded && <p>Status</p>}
+            </div>
+          </Link>
+          {/* CENTRAL HUB SIDEBAR */}
+        </>
+      );
+    } else if (usertype === "RENDERS") {
+      return (
+        <>
+          {/* RENDERS PANEL SIDEVAR */}
+          <Link to="/renderCard">
+            <div className={`Links ${activeLink === "/renderCard" || activeLink===`/rendersdetailing/${id}` ? "activeLinks" : ""}`}>
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={userimg} alt="" />
+              {sidebarExpanded && <p>Render</p>}
+            </div>
+          </Link>
+          <Link to="/finishedProject">
+            <div className={`Links ${activeLink === "/finishedProject" || activeLink === `/finished/${id}` ? "activeLinks" : ""}`}>
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={customeimg} alt="" />
+              {sidebarExpanded && <p>Finished project</p>}
+            </div>
+          </Link>
+          <Link to="/chat">
+            <div className={`Links ${activeLink === "/chat" ? "activeLinks" : ""}`}>
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={chatboximg} alt="" />
+              {sidebarExpanded && <p>Chat box</p>}
+            </div>
+          </Link>
+
+          {/* RENDERS PANEL SIDEVAR */}
+        </>
+      );
+    } else if (usertype === "WAREHOUSE") {
+      return (
+        <>
+          {/* WAREHOUSE PANEL SIDEBAR */}
+          <Link to="/wareHouse">
+            <div className={`Links ${activeLink === "/wareHouse" ? "activeLinks" : ""}`}>
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={userimg} alt="" />
+              {sidebarExpanded && <p>voters panel</p>}
+            </div>
+          </Link>
+          <Link to="/chat">
+            <div className={`Links ${activeLink === "/chat" ? "activeLinks" : ""}`}>
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={chatboximg} alt="" />
+              {sidebarExpanded && <p>Chat box</p>}
+            </div>
+          </Link>
+          <Link to="/customRequestTable">
+            <div className={`Links ${activeLink === "/customRequestTable" ? "activeLinks" : ""}`}>
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={customeimg} alt="" />
+              {sidebarExpanded && <p>Customize Request </p>}
+            </div>
+          </Link>
+          {/* <Link to="/wareHouseDetails">
+            <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={customeimg} alt="" />
+              {sidebarExpanded && <p>Confirmed orders</p>}
+            </div>
+          </Link> */}
+          <Link to="/scan">
+            <div className={`Links ${activeLink === "/scan" ? "activeLinks" : ""}`}>
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={pack} alt="" />
+              {sidebarExpanded && <p>Recieved </p>}
+            </div>
+          </Link>
+          <Link to="/newscanmodule">
+            <div className={`Links ${activeLink === "/newscanmodule" ? "activeLinks" : ""}`}>
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={scan} alt="" />
+              {sidebarExpanded && <p>Scan </p>}
+            </div>
+          </Link>
+          <Link to="/workdone">
+            <div className={`Links ${activeLink === "/workdone" ? "activeLinks" : ""}`}>
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={done} alt="" />
+              {sidebarExpanded && <p>Work Done </p>}
+            </div>
+          </Link>
+        
+          <Link to="/statusPage">
+            <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={track} alt="" style={{width:"22px",height:"22px"}} />
+              {sidebarExpanded && <p>Status</p>}
+            </div>
+          </Link>
+          {/* WAREHOUSE PANEL SIDEBAR */}
+        </>
+      );
+    }
+  };
+  return (
+    <div>
+      <div
+        className={`Sidebar_Parent ${
+          sidebarExpanded ? "expanded" : "collapsed"
+        }`}
+      >
+        <div className="logo">
+          <img src={logo} alt="Logo" />
+        </div>
+        <div className="vertical_sideBar_line"></div>
+        <div className="lin_container"></div>
+        <div className="Sidebar_Links">{renderLinks()}</div>
+        <div className="Arrow" onClick={toggleSidebar}>
+          {sidebarExpanded ? (
+            <MdKeyboardArrowLeft className="ArrowIcon1" />
+          ) : (
+            <MdKeyboardArrowRight className="ArrowIcon2" />
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Sidebar;

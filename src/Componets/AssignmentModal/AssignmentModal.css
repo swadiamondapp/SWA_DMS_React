@@ -1,0 +1,45 @@
+
+
+.create_folder{
+    display: flex;
+    z-index: 999;
+}
+.title {
+    font-weight: 400;
+    font-family: "Gilroy medium";
+    font-size: 18px;
+    margin-bottom: 25px;
+    color:#000000;
+}
+.label-title {
+    font-family: "Inter", sans-serif;
+    font-weight: 500;
+    padding-bottom: 7px;
+    opacity:60%;
+
+
+}
+.folderInputContainer {
+    display: flex;
+    flex-direction: column;
+}
+.inputFeildt {
+    border-radius: 8px;
+    border:0.75px solid #E0E1E1; 
+    font-weight: 500;
+    padding:8px 5px;
+    outline: none;
+
+}
+.button-create {
+    margin-top: 12px;
+    background-color: #2B2B2B;
+    font-family: "Gilroy medium";
+    font-weight: 400;
+    color:#fff;
+    border: none;
+    padding:10px 0px;
+    border-radius: 8px;
+
+
+}

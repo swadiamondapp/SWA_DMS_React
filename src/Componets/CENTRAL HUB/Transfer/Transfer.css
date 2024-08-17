@@ -1,0 +1,36 @@
+.transferSearch {
+  border: 1px solid balck;
+}
+.scan_select_Central{
+  width: 80px;
+  height: 26px;
+  border-radius: 32px;
+  outline: none;
+  border: none;
+  background-color: #23A064;
+  color: white;
+  padding-left: 4px;
+  font-size: 11px;
+  font-weight: 500;
+
+}
+.scan_select_Central {
+  -webkit-appearance: none; 
+  -moz-appearance: none; 
+  appearance: none; 
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23ffffff" height="24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5H7z" fill="%23ffffff"/></svg>');
+  background-repeat: no-repeat;
+  background-position-x: right; 
+  padding-right: 10px; 
+}
+.custom-option {
+  background-color: #f0f0f0;
+  color: #333;
+  padding: 10px;
+  margin: 5px 0; /* This might not be supported in all browsers */
+  display: flex;
+  gap:10px
+}
+.created_date{
+ width: 200px !important;
+}

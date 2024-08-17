@@ -1,0 +1,205 @@
+.print-renders-product {
+  margin: 20px 20px;
+}
+
+.print-slot-modal-container {
+  /* Add any specific styles for the modal container if needed */
+}
+
+.print-slot-container {
+  width: 100%;
+}
+
+.print-custom-table {
+  width: 100%;
+  /* border-collapse: collapse; */
+}
+
+.print-single-border {
+  border: 1px solid #ddd;
+}
+
+.print-column-header {
+  background: white;
+  text-align: left;
+  padding: 8px;
+  color: #2e364c;
+  font-family: "Gilroy medium";
+  border: 1px solid rgba(231, 237, 244, 1);
+}
+
+.print-table-body {
+  vertical-align: top;
+}
+
+.print-table-cell {
+  font-family: "Gilroy medium";
+  font-size: 14px;
+  font-weight: 400;
+  padding: 8px;
+  color: #2e364c;
+  border: 1px solid rgba(231, 237, 244, 1) !important;
+}
+
+.print-custom-table .print-table-cell {
+  width: 25%;
+}
+
+tbody tr:last-child .print-table-cell {
+  border-bottom: none;
+}
+
+.NewSlotPrint {
+  width: 100%;
+  height: 100vh;
+  padding: 2px;
+  /* background-color: red; */
+  height: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+}
+.slot_items {
+  height: 355px;
+  width: 99%;
+  border-radius: 8px;
+  border: 1px solid black;
+  margin-bottom: 5px;
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+  gap: 9px;
+}
+.print_head {
+  width: 100%;
+  border-radius: 7px;
+  padding: 5px;
+  background-color: #d7365f;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: white;
+  font-size: 16px;
+  font-weight: 900;
+  position: relative;
+  z-index: 9;
+}
+
+.print_head img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 7px;
+}
+
+.print_detail {
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: space-between;
+}
+.qrsection {
+  width: 69%;
+  height: 80px;
+  display: flex;
+  align-items: start;
+  /* background-color: green; */
+  border-bottom: 1px solid black;
+}
+.print_content {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  font-size: 11px;
+  font-weight: 600;
+  gap: 5px;
+  /* background-color: yellow; */
+}
+.print_qr {
+  width: 30%;
+  height: 100%;
+  display: flex;
+  /* align-items: center; */
+  justify-content: center;
+  /* background-color: red; */
+}
+.img_section {
+  border: 1px solid black;
+  border-radius: 8px;
+  width: 28%;
+  height: 80px;
+  overflow: hidden;
+}
+.img_section img {
+  object-fit: contain;
+}
+.print_tag {
+  width: 100%;
+  height: 40px;
+  display: flex;
+  flex-direction: column;
+  font-size: 11px;
+  font-weight: 600;
+  justify-content: space-evenly;
+  border-bottom: 1px solid black;
+}
+.approx_details {
+  width: 100%;
+  height: auto;
+  display: flex;
+
+  /* background: red; */
+}
+.approx {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  font-size: 11px;
+  font-weight: 600;
+  gap: 5px;
+}
+.table_head {
+  height: 20px;
+  display: flex;
+  align-items: center;
+}
+.print_table {
+  width: 99%;
+  /* height: 89px; */
+  border-radius: 10px;
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+.print_table_main th {
+  font-size: 10px;
+  font-weight: 600;
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+.print_table_main th:first-child {
+  border-left: 1px none !important;
+}
+.print_table_main th:last-child {
+  border-right: 1px none !important;
+}
+.tr_section td {
+  /* height: 100%; */
+  font-size: 10px;
+  font-weight: 600;
+  border: 1px solid black;
+  border-collapse: collapse;
+  border-radius: 10px;
+  border-bottom: 1px none !important;
+  padding: 15px;
+}
+.tr_section td:first-child {
+  border-left: 1px none !important;
+}
+.tr_section td:last-child {
+  border-right: 1px none !important;
+}

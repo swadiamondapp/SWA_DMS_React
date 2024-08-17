@@ -1,0 +1,36 @@
+.uploadPNG_Container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.upload_DMFile {
+}
+.addButton_Container {
+}
+.dashedImage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 64px;
+  width: 64px;
+  border: 0.5px dashed #c2ccd3;
+  padding: 15px 20px;
+  position: relative;
+}
+.dashed_imageContainer {
+  display: flex;
+  gap: 10px;
+}
+.title_1 {
+  font-family: "Inter", sans-serif;
+  color: #19242d;
+  font-size: 12px;
+  font-weight: 400;
+}
+.cancelButton{
+  color: gray;
+  padding: 10px 20px;
+  border-radius: 8px;
+  background-color: white;
+  border: 1px solid rgba(128, 128, 128, 0.717);
+}

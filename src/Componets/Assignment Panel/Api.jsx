@@ -1,0 +1,779 @@
+import { apiService, checkApiStatus } from "../../Pages/Services/ApiInstants";
+import { setToLocalstorage } from "../../Pages/Utils/Common";
+import {
+  ASSIGNMENT_MOVE,
+  ASSIGNMENT_PANEL_DETAILS_PAGE,
+  ASSIGNMENT_SORTBY_ADMIN,
+  ASSIGNMENT_SORTBY_DESIGNER,
+  ASSIGN_UNASSIGN_DESIGNERS,
+  CALCULATION,
+  DELETE_ITEM_FROM_ASSIGNMENT_PANEL,
+  DIAMOND_TYPE_DROPDOWN,
+  EDIT_BASIC_DETAILS,
+  FINDINGS_LIST,
+  FOLDER_DETAIL_API,
+  LIST_ALL_DESIGNERS,
+  LIST_ASSIGNMENT_PANEL,
+  METAL_TYPE,
+  MOVE_SINGLE_ITEM_TO_DESIGNPOOL,
+  MOVE_TO_FOLDER,
+  PRODUCT_CATEGORY_LIST,
+  SEARCH_DESIGNERS,
+  TAG_LIST,
+  UPLOAD_ADMIN_IMAGE_ASSIGNMENT,
+} from "../../Pages/Services/EndPoints";
+import {
+  all_Designs,
+  list_assignment_folder,
+} from "../ADMIN PANEL/Design Pool/Api";
+
+export const list_assignment_panel = async (setIsLoading, setData) => {
+  try {
+    setIsLoading(true);
+    const response = await apiService.get(LIST_ASSIGNMENT_PANEL);
+    if (checkApiStatus(response)) {
+      setData(response.data.results.data);
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+export const sort_assignmentpanel_bydesigner = async (
+  setIsLoading,
+  setData
+) => {
+  try {
+    const response = await apiService.get(ASSIGNMENT_SORTBY_DESIGNER);
+    if (checkApiStatus(response)) {
+      setData(response.data.results.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const sort_assignmentpanel_byadmin = async (setIsLoading, setData) => {
+  try {
+    const response = await apiService.get(ASSIGNMENT_SORTBY_ADMIN);
+    if (checkApiStatus(response)) {
+      setData(response.data.results.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const list_folderDetails = async (
+  setIsLoading,
+  setFolderDetails,
+  selectedId
+) => {
+  try {
+    const response = await apiService.get(`${FOLDER_DETAIL_API}${selectedId}/`);
+    if (response.data.results.status_code === 200) {
+      setFolderDetails(response.data.results.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const listFolderDetailVeiwAssignmentPanel = async (
+  setIsLoading,
+  setFolderDetailsView,
+  id,
+  designIdA
+) => {
+  try {
+    const response = await apiService.get(
+      `${ASSIGNMENT_PANEL_DETAILS_PAGE}${id}/item/${designIdA}/`
+    );
+    if (checkApiStatus(response)) {
+      setFolderDetailsView(response.data.results.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const move_to_folder = async (
+  setIsLoading,
+  folderName,
+  selectedAssignment,
+  setAssignmentFolder,
+  setData,
+  onClose,
+  setSuccessMessage,
+  setSuccessModalOpen,
+  setFolderName,
+
+  setSelectedAssignment,
+  setError,
+  setShowRadioButtons,
+  setSelectButtonLabel
+) => {
+  try {
+    const body = {
+      folder_data: {
+        name: folderName,
+      },
+      items: selectedAssignment,
+    };
+    console.log(body, "itemMovirddd");
+    const response = await apiService.post(MOVE_TO_FOLDER, body);
+    if (checkApiStatus(response)) {
+      list_assignment_folder(setIsLoading, setAssignmentFolder);
+      list_assignment_panel(setIsLoading, setData);
+      onClose();
+      setSuccessMessage("Assignment Folder Created SuccessFully");
+      setSuccessModalOpen(true);
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1600);
+      setFolderName("");
+
+      setSelectedAssignment([]);
+      setError("");
+      setShowRadioButtons(false);
+      setSelectButtonLabel("Select");
+    }
+    if (response.data.results.status_code === 206) {
+      setError(response.data.results.message);
+    }
+  } catch (error) {
+    console.error("Error moving designs:", error);
+  }
+  // catch (error) {
+  //   console.log(error, "erreree");
+  //   const errorReason = error?.response?.data?.name;
+  //   const errorReasonString = errorReason
+  //     ? Object.values(errorReason).flat().join(", ")
+  //     : "";
+  //   console.log(errorReasonString, "errrstring");
+  //   setError(errorReason);
+  // }
+};
+
+export const metal_type_dropdown_basicDetails = async (
+  setMetalTypeDropDown
+) => {
+  try {
+    const response = await apiService.get(METAL_TYPE);
+    if (checkApiStatus(response)) {
+      setMetalTypeDropDown(response?.data?.results?.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const diamond_type_dropdown_basicDetails = async (setDiamondType) => {
+  try {
+    const response = await apiService.get(DIAMOND_TYPE_DROPDOWN);
+    if (checkApiStatus(response)) {
+      setDiamondType(response?.data?.results?.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const tag_List_basicDetails = async (setSelected) => {
+  try {
+    const response = await apiService.get(TAG_LIST);
+    if (checkApiStatus(response)) {
+      setSelected(response?.data?.results?.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const findings_List_basicDetails = async (setFindingsList) => {
+  try {
+    const response = await apiService.get(FINDINGS_LIST);
+    if (checkApiStatus(response)) {
+      setFindingsList(response?.data?.results?.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const product_category_basicDetails = async (setListProductCategory) => {
+  try {
+    const response = await apiService.get(PRODUCT_CATEGORY_LIST);
+    if (checkApiStatus(response)) {
+      setListProductCategory(response?.data?.results?.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const move_to_assignment = async (
+  formData,
+  onClose,
+  setSuccessModalOpen,
+  setSuccessMessage,
+  setIsLoading,
+  setSelectedDesigns,
+  setData,
+  setShowRadioButtons,
+  setSelectButtonLabel,
+  setShowAssignmentModal,
+  setMovedItemsId,
+  setFormData,
+  getSelectedDesign,
+  callBack,
+  setSelectedIdsForDelet
+) => {
+  try {
+    const body = {
+      design_codes: formData.SKU ? formData.SKU : getSelectedDesign,
+      assignment_data: {
+        length: formData.length,
+        width: formData.width,
+        height: formData.height,
+        approx_diamond_weight: formData.approxDiamondWeight,
+        approx_metal_weight: formData.approxMetalWeights,
+        approx_price: formData.approxMRP,
+        note: formData.notes,
+        product_category: formData.productCategory,
+        type_of_metal: formData.typeOfMetal,
+        diamond_type: formData.diamondType,
+        findings: formData.findings,
+        tag: formData.tag,
+      },
+    };
+    console.log(body, "move_TO_ASSINGG");
+    const response =
+      (formData.SKU || getSelectedDesign) &&
+      (await apiService.post(ASSIGNMENT_MOVE, body));
+    if (response.data.results.status_code === 200) {
+      all_Designs(setIsLoading, setData);
+      onClose();
+      setSuccessMessage("Moved to Assignment Panel Successfully");
+      setSuccessModalOpen(true);
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1600);
+      setSelectedDesigns([]);
+      setShowRadioButtons(false);
+      setSelectButtonLabel("Select");
+      // setShowAssignmentModal(true);
+      setMovedItemsId(response?.data?.results?.data);
+      setFormData({
+        SKU: "",
+        productCategory: "",
+        length: "",
+        width: "",
+        height: "",
+        typeOfMetal: "",
+        diamondType: "",
+        approxDiamondWeight: "",
+        findings: "",
+        approxMetalWeights: "",
+        approxMRP: "",
+        tag: [],
+        notes: "",
+      });
+      callBack();
+      setSelectedIdsForDelet([]);
+    }
+  } catch (error) {
+    console.error("Error moving designs:", error);
+  }
+};
+
+export const editBasicDetails = async (
+  formData,
+  folderIdA,
+  designId,
+  setSuccessMessage,
+  setSuccessModalOpen,
+  onClose,
+  updateEditFunction
+) => {
+  try {
+    const body = {
+      length: formData.length,
+      width: formData.width,
+      height: formData.height,
+      approx_diamond_weight: formData.approxDiamondWeight,
+      approx_metal_weight: formData.approxMetalWeights,
+      approx_price: formData.approxMRP,
+      notes: formData.notes,
+      product_category: formData.productCategory,
+      type_of_metal: formData.typeOfMetal,
+      diamond_type: formData.diamondType,
+      findings: formData.findings,
+      tag: formData.tag,
+    };
+    console.log(body, "move_TO_ASSINGG");
+    const response = await apiService.patch(
+      `${EDIT_BASIC_DETAILS}${folderIdA}/items/${designId}/edit/`,
+      body
+    );
+    if (response.data.results.status_code === 200) {
+      // all_Designs(setIsLoading, setData);
+      onClose();
+      setSuccessMessage("Basic Details Edited SuccessFully");
+      setSuccessModalOpen(true);
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1600);
+      updateEditFunction();
+    }
+  } catch (error) {
+    console.error("Error moving designs:", error);
+  }
+};
+
+// export const move_to_assignment_from_admin = async (
+//   formData,
+//   onClose,
+//   setSuccessModalOpen,
+//   setAssignDesignerModalOpen,
+//   setSuccessMessage,
+//   setAdminBasicDetailsOpen,
+//   setAdminUploadedItemId,
+
+//   // setIsLoading,
+//   // setSelectedDesigns,
+//   // setData,
+//   // setShowRadioButtons,
+//   // setSelectButtonLabel,
+//   // setShowAssignmentModal,
+//   // setMovedItemsId,
+//   // setFormData
+// ) => {
+//   try {
+//     const body = {
+//       design_codes: formData.SKU,
+//       assignment_data: {
+//         length: formData.length,
+//         width: formData.width,
+//         height: formData.height,
+//         approx_diamond_weight: formData.approxDiamondWeight,
+//         approx_metal_weight: formData.approxMetalWeights,
+//         approx_price: formData.approxMRP,
+//         note: formData.notes,
+//         product_category: formData.productCategory,
+//         type_of_metal: formData.typeOfMetal,
+//         diamond_type: formData.diamondType,
+//         findings: formData.findings,
+//         tag: formData.tag,
+//       },
+//     };
+//     console.log(body, "move_TO_ASSINGG");
+//     const response = await apiService.post(ASSIGNMENT_MOVE, body);
+//     if (response?.data?.results?.status_code === 200) {
+//       setAdminUploadedItemId(response.data.results.data);
+//       setSuccessMessage("Moved to Assignment Successfully");
+//       setSuccessModalOpen(true);
+//       setAssignDesignerModalOpen(true);
+//       setTimeout(() => {
+//         setSuccessModalOpen(false);
+//         setAdminBasicDetailsOpen(false);
+//       }, 1600);
+//       // setSelectedDesigns([]);
+//       // setShowRadioButtons(false);
+//       // setSelectButtonLabel("Select");
+//       // setShowAssignmentModal(true);
+//       // setMovedItemsId(response?.data?.results.data);
+//       // setFormData({
+//       //   SKU: "",
+//       //   productCategory: "",
+//       //   length: "",
+//       //   width: "",
+//       //   height: "",
+//       //   typeOfMetal: "",
+//       //   diamondType: "",
+//       //   approxDiamondWeight: "",
+//       //   findings: "",
+//       //   approxMetalWeights: "",
+//       //   approxMRP: "",
+//       //   tag: "",
+//       //   notes: "",
+//       // });
+//     }
+//   } catch (error) {
+//     console.error("Error moving designs:", error);
+//   }
+// };
+export const move_to_assignment_from_admin = async (
+  formData,
+  setSuccessModalOpen,
+  setAssignDesignerModalOpen,
+  setSuccessMessage,
+  setAdminBasicDetailsOpen,
+  setAdminBasicItemId,
+  setFormData
+) => {
+  try {
+    const body = {
+      design_codes: formData.SKU,
+      assignment_data: {
+        length: formData.length,
+        width: formData.width,
+        height: formData.height,
+        approx_diamond_weight: formData.approxDiamondWeight,
+        approx_metal_weight: formData.approxMetalWeights,
+        approx_price: formData.approxMRP,
+        note: formData.notes,
+        product_category: formData.productCategory,
+        type_of_metal: formData.typeOfMetal,
+        diamond_type: formData.diamondType,
+        findings: formData.findings,
+        tag: formData.tag,
+      },
+    };
+    console.log(body, "move_TO_ASSIGN");
+    const response = await apiService.post(ASSIGNMENT_MOVE, body);
+    if (response.data.results.status_code === 200) {
+      setAdminBasicItemId(response.data.results.data[0].item_id); // Update the new state with the response data
+      // setSuccessMessage("Moved to Assignment Successfully");
+      // setSuccessModalOpen(true);
+      setAssignDesignerModalOpen(true);
+      setFormData({
+        SKU: [],
+        productCategory: "",
+        length: "",
+        width: "",
+        height: "",
+        typeOfMetal: "",
+        diamondType: "",
+        approxDiamondWeight: "",
+        findings: "",
+        approxMetalWeights: "",
+        approxMRP: "",
+        tag: "",
+        notes: "",
+      });
+      setTimeout(() => {
+        // setSuccessModalOpen(false);
+      }, 1600);
+    }
+  } catch (error) {
+    console.error("Error moving designs:", error);
+  }
+};
+
+// export const upload_admin_image_assignment = async (
+// setAdminUploadedImageIds,
+// uploadedImage,
+// setAdminBasicDetailsOpen
+// ) => {
+//   try {
+//     const body = {
+//       image : uploadedImage
+//     };
+//     console.log(body, "move_TO_ASSINGG");
+//     const response = await apiService.post(UPLOAD_ADMIN_IMAGE_ASSIGNMENT, body);
+//     if (response.data.results.status_code === 200) {
+//       setAdminUploadedImageIds(response.data.results.data)
+//       setAdminBasicDetailsOpen(true)
+//     }
+//   } catch (error) {
+//     console.error("Error moving designs:", error);
+//   }
+// };
+
+export const upload_admin_image_assignment = async (
+  setAdminUploadedImageIds,
+  uploadedImage,
+  setAdminBasicDetailsOpen,
+  setAdminUploadedIds,
+  setImageSingleError
+) => {
+  try {
+    // Ensure uploadedImage is a File or Blob
+    const formData = new FormData();
+    formData.append("image", uploadedImage);
+
+    const response = await apiService.post(
+      UPLOAD_ADMIN_IMAGE_ASSIGNMENT,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    if (response?.data?.results?.status_code === 200) {
+      const responseData = response?.data?.results?.data;
+      setAdminUploadedImageIds(responseData); // Set the entire response data to state
+      setAdminBasicDetailsOpen(true);
+      setAdminUploadedIds(responseData.id);
+      setImageSingleError(null);
+    }
+  } catch (error) {
+    console.error("Error uploading image:", error);
+  }
+};
+
+export const basic_calculation = async (
+  setIsLoadingCalculation,
+  formData,
+  SelectedMetalId,
+  SelectedDiamondId,
+  setCalculationData
+) => {
+  try {
+    setIsLoadingCalculation(true);
+    const body = {
+      metal_weight: formData.approxMetalWeights,
+      diamond_weight: formData.approxDiamondWeight,
+      metal_id: SelectedMetalId,
+      diamond_id: SelectedDiamondId,
+    };
+    console.log(body, "move_TO_ASSINGG");
+    const response = await apiService.post(CALCULATION, body);
+    if (response.data.results.status_code === 200) {
+      setCalculationData(response?.data?.results?.data);
+    }
+  } catch (error) {
+    console.error("Error moving designs:", error);
+  } finally {
+    setIsLoadingCalculation(false);
+  }
+};
+
+export const list_all_designers = async (setAllDesigners) => {
+  try {
+    const response = await apiService.get(LIST_ALL_DESIGNERS);
+    if (checkApiStatus(response)) {
+      setAllDesigners(response?.data?.results?.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const list_all_designers_get = async (setIsLoading,setAllDesigners) => {
+  try {
+    setIsLoading(true)
+    const response = await apiService.get(LIST_ALL_DESIGNERS);
+    if (checkApiStatus(response)) {
+      console.log(response,"response_de")
+      setAllDesigners(response?.data?.results?.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }finally{
+    setIsLoading(false)
+  }
+};
+
+export const assign_to_designers = async (
+  assignedDesignerId,
+  AdminUploadedIds,
+  onClose,
+  setSuccessModalOpen,
+  setSuccessMessage,
+  setOpenAdminFolder,
+  setAssignDesignerModalOpen,
+  setAdminBasicDetailsOpen,
+  setUploadedImage,
+  setAssignedDesignerId,
+  setSearchDesigner,
+  setAllDesigners,
+  recallListDesigners
+) => {
+  try {
+    const body = {
+      paper_design_id: AdminUploadedIds,
+      user: assignedDesignerId,
+    };
+    console.log(body, "bodyDeesiners");
+    const response = await apiService.post(ASSIGN_UNASSIGN_DESIGNERS, body);
+    if (response.data.results.status_code === 200) {
+      setSuccessMessage("Item Assigned Successfully");
+      setSuccessModalOpen(true);
+      setTimeout(() => {
+        // setOpenAdminFolder(true);
+        setSuccessModalOpen(false);
+        onClose();
+      }, 1600);
+      setAssignDesignerModalOpen(false);
+      setAdminBasicDetailsOpen(false);
+      setUploadedImage(null);
+      setAssignedDesignerId(null);
+      setSearchDesigner("");
+      list_all_designers(setAllDesigners);
+      recallListDesigners();
+    }
+  } catch (error) {
+    // setSelectedAssignment([])
+    console.error("Error moving designs:", error);
+    // alert("Please Assign A Designer");
+  }
+};
+export const move_to_folder_admin_user = async (
+  adminBasicItemIdsArray,
+  folderName,
+  setSuccessMessage,
+  setSuccessModalOpen,
+  setFolderName,
+  onClose,
+  setAssignDesignerModalOpen,
+  setAdminBasicDetailsOpen,
+  setUploadedImage,
+  setAssignedDesignerId
+) => {
+  try {
+    const body = {
+      folder_data: {
+        name: folderName,
+      },
+      items: adminBasicItemIdsArray,
+    };
+    console.log(body, "itemMovirddd");
+    const response = await apiService.post(MOVE_TO_FOLDER, body);
+    if (response.data.results.status_code === 200) {
+      console.log("successfully created");
+      // list_assignment_folder(setIsLoading, setAssignmentFolder);
+      onClose();
+      setSuccessMessage("Assignment Folder Created SuccessFully");
+      setSuccessModalOpen(true);
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+        setAssignDesignerModalOpen(false);
+        setAdminBasicDetailsOpen(false);
+        setUploadedImage(null);
+      }, 1600);
+      setAssignedDesignerId(null);
+      setFolderName("");
+    }
+  } catch (error) {
+    console.error("Error moving designs:", error);
+  }
+};
+
+export const moveSingleItemToDesignPool = async (
+  setIsLoading,
+  item,
+  setData,
+  setSuccessModalOpen,
+  setSuccessMessage,
+  setActiveCardId
+) => {
+  try {
+    setIsLoading(true);
+    const response = await apiService.delete(
+      `${MOVE_SINGLE_ITEM_TO_DESIGNPOOL}${item}/`
+    );
+    if (checkApiStatus(response)) {
+      list_assignment_panel(setIsLoading, setData);
+      setSuccessMessage("item Moved Successfully");
+      setSuccessModalOpen(true);
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+      }, 1600);
+      setActiveCardId([]);
+    }
+  } catch (error) {
+    console.error("Error moving designs:", error);
+  } finally {
+    setIsLoading(false);
+  }
+};
+export const deleteItemFromAssignmentPanel = async (
+  setIsLoading,
+  item,
+  setData,
+  setSuccessModalOpen,
+  setSuccessMessage,
+  setActiveCardId,
+  setDeleteConfirmationOpen
+) => {
+  try {
+    setIsLoading(true);
+    const response = await apiService.delete(
+      `${DELETE_ITEM_FROM_ASSIGNMENT_PANEL}${item}/`
+    );
+    if (checkApiStatus(response)) {
+      list_assignment_panel(setIsLoading, setData);
+      setSuccessMessage("item Deleted Successfully");
+      setSuccessModalOpen(true);
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+        setDeleteConfirmationOpen(false);
+      }, 1600);
+      setActiveCardId([]);
+    }
+  } catch (error) {
+    console.error("Error moving designs:", error);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+export const listDesignersByName = async (
+  setIsLoading,
+  setAllDesigners,
+  SearchDesigners
+) => {
+  try {
+    setIsLoading(true);
+    const response = await apiService.get(
+      `${SEARCH_DESIGNERS}${SearchDesigners}`
+    );
+    if (checkApiStatus(response)) {
+      setAllDesigners(response?.data?.results?.data);
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+export const filterAdminDesigns = async (
+  setIsLoading,
+  startDate,
+  endDate,
+  filterTag,
+  filterCategory,
+  filterDesigner,
+  setData,
+  filterMaxPrice,
+  filterMinPrice,
+  setFilter,
+  setError
+) => {
+  try {
+    setIsLoading(true);
+
+    let apiUrl = `${LIST_ASSIGNMENT_PANEL}?date_from=${
+      startDate ? startDate : ""
+    }&date_to=${endDate ? endDate : ""}&tags=${
+      filterTag ? filterTag : ""
+    }&product_type=${filterCategory ? filterCategory : ""}&designer=${
+      filterDesigner ? filterDesigner : ""
+    }&price_below=${filterMinPrice ? filterMinPrice : ""}&price_above=${
+      filterMaxPrice ? filterMaxPrice : ""
+    }`;
+
+    const response = await apiService.get(apiUrl);
+    if (checkApiStatus(response)) {
+      setData(response?.data?.results?.data);
+      setFilter(false)
+    }
+    else if (
+      response.data.results &&
+      response.data.results.status_code === 206
+    ) {
+      setError(response.data.results.message);
+      setTimeout(()=>{
+        setError("")
+      },3000)
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setIsLoading(false);
+  }
+};

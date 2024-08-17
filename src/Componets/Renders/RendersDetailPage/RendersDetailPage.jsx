@@ -1,0 +1,106 @@
+import React, { useContext, useEffect, useRef } from "react";
+import "./RendersDetailPage.css";
+import download from "../../../assets/download.png";
+import print from "../../../assets/printer.png";
+import ReactToPrint, { useReactToPrint } from "react-to-print";
+import { LuPrinter } from "react-icons/lu";
+import RendersProductPrint from "../RendersProductPrint/RendersProductPrint";
+import { useLocation, Link, useNavigate } from "react-router-dom";
+
+const RendersDetailPage = ({ folderDetails, sidebarExpanded }) => {
+  const navigate = useNavigate();
+  console.log("folderDetails", folderDetails);
+
+  const printRef = useRef();
+
+  const handlePrint = useReactToPrint({
+    content: printRef.current,
+  });
+
+  const handleDownload = (imageUrl) => {
+    fetch(imageUrl, {
+      method: 'GET',
+      mode: 'cors'
+  })
+  .then(response => response.blob())
+  .then(blob => {
+      const blobUrl = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.download = 'downloaded_image.jpg';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+  })
+  .catch(error => console.error('Error downloading the image:', error));
+  };
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+    setImages({ 
+      normal: null, 
+      threeD: null 
+    });
+  };
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const year = date.getFullYear();
+  
+    return `${day} ${month} ${year}`;
+  };
+  const handleForlderDetailsVeiw = (id,designCode) => {
+    navigate(`/assignmentviewsAll/${id}`, {
+      state: {
+      
+        detailsViewFolderName: designCode,
+      
+      },
+    });
+  };
+
+  return (
+    <>
+      {folderDetails?.map((item) => (
+        <div
+          className="RendersDetailPage"
+          key={item.id}
+          style={{ marginLeft: sidebarExpanded ? "218px" : "120px" }}
+        >
+          <div className="Detail_Card" onClick={() => handleForlderDetailsVeiw(item.id,item.designCode)}>
+            <img src={item.file_2d} alt="" />
+            <span>
+              POSTED ON:   <b>{formatDate(item.created_at)}</b>
+            </span>
+            <button onClick={() => handleDownload(item.file_2d)}>
+              DOWNLOAD <img className="img_detail" src={download} alt="" />
+            </button>
+          </div>
+          <div className="Detail_Card">
+            <img src={item.file_3d} alt="" />
+            <span>
+              POSTED ON: <b> {formatDate(item.created_at.split("T")[0])} </b>
+            </span>
+            <ReactToPrint
+              trigger={() => (
+                <div className="Detail_Card_print" onClick={handlePrint}>
+                  <LuPrinter /> Print
+                </div>
+              )}
+              content={() => printRef.current}
+            />
+            <div style={{ display: "none" }}>
+              <RendersProductPrint
+                ref={printRef}
+                folderDetails={folderDetails}
+              />
+            </div>
+          </div>
+        </div>
+      ))}
+    </>
+  );
+};
+
+export default RendersDetailPage;

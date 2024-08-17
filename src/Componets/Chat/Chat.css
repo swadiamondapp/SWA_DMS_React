@@ -1,0 +1,140 @@
+.ParentChatSection {
+  background: #fff;
+  box-shadow: 0px 8.890301704406738px 12.27112102508545px 0px #00000009;
+  box-shadow: 0px 71px 98px 0px #00000012;
+  border-radius: 4px;
+  display: grid;
+  grid-template-columns: 1fr 2.5fr;
+  height: 100vh;
+}
+.Left_Chat_Section {
+  background: #f9f9f9;
+}
+.Chat_search {
+  background: #f9f9f9;
+  padding: 25px 20px;
+  position: relative;
+  padding-bottom: 27px;
+}
+.Chat_search input {
+  width: 100%;
+  position: relative;
+  padding: 14px 20px;
+  box-shadow: 0px 4px 4px 0px #dfddd740 inset;
+
+  border: 0.5px solid #f1efea;
+  outline: none;
+  border-radius: 32px;
+}
+.Chat_search input::placeholder {
+  color: #c6bfae;
+  font-family: "Gilroy medium";
+}
+.Chat_search img {
+  position: absolute;
+  top: 38%;
+  right: 12%;
+}
+.Chat_user_Card {
+  border-top: 0.5px solid #e1dfd5;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 10px 20px;
+}
+.User___details {
+  font-family: "Gilroy medium";
+}
+.User___details p:nth-child(1) {
+  color: #000;
+  padding-bottom: 5px;
+  font-weight: 600;
+}
+.User___details p:nth-child(2) {
+  font-size: 14px;
+  color: #000000b5;
+}
+.Chat_user_Card:hover {
+  background: #f2f2f2;
+}
+.Right_Chat_Section {
+  position: relative;
+  /* padding: 20px; */
+  margin: 20px;
+  margin-bottom: 0px;
+}
+.Send_Btn_Parent {
+  position: absolute;
+  bottom: 0%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  border-top: 0.5px solid #e8e8e8;
+  padding: 15px 0px;
+}
+.Send_Btn_Parent input {
+  width: 100%;
+}
+.C1_chat {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 60px;
+}
+.chat___message {
+  width: 300px;
+  background: #f2f2f2;
+  border-radius: 16px;
+  padding: 15px 20px;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+}
+.chat___message2 {
+  width: 300px;
+  background: #e6f0f0;
+  border-radius: 16px;
+  padding: 15px 20px;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+}
+.name___date {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 8px;
+  font-family: "Gilroy medium";
+}
+.C2_chat {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 60px;
+  justify-content: end;
+}
+.Send_Btn_Parent input {
+  width: 100%;
+  background: #edf4f6;
+  border: 0.5px solid #dde8eb;
+  padding: 15px;
+  outline: none;
+
+  border-radius: 8px;
+}
+.Send_Btn_Parent input::placeholder {
+  color: #414b56;
+  font-family: "Inter", sans-serif;
+}
+.Send_Btn_Parent button {
+  background: #0464d5;
+  color: #fff;
+  border: none;
+  padding: 14px 25px;
+  border-radius: 8px;
+  font-family: "Inter", sans-serif;
+  cursor: pointer;
+}
+.DATE___SEC {
+  font-size: 14px;
+  color: #00000096;
+}

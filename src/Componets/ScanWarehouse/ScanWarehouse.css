@@ -1,0 +1,13 @@
+.scantable_main_search{
+    /* background-color: red; */
+    display: flex;
+    justify-content: space-between;
+}
+.searchblue_border{
+    border: 1px solid #0466d563 !important;
+}
+.searchblue{
+    width: 41px;
+    height: 42px;
+    top: 0.5px !important;
+}

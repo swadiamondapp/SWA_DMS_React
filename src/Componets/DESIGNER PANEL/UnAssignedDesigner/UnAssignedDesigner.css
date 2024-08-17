@@ -1,0 +1,49 @@
+.parent_UnAssignedD {
+display: flex;
+justify-content: space-between;
+/* align-items: center; */
+text-align: right;
+}
+.UnassignDesigner button {
+    background: transparent;
+    border: 1px solid #126E72;
+    border-radius: 32px;
+    padding :6px 5px;
+    color:#126E72;
+    font-family: "Gilroy medium";
+    font-size: 14px;
+}
+.unasignCardDetails {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+.unassignbuttondetails {
+    display: flex;
+    align-items: center;
+    gap:20px
+}
+.unassign_name p:first-child {
+    color: #455173;
+    font-size: 14px;
+    font-family: "Gilroy bold";
+  }
+  .unassign_name p:last-child {
+    color: #666;
+    font-size: 0.9em;
+    font-family: "Gilroy medium";
+  }
+  .unassign_avatar img {
+    width:32px;
+    height: 32px;
+    border-radius: 32px;
+  }
+  .tag_customizedOrder {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  .dropdown_UN {
+    position: absolute;
+  }

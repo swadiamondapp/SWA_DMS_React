@@ -1,0 +1,47 @@
+.RendersHome{
+    padding: 10px 0px 0px 10px;
+    /* background-color: white; */
+    height: auto;
+    /* width: 82%; */
+    margin-left: 225px;
+    margin-top: 20px;
+    border-radius: 10px;
+    font-family: "Gilroy reguler";
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.RendersHome_butns{
+    width: 100%;
+    /* background-color: red; */
+    display: flex;
+    justify-content: end;
+    gap: 10px;
+}
+.RendersHome_butns button{
+    padding: 9px 12px 9px 12px;
+    border-radius: 100px;
+    border: none;
+    background-color: white;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 6px;
+
+}
+.RendersHome_img{
+    width: 14px;
+    height: 14px;
+}
+.RendersHome_folders{
+width: 100%;
+/* background-color: aquamarine; */
+display: flex;
+flex-wrap: wrap;
+gap: 30px;
+}
+.folder_name{
+    font-size: 12px !important;
+    /* font-weight: 600; */
+}

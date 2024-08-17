@@ -1,0 +1,143 @@
+.MastersModal {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border-radius: 7px;
+}
+
+.MastersModal button{
+cursor: pointer;
+}
+
+
+.master_modal {
+  /* background-color: red; */
+  width: 100%;
+  /* height: 300px; */
+  font-family: "Gilroy medium";
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+}
+
+.master_modal button {
+  border: none;
+  background-color: white;
+}
+.btn_close {
+  width: 14px;
+  height: 14px;
+}
+
+.modal_close {
+  font-size: 30px;
+  color: #2b2b2b;
+}
+.modal_fields {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.inp1 {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.inp1 label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #19242d8f;
+}
+.inp1 input {
+  width: 100%;
+  padding: 10px 10px;
+  border: 1px solid #e0e1e1;
+  border-radius: 8px;
+  outline: none;
+}
+.inp_2nd {
+  width: 25%;
+}
+.modal_btns {
+  width: 100%;
+  /* background-color: red; */
+  display: flex;
+  justify-content: end;
+  gap: 20px;
+}
+.modal_btns button {
+  padding: 10px 10px;
+  border-radius: 5px;
+  border: none;
+}
+.modal_btns :nth-child(1) {
+  border: 1px solid #e0e1e1;
+  color: #999999;
+  background-color: white;
+}
+.modal_btns :nth-child(2) {
+  background-color: #04344d;
+  color: white;
+}
+.img_div {
+  width: 100%;
+  padding: 20px 20px;
+  background-color: #f6f5f182;
+  border-radius: 8px;
+  border: 1px dashed #e6e3d7;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.img_div span {
+  font-size: 14px;
+  font-weight: 600;
+}
+.image_upload {
+  display: flex;
+  justify-content: space-between;
+}
+
+.image_upload input {
+  width: 28%;
+  display: none;
+}
+.image_upload label {
+  font-size: 12px;
+  font-weight: 400;
+  background-color: blue;
+  color: white;
+  padding: 10px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.upload_img {
+  width: 20px;
+  height: 15px;
+}
+.inp3 {
+  width: 100%;
+}
+
+.error{
+  color: red;
+  font-size: 10px;
+}
+
+.scan_update_btn{
+  /* width: 30% ; */
+  background-color: #0464D5;
+  color: white;
+  display: flex ;
+  align-items: center ;
+  text-align: center ;
+  padding: 5px 20px;
+  margin-left: 20px;
+  border: none;
+  border-radius: 10px;
+  /* height: 90%; */
+}

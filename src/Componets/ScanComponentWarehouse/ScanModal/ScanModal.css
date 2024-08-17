@@ -1,0 +1,73 @@
+
+
+.scan_list{
+    background-color: #126E72 !important;
+    padding: 7px 7px !important;
+    border-radius: 20px;
+    color: white;
+    font-size: 11px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+border: none;
+
+}
+.scan_list img{ 
+width: 15px;
+height: 15px;
+}
+.scan_head{
+    background-color: #F2F2F2;
+    border-radius: 8px 8px 0px 0px;
+    padding: 15px;
+}
+
+.scan_table{
+    width: 100%;
+}
+.scan_table table,th,td {
+    font-size: 11px;
+    border-bottom: 1px solid #F2F2F2;
+    border-left: 1px solid #F2F2F2;
+    
+}
+.modal_container{
+    /* background-color: red; */
+    /* padding: 10px; */
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    
+}
+.close_btn{
+    display: flex;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0);
+    border: none;
+    outline: none;
+    color: white;
+    padding: 4px;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 500;
+}
+.close_btn img{
+    width: 14px;
+    height: 14px;
+}
+
+.Print_table{
+    padding: 20px;
+    margin-top: 50px;
+}
+.Print_table table,th,td {
+    font-size: 13px;
+    /* border: 1px solid #F2F2F2; */
+    
+}
+.Print_table table,th {
+    font-weight: 600;
+}
+.print_span{
+    font-weight: 300;
+}
