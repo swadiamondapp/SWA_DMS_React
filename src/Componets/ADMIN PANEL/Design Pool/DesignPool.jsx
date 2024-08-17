@@ -246,7 +246,8 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
     setDeleteConfirmationOpen(true);
   };
 
-  console.log("filter----", filter);
+
+
 
   return (
     <div>
