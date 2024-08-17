@@ -18,6 +18,7 @@ import searchblue from "../../../assets/bluesearch.png";
 import dlt from "../../../assets/deleticon.png";
 import scan from "../../../assets/scan.png";
 import SuccessModal from "../../SuccessModal/SuccessModal";
+import { CircularProgress } from "@mui/material";
 
 const CentralhubScanModule = ({ sidebarExpanded }) => {
   const [open, setOpen] = useState(false);
@@ -33,8 +34,8 @@ const CentralhubScanModule = ({ sidebarExpanded }) => {
   const [deleteId, setDeleteId] = useState("");
 
   useEffect(() => {
-    centralStatusTableData(setStatus,setIsLoading);
-    centralHubScanTable(setScanTableData);
+    centralStatusTableData(setStatus, setIsLoading);
+    centralHubScanTable(setIsLoading, setScanTableData);
   }, []);
 
   const openModal = () => {
@@ -123,9 +124,6 @@ const CentralhubScanModule = ({ sidebarExpanded }) => {
     return new Date(dateString).toLocaleDateString("en-GB", options);
   };
 
-  console.log("central hub scanTableData", scanTableData);
-  console.log("clickedProductIds", clickedProductIds);
-
   return (
     <>
       <div
@@ -178,8 +176,11 @@ const CentralhubScanModule = ({ sidebarExpanded }) => {
             </div>
             <div className="Create_user">
               <button
-               disabled={clickedProductIds.length === 0}
-              onClick={openModal}>Change CH Status</button>
+                disabled={clickedProductIds.length === 0}
+                onClick={openModal}
+              >
+                Change CH Status
+              </button>
             </div>
           </div>
         </div>
@@ -210,6 +211,42 @@ const CentralhubScanModule = ({ sidebarExpanded }) => {
                 </tr>
               </thead>
               <tbody>
+                {isLoading && (
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <CircularProgress
+                      // filter={filter}
+                      // setFilter={setFilter}
+                      size={50}
+                      sx={{
+                        color: "#126e72",
+                        padding: "8px 10px",
+                        width: "35px",
+                      }}
+                    />
+                  </div>
+                )}
+
+                {!isLoading && scanTableData.length === 0 && (
+                  <div
+                    className=""
+                    style={{
+                      width: "100%",
+                      height: "200px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <span>No Data Found</span>
+                  </div>
+                )}
+
                 {scanTableData.map((item, index) => (
                   <tr key={item.id} className="table_row">
                     <td>
@@ -229,9 +266,7 @@ const CentralhubScanModule = ({ sidebarExpanded }) => {
                     <td style={{ borderLeft: "none" }}>
                       {item.Productdetails.product_category}
                     </td>
-                    <td style={{ borderLeft: "none" }}>
-                      {item.status}
-                    </td>
+                    <td style={{ borderLeft: "none" }}>{item.status}</td>
                     <td style={{ borderLeft: "none" }}>
                       {item.Productdetails.approx_metal_weight} GM
                     </td>
@@ -255,20 +290,6 @@ const CentralhubScanModule = ({ sidebarExpanded }) => {
             successMessage={successMessage}
           />
         </div>
-        {scanTableData.length === 0 && (
-          <div
-            className=""
-            style={{
-              width: "100%",
-              height: "200px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <span>No Data Found</span>
-          </div>
-        )}
 
         {open && (
           <MastersModal

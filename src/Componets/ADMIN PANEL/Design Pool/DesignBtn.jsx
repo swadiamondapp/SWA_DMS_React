@@ -182,7 +182,8 @@ const DesignBtn = ({
         >
           {location.pathname === "/designpool" &&
             SelectedIdsForDelet.length > 0 && (
-              <div className="Download_ParentD">
+              <div className="Download_ParentD" 
+              >
                 <button
                   className="D_downlodBtn"
                   style={{ background: "red" }}

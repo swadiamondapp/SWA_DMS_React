@@ -33,6 +33,7 @@ export const list_warehouse_design = async (
   setWarehouseStatus
 ) => {
   try {
+    setIsLoading(true)
     const response = await apiService.get(LIST_WAREHOUSE_DESIGNS);
     if (checkApiStatus(response)) {
       setDesignWareHouse(response.data.results.data);
@@ -40,6 +41,8 @@ export const list_warehouse_design = async (
     }
   } catch (error) {
     console.log(error);
+  }finally{
+    setIsLoading(false)
   }
 };
 

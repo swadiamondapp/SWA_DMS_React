@@ -15,12 +15,15 @@ import { apiService } from "../../../Pages/Services/ApiInstants";
 import { useNavigate } from "react-router-dom";
 import LottieAnimation from "../../../LottiAnimation";
 import BasicDetailModal from "../../BasicDetails/BasicDetailModal";
-import { CircularProgress } from "@mui/material";
+import { Box, CircularProgress, Tab } from "@mui/material";
 import AnnotationModalDesignPool from "./AnnotationModalDesignPool/AnnotationModalDesignPool";
 import SuccessModal from "../../SuccessModal/SuccessModal";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import DeleteConfirmationModal from "../../ConfirmationModal/DeleteConfirmationModal";
 import AdminFilter from "../../AdminFilter/AdminFilter";
+import TabContext from "@mui/lab/TabContext";
+import TabList from "@mui/lab/TabList";
+import TabPanel from "@mui/lab/TabPanel";
 
 const DesignPool = ({ sidebarExpanded, setData, Data }) => {
   const [showRadioButtons, setShowRadioButtons] = useState(false);
@@ -48,6 +51,7 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
   const clickedInsideRef = useRef(false);
 
   const [filter, setFilter] = useState(false);
+  const [value, setValue] = React.useState("1");
 
   const navigate = useNavigate();
   const dropdownRefDD = useRef(null);
@@ -247,7 +251,9 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
   };
 
 
-
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
 
   return (
     <div>
@@ -291,6 +297,7 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
           </button>
         </div> */}
         {/* Use the DesignButtons component */}
+        <div className="" style={{ padding: "10px" }}>
         <DesignBtn
           toggleDownloadOptions={toggleDownloadOptions}
           selectButtonLabel={selectButtonLabel}
@@ -320,10 +327,33 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
           filter={filter}
           setFilter={setFilter}
         />
+        </div>
         {/* new design section */}
         {/* new design section */}
-        <div className="Parent_NewDesign">
-          <h3 className="HeadNewdesign">
+
+        <Box sx={{ width: "100%", typography: "body1" }}>
+          <TabContext value={value}>
+            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+              <TabList
+                onChange={handleChange}
+                aria-label="lab API tabs example"
+              >
+                <Tab
+                  label="New design"
+                  value="1"
+                  style={{ textTransform: "capitalize" }}
+                />
+                <Tab
+                  label="Unvoted"
+                  value="2"
+                  style={{ textTransform: "capitalize" }}
+                />
+              </TabList>
+            </Box>
+            <TabPanel value="1">
+            <div className="Parent_NewDesign" style={{paddingTop:"50px"}}>
+         
+            <h3 className="HeadNewdesign">
             New design (&nbsp; {Data.length}&nbsp; )
           </h3>
           {isLoading && (
@@ -434,27 +464,10 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
               </>
             ))}
           </div>
-
-          {anotationModal && (
-            <AnnotationModalDesignPool
-              setanotationModal={setanotationModal}
-              anotationModal={anotationModal}
-              selectedDesign={selectedDesign}
-              setSuccessModalOpen={setSuccessModalOpen}
-              setSuccessMessage={setSuccessMessage}
-              setData={setData}
-            />
-          )}
-
-          <SuccessModal
-            successModalOpen={successModalOpen}
-            // handleOpen={handleOpen}
-            // handleClose={handleClose}
-            successMessage={successMessage}
-          />
-
-          {/* unvoted design */}
-          <div className="Parent_unvoted">
+          </div>
+            </TabPanel>
+            <TabPanel value="2" className="folders_tabpanel">
+            <div className="Parent_unvoted">
             <h3 className="HeadNewdesign">
               Unvoted (&nbsp; {unvotedData.length}&nbsp; )
             </h3>
@@ -482,9 +495,31 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
               ))}
             </div>
           </div>
-          {/* unvoted design */}
-        </div>
-        {/* new design section */}
+            </TabPanel>
+          </TabContext>
+        </Box>
+
+       
+
+          {anotationModal && (
+            <AnnotationModalDesignPool
+              setanotationModal={setanotationModal}
+              anotationModal={anotationModal}
+              selectedDesign={selectedDesign}
+              setSuccessModalOpen={setSuccessModalOpen}
+              setSuccessMessage={setSuccessMessage}
+              setData={setData}
+            />
+          )}
+
+          <SuccessModal
+            successModalOpen={successModalOpen}
+            // handleOpen={handleOpen}
+            // handleClose={handleClose}
+            successMessage={successMessage}
+          />
+
+
       </div>
       <DeleteConfirmationModal
         DeleteConfirmationOpen={DeleteConfirmationOpen}

@@ -34,6 +34,7 @@ const WareHousePage = () => {
         DesignWareHouse={DesignWareHouse}
         LastVotedDesign={LastVotedDesign}
         sidebarExpanded={sidebarExpanded}
+        isLoading={isLoading}
       />
     </div>
   );
