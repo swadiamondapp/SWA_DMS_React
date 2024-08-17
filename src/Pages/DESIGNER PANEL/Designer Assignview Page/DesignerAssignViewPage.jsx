@@ -14,7 +14,7 @@ const DesignerAssignViewPage = () => {
 
   useEffect(() => {
     list_designer_folderDetails_new(setIsLoading, setFolderDetails, id);
-  }, []);
+  }, [id]);
 
   return (
     <div className="DesignerDashboardPage">

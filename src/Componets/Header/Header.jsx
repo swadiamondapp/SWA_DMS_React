@@ -32,7 +32,7 @@ const Header = ({
   const folderNamec = query.get("folderNamec");
 
   const [isLogoutDropdown, setIsLogoutDropdown] = useState(false);
-  
+
   const pathname = location.pathname;
   const isStatusPage = pathname === "/statusPage";
   const isStatusPageWithId = pathname.startsWith("/statusPage/");
@@ -55,7 +55,7 @@ const Header = ({
   const { assignmentId, folderNameAssignmentView } = location.state || {};
   const { assignmentFolderName } = location.state || {};
   const { folderName } = location.state || {};
-  const { detailsViewFolderName} = location.state || {};
+  const { detailsViewFolderName } = location.state || {};
   console.log("header===>FolderName", folderName);
 
   useEffect(() => {
@@ -213,10 +213,15 @@ const Header = ({
                 {location.pathname === "/unassigneddesigner" && (
                   <h3>Assigned to</h3>
                 )}
-{location.pathname === `/assignmentviewsAll/${id}` && (
-                  <h3>{detailsViewFolderName}</h3>)}
+                {location.pathname === "/caduploaded" && <h3>CAD Uploaded</h3>}
+                {location.pathname === "/rendersuploaded" && (
+                  <h3>Renders Uploaded</h3>
+                )}
+                {location.pathname === `/assignmentviewsAll/${id}` && (
+                  <h3>{detailsViewFolderName}</h3>
+                )}
 
-                 {(isStatusPage || isStatusPageWithId) && <h3>Status</h3>}
+                {(isStatusPage || isStatusPageWithId) && <h3>Status</h3>}
 
                 {location.pathname === "/slot" && <h3>Slot</h3>}
                 {leftHeader && <h3>{leftHeader}</h3>}
@@ -281,6 +286,8 @@ const Header = ({
                   location.pathname !== "/statusPage" &&
                   location.pathname !== "/centralhubscan" &&
                   location.pathname !== "/otherlogin" &&
+                  location.pathname !== "/caduploaded" &&
+                  location.pathname !== "/rendersuploaded" &&
                   location.pathname !== `/centralfolderdetails/${id}` &&
                   location.pathname !== `/assignmentview/${assignmentId}` &&
                   location.pathname !== `/assignmentviewsAll/${id}` && (

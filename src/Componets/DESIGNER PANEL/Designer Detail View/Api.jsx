@@ -120,7 +120,7 @@ export const unAssignCadDesigner = async (
     };
     console.log(body, "body====>Unsss");
     const response = await apiService.patch(`${UNASSIGN_CAD_DESIGNERS}`, body);
-    if (checkApiStatus(response)) {
+    if (checkApsetFolderDetailsiStatus(response)) {
       list_designer_folderDetails_new();
       setSuccessMessage("Item Unassigned Successfully");
       setSuccessModalOpen(true);

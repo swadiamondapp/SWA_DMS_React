@@ -18,7 +18,9 @@ const DesignerFilterModal = ({
   setOpenFilterModal,
   openFilterModal,
   setFolderDetails,
-  onClearCall
+  onClearCall,
+  folderDetails,
+  setFilteredData
 }) => {
   const { id } = useParams();
   const [filterTag, setFilterTag] = useState("");
@@ -106,7 +108,8 @@ const DesignerFilterModal = ({
       formData,
       setFolderDetails,
       startDate,
-      endDate
+      endDate,
+      setFilteredData
     );
   };
 

@@ -3,7 +3,7 @@ import "./DesignerDetailView.css";
 import DesignBtn from "../../ADMIN PANEL/Design Pool/DesignBtn";
 import ring from "../../../assets/ring.png";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
-import { list_designer_folderDetails } from "./Api";
+import { list_designer_folderDetails, list_designer_folderDetails_new } from "./Api";
 import DesignerFilterModal from "../../DesignerFilterModal/DesignerFilterModal";
 
 const DesignerDetailView = (props) => {
@@ -13,34 +13,17 @@ const DesignerDetailView = (props) => {
   const [showMoveOptions, setShowMoveOptions] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedAssignment, setSelectedAssignment] = useState([]);
+ 
+  const [filteredDta,setFilteredData]= useState([])
+
   const [openFilterModal, setOpenFilterModal] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const query = new URLSearchParams(location.search);
   const folderName = query.get("name");
 
-  const card = [
-    {
-      product: "SWAD3456",
-      name: "Shivaprasad Yadav",
-      date: "12 june 2023",
-    },
-    {
-      product: "SWAD3456",
-      name: "Shivaprasad Yadav",
-      date: "12 june 2023",
-    },
-    {
-      product: "SWAD3456",
-      name: "Shivaprasad Yadav",
-      date: "12 june 2023",
-    },
-    {
-      product: "SWAD3456",
-      name: "Shivaprasad Yadav",
-      date: "12 june 2023",
-    },
-  ];
+
+  console.log("filteredDta",filteredDta)
 
   const toggleRadioButtons = () => {
     setShowRadioButtons(!showRadioButtons);
@@ -68,7 +51,6 @@ const DesignerDetailView = (props) => {
   // const handleAssignmentCad = () => {
   //   assign_to_cad(setIsLoading,folderId,userId,selectedDesigns)
   // }
-  console.log(props.folderDetails, "dataP87");
 
   const formatDate = (isoString) => {
     const date = new Date(isoString);
@@ -125,6 +107,12 @@ const DesignerDetailView = (props) => {
       },
     });
   };
+
+  useEffect(() => {
+    // Logs to check if `folderDetails` is updated correctly
+    console.log("Updated folderDetails:", props.folderDetails);
+  }, [props.folderDetails]);
+    
   return (
     <div
       className="DesignerAssignmentPanel"
@@ -150,14 +138,13 @@ const DesignerDetailView = (props) => {
       <div className="DesignerAssignment___panel_Cards">
         <div className="Parent_NewDesign">
           <div className="Card_Design_Parent" style={{ marginTop: "50px" }}>
+           
+          {props.folderDetails?.assignment_items?.length === 0 && <h6>No Data Found</h6>}
+
             {props.folderDetails &&
               props.folderDetails?.assignment_items?.map((item) => (
                 <div
                   className="New_Design_card"
-                  // style={{
-                  //   display:
-                  //     item.items_status === "ALLOCATED" ? "none" : "block",
-                  // }}
                 >
                   {console.log("itemeeeeeee", item)}
                   <div
@@ -226,6 +213,8 @@ const DesignerDetailView = (props) => {
           setOpenFilterModal={setOpenFilterModal}
           setFolderDetails={props.setFolderDetails}
           onClearCall={props.onClearCall}
+          folderDetails={props.folderDetails}
+          setFilteredData={setFilteredData}
         />
       )}
       </div>

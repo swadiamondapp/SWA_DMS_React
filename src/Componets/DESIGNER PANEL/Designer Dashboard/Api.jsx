@@ -159,19 +159,21 @@ export const designerFilter = async (
   setIsLoading,
   id,
   formData,
-  setCategoryFilter,
+  setFolderDetails,
   startDate,
-  endDate
-
+  endDate,
+  setFilteredData
 ) => {
   try {
     setIsLoading(true);
-    let apiUrl = `${DESIGNER_CATEGORY_FILTER}${id}?category_ids=${formData.productCategory}&date_from=${
-      startDate ? startDate : ""
-    }&date_to=${endDate ? endDate : ""}`;
+    let apiUrl = `${DESIGNER_CATEGORY_FILTER}${id}?category_ids=${
+      formData.productCategory
+    }&date_from=${startDate ? startDate : ""}&date_to=${
+      endDate ? endDate : ""
+    }`;
     const response = await apiService.get(apiUrl);
-    if (checkApiStatus(response)) {
-      setCategoryFilter(response.data.result.data);
+    if (response.data.results.status_code === 200) {
+      setFolderDetails(response.data.results.data);
     }
   } catch (error) {
     console.log(error);
