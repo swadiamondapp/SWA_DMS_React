@@ -301,6 +301,7 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
             style={{ display: "none" }}
           />
         </div>
+        { value == 1 && (
         <DesignBtn
           toggleDownloadOptions={toggleDownloadOptions}
           selectButtonLabel={selectButtonLabel}
@@ -323,6 +324,7 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
           // setcreateFolderModal={setcreateFolderModal}
           // handleCreateFolderModal
         />
+      )}
       </div>
 
       <div className="Assignment_Panel_desc">
