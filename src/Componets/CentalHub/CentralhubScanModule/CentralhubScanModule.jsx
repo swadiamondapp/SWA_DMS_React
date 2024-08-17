@@ -211,42 +211,6 @@ const CentralhubScanModule = ({ sidebarExpanded }) => {
                 </tr>
               </thead>
               <tbody>
-                {isLoading && (
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    <CircularProgress
-                      // filter={filter}
-                      // setFilter={setFilter}
-                      size={50}
-                      sx={{
-                        color: "#126e72",
-                        padding: "8px 10px",
-                        width: "35px",
-                      }}
-                    />
-                  </div>
-                )}
-
-                {!isLoading && scanTableData.length === 0 && (
-                  <div
-                    className=""
-                    style={{
-                      width: "100%",
-                      height: "200px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <span>No Data Found</span>
-                  </div>
-                )}
-
                 {scanTableData.map((item, index) => (
                   <tr key={item.id} className="table_row">
                     <td>
@@ -282,6 +246,43 @@ const CentralhubScanModule = ({ sidebarExpanded }) => {
                 ))}
               </tbody>
             </table>
+
+            {isLoading && (
+              <div
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <CircularProgress
+                  // filter={filter}
+                  // setFilter={setFilter}
+                  size={50}
+                  sx={{
+                    color: "#126e72",
+                    padding: "8px 10px",
+                    width: "35px",
+                  }}
+                />
+              </div>
+            )}
+
+            {!isLoading && scanTableData.length === 0 && (
+              <div
+                className=""
+                style={{
+                  width: "100%",
+                  height: "200px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <span>No Data Found</span>
+              </div>
+            )}
           </div>
           <SuccessModal
             successModalOpen={successModalOpen}
