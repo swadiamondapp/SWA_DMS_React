@@ -177,6 +177,22 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
               {sidebarExpanded && <p>Assigned To</p>}
             </div>
           </Link>
+          <Link to="/caduploaded">
+            <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={cad} alt="" style={{width:"19px",height:"19px"}} />
+              {sidebarExpanded && <p>CAD Uploaded</p>}
+            </div>
+          </Link>
+          <Link to="/rendersuploaded">
+            <div className="Links">
+            <div className="horizontal_line_sidebar"></div>
+            <div className="lin_container"></div>
+              <img src={render} alt="" style={{width:"19px",height:"19px"}} />
+              {sidebarExpanded && <p>Renders Uploaded</p>}
+            </div>
+          </Link>
           <Link to="/statusPage">
             <div className="Links">
             <div className="horizontal_line_sidebar"></div>
@@ -224,6 +240,7 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
               {sidebarExpanded && <p>Gallery</p>}
             </div>
           </Link>
+          
           <Link to="/statusPage">
             <div className="Links">
             <div className="horizontal_line_sidebar"></div>
