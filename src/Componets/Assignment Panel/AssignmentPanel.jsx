@@ -21,8 +21,11 @@ import AdminBasicDetailsModal from "../AdminBasicDetailsModal/AdminBasicDetailsM
 import AssignmentModal from "../AssignmentModal/AssignmentModal";
 import SuccessModal from "../SuccessModal/SuccessModal";
 import DeleteConfirmationModal from "../ConfirmationModal/DeleteConfirmationModal";
-import { CircularProgress } from "@mui/material";
+import { Box, CircularProgress, Tab } from "@mui/material";
 import AdminFilter from "../AdminFilter/AdminFilter";
+import TabContext from "@mui/lab/TabContext";
+import TabList from "@mui/lab/TabList";
+import TabPanel from "@mui/lab/TabPanel";
 
 // import { useLocation, useNavigate } from "react-router-dom";
 
@@ -63,6 +66,7 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
   const [filterMaxPrice, setFilterMaxPrice] = useState("");
   const [filterMinPrice, setFilterMinPrice] = useState("");
   const [dd, setDd] = useState();
+  const [value, setValue] = React.useState("1");
 
   const location = useLocation();
   const dotsRef = useRef(null);
@@ -257,11 +261,19 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
     });
   };
 
-  console.log("Data", Data);
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  const length = Data.reduce((count, dataItem) => {
+    if (!dataItem?.items) return count;
+    return count + dataItem.items.length;
+  }, 0);
+
 
   return (
     <div
-    className={`Parent_AssignmentView ${filter ? 'no-scroll' : ''}`}
+      className={`Parent_AssignmentView ${filter ? "no-scroll" : ""}`}
       style={{ paddingLeft: sidebarExpanded ? "225px" : "130px" }}
     >
       <div className="AssignmentPanel_FileUpload" style={{ padding: "10px" }}>
@@ -312,29 +324,29 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
           // handleCreateFolderModal
         />
 
-        <div className="Assignment_panel_section">
-          {isLoading && (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <CircularProgress
-                size={50} // Set the desired size
-                sx={{
-                  color: "#126e72",
-                  padding: "8px 10px",
-                  width: "35px",
-                }}
-              />
-            </div>
-          )}
-
-          <>
-            <h3 className="HeadNewdesign">
-              Selected (&nbsp; {Data.length}&nbsp; )
+        <Box sx={{ width: "100%", typography: "body1" }}>
+          <TabContext value={value}>
+            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+              <TabList
+                onChange={handleChange}
+                aria-label="lab API tabs example"
+              >
+                <Tab
+                  label="Selected"
+                  value="1"
+                  style={{ textTransform: "capitalize" }}
+                />
+                <Tab
+                  label="Folders"
+                  value="2"
+                  style={{ textTransform: "capitalize" }}
+                />
+              </TabList>
+            </Box>
+            <TabPanel value="1">
+              <div className="first_tab" style={{paddingTop:"50px"}}>
+              <h3 className="HeadNewdesign">
+              Selected (&nbsp; {length}&nbsp; )
             </h3>
 
             {!isLoading && Data.length === 0 ? (
@@ -359,7 +371,6 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
                     const designCode = paperDesign?.designcode;
                     const image = paperDesign?.image;
                     const likesCount = paperDesign?.likes_count;
-
                     if (!image) {
                       return null;
                     }
@@ -483,8 +494,11 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
                 )}
               </div>
             )}
+              </div>
+            </TabPanel>
+            <TabPanel value="2" className="folders_tabpanel">
 
-            <div className="Parent_Folder_section">
+              <div className="Parent_Folder_section" >
               <h3 className="HeadNewdesign">Folders</h3>
               <div className="folderCard_parent">
                 {assignmentFolder.map((item) => (
@@ -507,6 +521,34 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
                 ))}
               </div>
             </div>
+            </TabPanel>
+          </TabContext>
+        </Box>
+
+        <div className="Assignment_panel_section">
+          {isLoading && (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <CircularProgress
+                size={50} // Set the desired size
+                sx={{
+                  color: "#126e72",
+                  padding: "8px 10px",
+                  width: "35px",
+                }}
+              />
+            </div>
+          )}
+
+          <>
+            
+
+            
           </>
         </div>
       </div>

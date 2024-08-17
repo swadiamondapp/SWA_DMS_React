@@ -165,7 +165,6 @@ export const designerFilter = async (
 
 ) => {
   try {
-debugger
     setIsLoading(true);
     let apiUrl = `${DESIGNER_CATEGORY_FILTER}${id}?category_ids=${formData.productCategory}&date_from=${
       startDate ? startDate : ""
