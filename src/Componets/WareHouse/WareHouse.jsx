@@ -3,40 +3,21 @@ import "../../Componets/ADMIN PANEL/Design Pool/DesignPool.css";
 import like from "../../assets/like.png";
 import ring from "../../assets/ring.png";
 import { useNavigate } from "react-router-dom";
+import { Box, CircularProgress, Tab } from "@mui/material";
+import TabContext from "@mui/lab/TabContext";
+import TabList from "@mui/lab/TabList";
+import TabPanel from "@mui/lab/TabPanel";
 // import DesignBtn from "../../ADMIN PANEL/Design Pool/DesignBtn";
 
 const WareHouse = (props) => {
- 
   const navigate = useNavigate();
-  
 
   const [showRadioButtons, setShowRadioButtons] = useState(false);
   const [selectButtonLabel, setSelectButtonLabel] = useState("Select");
   const [showDownloadOptions, setShowDownloadOptions] = useState(false);
   const [showMoveOptions, setShowMoveOptions] = useState(false);
 
-  const card = [
-    {
-      product: "SWAD3456",
-      name: "Shivaprasad Yadav",
-      date: "12 june 2023",
-    },
-    {
-      product: "SWAD3456",
-      name: "Shivaprasad Yadav",
-      date: "12 june 2023",
-    },
-    {
-      product: "SWAD3456",
-      name: "Shivaprasad Yadav",
-      date: "12 june 2023",
-    },
-    {
-      product: "SWAD3456",
-      name: "Shivaprasad Yadav",
-      date: "12 june 2023",
-    },
-  ];
+  const [value, setValue] = React.useState("1");
 
   const handleTrack = (item, designCode) => {
     navigate(`/statusPage/${item.id}`, {
@@ -45,7 +26,6 @@ const WareHouse = (props) => {
       },
     });
   };
-
 
   const toggleRadioButtons = () => {
     setShowRadioButtons(!showRadioButtons);
@@ -58,7 +38,10 @@ const WareHouse = (props) => {
     setShowMoveOptions(!showMoveOptions);
   };
 
-  console.log(props.DesignWareHouse, "wareHouse===>");
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
   return (
     <div>
       <div
@@ -104,96 +87,160 @@ const WareHouse = (props) => {
 
         {/* new design section */}
         {/* new design section */}
-        <div className="Parent_NewDesign">
-          <h3 className="HeadNewdesign">
-            Newly added (&nbsp;{props.DesignWareHouse?.length}&nbsp;)
-          </h3>
-          <div className="Card_Design_Parent">
-            {props.DesignWareHouse.map((item) => (
-              <div className="New_Design_card">
-                <div className="Card_img">
-                  <img src={item.image} alt="" />
-                </div>
-                <div className="Card_Details">
-                  <h3>ID : {item.designcode}</h3>
-                  <div className="" style={{display:"flex",gap:"5px"}}>
-                    <span style={{ color: "#23A064" }}>Status :</span>
-                    <span>{item.current_status || ""}</span>
-                  </div>
-                  <div className="Card_Details_Inner">
-                    <div className="Inner_Left">
-                      <p>{item.user_name}</p>
-                      <p>{item.created_at}</p>
-                    </div>
-                    <div className="" style={{display:"flex",width:"auto",gap:"10px"}}>
-                    <button
-                      style={{
-                        padding: "7px 10px ",
-                        borderRadius: "4px",
-                        color: "white",
-                        backgroundColor: "#0464D5",
-                        border: "none",
-                        fontSize:"15px",
-                        fontWeight:"900"
 
+        <Box sx={{ width: "100%", typography: "body1" }}>
+          <TabContext value={value}>
+            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+              <TabList
+                onChange={handleChange}
+                aria-label="lab API tabs example"
+              >
+                <Tab
+                  label="Newly Added"
+                  value="1"
+                  style={{ textTransform: "capitalize" }}
+                />
+                <Tab
+                  label="Last Voted"
+                  value="2"
+                  style={{ textTransform: "capitalize" }}
+                />
+              </TabList>
+            </Box>
+            <TabPanel value="1">
+              <div className="first_tab" style={{ paddingTop: "50px" }}>
+                <h3 className="HeadNewdesign">
+                  Newly added (&nbsp;{props.DesignWareHouse?.length}&nbsp;)
+                </h3>
+
+                {props.isLoading && (
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <CircularProgress
+                      // filter={filter}
+                      // setFilter={setFilter}
+                      size={50}
+                      sx={{
+                        color: "#126e72",
+                        padding: "8px 10px",
+                        width: "35px",
                       }}
-                      onClick={() =>
-                        handleTrack(item, item.designcode)
-                      }
-                      
-                    >
-                      Track
-                    </button>
-                    <div className="Inner_Right">
-                      <p>{item.likes_count}</p>
-                    </div>
-                    </div>
+                    />
                   </div>
-                </div>
-                {/* radio btn */}
-                {showRadioButtons && (
-                  <input
-                    className="Radio_select"
-                    type="radio"
-                    id="html"
-                    name="fav_language"
-                    value="HTML"
-                  ></input>
                 )}
-                {/* radio btn */}
-              </div>
-            ))}
-          </div>
-          {/* unvoted design */}
-          <div className="Parent_unvoted">
-            <h3 className="HeadNewdesign">
-              Last Voted (&nbsp;{props.LastVotedDesign?.length}&nbsp;)
-            </h3>
-            <div className="Card_Design_Parent">
-              {props.LastVotedDesign.map((item) => (
-                <div className="New_Design_card">
-                  <div className="Card_img">
-                    <img src={item.image} alt="" />
-                  </div>
-                  <div className="Card_Details">
-                    <h3>ID : {item.designcode}</h3>
-                    <div className="Card_Details_Inner">
-                      <div className="Inner_Left">
-                        <p>{item.user_name}</p>
-                        <p>{item.created_at}</p>
+
+                {props.isLoading === false &&
+                  props?.DesignWareHouse?.length === 0 && (
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <span style={{ marginTop: "100px" }}>No Data Found</span>
+                    </div>
+                  )}
+
+                <div className="Card_Design_Parent">
+                  {props.DesignWareHouse.map((item) => (
+                    <div className="New_Design_card">
+                      <div className="Card_img">
+                        <img src={item.image} alt="" />
                       </div>
-                      <div className="Inner_Right">
-                        <p>{item.likes_count}</p>
+                      <div className="Card_Details">
+                        <h3>ID : {item.designcode}</h3>
+                        <div
+                          className=""
+                          style={{ display: "flex", gap: "5px" }}
+                        >
+                          <span style={{ color: "#23A064" }}>Status :</span>
+                          <span>{item.current_status || ""}</span>
+                        </div>
+                        <div className="Card_Details_Inner">
+                          <div className="Inner_Left">
+                            <p>{item.user_name}</p>
+                            <p>{item.created_at}</p>
+                          </div>
+                          <div
+                            className=""
+                            style={{
+                              display: "flex",
+                              width: "auto",
+                              gap: "10px",
+                            }}
+                          >
+                            <button
+                              style={{
+                                padding: "7px 10px ",
+                                borderRadius: "4px",
+                                color: "white",
+                                backgroundColor: "#0464D5",
+                                border: "none",
+                                fontSize: "15px",
+                                fontWeight: "900",
+                              }}
+                              onClick={() => handleTrack(item, item.designcode)}
+                            >
+                              Track
+                            </button>
+                            <div className="Inner_Right">
+                              <p>{item.likes_count}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      {/* radio btn */}
+                      {showRadioButtons && (
+                        <input
+                          className="Radio_select"
+                          type="radio"
+                          id="html"
+                          name="fav_language"
+                          value="HTML"
+                        ></input>
+                      )}
+                      {/* radio btn */}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </TabPanel>
+            <TabPanel value="2" className="folders_tabpanel">
+              <div className="Parent_Folder_section">
+                <h3 className="HeadNewdesign">
+                  Last Voted (&nbsp;{props.LastVotedDesign?.length}&nbsp;)
+                </h3>
+                <div className="Card_Design_Parent">
+                  {props.LastVotedDesign.map((item) => (
+                    <div className="New_Design_card">
+                      <div className="Card_img">
+                        <img src={item.image} alt="" />
+                      </div>
+                      <div className="Card_Details">
+                        <h3>ID : {item.designcode}</h3>
+                        <div className="Card_Details_Inner">
+                          <div className="Inner_Left">
+                            <p>{item.user_name}</p>
+                            <p>{item.created_at}</p>
+                          </div>
+                          <div className="Inner_Right">
+                            <p>{item.likes_count}</p>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </div>
-          {/* unvoted design */}
-        </div>
-        {/* new design section */}
+              </div>
+            </TabPanel>
+          </TabContext>
+        </Box>
       </div>
     </div>
   );

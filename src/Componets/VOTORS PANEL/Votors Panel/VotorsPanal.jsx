@@ -6,7 +6,7 @@ import { all_Designs_items, like_design, voted_design_list } from "../Api";
 import thumb from "../../../assets/thumb2.png";
 import { FaRegThumbsUp, FaThumbsUp } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
-import { Box, Tab } from "@mui/material";
+import { Box, CircularProgress, Tab } from "@mui/material";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
@@ -15,7 +15,7 @@ const VotorsPanal = ({ sidebarExpanded }) => {
   const navigate = useNavigate();
 
   const [Data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [votedList, setVotedList] = useState([]);
   const [animate, setAnimate] = useState({});
   const [value, setValue] = React.useState("1");
@@ -40,7 +40,7 @@ const VotorsPanal = ({ sidebarExpanded }) => {
       setAnimate((prev) => ({ ...prev, [id]: false })); // Reset the animation state after it completes
     }, 800); // Duration of the animation
   };
-   
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -98,6 +98,43 @@ const VotorsPanal = ({ sidebarExpanded }) => {
                   <h3 className="HeadNewdesign">
                     Newly added (&nbsp;{Data.length}&nbsp;)
                   </h3>
+
+                  {isLoading && (
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <CircularProgress
+                        // filter={filter}
+                        // setFilter={setFilter}
+                        size={50}
+                        sx={{
+                          color: "#126e72",
+                          padding: "8px 10px",
+                          width: "35px",
+                        }}
+                      />
+                    </div>
+                  )}
+
+                  {!isLoading && Data.length === 0 && (
+                    <div
+                      className=""
+                      style={{
+                        width: "100%",
+                        height: "200px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <span>No Data Found</span>
+                    </div>
+                  )}
+
                   <div className="Card_Design_Parent">
                     {Data.map((item) => (
                       <div className="New_Design_card">

@@ -155,14 +155,17 @@ export const warehouseScanItemDelete = async (
 
 // ......CENTRAL_HB..
 
-export const centralHubScanTable = async (setScanTableData) => {
+export const centralHubScanTable = async (setIsLoading,setScanTableData) => {
   try {
+    setIsLoading(true)
     const response = await apiService.get(CENTRALHUB_NEW_SCAN_LIST);
     if (checkApiStatus(response)) {
       setScanTableData(response.data.results.data);
     }
   } catch (error) {
     console.log(error);
+  }finally{
+    setIsLoading(false)
   }
 };
 
