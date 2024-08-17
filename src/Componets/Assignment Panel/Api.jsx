@@ -552,6 +552,21 @@ export const list_all_designers = async (setAllDesigners) => {
   }
 };
 
+export const list_all_designers_get = async (setIsLoading,setAllDesigners) => {
+  try {
+    setIsLoading(true)
+    const response = await apiService.get(LIST_ALL_DESIGNERS);
+    if (checkApiStatus(response)) {
+      console.log(response,"response_de")
+      setAllDesigners(response?.data?.results?.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }finally{
+    setIsLoading(false)
+  }
+};
+
 export const assign_to_designers = async (
   assignedDesignerId,
   AdminUploadedIds,
@@ -726,7 +741,8 @@ export const filterAdminDesigns = async (
   setData,
   filterMaxPrice,
   filterMinPrice,
-  setFilter
+  setFilter,
+  setError
 ) => {
   try {
     setIsLoading(true);
@@ -745,6 +761,15 @@ export const filterAdminDesigns = async (
     if (checkApiStatus(response)) {
       setData(response?.data?.results?.data);
       setFilter(false)
+    }
+    else if (
+      response.data.results &&
+      response.data.results.status_code === 206
+    ) {
+      setError(response.data.results.message);
+      setTimeout(()=>{
+        setError("")
+      },3000)
     }
   } catch (error) {
     console.log(error);

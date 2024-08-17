@@ -3,14 +3,25 @@ import "./VotorsPanal.css";
 import ring from "../../../assets/ring.png";
 // import { voters_customization_list } from "./Api";
 import { all_Designs_items, like_design, voted_design_list } from "../Api";
-import thumb from '../../../assets/thumb2.png'
+import thumb from "../../../assets/thumb2.png";
 import { FaRegThumbsUp, FaThumbsUp } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
 
 const VotorsPanal = ({ sidebarExpanded }) => {
+  const navigate = useNavigate();
+
   const [Data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState([]);
   const [votedList, setVotedList] = useState([]);
   const [animate, setAnimate] = useState({});
+
+  const handleTrack = (item, designCode) => {
+    navigate(`/statusPage/${item.id}`, {
+      state: {
+        code: designCode,
+      },
+    });
+  };
 
   useEffect(() => {
     all_Designs_items(setIsLoading, setData);
@@ -18,7 +29,7 @@ const VotorsPanal = ({ sidebarExpanded }) => {
   }, []);
 
   const handleLikeClicks = (id) => {
-    like_design(setIsLoading, id, setData,setVotedList);
+    like_design(setIsLoading, id, setData, setVotedList);
     setAnimate((prev) => ({ ...prev, [id]: true }));
     setTimeout(() => {
       setAnimate((prev) => ({ ...prev, [id]: false })); // Reset the animation state after it completes
@@ -56,7 +67,9 @@ const VotorsPanal = ({ sidebarExpanded }) => {
     >
       <div className="VotorsPanelsection">
         <div className="Parent_NewDesign">
-          <h3 className="HeadNewdesign">Newly added (&nbsp;{Data.length}&nbsp;)</h3>
+          <h3 className="HeadNewdesign">
+            Newly added (&nbsp;{Data.length}&nbsp;)
+          </h3>
           <div className="Card_Design_Parent">
             {Data.map((item) => (
               <div className="New_Design_card">
@@ -65,23 +78,50 @@ const VotorsPanal = ({ sidebarExpanded }) => {
                 </div>
                 <div className="Card_Details">
                   <h3>ID : {item.designcode}</h3>
+                  <div className="" style={{ display: "flex", gap: "5px" }}>
+                    <span style={{ color: "#23A064" }}>Status :</span>
+                    <span>{item.current_status || ""}</span>
+                  </div>
                   <div className="Card_Details_Inner">
                     <div className="Inner_Left">
                       <p>{item.user_name}</p>
                       <p>{item.created_at}</p>
                     </div>
                     <div
-                      // className="Inner_Right"
-                      className={`Inner_Right ${
-                        animate[item.id] ? "wobble" : ""
-                      }`}
-                      style={{ borderRadius: "4px" }}
-                      onClick={() => handleLikeClicks(item.id)}
+                      className=""
+                      style={{
+                        display: "flex",
+                        width: "auto",
+                        gap: "10px",
+                      }}
                     >
-                     <p style={{ padding: "8px 18px" }}>
+                      <button
+                        style={{
+                          padding: "7px 10px ",
+                          borderRadius: "4px",
+                          color: "white",
+                          backgroundColor: "#0464D5",
+                          border: "none",
+                          fontSize: "15px",
+                          fontWeight: "900",
+                        }}
+                        onClick={() => handleTrack(item, item.designcode)}
+                      >
+                        Track
+                      </button>
+                      <div
+                        // className="Inner_Right"
+                        className={`Inner_Right ${
+                          animate[item.id] ? "wobble" : ""
+                        }`}
+                        style={{ borderRadius: "4px" }}
+                        onClick={() => handleLikeClicks(item.id)}
+                      >
+                        <p style={{ padding: "8px 18px" }}>
                           <FaRegThumbsUp size={20} />
                         </p>
-                      {/* <p style={{ padding: "8px 18px" }}>{item.likes_count}</p> */}
+                        {/* <p style={{ padding: "8px 18px" }}>{item.likes_count}</p> */}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -91,7 +131,9 @@ const VotorsPanal = ({ sidebarExpanded }) => {
           {/* Last voted design */}
           <div className="lastvoted">
             <div className="Parent_unvoted">
-              <h3 className="HeadNewdesign">Last voted (&nbsp;{votedList.length}&nbsp;)</h3>
+              <h3 className="HeadNewdesign">
+                Last voted (&nbsp;{votedList.length}&nbsp;)
+              </h3>
               <div className="Card_Design_Parent">
                 {votedList.map((item) => (
                   <div className="New_Design_card">
@@ -106,18 +148,18 @@ const VotorsPanal = ({ sidebarExpanded }) => {
                           <p>{item.created_at}</p>
                         </div>
                         <div
-                      // className="Inner_Right"
-                      className={`Inner_Right ${
-                        animate[item.id] ? "wobble" : ""
-                      }`}
-                      style={{ borderRadius: "4px" }}
-                      onClick={() => handleLikeClicks(item.id)}
-                    >
-                      <p style={{ padding: "8px 18px" }}>
-                          <FaThumbsUp size={20} />
-                        </p>
-                      {/* <p style={{ padding: "8px 18px" }}>{item.likes_count}</p> */}
-                    </div>
+                          // className="Inner_Right"
+                          className={`Inner_Right ${
+                            animate[item.id] ? "wobble" : ""
+                          }`}
+                          style={{ borderRadius: "4px" }}
+                          onClick={() => handleLikeClicks(item.id)}
+                        >
+                          <p style={{ padding: "8px 18px" }}>
+                            <FaThumbsUp size={20} />
+                          </p>
+                          {/* <p style={{ padding: "8px 18px" }}>{item.likes_count}</p> */}
+                        </div>
                       </div>
                     </div>
                   </div>

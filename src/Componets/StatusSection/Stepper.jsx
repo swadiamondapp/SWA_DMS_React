@@ -21,6 +21,8 @@ const Stepper = ({ code }) => {
     setProductId(value);
   };
 
+  console.log("code",code)
+
   useEffect(() => {
     if (code) {
       handleTrackProduct(code);
@@ -187,13 +189,33 @@ const Stepper = ({ code }) => {
 
   const formatDateTrack = (isoString) => {
     if (!isoString) return "";
-
+  
     const date = new Date(isoString);
+    
+    // Date Formatting
     const day = String(date.getDate()).padStart(2, "0");
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
+  
+    // Time Formatting
+    let hours = date.getHours();
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const seconds = String(date.getSeconds()).padStart(2, "0");
+    
+    // Determine AM/PM
+    const period = hours >= 12 ? "PM" : "AM";
+    
+    // Convert to 12-hour format
+    hours = hours % 12;
+    hours = hours ? hours : 12; // Hour '0' should be '12'
+    
+    // Format hours
+    const formattedHours = String(hours).padStart(2, "0");
+    
+    // Combine date and time
+    return `${day}/${month}/${year} ${formattedHours}:${minutes} ${period}`;
   };
+  
 
   const getFormattedDate = (stepId, dates) => {
     switch (stepId) {
@@ -217,6 +239,7 @@ const Stepper = ({ code }) => {
         return ""; 
     }
   };
+  
   
 
   return (
@@ -316,6 +339,8 @@ const Stepper = ({ code }) => {
                           color: "black",
                           fontSize: "13px",
                           textAlign: "center",
+                          width:"90px",
+                          // backgroundColor:"red"
                         }}
                       >
                         {getFormattedDate(step.id, dates)}
