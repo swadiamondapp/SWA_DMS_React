@@ -15,6 +15,7 @@ const DesignerDetailView = (props) => {
   const [selectedAssignment, setSelectedAssignment] = useState([]);
  
   const [filteredDta,setFilteredData]= useState([])
+  const [dd, setDd] = useState();
 
   const [openFilterModal, setOpenFilterModal] = useState(false);
   const navigate = useNavigate();
@@ -215,6 +216,8 @@ const DesignerDetailView = (props) => {
           onClearCall={props.onClearCall}
           folderDetails={props.folderDetails}
           setFilteredData={setFilteredData}
+          setDd={setDd}
+          dd={dd}
         />
       )}
       </div>

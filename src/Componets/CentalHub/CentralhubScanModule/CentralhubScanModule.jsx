@@ -35,7 +35,7 @@ const CentralhubScanModule = ({ sidebarExpanded }) => {
 
   useEffect(() => {
     centralStatusTableData(setStatus, setIsLoading);
-    centralHubScanTable(setIsLoading, setScanTableData);
+    centralHubScanTable( setScanTableData);
   }, []);
 
   const openModal = () => {
@@ -124,6 +124,8 @@ const CentralhubScanModule = ({ sidebarExpanded }) => {
     return new Date(dateString).toLocaleDateString("en-GB", options);
   };
 
+  console.log(scanTableData,"scanTableData")
+
   return (
     <>
       <div
@@ -211,7 +213,7 @@ const CentralhubScanModule = ({ sidebarExpanded }) => {
                 </tr>
               </thead>
               <tbody>
-                {scanTableData.map((item, index) => (
+                {scanTableData  && scanTableData?.map((item, index) => (
                   <tr key={item.id} className="table_row">
                     <td>
                       <input
