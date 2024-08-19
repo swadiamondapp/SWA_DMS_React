@@ -170,7 +170,7 @@ export const designerFilter = async (
       formData.productCategory
     }&date_from=${startDate ? startDate : ""}&date_to=${
       endDate ? endDate : ""
-    }`;
+    }&tags=${ formData.tag ? formData.tag : "" }`;
     const response = await apiService.get(apiUrl);
     if (response.data.results.status_code === 200) {
       setFolderDetails(response.data.results.data);

@@ -148,7 +148,7 @@ const Header = ({
                 {location.pathname === "/customRequestTable" && (
                   <h3>Customize Request</h3>
                 )}
-                {location.pathname === "/wareHouse" && <h3>Votors panel</h3>}
+                {location.pathname === "/wareHouse" && <h3>Voters panel</h3>}
                 {location.pathname === "/votorspanal" && <h3>Voters panel</h3>}
                 {location.pathname === "/gallery" && <h3>Gallery</h3>}
                 {location.pathname === "/finishedProject" && (

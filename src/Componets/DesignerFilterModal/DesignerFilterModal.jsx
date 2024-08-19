@@ -11,6 +11,7 @@ import {
   designerFilterBasedOnCategory,
 } from "../DESIGNER PANEL/Designer Dashboard/Api";
 import { useParams } from "react-router-dom";
+import moment from "moment/moment";
 
 const { RangePicker } = DatePicker;
 
@@ -20,7 +21,9 @@ const DesignerFilterModal = ({
   setFolderDetails,
   onClearCall,
   folderDetails,
-  setFilteredData
+  setFilteredData,
+  setDd,
+  dd,
 }) => {
   const { id } = useParams();
   const [filterTag, setFilterTag] = useState("");
@@ -34,6 +37,7 @@ const DesignerFilterModal = ({
   const [selectedTags, setSelectedTags] = useState([]);
   const [selectedFechedTags, setSelectedFechedTags] = useState([]);
   const [forlderId,setFolderId] = useState(id)
+
 
   const [formData, setFormData] = useState({
     productCategory: "",
@@ -50,25 +54,26 @@ const DesignerFilterModal = ({
     setFormData({
       productCategory: "",
       tag:[]
-    });
-    setStartDate([])
-    setEndDate([])
+    })
+    setStartDate(null)
+    setEndDate(null)
     onClearCall()
-
+    setOpenFilterModal(false)
+    setDd(null)
   };
 
-  const handleDateChange = (dates, dateStrings) => {
-    const [startDate, endDate] = dates;
-    console.log("Start Date: ", startDate);
-    console.log("End Date: ", endDate);
-    // You can also use dateStrings for formatted strings:
-    console.log("Start Date (formatted): ", dateStrings[0]);
-    console.log("End Date (formatted): ", dateStrings[1]);
 
-    // If you want to store the dates in state, you can use:
-    setStartDate(dateStrings[0]);
-    setEndDate(dateStrings[1]);
+  const handleChange = (values) => {
+    if (values) {
+      const [start, end] = values;
+      setDd(values);
+      const formattedStart = start.format("YYYY-MM-DD");
+      const formattedEnd = end.format("YYYY-MM-DD");
+      setStartDate(formattedStart);
+      setEndDate(formattedEnd);
+    }
   };
+  
 
   console.log(startDate, "sartssdfsd");
   useEffect(() => {
@@ -81,7 +86,7 @@ const DesignerFilterModal = ({
     setOpenFilterModal(false);
     setFormData({
       productCategory: "",
-      tag:[]
+      tag:[],
     });
     setFolderId(null)
   
@@ -111,7 +116,7 @@ const DesignerFilterModal = ({
       endDate,
       setFilteredData
     );
-  };
+  };  
 
   return (
     <>
@@ -170,7 +175,8 @@ const DesignerFilterModal = ({
                 height: "40px",
               }}
               size={12}
-              onChange={handleDateChange}
+              value={dd}
+              onChange={handleChange}
             />
           </div>
 
