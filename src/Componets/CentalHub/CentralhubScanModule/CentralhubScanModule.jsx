@@ -170,7 +170,7 @@ const CentralhubScanModule = ({ sidebarExpanded }) => {
                   onChange={handleInputChange}
                   onKeyPress={handleKeyPress}
                 />
-                <img onClick={handleSearch} src={searchimg} alt="" />
+                <img onClick={handleSearch} src={searchimg} alt="" style={{cursor:"pointer"}}/>
               </div>
               {error && (
                 <span style={{ color: "red", fontSize: "10px" }}>{error}</span>
@@ -193,6 +193,7 @@ const CentralhubScanModule = ({ sidebarExpanded }) => {
                 <tr>
                   <th style={{ borderLeft: "none" }}>
                     <input
+                    style={{cursor:"pointer"}}
                       type="checkbox"
                       onChange={handleHeaderCheckboxChange}
                       checked={

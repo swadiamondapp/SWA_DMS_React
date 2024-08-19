@@ -243,7 +243,7 @@
                         <div
                           className="slotPrintButton"
                           onClick={handlePrint}
-
+                               style={{cursor:"pointer"}}
                         >
                           <LuPrinter /> Print
                         </div>

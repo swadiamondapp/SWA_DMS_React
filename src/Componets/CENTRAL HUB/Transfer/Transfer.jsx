@@ -23,6 +23,8 @@ import searchimg from "../../../assets/search.png";
 import bluesearch from "../../../assets/bluesearch.png";
 import SuccessModal from "../../SuccessModal/SuccessModal";
 import { CircularProgress } from "@mui/material";
+import dlt from "../../../assets/deleticon.png";
+
 
 const Transfer = ({ sidebarExpanded }) => {
   const [showEditDelete, setShowEditDelete] = useState(null);
@@ -199,7 +201,12 @@ const Transfer = ({ sidebarExpanded }) => {
                   onChange={handleScanChange}
                   onKeyPress={handleKeyPress}
                 />
-                <img onClick={handleTransferScan} src={searchimg} alt="" />
+                <img
+                  onClick={handleTransferScan}
+                  src={searchimg}
+                  alt=""
+                  style={{ cursor: "pointer" }}
+                />
               </div>
               {error && (
                 <span
@@ -242,11 +249,12 @@ const Transfer = ({ sidebarExpanded }) => {
                 <th style={{}}>Product Category</th>
                 <th>Weight</th>
                 <th>Status</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
               {TransferData?.map((item, index) => (
-                <tr key={index} style={{ color: "#2E364C" }}>
+                <tr key={index} style={{ color: "#2E364C" }} className="table_row">
                   <td className="serialNumber_cell">{index + 1}</td>
                   <td style={{ width: "25%" }}>
                     {formatDate(item.created_at)}
@@ -269,7 +277,7 @@ const Transfer = ({ sidebarExpanded }) => {
                         }}
                       >
                         <div>
-                          <select
+                          {/* <select
                             className="scan_select_Central"
                             name="centralStatus"
                             id="centralHubStatus"
@@ -278,6 +286,7 @@ const Transfer = ({ sidebarExpanded }) => {
                               handleStatusChange(event, item.id)
                             }
                             style={{
+                              cursor:"pointer",
                               backgroundColor:
                                 item.status === "Created"
                                   ? "#23A064"
@@ -288,7 +297,19 @@ const Transfer = ({ sidebarExpanded }) => {
                           >
                             <option value="Created">Created</option>
                             <option value="Transfered">Transfered</option>
-                          </select>
+                          </select> */}
+                          <p
+                            // className="scan_select_Central"
+                            style={{
+                              color: "white",
+                              background: "#0464D5",
+                              padding: "6px 10px",
+                              fontWeight:700,
+                              borderRadius:"26px"
+                            }}
+                          >
+                            Transferred
+                          </p>
                         </div>
 
                         {/* <div>
@@ -303,16 +324,16 @@ const Transfer = ({ sidebarExpanded }) => {
                         />
                       </div> */}
                       </div>
-                      {/* <div className="DOTSBTNS">
-                      <BsThreeDotsVertical
-                        className="Action_dots"
-                        onClick={() =>
-                          setShowEditDelete(
-                            showEditDelete === index ? null : index
-                          )
-                        }
+                    </div>
+                  </td>
+                  <td >
+                    <div className="DOTSBTNS"  style={{display:"flex",alignItems:"center",justifyContent:"center",width:"100px"}}>
+                      <img
+                        // onClick={() => handleDeleteOpen(item.id)}
+                        style={{ width: "16px", height: "20px" }}
+                        src={dlt}
+                        alt="Delete"
                       />
-                    </div> */}
                     </div>
                   </td>
                 </tr>
