@@ -65,8 +65,9 @@ const Stepper = ({ code }) => {
     { id: 6, title: "Slotted" },
     { id: 7, title: "Central Hub status" },
     { id: 8, title: "Transferred to warehouse" },
-    { id: 9, title: "Warehouse status" },
-    { id: 10, title: "Work done", text: "Workdone" },
+    { id: 9, title: "Warehouse Recieved" },
+    { id: 10, title: "Warehouse status" },
+    { id: 11, title: "Work done", text: "Workdone" },
   ];
 
   const status = steppretDta?.Tracking_data?.status_message || "";
@@ -233,7 +234,7 @@ const Stepper = ({ code }) => {
         return formatDateTrack(dates?.cad_finished);
       case 8:
         return formatDateTrack(dates?.transfer_to_warehouse);
-      case 10:
+      case 11:
         return formatDateTrack(dates?.workdone);
       default:
         return ""; 
@@ -244,7 +245,9 @@ const Stepper = ({ code }) => {
 
   return (
     <>
+    { code ? (<div className=""></div> ) : (  
       <div className="">
+      
         <div className="staus_search">
           {/* Search Input */}
           <input
@@ -263,6 +266,7 @@ const Stepper = ({ code }) => {
           <span style={{ color: "red", fontSize: "10px" }}>{error}</span>
         )}
       </div>
+    )}
 
       <div className="stepper-container" style={{ marginTop: "3%" }}>
         <h3 style={{ marginBottom: "50px" }}>
@@ -280,7 +284,7 @@ const Stepper = ({ code }) => {
                   className="step-wrapper"
                   onClick={() =>
                     (step.id === 7 && toggleDropdown()) ||
-                    (step.id === 9 && toggleDropdown2()) ||
+                    (step.id === 10 && toggleDropdown2()) ||
                     (step.id === 5 && toggleDropdown3())
                   }
                 >
@@ -290,7 +294,7 @@ const Stepper = ({ code }) => {
                       position: "relative",
                       backgroundColor: isActive ? "#00474d" : "inherit",
                       cursor:
-                        step.id === 7 || step.id === 9 || step.id === 5
+                        step.id === 7 || step.id === 10 || step.id === 5
                           ? "pointer"
                           : "",
                     }}
@@ -462,7 +466,7 @@ const Stepper = ({ code }) => {
                         })}
                       </div>
                     )}
-                    {step.id === 9 && dropdownVisible2 && (
+                    {step.id === 10 && dropdownVisible2 && (
                       <div
                         className="dropdown-container"
                         style={{ marginTop: "40px" }}

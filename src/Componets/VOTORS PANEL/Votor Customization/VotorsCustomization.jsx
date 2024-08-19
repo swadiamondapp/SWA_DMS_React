@@ -115,14 +115,15 @@ const VotorsCustomization = ({ sidebarExpanded }) => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
+                height:"90vh"
               }}
             >
               <CircularProgress
-                size={100} // Set the desired size
+                size={50} // Set the desired size
                 sx={{
                   color: "#126e72",
-                  padding: "8px 10px",
-                  width: "35px",
+                  // padding: "8px 10px",
+                  // width: "35px",
                 }}
               />
             </div>
