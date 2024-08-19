@@ -73,6 +73,7 @@ const Header = ({
     };
   }, []);
   console.log(userImage, "userImagge");
+  console.log( detailsViewFolderName," detailsViewFolderName")
   const handleSearchWithName = (event) => {
     setSearchWithName(event.target.value, "nameSarch");
   };

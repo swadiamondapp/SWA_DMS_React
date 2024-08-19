@@ -19,45 +19,45 @@ const RendersDetailPage = ({ folderDetails, sidebarExpanded }) => {
 
   const handleDownload = (imageUrl) => {
     fetch(imageUrl, {
-      method: 'GET',
-      mode: 'cors'
-  })
-  .then(response => response.blob())
-  .then(blob => {
-      const blobUrl = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = blobUrl;
-      link.download = 'downloaded_image.jpg';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-  })
-  .catch(error => console.error('Error downloading the image:', error));
+      method: "GET",
+      mode: "cors",
+    })
+      .then((response) => response.blob())
+      .then((blob) => {
+        const blobUrl = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = blobUrl;
+        link.download = "downloaded_image.jpg";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      })
+      .catch((error) => console.error("Error downloading the image:", error));
   };
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
-    setImages({ 
-      normal: null, 
-      threeD: null 
+    setImages({
+      normal: null,
+      threeD: null,
     });
   };
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
     const year = date.getFullYear();
-  
+
     return `${day} ${month} ${year}`;
   };
-  const handleForlderDetailsVeiw = (id,designCode) => {
+  const handleForlderDetailsVeiw = (id, designCode) => {
     navigate(`/assignmentviewsAll/${id}`, {
       state: {
-      
         detailsViewFolderName: designCode,
-      
+        renderMessage: true,
       },
     });
+    console.log(designCode, "renderDesignCode");
   };
 
   return (
@@ -68,10 +68,13 @@ const RendersDetailPage = ({ folderDetails, sidebarExpanded }) => {
           key={item.id}
           style={{ marginLeft: sidebarExpanded ? "218px" : "120px" }}
         >
-          <div className="Detail_Card" onClick={() => handleForlderDetailsVeiw(item.id,item.designCode)}>
+          <div
+            className="Detail_Card"
+            onClick={() => handleForlderDetailsVeiw(item.id, item.designcode)}
+          >
             <img src={item.file_2d} alt="" />
             <span>
-              POSTED ON:   <b>{formatDate(item.created_at)}</b>
+              POSTED ON: <b>{formatDate(item.created_at)}</b>
             </span>
             <button onClick={() => handleDownload(item.file_2d)}>
               DOWNLOAD <img className="img_detail" src={download} alt="" />
