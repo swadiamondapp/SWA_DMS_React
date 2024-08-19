@@ -28,12 +28,13 @@ const UploadFile = ({
   createFinsishedProjects,
   setSuccess,
   setFinishedProjectData,
+  pid
 }) => {
   const initialImageSlots = 6;
   const [isLoading, setIsLoading] = useState(false);
   const [images, setImages] = useState(Array(initialImageSlots).fill(null));
   const [file, setFile] = useState(null);
-  const [id, setId] = useState("");
+  const [id, setId] = useState( pid ? pid : "");
   const [errors, setErrors] = useState("");
 
   const handleImageUpload = (index, event) => {
@@ -93,7 +94,7 @@ const UploadFile = ({
   };
 
   console.log(" errors____", errors);
-  console.log("file images", file);
+  console.log("file images", images);
 
   return (
     <div>

@@ -187,7 +187,7 @@ const VotorsPanal = ({ sidebarExpanded }) => {
                                 style={{ borderRadius: "4px" }}
                                 onClick={() => handleLikeClicks(item.id)}
                               >
-                                <p style={{ padding: "8px 18px" }}>
+                                <p style={{ padding: "8px 18px",cursor:"pointer" }}>
                                   <FaRegThumbsUp size={20} />
                                 </p>
                                 {/* <p style={{ padding: "8px 18px" }}>{item.likes_count}</p> */}
@@ -227,7 +227,7 @@ const VotorsPanal = ({ sidebarExpanded }) => {
                                 style={{ borderRadius: "4px" }}
                                 onClick={() => handleLikeClicks(item.id)}
                               >
-                                <p style={{ padding: "8px 18px" }}>
+                                <p style={{ padding: "8px 18px",cursor:"pointer" }}>
                                   <FaThumbsUp size={20} />
                                 </p>
                                 {/* <p style={{ padding: "8px 18px" }}>{item.likes_count}</p> */}

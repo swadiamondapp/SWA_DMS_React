@@ -33,6 +33,7 @@ const RendersUploadedFile = ({sidebarExpanded }) => {
         >
           <div className="folderCard_parent">
             <div
+              style={{cursor:"pointer"}}
               className="folder__card"
               //   key={item.id}
               //   onClick={() => handleFolderClick(item)}

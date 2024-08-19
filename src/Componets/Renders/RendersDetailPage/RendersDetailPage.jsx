@@ -6,6 +6,8 @@ import ReactToPrint, { useReactToPrint } from "react-to-print";
 import { LuPrinter } from "react-icons/lu";
 import RendersProductPrint from "../RendersProductPrint/RendersProductPrint";
 import { useLocation, Link, useNavigate } from "react-router-dom";
+import ThreeDViewer from "../../ThreeDViewer/ThreeDViewer";
+import { GoDownload } from "react-icons/go";
 
 const RendersDetailPage = ({ folderDetails, sidebarExpanded }) => {
   const navigate = useNavigate();
@@ -17,7 +19,25 @@ const RendersDetailPage = ({ folderDetails, sidebarExpanded }) => {
     content: printRef.current,
   });
 
-  const handleDownload = (imageUrl) => {
+  // const handleDownload = (imageUrl) => {
+  //   fetch(imageUrl, {
+  //     method: "GET",
+  //     mode: "cors",
+  //   })
+  //     .then((response) => response.blob())
+  //     .then((blob) => {
+  //       const blobUrl = URL.createObjectURL(blob);
+  //       const link = document.createElement("a");
+  //       link.href = blobUrl;
+  //       link.download = "downloaded_image.jpg";
+  //       document.body.appendChild(link);
+  //       link.click();
+  //       document.body.removeChild(link);
+  //     })
+  //     .catch((error) => console.error("Error downloading the image:", error));
+  // };
+
+  const handleDownload = (imageUrl, fileName = "downloaded_file") => {
     fetch(imageUrl, {
       method: "GET",
       mode: "cors",
@@ -27,12 +47,12 @@ const RendersDetailPage = ({ folderDetails, sidebarExpanded }) => {
         const blobUrl = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = blobUrl;
-        link.download = "downloaded_image.jpg";
+link.download = fileName;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
       })
-      .catch((error) => console.error("Error downloading the image:", error));
+.catch((error) => console.error("Error downloading the file:", error));
   };
 
   const handleOpenModal = () => {
@@ -54,7 +74,7 @@ const RendersDetailPage = ({ folderDetails, sidebarExpanded }) => {
     navigate(`/assignmentviewsAll/${id}`, {
       state: {
         detailsViewFolderName: designCode,
-        renderMessage: true,
+renderMessage: true,
       },
     });
     console.log(designCode, "renderDesignCode");
@@ -68,31 +88,35 @@ const RendersDetailPage = ({ folderDetails, sidebarExpanded }) => {
           key={item.id}
           style={{ marginLeft: sidebarExpanded ? "218px" : "120px" }}
         >
-          <div
-            className="Detail_Card"
-            onClick={() => handleForlderDetailsVeiw(item.id, item.designcode)}
-          >
-            <img src={item.file_2d} alt="" />
+<div className="Detail_Card">
+            <img
+              src={item.file_2d}
+              alt=""
+              onClick={() => handleForlderDetailsVeiw(item.id, item.designCode)}
+            />
             <span>
               POSTED ON: <b>{formatDate(item.created_at)}</b>
             </span>
-            <button onClick={() => handleDownload(item.file_2d)}>
-              DOWNLOAD <img className="img_detail" src={download} alt="" />
+            <button
+              className="Download_btn_hub"
+              onClick={() => handleDownload(item.file_2d, "image_2d.jpg")}
+            >
+              DOWNLOAD
+              <GoDownload />
             </button>
           </div>
           <div className="Detail_Card">
-            <img src={item.file_3d} alt="" />
+            <ThreeDViewer url={item.file_3d} />
             <span>
               POSTED ON: <b> {formatDate(item.created_at.split("T")[0])} </b>
             </span>
-            <ReactToPrint
-              trigger={() => (
-                <div className="Detail_Card_print" onClick={handlePrint}>
-                  <LuPrinter /> Print
-                </div>
-              )}
-              content={() => printRef.current}
-            />
+            <button
+              className="Download_btn_hub"
+              onClick={() => handleDownload(item.file_3d, "model_3d.3dm")}
+            >
+              DOWNLOAD
+              <GoDownload />
+            </button>
             <div style={{ display: "none" }}>
               <RendersProductPrint
                 ref={printRef}

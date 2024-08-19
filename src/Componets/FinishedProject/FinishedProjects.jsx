@@ -238,6 +238,7 @@ const FinishedProjects = (props) => {
               {grid && (
                 <>
                   <div
+                    style={{ cursor: "pointer" }}
                     className="folder__card"
                     onClick={() => handleFolderClick(item)}
                   >
@@ -268,9 +269,9 @@ const FinishedProjects = (props) => {
                   <div
                     className="folder__card"
                     onClick={() => handleFolderClick(item)}
-                    style={{display:"flex",width:"110px"}}
+                    style={{ display: "flex", width: "110px",cursor:"pointer" }}
                   >
-                    <img src={folderimg} alt="" style={{width:"26px"}} />
+                    <img src={folderimg} alt="" style={{ width: "26px" }} />
 
                     <p className="text-truncate">
                       {truncateText(item.name, 10)}
@@ -284,14 +285,19 @@ const FinishedProjects = (props) => {
                   <div
                     className="folder__card"
                     onClick={() => handleFolderClick(item)}
-                    style={{display:"flex",width:"140px"}}
+                    style={{ display: "flex", width: "140px",cursor:"pointer" }}
                   >
-                    <img src={folderimg} alt="" style={{width:"40px"}} />
+                    <img src={folderimg} alt="" style={{ width: "40px" }} />
 
                     <p className="text-truncate">
                       {truncateText(item.name, 10)}
                     </p>
-                    <span className="text-truncate_hover" style={{fontSize:"11px"}}>{item.name}</span>
+                    <span
+                      className="text-truncate_hover"
+                      style={{ fontSize: "11px" }}
+                    >
+                      {item.name}
+                    </span>
                   </div>
                 </>
               )}

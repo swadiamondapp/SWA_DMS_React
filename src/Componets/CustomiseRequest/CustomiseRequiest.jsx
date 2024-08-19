@@ -116,7 +116,8 @@ const CustomiseRequest = ({
     left: "50%",
     transform: "translate(-50%, -50%)",
     width: 480,
-    height: wareHouseuserId ? "95%" : "96%",
+    // height:600,
+    // height: wareHouseuserId ? "95%" : "96%",
     bgcolor: "background.paper",
     border: "none",
     boxShadow: 24,
@@ -182,17 +183,17 @@ const CustomiseRequest = ({
             onClose={onClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
-            style={{ position: "absolute", right: "0px" }}
+            style={{ position: "absolute", right: "0px"  }}
             className="modal"
           >
             <Box sx={style}>
               <Typography id="modal-modal-description" sx={{ mx: 1, pb: 1 }}>
                 <div>
-                  <div>
+                  <div >
                     <div
                       style={{
                         display: "flex",
-                        justifyContent: "space-between",
+                        justifyContent: "space-between"
                       }}
                     >
                       <span className="headerTitle">

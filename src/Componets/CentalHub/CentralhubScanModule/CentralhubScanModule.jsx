@@ -35,7 +35,7 @@ const CentralhubScanModule = ({ sidebarExpanded }) => {
 
   useEffect(() => {
     centralStatusTableData(setStatus, setIsLoading);
-    centralHubScanTable(setIsLoading, setScanTableData);
+    centralHubScanTable( setScanTableData);
   }, []);
 
   const openModal = () => {
@@ -124,6 +124,8 @@ const CentralhubScanModule = ({ sidebarExpanded }) => {
     return new Date(dateString).toLocaleDateString("en-GB", options);
   };
 
+  console.log(scanTableData,"scanTableData")
+
   return (
     <>
       <div
@@ -168,7 +170,7 @@ const CentralhubScanModule = ({ sidebarExpanded }) => {
                   onChange={handleInputChange}
                   onKeyPress={handleKeyPress}
                 />
-                <img onClick={handleSearch} src={searchimg} alt="" />
+                <img onClick={handleSearch} src={searchimg} alt="" style={{cursor:"pointer"}}/>
               </div>
               {error && (
                 <span style={{ color: "red", fontSize: "10px" }}>{error}</span>
@@ -191,6 +193,7 @@ const CentralhubScanModule = ({ sidebarExpanded }) => {
                 <tr>
                   <th style={{ borderLeft: "none" }}>
                     <input
+                    style={{cursor:"pointer"}}
                       type="checkbox"
                       onChange={handleHeaderCheckboxChange}
                       checked={
@@ -211,7 +214,7 @@ const CentralhubScanModule = ({ sidebarExpanded }) => {
                 </tr>
               </thead>
               <tbody>
-                {scanTableData.map((item, index) => (
+                {scanTableData  && scanTableData?.map((item, index) => (
                   <tr key={item.id} className="table_row">
                     <td>
                       <input

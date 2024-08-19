@@ -107,15 +107,14 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
             </div>
           </Link>
           <Link to="/caduploaded">
-            <div className="Links">
-            <div className="horizontal_line_sidebar"></div>
+          <div className={`Links ${activeLink === "/caduploaded" ? "activeLinks" : ""}`}>            <div className="horizontal_line_sidebar"></div>
             <div className="lin_container"></div>
               <img src={cad} alt="" style={{width:"19px",height:"19px"}} />
               {sidebarExpanded && <p>CAD Uploaded</p>}
             </div>
           </Link>
           <Link to="/rendersuploaded">
-            <div className="Links">
+          <div className={`Links ${activeLink === "/rendersuploaded" ? "activeLinks" : ""}`}>            <div className="horizontal_line_sidebar"></div>
             <div className="horizontal_line_sidebar"></div>
             <div className="lin_container"></div>
               <img src={render} alt="" style={{width:"19px",height:"19px"}} />
