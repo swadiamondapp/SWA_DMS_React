@@ -23,11 +23,12 @@ import {
   metal_type_drop_down,
   product_type_drop_down,
 } from "../ADMIN PANEL/Api_dropDown";
-import { detailsViewOfItems } from "./Api";
+import { detailsViewOfItems, detailsViewOfItemsRenders } from "./Api";
 
 const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
   const location = useLocation();
   const { id } = useParams();
+  const { detailsViewFolderName, renderMessage } = location.state || {};
   const [folderDetails, setFolderDetails] = useState([]);
   const [folderDetailView, setFolderDetailsView] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -46,11 +47,16 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
   const [DetailsData, setDetailsData] = useState([]);
 
   useEffect(() => {
-    // list_folderDetails(setIsLoading,setFolderDetails,id)
-    detailsViewOfItems(setIsLoading, setFolderDetailsView, id);
-  }, [id]);
+    if (renderMessage === true) {
+      detailsViewOfItemsRenders(setIsLoading, setFolderDetailsView, id);
+    } else {
+      detailsViewOfItems(setIsLoading, setFolderDetailsView, id);
+    }
 
-  console.log(folderDetailView, "DetailsData");
+    // list_folderDetails(setIsLoading,setFolderDetails,id)
+  }, [id,renderMessage]);
+
+  console.log(renderMessage, "renderMessage");
 
   console.log(designId, "designId");
 
@@ -135,7 +141,7 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
       >
         <div className="AssignmentView">
           <div className="Left_img_View">
-            <img src={itemDetails?.paper_design?.image} alt="" />
+            <img src={itemDetails?.paper_design?.image || itemDetails?.image} alt="" />
           </div>
           <div className="right_Assignment_View">
             {/* <div
@@ -150,7 +156,7 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
               <div className="Assignment_Details">
                 <div className="A1_text">
                   <p>Product Id</p>
-                  <p>{itemDetails?.paper_design?.designcode}</p>
+                  <p>{itemDetails?.paper_design?.designcode || detailsViewFolderName}</p>
                 </div>
                 <div className="A1_text">
                   <p>Category</p>

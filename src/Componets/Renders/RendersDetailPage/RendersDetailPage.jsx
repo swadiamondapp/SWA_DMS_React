@@ -47,12 +47,12 @@ const RendersDetailPage = ({ folderDetails, sidebarExpanded }) => {
         const blobUrl = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = blobUrl;
-        link.download = fileName;
+link.download = fileName;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
       })
-      .catch((error) => console.error("Error downloading the file:", error));
+.catch((error) => console.error("Error downloading the file:", error));
   };
 
   const handleOpenModal = () => {
@@ -74,8 +74,10 @@ const RendersDetailPage = ({ folderDetails, sidebarExpanded }) => {
     navigate(`/assignmentviewsAll/${id}`, {
       state: {
         detailsViewFolderName: designCode,
+renderMessage: true,
       },
     });
+    console.log(designCode, "renderDesignCode");
   };
 
   return (
@@ -86,7 +88,7 @@ const RendersDetailPage = ({ folderDetails, sidebarExpanded }) => {
           key={item.id}
           style={{ marginLeft: sidebarExpanded ? "218px" : "120px" }}
         >
-          <div className="Detail_Card">
+<div className="Detail_Card">
             <img
               src={item.file_2d}
               alt=""
