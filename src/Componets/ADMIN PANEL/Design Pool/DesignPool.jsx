@@ -539,7 +539,8 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
             setSelectedDesigns,
             setShowRadioButtons,
             setSelectButtonLabel,
-            setSelectedIdsForDelet
+            setSelectedIdsForDelet,
+            setUnvotedData
           );
         }}
       />
