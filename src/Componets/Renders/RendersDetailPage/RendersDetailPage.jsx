@@ -92,7 +92,7 @@ renderMessage: true,
             <img
               src={item.file_2d}
               alt=""
-              onClick={() => handleForlderDetailsVeiw(item.id, item.designCode)}
+              onClick={() => handleForlderDetailsVeiw(item.id, item.designcode)}
             />
             <span>
               POSTED ON: <b>{formatDate(item.created_at)}</b>
