@@ -285,6 +285,7 @@ const Header = ({
                   location.pathname !== "/scan" &&
                   location.pathname !== "/designpool" &&
                   location.pathname !== "/statusPage" &&
+                  location.pathname !== `/statusPage/${id}` &&
                   location.pathname !== "/centralhubscan" &&
                   location.pathname !== "/otherlogin" &&
                   location.pathname !== "/caduploaded" &&

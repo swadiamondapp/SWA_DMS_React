@@ -158,7 +158,8 @@ export const deleteItemFromDesignPool = async (
   setSelectedDesigns,
   setShowRadioButtons,
   setSelectButtonLabel,
-  setSelectedIdsForDelet
+  setSelectedIdsForDelet,
+  setUnvotedData
 ) => {
   
   try {
@@ -177,6 +178,7 @@ export const deleteItemFromDesignPool = async (
         setDeleteConfirmationOpen(false);
       }, 1600);
       all_Designs(setIsLoading, setData);
+      unvoted_design(setIsLoading,setUnvotedData)
       // setActiveCardId([]);
       setSelectedDesigns([])
       setShowRadioButtons(false)
