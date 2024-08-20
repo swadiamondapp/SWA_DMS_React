@@ -113,6 +113,7 @@ const FinishedProjects = (props) => {
   };
   sort;
   console.log("props?.finishedProjectData", props?.finishedProjectData);
+  console.log("loading", props?.isLoading);
 
   return (
     <>
@@ -213,7 +214,7 @@ const FinishedProjects = (props) => {
             showMoveOptions={showMoveOptions}
           /> */}
 
-        {props?.finishedProjectData?.length === 0 && (
+        {props?.isLoading && props?.finishedProjectData?.length === 0 ? (
           <div
             style={{
               display: "flex",
@@ -230,6 +231,12 @@ const FinishedProjects = (props) => {
                 width: "35px",
               }}
             />
+          </div>
+        ) : (
+        <div className="" style={{width:"100%",
+          height:"400px",display:"flex",alignItems:"center",justifyContent:"center"
+        }}>
+          <span>No Data found</span>
           </div>
         )}
         <div className="folderCard_parent RendersHome_folders_top">
