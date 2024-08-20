@@ -277,7 +277,7 @@ const Transfer = ({ sidebarExpanded }) => {
                         }}
                       >
                         <div>
-                          {/* <select
+                          <select
                             className="scan_select_Central"
                             name="centralStatus"
                             id="centralHubStatus"
@@ -297,9 +297,8 @@ const Transfer = ({ sidebarExpanded }) => {
                           >
                             <option value="Created">Created</option>
                             <option value="Transfered">Transfered</option>
-                          </select> */}
-                          <p
-                            // className="scan_select_Central"
+                          </select>
+                          {/* <p
                             style={{
                               color: "white",
                               background: "#0464D5",
@@ -309,7 +308,7 @@ const Transfer = ({ sidebarExpanded }) => {
                             }}
                           >
                             Transferred
-                          </p>
+                          </p> */}
                         </div>
 
                         {/* <div>
