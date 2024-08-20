@@ -180,21 +180,39 @@ const BasicDetailModal = ({
       'array.empty': 'Product category cannot be empty',
       'array.min': 'Product category cannot be empty',
     }),
-    approxDiamondWeight: Joi.string().custom((value, helpers) => {
-      if (value === "0") {
-        return helpers.message("cannot be zero");
-      }
-      return value;
-    }).required().messages({
-      "string.empty": `cannot be empty`,
+    approxDiamondWeight: Joi.alternatives().try(
+      Joi.number().custom((value, helpers) => {
+        if (value === 0) {
+          return helpers.message("cannot be zero");
+        }
+        return value;
+      }),
+      Joi.string().custom((value, helpers) => {
+        if (value === "0") {
+          return helpers.message("cannot be zero");
+        }
+        return value;
+      })
+    ).required().messages({
+      "alternatives.match": "must be a valid number or string",
+      "string.empty": "cannot be empty",
     }),
-    approxMetalWeights: Joi.string().custom((value, helpers) => {
-      if (value === "0") {
-        return helpers.message("cannot be zero");
-      }
-      return value;
-    }).required().messages({
-      "string.empty": `cannot be empty`,
+    approxMetalWeights: Joi.alternatives().try(
+      Joi.number().custom((value, helpers) => {
+        if (value === 0) {
+          return helpers.message("cannot be zero");
+        }
+        return value;
+      }),
+      Joi.string().custom((value, helpers) => {
+        if (value === "0") {
+          return helpers.message("cannot be zero");
+        }
+        return value;
+      })
+    ).required().messages({
+      "alternatives.match": "must be a valid number or string",
+      "string.empty": "cannot be empty",
     }),
     approxMRP: Joi.number().required().messages({
       'number.base': 'Approximate MRP must be a number',
@@ -413,7 +431,7 @@ const BasicDetailModal = ({
       SelectedDiamondId &&
       SelectedMetalId &&
       formData.diamondType &&
-      formData.typeOfMetal
+      formData.typeOfMetal 
     ) {
       CalculateApproxAmount()
     } else {
