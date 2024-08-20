@@ -65,7 +65,7 @@ const Stepper = ({ code }) => {
     { id: 6, title: "Slotted" },
     { id: 7, title: "Central Hub status" },
     { id: 8, title: "Transferred to warehouse" },
-    { id: 9, title: "Warehouse Recieved" },
+    { id: 9, title: "Warehouse Received" },
     { id: 10, title: "Warehouse status" },
     { id: 11, title: "Work done", text: "Workdone" },
   ];
