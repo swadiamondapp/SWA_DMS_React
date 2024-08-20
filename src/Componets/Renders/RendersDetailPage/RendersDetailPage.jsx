@@ -75,7 +75,7 @@ const RendersDetailPage = ({ folderDetails, sidebarExpanded }) => {
       state: {
         detailsViewFolderName: designCode,
       },
-    });
+    }); 
   };
 
   return (
