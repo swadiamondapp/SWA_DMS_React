@@ -3,6 +3,7 @@ import {
   FINISHED_PROJECTS,
   FOLDER_ITEM,
   CREATE_FINISHED_PROJECTS,
+  RENDESR_ALL_FINISHED_PROJECTS,
 } from "../Services/EndPoints";
 import { apiService, checkApiStatus } from "../Services/ApiInstants";
 
@@ -25,9 +26,7 @@ export const finishedProjectList = async (setData) => {
     }
   } catch (error) {
     console.log(error);
-  } finally {
-    setIsLoading(false);
-  }
+  } 
 };
 
 export const folderItemList = async (setIsLoading, setData, id) => {
@@ -73,4 +72,15 @@ export const createFinsishedProjects = async (
   } finally {
     setIsLoading(false);
   }
+};
+
+export const rendersAllFinishedProjectList = async (setData) => {
+  try {
+    const response = await apiService.get(RENDESR_ALL_FINISHED_PROJECTS);
+    if (checkApiStatus(response)) {
+      setData(response?.data?.results?.data);
+    }
+  } catch (error) {
+    console.log(error);
+  } 
 };

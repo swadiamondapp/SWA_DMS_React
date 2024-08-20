@@ -171,7 +171,7 @@ const ScanWarehouse = ({ sidebarExpanded }) => {
                   onChange={handleInputChange}
                   onKeyPress={handleKeyPress}
                 />
-                <img onClick={handleSearch} src={searchimg} alt="" />
+                <img onClick={handleSearch} src={searchimg} alt="" style={{cursor:"pointer"}}/>
               </div>
               {error && (
                 <span style={{ color: "red", fontSize: "10px" }}>{error}</span>
@@ -237,7 +237,7 @@ const ScanWarehouse = ({ sidebarExpanded }) => {
                     <td style={{ borderLeft: "none" }}>
                       <img
                         onClick={() => handleDeleteOpen(item.id)}
-                        style={{ width: "16px", height: "20px" }}
+                        style={{ width: "16px", height: "20px",cursor:"pointer"}}
                         src={dlt}
                         alt="Delete"
                       />

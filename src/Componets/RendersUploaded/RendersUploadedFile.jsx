@@ -1,6 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useLocation, Link, useNavigate } from "react-router-dom";
-import "../FinishedProject/FinishedProject.css";
+import React, { useEffect, useState } from 'react'
 import folderimg from "../../assets/folder.png";
 import DesignBtn from "../ADMIN PANEL/Design Pool/DesignBtn";
 import { LiaCloudUploadAltSolid } from "react-icons/lia";
@@ -11,8 +9,10 @@ import { CircularProgress } from "@mui/material";
 import { MdViewModule } from "react-icons/md";
 import sort from "../../assets/sort.png";
 import filter from "../../assets/filter.png";
+import { useNavigate } from 'react-router-dom';
 
-const FinishedProjects = (props) => {
+
+const RendersUploadedFile = (props) => {
   const navigate = useNavigate();
 
   const [uploadInstructionsVisible, setUploadInstructionsVisible] =
@@ -66,42 +66,13 @@ const FinishedProjects = (props) => {
     }
   }, [activeDesignCode]);
 
-  const handleCardClick = (designCode) => {
-    setActiveDesignCode(designCode);
-  };
 
-  const handleFileUpload = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setUploadedImage(reader.result);
-        setUploadInstructionsVisible(false);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const [showRadioButtons, setShowRadioButtons] = useState(false);
-  const [selectButtonLabel, setSelectButtonLabel] = useState("Select");
-  const [showDownloadOptions, setShowDownloadOptions] = useState(false);
-  const [showMoveOptions, setShowMoveOptions] = useState(false);
-
-  const toggleRadioButtons = () => {
-    setShowRadioButtons(!showRadioButtons);
-    setSelectButtonLabel(showRadioButtons ? "Select" : "Unselect");
-  };
-  const toggleDownloadOptions = () => {
-    setShowDownloadOptions(!showDownloadOptions);
-  };
-  const toggleMoveOptions = () => {
-    setShowMoveOptions(!showMoveOptions);
-  };
 
   const handleFolderClick = (item) => {
     navigate(`/finished/${item.id}`, {
       state: {
         folderName: item.name,
+        path:"rendersUploaded"
       },
     });
   };
@@ -111,7 +82,7 @@ const FinishedProjects = (props) => {
     }
     return text;
   };
-  sort;
+
   console.log("props?.finishedProjectData", props?.finishedProjectData);
 
   return (
@@ -120,7 +91,7 @@ const FinishedProjects = (props) => {
         className="Parant_FinishedProject"
         style={{ marginLeft: props?.sidebarExpanded ? "225px" : "130px" }}
       >
-        <div className="Design_FileUpload" style={{ marginTop: "10px" }}>
+        {/* <div className="Design_FileUpload" style={{ marginTop: "10px" }}>
           {uploadInstructionsVisible ? (
             <>
               <div>
@@ -156,7 +127,7 @@ const FinishedProjects = (props) => {
             style={{ display: "none" }}
             onChange={handleFileUpload}
           />
-        </div>
+        </div> */}
 
         <div className="RendersHome_butns" style={{ marginTop: "10px" }}>
           <button
@@ -306,7 +277,7 @@ const FinishedProjects = (props) => {
         </div>
       </div>
 
-      <UploadFile
+      {/* <UploadFile
         open={uploadModalOpen}
         setUploadModalOpen
         onClose={() => setUploadModalOpen(false)}
@@ -318,9 +289,9 @@ const FinishedProjects = (props) => {
         successModalOpen={success}
         handleClose={() => setSuccess(false)}
         successMessage={"Files uploaded succesfully"}
-      />
+      /> */}
     </>
   );
 };
 
-export default FinishedProjects;
+export default RendersUploadedFile

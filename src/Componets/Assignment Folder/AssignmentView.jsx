@@ -89,7 +89,7 @@ const AssignmentView = ({ sidebarExpanded, setHeaderDetials }) => {
 
   const findOutLetNameByID = (id) => {
     const item = outLetDropDown.find((entry) => entry.id === id);
-    return item ? item.name : "Note Found";
+    return item ? item.name : "Not Found";
   };
   // const productCategoryByID = (id) => {
   //   const item = ProudctCategory.find((entry) => entry.id === id);
@@ -121,7 +121,7 @@ const AssignmentView = ({ sidebarExpanded, setHeaderDetials }) => {
   const productCategoryByID = (id) => {
     const item = ProudctCategory.find((entry) => entry.id === id);
     console.log("kkkkkk",item)
-    return item ? item.name : "Note Found";
+    return item ? item.name : "Not Found";
   };
 
 

@@ -65,6 +65,8 @@ import CentralHubScan from "./Componets/CentalHub/CentralHubScan/CentralHubScan"
 import AssignmentDetailsViewsAllPageView from "./Pages/AssignmentDetailsViewsAllPage/AssignmentDetailsViewsAllPageView";
 import StatusPage from "./Pages/StatusPage/StatusPage";
 import NewSlotPrint from "./Componets/CENTRAL HUB/Slot/NewSlotPrint";
+import CadUploaded from "./Componets/CadUploaded/CadUploaded";
+import RendersUploaded from "./Componets/RendersUploaded/RendersUploaded";
 
 function App() {
   return (
@@ -108,6 +110,15 @@ function App() {
               path="/rendersdetailing/:id"
               element={<RendersDetailing />}
             />
+            <Route
+              path="/caduploaded"
+              element={<CadUploaded />}
+            />
+             <Route
+              path="/rendersuploaded"
+              element={<RendersUploaded />}
+            />
+
 
             <Route
               path="/centralfolderdetails/:id"

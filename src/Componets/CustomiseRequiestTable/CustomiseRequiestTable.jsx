@@ -86,6 +86,8 @@ const CustomizationTable = (props) => {
   );
   const [CustomizationListData, setCustomizationListData] = useState([]);
   const [printItem, setPrintItem] = useState(null);
+  const [printData , setPrintData] = useState([])
+  const [isPrintLoad , setIsPrintLoad] = useState(false)
 
   const dropdownRefs = useRef([]);
 
@@ -180,13 +182,23 @@ const CustomizationTable = (props) => {
     return item ? item.name : "Not Found";
   };
 
-  const onLoadWareHousePrint = (wareHouseId) => {
-    customization_details_view_warehouse(
+  const onLoadWareHousePrint = async (wareHouseId) => {
+    // Set loading state
+    setIsPrintLoad(true);
+    
+    // Fetch the data and wait until it's done
+    await customization_details_view_warehouse(
       setIsLoading,
-      setCustomizationWareHouseData,
+      setPrintData,
       wareHouseId
     );
-  }
+  
+    // Ensure the state update is processed
+    await new Promise((resolve) => setTimeout(resolve, 0));
+  
+    // Unset loading state
+    setIsPrintLoad(false);
+  };
 
   console.log("printItem", printItem);
 
@@ -274,6 +286,7 @@ const CustomizationTable = (props) => {
                             </div>
                           )}
                           content={() => printRef.current}
+                          // onBeforePrint={()=>onLoadWareHousePrint(item.id)}
                           onBeforeGetContent={()=>onLoadWareHousePrint(item.id)}
                         />
                       </button>
@@ -281,7 +294,7 @@ const CustomizationTable = (props) => {
                       <div style={{ display: "none" }}>
                         <CustomizationListDataPrint
                           ref={printRef}
-                          dataToDisplay={CustomizationWareHouseData}
+                          dataToDisplay={printData}
                         />
                       </div>
 

@@ -29,6 +29,7 @@ export const LIST_ASSIGNED_CAD_DESIGN = "list/myassigned-data/";
 export const CUSTOMIZATION_DETAILS = "customization-detail/";
 export const DESIGN_LIST_CAD = "all-designlistof-cad/";
 export const FINISHED_PROJECTS = "list/finished/projects/";
+export const RENDESR_ALL_FINISHED_PROJECTS ="list/folderby/Renders"
 export const FOLDER_ITEM = "innerproject/detail/";
 export const LIST_SLOT_HUB = "slot/list/";
 export const LIST_FROM_DESIGN_CAD = "all-designlistof-cad/";
@@ -194,5 +195,6 @@ export const DESIGNER_STATUS_BASED_FILTER = "designer/folder-detail/526/?item_st
 export const DESIGNER_CATEGORY_FILTER = "designer/folder-detail/"
 export const DESIGNER_TAG_BASED_FILTER = "designer/folder-detail/526/?tag_ids=54"
 export const DESIGNER_DATE_RANGE_FILTER = "designer/folder-detail/"
+export const REDNERS_DETAILS_VIEW = "cad/folderItem/basicdata/"
 
 

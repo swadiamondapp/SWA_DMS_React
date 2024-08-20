@@ -1,19 +1,24 @@
-import React, {  useEffect, useState } from "react";
-import "./RendersHome.css";
-import view from "../../../assets/view.png";
-import sort from "../../../assets/sort.png";
-import filter from "../../../assets/filter.png";
-import folderimg from "../../../assets/folder.png";
-import { Link, useNavigate } from "react-router-dom";
-import DesignBtn from "../../ADMIN PANEL/Design Pool/DesignBtn";
-import { CircularProgress } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import folderimg from "../../assets/folder.png";
+import { useNavigate } from "react-router-dom";
 import { MdViewModule } from "react-icons/md";
+import sort from "../../assets/sort.png";
+import filter from "../../assets/filter.png";
+import { cadDesignList } from "../../Pages/Renders/Apis";
+import { CircularProgress } from "@mui/material";
 
-const RendersHome = ({ designListData, sidebarExpanded }) => {
+const CADuploadedFiles = ({sidebarExpanded }) => {
   const [view, setView] = useState(false);
   const [grid, setGrid] = useState(true);
   const [detail, setDetail] = useState(false);
   const [tiles, setTiles] = useState(false);
+
+  const [designListData, setDesignListData] = useState([]);
+
+  useEffect(() => {
+    cadDesignList(setDesignListData);
+  }, []);
+
 
   const navigate = useNavigate();
 
@@ -171,4 +176,4 @@ const RendersHome = ({ designListData, sidebarExpanded }) => {
   );
 };
 
-export default RendersHome;
+export default CADuploadedFiles;

@@ -113,7 +113,7 @@ const WorkDoneTable = ({ sidebarExpanded }) => {
             onChange={handleInputChange}
             onKeyPress={handleKeyPress}
           />
-          <img onClick={handleSearch} src={searchimg} alt="" />
+          <img onClick={handleSearch} src={searchimg} alt="" style={{cursor:"pointer"}}/>
         </div>
         {error && (
           <p style={{ color: "red", fontSize: "10px", marginTop: "3px" }}>

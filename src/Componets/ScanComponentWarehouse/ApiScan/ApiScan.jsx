@@ -156,6 +156,7 @@ export const warehouseScanItemDelete = async (
 // ......CENTRAL_HB..
 
 export const centralHubScanTable = async (setScanTableData) => {
+  
   try {
     const response = await apiService.get(CENTRALHUB_NEW_SCAN_LIST);
     if (checkApiStatus(response)) {
