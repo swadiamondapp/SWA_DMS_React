@@ -18,15 +18,18 @@ export const cadDesignList = async (setData) => {
   }
 };
 
-export const finishedProjectList = async (setData) => {
+export const finishedProjectList = async (setData,setIsLoading) => {
   try {
+    setIsLoading(true)
     const response = await apiService.get(FINISHED_PROJECTS);
     if (checkApiStatus(response)) {
       setData(response?.data?.results?.data);
     }
   } catch (error) {
     console.log(error);
-  } 
+  } finally{
+    setIsLoading(false)
+  }
 };
 
 export const folderItemList = async (setIsLoading, setData, id) => {

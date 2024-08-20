@@ -432,17 +432,17 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
                                   style={{
                                     display: "flex",
                                     width: "auto",
-                                    gap: "10px",
+                                    gap: "5px",
                                   }}
                                 >
                                   <button
                                     style={{
-                                      padding: "7px 10px ",
+                                      padding: "7px 5px ",
                                       borderRadius: "4px",
                                       color: "white",
                                       backgroundColor: "#0464D5",
                                       border: "none",
-                                      fontSize: "15px",
+                                      fontSize: "13px",
                                       fontWeight: "900",
                                     }}
                                     onClick={() =>
