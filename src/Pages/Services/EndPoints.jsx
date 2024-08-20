@@ -29,6 +29,7 @@ export const LIST_ASSIGNED_CAD_DESIGN = "list/myassigned-data/";
 export const CUSTOMIZATION_DETAILS = "customization-detail/";
 export const DESIGN_LIST_CAD = "all-designlistof-cad/";
 export const FINISHED_PROJECTS = "list/finished/projects/";
+export const RENDESR_ALL_FINISHED_PROJECTS ="list/folderby/Renders"
 export const FOLDER_ITEM = "innerproject/detail/";
 export const LIST_SLOT_HUB = "slot/list/";
 export const LIST_FROM_DESIGN_CAD = "all-designlistof-cad/";

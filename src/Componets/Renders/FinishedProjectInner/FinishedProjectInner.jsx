@@ -4,8 +4,14 @@ import ShareIcon from "../../../assets/shareIcon.png";
 import { LiaCloudUploadAltSolid } from "react-icons/lia";
 import UploadFile from "../../UploadFile/UploadFile";
 import { createFinsishedProjects } from "../../../Pages/Renders/Apis";
+import { useLocation } from "react-router-dom";
 
 const FinishedProjectInner = (props) => {
+  const location = useLocation();
+
+  const {path} = location.state || "";
+  console.log("path",path)
+
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
 
   const handleOpenModal = () => {
@@ -19,6 +25,8 @@ const FinishedProjectInner = (props) => {
       className="MainContainer"
       style={{ marginLeft: props?.sidebarExpanded ? "225px" : "125px" }}
     >
+
+   {!path && (
       <div className="Design_FileUpload">
         <div>
           <p className="D__fileUpload">Reupload</p>
@@ -39,6 +47,7 @@ const FinishedProjectInner = (props) => {
           style={{ display: "none" }}
         />
       </div>
+    )}
 
       <div className="parentRendercard">
         {props?.folderItem &&
