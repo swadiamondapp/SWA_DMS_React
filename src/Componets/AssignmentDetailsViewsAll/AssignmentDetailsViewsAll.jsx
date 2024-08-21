@@ -24,11 +24,17 @@ import {
   product_type_drop_down,
 } from "../ADMIN PANEL/Api_dropDown";
 import { detailsViewOfItems, detailsViewOfItemsRenders } from "./Api";
+import { GoDownload } from "react-icons/go";
+import ThreeDViewer from "../ThreeDViewer/ThreeDViewer";
+import InstructionModal from "../InstructionModal/InstructionModal";
+import ShareIcon from "../../assets/shareIcon.png";
+import { Select } from "antd";
 
 const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
   const location = useLocation();
   const { id } = useParams();
-  const { detailsViewFolderName, renderMessage } = location.state || {};
+  const { detailsViewFolderName, renderMessage, cardDatas, page } =
+    location.state || {};
   const [folderDetails, setFolderDetails] = useState([]);
   const [folderDetailView, setFolderDetailsView] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -45,6 +51,18 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
   const [selectedTags, setSelectedTags] = useState([]);
   const [FindingsList, setFindingsList] = useState([]);
   const [DetailsData, setDetailsData] = useState([]);
+  const [openModal, setOpenmodal] = useState(false);
+  const [modalHeading, setmodalHeading] = useState("");
+
+  const handleopenModal = () => {
+    setOpenmodal(!openModal);
+    setmodalHeading("Add cad Instractions");
+  };
+
+  const handleopenModalRender = () => {
+    setOpenmodal(!openModal);
+    setmodalHeading("Add Render Instractions");
+  };
 
   useEffect(() => {
     if (renderMessage === true) {
@@ -54,11 +72,29 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
     }
 
     // list_folderDetails(setIsLoading,setFolderDetails,id)
-  }, [id,renderMessage]);
+  }, [id, renderMessage]);
 
   console.log(renderMessage, "renderMessage");
 
-  console.log(designId, "designId");
+  console.log(cardDatas, "cardDatas");
+
+  const handleDownload = (imageUrl, fileName = "downloaded_file") => {
+    fetch(imageUrl, {
+      method: "GET",
+      mode: "cors",
+    })
+      .then((response) => response.blob())
+      .then((blob) => {
+        const blobUrl = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = blobUrl;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      })
+      .catch((error) => console.error("Error downloading the file:", error));
+  };
 
   useEffect(() => {
     if (folderDetailView) {
@@ -130,6 +166,19 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
     return item ? item.name : "Note Found";
   };
 
+  const handleChange = (value) => {
+    console.log(`selected ${value}`);
+  };
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+    const year = date.getFullYear();
+
+    return `${day} ${month} ${year}`;
+  };
+
   //   console.log(selectedTags, "fghjkl");
   //   console.log(itemDetails, "itemDetails");
   // console.log(FindingsList,"finsdfasfd")
@@ -140,8 +189,121 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
         style={{ paddingLeft: sidebarExpanded ? "225px" : "130px" }}
       >
         <div className="AssignmentView">
-          <div className="Left_img_View">
-            <img src={itemDetails?.paper_design?.image || itemDetails?.image} alt="" />
+          <div className="detail_left_part">
+            <div className="Left_img_View">
+              <img
+                src={itemDetails?.paper_design?.image || itemDetails?.image}
+                alt=""
+              />
+            </div>
+            {page === "CADdetail"  && (
+              <div className="cad_uploaded_admin">
+                <div
+                  className=""
+                  style={{
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "end",
+                    fontSize: "18px",
+                  }}
+                >
+                  <h4>Cad Output file</h4>
+                  <button
+                    style={{
+                      padding: "10px 16px 10px 16px",
+                      background: "#0464D5",
+                      color: "white",
+                      borderRadius: "30px",
+                      border: "none",
+                      outline: "none",
+                      fontSize: "16px",
+                      fontWeight: "600",
+                      cursor: "pointer",
+                    }}
+                    onClick={handleopenModal}
+                  >
+                    Add instraction
+                  </button>
+                </div>
+                <div
+                  className=""
+                  style={{
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <div
+                    className="Detail_Card"
+                    style={{ width: "48%", height: "300px", gap: "5px" }}
+                  >
+                    <img
+                      src={cardDatas[0]?.file_2d}
+                      alt=""
+                      // onClick={() => handleForlderDetailsVeiw(item.id, item.designcode)}
+                    />
+                    <span>
+                      POSTED ON:
+                      <b>{formatDate(cardDatas[0]?.created_at)}</b>
+                    </span>
+                    <button
+                      className="Download_btn_hub"
+                      onClick={() =>
+                        handleDownload(cardDatas[0]?.file_2d, "image_2d.jpg")
+                      }
+                    >
+                      DOWNLOAD
+                      <GoDownload />
+                    </button>
+                    <button
+                      style={{
+                        padding: "3px 6px 3px 6px",
+                        color: "#23A064",
+                        border: "1px solid #23A064",
+                        background: "#23A0641A",
+                        width: "auto",
+                        borderRadius: "32px",
+                      }}
+                    >
+                      Approved
+                    </button>
+                  </div>
+                  <div
+                    className="Detail_Card"
+                    style={{ width: "48%", height: "300px", gap: "10px" }}
+                  >
+                    <ThreeDViewer url={cardDatas[0]?.file_3d} />
+                    <span>
+                      POSTED ON:
+                      <b> {formatDate(cardDatas[0]?.created_at)} </b>
+                    </span>
+                    <button
+                      className="Download_btn_hub"
+                      onClick={() =>
+                        handleDownload(cardDatas[0]?.file_3d, "model_3d.3dm")
+                      }
+                      style={{ background: "#126E72" }}
+                    >
+                      DOWNLOAD
+                      <GoDownload />
+                    </button>
+                    <button
+                      style={{
+                        padding: "13px 6px ",
+                        color: "#23A064",
+                        border: "1px solid #23A064",
+                        background: "#23A0641A",
+                        width: "auto",
+                        borderRadius: "32px",
+                      }}
+                    >
+                      Approved
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
           <div className="right_Assignment_View">
             {/* <div
@@ -156,7 +318,10 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
               <div className="Assignment_Details">
                 <div className="A1_text">
                   <p>Product Id</p>
-                  <p>{itemDetails?.paper_design?.designcode || detailsViewFolderName}</p>
+                  <p>
+                    {itemDetails?.paper_design?.designcode ||
+                      detailsViewFolderName}
+                  </p>
                 </div>
                 <div className="A1_text">
                   <p>Category</p>
@@ -255,7 +420,130 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
             </div>
           </div>
         </div>
+
+{page === "CADdetail" && (
+        <div
+          className=""
+          handleopenModalRender
+          style={{
+            width: "100%",
+            display: "flex",
+            gap: "6px",
+            // flexWrap: "wrap",
+            flexDirection: "column",
+            height: "auto",
+          }}
+        >
+          <div
+            className=""
+            style={{
+              width: "57%",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "end",
+              fontSize: "18px",
+            }}
+          >
+            <h4>Render Output file</h4>
+            <button
+              style={{
+                padding: "10px 16px 10px 16px",
+                background: "#0464D5",
+                color: "white",
+                borderRadius: "30px",
+                border: "none",
+                outline: "none",
+                fontSize: "16px",
+                fontWeight: "600",
+                cursor: "pointer",
+              }}
+              onClick={handleopenModalRender}
+            >
+              Add instraction
+            </button>
+          </div>
+
+          <div
+            className=""
+            style={{
+              width: "100%",
+              display: "flex",
+              gap: "6px",
+              flexWrap: "wrap",
+              // flexDirection:"column",
+              height: "auto",
+              paddingBottom: "10px",
+            }}
+          >
+            <div
+              className="finishedCardContainer2"
+              // key={index}
+            >
+              <img
+                src={itemDetails?.paper_design?.image || itemDetails?.image}
+                alt="card_image"
+              />
+              <span className="postedOn">
+                POSTED ON:{" "}
+                <span className="postedOn_data">
+                  20-06-2024
+                  {/* {createdAt} */}
+                </span>
+              </span>
+              {/* <select name="" id=""
+                   style={{
+                    padding: "6px 6px 6px 2px",
+                    color: "#23A064",
+                    border: "1px solid #23A064",
+                    background: "#23A0641A",
+                    width: "auto",
+                    borderRadius: "32px",
+                    outline:"none"
+                  }}
+                  >
+                    <option value="">Pending</option>
+                    <option value="">Accepted</option>
+                    <option value="">Rejected</option>
+                  </select> */}
+              <Select
+                defaultValue="lucy"
+                style={{
+                  width: 120,
+                  padding: "6px 6px 6px 2px",
+                  color: "#23A064",
+                  border: "1px solid #23A064",
+                  background: "#23A0641A",
+                  borderRadius: "32px"
+                }}
+                onChange={handleChange}
+                options={[
+                  {
+                    value: "jack",
+                    label: "Jack",
+                  },
+                  {
+                    value: "lucy",
+                    label: "Lucy",
+                  },
+                  {
+                    value: "Yiminghe",
+                    label: "Yiminghe",
+                  },
+                  {
+                    value: "disabled",
+                    label: "Disabled",
+                    disabled: true,
+                  },
+                ]}
+              />
+            </div>
+          </div>
+        </div>
+         )}
       </div>
+   
+
+
       {/* <BasicDetailModal
         name={"editbasicDetails"}
         open={open}
@@ -273,6 +561,14 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
           )
         }
       /> */}
+
+      {openModal && (
+        <InstructionModal
+          open={handleopenModal}
+          setOpenmodal={setOpenmodal}
+          modalHeading={modalHeading}
+        />
+      )}
     </div>
   );
 };

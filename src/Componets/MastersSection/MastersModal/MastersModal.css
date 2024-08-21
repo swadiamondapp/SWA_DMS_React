@@ -141,3 +141,27 @@ cursor: pointer;
   border-radius: 10px;
   /* height: 90%; */
 }
+
+
+.inp2_admin {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.inp2_admin label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #19242d8f;
+}
+.inp2_admin textarea {
+  width: 100%;
+  padding: 10px 10px;
+  border: 1px solid #e0e1e1;
+  border-radius: 8px;
+  outline: none;
+  height: 160px;
+  resize: none;
+  background: none;
+  font-size: 14px;
+}

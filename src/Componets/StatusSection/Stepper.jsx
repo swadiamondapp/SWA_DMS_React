@@ -353,7 +353,7 @@ const Stepper = ({ code }) => {
                     {step.id === 7 && dropdownVisible && (
                       <div
                         className="dropdown-container"
-                        style={{ marginTop: "40px" }}
+                        style={{ marginTop: "70px",marginLeft:"10px" }}
                       >
                         {cHdata?.map((sub, index) => {
                           const chStatusHistory =
@@ -469,7 +469,7 @@ const Stepper = ({ code }) => {
                     {step.id === 10 && dropdownVisible2 && (
                       <div
                         className="dropdown-container"
-                        style={{ marginTop: "40px" }}
+                        style={{ marginTop: "70px" }}
                       >
                         {wHdata?.map((sub, index) => {
                           const warehouseStatusHistory =
@@ -595,7 +595,7 @@ const Stepper = ({ code }) => {
                         <div
                           className="dropdown-container"
                           style={{
-                            marginTop: "40px",
+                            marginTop: "70px",
                             height: "50px",
                             width: "210px",
                           }}

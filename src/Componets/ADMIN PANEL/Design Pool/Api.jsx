@@ -11,7 +11,9 @@ import {
   DESIGNPOOL_SEARCHBY_ID,
   UPDATE_DESIGNPOOL_IMAGE,
   DELETE_ITEM_FROM_DESIGNPOOL,
+  DELETE_TRASFER_DATA,
 } from "../../../Pages/Services/EndPoints";
+import { centralTransfer } from "../../../Pages/CENTRAL HUB/Api";
 
 export const all_Designs = async (setIsLoading, setData) => {
   try {

@@ -12,6 +12,10 @@ import { GoDownload } from "react-icons/go";
 const RendersDetailPage = ({ folderDetails, sidebarExpanded }) => {
   const navigate = useNavigate();
   console.log("folderDetails", folderDetails);
+  const location = useLocation()
+  const { page } = location.state || {};
+
+  console.log("page",page)
 
   const printRef = useRef();
 
@@ -47,12 +51,12 @@ const RendersDetailPage = ({ folderDetails, sidebarExpanded }) => {
         const blobUrl = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = blobUrl;
-link.download = fileName;
+        link.download = fileName;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
       })
-.catch((error) => console.error("Error downloading the file:", error));
+      .catch((error) => console.error("Error downloading the file:", error));
   };
 
   const handleOpenModal = () => {
@@ -74,7 +78,9 @@ link.download = fileName;
     navigate(`/assignmentviewsAll/${id}`, {
       state: {
         detailsViewFolderName: designCode,
-renderMessage: true,
+        renderMessage: true,
+        cardDatas: folderDetails,
+        page: page,
       },
     });
     console.log(designCode, "renderDesignCode");
@@ -88,7 +94,7 @@ renderMessage: true,
           key={item.id}
           style={{ marginLeft: sidebarExpanded ? "218px" : "120px" }}
         >
-<div className="Detail_Card">
+          <div className="Detail_Card">
             <img
               src={item.file_2d}
               alt=""
