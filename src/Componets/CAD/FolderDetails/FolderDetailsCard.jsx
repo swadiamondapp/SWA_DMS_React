@@ -1,8 +1,8 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import "./FolderDetails.css";
 import { LiaCloudUploadAltSolid } from "react-icons/lia";
 import { GoDownload } from "react-icons/go";
-import { IoPrintOutline } from "react-icons/io5";
+import { IoEye, IoPrintOutline } from "react-icons/io5";
 import CadPrint from "./CadPrint";
 import ReactToPrint, { useReactToPrint } from "react-to-print";
 import { LuPrinter } from "react-icons/lu";
@@ -10,6 +10,7 @@ import axios from "axios";
 import fileDownload from "js-file-download";
 import { CircularProgress } from "@mui/material";
 import ThreeDViewer from "../../ThreeDViewer/ThreeDViewer";
+import InstructionModal from "../../InstructionModal/InstructionModal";
 
 const FolderDetailsCard = ({
   folderDetails,
@@ -19,6 +20,15 @@ const FolderDetailsCard = ({
   isLoading,
 }) => {
   const printRef = useRef();
+  const [openModal, setOpenmodal] = useState(false);
+  const [modalHeading, setmodalHeading] = useState("");
+  const [modalTitle, setmodalTitle] = useState("");
+
+  const handleopenModal = () => {
+    setOpenmodal(!openModal);
+    setmodalHeading("cad Instractions");
+    setmodalTitle("instraction")
+  };
 
   const handlePrint = useReactToPrint({
     content: printRef.current,
@@ -77,25 +87,55 @@ const FolderDetailsCard = ({
       className="ParentCad"
       style={{ paddingLeft: sidebarExpanded ? "225px" : "130px" }}
     >
-      <div className="Design_FileUpload">
-        <div>
-          <p className="D__fileUpload">Reupload</p>
-          <p className="D__fileUpload2">
-            Once any changes needed in the file you can reupload the file
-          </p>
+      <div
+        className=""
+        style={{
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "end",
+          gap: "10px",
+        }}
+      >
+        <div className="Design_FileUpload" style={{width:"100%"}}>
+          <div>
+            <p className="D__fileUpload">Reupload</p>
+            <p className="D__fileUpload2">
+              Once any changes needed in the file you can reupload the file
+            </p>
+          </div>
+          <div className="File____uploadbtn">
+            <button onClick={handleOpenModal}>
+              Re Upload File{" "}
+              <LiaCloudUploadAltSolid style={{ fontSize: "22px" }} />
+            </button>
+          </div>
+          <input
+            id="fileInput"
+            type="file"
+            accept="image/*"
+            style={{ display: "none" }}
+          />
         </div>
-        <div className="File____uploadbtn">
-          <button onClick={handleOpenModal}>
-            Re Upload File{" "}
-            <LiaCloudUploadAltSolid style={{ fontSize: "22px" }} />
-          </button>
-        </div>
-        <input
-          id="fileInput"
-          type="file"
-          accept="image/*"
-          style={{ display: "none" }}
-        />
+        <button
+          style={{
+            display: "flex",
+            gap: "8px",
+            alignItems: "center",
+            background: "black",
+            color: "white",
+            border: "none",
+            fontSize: "14px",
+            fontWeight: "600",
+            justifyContent: "center",
+            padding: "6px",
+            borderRadius: "4px",
+          }}
+          onClick={handleopenModal}
+        >
+          View Instraction{" "}
+          <IoEye style={{ color: "white", fontSize: "20px" }} />
+        </button>
       </div>
 
       {folderDetails?.length === 0 && (
@@ -121,7 +161,7 @@ const FolderDetailsCard = ({
       <div className="parentCentral" style={{ paddingLeft: "0px" }}>
         <div className="CadAssignmentCard">
           <div className="Card_Design_Parent">
-            <div className="New_Design_card">
+            <div className="New_Design_card" style={{ width: "280px" }}>
               <div className="Card_Details">
                 <div
                   className="Card_img"
@@ -143,10 +183,29 @@ const FolderDetailsCard = ({
                     DOWNLOAD
                     <GoDownload />
                   </button>
+
+                  <select
+                    name=""
+                    id=""
+                    style={{
+                      padding: "6px 6px 6px 6px",
+                      color: "#23A064",
+                      border: "1px solid #23A064",
+                      background: "#23A0641A",
+                      width: "auto",
+                      borderRadius: "32px",
+                      outline: "none",
+                      marginTop: "13px",
+                    }}
+                  >
+                    <option value="">Pending</option>
+                    <option value="">Accepted</option>
+                    <option value="">Rejected</option>
+                  </select>
                 </div>
               </div>
             </div>
-            <div className="New_Design_card">
+            <div className="New_Design_card" style={{ width: "280px" }}>
               <div className="Card_Details">
                 <div
                   className="Card_img"
@@ -164,28 +223,46 @@ const FolderDetailsCard = ({
                   </p>
                   <button
                     className="Download_btn_hub"
+                    style={{ background: "#126E72" }}
                     onClick={() => handleDownload(folderDetails?.file_3d, "3d")}
                   >
                     DOWNLOAD
                     <GoDownload />
                   </button>
-                  {/* <ReactToPrint
-                    trigger={() => (
-                      <div className="Prinit_btn_hub" onClick={handlePrint}>
-                        <LuPrinter /> Print
-                      </div>
-                    )}
-                    content={() => printRef.current}
-                  />{" "}
-                  <div style={{ display: "none" }}>
-                    <CadPrint ref={printRef} folderDetails={folderDetails} />
-                  </div> */}
+                  <select
+                    name=""
+                    id=""
+                    style={{
+                      padding: "6px 6px 6px 6px",
+                      color: "#23A064",
+                      border: "1px solid #23A064",
+                      background: "#23A0641A",
+                      width: "auto",
+                      borderRadius: "32px",
+                      outline: "none",
+                      marginTop: "13px",
+                    }}
+                  >
+                    <option value="">Pending</option>
+                    <option value="">Accepted</option>
+                    <option value="">Rejected</option>
+                  </select>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+
+      {openModal && (
+          <InstructionModal
+            open={handleopenModal}
+            setOpenmodal={setOpenmodal}
+            modalHeading={modalHeading}
+            modalTitle={modalTitle}
+          />
+        )}
     </div>
   );
 };

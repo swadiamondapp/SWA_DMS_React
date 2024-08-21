@@ -196,5 +196,5 @@ export const DESIGNER_CATEGORY_FILTER = "designer/folder-detail/"
 export const DESIGNER_TAG_BASED_FILTER = "designer/folder-detail/526/?tag_ids=54"
 export const DESIGNER_DATE_RANGE_FILTER = "designer/folder-detail/"
 export const REDNERS_DETAILS_VIEW = "cad/folderItem/basicdata/"
-
+export const DELETE_TRASFER_DATA = "transfer/delete/"
 
