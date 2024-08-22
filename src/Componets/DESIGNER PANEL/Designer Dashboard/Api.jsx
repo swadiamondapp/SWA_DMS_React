@@ -72,7 +72,10 @@ export const upload_multiple_designs_items = async (
   upDateUploadImagesView,
   setSuccessModalOpen,
   setSuccessMessage,
-  handleclose
+  handleclose,
+  formDataId,
+  setErrors,
+  setFormData
 ) => {
   try {
     setIsLoading(true);
@@ -81,6 +84,8 @@ export const upload_multiple_designs_items = async (
       formData.append(`image${index + 1}`, file.originFileObj);
       console.log(file.originFileObj, "uploaedImageweew");
     });
+    formData.append('tag', formDataId.tag);
+    formData.append('product_type', formDataId.productCategory);
     const body = formData;
     console.log(body, "body==>Upload");
     const response = await apiService.post(UPLOAD_MULTIPLE_IMAGES, body);
@@ -94,6 +99,11 @@ export const upload_multiple_designs_items = async (
         setSuccessModalOpen(false);
       }, 1600);
       handleclose();
+      setErrors({})
+      setFormData({
+        productCategory: "",
+        tag: [],
+      })
     }
     return res;
   } catch (error) {
