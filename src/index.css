@@ -94,3 +94,13 @@ input[type="number"]::-webkit-inner-spin-button {
 .css-13xfq8m-MuiTabPanel-root{
   padding: 0px !important;
 }
+
+
+:where(.css-dev-only-do-not-override-1c0na6j).ant-select-outlined:not(.ant-select-customize-input) .ant-select-selector {
+border: none;
+background:none;
+}
+.ant-select-focused:where(.css-dev-only-do-not-override-1c0na6j).ant-select-outlined:not(.ant-select-disabled):not(.ant-select-customize-input):not(.ant-pagination-size-changer) .ant-select-selector {
+  border-color: none;
+  box-shadow: none;
+}

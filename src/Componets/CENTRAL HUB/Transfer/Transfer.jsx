@@ -7,6 +7,7 @@ import SlotView from "../../SlotVIew/SlotView";
 import {
   centralTransfer,
   changeCentralHubStatus,
+  deleteTrasferItem,
   listCentralHubStatus,
   list_slot_central_hub,
   scanSloteTransfer,
@@ -24,7 +25,7 @@ import bluesearch from "../../../assets/bluesearch.png";
 import SuccessModal from "../../SuccessModal/SuccessModal";
 import { CircularProgress } from "@mui/material";
 import dlt from "../../../assets/deleticon.png";
-
+import DeleteConfirmationModal from "../../ConfirmationModal/DeleteConfirmationModal";
 
 const Transfer = ({ sidebarExpanded }) => {
   const [showEditDelete, setShowEditDelete] = useState(null);
@@ -44,6 +45,8 @@ const Transfer = ({ sidebarExpanded }) => {
   const [CentralHubStatus, setCentralHubStatus] = useState([]);
   const [error, setError] = useState("");
   const [transferStatus, setTransferStatus] = useState("Created");
+  const [DeleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
+  const [dltId,setDltId] = useState("")
 
   const handlePrintSlotModalClose = () => {
     setPrintSlotModalOpen(false);
@@ -156,6 +159,15 @@ const Transfer = ({ sidebarExpanded }) => {
     }
   };
 
+  const handleDeleteClose = () => {
+    setDeleteConfirmationOpen(false);
+    // setSelectedIdsForDelet([]);
+  };
+  const handleDeleteOpen = (Id) => {
+    setDeleteConfirmationOpen(true);
+    setDltId(Id)
+  };
+
   console.log(CentralHubStatus, "CentralHubStatus");
   return (
     <div
@@ -254,7 +266,11 @@ const Transfer = ({ sidebarExpanded }) => {
             </thead>
             <tbody>
               {TransferData?.map((item, index) => (
-                <tr key={index} style={{ color: "#2E364C" }} className="table_row">
+                <tr
+                  key={index}
+                  style={{ color: "#2E364C" }}
+                  className="table_row"
+                >
                   <td className="serialNumber_cell">{index + 1}</td>
                   <td style={{ width: "25%" }}>
                     {formatDate(item.created_at)}
@@ -303,8 +319,8 @@ const Transfer = ({ sidebarExpanded }) => {
                               color: "white",
                               background: "#0464D5",
                               padding: "6px 10px",
-                              fontWeight:700,
-                              borderRadius:"26px"
+                              fontWeight: 700,
+                              borderRadius: "26px",
                             }}
                           >
                             {item.status}
@@ -325,10 +341,18 @@ const Transfer = ({ sidebarExpanded }) => {
                       </div>
                     </div>
                   </td>
-                  <td >
-                    <div className="DOTSBTNS"  style={{display:"flex",alignItems:"center",justifyContent:"center",width:"100px"}}>
+                  <td>
+                    <div
+                      className="DOTSBTNS"
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        width: "100px",
+                      }}
+                    >
                       <img
-                        // onClick={() => handleDeleteOpen(item.id)}
+                        onClick={() => handleDeleteOpen(item.id)}
                         style={{ width: "16px", height: "20px" }}
                         src={dlt}
                         alt="Delete"
@@ -454,6 +478,25 @@ const Transfer = ({ sidebarExpanded }) => {
         userId={userId}
         slotView={slotView}
       />
+
+      <DeleteConfirmationModal
+        DeleteConfirmationOpen={DeleteConfirmationOpen}
+        handleDeleteClose={handleDeleteClose}
+        setDeleteConfirmationOpen={setDeleteConfirmationOpen}
+        handleDeleteOpen={handleDeleteOpen}
+        isLoading={isLoading}
+        deleteFunction={() => {
+          deleteTrasferItem(
+            setIsLoading,
+            setSuccessModalOpen,
+            setSuccessMessage,
+            setDeleteConfirmationOpen,
+            dltId,
+            setTransferData
+          );
+        }}
+      />
+
       <SuccessModal
         successModalOpen={successModalOpen}
         successMessage={successMessage}

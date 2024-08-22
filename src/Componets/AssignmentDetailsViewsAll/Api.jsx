@@ -21,11 +21,9 @@ export const detailsViewOfItemsRenders = async (
   setFolderDetailsView,
   id
 ) => {
-
   try {
     const response = await apiService.get(`${REDNERS_DETAILS_VIEW}${id}`);
     if (checkApiStatus(response)) {
-      debugger
       setFolderDetailsView(response.data.results);
     }
   } catch (error) {
