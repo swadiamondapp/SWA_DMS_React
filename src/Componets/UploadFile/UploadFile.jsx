@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./UploadFile.css";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import closeButton from "../../assets/closeButton.svg";
@@ -28,38 +27,62 @@ const UploadFile = ({
   createFinsishedProjects,
   setSuccess,
   setFinishedProjectData,
-  pid
+  pid,
+  fid,
+  setFolderItem,
+  Images
 }) => {
   const initialImageSlots = 6;
   const [isLoading, setIsLoading] = useState(false);
   const [images, setImages] = useState(Array(initialImageSlots).fill(null));
   const [file, setFile] = useState(null);
-  const [id, setId] = useState( pid ? pid : "");
+  const [id, setId] = useState(pid || "");
   const [errors, setErrors] = useState("");
+
+  useEffect(() => {
+    if (Images && Array.isArray(Images)) {
+      const updatedImages = Array(initialImageSlots).fill(null);
+
+      Images.forEach((imageObj) => {
+        Object.keys(imageObj).forEach((key) => {
+          if (key.startsWith('img')) {
+            const index = parseInt(key.replace('img', '')) - 1; // img1 -> 0, img2 -> 1, ...
+            if (index >= 0 && index < initialImageSlots) {
+              updatedImages[index] = imageObj[key] || null;
+            }
+          }
+        });
+      });
+
+      setImages(updatedImages);
+    }
+  }, [Images]);
 
   const handleImageUpload = (index, event) => {
     const newImages = [...images];
     newImages[index] = event.target.files[0];
     setImages(newImages);
 
-    if (
-      index === newImages.length - 1 &&
-      newImages.every((image) => image !== null)
-    ) {
+    // Reset the file input to allow re-upload of the same file
+    event.target.value = null;
+
+    // Add extra slot if needed
+    if (index === newImages.length - 1 && newImages.every((image) => image !== null)) {
       setImages([...newImages, null]);
     }
   };
 
   const handleFileUpload = (event) => {
     setFile(event.target.files[0]);
+    event.target.value = null; // Reset the file input
   };
 
-  const handleclose = () => {
+  const handleClose = () => {
     onClose();
     setImages(Array(initialImageSlots).fill(null));
     setId("");
     setErrors("");
-    setFile(null)
+    setFile(null);
   };
 
   const handleUpload = () => {
@@ -87,14 +110,13 @@ const UploadFile = ({
       setIsLoading,
       formData,
       setSuccess,
-      handleclose,
+      handleClose,
       setFinishedProjectData,
-      setErrors
+      setErrors,
+      fid,
+      setFolderItem
     );
   };
-
-  console.log(" errors____", errors);
-  console.log("file images", images);
 
   return (
     <div>
@@ -121,7 +143,7 @@ const UploadFile = ({
                     Upload file
                   </span>
                   <button
-                    onClick={handleclose}
+                    onClick={handleClose}
                     style={{ background: "#FAFAFA", border: "none" }}
                   >
                     <img src={closeButton} alt="close" />
@@ -130,9 +152,8 @@ const UploadFile = ({
               </Typography>
 
               <Typography id="modal-modal-description" sx={{ mx: 2, my: 2 }}>
-                <div className="uploadContiner">
-                  <div className="uploadImageContainerr"></div>
-                  <div className="inputContainer">
+                <div className="uploadContainer">
+                <div className="inputContainer">
                     <label htmlFor="" className="labelText">
                       ID
                     </label>
@@ -145,16 +166,24 @@ const UploadFile = ({
                   </div>
                   <div className="uploadPNG_Container">
                     <div className="addButton_Container">
-                      <span className="title_1">Upload PNG / JPEG file </span>
+                      <span className="title_1">Upload PNG / JPEG file</span>
                       <div className="dashed_imageContainer">
                         {images.map((image, index) => (
                           <div key={index} className="dashedImage">
-                            {image && (
+                            {image && image instanceof File ? (
                               <img
                                 src={URL.createObjectURL(image)}
-                                alt=""
+                                alt={`Uploaded preview ${index}`}
                                 style={{ height: "64px", width: "64px" }}
                               />
+                            ) : (
+                              image && (
+                                <img
+                                  src={image}
+                                  alt={`Existing image ${index}`}
+                                  style={{ height: "64px", width: "64px" }}
+                                />
+                              )
                             )}
                             <div style={{ position: "absolute" }}>
                               <label>
@@ -171,49 +200,15 @@ const UploadFile = ({
                         ))}
                       </div>
                     </div>
-                    {/* <div className="addButton_Container">
-                      <span className="title_1">Upload 2.DM File </span>
-                      <div className="dashed_imageContainer">
-                        <div className="dashedImage">
-                          {file && (
-                            <img
-                              src={URL.createObjectURL(file)}
-                              alt=""
-                              style={{
-                                height: "64px",
-                                width: "64px",
-                                position: "relative",
-                              }}
-                            />
-                          )}
-                          <label>
-                            <img
-                              src={plusICon}
-                              alt="add"
-                              style={{
-                                position: "absolute",
-                                zIndex: "999",
-                                top: "30%",
-                                left: "30%",
-                              }}
-                            />
-                            <input
-                              type="file"
-                              accept="image/png, image/jpeg"
-                              style={{ display: "none" }}
-                              onChange={handleFileUpload}
-                            />
-                          </label>
-                        </div>
-                      </div>
-                    </div> */}
                   </div>
-                  <div className="upload_DMFile"></div>
+
+
+
                   {errors && (
                     <p style={{ color: "red", fontSize: "11px" }}>{errors}</p>
                   )}
-                  <div className="buttons">
-                    <button className="cancelButton" onClick={handleclose}>
+                  <div className="buttons" style={{marginTop:"10px"}}>
+                    <button className="cancelButton" onClick={handleClose}>
                       Cancel
                     </button>
                     <button className="upButton" onClick={handleUpload}>

@@ -5,6 +5,7 @@ import {
 import { setToLocalstorage } from "../../../Pages/Utils/Common";
 import {
   DESIGNER_CATEGORY_FILTER,
+  DESIGNER_DASHBOARD_FILTER,
   LIST_ALL_CAD_DESIGNERS,
   LIST_ALL_USER,
   LIST_UPLOAD_DESIGN,
@@ -155,7 +156,7 @@ export const designerFilterBasedDate = async (
   }
 };
 
-export const designerFilter = async (
+export const  designerFilter = async (
   setIsLoading,
   id,
   formData,
@@ -167,6 +168,33 @@ export const designerFilter = async (
   try {
     setIsLoading(true);
     let apiUrl = `${DESIGNER_CATEGORY_FILTER}${id}?category_ids=${
+      formData.productCategory
+    }&date_from=${startDate ? startDate : ""}&date_to=${
+      endDate ? endDate : ""
+    }&tags=${ formData.tag ? formData.tag : "" }`;
+    const response = await apiService.get(apiUrl);
+    if (response.data.results.status_code === 200) {
+      setFolderDetails(response.data.results.data);
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+export const designerDashboradFilter = async (
+  setIsLoading,
+  id,
+  formData,
+  setFolderDetails,
+  startDate,
+  endDate,
+  setFilteredData
+) => {
+  try {
+    setIsLoading(true);
+    let apiUrl = `${DESIGNER_DASHBOARD_FILTER}?category_type=${
       formData.productCategory
     }&date_from=${startDate ? startDate : ""}&date_to=${
       endDate ? endDate : ""

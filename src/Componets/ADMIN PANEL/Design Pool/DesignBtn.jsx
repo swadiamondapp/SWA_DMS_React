@@ -359,7 +359,7 @@ const DesignBtn = ({
             </button>
           )}
           {location.pathname === `/designdashboard` && (
-            <button className="D_View_Sort_Filter" >
+            <button className="D_View_Sort_Filter"   onClick={handleFilderModal} >
               <RiFilter3Line /> Filter
             </button>
           )}

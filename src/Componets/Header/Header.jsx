@@ -96,9 +96,10 @@ const Header = ({
               >
                 <h3>ID : {basicDetails?.design_code}</h3>
                 <span
+                style={{padding:"5px 10px"}}
                   className={
                     basicDetails.timer_status === "Completed"
-                      ? "completed"
+                      ? "completed1"
                       : basicDetails.timer_status === "on-going"
                       ? "ongoing"
                       : "notstarted"
@@ -386,3 +387,4 @@ const Header = ({
 };
 
 export default Header;
+

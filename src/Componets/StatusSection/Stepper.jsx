@@ -70,6 +70,13 @@ const Stepper = ({ code }) => {
     { id: 11, title: "Work done", text: "Workdone" },
   ];
 
+  const cadstatus = [
+    { id: 1, title: "Pending" },
+    { id: 2, title: "Rejected" },
+    { id: 3, title: "Approved" },
+   
+  ];
+
   const status = steppretDta?.Tracking_data?.status_message || "";
 
   const status2 =
@@ -592,7 +599,7 @@ const Stepper = ({ code }) => {
                     )}
                     {step.id === 5 && dropdownVisible3 && (
                       <>
-                        <div
+                        {/* <div
                           className="dropdown-container"
                           style={{
                             marginTop: "70px",
@@ -644,7 +651,130 @@ const Stepper = ({ code }) => {
                               </div>
                             </div>
                           </div>
-                        </div>
+                        </div> */}
+
+                        <div
+                        className="dropdown-container"
+                        style={{ marginTop: "70px" }}
+                      >
+                        {cadstatus?.map((sub, index) => {
+                          // const warehouseStatusHistory =
+                          //   Array.isArray(
+                          //     steppretDta?.Tracking_data?.status_details
+                          //       ?.warehouse_status_history
+                          //   ) &&
+                          //   steppretDta?.Tracking_data?.status_details
+                          //     ?.warehouse_status_history.length > 0
+                          //     ? steppretDta.Tracking_data.status_details
+                          //         .warehouse_status_history[0]
+                          //     : {};
+
+                          // const matchedStatus =
+                          //   warehouseStatusHistory?.previous_status?.find(
+                          //     (status) => status.status === sub.name
+                          //   );
+
+                          // const isCurrentStatus =
+                          //   warehouseStatusHistory?.current_status === sub.name;
+
+                          // const WHDate = isCurrentStatus
+                          //   ? new Date(
+                          //       warehouseStatusHistory?.updated_at
+                          //     ).toLocaleDateString("en-US", {
+                          //       weekday: "long",
+                          //       day: "numeric",
+                          //       month: "long",
+                          //       // year: 'numeric',
+                          //     })
+                          //   : matchedStatus
+                          //   ? new Date(
+                          //       matchedStatus.changed_at
+                          //     ).toLocaleDateString("en-US", {
+                          //       weekday: "long",
+                          //       day: "numeric",
+                          //       month: "long",
+                          //       // year: 'numeric',
+                          //     })
+                          //   : null;
+
+                          // const WHTime = isCurrentStatus
+                          //   ? new Date(
+                          //       warehouseStatusHistory?.updated_at
+                          //     ).toLocaleTimeString()
+                          //   : matchedStatus
+                          //   ? new Date(
+                          //       matchedStatus.changed_at
+                          //     ).toLocaleTimeString()
+                          //   : null;
+
+                          const Active =
+                            wHdata.findIndex((s) => s.name === warehouse) >=
+                            index;
+
+                          return (
+                            <div className="vertical-stepper" key={index}>
+                              <React.Fragment>
+                                <div className="vertical-step">
+                                  {Active ? (
+                                    <span
+                                      className={`vertical-step-number ${
+                                        Active ? "vertical-step-complete" : ""
+                                      } `}
+                                      style={{ color: Active ? "white" : "" }}
+                                    >
+                                      &#10003;
+                                    </span>
+                                  ) : (
+                                    <span className="vertical-step-number">
+                                      &#10003;
+                                    </span>
+                                  )}
+
+                                  <div
+                                    className="step-heading"
+                                    style={{
+                                      display: "flex",
+                                      flexDirection: "column",
+                                      width: "150px",
+                                      // background:"green",
+                                      paddingLeft: "10px",
+                                    }}
+                                  >
+                                    <span
+                                      style={{
+                                        color: "black",
+                                        fontSize: "13px",
+                                      }}
+                                    >
+                                      {sub.title}
+                                    </span>
+                                    {/* {WHDate && (
+                                      <span
+                                        style={{
+                                          fontSize: "10px",
+                                          width: "auto",
+                                        }}
+                                      >
+                                        {WHDate} {WHTime}
+                                      </span>
+                                    )} */}
+                                  </div>
+                                </div>
+                                {index < cadstatus.length - 1 && (
+                                  <div
+                                    className="vertical-connector"
+                                    style={{
+                                      backgroundColor: Active
+                                        ? "#002427"
+                                        : "#ddd",
+                                    }}
+                                  />
+                                )}
+                              </React.Fragment>
+                            </div>
+                          );
+                        })}
+                      </div>
                       </>
                     )}
                   </div>

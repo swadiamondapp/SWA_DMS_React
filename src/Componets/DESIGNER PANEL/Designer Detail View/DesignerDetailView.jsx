@@ -16,7 +16,6 @@ const DesignerDetailView = (props) => {
  
   const [filteredDta,setFilteredData]= useState([])
   const [dd, setDd] = useState();
-
   const [openFilterModal, setOpenFilterModal] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -162,11 +161,11 @@ const DesignerDetailView = (props) => {
                   </div>
                   <div className="Card_Details">
                     <h3>ID : {item.paper_design.designcode}</h3>
-
                     <div className="Card_Details_Inner">
                       <div className="Inner_Left">
                         <p>{item.paper_design.designer_name}</p>
                         <p>{formatDate(item.paper_design.created_at)}</p>
+                        <p>Time Taken : {item.time_taken} </p>
                       </div>
                     </div>
                     <div
