@@ -43,12 +43,21 @@ const UploadFile = ({
     if (Images && Array.isArray(Images)) {
       const updatedImages = Array(initialImageSlots).fill(null);
 
+
       Images.forEach((imageObj) => {
-        Object.keys(imageObj).forEach((key) => {
+        Object.keys(imageObj).forEach(async (key) => {
           if (key.startsWith('img')) {
-            const index = parseInt(key.replace('img', '')) - 1; // img1 -> 0, img2 -> 1, ...
+            const index = parseInt(key.replace('img', '')) - 1;
             if (index >= 0 && index < initialImageSlots) {
-              updatedImages[index] = imageObj[key] || null;
+              if (imageObj[key]) {
+                // Convert existing URL to File
+                const response = await fetch(imageObj[key]);
+                const blob = await response.blob();
+                const file = new File([blob], `image${index + 1}.jpg`, { type: blob.type });
+                updatedImages[index] = file;
+              } else {
+                updatedImages[index] = null;
+              }
             }
           }
         });
@@ -56,7 +65,14 @@ const UploadFile = ({
 
       setImages(updatedImages);
     }
+    // const imageArray = Images.map(item => {
+    //   return Object.values(item).find(value => value && value.startsWith('http'));
+    // }).filter(Boolean); // Filter out null values
+    // setImages(imageArray);
   }, [Images]);
+
+  console.log("Images--->", images)
+
 
   const handleImageUpload = (index, event) => {
     const newImages = [...images];
@@ -168,21 +184,31 @@ const UploadFile = ({
                     <div className="addButton_Container">
                       <span className="title_1">Upload PNG / JPEG file</span>
                       <div className="dashed_imageContainer">
-                        {images.map((image, index) => (
-                          <div key={index} className="dashedImage">
+                        {images.map((image, index) => {
+                          // console.log("imagesjhbd------>", image)
+                          // console.log("imageurlObject------>", image && URL.createObjectURL(image))
+                          // console.log("images765", images)
+                          return (
+                            <div key={index} className="dashedImage">
                             {image && image instanceof File ? (
+                              <>
+                              {/* <p>Nithin</p> */}
                               <img
                                 src={URL.createObjectURL(image)}
                                 alt={`Uploaded preview ${index}`}
                                 style={{ height: "64px", width: "64px" }}
                               />
+                              </>
+                              
                             ) : (
                               image && (
+                                <>
+                                {/* <p>sayyan</p> */}
                                 <img
-                                  src={image}
+                                  src={URL.createObjectURL(image)}
                                   alt={`Existing image ${index}`}
                                   style={{ height: "64px", width: "64px" }}
-                                />
+                                /></>
                               )
                             )}
                             <div style={{ position: "absolute" }}>
@@ -197,12 +223,11 @@ const UploadFile = ({
                               </label>
                             </div>
                           </div>
-                        ))}
+                          )
+                        })}
                       </div>
                     </div>
                   </div>
-
-
 
                   {errors && (
                     <p style={{ color: "red", fontSize: "11px" }}>{errors}</p>

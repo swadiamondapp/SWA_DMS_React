@@ -33,6 +33,7 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
   const [openFilterModal, setOpenFilterModal] = useState(false);
   const [filteredDta, setFilteredData] = useState([]);
   const [dd, setDd] = useState();
+  const [hide, sethide] = useState(false);
 
   const navigate = useNavigate();
   const [grid, setGrid] = useState(true);
@@ -71,6 +72,7 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
   //     // await list_uploaded_designs(setIsLoading, setUploadedDesigns);
   //   }
   // };
+
 
   const handleFileUpload = (event) => {
     const files = Array.from(event.target.files); // Get the list of selected files
@@ -225,7 +227,7 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
                 }}
               >
                 <CircularProgress
-                  size={60}
+                  size={40}
                   sx={{
                     color: "#000000",
                     // padding: "8px 10px",
@@ -403,6 +405,7 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
             )}
           </div>
 
+    { !hide && (
           <div className="pagination">
             <Pagination
               count={Math.ceil(uploadedDesigns.length / 20)}
@@ -411,6 +414,7 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
               color="primary"
             />
           </div>
+          )}
         </div>
         <MultipleImageUpload
           open={multipleImageModalOpen}
@@ -437,6 +441,7 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
           setDd={setDd}
           dd={dd}
           page="designerDashboard"
+          sethide={sethide}
         />
       )}
     </div>

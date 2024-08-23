@@ -25,7 +25,8 @@ const DesignerFilterModal = ({
   setFilteredData,
   setDd,
   dd,
-  page
+  page,
+  sethide
 }) => {
   const { id } = useParams();
   const [filterTag, setFilterTag] = useState("");
@@ -62,6 +63,7 @@ const DesignerFilterModal = ({
     onClearCall()
     setOpenFilterModal(false)
     setDd(null)
+    sethide(false)
   };
 
 
@@ -108,7 +110,7 @@ const DesignerFilterModal = ({
 
 
   const handleFilterModal = () => {
-    page  ? (
+    page ? (
       designerDashboradFilter(
         setIsLoading,
         forlderId,
@@ -116,7 +118,9 @@ const DesignerFilterModal = ({
         setFolderDetails,
         startDate,
         endDate,
-        setFilteredData
+        setFilteredData,
+        setOpenFilterModal,
+        sethide
       )
     ) : (
       designerFilter(

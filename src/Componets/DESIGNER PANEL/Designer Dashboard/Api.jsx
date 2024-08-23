@@ -190,7 +190,9 @@ export const designerDashboradFilter = async (
   setFolderDetails,
   startDate,
   endDate,
-  setFilteredData
+  setFilteredData,
+  setOpenFilterModal,
+  sethide
 ) => {
   try {
     setIsLoading(true);
@@ -202,6 +204,8 @@ export const designerDashboradFilter = async (
     const response = await apiService.get(apiUrl);
     if (response.data.results.status_code === 200) {
       setFolderDetails(response.data.results.data);
+      setOpenFilterModal(false)
+      sethide(true)
     }
   } catch (error) {
     console.log(error);
