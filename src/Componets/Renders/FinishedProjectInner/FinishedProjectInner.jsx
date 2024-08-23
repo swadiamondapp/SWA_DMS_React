@@ -1,12 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./FinishedProjectInner.css";
 import ShareIcon from "../../../assets/shareIcon.png";
 import { LiaCloudUploadAltSolid } from "react-icons/lia";
 import UploadFile from "../../UploadFile/UploadFile";
-import { createFinsishedProjects } from "../../../Pages/Renders/Apis";
+import {
+  createFinsishedProjects,
+  finishedProjectList,
+  reuploadFinishedProject,
+} from "../../../Pages/Renders/Apis";
 import { useLocation } from "react-router-dom";
 import { IoEye } from "react-icons/io5";
 import InstructionModal from "../../InstructionModal/InstructionModal";
+import SuccessModal from "../../SuccessModal/SuccessModal";
 
 const FinishedProjectInner = (props) => {
   const location = useLocation();
@@ -15,12 +20,19 @@ const FinishedProjectInner = (props) => {
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
   const [openModal, setOpenmodal] = useState(false);
   const [modalHeading, setmodalHeading] = useState("");
-  const [modalTitle, setmodalTitle] = useState("")
+  const [modalTitle, setmodalTitle] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [finishedProjectData, setFinishedProjectData] = useState([]);
+  const [success, setSuccess] = useState(false);
+
+  useEffect(() => {
+    finishedProjectList(setFinishedProjectData, setIsLoading);
+  }, []);
 
   const handleopenModal = () => {
     setOpenmodal(!openModal);
     setmodalHeading("Add Render Instractions");
-    setmodalTitle("instraction")
+    setmodalTitle("instraction");
   };
 
   const handleOpenModal = () => {
@@ -28,6 +40,7 @@ const FinishedProjectInner = (props) => {
   };
 
   const productId = props?.folderItem[0]?.designcode;
+  const id = props?.id;
 
   return (
     <div
@@ -159,10 +172,21 @@ const FinishedProjectInner = (props) => {
           open={uploadModalOpen}
           setUploadModalOpen
           onClose={() => setUploadModalOpen(false)}
-          createFinsishedProjects={createFinsishedProjects}
+          createFinsishedProjects={reuploadFinishedProject}
+          setFinishedProjectData={setFinishedProjectData}
+          setSuccess={setSuccess}
           pid={productId}
+          fid={id}
+          setFolderItem={props?.setFolderItem}
+          Images={props?.folderItem[0]?.images}
         />
       )}
+
+      <SuccessModal
+        successModalOpen={success}
+        handleClose={() => setSuccess(false)}
+        successMessage={"Files uploaded succesfully"}
+      />
     </div>
   );
 };

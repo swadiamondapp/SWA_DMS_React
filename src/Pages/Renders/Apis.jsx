@@ -4,6 +4,7 @@ import {
   FOLDER_ITEM,
   CREATE_FINISHED_PROJECTS,
   RENDESR_ALL_FINISHED_PROJECTS,
+  RENDERS_REUPLOAD,
 } from "../Services/EndPoints";
 import { apiService, checkApiStatus } from "../Services/ApiInstants";
 
@@ -58,7 +59,7 @@ export const createFinsishedProjects = async (
     setIsLoading(true);
     const response = await apiService.post(CREATE_FINISHED_PROJECTS, data);
     if (checkApiStatus(response)) {
-      finishedProjectList(setFinishedProjectData);
+      finishedProjectList(setFinishedProjectData,setIsLoading);
       setSuccess(true);
       onClose();
       setTimeout(() => {
@@ -86,4 +87,37 @@ export const rendersAllFinishedProjectList = async (setData) => {
   } catch (error) {
     console.log(error);
   } 
+};
+
+export const reuploadFinishedProject = async (
+  setIsLoading,
+  data,
+  setSuccess,
+  onClose,
+  setFinishedProjectData,
+  setErrors,
+  fId,
+  setFolderItem
+) => {
+  try {
+    setIsLoading(true);
+    const response = await apiService.patch(`${RENDERS_REUPLOAD}${fId}`, data);
+    if (checkApiStatus(response)) {
+      setSuccess(true);
+      folderItemList(setIsLoading,setFolderItem,fId)
+      onClose();
+      setTimeout(() => {
+        setSuccess(false);
+      }, 1600);   
+  }  else if (
+    response.data
+  ) {
+    setErrors(response.data.name);
+  }
+}
+  catch (error) {
+    console.log(error);
+  } finally {
+    setIsLoading(false);
+  }
 };

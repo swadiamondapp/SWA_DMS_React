@@ -24,7 +24,6 @@ import AssignToModal from "../AssignToModal/AssignToModal";
 import CreateCustomisation from "../CreateCustomisation/CreateCustomisation";
 import ProductCustomisation from "../ProductCustomisation/ProductCustomisation";
 import CentalHub from "../CentalHub/CentalHub";
-import UploadFile from "../UploadFile/UploadFile";
 import { useLocation, Link } from "react-router-dom";
 import SlotView from "../SlotVIew/SlotView";
 import SlotCreation from "../SlotCreation/SlotCreation";

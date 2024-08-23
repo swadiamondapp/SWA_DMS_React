@@ -15,7 +15,9 @@ import {
 } from "./Api";
 import MultipleImageUpload from "../../MultipleImageUploadModal/MultipleImageUpload";
 import { useLocation, Link, useNavigate } from "react-router-dom";
+import DesignerFilterModal from "../../DesignerFilterModal/DesignerFilterModal";
 // import DesignerFilterModal from "../../DesignerFilterModal/DesignerFilterModal";
+
 const DesignerDashboard = ({ sidebarExpanded }) => {
   const [uploadInstructionsVisible, setUploadInstructionsVisible] =
     useState(true);
@@ -28,7 +30,10 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
   const [uploadImage, setUploadImage] = useState([]);
   const [previewImages, setPreviewImages] = useState([]);
   const [multipleImageModalOpen, setMultipleImageModalOpen] = useState(false);
-
+  const [openFilterModal, setOpenFilterModal] = useState(false);
+  const [filteredDta, setFilteredData] = useState([]);
+  const [dd, setDd] = useState();
+  const [hide, sethide] = useState(false);
 
   const navigate = useNavigate();
   const [grid, setGrid] = useState(true);
@@ -67,6 +72,7 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
   //     // await list_uploaded_designs(setIsLoading, setUploadedDesigns);
   //   }
   // };
+
 
   const handleFileUpload = (event) => {
     const files = Array.from(event.target.files); // Get the list of selected files
@@ -141,7 +147,7 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
             zIndex: "99",
             backgroundColor: "#F6F5F1",
             height: "160px",
-            paddingBottom:"10px"
+            paddingBottom: "10px",
           }}
         >
           <div className="Design_FileUpload" style={{ marginTop: "20px" }}>
@@ -195,7 +201,8 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
             grid={grid}
             detail={detail}
             tiles={tiles}
-      
+            openFilterModal={openFilterModal}
+            setOpenFilterModal={setOpenFilterModal}
           />
         </div>
 
@@ -203,6 +210,9 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
           <div className="DesignerDashboardcard">
             <h3 className="HeadNewdesign">Uploaded</h3>
 
+            {!isLoading && currentItems.length === 0 && (
+              <span>No Data Found</span>
+            )}
             {isLoading ? (
               <div
                 style={{
@@ -217,7 +227,7 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
                 }}
               >
                 <CircularProgress
-                  size={60}
+                  size={40}
                   sx={{
                     color: "#000000",
                     // padding: "8px 10px",
@@ -350,7 +360,10 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
                             {/* <LazyLoad height={900} offset={100}>
                              </LazyLoad> */}
                           </div>
-                          <div className="parent_border" style={{ width: "100%" }}></div>
+                          <div
+                            className="parent_border"
+                            style={{ width: "100%" }}
+                          ></div>
                           <div className="Card_Details_Designer_3">
                             <h3>ID : {item.designcode}</h3>
                             <div
@@ -391,6 +404,17 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
               </>
             )}
           </div>
+
+    { !hide && (
+          <div className="pagination">
+            <Pagination
+              count={Math.ceil(uploadedDesigns.length / 20)}
+              page={currentPage}
+              onChange={handlePageChange}
+              color="primary"
+            />
+          </div>
+          )}
         </div>
         <MultipleImageUpload
           open={multipleImageModalOpen}
@@ -405,15 +429,21 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
         />
       </div>
 
-
-      <div className="pagination">
-        <Pagination
-          count={Math.ceil(uploadedDesigns.length / 20)}
-          page={currentPage}
-          onChange={handlePageChange}
-          color="primary"
+      {openFilterModal && (
+        <DesignerFilterModal
+          open={openFilterModal}
+          onClose={() => setOpenFilterModal(false)}
+          setOpenFilterModal={setOpenFilterModal}
+          setFolderDetails={setCurrentItems}
+          onClearCall={() => fetchDesigns()}
+          // folderDetails={props.folderDetails}
+          setFilteredData={setFilteredData}
+          setDd={setDd}
+          dd={dd}
+          page="designerDashboard"
+          sethide={sethide}
         />
-      </div>
+      )}
     </div>
   );
 };

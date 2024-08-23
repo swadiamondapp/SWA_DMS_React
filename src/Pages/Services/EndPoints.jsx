@@ -198,3 +198,5 @@ export const DESIGNER_DATE_RANGE_FILTER = "designer/folder-detail/"
 export const REDNERS_DETAILS_VIEW = "cad/folderItem/basicdata/"
 export const DELETE_TRASFER_DATA = "transfer/delete/"
 
+export const RENDERS_REUPLOAD = "render/reupload/"
+export const DESIGNER_DASHBOARD_FILTER = "/upload-design/"

@@ -7,6 +7,7 @@ import { DatePicker, Select } from "antd";
 import { tag_table_data } from "../MastersSection/ApiMasters/ApiMasters";
 import { product_category_basicDetails, tag_List_basicDetails } from "../Assignment Panel/Api";
 import {
+  designerDashboradFilter,
   designerFilter,
   designerFilterBasedOnCategory,
 } from "../DESIGNER PANEL/Designer Dashboard/Api";
@@ -24,6 +25,8 @@ const DesignerFilterModal = ({
   setFilteredData,
   setDd,
   dd,
+  page,
+  sethide
 }) => {
   const { id } = useParams();
   const [filterTag, setFilterTag] = useState("");
@@ -60,6 +63,7 @@ const DesignerFilterModal = ({
     onClearCall()
     setOpenFilterModal(false)
     setDd(null)
+    sethide(false)
   };
 
 
@@ -75,7 +79,6 @@ const DesignerFilterModal = ({
   };
   
 
-  console.log(startDate, "sartssdfsd");
   useEffect(() => {
     AOS.init({
       duration: 500,
@@ -104,18 +107,33 @@ const DesignerFilterModal = ({
   const filterOption = (input, option) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
   filterTag;
-  //   console.log("filter", filter);
+
 
   const handleFilterModal = () => {
-    designerFilter(
-      setIsLoading,
-      forlderId,
-      formData,
-      setFolderDetails,
-      startDate,
-      endDate,
-      setFilteredData
-    );
+    page ? (
+      designerDashboradFilter(
+        setIsLoading,
+        forlderId,
+        formData,
+        setFolderDetails,
+        startDate,
+        endDate,
+        setFilteredData,
+        setOpenFilterModal,
+        sethide
+      )
+    ) : (
+      designerFilter(
+        setIsLoading,
+        forlderId,
+        formData,
+        setFolderDetails,
+        startDate,
+        endDate,
+        setFilteredData
+      )
+    )
+   
   };  
 
   return (
