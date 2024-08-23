@@ -23,7 +23,11 @@ import {
   metal_type_drop_down,
   product_type_drop_down,
 } from "../ADMIN PANEL/Api_dropDown";
-import { detailsViewOfItems, detailsViewOfItemsRenders } from "./Api";
+import {
+  detailsViewOfItems,
+  detailsViewOfItemsRenders,
+  rendersDetailByCode,
+} from "./Api";
 import { GoDownload } from "react-icons/go";
 import ThreeDViewer from "../ThreeDViewer/ThreeDViewer";
 import InstructionModal from "../InstructionModal/InstructionModal";
@@ -53,6 +57,7 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
   const [DetailsData, setDetailsData] = useState([]);
   const [openModal, setOpenmodal] = useState(false);
   const [modalHeading, setmodalHeading] = useState("");
+  const [rendesrDetail, setRendesrDetail] = useState([]);
 
   const handleopenModal = () => {
     setOpenmodal(!openModal);
@@ -74,9 +79,11 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
     // list_folderDetails(setIsLoading,setFolderDetails,id)
   }, [id, renderMessage]);
 
-  console.log(renderMessage, "renderMessage");
+  useEffect(() => {
+    rendersDetailByCode(setIsLoading, setRendesrDetail, detailsViewFolderName);
+  }, [id]);
 
-  console.log(cardDatas, "cardDatas");
+  console.log(renderMessage, "renderMessage");
 
   const handleDownload = (imageUrl, fileName = "downloaded_file") => {
     fetch(imageUrl, {
@@ -106,6 +113,10 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
     }
   }, [folderDetailView]);
   const { assignment_details, itemDetails } = folderDetails;
+
+  // const designCode = itemDetails?.paper_design?.designcode || detailsViewFolderName ;
+
+  console.log(rendesrDetail, "rendesrDetail");
 
   const handleEditBasicDetails = () => {
     setIsOpen(true);
@@ -181,7 +192,7 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
 
   //   console.log(selectedTags, "fghjkl");
   //   console.log(itemDetails, "itemDetails");
-  // console.log(FindingsList,"finsdfasfd")
+  console.log(rendesrDetail?.images, "rendesrDetail[0]?.images?");
   return (
     <div>
       <div
@@ -196,7 +207,7 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
                 alt=""
               />
             </div>
-            {page === "CADdetail"  && (
+            {page === "CADdetail" && (
               <div className="cad_uploaded_admin">
                 <div
                   className=""
@@ -421,128 +432,107 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
           </div>
         </div>
 
-{page === "CADdetail" && (
-        <div
-          className=""
-          handleopenModalRender
-          style={{
-            width: "100%",
-            display: "flex",
-            gap: "6px",
-            // flexWrap: "wrap",
-            flexDirection: "column",
-            height: "auto",
-          }}
-        >
+        {page === "CADdetail" && rendesrDetail && (
           <div
             className=""
-            style={{
-              width: "57%",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "end",
-              fontSize: "18px",
-            }}
-          >
-            <h4>Render Output file</h4>
-            <button
-              style={{
-                padding: "10px 16px 10px 16px",
-                background: "#0464D5",
-                color: "white",
-                borderRadius: "30px",
-                border: "none",
-                outline: "none",
-                fontSize: "16px",
-                fontWeight: "600",
-                cursor: "pointer",
-              }}
-              onClick={handleopenModalRender}
-            >
-              Add instraction
-            </button>
-          </div>
-
-          <div
-            className=""
+            handleopenModalRender
             style={{
               width: "100%",
               display: "flex",
               gap: "6px",
-              flexWrap: "wrap",
-              // flexDirection:"column",
+              // flexWrap: "wrap",
+              flexDirection: "column",
               height: "auto",
-              paddingBottom: "10px",
             }}
           >
             <div
-              className="finishedCardContainer2"
-              // key={index}
+              className=""
+              style={{
+                width: "57%",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "end",
+                fontSize: "18px",
+              }}
             >
-              <img
-                src={itemDetails?.paper_design?.image || itemDetails?.image}
-                alt="card_image"
-              />
-              <span className="postedOn">
-                POSTED ON:{" "}
-                <span className="postedOn_data">
-                  20-06-2024
-                  {/* {createdAt} */}
-                </span>
-              </span>
-              {/* <select name="" id=""
-                   style={{
-                    padding: "6px 6px 6px 2px",
-                    color: "#23A064",
-                    border: "1px solid #23A064",
-                    background: "#23A0641A",
-                    width: "auto",
-                    borderRadius: "32px",
-                    outline:"none"
-                  }}
-                  >
-                    <option value="">Pending</option>
-                    <option value="">Accepted</option>
-                    <option value="">Rejected</option>
-                  </select> */}
-              <Select
-                defaultValue="lucy"
+              <h4>Render Output file</h4>
+              <button
                 style={{
-                  width: 120,
-                  padding: "6px 6px 6px 2px",
-                  color: "#23A064",
-                  border: "1px solid #23A064",
-                  background: "#23A0641A",
-                  borderRadius: "32px"
+                  padding: "10px 16px 10px 16px",
+                  background: "#0464D5",
+                  color: "white",
+                  borderRadius: "30px",
+                  border: "none",
+                  outline: "none",
+                  fontSize: "16px",
+                  fontWeight: "600",
+                  cursor: "pointer",
                 }}
-                onChange={handleChange}
-                options={[
-                  {
-                    value: "jack",
-                    label: "Jack",
-                  },
-                  {
-                    value: "lucy",
-                    label: "Lucy",
-                  },
-                  {
-                    value: "Yiminghe",
-                    label: "Yiminghe",
-                  },
-                  {
-                    value: "disabled",
-                    label: "Disabled",
-                    disabled: true,
-                  },
-                ]}
-              />
+                onClick={handleopenModalRender}
+              >
+                Add instraction
+              </button>
+            </div>
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                gap: "6px",
+                flexWrap: "wrap",
+                height: "auto",
+                paddingBottom: "10px",
+              }}
+            >
+              {rendesrDetail &&
+                rendesrDetail?.images?.map((imgObj, index) => {
+                  const imageUrl = Object.values(imgObj)[0];
+                  const createdAt = imgObj.created_at;
+                  console.log("imgurl---->", imageUrl);
+                  if (imageUrl) {
+                    return (
+                      <div className="finishedCardContainer2">
+                        <img src={imageUrl} alt="card_image" />
+                        <span className="postedOn">
+                          POSTED ON:{" "}
+                          <span className="postedOn_data">
+                            {new Date(createdAt).toLocaleDateString("en-GB")}{" "}
+                            {/* Format date as needed */}
+                          </span>
+                        </span>
+                        <Select
+                          defaultValue="lucy"
+                          style={{
+                            width: 120,
+                            padding: "6px 6px 6px 2px",
+                            color: "#23A064",
+                            border: "1px solid #23A064",
+                            background: "#23A0641A",
+                            borderRadius: "32px",
+                          }}
+                          onChange={handleChange}
+                          options={[
+                            { value: "jack", label: "Jack" },
+                            { value: "lucy", label: "Lucy" },
+                            { value: "Yiminghe", label: "Yiminghe" },
+                            {
+                              value: "disabled",
+                              label: "Disabled",
+                              disabled: true,
+                            },
+                          ]}
+                        />
+                      </div>
+                    );
+                  }
+                })}
             </div>
           </div>
-        </div>
-         )}
-      </div>
-   
+        )}
 
+        {rendesrDetail.length === 0 && (
+          <span>No Renders uploaded Currespond to this Product</span>
+        )}
+      </div>
 
       {/* <BasicDetailModal
         name={"editbasicDetails"}

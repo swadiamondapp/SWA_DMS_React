@@ -4,6 +4,7 @@ import {
 } from "../../../Pages/Services/ApiInstants";
 import { setToLocalstorage } from "../../../Pages/Utils/Common";
 import {
+  DESIGNER_ASSIGNTO_FILTER,
   DESIGNER_CATEGORY_FILTER,
   DESIGNER_DASHBOARD_FILTER,
   LIST_ALL_CAD_DESIGNERS,
@@ -201,6 +202,36 @@ export const designerDashboradFilter = async (
     }&date_from=${startDate ? startDate : ""}&date_to=${
       endDate ? endDate : ""
     }&tags=${ formData.tag ? formData.tag : "" }`;
+    const response = await apiService.get(apiUrl);
+    if (response.data.results.status_code === 200) {
+      setFolderDetails(response.data.results.data);
+      setOpenFilterModal(false)
+      sethide(true)
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+
+export const designerAssignToFilter = async (
+  setIsLoading,
+  designCode,
+  setFolderDetails,
+  startDate,
+  endDate,
+) => {
+  debugger
+  try {
+    setIsLoading(true);
+    let apiUrl = `${DESIGNER_ASSIGNTO_FILTER
+    }?design_code=${
+      designCode
+    }&date_from=${startDate ? startDate : ""}&date_to=${
+      endDate ? endDate : ""
+    }`;
     const response = await apiService.get(apiUrl);
     if (response.data.results.status_code === 200) {
       setFolderDetails(response.data.results.data);

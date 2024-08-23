@@ -182,8 +182,7 @@ const DesignBtn = ({
         >
           {location.pathname === "/designpool" &&
             SelectedIdsForDelet.length > 0 && (
-              <div className="Download_ParentD" 
-              >
+              <div className="Download_ParentD">
                 <button
                   className="D_downlodBtn"
                   style={{ background: "red" }}
@@ -193,7 +192,6 @@ const DesignBtn = ({
                 </button>
               </div>
             )}
-
           {location.pathname !== "/assignmentpanel" &&
             location.pathname !== "/designdashboard" &&
             location.pathname !== "/designerassignview" &&
@@ -218,7 +216,6 @@ const DesignBtn = ({
                 )}
               </div>
             )}
-
           {location.pathname !== "/designdashboard" &&
             location.pathname !== "/votorscustomization" &&
             location.pathname !== "/unassigneddesigner" &&
@@ -269,7 +266,6 @@ const DesignBtn = ({
                 </button>
               </div>
             )}
-
           {location.pathname === "/assignmentpanel" &&
             selectedAssignment.length > 0 &&
             selectButtonLabel === "Unselect" && (
@@ -279,7 +275,6 @@ const DesignBtn = ({
                 </button>
               </div>
             )}
-
           {location.pathname !== "/votorscustomization" &&
             location.pathname !== "/assignmentpanel" &&
             location.pathname !== "/unassigneddesigner" &&
@@ -316,7 +311,6 @@ const DesignBtn = ({
                 )}
               </button>
             )}
-
           {location.pathname === "/designdashboard" && (
             <button
               //  onClick={handleSort}
@@ -326,7 +320,6 @@ const DesignBtn = ({
               <LuArrowUpDown /> Sort
             </button>
           )}
-
           {location.pathname === "/assignmentpanel" && (
             <button
               onClick={handleSort}
@@ -358,14 +351,25 @@ const DesignBtn = ({
               )}
             </button>
           )}
-          {location.pathname === `/designdashboard` && (
-            <button className="D_View_Sort_Filter"   onClick={handleFilderModal} >
+          
+          {location.pathname === `/unassigneddesigner` && (
+            <button className="D_View_Sort_Filter" onClick={handleFilderModal}>
               <RiFilter3Line /> Filter
             </button>
           )}
-
+           
+          {location.pathname === `/designdashboard` && (
+            <button className="D_View_Sort_Filter" onClick={handleFilderModal}>
+              <RiFilter3Line /> Filter
+            </button>
+          )}
           {location.pathname === `/designerassignview/${id}` && (
             <button className="D_View_Sort_Filter" onClick={handleFilderModal}>
+              <RiFilter3Line /> Filter
+            </button>
+          )}
+          {location.pathname === `/designpool` && (
+            <button className="D_View_Sort_Filter" onClick={handleFilter}>
               <RiFilter3Line /> Filter
             </button>
           )}

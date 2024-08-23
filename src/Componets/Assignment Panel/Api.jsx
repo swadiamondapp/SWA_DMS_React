@@ -8,6 +8,7 @@ import {
   ASSIGN_UNASSIGN_DESIGNERS,
   CALCULATION,
   DELETE_ITEM_FROM_ASSIGNMENT_PANEL,
+  DESIGNPOOL_FILTER,
   DIAMOND_TYPE_DROPDOWN,
   EDIT_BASIC_DETAILS,
   FINDINGS_LIST,
@@ -552,18 +553,18 @@ export const list_all_designers = async (setAllDesigners) => {
   }
 };
 
-export const list_all_designers_get = async (setIsLoading,setAllDesigners) => {
+export const list_all_designers_get = async (setIsLoading, setAllDesigners) => {
   try {
-    setIsLoading(true)
+    setIsLoading(true);
     const response = await apiService.get(LIST_ALL_DESIGNERS);
     if (checkApiStatus(response)) {
-      console.log(response,"response_de")
+      console.log(response, "response_de");
       setAllDesigners(response?.data?.results?.data);
     }
   } catch (error) {
     console.log(error);
-  }finally{
-    setIsLoading(false)
+  } finally {
+    setIsLoading(false);
   }
 };
 
@@ -760,16 +761,61 @@ export const filterAdminDesigns = async (
     const response = await apiService.get(apiUrl);
     if (checkApiStatus(response)) {
       setData(response?.data?.results?.data);
-      setFilter(false)
-    }
-    else if (
+      setFilter(false);
+    } else if (
       response.data.results &&
       response.data.results.status_code === 206
     ) {
       setError(response.data.results.message);
-      setTimeout(()=>{
-        setError("")
-      },3000)
+      setTimeout(() => {
+        setError("");
+      }, 3000);
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+export const filterDesignPool = async (
+  setIsLoading,
+  startDate,
+  endDate,
+  filterTag,
+  filterCategory,
+  setData,
+  setFilter,
+  setError,
+  filterMaxLike,
+  filterMinLike,
+  designCode
+) => {
+  debugger;
+  try {
+    setIsLoading(true);
+    let apiUrl = `${DESIGNPOOL_FILTER}&date_from=${
+      startDate ? startDate : ""
+    }&date_to=${endDate ? endDate : ""}&tags=${
+      filterTag ? filterTag : ""
+    }&product_type=${filterCategory ? filterCategory : ""}&design_code=${
+      designCode ? designCode : ""
+    }&likes_count_min=${filterMinLike ? filterMinLike : 0 }&likes_count_max=${
+      filterMaxLike ? filterMaxLike : 0
+    }`;
+
+    const response = await apiService.get(apiUrl);
+    if (checkApiStatus(response)) {
+      setData(response?.data?.results?.data);
+      setFilter(false);
+    } else if (
+      response.data.results &&
+      response.data.results.status_code === 206
+    ) {
+      setError(response.data.results.message);
+      setTimeout(() => {
+        setError("");
+      }, 3000);
     }
   } catch (error) {
     console.log(error);
