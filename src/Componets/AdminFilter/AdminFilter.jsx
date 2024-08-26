@@ -219,7 +219,7 @@ const AdminFilter = ({
           <h2>Actual details</h2>
           <button
             onClick={handleFilterClose}
-            style={{ backgroundColor: "#F5F5F5" }}
+            style={{ backgroundColor: "none" }}
           >
             <img
               style={{ width: "20px", height: "20px" }}

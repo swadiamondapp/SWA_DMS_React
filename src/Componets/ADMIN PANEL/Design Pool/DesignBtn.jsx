@@ -166,11 +166,11 @@ const DesignBtn = ({
         location.pathname === "/unassigneddesigner" ? { marginTop: "18px" } : {}
       }
     >
-      <div className="DesignPool_btns" style={{ position: "relative" }}>
-        {location.pathname === "/unassigneddesigner" && (
-          <h4 style={{ marginRight: "59%" }}>Not Started Assignements</h4>
+      <div className="DesignPool_btns" style={{ position: "relative",display:"flex",justifyContent:"end" }}>
+      {location.pathname === "/unassigneddesigner" && (
+          <h4 style={{ marginRight: "59%" }}>Not Started Assignments</h4>
         )}
-        <div
+        {/* <div
           className=""
           style={{
             display: "flex",
@@ -179,7 +179,7 @@ const DesignBtn = ({
             right: "0%",
             top: "-10px",
           }}
-        >
+        > */}
           {location.pathname === "/designpool" &&
             SelectedIdsForDelet.length > 0 && (
               <div className="Download_ParentD">
@@ -386,7 +386,7 @@ const DesignBtn = ({
               Create Customization
             </button>
           )}
-        </div>
+        {/* </div> */}
       </div>
       <BasicDetailModal
         open={open}

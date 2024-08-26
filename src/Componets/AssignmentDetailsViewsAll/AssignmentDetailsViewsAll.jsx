@@ -33,6 +33,7 @@ import ThreeDViewer from "../ThreeDViewer/ThreeDViewer";
 import InstructionModal from "../InstructionModal/InstructionModal";
 import ShareIcon from "../../assets/shareIcon.png";
 import { Select } from "antd";
+import { AiOutlineEdit } from "react-icons/ai";
 
 const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
   const location = useLocation();
@@ -58,6 +59,7 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
   const [openModal, setOpenmodal] = useState(false);
   const [modalHeading, setmodalHeading] = useState("");
   const [rendesrDetail, setRendesrDetail] = useState([]);
+
 
   const handleopenModal = () => {
     setOpenmodal(!openModal);
@@ -325,7 +327,29 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
               <p>Edit</p>
             </div> */}
             <div className="Assignment_contents">
-              <h3>Basic details</h3>
+              <div
+                className=""
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "space-between",
+                }}
+              >
+                <h3>Basic details</h3>
+
+                <button
+                  className="btn_scan"
+                  onClick={() => handleEditBasicDetails()}
+
+                >
+                  <AiOutlineEdit
+                    style={{ color: "#0464D5" }}
+                    className="btn_scan_img1"
+                  />{" "}
+                  <span>Edit Details</span>
+                </button>
+              </div>
+
               <div className="Assignment_Details">
                 <div className="A1_text">
                   <p>Product Id</p>
@@ -525,23 +549,23 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
                     );
                   }
                 })}
+
+              {rendesrDetail.length === 0 && (
+                <span>No Renders uploaded Currespond to this Product</span>
+              )}
             </div>
           </div>
         )}
-
-        {rendesrDetail.length === 0 && (
-          <span>No Renders uploaded Currespond to this Product</span>
-        )}
       </div>
 
-      {/* <BasicDetailModal
+      <BasicDetailModal
         name={"editbasicDetails"}
         open={open}
         onClose={() => setIsOpen(false)}
         folderIdA={id}
         designId={designId}
         DetailsProductId={itemDetails?.paper_design?.designcode}
-        basicDetails={basicDetails}
+        basicDetails={assignment_details}
         updateEditFunction={() =>
           listFolderDetailVeiwAssignmentPanel(
             setIsLoading,
@@ -550,7 +574,7 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
             designId
           )
         }
-      /> */}
+      />
 
       {openModal && (
         <InstructionModal

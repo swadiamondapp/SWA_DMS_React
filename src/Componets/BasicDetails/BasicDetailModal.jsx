@@ -3,7 +3,7 @@ import "./BasicDetails.css";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { Modal, Backdrop, Fade } from '@mui/material';
+import { Modal, Backdrop, Fade } from "@mui/material";
 import { Select, Space } from "antd";
 import { TagsInput } from "react-tag-input-component";
 import Joi from "joi";
@@ -23,7 +23,7 @@ import {
 } from "../Assignment Panel/Api";
 import SuccessModal from "../SuccessModal/SuccessModal";
 import CircularProgress from "@mui/material/CircularProgress";
-import closeButtonBM from '../../assets/closeButtonBM.png'
+import closeButtonBM from "../../assets/closeButtonBM.png";
 
 const style = {
   position: "absolute",
@@ -71,7 +71,7 @@ const BasicDetailModal = ({
   designId,
   basicDetails,
   updateEditFunction,
-  setSelectedIdsForDelet
+  setSelectedIdsForDelet,
 }) => {
   // create modal
 
@@ -97,8 +97,7 @@ const BasicDetailModal = ({
   const [CalculationData, setCalculationData] = useState([]);
   const [MovedItemsId, setMovedItemsId] = useState([]);
   const [IsLoadingCalculation, setIsLoadingCalculation] = useState(false);
-  const [showMrp,setShowMrp] = useState([])
-
+  const [showMrp, setShowMrp] = useState([]);
 
   const [ItemMovedToAssignment, setItemMovedToAssignment] = useState([]);
 
@@ -118,7 +117,7 @@ const BasicDetailModal = ({
     notes: "",
   });
 
-  console.log(errors,"errroCOnodf")
+  console.log(errors, "errroCOnodf");
 
   useEffect(() => {
     if (name === "editbasicDetails" && basicDetails) {
@@ -157,9 +156,9 @@ const BasicDetailModal = ({
       "any.required": `SKU field is required and cannot be empty.`,
     }),
     productCategory: Joi.array().min(1).required().messages({
-      'array.base': 'cannot be empty',
-      'array.empty': 'Product category cannot be empty',
-      'array.min': 'Product category cannot be empty',
+      "array.base": "cannot be empty",
+      "array.empty": "Product category cannot be empty",
+      "array.min": "Product category cannot be empty",
     }),
     length: Joi.string().required().messages({
       "string.empty": ` cannot be empty`,
@@ -171,42 +170,48 @@ const BasicDetailModal = ({
       "string.empty": `cannot be empty`,
     }),
     typeOfMetal: Joi.array().min(1).required().messages({
-      'array.base': 'cannot be empty',
-      'array.empty': 'Product category cannot be empty',
-      'array.min': 'Product category cannot be empty',
+      "array.base": "cannot be empty",
+      "array.empty": "Product category cannot be empty",
+      "array.min": "Product category cannot be empty",
     }),
     diamondType: Joi.array().min(1).required().messages({
-      'array.base': 'cannot be empty',
-      'array.empty': 'Product category cannot be empty',
-      'array.min': 'Product category cannot be empty',
+      "array.base": "cannot be empty",
+      "array.empty": "Product category cannot be empty",
+      "array.min": "Product category cannot be empty",
     }),
-    approxDiamondWeight: Joi.string().custom((value, helpers) => {
-      if (value === "0") {
-        return helpers.message("cannot be zero");
-      }
-      return value;
-    }).required().messages({
-      "string.empty": `cannot be empty`,
-    }),
-    approxMetalWeights: Joi.string().custom((value, helpers) => {
-      if (value === "0") {
-        return helpers.message("cannot be zero");
-      }
-      return value;
-    }).required().messages({
-      "string.empty": `cannot be empty`,
-    }),
+    approxDiamondWeight: Joi.string()
+      .custom((value, helpers) => {
+        if (value === "0") {
+          return helpers.message("cannot be zero");
+        }
+        return value;
+      })
+      .required()
+      .messages({
+        "string.empty": `cannot be empty`,
+      }),
+    approxMetalWeights: Joi.string()
+      .custom((value, helpers) => {
+        if (value === "0") {
+          return helpers.message("cannot be zero");
+        }
+        return value;
+      })
+      .required()
+      .messages({
+        "string.empty": `cannot be empty`,
+      }),
     approxMRP: Joi.number().required().messages({
-      'number.base': 'Approximate MRP must be a number',
-      'number.empty': 'Approximate MRP cannot be empty', // Handles cases where it is empty but should be a number
-      'any.required': 'cannot be empty', // Handles cases where the field is missing
+      "number.base": "Approximate MRP must be a number",
+      "number.empty": "Approximate MRP cannot be empty", // Handles cases where it is empty but should be a number
+      "any.required": "cannot be empty", // Handles cases where the field is missing
     }),
-    tag: Joi.array().allow(null).allow('').messages({
+    tag: Joi.array().allow(null).allow("").messages({
       "array.base": "cannot be empty",
       "array.empty": "cannot be empty",
       "array.min": " cannot be empty",
     }),
-    findings: Joi.array().allow(null).allow('').messages({
+    findings: Joi.array().allow(null).allow("").messages({
       "array.base": "cannot be empty",
       "array.empty": " cannot be empty",
       "array.min": "cannot be empty",
@@ -296,11 +301,10 @@ const BasicDetailModal = ({
           setMovedItemsId,
           setFormData,
           getSelectedDesign,
-          ()=>{
-            setCalculationData([])
+          () => {
+            setCalculationData([]);
           },
           setSelectedIdsForDelet
-
         );
       }
       // setShowAssignmentModal(true);
@@ -415,9 +419,9 @@ const BasicDetailModal = ({
       formData.diamondType &&
       formData.typeOfMetal
     ) {
-      CalculateApproxAmount()
+      CalculateApproxAmount();
     } else {
-      setFormData(prevFormData => ({
+      setFormData((prevFormData) => ({
         ...prevFormData,
         approxMRP: CalculationData?.calculated_mrp,
       }));
@@ -434,7 +438,7 @@ const BasicDetailModal = ({
   useEffect(() => {
     if (CalculationData) {
       // setShowMrp(CalculationData.calculated_mrp);
-      setFormData(prevFormData => ({
+      setFormData((prevFormData) => ({
         ...prevFormData,
         approxMRP: CalculationData.calculated_mrp,
       }));
@@ -451,35 +455,32 @@ const BasicDetailModal = ({
     }
   }, [MovedItemsId]);
 
-  const handleCLoseButton = ()=> {
-    onClose()
+  const handleCLoseButton = () => {
+    onClose();
     setSelectedDesigns([]);
     setShowRadioButtons(false);
     setSelectButtonLabel("Select");
-    setSelectedIdsForDelet([])
-    setFormData(
-      {
-        SKU: "",
-        productCategory: "",
-        length: "",
-        width: "",
-        height: "",
-        typeOfMetal: "",
-        diamondType: "",
-        approxDiamondWeight: "",
-        findings: "",
-        approxMetalWeights: "",
-        approxMRP: "",
-        tag: [],
-        notes: "",
-      }
-    )
-    setErrors({})
-    
-    setCalculationData([])
+    setSelectedIdsForDelet([]);
+    setFormData({
+      SKU: "",
+      productCategory: "",
+      length: "",
+      width: "",
+      height: "",
+      typeOfMetal: "",
+      diamondType: "",
+      approxDiamondWeight: "",
+      findings: "",
+      approxMetalWeights: "",
+      approxMRP: "",
+      tag: [],
+      notes: "",
+    });
+    setErrors({});
 
-  }
-  
+    setCalculationData([]);
+  };
+
   return (
     <div>
       <div className="">
@@ -503,13 +504,14 @@ const BasicDetailModal = ({
                 <div className="container">
                   <div className="basicClosModalIcon">
                     <div>
-
-                  <span className="titleBasic">Basic details</span>
+                      <span className="titleBasic">Basic details</span>
                     </div>
-                    <div className="closeButtonImageBm" onClick={handleCLoseButton}>
-                      <img src={closeButtonBM} alt="" />
+                    <div
+                      className="closeButtonImageBm"
+                      onClick={handleCLoseButton}
+                    >
+                      <img src={closeButtonBM} alt="" style={{cursor:"pointer"}}/>
                     </div>
-
                   </div>
                   <form onSubmit={handleSubmit}>
                     <div className="formContainer">
@@ -587,12 +589,20 @@ const BasicDetailModal = ({
                           length
                         </label>
                         <input
-                          type="number"
+                          type="text"
                           className="inputFields"
                           name="length"
                           value={formData.length}
                           onChange={handleInput}
-                          onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
+                          onFocus={(e) =>
+                            e.target.addEventListener(
+                              "wheel",
+                              function (e) {
+                                e.preventDefault();
+                              },
+                              { passive: false }
+                            )
+                          }
                         />
                         <div>
                           {errors.length && (
@@ -607,12 +617,20 @@ const BasicDetailModal = ({
                           Width
                         </label>
                         <input
-                          type="number"
+                          type="text"
                           className="inputFields"
                           name="width"
                           value={formData.width}
                           onChange={handleInput}
-                          onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
+                          onFocus={(e) =>
+                            e.target.addEventListener(
+                              "wheel",
+                              function (e) {
+                                e.preventDefault();
+                              },
+                              { passive: false }
+                            )
+                          }
                         />
                         <div>
                           {errors.width && (
@@ -627,12 +645,20 @@ const BasicDetailModal = ({
                           Height
                         </label>
                         <input
-                          type="number"
+                          type="text"
                           className="inputFields"
                           name="height"
                           value={formData.height}
                           onChange={handleInput}
-                          onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
+                          onFocus={(e) =>
+                            e.target.addEventListener(
+                              "wheel",
+                              function (e) {
+                                e.preventDefault();
+                              },
+                              { passive: false }
+                            )
+                          }
                         />
                         <div>
                           {errors.height && (
@@ -666,7 +692,7 @@ const BasicDetailModal = ({
                             width: "100%",
                             zIndex: "9999999",
                             background: "#006E7F1A",
-                            cursor:'pointer'
+                            cursor: "pointer",
                           }}
                           options={metalTypeDropDown.map((item) => ({
                             value: item.id,
@@ -703,7 +729,7 @@ const BasicDetailModal = ({
                             width: "100%",
                             zIndex: 999999999,
                             background: "#006E7F1A",
-                            cursor:'pointer'
+                            cursor: "pointer",
                           }}
                           options={diamonType.map((item) => ({
                             value: item.id,
@@ -725,12 +751,21 @@ const BasicDetailModal = ({
                           Approx Diamond weight
                         </label>
                         <input
-                          type="number"
+                          style={{ background: "#ADD8E6" }}
+                          type="text"
                           className="inputFields"
                           name="approxDiamondWeight"
                           value={formData.approxDiamondWeight}
                           onChange={handleInput}
-                          onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
+                          onFocus={(e) =>
+                            e.target.addEventListener(
+                              "wheel",
+                              function (e) {
+                                e.preventDefault();
+                              },
+                              { passive: false }
+                            )
+                          }
                         />
                         <div>
                           {errors.approxDiamondWeight && (
@@ -747,12 +782,21 @@ const BasicDetailModal = ({
                           Approx metal weight
                         </label>
                         <input
-                          type="number"
+                          style={{ background: "#FEDD56" }}
+                          type="text"
                           className="inputFields"
                           name="approxMetalWeights"
                           value={formData.approxMetalWeights}
                           onChange={handleInput}
-                          onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
+                          onFocus={(e) =>
+                            e.target.addEventListener(
+                              "wheel",
+                              function (e) {
+                                e.preventDefault();
+                              },
+                              { passive: false }
+                            )
+                          }
                         />
                         <div>
                           {errors.approxMetalWeights && (
@@ -767,12 +811,11 @@ const BasicDetailModal = ({
                           Approx MRP
                         </label>
                         <input
-                          type="number"
+                          type="text"
                           className="inputFields"
                           name="approxMRP"
                           value={formData.approxMRP}
                           onChange={handleInput}
-
                           readOnly
                         />
                         {IsLoadingCalculation ? (
@@ -905,6 +948,7 @@ const BasicDetailModal = ({
                               width: "100%",
                               zIndex: "9999999",
                               background: "#006E7F1A",
+                              border: "1px solid #e0e1e1 !import",
                             }}
                             value={formData.tag}
                             placeholder="Select tags"
