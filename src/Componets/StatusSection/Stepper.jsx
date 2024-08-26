@@ -238,7 +238,7 @@ const Stepper = ({ code }) => {
       case 5:
         return formatDateTrack(dates?.cad_finished);
       case 6:
-        return formatDateTrack(dates?.cad_finished);
+        return formatDateTrack(dates?.slotted);
       case 8:
         return formatDateTrack(dates?.transfer_to_warehouse);
       case 11:
