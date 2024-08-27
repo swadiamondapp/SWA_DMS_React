@@ -115,10 +115,11 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
     }
   }, [folderDetailView]);
   const { assignment_details, itemDetails } = folderDetails;
-
+     
+   const productId = itemDetails?.id || "" ;
   // const designCode = itemDetails?.paper_design?.designcode || detailsViewFolderName ;
 
-  console.log(rendesrDetail, "rendesrDetail");
+  console.log(productId, "productId");
 
   const handleEditBasicDetails = () => {
     setIsOpen(true);
@@ -563,7 +564,8 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
         open={open}
         onClose={() => setIsOpen(false)}
         folderIdA={id}
-        designId={designId}
+        // designId={designId}
+        designId={productId}
         DetailsProductId={itemDetails?.paper_design?.designcode}
         basicDetails={assignment_details}
         updateEditFunction={() =>

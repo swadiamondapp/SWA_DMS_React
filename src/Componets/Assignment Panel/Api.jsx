@@ -296,6 +296,7 @@ export const editBasicDetails = async (
   onClose,
   updateEditFunction
 ) => {
+  debugger
   try {
     const body = {
       length: formData.length,
