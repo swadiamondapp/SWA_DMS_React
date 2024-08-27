@@ -239,6 +239,8 @@ const Stepper = ({ code }) => {
         return formatDateTrack(dates?.slotted);
       case 8:
         return formatDateTrack(dates?.transfer_to_warehouse);
+        case 9:
+          return formatDateTrack(dates?.warehouse_received);
       case 11:
         return formatDateTrack(dates?.workdone);
       default:
