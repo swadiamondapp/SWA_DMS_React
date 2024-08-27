@@ -4,7 +4,10 @@ import product from "../../assets/p1.png";
 // import "./assignmentviewsAll.css";
 import { LiaRupeeSignSolid } from "react-icons/lia";
 import { list_assignment_folder } from "../ADMIN PANEL/Design Pool/Api";
-import { FOLDER_DETAIL_API } from "../../Pages/Services/EndPoints";
+import {
+  DEATAILS_SATUS_UPDATE,
+  FOLDER_DETAIL_API,
+} from "../../Pages/Services/EndPoints";
 import axios from "axios";
 import {
   diamond_type_dropdown_basicDetails,
@@ -34,6 +37,7 @@ import InstructionModal from "../InstructionModal/InstructionModal";
 import ShareIcon from "../../assets/shareIcon.png";
 import { Select } from "antd";
 import { AiOutlineEdit } from "react-icons/ai";
+import { apiService, checkApiStatus } from "../../Pages/Services/ApiInstants";
 
 const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
   const location = useLocation();
@@ -59,7 +63,8 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
   const [openModal, setOpenmodal] = useState(false);
   const [modalHeading, setmodalHeading] = useState("");
   const [rendesrDetail, setRendesrDetail] = useState([]);
-
+  const [renderRemark, setRenderRemark] = useState("");
+  const [cadRemark, setCadRemark] = useState("");
 
   const handleopenModal = () => {
     setOpenmodal(!openModal);
@@ -115,11 +120,12 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
     }
   }, [folderDetailView]);
   const { assignment_details, itemDetails } = folderDetails;
-     
-   const productId = itemDetails?.id || "" ;
+
+  const productId = itemDetails?.id || "";
+  const productCode = itemDetails?.designcode || "";
   // const designCode = itemDetails?.paper_design?.designcode || detailsViewFolderName ;
 
-  console.log(productId, "productId");
+  // console.log(detailsViewFolderName, "productId");
 
   const handleEditBasicDetails = () => {
     setIsOpen(true);
@@ -180,10 +186,6 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
     return item ? item.name : "Note Found";
   };
 
-  const handleChange = (value) => {
-    console.log(`selected ${value}`);
-  };
-
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const day = String(date.getDate()).padStart(2, "0");
@@ -193,9 +195,67 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
     return `${day} ${month} ${year}`;
   };
 
+  const initialStatuses = rendesrDetail?.images
+    ?.filter((imgObj) => {
+      const [key, value] = Object.entries(imgObj)[0] || [];
+      return value && !key.includes("_status");
+    })
+    .reduce((acc, imgObj) => {
+      const [key] = Object.entries(imgObj)[0];
+      const imgKey = key.replace(/\d+/g, ""); // Remove digits to match img status keys
+      acc[`${key}_status`] = "Pending"; // Default status
+      return acc;
+    }, {});
+
+  const [status, setStatus] = useState(initialStatuses);
+
+  
+  const updateImageStatuses = async () => {
+    const body = {
+      ...status,
+      remark: "" 
+    };
+    try {
+      setIsLoading(true);
+      const response = await apiService.patch(`${DEATAILS_SATUS_UPDATE}${detailsViewFolderName}`, body);
+      if (checkApiStatus(response)) {
+        setFolderDetailsView(response.data.results.data);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+
+  const handleChange = async (imgKey, value) => {
+    try{
+     await setStatus(prevStatus => {
+      const updatedStatus = {
+        ...prevStatus,
+        [`${imgKey}_status`]: value 
+      };
+      
+      return updatedStatus; 
+    });
+  
+    await updateImageStatuses(status);
+  }catch(error){
+    console.log(error)
+  }
+  };
+  
+  console.log("Initial", status);
+
+  // const handleChange = (value) => {
+  //   console.log(`selected ${value}`);
+  //   rendersImageStatusUpdate(setIsLoading,setFolderDetailsView,detailsViewFolderName,)
+  // };
+
   //   console.log(selectedTags, "fghjkl");
   //   console.log(itemDetails, "itemDetails");
-  console.log(rendesrDetail?.images, "rendesrDetail[0]?.images?");
+  console.log(rendesrDetail?.images, "rendesrDetail");
   return (
     <div>
       <div
@@ -341,7 +401,6 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
                 <button
                   className="btn_scan"
                   onClick={() => handleEditBasicDetails()}
-
                 >
                   <AiOutlineEdit
                     style={{ color: "#0464D5" }}
@@ -502,13 +561,13 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
               style={{
                 width: "100%",
                 display: "flex",
-                gap: "6px",
+                gap: "4px",
                 flexWrap: "wrap",
                 height: "auto",
                 paddingBottom: "10px",
               }}
             >
-              {rendesrDetail &&
+              {/* {rendesrDetail &&
                 rendesrDetail?.images?.map((imgObj, index) => {
                   const imageUrl = Object.values(imgObj)[0];
                   const createdAt = imgObj.created_at;
@@ -521,13 +580,53 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
                           POSTED ON:{" "}
                           <span className="postedOn_data">
                             {new Date(createdAt).toLocaleDateString("en-GB")}{" "}
-                            {/* Format date as needed */}
                           </span>
                         </span>
                         <Select
                           defaultValue="lucy"
                           style={{
-                            width: 120,
+                            width: 12  const initialStatuses = rendesrDetail?.images
+  ?.filter((imgObj) => {
+    const [key, value] = Object.entries(imgObj)[0] || [];
+    return value && !key.includes("_status");
+  })
+  .reduce((acc, imgObj) => {
+    const [key] = Object.entries(imgObj)[0];
+    const imgKey = key.replace(/\d+/g, ''); // Remove digits to match img status keys
+    acc[`${imgKey}_status`] = 'Pending'; // Default status
+    return acc;
+  }, {});
+
+const [status, setStatus] = useState(initialStatuses);
+
+// Update image statuses in the API
+const updateImageStatuses = async () => {
+  const body = {
+    ...status,
+    remark: "" // Add remark if needed
+  };
+
+  try {
+    setIsLoading(true);
+    const response = await apiService.post(`${DEATAILS_SATUS_UPDATE}${detailsViewFolderName}`, body);
+    if (checkApiStatus(response)) {
+      setFolderDetailsView(response.data.results.data);
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+const handleChange = (imgKey, value) => {
+  setStatus(prevStatus => ({
+    ...prevStatus,
+    [`${imgKey}_status`]: value
+  }));
+};
+
+console.log("Initial", status);0,
                             padding: "6px 6px 6px 2px",
                             color: "#23A064",
                             border: "1px solid #23A064",
@@ -549,7 +648,44 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
                       </div>
                     );
                   }
-                })}
+                })} */}
+
+              {rendesrDetail?.images?.map((imgObj, index) => {
+                const [key, imageUrl] = Object.entries(imgObj)[0];
+                if (!imageUrl || key.includes("_status")) return null; 
+
+                return (
+                  <div key={index} className="finishedCardContainer2">
+                    <img src={imageUrl} alt="card_image" />
+                    <span className="postedOn">
+                      POSTED ON:{" "}
+                      <span className="postedOn_data">
+                        {new Date(imgObj.created_at).toLocaleDateString(
+                          "en-GB"
+                        )}
+                      </span>
+                    </span>
+                    <Select
+                      // value={status[`${key}_status`] || "Pending"}
+                      style={{
+                        width: 120,
+                        padding: "6px 6px 6px 2px",
+                        color: "#23A064",
+                        border: "1px solid #23A064",
+                        background: "#23A0641A",
+                        borderRadius: "32px",
+                      }}
+                      onChange={(value) => handleChange(key, value)}
+                      options={[
+                        { value: "Approved", label: "Approved" },
+                        { value: "Rejected", label: "Rejected" },
+                      ]}
+                    />
+                  </div>
+                );
+              })}
+
+              {/* <button onClick={updateImageStatuses}>Update Status</button> */}
 
               {rendesrDetail.length === 0 && (
                 <span>No Renders uploaded Currespond to this Product</span>
@@ -583,6 +719,8 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
           open={handleopenModal}
           setOpenmodal={setOpenmodal}
           modalHeading={modalHeading}
+          setCadRemark={setCadRemark}
+          setRenderRemark={setRenderRemark}
         />
       )}
     </div>

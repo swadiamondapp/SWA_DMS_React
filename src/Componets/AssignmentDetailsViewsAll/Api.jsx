@@ -1,6 +1,7 @@
 import { apiService, checkApiStatus } from "../../Pages/Services/ApiInstants";
 import {
   ALL_ITEMS_DETAILS_VIEW,
+  DEATAILS_SATUS_UPDATE,
   REDNERS_DETAILS_VIEW,
   REDNERS_FOLDER_ITEM,
 } from "../../Pages/Services/EndPoints";
@@ -46,3 +47,29 @@ export const rendersDetailByCode = async (
     console.log(error);
   }
 };
+
+export const updateImageStatuses = async (
+  setIsLoading,
+  status,
+  remark,
+  setFolderDetailsView,
+  detailsViewFolderName
+) => {
+  debugger
+  const body = {
+    status,
+    remark: "" 
+  };
+  try {
+    setIsLoading(true);
+    const response = await apiService.patch(`${DEATAILS_SATUS_UPDATE}${detailsViewFolderName}`, body);
+    if (checkApiStatus(response)) {
+      setFolderDetailsView(response.data.results.data);
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setIsLoading(false);
+  }
+};
+ 

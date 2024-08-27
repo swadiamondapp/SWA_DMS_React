@@ -15,7 +15,7 @@ const style = {
   p: 2,
 };
 
-const InstructionModal = ({ open, setOpenmodal, modalHeading, modalTitle }) => {
+const InstructionModal = ({ open, setOpenmodal, modalHeading, modalTitle, setCadRemark ,setRenderRemark }) => {
   const handleInputData = (e) => {
     const { name, value } = e.target;
     setInputData((prevState) => ({
