@@ -926,9 +926,9 @@ const Stepper = ({ code }) => {
                             //     ).toLocaleTimeString()
                             //   : null;
 
-                            const Active =
-                              wHdata.findIndex((s) => s.name === warehouse) >=
-                              index;
+                            const Active = ""
+                              // wHdata.findIndex((s) => s.name === warehouse) >=
+                              // index;
 
                             return (
                               <div className="vertical-stepper" key={index}>
