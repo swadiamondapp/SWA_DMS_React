@@ -27,16 +27,15 @@ import closeButtonBM from "../../assets/closeButtonBM.png";
 
 const style = {
   position: "absolute",
-
   right: "0px",
-  width: 330,
+  width: "100%",
   height: "100%",
-  bgcolor: "background.paper",
+  // bgcolor: "background.paper",
   border: "none",
   boxShadow: 24,
   borderRadius: "8px 0 0 8px",
   overflowY: "scroll",
-  p: 2,
+  // p: 2,
 };
 const BasicEye = {
   position: "absolute",
@@ -499,8 +498,50 @@ const BasicDetailModal = ({
               onClick: (event) => event.stopPropagation(), // Prevent modal close on backdrop click
             }}
           >
+             
+
             <Box sx={style}>
-              <Typography>
+                <div className="modal_card_images">
+                    
+                {/* {Data.map((item, index) => (
+              <>
+                <div className="New_Design_card" key={item.id}>
+                  <div
+                    className="Card_img"
+                    style={{
+                      marginTop: "12px",
+                      height: "170px",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <img
+                      src={item.image}
+                      alt="image"
+                      onClick={() => OpenAnntaitionmodal(item)}
+                    />
+                  </div>
+                  <div className="Card_Details">
+                    <h3>ID : {item.designcode}</h3>
+                    <div className="Card_Details_Inner">
+                      <div className="Inner_Left">
+                        <p>{item.user_name}</p>
+                        <p>{item.created_at}</p>
+                      </div>
+                      <div className="Inner_Right">
+                        <p>
+                          {item.likes_count} <img src={like} alt="" />
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  
+                </div>
+              </>
+            ))} */}
+
+                </div>
+              <Typography className="modal_edit_section">
                 <div className="container">
                   <div className="basicClosModalIcon">
                     <div>
@@ -510,7 +551,11 @@ const BasicDetailModal = ({
                       className="closeButtonImageBm"
                       onClick={handleCLoseButton}
                     >
-                      <img src={closeButtonBM} alt="" style={{cursor:"pointer"}}/>
+                      <img
+                        src={closeButtonBM}
+                        alt=""
+                        style={{ cursor: "pointer" }}
+                      />
                     </div>
                   </div>
                   <form onSubmit={handleSubmit}>

@@ -238,19 +238,18 @@ const DesignBtn = ({
                   Move to <MdOutlineKeyboardArrowDown />
                 </button>
                 {showMoveOptions && (
-                  <div className="Sub_AssignmentPanel">
                     <Link
-                      style={{ textDecoration: "none" }}
-                      // to="/assignmentpanel"
+                      style={{ textDecoration: "none",cursor:"pointer" }}
                     >
+                  <div className="Sub_AssignmentPanel">
                       <p
                         style={{ color: "#000" }}
                         onClick={() => moveSelectedDesign()}
                       >
                         Assignment panel
                       </p>
-                    </Link>
                   </div>
+                    </Link>
                 )}
               </div>
             )}

@@ -42,6 +42,9 @@ const FinishedProjectInner = (props) => {
   const productId = props?.folderItem[0]?.designcode;
   const id = props?.id;
 
+  
+  console.log(location.pathname,"pathname")
+
   return (
     <div
       className="MainContainer"
@@ -78,6 +81,8 @@ const FinishedProjectInner = (props) => {
               style={{ display: "none" }}
             />
           </div>
+
+      
           <button
             style={{
               display: "flex",
@@ -97,6 +102,7 @@ const FinishedProjectInner = (props) => {
             View Instraction{" "}
             <IoEye style={{ color: "white", fontSize: "20px" }} />
           </button>
+
         </div>
       )}
 
