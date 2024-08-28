@@ -12,10 +12,10 @@ const style = {
   bgcolor: "background.paper",
   fontFamily: "Gilroy medium",
   boxShadow: 24,
-  p: 2
+  p: 2,
 };
 
-const InstructionModal = ({ open, setOpenmodal, modalHeading,modalTitle}) => {
+const InstructionModal = ({ open, setOpenmodal, modalHeading, modalTitle, setCadRemark ,setRenderRemark }) => {
   const handleInputData = (e) => {
     const { name, value } = e.target;
     setInputData((prevState) => ({
@@ -23,6 +23,12 @@ const InstructionModal = ({ open, setOpenmodal, modalHeading,modalTitle}) => {
       [name]: value,
     }));
   };
+
+  const pathName = location.pathname;
+  const shouldRenderButton = !(
+    pathName.startsWith("/finished/") && /\d+$/.test(pathName) ||
+    pathName.startsWith("/folderdetails/") && /\d+$/.test(pathName)
+  ); 
 
   return (
     <Modal
@@ -41,9 +47,11 @@ const InstructionModal = ({ open, setOpenmodal, modalHeading,modalTitle}) => {
           </button>
         </div>
 
-        <div className="modal_fields" style={{marginTop:"15px"}}>
+        <div className="modal_fields" style={{ marginTop: "15px" }}>
           <div className="inp2_admin">
-          <label htmlFor="">{modalTitle ? modalTitle : "Write instractions here"}</label>
+            <label htmlFor="">
+              {modalTitle ? modalTitle : "Write instractions here"}
+            </label>
             <textarea
               type="text"
               name="name"
@@ -58,13 +66,21 @@ const InstructionModal = ({ open, setOpenmodal, modalHeading,modalTitle}) => {
         )} */}
         {/* {location.pathname !== "/newscanmodule" &&
           location.pathname !== "/centralhubscan" && ( */}
-        <div className="modal_btns" >
-          <button
-          style={{width:"100%",background:"#04344D",color:"white",fontSize:"14px",fontWeight:"600"}}
-          //   onClick={handleCreatedata}
-          >
-            ADD INSTRACTION
-          </button>
+        <div className="modal_btns">
+          {shouldRenderButton && (
+            <button
+              style={{
+                width: "100%",
+                background: "#04344D",
+                color: "white",
+                fontSize: "14px",
+                fontWeight: "600",
+              }}
+              //   onClick={handleCreatedata}
+            >
+              ADD INSTRACTION
+            </button>
+          )}
         </div>
         {/* )} */}
       </Box>

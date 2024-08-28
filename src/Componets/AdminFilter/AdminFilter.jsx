@@ -7,6 +7,7 @@ import { DatePicker, Select, Spin } from "antd";
 import { tag_table_data } from "../MastersSection/ApiMasters/ApiMasters";
 import {
   filterAdminDesigns,
+  filterDesignPool,
   list_all_designers,
   list_all_designers_get,
   list_assignment_panel,
@@ -15,6 +16,7 @@ import {
 import { list_uploaded_designs } from "../DESIGNER PANEL/Designer Dashboard/Api";
 import moment from "moment";
 import { CircularProgress } from "@mui/material";
+import { all_Designs } from "../ADMIN PANEL/Design Pool/Api";
 
 const { RangePicker } = DatePicker;
 
@@ -38,6 +40,10 @@ const AdminFilter = ({
   setFilterMinPrice,
   setDd,
   dd,
+  filterMaxLike,
+  setFilterMaxLike,
+  filterMinLike,
+  setFilterMinLike,
 }) => {
   // const [startDate, setStartDate] = useState("");
   // const [endDate, setEndDate] = useState("");
@@ -51,12 +57,13 @@ const AdminFilter = ({
   const [productCategory, setProductCategory] = useState([]);
   const [designers, setDesigners] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [error,setError] = useState("")
+  const [error, setError] = useState("");
+  const [designCode, setDesignCode] = useState("");
 
   useEffect(() => {
     product_category_basicDetails(setProductCategory);
     tag_table_data(setTags, setIsLoading);
-    list_all_designers_get(setIsLoading,setDesigners);
+    list_all_designers_get(setIsLoading, setDesigners);
   }, []);
 
   useEffect(() => {
@@ -112,48 +119,78 @@ const AdminFilter = ({
     }
   };
 
+  console.log("filterMax", filterMaxLike);
 
   const handleFilter = async () => {
     try {
-      await filterAdminDesigns(
-        setIsLoading,
-        startDate,
-        endDate,
-        filterTag,
-        filterCategory,
-        filterDesigner,
-        setData,
-        filterMaxPrice,
-        filterMinPrice,
-        setFilter,
-        setError
-      );
+      if (location.pathname === "/assignmentpanel") {
+        await filterAdminDesigns(
+          setIsLoading,
+          startDate,
+          endDate,
+          filterTag,
+          filterCategory,
+          filterDesigner,
+          setData,
+          filterMaxPrice,
+          filterMinPrice,
+          setFilter,
+          setError
+        );
+      }
+      if ("/designpool") {
+        await filterDesignPool(
+          setIsLoading,
+          startDate,
+          endDate,
+          filterTag,
+          filterCategory,
+          setData,
+          setFilter,
+          setError,
+          filterMaxLike,
+          filterMinLike,
+          designCode
+        );
+      }
     } catch (error) {
       console.log(error);
     }
   };
-  
 
   const handleClear = async () => {
     try {
-      await list_assignment_panel(setIsLoading, setData);
-      setStartDate("");
-      setEndDate("");
-      setFilterCategory("");
-      setFilterTag("");
-      setFilterDesigner("");
-      setFilterMaxPrice("");
-      setFilterMinPrice("");
-      setDd("");
-      setFilter(false);
+      if (location.pathname === "/assignmentpanel") {
+        await list_assignment_panel(setIsLoading, setData);
+        setStartDate("");
+        setEndDate("");
+        setFilterCategory("");
+        setFilterTag("");
+        setFilterDesigner("");
+        setFilterMaxPrice("");
+        setFilterMinPrice("");
+        setDd("");
+        setFilter(false);
+      }
+      if ("/designpool") {
+        await all_Designs(setIsLoading, setData);
+        setStartDate("");
+        setEndDate("");
+        setFilterCategory("");
+        setFilterTag("");
+        setFilterMaxLike("");
+        setFilterMinLike("");
+        setDd("");
+        setDesignCode("")
+        setFilter(false);
+      }
     } catch (error) {
       console.log(error);
     }
-  }; 
+  };
 
-
-  console.log(isLoading,"isLoading")
-  console.log(designers,"designers")
+  console.log(isLoading, "isLoading");
+  console.log(designers, "designers");
 
   return (
     <>
@@ -182,7 +219,7 @@ const AdminFilter = ({
           <h2>Actual details</h2>
           <button
             onClick={handleFilterClose}
-            style={{ backgroundColor: "#F5F5F5" }}
+            style={{ backgroundColor: "none" }}
           >
             <img
               style={{ width: "20px", height: "20px" }}
@@ -214,41 +251,34 @@ const AdminFilter = ({
           />
         </div>
 
-        <div className="productCategory">
-          <label htmlFor="" className="edit_fields_span">
-            Product Category
-          </label>
-          <Select
-            showSearch
-            placeholder="-Select-"
-            optionFilterProp="children"
-            value={filterCategory}
-            onChange={(value) => setFilterCategory(value)}
-            onSearch={onSearch}
-            filterOption={filterOption}
+        {location.pathname === "/designpool" && (
+          <div
+            className="edit_fields"
             style={{
-              width: "99%",
-              height: "40px",
-              zIndex: "9999999",
-              background: "#006E7F1A",
+              display: "flex",
+              flexDirection: "column",
+              marginTop: "20px",
             }}
-            options={productCategory.map((tag) => ({
-              label: tag.name,
-              value: tag.id,
-            }))}
-            notFoundContent={ isLoading && <CircularProgress style={{width:"100px"}}/> }
-          />
-        </div>
+          >
+            <span className="edit_fields_span">Design Code</span>
+            <input
+              type="text"
+              style={{
+                width: "100%",
+                padding: "6px",
+                borderRadius: "4px",
+                border: "1px solid lightgray",
+                fontSize: "14px",
+                outline: "none",
+              }}
+              value={designCode.toUpperCase()}
+              onChange={(e) => setDesignCode(e.target.value.toUpperCase())}
+            />
+          </div>
+        )}
 
-        <div
-          className=""
-          style={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
-          <div className="productCategory" style={{ width: "48%" }}>
+        {location.pathname === "/assignmentpanel" && (
+          <div className="productCategory" style={{ width: "100%" }}>
             <label htmlFor="" className="edit_fields_span">
               Designer Wise
             </label>
@@ -272,29 +302,65 @@ const AdminFilter = ({
               }))}
             /> */}
 
-<Select
-      showSearch
-      placeholder="-Select-"
-      optionFilterProp="children"
-      value={filterDesigner}
-      onChange={(value) => setFilterDesigner(value)}
-      onSearch={onSearch}
-      filterOption={filterOption}
-      style={{
-        width: '100%',
-        height: '40px',
-        zIndex: '9999999',
-        background: '#006E7F1A',
-      }}
-      notFoundContent={!isLoading ? "Nithin" : null}
-    >
-      {designers.map((designer) => (
-        <Option key={designer.name} value={designer.name}>
-          {designer.name}
-        </Option>
-      ))}
-    </Select>
-            
+            <Select
+              showSearch
+              placeholder="-Select-"
+              optionFilterProp="children"
+              value={filterDesigner}
+              onChange={(value) => setFilterDesigner(value)}
+              onSearch={onSearch}
+              filterOption={filterOption}
+              style={{
+                width: "100%",
+                height: "40px",
+                zIndex: "9999999",
+                background: "#006E7F1A",
+              }}
+              notFoundContent={!isLoading ? "Nithin" : null}
+            >
+              {designers.map((designer) => (
+                <Option key={designer.name} value={designer.name}>
+                  {designer.name}
+                </Option>
+              ))}
+            </Select>
+          </div>
+        )}
+
+        <div
+          className=""
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+          <div className="productCategory">
+            <label htmlFor="" className="edit_fields_span">
+              Product Category
+            </label>
+            <Select
+              showSearch
+              placeholder="-Select-"
+              optionFilterProp="children"
+              value={filterCategory}
+              onChange={(value) => setFilterCategory(value)}
+              onSearch={onSearch}
+              filterOption={filterOption}
+              style={{
+                width: "99%",
+                height: "40px",
+                zIndex: "9999999",
+                background: "#006E7F1A",
+              }}
+              options={productCategory.map((tag) => ({
+                label: tag.name,
+                value: tag.id,
+              }))}
+              notFoundContent={
+                isLoading && <CircularProgress style={{ width: "100px" }} />
+              }
+            />
           </div>
 
           <div className="productCategory" style={{ width: "48%" }}>
@@ -323,42 +389,85 @@ const AdminFilter = ({
           </div>
         </div>
 
-        <div
-          className=""
-          style={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
-          <div className="productCategory" style={{ width: "48%" }}>
-            <label htmlFor="" className="edit_fields_span">
-              Above Price Range
-            </label>
-            <input
-              value={filterMaxPrice}
-              onChange={(e) => setFilterMaxPrice(e.target.value)}
-              className="filter_input"
-              type="text"
-            />
-          </div>
-
+        {location.pathname === "/assignmentpanel" && (
           <div
-            className="productCategory"
-            style={{ width: "48%", flexDirection: "column" }}
+            className=""
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-between",
+            }}
           >
-            <label htmlFor="" className="edit_fields_span">
-              Below Price Range
-            </label>
-            <input
-              value={filterMinPrice}
-              onChange={(e) => setFilterMinPrice(e.target.value)}
-              className="filter_input"
-              type="text"
-            />
+            <div className="productCategory" style={{ width: "48%" }}>
+              <label htmlFor="" className="edit_fields_span">
+                Above Price Range
+              </label>
+              <input
+                value={filterMaxPrice}
+                onChange={(e) => setFilterMaxPrice(e.target.value)}
+                className="filter_input"
+                type="text"
+              />
+            </div>
+
+            <div
+              className="productCategory"
+              style={{ width: "48%", flexDirection: "column" }}
+            >
+              <label htmlFor="" className="edit_fields_span">
+                Below Price Range
+              </label>
+              <input
+                value={filterMinPrice}
+                onChange={(e) => setFilterMinPrice(e.target.value)}
+                className="filter_input"
+                type="text"
+              />
+            </div>
           </div>
-        </div>
-         { error && <span style={{color:"red",fontSize:"19px"}}>{error}</span>}
+        )}
+
+        {location.pathname === "/designpool" && (
+          <div
+            className=""
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <div className="productCategory" style={{ width: "48%" }}>
+              <label htmlFor="" className="edit_fields_span">
+                Min Like Count
+              </label>
+              <input
+                value={filterMinLike}
+                onChange={(e) => setFilterMinLike(e.target.value)}
+                className="filter_input"
+                type="number"
+              />
+            </div>
+
+            <div
+              className="productCategory"
+              style={{ width: "48%", flexDirection: "column" }}
+            >
+              <label htmlFor="" className="edit_fields_span">
+                Max Like Count
+              </label>
+              <input
+                value={filterMaxLike}
+                onChange={(e) => setFilterMaxLike(e.target.value)}
+                className="filter_input"
+                type="number"
+              />
+            </div>
+          </div>
+        )}
+
+        {error && (
+          <span style={{ color: "red", fontSize: "19px" }}>{error}</span>
+        )}
         <div
           className=""
           style={{

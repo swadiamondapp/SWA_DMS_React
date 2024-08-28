@@ -1,6 +1,6 @@
 import { apiService, checkApiStatus } from "../../Pages/Services/ApiInstants";
 import { setToLocalstorage } from "../../Pages/Utils/Common";
-import { CHOOSE_OUTLET_DROPDOWN, DIAMONDS_COLOR, DIAMOND_CLARITY, METAL_TYPE_DROPDOWN, OUTLET_DROP_DOWN_MASTER, PRODUCT_TYPE_DROPDOWN } from "../../Pages/Services/EndPoints";
+import { CHOOSE_OUTLET_DROPDOWN, DIAMONDS_COLOR, DIAMOND_CLARITY, METAL_TYPE_DROPDOWN, OUTLET_DROP_DOWN_MASTER, PRODUCT_CATEGORY_LIST, PRODUCT_TYPE_DROPDOWN } from "../../Pages/Services/EndPoints";
 
 export const metal_type_drop_down = async (
     setMetalTypeDropDown
@@ -19,7 +19,7 @@ export const metal_type_drop_down = async (
     setProductTypeDropDown
   ) => {
     try {
-      const response = await apiService.get(PRODUCT_TYPE_DROPDOWN);
+      const response = await apiService.get(PRODUCT_CATEGORY_LIST);
       if (checkApiStatus(response)) {
         setProductTypeDropDown(response.data.results.data);
       }

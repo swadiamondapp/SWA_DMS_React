@@ -200,3 +200,9 @@ export const DELETE_TRASFER_DATA = "transfer/delete/"
 
 export const RENDERS_REUPLOAD = "render/reupload/"
 export const DESIGNER_DASHBOARD_FILTER = "/upload-design/"
+export const DESIGNER_ASSIGNTO_FILTER = "list/myassigned-data/"
+export const REDNERS_FOLDER_ITEM = "innerproject/detailbydesigncode/"
+
+export const DESIGNPOOL_FILTER = "list-all-design/?not_assigned=true"
+
+export const DEATAILS_SATUS_UPDATE = "designer/action/render-img/"

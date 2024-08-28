@@ -4,7 +4,10 @@ import product from "../../assets/p1.png";
 // import "./assignmentviewsAll.css";
 import { LiaRupeeSignSolid } from "react-icons/lia";
 import { list_assignment_folder } from "../ADMIN PANEL/Design Pool/Api";
-import { FOLDER_DETAIL_API } from "../../Pages/Services/EndPoints";
+import {
+  DEATAILS_SATUS_UPDATE,
+  FOLDER_DETAIL_API,
+} from "../../Pages/Services/EndPoints";
 import axios from "axios";
 import {
   diamond_type_dropdown_basicDetails,
@@ -23,12 +26,18 @@ import {
   metal_type_drop_down,
   product_type_drop_down,
 } from "../ADMIN PANEL/Api_dropDown";
-import { detailsViewOfItems, detailsViewOfItemsRenders } from "./Api";
+import {
+  detailsViewOfItems,
+  detailsViewOfItemsRenders,
+  rendersDetailByCode,
+} from "./Api";
 import { GoDownload } from "react-icons/go";
 import ThreeDViewer from "../ThreeDViewer/ThreeDViewer";
 import InstructionModal from "../InstructionModal/InstructionModal";
 import ShareIcon from "../../assets/shareIcon.png";
 import { Select } from "antd";
+import { AiOutlineEdit } from "react-icons/ai";
+import { apiService, checkApiStatus } from "../../Pages/Services/ApiInstants";
 
 const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
   const location = useLocation();
@@ -53,6 +62,9 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
   const [DetailsData, setDetailsData] = useState([]);
   const [openModal, setOpenmodal] = useState(false);
   const [modalHeading, setmodalHeading] = useState("");
+  const [rendesrDetail, setRendesrDetail] = useState([]);
+  const [renderRemark, setRenderRemark] = useState("");
+  const [cadRemark, setCadRemark] = useState("");
 
   const handleopenModal = () => {
     setOpenmodal(!openModal);
@@ -74,9 +86,11 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
     // list_folderDetails(setIsLoading,setFolderDetails,id)
   }, [id, renderMessage]);
 
-  console.log(renderMessage, "renderMessage");
+  useEffect(() => {
+    rendersDetailByCode(setIsLoading, setRendesrDetail, detailsViewFolderName);
+  }, [id]);
 
-  console.log(cardDatas, "cardDatas");
+  console.log(renderMessage, "renderMessage");
 
   const handleDownload = (imageUrl, fileName = "downloaded_file") => {
     fetch(imageUrl, {
@@ -106,6 +120,12 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
     }
   }, [folderDetailView]);
   const { assignment_details, itemDetails } = folderDetails;
+
+  const productId = itemDetails?.id || "";
+  const productCode = itemDetails?.designcode || "";
+  // const designCode = itemDetails?.paper_design?.designcode || detailsViewFolderName ;
+
+  // console.log(detailsViewFolderName, "productId");
 
   const handleEditBasicDetails = () => {
     setIsOpen(true);
@@ -166,10 +186,6 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
     return item ? item.name : "Note Found";
   };
 
-  const handleChange = (value) => {
-    console.log(`selected ${value}`);
-  };
-
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const day = String(date.getDate()).padStart(2, "0");
@@ -179,9 +195,67 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
     return `${day} ${month} ${year}`;
   };
 
+  const initialStatuses = rendesrDetail?.images
+    ?.filter((imgObj) => {
+      const [key, value] = Object.entries(imgObj)[0] || [];
+      return value && !key.includes("_status");
+    })
+    .reduce((acc, imgObj) => {
+      const [key] = Object.entries(imgObj)[0];
+      const imgKey = key.replace(/\d+/g, ""); // Remove digits to match img status keys
+      acc[`${key}_status`] = "Pending"; // Default status
+      return acc;
+    }, {});
+
+  const [status, setStatus] = useState(initialStatuses);
+
+  
+  const updateImageStatuses = async () => {
+    const body = {
+      ...status,
+      remark: "" 
+    };
+    try {
+      setIsLoading(true);
+      const response = await apiService.patch(`${DEATAILS_SATUS_UPDATE}${detailsViewFolderName}`, body);
+      if (checkApiStatus(response)) {
+        setFolderDetailsView(response.data.results.data);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+
+  const handleChange = async (imgKey, value) => {
+    try{
+     await setStatus(prevStatus => {
+      const updatedStatus = {
+        ...prevStatus,
+        [`${imgKey}_status`]: value 
+      };
+      
+      return updatedStatus; 
+    });
+  
+    await updateImageStatuses(status);
+  }catch(error){
+    console.log(error)
+  }
+  };
+  
+  console.log("Initial", status);
+
+  // const handleChange = (value) => {
+  //   console.log(`selected ${value}`);
+  //   rendersImageStatusUpdate(setIsLoading,setFolderDetailsView,detailsViewFolderName,)
+  // };
+
   //   console.log(selectedTags, "fghjkl");
   //   console.log(itemDetails, "itemDetails");
-  // console.log(FindingsList,"finsdfasfd")
+  console.log(rendesrDetail?.images, "rendesrDetail");
   return (
     <div>
       <div
@@ -196,7 +270,7 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
                 alt=""
               />
             </div>
-            {page === "CADdetail"  && (
+            {page === "CADdetail" && (
               <div className="cad_uploaded_admin">
                 <div
                   className=""
@@ -314,7 +388,28 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
               <p>Edit</p>
             </div> */}
             <div className="Assignment_contents">
-              <h3>Basic details</h3>
+              <div
+                className=""
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "space-between",
+                }}
+              >
+                <h3>Basic details</h3>
+
+                <button
+                  className="btn_scan"
+                  onClick={() => handleEditBasicDetails()}
+                >
+                  <AiOutlineEdit
+                    style={{ color: "#0464D5" }}
+                    className="btn_scan_img1"
+                  />{" "}
+                  <span>Edit Details</span>
+                </button>
+              </div>
+
               <div className="Assignment_Details">
                 <div className="A1_text">
                   <p>Product Id</p>
@@ -421,137 +516,194 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
           </div>
         </div>
 
-{page === "CADdetail" && (
-        <div
-          className=""
-          handleopenModalRender
-          style={{
-            width: "100%",
-            display: "flex",
-            gap: "6px",
-            // flexWrap: "wrap",
-            flexDirection: "column",
-            height: "auto",
-          }}
-        >
+        {page === "CADdetail" && rendesrDetail && (
           <div
             className=""
-            style={{
-              width: "57%",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "end",
-              fontSize: "18px",
-            }}
-          >
-            <h4>Render Output file</h4>
-            <button
-              style={{
-                padding: "10px 16px 10px 16px",
-                background: "#0464D5",
-                color: "white",
-                borderRadius: "30px",
-                border: "none",
-                outline: "none",
-                fontSize: "16px",
-                fontWeight: "600",
-                cursor: "pointer",
-              }}
-              onClick={handleopenModalRender}
-            >
-              Add instraction
-            </button>
-          </div>
-
-          <div
-            className=""
+            handleopenModalRender
             style={{
               width: "100%",
               display: "flex",
               gap: "6px",
-              flexWrap: "wrap",
-              // flexDirection:"column",
+              // flexWrap: "wrap",
+              flexDirection: "column",
               height: "auto",
-              paddingBottom: "10px",
             }}
           >
             <div
-              className="finishedCardContainer2"
-              // key={index}
+              className=""
+              style={{
+                width: "57%",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "end",
+                fontSize: "18px",
+              }}
             >
-              <img
-                src={itemDetails?.paper_design?.image || itemDetails?.image}
-                alt="card_image"
-              />
-              <span className="postedOn">
-                POSTED ON:{" "}
-                <span className="postedOn_data">
-                  20-06-2024
-                  {/* {createdAt} */}
-                </span>
-              </span>
-              {/* <select name="" id=""
-                   style={{
-                    padding: "6px 6px 6px 2px",
-                    color: "#23A064",
-                    border: "1px solid #23A064",
-                    background: "#23A0641A",
-                    width: "auto",
-                    borderRadius: "32px",
-                    outline:"none"
-                  }}
-                  >
-                    <option value="">Pending</option>
-                    <option value="">Accepted</option>
-                    <option value="">Rejected</option>
-                  </select> */}
-              <Select
-                defaultValue="lucy"
+              <h4>Render Output file</h4>
+              <button
                 style={{
-                  width: 120,
-                  padding: "6px 6px 6px 2px",
-                  color: "#23A064",
-                  border: "1px solid #23A064",
-                  background: "#23A0641A",
-                  borderRadius: "32px"
+                  padding: "10px 16px 10px 16px",
+                  background: "#0464D5",
+                  color: "white",
+                  borderRadius: "30px",
+                  border: "none",
+                  outline: "none",
+                  fontSize: "16px",
+                  fontWeight: "600",
+                  cursor: "pointer",
                 }}
-                onChange={handleChange}
-                options={[
-                  {
-                    value: "jack",
-                    label: "Jack",
-                  },
-                  {
-                    value: "lucy",
-                    label: "Lucy",
-                  },
-                  {
-                    value: "Yiminghe",
-                    label: "Yiminghe",
-                  },
-                  {
-                    value: "disabled",
-                    label: "Disabled",
-                    disabled: true,
-                  },
-                ]}
-              />
+                onClick={handleopenModalRender}
+              >
+                Add instraction
+              </button>
+            </div>
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                gap: "4px",
+                flexWrap: "wrap",
+                height: "auto",
+                paddingBottom: "10px",
+              }}
+            >
+              {/* {rendesrDetail &&
+                rendesrDetail?.images?.map((imgObj, index) => {
+                  const imageUrl = Object.values(imgObj)[0];
+                  const createdAt = imgObj.created_at;
+                  console.log("imgurl---->", imageUrl);
+                  if (imageUrl) {
+                    return (
+                      <div className="finishedCardContainer2">
+                        <img src={imageUrl} alt="card_image" />
+                        <span className="postedOn">
+                          POSTED ON:{" "}
+                          <span className="postedOn_data">
+                            {new Date(createdAt).toLocaleDateString("en-GB")}{" "}
+                          </span>
+                        </span>
+                        <Select
+                          defaultValue="lucy"
+                          style={{
+                            width: 12  const initialStatuses = rendesrDetail?.images
+  ?.filter((imgObj) => {
+    const [key, value] = Object.entries(imgObj)[0] || [];
+    return value && !key.includes("_status");
+  })
+  .reduce((acc, imgObj) => {
+    const [key] = Object.entries(imgObj)[0];
+    const imgKey = key.replace(/\d+/g, ''); // Remove digits to match img status keys
+    acc[`${imgKey}_status`] = 'Pending'; // Default status
+    return acc;
+  }, {});
+
+const [status, setStatus] = useState(initialStatuses);
+
+// Update image statuses in the API
+const updateImageStatuses = async () => {
+  const body = {
+    ...status,
+    remark: "" // Add remark if needed
+  };
+
+  try {
+    setIsLoading(true);
+    const response = await apiService.post(`${DEATAILS_SATUS_UPDATE}${detailsViewFolderName}`, body);
+    if (checkApiStatus(response)) {
+      setFolderDetailsView(response.data.results.data);
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+const handleChange = (imgKey, value) => {
+  setStatus(prevStatus => ({
+    ...prevStatus,
+    [`${imgKey}_status`]: value
+  }));
+};
+
+console.log("Initial", status);0,
+                            padding: "6px 6px 6px 2px",
+                            color: "#23A064",
+                            border: "1px solid #23A064",
+                            background: "#23A0641A",
+                            borderRadius: "32px",
+                          }}
+                          onChange={handleChange}
+                          options={[
+                            { value: "jack", label: "Jack" },
+                            { value: "lucy", label: "Lucy" },
+                            { value: "Yiminghe", label: "Yiminghe" },
+                            {
+                              value: "disabled",
+                              label: "Disabled",
+                              disabled: true,
+                            },
+                          ]}
+                        />
+                      </div>
+                    );
+                  }
+                })} */}
+
+              {rendesrDetail?.images?.map((imgObj, index) => {
+                const [key, imageUrl] = Object.entries(imgObj)[0];
+                if (!imageUrl || key.includes("_status")) return null; 
+
+                return (
+                  <div key={index} className="finishedCardContainer2">
+                    <img src={imageUrl} alt="card_image" />
+                    <span className="postedOn">
+                      POSTED ON:{" "}
+                      <span className="postedOn_data">
+                        {new Date(imgObj.created_at).toLocaleDateString(
+                          "en-GB"
+                        )}
+                      </span>
+                    </span>
+                    <Select
+                      // value={status[`${key}_status`] || "Pending"}
+                      style={{
+                        width: 120,
+                        padding: "6px 6px 6px 2px",
+                        color: "#23A064",
+                        border: "1px solid #23A064",
+                        background: "#23A0641A",
+                        borderRadius: "32px",
+                      }}
+                      onChange={(value) => handleChange(key, value)}
+                      options={[
+                        { value: "Approved", label: "Approved" },
+                        { value: "Rejected", label: "Rejected" },
+                      ]}
+                    />
+                  </div>
+                );
+              })}
+
+              {/* <button onClick={updateImageStatuses}>Update Status</button> */}
+
+              {rendesrDetail.length === 0 && (
+                <span>No Renders uploaded Currespond to this Product</span>
+              )}
             </div>
           </div>
-        </div>
-         )}
+        )}
       </div>
-   
 
-
-      {/* <BasicDetailModal
+      <BasicDetailModal
         name={"editbasicDetails"}
         open={open}
         onClose={() => setIsOpen(false)}
         folderIdA={id}
-        designId={designId}
+        // designId={designId}
+        designId={productId}
         DetailsProductId={itemDetails?.paper_design?.designcode}
-        basicDetails={basicDetails}
+        basicDetails={assignment_details}
         updateEditFunction={() =>
           listFolderDetailVeiwAssignmentPanel(
             setIsLoading,
@@ -560,13 +712,15 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
             designId
           )
         }
-      /> */}
+      />
 
       {openModal && (
         <InstructionModal
           open={handleopenModal}
           setOpenmodal={setOpenmodal}
           modalHeading={modalHeading}
+          setCadRemark={setCadRemark}
+          setRenderRemark={setRenderRemark}
         />
       )}
     </div>

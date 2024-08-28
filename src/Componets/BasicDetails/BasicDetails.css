@@ -201,3 +201,28 @@
 .closeButtonImageBm img {
   width: 14px;
 }
+
+
+.modal_card_images {
+  position: absolute;
+  width: 78%; 
+  height: auto; 
+  /* background-color: red; */
+  left: 0; 
+  top: 0;
+  z-index: 1; 
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  padding: 6px;
+}
+
+.modal_edit_section{
+  position: absolute;
+  width: 22%;
+  height: auto;
+  padding: 4px;
+  right: 0;
+  border-radius: 6px 0px 0px 6px;
+  background-color: white;
+}

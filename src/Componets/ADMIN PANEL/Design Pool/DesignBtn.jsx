@@ -166,11 +166,11 @@ const DesignBtn = ({
         location.pathname === "/unassigneddesigner" ? { marginTop: "18px" } : {}
       }
     >
-      <div className="DesignPool_btns" style={{ position: "relative" }}>
-        {location.pathname === "/unassigneddesigner" && (
-          <h4 style={{ marginRight: "59%" }}>Not Started Assignements</h4>
+      <div className="DesignPool_btns" style={{ position: "relative",display:"flex",justifyContent:"end" }}>
+      {location.pathname === "/unassigneddesigner" && (
+          <h4 style={{ marginRight: "59%" }}>Not Started Assignments</h4>
         )}
-        <div
+        {/* <div
           className=""
           style={{
             display: "flex",
@@ -179,11 +179,10 @@ const DesignBtn = ({
             right: "0%",
             top: "-10px",
           }}
-        >
+        > */}
           {location.pathname === "/designpool" &&
             SelectedIdsForDelet.length > 0 && (
-              <div className="Download_ParentD" 
-              >
+              <div className="Download_ParentD">
                 <button
                   className="D_downlodBtn"
                   style={{ background: "red" }}
@@ -193,7 +192,6 @@ const DesignBtn = ({
                 </button>
               </div>
             )}
-
           {location.pathname !== "/assignmentpanel" &&
             location.pathname !== "/designdashboard" &&
             location.pathname !== "/designerassignview" &&
@@ -218,7 +216,6 @@ const DesignBtn = ({
                 )}
               </div>
             )}
-
           {location.pathname !== "/designdashboard" &&
             location.pathname !== "/votorscustomization" &&
             location.pathname !== "/unassigneddesigner" &&
@@ -241,19 +238,18 @@ const DesignBtn = ({
                   Move to <MdOutlineKeyboardArrowDown />
                 </button>
                 {showMoveOptions && (
-                  <div className="Sub_AssignmentPanel">
                     <Link
-                      style={{ textDecoration: "none" }}
-                      // to="/assignmentpanel"
+                      style={{ textDecoration: "none",cursor:"pointer" }}
                     >
+                  <div className="Sub_AssignmentPanel">
                       <p
                         style={{ color: "#000" }}
                         onClick={() => moveSelectedDesign()}
                       >
                         Assignment panel
                       </p>
-                    </Link>
                   </div>
+                    </Link>
                 )}
               </div>
             )}
@@ -269,7 +265,6 @@ const DesignBtn = ({
                 </button>
               </div>
             )}
-
           {location.pathname === "/assignmentpanel" &&
             selectedAssignment.length > 0 &&
             selectButtonLabel === "Unselect" && (
@@ -279,7 +274,6 @@ const DesignBtn = ({
                 </button>
               </div>
             )}
-
           {location.pathname !== "/votorscustomization" &&
             location.pathname !== "/assignmentpanel" &&
             location.pathname !== "/unassigneddesigner" &&
@@ -316,7 +310,6 @@ const DesignBtn = ({
                 )}
               </button>
             )}
-
           {location.pathname === "/designdashboard" && (
             <button
               //  onClick={handleSort}
@@ -326,7 +319,6 @@ const DesignBtn = ({
               <LuArrowUpDown /> Sort
             </button>
           )}
-
           {location.pathname === "/assignmentpanel" && (
             <button
               onClick={handleSort}
@@ -358,14 +350,25 @@ const DesignBtn = ({
               )}
             </button>
           )}
-          {location.pathname === `/designdashboard` && (
-            <button className="D_View_Sort_Filter"   onClick={handleFilderModal} >
+          
+          {location.pathname === `/unassigneddesigner` && (
+            <button className="D_View_Sort_Filter" onClick={handleFilderModal}>
               <RiFilter3Line /> Filter
             </button>
           )}
-
+           
+          {location.pathname === `/designdashboard` && (
+            <button className="D_View_Sort_Filter" onClick={handleFilderModal}>
+              <RiFilter3Line /> Filter
+            </button>
+          )}
           {location.pathname === `/designerassignview/${id}` && (
             <button className="D_View_Sort_Filter" onClick={handleFilderModal}>
+              <RiFilter3Line /> Filter
+            </button>
+          )}
+          {location.pathname === `/designpool` && (
+            <button className="D_View_Sort_Filter" onClick={handleFilter}>
               <RiFilter3Line /> Filter
             </button>
           )}
@@ -382,7 +385,7 @@ const DesignBtn = ({
               Create Customization
             </button>
           )}
-        </div>
+        {/* </div> */}
       </div>
       <BasicDetailModal
         open={open}

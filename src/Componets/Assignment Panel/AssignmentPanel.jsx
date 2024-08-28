@@ -281,13 +281,13 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
         <div className="AssignmentPanel_FileUpload" style={{ padding: "10px" }}>
           {uploadInstructionsVisible && !uploadedImage && (
             <>
-              <p>Create new assignment</p>
-              <p>You can create Assignment directly</p>
+              <p>Direct Selection</p>
+              <p>Admin can select</p>
               <span
                 className="assignmentPanal_upload_text"
                 onClick={handleAdminBasicModal}
               >
-                Create Assignment
+                Directly Selection
               </span>
             </>
           )}

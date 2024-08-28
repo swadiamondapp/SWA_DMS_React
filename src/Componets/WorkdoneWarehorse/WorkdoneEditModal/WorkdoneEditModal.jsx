@@ -287,7 +287,8 @@ const WorkdoneEditModal = ({
                 <div className="workdone_modal">
                   <span>Length</span>
                   <input
-                    type="number"
+                  style={{background:"white",padding:"6px 0px"}}
+                    type="text"
                     onChange={handleInput}
                     value={formData.length}
                     name="length"
@@ -298,7 +299,8 @@ const WorkdoneEditModal = ({
                 <div className="workdone_modal">
                   <span>Width</span>
                   <input
-                    type="number"
+                  style={{background:"white",padding:"6px 0px"}}
+                    type="text"
                     onChange={handleInput}
                     value={formData.width}
                     name="width"
@@ -309,7 +311,8 @@ const WorkdoneEditModal = ({
                 <div className="workdone_modal">
                   <span>Height</span>
                   <input
-                    type="number"
+                  style={{background:"white",padding:"6px 0px"}}
+                    type="text"
                     onChange={handleInput}
                     value={formData.height}
                     name="height"
@@ -326,7 +329,7 @@ const WorkdoneEditModal = ({
                     onChange={(value) =>
                       handleSelectChange(value, "type_of_metal")
                     }
-                    style={{ width: "50%" }}
+                    style={{ width: "46%" }}
                     options={MetalTypeDropDown.map((item) => ({
                       value: item.id,
                       label: item.metal_name,
@@ -345,7 +348,7 @@ const WorkdoneEditModal = ({
                     }
                     onSearch={onSearch}
                     filterOption={filterOption}
-                    style={{ width: "50%" }}
+                    style={{ width: "46%" }}
                     options={diamonType.map((item) => ({
                       value: item.id,
                       label: item.name,
@@ -363,7 +366,8 @@ const WorkdoneEditModal = ({
                 <div className="workdone_modal">
                   <span>APPROX DIAMOND WEIGHT</span>
                   <input
-                    type="number"
+                  style={{background:"white",padding:"6px 0px"}}
+                    type="text"
                     onChange={handleInput}
                     value={formData.approx_diamond_weight}
                     name="approx_diamond_weight"
@@ -381,7 +385,7 @@ const WorkdoneEditModal = ({
                     onChange={(value) => handleSelectChange2(value, "findings")}
                     onSearch={onSearch}
                     filterOption={filterOption}
-                    style={{ width: "50%" }}
+                    style={{ width: "46%" }}
                     options={findings.map((item) => ({
                       value: item.id,
                       label: item.find_name,
@@ -392,7 +396,8 @@ const WorkdoneEditModal = ({
                 <div className="workdone_modal">
                   <span>Approx weight</span>
                   <input
-                    type="number"
+                  style={{background:"white",padding:"6px 0px"}}
+                    type="text"
                     onChange={handleInput}
                     value={formData.approx_metal_weight}
                     name="approx_metal_weight"
@@ -413,7 +418,7 @@ const WorkdoneEditModal = ({
                       onSearch={onSearch}
                       filterOption={filterOption}
                       // style={{ width: "100%", background: "none" }}
-                      style={{ width: "50%" }}
+                      style={{ width: "46%" }}
                       options={tags.map((item) => ({
                         value: item.id,
                         label: item.name,
@@ -438,6 +443,7 @@ const WorkdoneEditModal = ({
                 >
                   <span>Note</span>
                   <textarea
+                  style={{background:"white"}}
                     name="notes"
                     onChange={handleInput}
                     value={formData.notes}

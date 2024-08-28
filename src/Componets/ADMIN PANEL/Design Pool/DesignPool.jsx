@@ -49,6 +49,16 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
   const [SelectedIdsForDelet, setSelectedIdsForDelet] = useState([]);
   const assignmentDownRef = useRef(null); // Ref for the dropdown element
   const clickedInsideRef = useRef(false);
+  
+
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [filterTag, setFilterTag] = useState("");
+  const [filterCategory, setFilterCategory] = useState("");
+  const [filterDesigner, setFilterDesigner] = useState("");
+  const [filterMaxLike, setFilterMaxLike] = useState("");
+  const [filterMinLike, setFilterMinLike] = useState("");
+  const [dd, setDd] = useState();
 
   const [filter, setFilter] = useState(false);
   const [value, setValue] = React.useState("1");
@@ -376,6 +386,7 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
               />
             </div>
           )}
+          
 
           {isLoading !== true && Data.length === 0 && (
             <div
@@ -466,7 +477,7 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
           </div>
           </div>
             </TabPanel>
-            <TabPanel value="2" className="folders_tabpanel">
+            <TabPanel vafilterMinLikelue="2" className="folders_tabpanel">
             <div className="Parent_unvoted">
             <h3 className="HeadNewdesign">
               Unvoted (&nbsp; {unvotedData.length}&nbsp; )
@@ -546,7 +557,29 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
       />
       <BasicDetailModal />
 
-      {filter && <AdminFilter filter={filter} setFilter={setFilter}  setData={setData}/>}
+      {filter && (
+                  <AdminFilter
+                    filter={filter}
+                    setFilter={setFilter}
+                    setData={setData}
+                    startDate={startDate}
+                    setStartDate={setStartDate}
+                    endDate={endDate}
+                    setEndDate={setEndDate}
+                    filterTag={filterTag}
+                    setFilterTag={setFilterTag}
+                    filterCategory={filterCategory}
+                    setFilterCategory={setFilterCategory}
+                    filterDesigner={filterDesigner}
+                    setFilterDesigner={setFilterDesigner}
+                    filterMaxLike={filterMaxLike}
+                    setFilterMaxLike={setFilterMaxLike}
+                    filterMinLike={filterMinLike}
+                    setFilterMinLike={setFilterMinLike}
+                    setDd={setDd}
+                    dd={dd}
+                  />
+                )}
     </div>
   );
 };
