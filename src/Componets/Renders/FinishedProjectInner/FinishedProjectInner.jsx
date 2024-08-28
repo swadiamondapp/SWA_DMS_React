@@ -31,7 +31,7 @@ const FinishedProjectInner = (props) => {
 
   const handleopenModal = () => {
     setOpenmodal(!openModal);
-    setmodalHeading("Add Render Instractions");
+    setmodalHeading("Render Instractions");
     setmodalTitle("instraction");
   };
 
@@ -42,8 +42,7 @@ const FinishedProjectInner = (props) => {
   const productId = props?.folderItem[0]?.designcode;
   const id = props?.id;
 
-  
-  console.log(location.pathname,"pathname")
+  console.log(location.pathname, "pathname");
 
   return (
     <div
@@ -82,7 +81,6 @@ const FinishedProjectInner = (props) => {
             />
           </div>
 
-      
           <button
             style={{
               display: "flex",
@@ -102,7 +100,6 @@ const FinishedProjectInner = (props) => {
             View Instraction{" "}
             <IoEye style={{ color: "white", fontSize: "20px" }} />
           </button>
-
         </div>
       )}
 
@@ -111,6 +108,10 @@ const FinishedProjectInner = (props) => {
           props?.folderItem[0]?.images?.map((imgObj, index) => {
             const imageUrl = Object.values(imgObj)[0];
             const createdAt = imgObj.created_at;
+            const statusKey = Object.keys(imgObj).find((key) =>
+              key.endsWith("_status")
+            );
+            const statusValue = imgObj[statusKey];
             {
               console.log(imageUrl, "imageUrl");
             }
@@ -133,7 +134,7 @@ const FinishedProjectInner = (props) => {
                       borderRadius: "32px",
                     }}
                   >
-                    Approved
+                    {statusValue}
                   </button>
                   <div>
                     <button className="shareButton_finished">
@@ -169,6 +170,7 @@ const FinishedProjectInner = (props) => {
             setOpenmodal={setOpenmodal}
             modalHeading={modalHeading}
             modalTitle={modalTitle}
+            renderData={props?.folderItem[0]?.remark}
           />
         )}
       </div>

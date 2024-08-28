@@ -11,23 +11,33 @@ import fileDownload from "js-file-download";
 import { CircularProgress } from "@mui/material";
 import ThreeDViewer from "../../ThreeDViewer/ThreeDViewer";
 import InstructionModal from "../../InstructionModal/InstructionModal";
+import { Select } from "antd";
+import { Cad2DUpdateImage, Cad3DUpdateImage } from "../../AssignmentDetailsViewsAll/Api";
+import SuccessModal from "../../SuccessModal/SuccessModal";
 
 const FolderDetailsCard = ({
   folderDetails,
   setIsModalOpen,
   sidebarExpanded,
   setImages,
-  isLoading,
+  // isLoading,
 }) => {
   const printRef = useRef();
   const [openModal, setOpenmodal] = useState(false);
   const [modalHeading, setmodalHeading] = useState("");
   const [modalTitle, setmodalTitle] = useState("");
+  const [file2d_status, setFile2d_status] = useState("");
+  const [file3d_status, setFile3d_status] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [successModalOpen, setSuccessModalOpen] = useState(false);
+
+
+  console.log("file2d_status", file2d_status);
 
   const handleopenModal = () => {
     setOpenmodal(!openModal);
-    setmodalHeading("cad Instractions");
-    setmodalTitle("instraction")
+    setmodalHeading("CAD Instractions");
+    setmodalTitle("instraction");
   };
 
   const handlePrint = useReactToPrint({
@@ -80,8 +90,31 @@ const FolderDetailsCard = ({
     return `${day} ${month} ${year}`;
   }
 
-  console.log("folderDetails?.file_3d", folderDetails?.file_3d);
+  const handle2DChange = async (value) => {
+    setFile2d_status(value);
+    let updatedStatus = value
 
+    await Cad2DUpdateImage(
+      setIsLoading,
+      updatedStatus,
+      folderDetails?.designcode,
+      setSuccessModalOpen
+    );
+  };
+
+  const handle3DChange = async (value) => {
+    setFile3d_status(value);
+    let updatedStatus = value
+
+    await Cad3DUpdateImage(
+      setIsLoading,
+      updatedStatus,
+      folderDetails?.designcode,
+      setSuccessModalOpen
+    );
+  };
+
+ 
   return (
     <div
       className="ParentCad"
@@ -97,7 +130,7 @@ const FolderDetailsCard = ({
           gap: "10px",
         }}
       >
-        <div className="Design_FileUpload" style={{width:"100%"}}>
+        <div className="Design_FileUpload" style={{ width: "100%" }}>
           <div>
             <p className="D__fileUpload">Reupload</p>
             <p className="D__fileUpload2">
@@ -184,24 +217,27 @@ const FolderDetailsCard = ({
                     <GoDownload />
                   </button>
 
-                  <select
-                    name=""
-                    id=""
+                  <Select
+                    value={
+                      file2d_status
+                        ? file2d_status
+                        : folderDetails?.file2d_status
+                    }
                     style={{
-                      padding: "6px 6px 6px 6px",
+                      width: 120,
+                      padding: "6px 6px 6px 2px",
                       color: "#23A064",
                       border: "1px solid #23A064",
                       background: "#23A0641A",
-                      width: "auto",
                       borderRadius: "32px",
-                      outline: "none",
                       marginTop: "13px",
                     }}
-                  >
-                    <option value="">Pending</option>
-                    <option value="">Accepted</option>
-                    <option value="">Rejected</option>
-                  </select>
+                    onChange={(value) => handle2DChange(value)}
+                    options={[
+                      { value: "Approved", label: "Approved" },
+                      { value: "Rejected", label: "Rejected" },
+                    ]}
+                  />
                 </div>
               </div>
             </div>
@@ -229,7 +265,7 @@ const FolderDetailsCard = ({
                     DOWNLOAD
                     <GoDownload />
                   </button>
-                  <select
+                  {/* <select
                     name=""
                     id=""
                     style={{
@@ -240,13 +276,34 @@ const FolderDetailsCard = ({
                       width: "auto",
                       borderRadius: "32px",
                       outline: "none",
-                      marginTop: "13px",
+                      
                     }}
                   >
                     <option value="">Pending</option>
                     <option value="">Accepted</option>
                     <option value="">Rejected</option>
-                  </select>
+                  </select> */}
+                  <Select
+                    value={
+                      file3d_status
+                        ? file3d_status
+                        : folderDetails?.file3d_status
+                    }
+                    style={{
+                      width: 120,
+                      padding: "6px 6px 6px 2px",
+                      color: "#23A064",
+                      border: "1px solid #23A064",
+                      background: "#23A0641A",
+                      borderRadius: "32px",
+                      marginTop: "13px",
+                    }}
+                    onChange={(value) => handle3DChange(value)}
+                    options={[
+                      { value: "Approved", label: "Approved" },
+                      { value: "Rejected", label: "Rejected" },
+                    ]}
+                  />
                 </div>
               </div>
             </div>
@@ -254,15 +311,20 @@ const FolderDetailsCard = ({
         </div>
       </div>
 
-
       {openModal && (
-          <InstructionModal
-            open={handleopenModal}
-            setOpenmodal={setOpenmodal}
-            modalHeading={modalHeading}
-            modalTitle={modalTitle}
-          />
-        )}
+        <InstructionModal
+          open={handleopenModal}
+          setOpenmodal={setOpenmodal}
+          modalHeading={modalHeading}
+          modalTitle={modalTitle}
+          remarkData={folderDetails?.remark}
+        />
+      )}
+
+      <SuccessModal
+        successModalOpen={successModalOpen}
+        successMessage={"Status Updated successfully"}
+      />
     </div>
   );
 };

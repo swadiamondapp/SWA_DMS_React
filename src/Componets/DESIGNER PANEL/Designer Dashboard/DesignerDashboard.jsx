@@ -254,7 +254,7 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
                               className=""
                               style={{ display: "flex", gap: "5px" }}
                             >
-                              <span style={{ color: "#23A064" }}>Status :</span>
+                              <span style={{ color: "#23A064", fontSize:"13px" }}>Status : <span style={{ color: "black", fontSize:"12px" }}>{item.timer_status} - {item.timer_value}</span></span>
                               <span>{item.current_status || ""}</span>
                             </div>
                             <div className="Card_Details_Inner">

@@ -1,6 +1,8 @@
 import { apiService, checkApiStatus } from "../../Pages/Services/ApiInstants";
 import {
   ALL_ITEMS_DETAILS_VIEW,
+  CAD_IMAGE_SATUS_UPDATE,
+  DEATAILS_CAD_SATUS_UPDATE,
   DEATAILS_SATUS_UPDATE,
   REDNERS_DETAILS_VIEW,
   REDNERS_FOLDER_ITEM,
@@ -51,18 +53,101 @@ export const rendersDetailByCode = async (
 export const updateImageStatuses = async (
   setIsLoading,
   status,
-  remark,
   setFolderDetailsView,
-  detailsViewFolderName
+  detailsViewFolderName,
+  setRendesrDetail,
+  setSuccessModalOpen
 ) => {
   debugger
   const body = {
-    status,
-    remark: "" 
+    ...status,
   };
   try {
     setIsLoading(true);
     const response = await apiService.patch(`${DEATAILS_SATUS_UPDATE}${detailsViewFolderName}`, body);
+    if (checkApiStatus(response)) {
+      setSuccessModalOpen(true)
+      rendersDetailByCode(setIsLoading,setFolderDetailsView,detailsViewFolderName)
+      // setRendesrDetail(response.data.results.data);
+      setTimeout(() => {
+        setSuccessModalOpen(false)
+      }, 2000);
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+export const addRenderRemark = async (
+  setIsLoading,
+  renderRemark,
+  setSuccessModalOpen,
+  detailsViewFolderName,
+  setOpenmodal
+) => {
+  const body = {
+    remark:renderRemark 
+  };
+  try {
+    setIsLoading(true);
+    const response = await apiService.patch(`${DEATAILS_SATUS_UPDATE}${detailsViewFolderName}`, body);
+    if (checkApiStatus(response)) {
+      setOpenmodal(false)
+      setSuccessModalOpen(true)
+      setTimeout(() => {
+        setSuccessModalOpen(false)
+      }, 2000);
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setIsLoading(false);
+  }
+};
+ 
+export const addCadRemark = async (
+  setIsLoading,
+  cadRemark,
+  setSuccessModalOpen,
+  detailsViewFolderName,
+  setOpenmodal
+) => {
+  const body = {
+    remark:cadRemark 
+  };
+  try {
+    setIsLoading(true);
+    const response = await apiService.patch(`${DEATAILS_CAD_SATUS_UPDATE}${detailsViewFolderName}`, body);
+    if (checkApiStatus(response)) {
+      setOpenmodal(false)
+      setSuccessModalOpen(true)
+      setTimeout(() => {
+        setSuccessModalOpen(false)
+      }, 2000);
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+export const updateCadImageStatuses = async (
+  setIsLoading,
+  status,
+  remark,
+  setFolderDetailsView,
+  detailsViewFolderName
+) => {
+  const body = {
+    ...status,
+    remark: "" 
+  };
+  try {
+    setIsLoading(true);
+    const response = await apiService.patch(`${DEATAILS_CAD_SATUS_UPDATE}${detailsViewFolderName}`, body);
     if (checkApiStatus(response)) {
       setFolderDetailsView(response.data.results.data);
     }
@@ -72,4 +157,53 @@ export const updateImageStatuses = async (
     setIsLoading(false);
   }
 };
- 
+
+export const Cad2DUpdateImage = async (
+  setIsLoading,
+  status,
+  designcode,
+  setSuccessModalOpen
+) => {
+  const body = {
+    file2d_status:status
+  };
+  try {
+    setIsLoading(true);
+    const response = await apiService.patch(`${CAD_IMAGE_SATUS_UPDATE}${designcode}`, body);
+    if (checkApiStatus(response)) {
+      setSuccessModalOpen(true)
+      setTimeout(() => {
+        setSuccessModalOpen(false)
+      }, 2000);
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+export const Cad3DUpdateImage = async (
+  setIsLoading,
+  status,
+  designcode,
+  setSuccessModalOpen
+) => {
+  const body = {
+    file3d_status:status
+  };
+  try {
+    setIsLoading(true);
+    const response = await apiService.patch(`${CAD_IMAGE_SATUS_UPDATE}${designcode}`, body);
+    if (checkApiStatus(response)) {
+      setSuccessModalOpen(true)
+      setTimeout(() => {
+        setSuccessModalOpen(false)
+      }, 2000);
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setIsLoading(false);
+  }
+};
