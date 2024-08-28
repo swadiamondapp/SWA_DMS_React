@@ -30,6 +30,7 @@ import {
   detailsViewOfItems,
   detailsViewOfItemsRenders,
   rendersDetailByCode,
+  updateImageStatuses,
 } from "./Api";
 import { GoDownload } from "react-icons/go";
 import ThreeDViewer from "../ThreeDViewer/ThreeDViewer";
@@ -38,6 +39,7 @@ import ShareIcon from "../../assets/shareIcon.png";
 import { Select } from "antd";
 import { AiOutlineEdit } from "react-icons/ai";
 import { apiService, checkApiStatus } from "../../Pages/Services/ApiInstants";
+import SuccessModal from "../SuccessModal/SuccessModal";
 
 const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
   const location = useLocation();
@@ -63,8 +65,9 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
   const [openModal, setOpenmodal] = useState(false);
   const [modalHeading, setmodalHeading] = useState("");
   const [rendesrDetail, setRendesrDetail] = useState([]);
-  const [renderRemark, setRenderRemark] = useState("");
-  const [cadRemark, setCadRemark] = useState("");
+  const [successModalOpen, setSuccessModalOpen] = useState(false);
+  // const [renderRemark, setRenderRemark] = useState("");
+  // const [cadRemark, setCadRemark] = useState("");
 
   const handleopenModal = () => {
     setOpenmodal(!openModal);
@@ -89,8 +92,6 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
   useEffect(() => {
     rendersDetailByCode(setIsLoading, setRendesrDetail, detailsViewFolderName);
   }, [id]);
-
-  console.log(renderMessage, "renderMessage");
 
   const handleDownload = (imageUrl, fileName = "downloaded_file") => {
     fetch(imageUrl, {
@@ -202,60 +203,55 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
     })
     .reduce((acc, imgObj) => {
       const [key] = Object.entries(imgObj)[0];
-      const imgKey = key.replace(/\d+/g, ""); // Remove digits to match img status keys
-      acc[`${key}_status`] = "Pending"; // Default status
+      const imgKey = key.replace(/\d+/g, "");
+      acc[`${key}_status`] = "Pending";
       return acc;
     }, {});
 
   const [status, setStatus] = useState(initialStatuses);
 
-  
-  const updateImageStatuses = async () => {
-    const body = {
-      ...status,
-      remark: "" 
-    };
-    try {
-      setIsLoading(true);
-      const response = await apiService.patch(`${DEATAILS_SATUS_UPDATE}${detailsViewFolderName}`, body);
-      if (checkApiStatus(response)) {
-        setFolderDetailsView(response.data.results.data);
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  
-
   const handleChange = async (imgKey, value) => {
-    try{
-     await setStatus(prevStatus => {
-      const updatedStatus = {
+    let updatedStatus;
+    setStatus((prevStatus) => {
+      updatedStatus = {
         ...prevStatus,
-        [`${imgKey}_status`]: value 
+        [`${imgKey}_status`]: value,
       };
-      
-      return updatedStatus; 
+      return updatedStatus;
     });
-  
-    await updateImageStatuses(status);
-  }catch(error){
-    console.log(error)
-  }
-  };
-  
-  console.log("Initial", status);
 
-  // const handleChange = (value) => {
-  //   console.log(`selected ${value}`);
-  //   rendersImageStatusUpdate(setIsLoading,setFolderDetailsView,detailsViewFolderName,)
+    await updateImageStatuses(
+      setIsLoading,
+      updatedStatus,
+      setFolderDetailsView,
+      detailsViewFolderName,
+      setRendesrDetail,
+      setSuccessModalOpen
+    );
+  };
+
+  // const updateImageStatuses = async (updatedStatus) => {
+  //   const body = {
+  //     ...updatedStatus,
+  //     remark: ""
+  //   };
+  //   try {
+  //     setIsLoading(true);
+  //     const response = await apiService.patch(`${DEATAILS_SATUS_UPDATE}${detailsViewFolderName}`, body);
+  //     if (checkApiStatus(response)) {
+  //       setFolderDetailsView(response.data.results.data);
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
   // };
 
-  //   console.log(selectedTags, "fghjkl");
-  //   console.log(itemDetails, "itemDetails");
+  console.log("cardDatas", cardDatas);
+
   console.log(rendesrDetail?.images, "rendesrDetail");
+
   return (
     <div>
       <div
@@ -340,7 +336,7 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
                         borderRadius: "32px",
                       }}
                     >
-                      Approved
+                      {cardDatas[0]?.file2d_status}
                     </button>
                   </div>
                   <div
@@ -372,7 +368,7 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
                         borderRadius: "32px",
                       }}
                     >
-                      Approved
+                      {cardDatas[0]?.file3d_status}
                     </button>
                   </div>
                 </div>
@@ -428,15 +424,15 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
                 </div>
                 <div className="A1_text">
                   <p>Length</p>
-                  <p>{assignment_details?.length} mm </p>
+                  <p>{assignment_details?.length} </p>
                 </div>
                 <div className="A1_text">
                   <p>Width</p>
-                  <p>{assignment_details?.width} mm</p>
+                  <p>{assignment_details?.width} </p>
                 </div>
                 <div className="A1_text">
                   <p>Height</p>
-                  <p>{assignment_details?.height} mm</p>
+                  <p>{assignment_details?.height} </p>
                 </div>
                 <div className="A1_text">
                   <p>Type of metal</p>
@@ -651,8 +647,15 @@ console.log("Initial", status);0,
                 })} */}
 
               {rendesrDetail?.images?.map((imgObj, index) => {
-                const [key, imageUrl] = Object.entries(imgObj)[0];
-                if (!imageUrl || key.includes("_status")) return null; 
+                const [imageKey, imageUrl] = Object.entries(imgObj).find(
+                  ([key, value]) =>
+                    key.startsWith("img") && !key.endsWith("_status")
+                );
+
+                const statusKey = `${imageKey}_status`;
+                const statusValue = imgObj[statusKey];
+
+                if (!imageUrl) return null;
 
                 return (
                   <div key={index} className="finishedCardContainer2">
@@ -666,7 +669,7 @@ console.log("Initial", status);0,
                       </span>
                     </span>
                     <Select
-                      // value={status[`${key}_status`] || "Pending"}
+                      value={statusValue}
                       style={{
                         width: 120,
                         padding: "6px 6px 6px 2px",
@@ -675,7 +678,7 @@ console.log("Initial", status);0,
                         background: "#23A0641A",
                         borderRadius: "32px",
                       }}
-                      onChange={(value) => handleChange(key, value)}
+                      onChange={(value) => handleChange(imageKey, value)}
                       options={[
                         { value: "Approved", label: "Approved" },
                         { value: "Rejected", label: "Rejected" },
@@ -719,10 +722,21 @@ console.log("Initial", status);0,
           open={handleopenModal}
           setOpenmodal={setOpenmodal}
           modalHeading={modalHeading}
-          setCadRemark={setCadRemark}
-          setRenderRemark={setRenderRemark}
+          setSuccessModalOpen={setSuccessModalOpen}
+          setIsLoading={setIsLoading}
+          detailsViewFolderName={detailsViewFolderName}
+          // setCadRemark={setCadRemark}
+          // setRenderRemark={setRenderRemark}
+          // renderRemark={renderRemark}
         />
       )}
+
+      <SuccessModal
+        successModalOpen={successModalOpen}
+        // handleOpen={handleOpen}
+        // handleClose={handleClose}
+        successMessage={"Updated Successfully"}
+      />
     </div>
   );
 };

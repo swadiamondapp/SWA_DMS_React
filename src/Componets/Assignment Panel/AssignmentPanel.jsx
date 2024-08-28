@@ -406,7 +406,7 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
                                 style={{ display: "flex", gap: "5px" }}
                               >
                                 <span style={{ color: "#23A064" }}>
-                                  Status :
+                                  Status : <span style={{ color: "black", fontSize:"12px" }}>{item.timer_status} - {item.timer_value}</span>
                                 </span>
                                 <span>{item.current_status || ""}</span>
                               </div>
