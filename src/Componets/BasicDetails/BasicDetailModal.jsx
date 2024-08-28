@@ -178,27 +178,45 @@ const BasicDetailModal = ({
       "array.empty": "Product category cannot be empty",
       "array.min": "Product category cannot be empty",
     }),
-    approxDiamondWeight: Joi.string()
-      .custom((value, helpers) => {
-        if (value === "0") {
-          return helpers.message("cannot be zero");
-        }
-        return value;
-      })
+approxDiamondWeight: Joi.alternatives()
+      .try(
+        Joi.number().custom((value, helpers) => {
+          if (value === 0) {
+            return helpers.message("cannot be zero");
+          }
+          return value;
+        }),
+        Joi.string().custom((value, helpers) => {
+          if (value === "0") {
+            return helpers.message("cannot be zero");
+          }
+          return value;
+        })
+      )
       .required()
       .messages({
-        "string.empty": `cannot be empty`,
+        "alternatives.match": "must be a valid number or string",
+        "string.empty": "cannot be empty",
       }),
-    approxMetalWeights: Joi.string()
-      .custom((value, helpers) => {
-        if (value === "0") {
-          return helpers.message("cannot be zero");
-        }
-        return value;
-      })
+    approxMetalWeights: Joi.alternatives()
+      .try(
+        Joi.number().custom((value, helpers) => {
+          if (value === 0) {
+            return helpers.message("cannot be zero");
+          }
+          return value;
+        }),
+        Joi.string().custom((value, helpers) => {
+          if (value === "0") {
+            return helpers.message("cannot be zero");
+          }
+          return value;
+        })
+      )
       .required()
       .messages({
-        "string.empty": `cannot be empty`,
+        "alternatives.match": "must be a valid number or string",
+        "string.empty": "cannot be empty",
       }),
     approxMRP: Joi.number().required().messages({
       "number.base": "Approximate MRP must be a number",
@@ -433,6 +451,36 @@ const BasicDetailModal = ({
     formData.diamondType,
     formData.typeOfMetal,
   ]);
+  useEffect(() => {
+    if (name === "editbasicDetails" && basicDetails) {
+      // Update selected IDs based on basicDetails
+      setSelectedMetalId(Number(basicDetails.type_of_metal));
+      setSelectedDiamondId(Number(basicDetails.diamond_type));
+
+      // Call calculation if all values are present
+      if (
+        formData.approxMetalWeights &&
+        formData.approxDiamondWeight &&
+        basicDetails.type_of_metal &&
+        basicDetails.diamond_type
+      ) {
+        CalculateApproxAmount();
+      }
+    }
+  }, [
+    name,
+    basicDetails,
+    formData.approxMetalWeights,
+    formData.approxDiamondWeight,
+  ]);
+
+  console.log(
+    SelectedMetalId,
+    SelectedDiamondId,
+    formData.approxMetalWeights,
+    formData.approxDiamondWeight,
+    "metalId=diamondId+metalW=diamonW"
+  );
 
   useEffect(() => {
     if (CalculationData) {
@@ -551,7 +599,7 @@ const BasicDetailModal = ({
                       className="closeButtonImageBm"
                       onClick={handleCLoseButton}
                     >
-                      <img
+ <img
                         src={closeButtonBM}
                         alt=""
                         style={{ cursor: "pointer" }}
