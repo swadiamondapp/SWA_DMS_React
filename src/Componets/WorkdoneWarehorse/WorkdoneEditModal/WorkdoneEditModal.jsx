@@ -182,19 +182,19 @@ const WorkdoneEditModal = ({
                   <div className="workdone_modal">
                     <span className="workdone_modal_span1">Length</span>
                     <span className="workdone_modal_span2">
-                      {product?.basic_details?.assignment.length} mm
+                      {product?.basic_details?.assignment.length} 
                     </span>
                   </div>
                   <div className="workdone_modal">
                     <span className="workdone_modal_span1">Width</span>
                     <span className="workdone_modal_span2">
-                      {product?.basic_details?.assignment.width} mm
+                      {product?.basic_details?.assignment.width} 
                     </span>
                   </div>
                   <div className="workdone_modal">
                     <span className="workdone_modal_span1">Height</span>
                     <span className="workdone_modal_span2">
-                      {product?.basic_details?.assignment.height} mm
+                      {product?.basic_details?.assignment.height} 
                     </span>
                   </div>
                   <div className="workdone_modal">

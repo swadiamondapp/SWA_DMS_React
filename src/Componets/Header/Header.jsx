@@ -21,6 +21,7 @@ const Header = ({
   searchListId,
   handleInputChange,
   headerDetails,
+  handleCADLogout
   // handleSearchDesignPoool
 }) => {
   const location = useLocation();
@@ -368,6 +369,7 @@ const Header = ({
                       className="log_out__btns"
                       ref={dropdownRef}
                       onClick={() => {
+                        handleCADLogout()
                         removeLocalstorage(navigate);
                       }}
                     >

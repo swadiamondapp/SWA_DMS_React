@@ -74,7 +74,7 @@ const BasicDetailModal = ({
   setSelectedIdsForDelet,
   pid,
   setFolderDetailsView,
-  detailId
+  detailId,
 }) => {
   // create modal
 
@@ -182,7 +182,7 @@ const BasicDetailModal = ({
       "array.empty": "Product category cannot be empty",
       "array.min": "Product category cannot be empty",
     }),
-approxDiamondWeight: Joi.alternatives()
+    approxDiamondWeight: Joi.alternatives()
       .try(
         Joi.number().custom((value, helpers) => {
           if (value === 0) {
@@ -348,7 +348,7 @@ approxDiamondWeight: Joi.alternatives()
         return errors;
       }, {});
       setErrors(validationErrors);
-    } else if( isStatusPageName) {
+    } else if (isStatusPageName) {
       console.log("Form submitted:", formData);
       editBasicDetails(
         formData,
@@ -358,9 +358,9 @@ approxDiamondWeight: Joi.alternatives()
         setSuccessModalOpen,
         onClose,
         updateEditFunction
-      ); setErrors({ undefined });
-    } 
-    else if( isStatusPageWithId) {
+      );
+      setErrors({ undefined });
+    } else if (isStatusPageWithId) {
       console.log("Form submitted:", formData);
       assignmentPanelSelectedEdit(
         formData,
@@ -561,11 +561,8 @@ approxDiamondWeight: Joi.alternatives()
               onClick: (event) => event.stopPropagation(), // Prevent modal close on backdrop click
             }}
           >
-             
-
             <Box sx={style}>
-                <div className="modal_card_images">
-                    
+              <div className="modal_card_images">
                 {/* {Data.map((item, index) => (
               <>
                 <div className="New_Design_card" key={item.id}>
@@ -602,8 +599,7 @@ approxDiamondWeight: Joi.alternatives()
                 </div>
               </>
             ))} */}
-
-                </div>
+              </div>
               <Typography className="modal_edit_section">
                 <div className="container">
                   <div className="basicClosModalIcon">
@@ -614,7 +610,7 @@ approxDiamondWeight: Joi.alternatives()
                       className="closeButtonImageBm"
                       onClick={handleCLoseButton}
                     >
- <img
+                      <img
                         src={closeButtonBM}
                         alt=""
                         style={{ cursor: "pointer" }}
@@ -963,6 +959,8 @@ approxDiamondWeight: Joi.alternatives()
                         </label>
                         {name === "editbasicDetails" ? (
                           <Select
+                            onSearch={onSearch}
+                            filterOption={filterOption}
                             mode="multiple"
                             style={{
                               width: "100%",
@@ -985,6 +983,8 @@ approxDiamondWeight: Joi.alternatives()
                           />
                         ) : (
                           <Select
+                          onSearch={onSearch}
+                          filterOption={filterOption}
                             mode="multiple"
                             style={{
                               width: "100%",
@@ -1058,6 +1058,8 @@ approxDiamondWeight: Joi.alternatives()
                               background: "#006E7F1A",
                               border: "1px solid #e0e1e1 !import",
                             }}
+                            onSearch={onSearch}
+                            filterOption={filterOption}
                             value={formData.tag}
                             placeholder="Select tags"
                             onChange={(value) => {
@@ -1074,6 +1076,8 @@ approxDiamondWeight: Joi.alternatives()
                           />
                         ) : (
                           <Select
+                          onSearch={onSearch}
+                          filterOption={filterOption}
                             mode="multiple"
                             style={{
                               width: "100%",

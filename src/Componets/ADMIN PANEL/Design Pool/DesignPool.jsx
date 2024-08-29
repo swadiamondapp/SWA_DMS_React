@@ -271,6 +271,28 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
     });
   };
 
+  const formatDateTwo = (isoString) => {
+    if (!isoString) {
+      return "";
+    }
+  
+    const date = new Date(isoString);
+    
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    
+    let hours = date.getHours();
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    
+    hours = hours % 12;
+    hours = hours ? String(hours).padStart(2, "0") : '12'; 
+    
+    return `${day}/${month}/${year} ${hours}:${minutes} ${ampm}`;
+  };
+  
+
   // console.log("unvoted", unvotedData)
 
   return (
@@ -430,7 +452,22 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
                             <div className="Inner_Left">
                               <p>{item.user_name}</p>
                               <p>{item.created_at}</p>
+                            <span
+                                  style={{ color: "#23A064", fontSize: "13px" }}
+                                >
+                                  Track status :{" "}
+                                  <span
+                                    style={{ color: "black", fontSize: "12px" }}
+                                  >
+                                    {
+                                     item?.currentstatus_track && item?.currentstatus_track[0]?.current_status
+                                    } -
+                                    { item?.currentstatus_track && formatDateTwo(item?.currentstatus_track[0]?.date)}
+                                  </span>
+                                </span>
                             </div>
+                          </div>
+                            <div className="" style={{display:"flex" ,gap:"5px",width:"100%",justifyContent:"end"}}>
                             <button
                               style={{
                                 padding: "7px 5px ",
@@ -445,12 +482,12 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
                             >
                               Track
                             </button>
-                            <div className="Inner_Right">
-                              <p>
+                            <div className="Inner_Right" >
+                              <p style={{color:"white",fontSize:"12px"}}>  
                                 {item.likes_count} <img src={like} alt="" />
                               </p>
                             </div>
-                          </div>
+                            </div>
                         </div>
                         {/* radio btn */}
                         {showRadioButtons && (
@@ -518,13 +555,43 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
                           <div className="Inner_Left">
                             <p>{item.user_name}</p>
                             <p>{item.created_at}</p>
+                            <span
+                                  style={{ color: "#23A064", fontSize: "13px" }}
+                                >
+                                  Track status :{" "}
+                                  <span
+                                    style={{ color: "black", fontSize: "12px" }}
+                                  >
+                                    {
+                                     item?.currentstatus_track && item?.currentstatus_track[0]?.current_status
+                                    } -
+                                    { item?.currentstatus_track && formatDateTwo(item?.currentstatus_track[0]?.date)}
+                                  </span>
+                                </span>
                           </div>
-                          <div className="Inner_Right">
+                        </div>
+
+                        <div className="" style={{display:"flex" ,gap:"5px",width:"100%",justifyContent:"end"}}>
+                            <button
+                              style={{
+                                padding: "7px 5px ",
+                                borderRadius: "4px",
+                                color: "white",
+                                backgroundColor: "#0464D5",
+                                border: "none",
+                                fontSize: "13px",
+                                fontWeight: "900",
+                              }}
+                              onClick={() => handleTrack(item, item.designcode)}
+                            >
+                              Track
+                            </button>
+                            <div className="Inner_Right">
                             <p>
                               {item.likes_count} <img src={like} alt="" />
                             </p>
-                          </div>
-                        </div>
+                            </div>
+                            </div>
                       </div>
                     </div>
                   ))}
