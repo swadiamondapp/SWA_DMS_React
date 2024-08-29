@@ -166,6 +166,7 @@ export const  designerFilter = async (
   endDate,
   setFilteredData
 ) => {
+  
   try {
     setIsLoading(true);
     let apiUrl = `${DESIGNER_CATEGORY_FILTER}${id}?category_ids=${
@@ -223,7 +224,7 @@ export const designerAssignToFilter = async (
   startDate,
   endDate,
 ) => {
-  debugger
+  
   try {
     setIsLoading(true);
     let apiUrl = `${DESIGNER_ASSIGNTO_FILTER

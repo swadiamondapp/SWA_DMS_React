@@ -166,8 +166,11 @@ const DesignBtn = ({
         location.pathname === "/unassigneddesigner" ? { marginTop: "18px" } : {}
       }
     >
-      <div className="DesignPool_btns" style={{ position: "relative",display:"flex",justifyContent:"end" }}>
-      {location.pathname === "/unassigneddesigner" && (
+      <div
+        className="DesignPool_btns"
+        style={{ position: "relative", display: "flex", justifyContent: "end" }}
+      >
+        {location.pathname === "/unassigneddesigner" && (
           <h4 style={{ marginRight: "59%" }}>Not Started Assignments</h4>
         )}
         {/* <div
@@ -180,211 +183,204 @@ const DesignBtn = ({
             top: "-10px",
           }}
         > */}
-          {location.pathname === "/designpool" &&
-            SelectedIdsForDelet.length > 0 && (
-              <div className="Download_ParentD">
-                <button
-                  className="D_downlodBtn"
-                  style={{ background: "red" }}
-                  onClick={handleDesignPoolDelet}
-                >
-                  Delete
-                </button>
-              </div>
-            )}
-          {location.pathname !== "/assignmentpanel" &&
-            location.pathname !== "/designdashboard" &&
-            location.pathname !== "/designerassignview" &&
-            location.pathname !== "/votorscustomization" &&
-            location.pathname !== "/finishedProject" &&
-            location.pathname !== "/unassigneddesigner" &&
-            location.pathname !== `/designerassignview/${id}` && (
-              <div className="Download_ParentD" ref={downRefff}>
-                <button
-                  className="D_downlodBtn"
-                  onClick={toggleDownloadOptions}
-                >
-                  Download <TbDownload />
-                </button>
-                {showDownloadOptions && (
-                  <div className="Download_Sub">
-                    <p onClick={handleAllDownload}>All</p>
-                    <p onClick={() => handleDownloadMultiple(selectedImages)}>
-                      Selected
-                    </p>
-                  </div>
-                )}
-              </div>
-            )}
-          {location.pathname !== "/designdashboard" &&
-            location.pathname !== "/votorscustomization" &&
-            location.pathname !== "/unassigneddesigner" &&
-            location.pathname !== "/finishedProject" && (
-              <button className="D_selectBtn" onClick={toggleRadioButtons}>
-                {selectButtonLabel}
-              </button>
-            )}
-          {location.pathname !== "/assignmentpanel" &&
-            location.pathname !== "/designdashboard" &&
-            location.pathname === "/designpool" &&
-            selectButtonLabel === "Unselect" &&
-            getSelectedDesign.length > 0 &&
-            location.pathname !== "/designerassignview" &&
-            location.pathname !== "/votorscustomization" &&
-            location.pathname !== `/designerassignview/${id}` &&
-            location.pathname !== "/finishedProject" && (
-              <div className="Parent_MoveTo" ref={assignmentDownRef}>
-                <button className="D_moveBtn" onClick={toggleMoveOptions}>
-                  Move to <MdOutlineKeyboardArrowDown />
-                </button>
-                {showMoveOptions && (
-                    <Link
-                      style={{ textDecoration: "none",cursor:"pointer" }}
-                    >
-                  <div className="Sub_AssignmentPanel">
-                      <p
-                        style={{ color: "#000" }}
-                        onClick={() => moveSelectedDesign()}
-                      >
-                        Assignment panel
-                      </p>
-                  </div>
-                    </Link>
-                )}
-              </div>
-            )}
-          {location.pathname === `/designerassignview/${id}` &&
-            selectedDesign.length > 0 &&
-            selectButtonLabel === "Unselect" && (
-              <div className="Parent_MoveTo">
-                <button
-                  className="D_moveBtn"
-                  onClick={() => setIsModalOpenAssign(true)}
-                >
-                  Assign To
-                </button>
-              </div>
-            )}
-          {location.pathname === "/assignmentpanel" &&
-            selectedAssignment.length > 0 &&
-            selectButtonLabel === "Unselect" && (
-              <div className="Parent_MoveTo">
-                <button className="D_moveBtn" onClick={handleCreatedFolder}>
-                  Create folder
-                </button>
-              </div>
-            )}
-          {location.pathname !== "/votorscustomization" &&
-            location.pathname !== "/assignmentpanel" &&
-            location.pathname !== "/unassigneddesigner" &&
-            location.pathname !== "/designpool" &&
-            // location.pathname === "/renderCard" &&
-            location.pathname === "/designdashboard" && (
+        {location.pathname === "/designpool" &&
+          SelectedIdsForDelet.length > 0 && (
+            <div className="Download_ParentD">
               <button
-                className="D_View_Sort_Filter"
-                onClick={handleView}
-                style={{ position: "relative" }}
+                className="D_downlodBtn"
+                style={{ background: "red" }}
+                onClick={handleDesignPoolDelet}
               >
-                <MdViewModule /> View
-                {view && (
-                  <div className="sortData" style={{ left: "-20px" }}>
-                    <span
-                      className={grid === true ? "setcolor" : ""}
-                      onClick={gridView}
-                    >
-                      Grid
-                    </span>
-                    <span
-                      className={detail === true ? "setcolor2" : ""}
-                      onClick={detailView}
-                    >
-                      Details
-                    </span>
-                    <span
-                      className={tiles === true ? "setcolor3" : ""}
-                      onClick={tileView}
-                    >
-                      Tiles
-                    </span>
-                  </div>
-                )}
+                Delete
               </button>
-            )}
-          {location.pathname === "/designdashboard" && (
-            <button
-              //  onClick={handleSort}
-              className="D_View_Sort_Filter"
-              style={{ position: "relative" }}
-            >
-              <LuArrowUpDown /> Sort
+            </div>
+          )}
+        {location.pathname !== "/assignmentpanel" &&
+          location.pathname !== "/designdashboard" &&
+          location.pathname !== "/designerassignview" &&
+          location.pathname !== "/votorscustomization" &&
+          location.pathname !== "/finishedProject" &&
+          location.pathname !== "/unassigneddesigner" &&
+          location.pathname !== `/designerassignview/${id}` && (
+            <div className="Download_ParentD" ref={downRefff}>
+              <button className="D_downlodBtn" onClick={toggleDownloadOptions}>
+                Download <TbDownload />
+              </button>
+              {showDownloadOptions && (
+                <div className="Download_Sub">
+                  <p onClick={handleAllDownload}>All</p>
+                  <p onClick={() => handleDownloadMultiple(selectedImages)}>
+                    Selected
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+        {location.pathname !== "/designdashboard" &&
+          location.pathname !== "/votorscustomization" &&
+          location.pathname !== "/unassigneddesigner" &&
+          location.pathname !== "/finishedProject" && (
+            <button className="D_selectBtn" onClick={toggleRadioButtons}>
+              {selectButtonLabel}
             </button>
           )}
-          {location.pathname === "/assignmentpanel" && (
+        {location.pathname !== "/assignmentpanel" &&
+          location.pathname !== "/designdashboard" &&
+          location.pathname === "/designpool" &&
+          selectButtonLabel === "Unselect" &&
+          getSelectedDesign.length > 0 &&
+          location.pathname !== "/designerassignview" &&
+          location.pathname !== "/votorscustomization" &&
+          location.pathname !== `/designerassignview/${id}` &&
+          location.pathname !== "/finishedProject" && (
+            <div className="Parent_MoveTo" ref={assignmentDownRef}>
+              <button className="D_moveBtn" onClick={toggleMoveOptions}>
+                Move to <MdOutlineKeyboardArrowDown />
+              </button>
+              {showMoveOptions && (
+                <Link style={{ textDecoration: "none", cursor: "pointer" }}>
+                  <div
+                    className="Sub_AssignmentPanel"
+                    onClick={() => moveSelectedDesign()}
+                  >
+                    <p style={{ color: "#000" }}>Assignment panel</p>
+                  </div>
+                </Link>
+              )}
+            </div>
+          )}
+        {location.pathname === `/designerassignview/${id}` &&
+          selectedDesign.length > 0 &&
+          selectButtonLabel === "Unselect" && (
+            <div className="Parent_MoveTo">
+              <button
+                className="D_moveBtn"
+                onClick={() => setIsModalOpenAssign(true)}
+              >
+                Assign To
+              </button>
+            </div>
+          )}
+        {location.pathname === "/assignmentpanel" &&
+          selectedAssignment.length > 0 &&
+          selectButtonLabel === "Unselect" && (
+            <div className="Parent_MoveTo">
+              <button className="D_moveBtn" onClick={handleCreatedFolder}>
+                Create folder
+              </button>
+            </div>
+          )}
+        {location.pathname !== "/votorscustomization" &&
+          location.pathname !== "/assignmentpanel" &&
+          location.pathname !== "/unassigneddesigner" &&
+          location.pathname !== "/designpool" &&
+          // location.pathname === "/renderCard" &&
+          location.pathname === "/designdashboard" && (
             <button
-              onClick={handleSort}
               className="D_View_Sort_Filter"
+              onClick={handleView}
               style={{ position: "relative" }}
             >
-              <LuArrowUpDown /> Sort
-              {sort && (
-                <div className="sortData">
+              <MdViewModule /> View
+              {view && (
+                <div className="sortData" style={{ left: "-20px" }}>
                   <span
-                    className={activeFilter === "all" ? "setcolor" : ""}
-                    onClick={handleSortByAll}
+                    className={grid === true ? "setcolor" : ""}
+                    onClick={gridView}
                   >
-                    All
+                    Grid
                   </span>
                   <span
-                    className={activeFilter === "designer" ? "setcolor2" : ""}
-                    onClick={handleSortByDesigner}
+                    className={detail === true ? "setcolor2" : ""}
+                    onClick={detailView}
                   >
-                    Designer added
+                    Details
                   </span>
                   <span
-                    className={activeFilter === "admin" ? "setcolor3" : ""}
-                    onClick={handleSortByAdmin}
+                    className={tiles === true ? "setcolor3" : ""}
+                    onClick={tileView}
                   >
-                    Admin added
+                    Tiles
                   </span>
                 </div>
               )}
             </button>
           )}
-          
-          {location.pathname === `/unassigneddesigner` && (
-            <button className="D_View_Sort_Filter" onClick={handleFilderModal}>
-              <RiFilter3Line /> Filter
-            </button>
-          )}
-           
-          {location.pathname === `/designdashboard` && (
-            <button className="D_View_Sort_Filter" onClick={handleFilderModal}>
-              <RiFilter3Line /> Filter
-            </button>
-          )}
-          {location.pathname === `/designerassignview/${id}` && (
-            <button className="D_View_Sort_Filter" onClick={handleFilderModal}>
-              <RiFilter3Line /> Filter
-            </button>
-          )}
-          {location.pathname === `/designpool` && (
-            <button className="D_View_Sort_Filter" onClick={handleFilter}>
-              <RiFilter3Line /> Filter
-            </button>
-          )}
-          {location.pathname === "/assignmentpanel" && (
-            <button className="D_View_Sort_Filter" onClick={handleFilter}>
-              <RiFilter3Line /> Filter
-            </button>
-          )}
-          {location.pathname === "/votorscustomization" && (
-            <button
-              className="D_downlodBtn"
-              onClick={() => setIsCreateCustomizeModalOpen(true)}
-            >
-              Create Customization
-            </button>
-          )}
+        {location.pathname === "/designdashboard" && (
+          <button
+            //  onClick={handleSort}
+            className="D_View_Sort_Filter"
+            style={{ position: "relative" }}
+          >
+            <LuArrowUpDown /> Sort
+          </button>
+        )}
+        {location.pathname === "/assignmentpanel" && (
+          <button
+            onClick={handleSort}
+            className="D_View_Sort_Filter"
+            style={{ position: "relative" }}
+          >
+            <LuArrowUpDown /> Sort
+            {sort && (
+              <div className="sortData">
+                <span
+                  className={activeFilter === "all" ? "setcolor" : ""}
+                  onClick={handleSortByAll}
+                >
+                  All
+                </span>
+                <span
+                  className={activeFilter === "designer" ? "setcolor2" : ""}
+                  onClick={handleSortByDesigner}
+                >
+                  Designer added
+                </span>
+                <span
+                  className={activeFilter === "admin" ? "setcolor3" : ""}
+                  onClick={handleSortByAdmin}
+                >
+                  Admin added
+                </span>
+              </div>
+            )}
+          </button>
+        )}
+
+        {location.pathname === `/unassigneddesigner` && (
+          <button className="D_View_Sort_Filter" onClick={handleFilderModal}>
+            <RiFilter3Line /> Filter
+          </button>
+        )}
+
+        {location.pathname === `/designdashboard` && (
+          <button className="D_View_Sort_Filter" onClick={handleFilderModal}>
+            <RiFilter3Line /> Filter
+          </button>
+        )}
+        {location.pathname === `/designerassignview/${id}` && (
+          <button className="D_View_Sort_Filter" onClick={handleFilderModal}>
+            <RiFilter3Line /> Filter
+          </button>
+        )}
+        {location.pathname === `/designpool` && (
+          <button className="D_View_Sort_Filter" onClick={handleFilter}>
+            <RiFilter3Line /> Filter
+          </button>
+        )}
+        {location.pathname === "/assignmentpanel" && (
+          <button className="D_View_Sort_Filter" onClick={handleFilter}>
+            <RiFilter3Line /> Filter
+          </button>
+        )}
+        {location.pathname === "/votorscustomization" && (
+          <button
+            className="D_downlodBtn"
+            onClick={() => setIsCreateCustomizeModalOpen(true)}
+          >
+            Create Customization
+          </button>
+        )}
         {/* </div> */}
       </div>
       <BasicDetailModal

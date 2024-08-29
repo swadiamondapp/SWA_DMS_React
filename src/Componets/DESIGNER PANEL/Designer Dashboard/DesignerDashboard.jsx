@@ -209,7 +209,7 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
 
         <div className="Uploaded___list">
           <div className="DesignerDashboardcard">
-            <h3 className="HeadNewdesign">Uploaded</h3>
+            <h3 className="HeadNewdesign">Uploaded  (&nbsp; {currentItems.length}&nbsp; )</h3>
 
             {!isLoading && currentItems.length === 0 && (
               <span>No Data Found</span>
@@ -254,9 +254,9 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
                               className=""
                               style={{ display: "flex", gap: "5px" }}
                             >
-                              <span style={{ color: "#23A064", fontSize:"13px" }}>Status : <span style={{ color: "black", fontSize:"12px" }}>{item.timer_status} - {item.timer_value}</span></span>
-                              <span>{item.current_status || ""}</span>
+                              <span style={{ color: "#23A064", fontSize:"13px" }}>Track status : <span style={{ color: "black", fontSize:"12px" }}>{item?.currentstatus_track[0]?.current_status}  {item?.currentstatus_track[0]?.date}</span></span>
                             </div>
+                            <span style={{ color: "#23A064", fontSize:"12px" }}>CAD status : <span style={{ color: "black", fontSize:"12px" }}>{item.timer_status} - {item.timer_value}</span></span>
                             <div className="Card_Details_Inner">
                               <div className="Inner_Left">
                                 <p>{item.name}</p>

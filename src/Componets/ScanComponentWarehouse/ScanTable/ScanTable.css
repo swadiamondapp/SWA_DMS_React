@@ -28,8 +28,10 @@
   border: none;
   background-color: rgb(255, 255, 255);
   display: flex;
-  align-items: center;
-  gap: 10px;
+  align-items: end;
+  gap: 5px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid #0464D5;
 }
 .btn_scan_img1 {
   width: 20px;
@@ -41,7 +43,7 @@
   height: 20px;
 }
 .btn_scan {
-    font-size: 12px;
+    font-size: 13px;
     color: #0464D5;
 }
 .select_scan {

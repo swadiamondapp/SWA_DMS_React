@@ -40,6 +40,7 @@ import { Select } from "antd";
 import { AiOutlineEdit } from "react-icons/ai";
 import { apiService, checkApiStatus } from "../../Pages/Services/ApiInstants";
 import SuccessModal from "../SuccessModal/SuccessModal";
+import { MdOutlineEdit } from "react-icons/md";
 
 const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
   const location = useLocation();
@@ -247,10 +248,10 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
   //     setIsLoading(false);
   //   }
   // };
+  
+  const pid = assignment_details?.id
 
-  console.log("cardDatas", cardDatas);
-
-  console.log(rendesrDetail?.images, "rendesrDetail");
+  console.log(assignment_details?.id, "assignment_details");
 
   return (
     <div>
@@ -398,7 +399,7 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
                   className="btn_scan"
                   onClick={() => handleEditBasicDetails()}
                 >
-                  <AiOutlineEdit
+                  <MdOutlineEdit
                     style={{ color: "#0464D5" }}
                     className="btn_scan_img1"
                   />{" "}
@@ -715,6 +716,9 @@ console.log("Initial", status);0,
             designId
           )
         }
+        pid={pid}
+        setFolderDetailsView={setFolderDetailsView}
+        detailId={id}
       />
 
       {openModal && (

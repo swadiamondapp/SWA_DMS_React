@@ -270,6 +270,22 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
     return count + dataItem.items.length;
   }, 0);
 
+  const formatDateTwo = (isoString) => {
+    const date = new Date(isoString);
+    
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    
+    let hours = date.getHours();
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    
+    hours = hours % 12;
+    hours = hours ? String(hours).padStart(2, "0") : '12'; 
+     return `${day}/${month}/${year} ${hours}:${minutes} ${ampm}`;
+  };
+
   console.log(filter, "filter");
 
   return (
@@ -301,30 +317,30 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
             style={{ display: "none" }}
           />
         </div>
-        { value == 1 && (
-        <DesignBtn
-          toggleDownloadOptions={toggleDownloadOptions}
-          selectButtonLabel={selectButtonLabel}
-          toggleRadioButtons={toggleRadioButtons}
-          toggleMoveOptions={toggleMoveOptions}
-          showDownloadOptions={showDownloadOptions}
-          showMoveOptions={showMoveOptions}
-          selectedAssignment={selectedAssignment}
-          setSelectedAssignment={setSelectedAssignment}
-          setAssignmentFolder={setAssignmentFolder}
-          selectedDesignCode={selectedDesignCode}
-          handleCreatedFolder={handleCreatedFolder}
-          handleSortByDesigner={handleSortByDesigner}
-          handleSortByAdmin={handleSortByAdmin}
-          handleSortByAll={handleSortByAll}
-          assignmentFolder={assignmentFolder}
-          filter={filter}
-          setFilter={setFilter}
-          activeFilter={activeFilter}
-          // setcreateFolderModal={setcreateFolderModal}
-          // handleCreateFolderModal
-        />
-      )}
+        {value == 1 && (
+          <DesignBtn
+            toggleDownloadOptions={toggleDownloadOptions}
+            selectButtonLabel={selectButtonLabel}
+            toggleRadioButtons={toggleRadioButtons}
+            toggleMoveOptions={toggleMoveOptions}
+            showDownloadOptions={showDownloadOptions}
+            showMoveOptions={showMoveOptions}
+            selectedAssignment={selectedAssignment}
+            setSelectedAssignment={setSelectedAssignment}
+            setAssignmentFolder={setAssignmentFolder}
+            selectedDesignCode={selectedDesignCode}
+            handleCreatedFolder={handleCreatedFolder}
+            handleSortByDesigner={handleSortByDesigner}
+            handleSortByAdmin={handleSortByAdmin}
+            handleSortByAll={handleSortByAll}
+            assignmentFolder={assignmentFolder}
+            filter={filter}
+            setFilter={setFilter}
+            activeFilter={activeFilter}
+            // setcreateFolderModal={setcreateFolderModal}
+            // handleCreateFolderModal
+          />
+        )}
       </div>
 
       <div className="Assignment_Panel_desc">
@@ -405,9 +421,21 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
                                 className=""
                                 style={{ display: "flex", gap: "5px" }}
                               >
-                                <span style={{ color: "#23A064" }}>
-                                  Status : <span style={{ color: "black", fontSize:"12px" }}>{item.timer_status} - {item.timer_value}</span>
+                                <span
+                                  style={{ color: "#23A064", fontSize: "13px" }}
+                                >
+                                  Track status :{" "}
+                                  <span
+                                    style={{ color: "black", fontSize: "12px" }}
+                                  >
+                                    {
+                                      item?.status_track[0]
+                                        ?.current_status
+                                    } -
+                                    {formatDateTwo(item?.status_track[0]?.date)}
+                                  </span>
                                 </span>
+
                                 <span>{item.current_status || ""}</span>
                               </div>
                               <div className="Card_Details_Inner">

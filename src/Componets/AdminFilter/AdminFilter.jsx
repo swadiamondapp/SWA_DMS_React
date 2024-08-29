@@ -138,7 +138,7 @@ const AdminFilter = ({
           setError
         );
       }
-      if ("/designpool") {
+      if (location.pathname ===  "/designpool") {
         await filterDesignPool(
           setIsLoading,
           startDate,
@@ -172,7 +172,7 @@ const AdminFilter = ({
         setDd("");
         setFilter(false);
       }
-      if ("/designpool") {
+      if (location.pathname === "/designpool") {
         await all_Designs(setIsLoading, setData);
         setStartDate("");
         setEndDate("");
@@ -190,7 +190,7 @@ const AdminFilter = ({
   };
 
   console.log(isLoading, "isLoading");
-  console.log(designers, "designers");
+  console.log(filterMinLike, "filterMinLike");
 
   return (
     <>

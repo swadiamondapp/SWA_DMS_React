@@ -150,13 +150,13 @@ button {
   color: #fff;
   font-weight: 600;
   /* font-size: 16px; */
-  border-radius: 8px;
+  border-radius: 4px;
 }
 .Inner_Right p {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 7px 10px;
+  gap: 5px;
+  padding: 4px 5px;
 }
 .Parent_unvoted {
   padding: 50px 0px;
