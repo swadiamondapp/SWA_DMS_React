@@ -147,24 +147,24 @@ const WorkDoneTable = ({ sidebarExpanded }) => {
                   </td>
 
                   <td style={{ borderLeft: "none" }}>
-                    <div className="scan_btn_div">
+                    <div className="scan_btn_div" style={{display:"flex",alignItems:"center",justifyContent:"center"}}>
                       <button
-                        className="btn_scan"
+                        className="btn_scan1"
                         onClick={() => handleopenLeftBar(item.id)}
                       >
                         <AiOutlineEdit
                           style={{ color: "#0464D5" }}
                           className="btn_scan_img1"
                         />{" "}
-                        <span>Edit Details</span>
+                        <span style={{color:"#216CD8"}}>Edit Details</span>
                       </button>
                       <button
                         onClick={() => openModal(item.id)}
-                        className="btn_scan"
+                        className="btn_scan1"
                       >
                         <IoEye className="btn_scan_img1" />
                       </button>
-                      <button className="btn_scan">
+                      <button className="btn_scan1">
                         <img
                           className="btn_scan_img2"
                           src={ThreeDot}

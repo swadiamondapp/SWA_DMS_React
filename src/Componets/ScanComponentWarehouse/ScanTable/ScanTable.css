@@ -33,6 +33,17 @@
   margin-bottom: 30px;
   border-bottom: 1px solid #0464D5;
 }
+.btn_scan1 {
+  border: none;
+  background-color: rgb(255, 255, 255);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  margin-bottom: 0px;
+  cursor: pointer;
+  /* border-bottom: 1px solid #0464D5; */
+}
 .btn_scan_img1 {
   width: 20px;
   height: 20px;

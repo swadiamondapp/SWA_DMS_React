@@ -157,6 +157,8 @@ button {
   align-items: center;
   gap: 5px;
   padding: 4px 5px;
+  color: #fff;
+  font-size:14px;
 }
 .Parent_unvoted {
   padding: 50px 0px;

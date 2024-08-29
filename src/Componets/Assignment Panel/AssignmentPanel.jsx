@@ -271,19 +271,24 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
   }, 0);
 
   const formatDateTwo = (isoString) => {
+    if (!isoString) {
+      return "";
+    }
+
     const date = new Date(isoString);
-    
+
     const day = String(date.getDate()).padStart(2, "0");
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const year = date.getFullYear();
-    
+
     let hours = date.getHours();
     const minutes = String(date.getMinutes()).padStart(2, "0");
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    
+    const ampm = hours >= 12 ? "PM" : "AM";
+
     hours = hours % 12;
-    hours = hours ? String(hours).padStart(2, "0") : '12'; 
-     return `${day}/${month}/${year} ${hours}:${minutes} ${ampm}`;
+    hours = hours ? String(hours).padStart(2, "0") : "12";
+
+    return `${day}/${month}/${year} ${hours}:${minutes} ${ampm}`;
   };
 
   console.log(filter, "filter");
@@ -428,16 +433,24 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
                                   <span
                                     style={{ color: "black", fontSize: "12px" }}
                                   >
-                                    {
-                                      item?.status_track[0]
-                                        ?.current_status
-                                    } -
+                                    {item?.status_track[0]?.current_status} -
                                     {formatDateTwo(item?.status_track[0]?.date)}
                                   </span>
                                 </span>
 
-                                <span>{item.current_status || ""}</span>
+                                {/* <span>{item.current_status || ""}</span> */}
                               </div>
+                              <span
+                                style={{ color: "#23A064", fontSize: "12px" }}
+                              >
+                                CAD status :{" "}
+                                <span
+                                  style={{ color: "black", fontSize: "12px" }}
+                                >
+                                  {item.timer_status} - {item.timer_value}
+                                </span>
+                              </span>
+
                               <div className="Card_Details_Inner">
                                 <div className="Inner_Left">
                                   <p>{designer}</p>
@@ -455,11 +468,13 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
                                     {formatDate(updatedAt)}
                                   </p>
                                 </div>
+                              </div>
                                 <div
                                   className=""
                                   style={{
                                     display: "flex",
-                                    width: "auto",
+                                    width: "100%",
+                                    justifyContent:"end",
                                     gap: "5px",
                                   }}
                                 >
@@ -481,12 +496,11 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
                                   </button>
                                   <div className="Inner_Right">
                                     <p>
-                                      {likesCount}
-                                      <img src={like} alt="Likes" />
+                                      {item.likes_count}
+                                      <img src={like} alt="" />
                                     </p>
                                   </div>
                                 </div>
-                              </div>
                             </div>
                             {showRadioButtons && (
                               <input

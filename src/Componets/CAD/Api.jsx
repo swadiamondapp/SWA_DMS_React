@@ -13,6 +13,7 @@ import {
   FOLDER_DETAILS,
   CAD_RE_UPLOAD,
   BASIC_DETAILS,
+  CAD_LOGOUT,
 } from "../../Pages/Services/EndPoints";
 
 export const list_assigned_cad_design = async (
@@ -285,3 +286,19 @@ export const reUploadFile = async (
 };
 
 
+export const cadLogut = async ( timerValue) => {
+  const body  ={
+    timer_value : timerValue
+  }
+  try {
+    setIsLoading(true);
+    const response = await apiService.get(CAD_LOGOUT);
+    if (checkApiStatus(response)) {
+      // setData(response.data.results.data);
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setIsLoading(false);
+  }
+};
