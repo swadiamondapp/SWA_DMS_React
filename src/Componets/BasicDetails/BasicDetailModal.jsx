@@ -11,6 +11,7 @@ import AssignmentModal from "../AssignmentModal/AssignmentModal";
 import EyeIcons from "../../assets/bmEye.png";
 import closeButton from "../../assets/closeButton.svg";
 import {
+  assignmentPanelSelectedEdit,
   basic_calculation,
   diamond_type_dropdown_basicDetails,
   editBasicDetails,
@@ -71,6 +72,9 @@ const BasicDetailModal = ({
   basicDetails,
   updateEditFunction,
   setSelectedIdsForDelet,
+  pid,
+  setFolderDetailsView,
+  detailId
 }) => {
   // create modal
 
@@ -249,14 +253,12 @@ approxDiamondWeight: Joi.alternatives()
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Validate form data using Joi schema
     const { error } = schema.validate(formData, {
       abortEarly: false,
       allowUnknown: true,
     });
 
     if (error) {
-      // Form is invalid, display validation errors
       const validationErrors = error.details.reduce((errors, err) => {
         errors[err.path[0]] = err.message;
         return errors;
@@ -282,6 +284,11 @@ approxDiamondWeight: Joi.alternatives()
   };
   const filterOption = (input, option) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
+
+  const pathname = location.pathname;
+  const isStatusPage = pathname === "/assignmentviewsAll/";
+  const isStatusPageWithId = pathname.startsWith("/assignmentviewsAll/");
+  const isStatusPageName = pathname.startsWith("/assignmentview/");
 
   const handleNextClick = () => {
     const { error } = schema.validate(formData, {
@@ -336,16 +343,13 @@ approxDiamondWeight: Joi.alternatives()
     });
 
     if (error) {
-      // Form is invalid, display validation errors
       const validationErrors = error.details.reduce((errors, err) => {
         errors[err.path[0]] = err.message;
         return errors;
       }, {});
       setErrors(validationErrors);
-    } else {
-      // Form is valid, proceed with submission
+    } else if( isStatusPageName) {
       console.log("Form submitted:", formData);
-      // onClose();
       editBasicDetails(
         formData,
         folderIdA,
@@ -354,10 +358,21 @@ approxDiamondWeight: Joi.alternatives()
         setSuccessModalOpen,
         onClose,
         updateEditFunction
+      ); setErrors({ undefined });
+    } 
+    else if( isStatusPageWithId) {
+      console.log("Form submitted:", formData);
+      assignmentPanelSelectedEdit(
+        formData,
+        pid,
+        setSuccessMessage,
+        setSuccessModalOpen,
+        onClose,
+        updateEditFunction,
+        setIsLoading,
+        setFolderDetailsView,
+        detailId
       );
-      // setShowAssignmentModal(true);
-      // Clear errors
-      setErrors({ undefined });
     }
   };
   console.log(errors, "eeeeeeeee==>");

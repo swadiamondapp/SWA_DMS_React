@@ -61,7 +61,8 @@ const DesignerFilterModal = ({
     list_all_designers_get(setIsLoading, setDesigners);
   }, []);
 
-  console.log("designcode", designCode);
+  const pathname = location.pathname;
+  const assignSection = pathname.startsWith("/designerassignview/");
 
   const clearAllFilters = () => {
     setFormData({
@@ -116,7 +117,7 @@ const DesignerFilterModal = ({
   filterTag;
 
   const handleFilterModal = () => {
-    if (page == "designerDashboard") {
+    if (location.pathname == "/designdashboard") {
       designerDashboradFilter(
         setIsLoading,
         forlderId,
@@ -128,17 +129,7 @@ const DesignerFilterModal = ({
         setOpenFilterModal,
         sethide
       );
-    }
-    if (page == "assignto") {
-      designerAssignToFilter(
-        setIsLoading,
-        designCode,
-        setFolderDetails,
-        startDate,
-        endDate
-        // setFilteredData
-      );
-    } else {
+    } else if (assignSection) {
       designerFilter(
         setIsLoading,
         forlderId,
@@ -148,10 +139,19 @@ const DesignerFilterModal = ({
         endDate,
         setFilteredData
       );
+    } else if (location.pathname === "/unassigneddesigner") {
+      designerAssignToFilter(
+        setIsLoading,
+        designCode,
+        setFolderDetails,
+        startDate,
+        endDate
+        // setFilteredData
+      );
     }
   };
 
-  console.log("page",page)
+  console.log("page", page);
 
   return (
     <>
@@ -201,9 +201,7 @@ const DesignerFilterModal = ({
               marginTop: "20px",
             }}
           >
-            <span className="edit_fields">
-              Select From Date & End Date
-            </span>
+            <span className="edit_fields">Select From Date & End Date</span>
             <RangePicker
               style={{
                 width: "70%",
@@ -216,30 +214,30 @@ const DesignerFilterModal = ({
           </div>
 
           {page == "assignto" ? (
-          <div
-            className="edit_fields"
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              marginTop: "20px",
-            }}
-          >
-            <span className="label-text">Design Code</span>
-            <input
-              type="text"
+            <div
+              className="edit_fields"
               style={{
-                width: "100%",
-                padding: "6px",
-                borderRadius: "4px",
-                border: "1px solid lightgray",
-                fontSize: "14px",
-                outline: "none",
+                display: "flex",
+                flexDirection: "column",
+                marginTop: "20px",
               }}
-              value={designCode.toUpperCase()}
-              onChange={(e) => setDesignCode(e.target.value.toUpperCase())}
-            />
-          </div>
-          ) :  (
+            >
+              <span className="label-text">Design Code</span>
+              <input
+                type="text"
+                style={{
+                  width: "100%",
+                  padding: "6px",
+                  borderRadius: "4px",
+                  border: "1px solid lightgray",
+                  fontSize: "14px",
+                  outline: "none",
+                }}
+                value={designCode.toUpperCase()}
+                onChange={(e) => setDesignCode(e.target.value.toUpperCase())}
+              />
+            </div>
+          ) : (
             <div>
               {" "}
               <div className="productCategory">

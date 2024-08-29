@@ -209,7 +209,7 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
 
         <div className="Uploaded___list">
           <div className="DesignerDashboardcard">
-            <h3 className="HeadNewdesign">Uploaded</h3>
+            <h3 className="HeadNewdesign">Uploaded  (&nbsp; {currentItems.length}&nbsp; )</h3>
 
             {!isLoading && currentItems.length === 0 && (
               <span>No Data Found</span>

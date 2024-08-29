@@ -209,3 +209,4 @@ export const DEATAILS_SATUS_UPDATE = "designer/action/render-img/"
 export const DEATAILS_CAD_SATUS_UPDATE = "designer/action/cad-img/"
 
 export const CAD_IMAGE_SATUS_UPDATE = "designer/action/cad-img/"
+export const EDIT_ASSSI_SELECTED_DETAILS = "assignment/";

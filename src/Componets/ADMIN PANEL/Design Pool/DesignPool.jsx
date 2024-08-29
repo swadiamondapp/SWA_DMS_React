@@ -95,11 +95,11 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
     // moveSelectedDesign(setIsLoading,setSelectedDesigns)
   }, []);
 
-  console.log(Data, "datat========d==>");
+  // console.log(Data, "datat========d==>");
 
-  console.log(SelectedIdsForDelet, "selectedImages");
-  console.log(selectedDesigns, "selectedImages");
-  console.log(selectedImages, "selectedImages");
+  // console.log(SelectedIdsForDelet, "selectedImages");
+  // console.log(selectedDesigns, "selectedImages");
+  // console.log(selectedImages, "selectedImages");
 
   const handleCheckboxChange = (designcode, image, id) => {
     if (selectedDesigns.includes(designcode)) {
@@ -264,6 +264,8 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  // console.log("unvoted", unvotedData)
 
   return (
     <div>
@@ -477,13 +479,13 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
           </div>
           </div>
             </TabPanel>
-            <TabPanel vafilterMinLikelue="2" className="folders_tabpanel">
+            <TabPanel value="2" vafilterMinLikelue="2" className="folders_tabpanel">
             <div className="Parent_unvoted">
             <h3 className="HeadNewdesign">
               Unvoted (&nbsp; {unvotedData.length}&nbsp; )
             </h3>
             <div className="Card_Design_Parent">
-              {unvotedData.map((item) => (
+              {unvotedData?.map((item) => (
                 <div className="New_Design_card">
                   <div className="Card_img">
                     <img src={item.image} alt="" />

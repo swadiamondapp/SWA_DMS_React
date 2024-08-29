@@ -23,6 +23,7 @@ import {
   metal_type_drop_down,
   product_type_drop_down,
 } from "../ADMIN PANEL/Api_dropDown";
+import { MdOutlineEdit } from "react-icons/md";
 
 const AssignmentView = ({ sidebarExpanded, setHeaderDetials }) => {
   const { id } = useParams();
@@ -139,15 +140,46 @@ const AssignmentView = ({ sidebarExpanded, setHeaderDetials }) => {
             <img src={itemDetails?.paper_design?.image} alt="" />
           </div>
           <div className="right_Assignment_View">
-            <div
+            {/* <div
               className="editContainer"
               onClick={() => handleEditBasicDetails()}
             >
               <img src={EdiIcon} alt="" />
               <p>Edit</p>
-            </div>
+            </div> */}
+            {/* <button
+                  className="btn_scan"
+                  onClick={() => handleEditBasicDetails()}
+                >
+                  <MdOutlineEdit
+                    style={{ color: "#0464D5" }}
+                    className="btn_scan_img1"
+                  />{" "}
+                  <span>Edit Details</span>
+                </button> */}
+            
             <div className="Assignment_contents">
-              <h3>Basic details</h3>
+            <div
+                className=""
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "space-between",
+                }}
+              >
+                <h3>Basic details</h3>
+
+                <button
+                  className="btn_scan"
+                  onClick={() => handleEditBasicDetails()}
+                >
+                  <MdOutlineEdit
+                    style={{ color: "#0464D5" }}
+                    className="btn_scan_img1"
+                  />{" "}
+                  <span>Edit Details</span>
+                </button>
+              </div>
               <div className="Assignment_Details">
                 <div className="A1_text">
                   <p>Product Id</p>
@@ -161,15 +193,15 @@ const AssignmentView = ({ sidebarExpanded, setHeaderDetials }) => {
                 </div>
                 <div className="A1_text">
                   <p>Length</p>
-                  <p>{basicDetails?.length} mm </p>
+                  <p>{basicDetails?.length}  </p>
                 </div>
                 <div className="A1_text">
                   <p>Width</p>
-                  <p>{basicDetails?.width} mm</p>
+                  <p>{basicDetails?.width} </p>
                 </div>
                 <div className="A1_text">
                   <p>Height</p>
-                  <p>{basicDetails?.height} mm</p>
+                  <p>{basicDetails?.height} </p>
                 </div>
                 <div className="A1_text">
                   <p>Type of metal</p>
