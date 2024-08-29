@@ -49,7 +49,6 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
   const [SelectedIdsForDelet, setSelectedIdsForDelet] = useState([]);
   const assignmentDownRef = useRef(null); // Ref for the dropdown element
   const clickedInsideRef = useRef(false);
-  
 
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -260,9 +259,16 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
     setDeleteConfirmationOpen(true);
   };
 
-
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+
+  const handleTrack = (item, designCode) => {
+    navigate(`/statusPage/${item.id}`, {
+      state: {
+        code: designCode,
+      },
+    });
   };
 
   // console.log("unvoted", unvotedData)
@@ -310,35 +316,35 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
         </div> */}
         {/* Use the DesignButtons component */}
         <div className="" style={{ padding: "10px" }}>
-        <DesignBtn
-          toggleDownloadOptions={toggleDownloadOptions}
-          selectButtonLabel={selectButtonLabel}
-          setSelectButtonLabel={setSelectButtonLabel}
-          toggleRadioButtons={toggleRadioButtons}
-          toggleMoveOptions={toggleMoveOptions}
-          showDownloadOptions={showDownloadOptions}
-          showMoveOptions={showMoveOptions}
-          moveSelectedDesign={moveSelectedDesigns}
-          getSelectedDesign={selectedDesigns}
-          setSelectedDesigns={setSelectedDesigns}
-          setIsOpen={setIsOpen}
-          open={open}
-          setData={setData}
-          setShowRadioButtons={setShowRadioButtons}
-          selectedImages={selectedImages}
-          setSelectedImages={setSelectedImages}
-          setAllSelected={setAllSelected}
-          setShowDownloadOptions={setShowDownloadOptions}
-          selectAllDesigns={selectAllDesigns}
-          downRefff={dropdownRef}
-          assignmentDownRef={assignmentDownRef}
-          delteItemsFromDesignPool={delteItemsFromDesignPool}
-          setDeleteConfirmationOpen={setDeleteConfirmationOpen}
-          SelectedIdsForDelet={SelectedIdsForDelet}
-          setSelectedIdsForDelet={setSelectedIdsForDelet}
-          filter={filter}
-          setFilter={setFilter}
-        />
+          <DesignBtn
+            toggleDownloadOptions={toggleDownloadOptions}
+            selectButtonLabel={selectButtonLabel}
+            setSelectButtonLabel={setSelectButtonLabel}
+            toggleRadioButtons={toggleRadioButtons}
+            toggleMoveOptions={toggleMoveOptions}
+            showDownloadOptions={showDownloadOptions}
+            showMoveOptions={showMoveOptions}
+            moveSelectedDesign={moveSelectedDesigns}
+            getSelectedDesign={selectedDesigns}
+            setSelectedDesigns={setSelectedDesigns}
+            setIsOpen={setIsOpen}
+            open={open}
+            setData={setData}
+            setShowRadioButtons={setShowRadioButtons}
+            selectedImages={selectedImages}
+            setSelectedImages={setSelectedImages}
+            setAllSelected={setAllSelected}
+            setShowDownloadOptions={setShowDownloadOptions}
+            selectAllDesigns={selectAllDesigns}
+            downRefff={dropdownRef}
+            assignmentDownRef={assignmentDownRef}
+            delteItemsFromDesignPool={delteItemsFromDesignPool}
+            setDeleteConfirmationOpen={setDeleteConfirmationOpen}
+            SelectedIdsForDelet={SelectedIdsForDelet}
+            setSelectedIdsForDelet={setSelectedIdsForDelet}
+            filter={filter}
+            setFilter={setFilter}
+          />
         </div>
         {/* new design section */}
         {/* new design section */}
@@ -363,96 +369,108 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
               </TabList>
             </Box>
             <TabPanel value="1">
-            <div className="Parent_NewDesign" style={{paddingTop:"50px"}}>
-         
-            <h3 className="HeadNewdesign">
-            New design (&nbsp; {Data.length}&nbsp; )
-          </h3>
-          {isLoading && (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <CircularProgress
-                filter={filter}
-                setFilter={setFilter}
-                size={50}
-                sx={{
-                  color: "#126e72",
-                  padding: "8px 10px",
-                  width: "35px",
-                }}
-              />
-            </div>
-          )}
-          
-
-          {isLoading !== true && Data.length === 0 && (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <span style={{ marginTop: "100px" }}>No Data Found</span>
-            </div>
-          )}
-
-          <div className="Card_Design_Parent">
-            {Data.map((item, index) => (
-              <>
-                <div className="New_Design_card" key={item.id}>
+              <div className="Parent_NewDesign" style={{ paddingTop: "50px" }}>
+                <h3 className="HeadNewdesign">
+                  New design (&nbsp; {Data.length}&nbsp; )
+                </h3>
+                {isLoading && (
                   <div
-                    className="Card_img"
                     style={{
-                      marginTop: "12px",
-                      height: "170px",
-                      cursor: "pointer",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
                     }}
                   >
-                    <img
-                      src={item.image}
-                      alt="image"
-                      onClick={() => OpenAnntaitionmodal(item)}
+                    <CircularProgress
+                      filter={filter}
+                      setFilter={setFilter}
+                      size={50}
+                      sx={{
+                        color: "#126e72",
+                        padding: "8px 10px",
+                        width: "35px",
+                      }}
                     />
                   </div>
-                  <div className="Card_Details">
-                    <h3>ID : {item.designcode}</h3>
-                    <div className="Card_Details_Inner">
-                      <div className="Inner_Left">
-                        <p>{item.user_name}</p>
-                        <p>{item.created_at}</p>
-                      </div>
-                      <div className="Inner_Right">
-                        <p>
-                          {item.likes_count} <img src={like} alt="" />
-                        </p>
-                      </div>
-                    </div>
+                )}
+
+                {isLoading !== true && Data.length === 0 && (
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <span style={{ marginTop: "100px" }}>No Data Found</span>
                   </div>
-                  {/* radio btn */}
-                  {showRadioButtons && (
-                    <input
-                      className="Radio_select"
-                      type="checkbox"
-                      id={item.designcode}
-                      name="fav_language"
-                      value={item.designcode}
-                      onChange={() =>
-                        handleCheckboxChange(
-                          item.designcode,
-                          item.image,
-                          item.id
-                        )
-                      }
-                      checked={selectedDesigns.includes(item.designcode)}
-                    ></input>
-                  )}
-                  {/* {!showRadioButtons && location.pathname === "/designpool" && (
+                )}
+
+                <div className="Card_Design_Parent">
+                  {Data.map((item, index) => (
+                    <>
+                      <div className="New_Design_card" key={item.id}>
+                        <div
+                          className="Card_img"
+                          style={{
+                            marginTop: "12px",
+                            height: "170px",
+                            cursor: "pointer",
+                          }}
+                        >
+                          <img
+                            src={item.image}
+                            alt="image"
+                            onClick={() => OpenAnntaitionmodal(item)}
+                          />
+                        </div>
+                        <div className="Card_Details">
+                          <h3>ID : {item.designcode}</h3>
+                          <div className="Card_Details_Inner">
+                            <div className="Inner_Left">
+                              <p>{item.user_name}</p>
+                              <p>{item.created_at}</p>
+                            </div>
+                            <button
+                              style={{
+                                padding: "7px 5px ",
+                                borderRadius: "4px",
+                                color: "white",
+                                backgroundColor: "#0464D5",
+                                border: "none",
+                                fontSize: "13px",
+                                fontWeight: "900",
+                              }}
+                              onClick={() => handleTrack(item, item.designcode)}
+                            >
+                              Track
+                            </button>
+                            <div className="Inner_Right">
+                              <p>
+                                {item.likes_count} <img src={like} alt="" />
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        {/* radio btn */}
+                        {showRadioButtons && (
+                          <input
+                            className="Radio_select"
+                            type="checkbox"
+                            id={item.designcode}
+                            name="fav_language"
+                            value={item.designcode}
+                            onChange={() =>
+                              handleCheckboxChange(
+                                item.designcode,
+                                item.image,
+                                item.id
+                              )
+                            }
+                            checked={selectedDesigns.includes(item.designcode)}
+                          ></input>
+                        )}
+                        {/* {!showRadioButtons && location.pathname === "/designpool" && (
                     <div
                       onClick={() => toggleDeleteMoveButtons(item.id)}
                       ref={dotsRef}
@@ -463,7 +481,7 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
                       />
                     </div>
                   )} */}
-                  {/* {activeCardId === item.id && (
+                        {/* {activeCardId === item.id && (
                     <div
                       className="Dots_Delete_DesignPool_btns"
                       ref={dropdownRefDD}
@@ -472,67 +490,67 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
                      
                     </div>
                   )} */}
-                  {/* radio btn */}
-                </div>
-              </>
-            ))}
-          </div>
-          </div>
-            </TabPanel>
-            <TabPanel value="2" vafilterMinLikelue="2" className="folders_tabpanel">
-            <div className="Parent_unvoted">
-            <h3 className="HeadNewdesign">
-              Unvoted (&nbsp; {unvotedData.length}&nbsp; )
-            </h3>
-            <div className="Card_Design_Parent">
-              {unvotedData?.map((item) => (
-                <div className="New_Design_card">
-                  <div className="Card_img">
-                    <img src={item.image} alt="" />
-                  </div>
-                  <div className="Card_Details">
-                    <h3>ID : {item.designcode}</h3>
-                    <div className="Card_Details_Inner">
-                      <div className="Inner_Left">
-                        <p>{item.user_name}</p>
-                        <p>{item.created_at}</p>
+                        {/* radio btn */}
                       </div>
-                      <div className="Inner_Right">
-                        <p>
-                          {item.likes_count} <img src={like} alt="" />
-                        </p>
+                    </>
+                  ))}
+                </div>
+              </div>
+            </TabPanel>
+            <TabPanel
+              value="2"
+              vafilterMinLikelue="2"
+              className="folders_tabpanel"
+            >
+              <div className="Parent_unvoted">
+                <h3 className="HeadNewdesign">
+                  Unvoted (&nbsp; {unvotedData.length}&nbsp; )
+                </h3>
+                <div className="Card_Design_Parent">
+                  {unvotedData?.map((item) => (
+                    <div className="New_Design_card">
+                      <div className="Card_img">
+                        <img src={item.image} alt="" />
+                      </div>
+                      <div className="Card_Details">
+                        <h3>ID : {item.designcode}</h3>
+                        <div className="Card_Details_Inner">
+                          <div className="Inner_Left">
+                            <p>{item.user_name}</p>
+                            <p>{item.created_at}</p>
+                          </div>
+                          <div className="Inner_Right">
+                            <p>
+                              {item.likes_count} <img src={like} alt="" />
+                            </p>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </div>
+              </div>
             </TabPanel>
           </TabContext>
         </Box>
 
-       
-
-          {anotationModal && (
-            <AnnotationModalDesignPool
-              setanotationModal={setanotationModal}
-              anotationModal={anotationModal}
-              selectedDesign={selectedDesign}
-              setSuccessModalOpen={setSuccessModalOpen}
-              setSuccessMessage={setSuccessMessage}
-              setData={setData}
-            />
-          )}
-
-          <SuccessModal
-            successModalOpen={successModalOpen}
-            // handleOpen={handleOpen}
-            // handleClose={handleClose}
-            successMessage={successMessage}
+        {anotationModal && (
+          <AnnotationModalDesignPool
+            setanotationModal={setanotationModal}
+            anotationModal={anotationModal}
+            selectedDesign={selectedDesign}
+            setSuccessModalOpen={setSuccessModalOpen}
+            setSuccessMessage={setSuccessMessage}
+            setData={setData}
           />
+        )}
 
-
+        <SuccessModal
+          successModalOpen={successModalOpen}
+          // handleOpen={handleOpen}
+          // handleClose={handleClose}
+          successMessage={successMessage}
+        />
       </div>
       <DeleteConfirmationModal
         DeleteConfirmationOpen={DeleteConfirmationOpen}
@@ -560,28 +578,28 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
       <BasicDetailModal />
 
       {filter && (
-                  <AdminFilter
-                    filter={filter}
-                    setFilter={setFilter}
-                    setData={setData}
-                    startDate={startDate}
-                    setStartDate={setStartDate}
-                    endDate={endDate}
-                    setEndDate={setEndDate}
-                    filterTag={filterTag}
-                    setFilterTag={setFilterTag}
-                    filterCategory={filterCategory}
-                    setFilterCategory={setFilterCategory}
-                    filterDesigner={filterDesigner}
-                    setFilterDesigner={setFilterDesigner}
-                    filterMaxLike={filterMaxLike}
-                    setFilterMaxLike={setFilterMaxLike}
-                    filterMinLike={filterMinLike}
-                    setFilterMinLike={setFilterMinLike}
-                    setDd={setDd}
-                    dd={dd}
-                  />
-                )}
+        <AdminFilter
+          filter={filter}
+          setFilter={setFilter}
+          setData={setData}
+          startDate={startDate}
+          setStartDate={setStartDate}
+          endDate={endDate}
+          setEndDate={setEndDate}
+          filterTag={filterTag}
+          setFilterTag={setFilterTag}
+          filterCategory={filterCategory}
+          setFilterCategory={setFilterCategory}
+          filterDesigner={filterDesigner}
+          setFilterDesigner={setFilterDesigner}
+          filterMaxLike={filterMaxLike}
+          setFilterMaxLike={setFilterMaxLike}
+          filterMinLike={filterMinLike}
+          setFilterMinLike={setFilterMinLike}
+          setDd={setDd}
+          dd={dd}
+        />
+      )}
     </div>
   );
 };
