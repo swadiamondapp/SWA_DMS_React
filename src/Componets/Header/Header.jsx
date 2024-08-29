@@ -369,8 +369,14 @@ const Header = ({
                       className="log_out__btns"
                       ref={dropdownRef}
                       onClick={() => {
-                        handleCADLogout()
+                        // const res = handleCADLogout()
+                        // console.log("res8734", res)
+                        if (userType == "CAD") {
+                           handleCADLogout()
                         removeLocalstorage(navigate);
+                        } else {
+                          removeLocalstorage(navigate);
+                        }
                       }}
                     >
                       <button>
