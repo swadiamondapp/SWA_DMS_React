@@ -116,6 +116,21 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
     }
   };
 
+  const handleSelectAll = () => {
+    const allDesignCodes = Data.map((item) => item.designcode);
+    const allImages = Data.map((item) => item.image);
+    const allIds = Data.map((item) => item.id);
+    setSelectedDesigns(allDesignCodes);
+    setSelectedImages(allImages);
+    setSelectedIdsForDelet(allIds);
+  };
+
+  const handleDeselectAll = () => {
+    setSelectedDesigns([]);
+    setSelectedImages([]);
+    setSelectedIdsForDelet([]);
+  };
+
   // const handleCheckboxChange = (designcode) => {
   //   setSelectedDesigns(prevState => ({
   //     ...prevState,
@@ -177,7 +192,32 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
 
   const handleDownloadMultiple = async (imageData) => {
     for (const { image, designcode } of imageData) {
-      try {
+      try {  const handleCheckboxChange = (designcode, image, id) => {
+        if (selectedDesigns.includes(designcode)) {
+          setSelectedDesigns(selectedDesigns.filter((item) => item !== designcode));
+          setSelectedImages(selectedImages.filter((img) => img !== image));
+          setSelectedIdsForDelet(SelectedIdsForDelet.filter((item) => item !== id));
+        } else {
+          setSelectedDesigns([...selectedDesigns, designcode]);
+          setSelectedImages([...selectedImages, image]);
+          setSelectedIdsForDelet([...SelectedIdsForDelet, id]);
+        }
+      };
+    
+      const handleSelectAll = () => {
+        const allDesignCodes = Data.map((item) => item.designcode);
+        const allImages = Data.map((item) => item.image);
+        const allIds = Data.map((item) => item.id);
+        setSelectedDesigns(allDesignCodes);
+        setSelectedImages(allImages);
+        setSelectedIdsForDelet(allIds);
+      };
+    
+      const handleDeselectAll = () => {
+        setSelectedDesigns([]);
+        setSelectedImages([]);
+        setSelectedIdsForDelet([]);
+      };
         const response = await fetch(image, {
           method: "GET",
           mode: "cors",
@@ -186,7 +226,7 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
         const blobUrl = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = blobUrl;
-        link.download = `designPool_${designcode}.jpg`; // Use design code in filename
+        link.download = `designPool_${designcode}.jpg`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -376,7 +416,9 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
             detail={detail}
             tiles={tiles}
             Data={Data}
-
+            handleSelectAll={handleSelectAll}
+            handleDeselectAll={handleDeselectAll}
+            showRadioButtons={showRadioButtons}
           />
         </div>
         {/* new design section */}
@@ -439,6 +481,7 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
                   </div>
                 )}
                 <>
+               
                   {grid && (
                     <div className="Card_Design_Parent">
                       {Data.map((item, index) => (
@@ -532,7 +575,7 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
                               checked={selectedDesigns.includes(
                                 item.designcode
                               )}
-                            ></input>
+                            />
                           )}
                           {/* {!showRadioButtons && location.pathname === "/designpool" && (
                     <div
@@ -658,25 +701,25 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
                         </div>
                       ))}
                     </div>
-                  )} 
-                   
-                   {tiles && (
+                  )}
+
+                  {tiles && (
                     <div className="Card_Design_Parent2">
                       {Data.map((item, index) => (
                         <div className="New_Design_card_3" key={item.id}>
                           <div
-                             className=""
-                             style={{
-                               width: "100%",
-                               height: "70vh",
-                               display: "flex",
-                               alignItems: "center",
-                               justifyContent: "center",
-                               cursor:"pointer"
-                             }}
+                            className=""
+                            style={{
+                              width: "100%",
+                              height: "70vh",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              cursor: "pointer",
+                            }}
                           >
                             <img
-                               style={{
+                              style={{
                                 backgroundSize: "contain",
                                 width: "90%",
                                 height: "100%",
@@ -767,7 +810,6 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
                       ))}
                     </div>
                   )}
-
                 </>
               </div>
             </TabPanel>
@@ -891,8 +933,7 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
           );
         }}
       />
-      <BasicDetailModal
-      />
+      <BasicDetailModal />
 
       {filter && (
         <AdminFilter
