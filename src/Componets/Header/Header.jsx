@@ -371,12 +371,12 @@ const Header = ({
                       onClick={() => {
                         // const res = handleCADLogout()
                         // console.log("res8734", res)
-                        // if (userType === "CAD") {
-                        //    handleCADLogout()
-                        // removeLocalstorage(navigate);
-                        // } else {
+                        if (userType == "CAD") {
+                           handleCADLogout()
+                        removeLocalstorage(navigate);
+                        } else {
                           removeLocalstorage(navigate);
-                        // }
+                        }
                       }}
                     >
                       <button>
