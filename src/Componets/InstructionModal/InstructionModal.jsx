@@ -32,7 +32,7 @@ const InstructionModal = ({
 }) => {
   const [renderRemarkText, setRenderRemarkText] = useState("");
   const [cadRemark, setCadRemark] = useState("");
-  const [text, settext] = useState("");
+  const [error, setError] = useState("");
 
   // const handleInputData =(e) => {
   //   if (modalHeading === "Add Render Instructions") {
@@ -45,16 +45,21 @@ const InstructionModal = ({
   // };
 
   const handleInputData = (e) => {
-    if (modalHeading === "Add Render Instractions") {
+    if (modalHeading === "Add Render Instructions") {
       setRenderRemarkText(e.target.value);
     }
-    if (modalHeading === "Add cad Instractions") {
+    if (modalHeading === "Add cad Instructions") {
       setCadRemark(e.target.value);
     }
   };
 
   const handleAddRemark = async () => {
-    if (modalHeading === "Add Render Instractions") {
+    if (modalHeading === "Add Render Instructions") {
+      if (renderRemarkText === ""){
+        setError("Add instruction")
+        return
+      }
+    
       await addRenderRemark(
         setIsLoading,
         renderRemarkText,
@@ -63,7 +68,11 @@ const InstructionModal = ({
         setOpenmodal
       );
     }
-    if (modalHeading === "Add cad Instractions") {
+    if (modalHeading === "Add cad Instructions") {
+      if (cadRemark === ""){
+        setError("Add instruction")
+        return
+      }
         await addCadRemark(
         setIsLoading,
         cadRemark,
@@ -103,9 +112,9 @@ const InstructionModal = ({
         <div className="modal_fields" style={{ marginTop: "15px" }}>
           <div className="inp2_admin">
             <label htmlFor="">
-              {modalTitle ? modalTitle : "Write instractions here"}
+              {modalTitle ? modalTitle : "Write instructions here"}
             </label>
-           { modalHeading == "CAD Instractions"  && (
+           { modalHeading == "CAD Instructions"  && (
                  <textarea
                  type="text"
                  name="name"
@@ -113,7 +122,7 @@ const InstructionModal = ({
                 readOnly
                />      
            )}
-           { modalHeading == "Render Instractions"  && (
+           { modalHeading == "Render Instructions"  && (
                  <textarea
                  type="text"
                  name="name"
@@ -121,8 +130,8 @@ const InstructionModal = ({
                 readOnly
                />      
            )}
-           { modalHeading == "Add cad Instractions"  ||
-             modalHeading == "Add Render Instractions" ? (
+           { modalHeading == "Add cad Instructions"  ||
+             modalHeading == "Add Render Instructions" ? (
             <textarea
                  type="text"
                  name="name"
@@ -140,6 +149,7 @@ const InstructionModal = ({
         )} */}
         {/* {location.pathname !== "/newscanmodule" &&
           location.pathname !== "/centralhubscan" && ( */}
+          {error && (<span style={{fontSize:"12px",color:"red"}}>{error}</span>)}
         <div className="modal_btns">
           {shouldRenderButton && (
             <button
@@ -152,7 +162,7 @@ const InstructionModal = ({
               }}
               onClick={handleAddRemark}
             >
-              ADD INSTRACTION
+              ADD INSTRUCTION
             </button>
           )}
         </div>

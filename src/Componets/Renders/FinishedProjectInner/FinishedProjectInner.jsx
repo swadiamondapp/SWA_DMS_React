@@ -31,8 +31,8 @@ const FinishedProjectInner = (props) => {
 
   const handleopenModal = () => {
     setOpenmodal(!openModal);
-    setmodalHeading("Render Instractions");
-    setmodalTitle("instraction");
+    setmodalHeading("Render Instructions");
+    setmodalTitle("instruction");
   };
 
   const handleOpenModal = () => {

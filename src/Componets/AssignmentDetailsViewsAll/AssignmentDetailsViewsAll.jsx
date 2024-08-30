@@ -72,12 +72,12 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
 
   const handleopenModal = () => {
     setOpenmodal(!openModal);
-    setmodalHeading("Add cad Instractions");
+    setmodalHeading("Add cad Instructions");
   };
 
   const handleopenModalRender = () => {
     setOpenmodal(!openModal);
-    setmodalHeading("Add Render Instractions");
+    setmodalHeading("Add Render Instructions");
   };
 
   useEffect(() => {
