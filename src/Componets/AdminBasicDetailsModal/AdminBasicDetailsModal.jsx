@@ -872,7 +872,7 @@ const AdminBasicDetailsModal = ({
                                     length
                                   </label>
                                   <input
-                                    type="number"
+                                    type="text"
                                     className="inputFields"
                                     name="length"
                                     value={formData.length}
@@ -900,7 +900,7 @@ const AdminBasicDetailsModal = ({
                                     Width
                                   </label>
                                   <input
-                                    type="number"
+                                    type="text"
                                     className="inputFields"
                                     name="width"
                                     value={formData.width}
@@ -928,7 +928,7 @@ const AdminBasicDetailsModal = ({
                                     Height
                                   </label>
                                   <input
-                                    type="number"
+                                    type="text"
                                     className="inputFields"
                                     name="height"
                                     value={formData.height}
@@ -1031,6 +1031,7 @@ const AdminBasicDetailsModal = ({
                                     Approx Diamond weight
                                   </label>
                                   <input
+                                   style={{ background: "#ADD8E6" }}
                                     type="number"
                                     className="inputFields"
                                     name="approxDiamondWeight"
@@ -1061,6 +1062,7 @@ const AdminBasicDetailsModal = ({
                                     Approx metal weight
                                   </label>
                                   <input
+                                  style={{ background: "#FEDD56" }}
                                     type="number"
                                     className="inputFields"
                                     name="approxMetalWeights"
@@ -1132,6 +1134,8 @@ const AdminBasicDetailsModal = ({
                                     Findings
                                   </label>
                                   <Select
+                                  onSearch={onSearch}
+                                  filterOption={filterOption}
                                     mode="multiple"
                                     style={{
                                       width: "100%",
@@ -1196,6 +1200,8 @@ const AdminBasicDetailsModal = ({
                           classNames="inputTag"
                         /> */}
                                   <Select
+                                  onSearch={onSearch}
+                                  filterOption={filterOption}
                                     mode="multiple"
                                     style={{
                                       width: "100%",
