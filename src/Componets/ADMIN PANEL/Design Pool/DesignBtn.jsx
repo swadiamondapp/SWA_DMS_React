@@ -306,6 +306,38 @@ const DesignBtn = ({
               )}
             </button>
           )}
+          {location.pathname === "/assignmentpanel" ||
+            location.pathname === "/designpool" && (
+            <button
+              className="D_View_Sort_Filter"
+              onClick={handleView}
+              style={{ position: "relative" }}
+            >
+              <MdViewModule /> View
+              {view && (
+                <div className="sortData" style={{ left: "-20px" }}>
+                  <span
+                    className={grid === true ? "setcolor" : ""}
+                    onClick={gridView}
+                  >
+                    Grid
+                  </span>
+                  <span
+                    className={detail === true ? "setcolor2" : ""}
+                    onClick={detailView}
+                  >
+                    Details
+                  </span>
+                  <span
+                    className={tiles === true ? "setcolor3" : ""}
+                    onClick={tileView}
+                  >
+                    Tiles
+                  </span>
+                </div>
+              )}
+            </button>
+          )}
         {location.pathname === "/designdashboard" && (
           <button
             //  onClick={handleSort}
@@ -373,6 +405,7 @@ const DesignBtn = ({
             <RiFilter3Line /> Filter
           </button>
         )}
+        
         {location.pathname === "/votorscustomization" && (
           <button
             className="D_downlodBtn"
