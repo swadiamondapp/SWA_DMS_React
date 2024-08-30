@@ -371,7 +371,7 @@ const Header = ({
                       onClick={() => {
                         // const res = handleCADLogout()
                         // console.log("res8734", res)
-                        if (userType === "CAD") {
+                        if (userType == "CAD") {
                            handleCADLogout()
                         removeLocalstorage(navigate);
                         } else {

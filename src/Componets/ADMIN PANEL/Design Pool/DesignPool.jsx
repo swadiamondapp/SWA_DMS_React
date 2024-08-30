@@ -59,6 +59,10 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
   const [filterMinLike, setFilterMinLike] = useState("");
   const [dd, setDd] = useState();
 
+  const [grid, setGrid] = useState(true);
+  const [detail, setDetail] = useState(false);
+  const [tiles, setTiles] = useState(false);
+
   const [filter, setFilter] = useState(false);
   const [value, setValue] = React.useState("1");
 
@@ -275,23 +279,22 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
     if (!isoString) {
       return "";
     }
-  
+
     const date = new Date(isoString);
-    
+
     const day = String(date.getDate()).padStart(2, "0");
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const year = date.getFullYear();
-    
+
     let hours = date.getHours();
     const minutes = String(date.getMinutes()).padStart(2, "0");
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    
+    const ampm = hours >= 12 ? "PM" : "AM";
+
     hours = hours % 12;
-    hours = hours ? String(hours).padStart(2, "0") : '12'; 
-    
+    hours = hours ? String(hours).padStart(2, "0") : "12";
+
     return `${day}/${month}/${year} ${hours}:${minutes} ${ampm}`;
   };
-  
 
   // console.log("unvoted", unvotedData)
 
@@ -366,6 +369,12 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
             setSelectedIdsForDelet={setSelectedIdsForDelet}
             filter={filter}
             setFilter={setFilter}
+            setGrid={setGrid}
+            setDetail={setDetail}
+            setTiles={setTiles}
+            grid={grid}
+            detail={detail}
+            tiles={tiles}
           />
         </div>
         {/* new design section */}
@@ -427,87 +436,104 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
                     <span style={{ marginTop: "100px" }}>No Data Found</span>
                   </div>
                 )}
+                  <>
+                    {grid && (
 
-                <div className="Card_Design_Parent">
-                  {Data.map((item, index) => (
-                    <>
-                      <div className="New_Design_card" key={item.id}>
-                        <div
-                          className="Card_img"
-                          style={{
-                            marginTop: "12px",
-                            height: "170px",
-                            cursor: "pointer",
-                          }}
-                        >
-                          <img
-                            src={item.image}
-                            alt="image"
-                            onClick={() => OpenAnntaitionmodal(item)}
-                          />
-                        </div>
-                        <div className="Card_Details">
-                          <h3>ID : {item.designcode}</h3>
-                          <div className="Card_Details_Inner">
-                            <div className="Inner_Left">
-                              <p>{item.user_name}</p>
-                              <p>{item.created_at}</p>
-                            <span
+                      <div className="Card_Design_Parent">
+                     {Data.map((item, index) => (
+                        <div className="New_Design_card" key={item.id}>
+                          <div
+                            className="Card_img"
+                            style={{
+                              marginTop: "12px",
+                              height: "170px",
+                              cursor: "pointer",
+                            }}
+                          >
+                            <img
+                              src={item.image}
+                              alt="image"
+                              onClick={() => OpenAnntaitionmodal(item)}
+                            />
+                          </div>
+                          <div className="Card_Details">
+                            <h3>ID : {item.designcode}</h3>
+                            <div className="Card_Details_Inner">
+                              <div className="Inner_Left">
+                                <p>{item.user_name}</p>
+                                <p>{item.created_at}</p>
+                                <span
                                   style={{ color: "#23A064", fontSize: "13px" }}
                                 >
                                   Track status :{" "}
                                   <span
                                     style={{ color: "black", fontSize: "12px" }}
                                   >
-                                    {
-                                     item?.currentstatus_track && item?.currentstatus_track[0]?.current_status
-                                    } -
-                                    { item?.currentstatus_track && formatDateTwo(item?.currentstatus_track[0]?.date)}
+                                    {item?.currentstatus_track &&
+                                      item?.currentstatus_track[0]
+                                        ?.current_status}{" "}
+                                    -
+                                    {item?.currentstatus_track &&
+                                      formatDateTwo(
+                                        item?.currentstatus_track[0]?.date
+                                      )}
                                   </span>
                                 </span>
+                              </div>
+                            </div>
+                            <div
+                              className=""
+                              style={{
+                                display: "flex",
+                                gap: "5px",
+                                width: "100%",
+                                justifyContent: "end",
+                              }}
+                            >
+                              <button
+                                style={{
+                                  padding: "7px 5px ",
+                                  borderRadius: "4px",
+                                  color: "white",
+                                  backgroundColor: "#0464D5",
+                                  border: "none",
+                                  fontSize: "13px",
+                                  fontWeight: "900",
+                                }}
+                                onClick={() =>
+                                  handleTrack(item, item.designcode)
+                                }
+                              >
+                                Track
+                              </button>
+                              <div className="Inner_Right">
+                                <p style={{ color: "white", fontSize: "12px" }}>
+                                  {item.likes_count} <img src={like} alt="" />
+                                </p>
+                              </div>
                             </div>
                           </div>
-                            <div className="" style={{display:"flex" ,gap:"5px",width:"100%",justifyContent:"end"}}>
-                            <button
-                              style={{
-                                padding: "7px 5px ",
-                                borderRadius: "4px",
-                                color: "white",
-                                backgroundColor: "#0464D5",
-                                border: "none",
-                                fontSize: "13px",
-                                fontWeight: "900",
-                              }}
-                              onClick={() => handleTrack(item, item.designcode)}
-                            >
-                              Track
-                            </button>
-                            <div className="Inner_Right" >
-                              <p style={{color:"white",fontSize:"12px"}}>  
-                                {item.likes_count} <img src={like} alt="" />
-                              </p>
-                            </div>
-                            </div>
-                        </div>
-                        {/* radio btn */}
-                        {showRadioButtons && (
-                          <input
-                            className="Radio_select"
-                            type="checkbox"
-                            id={item.designcode}
-                            name="fav_language"
-                            value={item.designcode}
-                            onChange={() =>
-                              handleCheckboxChange(
-                                item.designcode,
-                                item.image,
-                                item.id
-                              )
-                            }
-                            checked={selectedDesigns.includes(item.designcode)}
-                          ></input>
-                        )}
-                        {/* {!showRadioButtons && location.pathname === "/designpool" && (
+                          {/* radio btn */}
+                          {showRadioButtons && (
+                            <input
+                              className="Radio_select"
+                              type="checkbox"
+                              id={item.designcode}
+                              name="fav_language"
+                              value={item.designcode}
+                              onChange={() =>
+                                handleCheckboxChange(
+                                  item.designcode,
+                                  item.image,
+                                  item.id
+                                )
+                              }
+                              checked={selectedDesigns.includes(
+                                item.designcode
+                              )}
+                            ></input>
+                          )}
+                          {/* {!showRadioButtons && location.pathname === "/designpool" && (
                     <div
                       onClick={() => toggleDeleteMoveButtons(item.id)}
                       ref={dotsRef}
@@ -518,7 +544,7 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
                       />
                     </div>
                   )} */}
-                        {/* {activeCardId === item.id && (
+                          {/* {activeCardId === item.id && (
                     <div
                       className="Dots_Delete_DesignPool_btns"
                       ref={dropdownRefDD}
@@ -527,11 +553,113 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
                      
                     </div>
                   )} */}
-                        {/* radio btn */}
+                          {/* radio btn */}
+                        </div>
+                      ))}
                       </div>
-                    </>
-                  ))}
-                </div>
+                    )}
+
+{detail && (
+<div className="Card_Design_Parent3" >
+{Data.map((item, index) => (
+                        <div className="New_Design_card" key={item.id}>
+                          <div
+                            className="Card_img"
+                            style={{
+                              marginTop: "12px",
+                              height: "170px",
+                              cursor: "pointer",
+                            }}
+                          >
+                            <img
+                              src={item.image}
+                              alt="image"
+                              onClick={() => OpenAnntaitionmodal(item)}
+                            />
+                          </div>
+                          <div className="Card_Details_Designer">
+                            <h3>ID : {item.designcode}</h3>
+                            <div className="Card_Details_Inner">
+                              <div className="Inner_Left">
+                                <p>{item.user_name}</p>
+                                <p>{item.created_at}</p>
+                                <span
+                                  style={{ color: "#23A064", fontSize: "13px" }}
+                                >
+                                  Track status :{" "}
+                                  <span
+                                    style={{ color: "black", fontSize: "12px" }}
+                                  >
+                                    {item?.currentstatus_track &&
+                                      item?.currentstatus_track[0]
+                                        ?.current_status}{" "}
+                                    -
+                                    {item?.currentstatus_track &&
+                                      formatDateTwo(
+                                        item?.currentstatus_track[0]?.date
+                                      )}
+                                  </span>
+                                </span>
+                              </div>
+                            </div>
+                            <div
+                              className=""
+                              style={{
+                                display: "flex",
+                                gap: "5px",
+                                width: "100%",
+                                justifyContent: "end",
+                              }}
+                            >
+                              <button
+                                style={{
+                                  padding: "7px 5px ",
+                                  borderRadius: "4px",
+                                  color: "white",
+                                  backgroundColor: "#0464D5",
+                                  border: "none",
+                                  fontSize: "13px",
+                                  fontWeight: "900",
+                                }}
+                                onClick={() =>
+                                  handleTrack(item, item.designcode)
+                                }
+                              >
+                                Track
+                              </button>
+                              <div className="Inner_Right">
+                                <p style={{ color: "white", fontSize: "12px" }}>
+                                  {item.likes_count} <img src={like} alt="" />
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                          {/* radio btn */}
+                          {showRadioButtons && (
+                            <input
+                              className="Radio_select"
+                              type="checkbox"
+                              id={item.designcode}
+                              name="fav_language"
+                              value={item.designcode}
+                              onChange={() =>
+                                handleCheckboxChange(
+                                  item.designcode,
+                                  item.image,
+                                  item.id
+                                )
+                              }
+                              checked={selectedDesigns.includes(
+                                item.designcode
+                              )}
+                            ></input>
+                          )}
+                          </div>
+                     ))}
+                     </div>
+                   )}
+
+                  </>
               </div>
             </TabPanel>
             <TabPanel
@@ -556,42 +684,54 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
                             <p>{item.user_name}</p>
                             <p>{item.created_at}</p>
                             <span
-                                  style={{ color: "#23A064", fontSize: "13px" }}
-                                >
-                                  Track status :{" "}
-                                  <span
-                                    style={{ color: "black", fontSize: "12px" }}
-                                  >
-                                    {
-                                     item?.currentstatus_track && item?.currentstatus_track[0]?.current_status
-                                    } -
-                                    { item?.currentstatus_track && formatDateTwo(item?.currentstatus_track[0]?.date)}
-                                  </span>
-                                </span>
+                              style={{ color: "#23A064", fontSize: "13px" }}
+                            >
+                              Track status :{" "}
+                              <span
+                                style={{ color: "black", fontSize: "12px" }}
+                              >
+                                {item?.currentstatus_track &&
+                                  item?.currentstatus_track[0]
+                                    ?.current_status}{" "}
+                                -
+                                {item?.currentstatus_track &&
+                                  formatDateTwo(
+                                    item?.currentstatus_track[0]?.date
+                                  )}
+                              </span>
+                            </span>
                           </div>
                         </div>
 
-                        <div className="" style={{display:"flex" ,gap:"5px",width:"100%",justifyContent:"end"}}>
-                            <button
-                              style={{
-                                padding: "7px 5px ",
-                                borderRadius: "4px",
-                                color: "white",
-                                backgroundColor: "#0464D5",
-                                border: "none",
-                                fontSize: "13px",
-                                fontWeight: "900",
-                              }}
-                              onClick={() => handleTrack(item, item.designcode)}
-                            >
-                              Track
-                            </button>
-                            <div className="Inner_Right">
+                        <div
+                          className=""
+                          style={{
+                            display: "flex",
+                            gap: "5px",
+                            width: "100%",
+                            justifyContent: "end",
+                          }}
+                        >
+                          <button
+                            style={{
+                              padding: "7px 5px ",
+                              borderRadius: "4px",
+                              color: "white",
+                              backgroundColor: "#0464D5",
+                              border: "none",
+                              fontSize: "13px",
+                              fontWeight: "900",
+                            }}
+                            onClick={() => handleTrack(item, item.designcode)}
+                          >
+                            Track
+                          </button>
+                          <div className="Inner_Right">
                             <p>
                               {item.likes_count} <img src={like} alt="" />
                             </p>
-                            </div>
-                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   ))}
