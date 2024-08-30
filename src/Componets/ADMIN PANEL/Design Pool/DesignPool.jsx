@@ -375,6 +375,8 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
             grid={grid}
             detail={detail}
             tiles={tiles}
+            Data={Data}
+
           />
         </div>
         {/* new design section */}
@@ -436,11 +438,10 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
                     <span style={{ marginTop: "100px" }}>No Data Found</span>
                   </div>
                 )}
-                  <>
-                    {grid && (
-
-                      <div className="Card_Design_Parent">
-                     {Data.map((item, index) => (
+                <>
+                  {grid && (
+                    <div className="Card_Design_Parent">
+                      {Data.map((item, index) => (
                         <div className="New_Design_card" key={item.id}>
                           <div
                             className="Card_img"
@@ -556,12 +557,12 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
                           {/* radio btn */}
                         </div>
                       ))}
-                      </div>
-                    )}
+                    </div>
+                  )}
 
-{detail && (
-<div className="Card_Design_Parent3" >
-{Data.map((item, index) => (
+                  {detail && (
+                    <div className="Card_Design_Parent3">
+                      {Data.map((item, index) => (
                         <div className="New_Design_card" key={item.id}>
                           <div
                             className="Card_img"
@@ -654,12 +655,120 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
                               )}
                             ></input>
                           )}
+                        </div>
+                      ))}
+                    </div>
+                  )} 
+                   
+                   {tiles && (
+                    <div className="Card_Design_Parent2">
+                      {Data.map((item, index) => (
+                        <div className="New_Design_card_3" key={item.id}>
+                          <div
+                             className=""
+                             style={{
+                               width: "100%",
+                               height: "70vh",
+                               display: "flex",
+                               alignItems: "center",
+                               justifyContent: "center",
+                               cursor:"pointer"
+                             }}
+                          >
+                            <img
+                               style={{
+                                backgroundSize: "contain",
+                                width: "90%",
+                                height: "100%",
+                              }}
+                              src={item.image}
+                              alt="image"
+                              onClick={() => OpenAnntaitionmodal(item)}
+                            />
                           </div>
-                     ))}
-                     </div>
-                   )}
+                          <div className="Card_Details_Designer">
+                            <h3>ID : {item.designcode}</h3>
+                            <div className="Card_Details_Inner">
+                              <div className="Inner_Left">
+                                <p>{item.user_name}</p>
+                                <p>{item.created_at}</p>
+                                <span
+                                  style={{ color: "#23A064", fontSize: "13px" }}
+                                >
+                                  Track status :{" "}
+                                  <span
+                                    style={{ color: "black", fontSize: "12px" }}
+                                  >
+                                    {item?.currentstatus_track &&
+                                      item?.currentstatus_track[0]
+                                        ?.current_status}{" "}
+                                    -
+                                    {item?.currentstatus_track &&
+                                      formatDateTwo(
+                                        item?.currentstatus_track[0]?.date
+                                      )}
+                                  </span>
+                                </span>
+                              </div>
+                            </div>
+                            <div
+                              className=""
+                              style={{
+                                display: "flex",
+                                gap: "5px",
+                                width: "100%",
+                                justifyContent: "end",
+                              }}
+                            >
+                              <button
+                                style={{
+                                  padding: "7px 5px ",
+                                  borderRadius: "4px",
+                                  color: "white",
+                                  backgroundColor: "#0464D5",
+                                  border: "none",
+                                  fontSize: "13px",
+                                  fontWeight: "900",
+                                }}
+                                onClick={() =>
+                                  handleTrack(item, item.designcode)
+                                }
+                              >
+                                Track
+                              </button>
+                              <div className="Inner_Right">
+                                <p style={{ color: "white", fontSize: "12px" }}>
+                                  {item.likes_count} <img src={like} alt="" />
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                          {/* radio btn */}
+                          {showRadioButtons && (
+                            <input
+                              className="Radio_select"
+                              type="checkbox"
+                              id={item.designcode}
+                              name="fav_language"
+                              value={item.designcode}
+                              onChange={() =>
+                                handleCheckboxChange(
+                                  item.designcode,
+                                  item.image,
+                                  item.id
+                                )
+                              }
+                              checked={selectedDesigns.includes(
+                                item.designcode
+                              )}
+                            ></input>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
 
-                  </>
+                </>
               </div>
             </TabPanel>
             <TabPanel
@@ -782,7 +891,8 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
           );
         }}
       />
-      <BasicDetailModal />
+      <BasicDetailModal
+      />
 
       {filter && (
         <AdminFilter

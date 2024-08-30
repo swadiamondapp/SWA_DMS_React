@@ -1,6 +1,7 @@
 import { apiService, checkApiStatus } from "../../Pages/Services/ApiInstants";
 import { setToLocalstorage } from "../../Pages/Utils/Common";
 import {
+  ADMIN_FOLDER_RENAME,
   ASSIGNMENT_MOVE,
   ASSIGNMENT_PANEL_DETAILS_PAGE,
   ASSIGNMENT_SORTBY_ADMIN,
@@ -840,7 +841,6 @@ export const filterDesignPool = async (
   filterMinLike,
   designCode
 ) => {
-  debugger;
   try {
     setIsLoading(true);
     let apiUrl = `${DESIGNPOOL_FILTER}&date_from=${
@@ -867,6 +867,31 @@ export const filterDesignPool = async (
       setTimeout(() => {
         setError("");
       }, 3000);
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+
+export const adminFolderRename = async (
+  setIsLoading,
+  fid,
+  text,
+  setAssignmentFolder
+) => {
+  const body = {
+    name:text
+  }
+  try {
+    setIsLoading(true);
+    const response = await apiService.put(
+      `${ADMIN_FOLDER_RENAME}${fid}/`,body
+    );
+    if (checkApiStatus(response)) {
+      list_assignment_folder(setIsLoading,setAssignmentFolder)
     }
   } catch (error) {
     console.log(error);

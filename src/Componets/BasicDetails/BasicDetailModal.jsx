@@ -10,6 +10,8 @@ import Joi from "joi";
 import AssignmentModal from "../AssignmentModal/AssignmentModal";
 import EyeIcons from "../../assets/bmEye.png";
 import closeButton from "../../assets/closeButton.svg";
+import like from "../../assets/like.png";
+
 import {
   assignmentPanelSelectedEdit,
   basic_calculation,
@@ -75,6 +77,7 @@ const BasicDetailModal = ({
   pid,
   setFolderDetailsView,
   detailId,
+  Data,
 }) => {
   // create modal
 
@@ -144,14 +147,14 @@ const BasicDetailModal = ({
       }));
     }
   }, [name, DetailsProductId, basicDetails]);
-  console.log(successMessage, "success");
-  console.log(formData, "basicFormdData");
-  console.log(selectedAssignment, "basic=====>");
-  console.log(formData.approxMetalWeights, "metalWieght");
-  console.log(metalTypeDropDown, "metalTypeDropDown");
-  console.log(ProudctCategory, "taggggg");
-  console.log(CalculationData, "CalculationData");
-  console.log(basicDetails && basicDetails.approx_metal_weight, "basicDtails");
+  // console.log(successMessage, "success");
+  // console.log(formData, "basicFormdData");
+  // console.log(selectedAssignment, "basic=====>");
+  // console.log(formData.approxMetalWeights, "metalWieght");
+  // console.log(metalTypeDropDown, "metalTypeDropDown");
+  // console.log(ProudctCategory, "taggggg");
+  // console.log(CalculationData, "CalculationData");
+  // console.log(basicDetails && basicDetails.approx_metal_weight, "basicDtails");
 
   const schema = Joi.object({
     SKU: Joi.required().messages({
@@ -543,6 +546,12 @@ const BasicDetailModal = ({
     setCalculationData([]);
   };
 
+  const filteredData = Data?.filter((item) =>
+    getSelectedDesign.includes(item.designcode)
+  );
+
+  console.log("filteredData", filteredData);
+
   return (
     <div>
       <div className="">
@@ -563,42 +572,54 @@ const BasicDetailModal = ({
           >
             <Box sx={style}>
               <div className="modal_card_images">
-                {/* {Data.map((item, index) => (
-              <>
-                <div className="New_Design_card" key={item.id}>
-                  <div
-                    className="Card_img"
-                    style={{
-                      marginTop: "12px",
-                      height: "170px",
-                      cursor: "pointer",
-                    }}
-                  >
-                    <img
-                      src={item.image}
-                      alt="image"
-                      onClick={() => OpenAnntaitionmodal(item)}
-                    />
-                  </div>
-                  <div className="Card_Details">
-                    <h3>ID : {item.designcode}</h3>
-                    <div className="Card_Details_Inner">
-                      <div className="Inner_Left">
-                        <p>{item.user_name}</p>
-                        <p>{item.created_at}</p>
+                {filteredData?.map((item, index) => (
+                  <>
+                    <div
+                      className="New_Design_card"
+                      key={item.id}
+                      style={{ width: "250px" }}
+                    >
+                      <div
+                        className="Card_img"
+                        style={{
+                          marginTop: "12px",
+                          height: "170px",
+                          cursor: "pointer",
+                        }}
+                      >
+                        <img
+                          src={item.image}
+                          alt="image"
+                          // onClick={() => OpenAnntaitionmodal(item)}
+                        />
                       </div>
-                      <div className="Inner_Right">
-                        <p>
-                          {item.likes_count} <img src={like} alt="" />
-                        </p>
+                      <div className="Card_Details">
+                        <h3>ID : {item.designcode}</h3>
+                        <div className="Card_Details_Inner">
+                          <div className="Inner_Left">
+                            <p>{item.user_name}</p>
+                            <p>{item.created_at}</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        className=""
+                        style={{
+                          display: "flex",
+                          justifyContent: "end",
+                          width: "100%",
+                          alignItems: "end",
+                        }}
+                      >
+                        <div className="Inner_Right" style={{ width: "50px" }}>
+                          <p style={{ color: "white", fontSize: "12px" }}>
+                            {item?.likes_count} <img src={like} alt="" />
+                          </p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  
-                  
-                </div>
-              </>
-            ))} */}
+                  </>
+                ))}
               </div>
               <Typography className="modal_edit_section">
                 <div className="container">
@@ -983,8 +1004,8 @@ const BasicDetailModal = ({
                           />
                         ) : (
                           <Select
-                          onSearch={onSearch}
-                          filterOption={filterOption}
+                            onSearch={onSearch}
+                            filterOption={filterOption}
                             mode="multiple"
                             style={{
                               width: "100%",
@@ -1076,8 +1097,8 @@ const BasicDetailModal = ({
                           />
                         ) : (
                           <Select
-                          onSearch={onSearch}
-                          filterOption={filterOption}
+                            onSearch={onSearch}
+                            filterOption={filterOption}
                             mode="multiple"
                             style={{
                               width: "100%",

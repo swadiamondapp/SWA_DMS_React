@@ -105,6 +105,8 @@ export const WORKDONE_TABLE_PRODUCT_SEARCH = "workdone/scan/";
 export const WORKDONE_TABLE_PRODUCT_DETAIL = "workdone/";
 export const WORKDONE_TABLE_PRODUCT_UPDATE = "assignment/";
 
+
+
 export const WORKDONE_CUSTOMIZATION_APPROVE = "confirm/customizations/";
 
 export const MASTERS_FINDING_DATAS = "master/finding/list";
@@ -212,3 +214,7 @@ export const CAD_IMAGE_SATUS_UPDATE = "designer/action/cad-img/"
 export const EDIT_ASSSI_SELECTED_DETAILS = "assignment/";
 
 export const CAD_LOGOUT = "logout/";
+export const ADMIN_FOLDER_RENAME = "folder/edit/";
+
+export const WORKDONE_ACTUAL_DETAIL_TABLE_UPDATE = "workdone/";
+export const CENTRALHUB_SEARCH = "all/folderlist/?design_code=";
