@@ -218,3 +218,4 @@ export const ADMIN_FOLDER_RENAME = "folder/edit/";
 
 export const WORKDONE_ACTUAL_DETAIL_TABLE_UPDATE = "workdone/";
 export const CENTRALHUB_SEARCH = "all/folderlist/?design_code=";
+export const DESIGNER_ASSIAN_SEARCH = "designer/getlist-folder/?foldername=";

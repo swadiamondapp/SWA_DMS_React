@@ -69,7 +69,10 @@ const DesignBtn = ({
   filter,
   setFilter,
   activeFilter,
-  Data
+  Data,
+  handleDeselectAll,
+  handleSelectAll,
+  showRadioButtons
 }) => {
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -225,6 +228,42 @@ const DesignBtn = ({
               {selectButtonLabel}
             </button>
           )}
+          {showRadioButtons && (
+           <div style={{width:"200px"}}>
+        <button
+          style={{
+            padding: "9px 15px",
+            borderRadius: "4px",
+            color: "white",
+            backgroundColor: "#0464D5",
+            border: "none",
+            fontSize: "13px",
+            fontWeight: "900",
+            marginRight: "10px",
+            borderRadius:"30px"
+          }}
+          onClick={handleSelectAll}
+        >
+          Select All
+        </button>
+        <button
+          style={{
+            padding: "9px 15px",
+            borderRadius: "4px",
+            color: "white",
+            backgroundColor: "#FF4C4C",
+            border: "none",
+            fontSize: "13px",
+            fontWeight: "900",
+            borderRadius:"30px"
+          }}
+          onClick={handleDeselectAll}
+        >
+          Deselect All
+        </button>
+      </div>
+)}
+
         {location.pathname !== "/assignmentpanel" &&
           location.pathname !== "/designdashboard" &&
           location.pathname === "/designpool" &&
