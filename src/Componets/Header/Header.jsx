@@ -321,6 +321,20 @@ const Header = ({
                     </div>
                   </div>
                 )}
+                {location.pathname === "/centralDashboard" && (
+                  <div className="Search_Admin">
+                    <div className="Search_User">
+                      <input
+                        type="text"
+                        placeholder="Search ID"
+                        value={searchListId}
+                        onChange={handleInputChange}
+                      />
+                      {/* <img onClick={handleSearchDesignPoool} src={searchimg} alt="" /> */}
+                      <img src={searchimg} alt="" />
+                    </div>
+                  </div>
+                )}
 
                 {headerDetails?.paper_design &&
                 headerDetails.paper_design.designer_img !== "N/A" &&

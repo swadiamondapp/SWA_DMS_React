@@ -465,7 +465,7 @@ const WorkdoneEditModal = ({
                   <button
                     onClick={() =>
                       handleProductUpdate(
-                        product?.basic_details?.assignment?.id
+                        product?.id
                       )
                     }
                   >
