@@ -487,16 +487,16 @@ const Stepper = ({ code }) => {
                           steppretDta.Tracking_data.status_details.ch_status_history.map(
                             (chStatusHistory, index) => {
                               const isCurrentStatus =
-                                chStatusHistory?.current_status;
+                                chStatusHistory?.status;
                               const formattedDate = new Date(
-                                chStatusHistory?.updated_at
+                                chStatusHistory?.changed_at
                               ).toLocaleDateString("en-US", {
                                 weekday: "long",
                                 day: "numeric",
                                 month: "long",
                               });
                               const formattedTime = new Date(
-                                chStatusHistory?.updated_at
+                                chStatusHistory?.changed_at
                               ).toLocaleTimeString("en-US", {
                                 hour: "numeric",
                                 minute: "numeric",
@@ -722,16 +722,16 @@ const Stepper = ({ code }) => {
                             {steppretDta.Tracking_data.status_details.warehouse_status_history.map(
                               (warehouseStatusHistory, index) => {
                                 const isCurrentStatus =
-                                  warehouseStatusHistory?.current_status;
+                                  warehouseStatusHistory?.status;
                                 const formattedDate = new Date(
-                                  warehouseStatusHistory?.updated_at
+                                  warehouseStatusHistory?.changed_at
                                 ).toLocaleDateString("en-US", {
                                   weekday: "long",
                                   day: "numeric",
                                   month: "long",
                                 });
                                 const formattedTime = new Date(
-                                  warehouseStatusHistory?.updated_at
+                                  warehouseStatusHistory?.changed_at
                                 ).toLocaleTimeString("en-US", {
                                   hour: "numeric",
                                   minute: "numeric",

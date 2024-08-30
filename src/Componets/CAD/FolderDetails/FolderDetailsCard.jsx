@@ -36,8 +36,8 @@ const FolderDetailsCard = ({
 
   const handleopenModal = () => {
     setOpenmodal(!openModal);
-    setmodalHeading("CAD Instractions");
-    setmodalTitle("instraction");
+    setmodalHeading("CAD Instructions");
+    setmodalTitle("instruction");
   };
 
   const handlePrint = useReactToPrint({

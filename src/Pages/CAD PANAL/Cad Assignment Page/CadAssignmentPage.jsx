@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Sidebar from "../../../Componets/Sidebar/Sidebar";
 import Header from "../../../Componets/Header/Header";
 import CadAssignment from "../../../Componets/CAD/Cad Assignment Panal/CadAssignment";
@@ -10,6 +10,7 @@ import {
 } from "../../../Componets/CAD/Api";
 import SuccessModal from "../../../Componets/SuccessModal/SuccessModal";
 import CentalHub from "../../../Componets/CentalHub/CentalHub";
+import { ContextTime } from "../TimerContext";
 
 const CadAssignmentPage = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -26,6 +27,10 @@ const CadAssignmentPage = () => {
     normal: null,
     threeD: null,
   });
+
+  const {cadTime , setCadTime} = useContext(ContextTime)
+  setCadTime(timer)
+
 
   useEffect(() => {
     getDesignList(setIsLoading, setDesignList);
@@ -186,6 +191,7 @@ const CadAssignmentPage = () => {
       <Sidebar
         sidebarExpanded={sidebarExpanded}
         setSidebarExpanded={setSidebarExpanded}
+        timer={timer}
       />
       <Header sidebarExpanded={sidebarExpanded}
        handleCADLogout={handleCADLogout}

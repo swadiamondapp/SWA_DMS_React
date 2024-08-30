@@ -589,6 +589,33 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
                     item.id
                   }?name=${encodeURIComponent(item.name)}`}
                 > */}
+                {!showRadioButtons &&
+                              location.pathname === "/assignmentpanel" && (
+                                <div
+                                  onClick={() =>
+                                    toggleDeleteMoveButtons(itemId)
+                                  }
+                                  ref={dotsRef}
+                                >
+                                  <BsThreeDotsVertical
+                                    className="A_dots"
+                                    style={{ fontSize: "20px" }}
+                                  />
+                                </div>
+                              )}
+                            {/* {activeCardId === itemId && ( */}
+                              {/* <div
+                                className="Dots_Delete_DesignPool_btns"
+                                ref={dropdownRef}
+                              >
+                                <p onClick={() => handleDeleteSingle(itemId)}>
+                                  Delete
+                                </p>
+                                <p onClick={() => moveToDesignPool(itemId)}>
+                                  Move to Design pool
+                                </p>
+                              </div> */}
+                            {/* )} */}
                       <img src={folderimg} alt="" />
                       {/* </Link> */}
                       <p style={{ wordWrap: "break-word", maxWidth: "100px" }}>
