@@ -15,7 +15,6 @@ const CentralHubDashboard = () => {
     listFoldersCentralHub(setIsLoading, setFolders);
   }, []);
 
-  const [Data, setData] = useState([]);
   const [searchListId, setsearchListId] = useState("");
 
   const handleInputChange = async (event) => {
