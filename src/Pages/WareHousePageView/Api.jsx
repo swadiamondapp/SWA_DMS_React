@@ -683,7 +683,8 @@ export const workDone_table_product_update = async (
   formData,
   setOpenLeftbar,
   setSuccessModalOpen,
-  setSuccessMessage
+  setSuccessMessage,
+  refreshList
 ) => {
   debugger
   try {
@@ -696,10 +697,13 @@ export const workDone_table_product_update = async (
     if (checkApiStatus(response)) {
       setSuccessModalOpen(true);
       setSuccessMessage("Data Updated Successfully");
+
       setTimeout(() => {
         setSuccessModalOpen(false);
       }, 1700);
       setOpenLeftbar(false);
+      refreshList()
+      
     }
   } catch (error) {
     console.error("Update Failed", error);

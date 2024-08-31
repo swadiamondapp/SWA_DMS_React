@@ -24,6 +24,7 @@ const WorkdoneEditModal = ({
   clickedProductId,
   setSuccessModalOpen,
   setSuccessMessage,
+  refreshList
 }) => {
   const [formData, setFormData] = useState({
     length: "",
@@ -34,6 +35,7 @@ const WorkdoneEditModal = ({
     approx_diamond_weight: "",
     findings: [],
     approx_metal_weight: "",
+    // approx_mrp:"",
     tag: [],
     notes: "",
   });
@@ -109,6 +111,7 @@ const WorkdoneEditModal = ({
       !formData.approx_diamond_weight ||
       !formData.findings ||
       !formData.approx_metal_weight ||
+      // !formData.approx_mrp ||
       !formData.tag ||
       !formData.notes
     ) {
@@ -125,7 +128,8 @@ const WorkdoneEditModal = ({
         formData,
         setOpenLeftbar,
         setSuccessModalOpen,
-        setSuccessMessage
+        setSuccessMessage,
+        refreshList
       );
     } catch (error) {
       console.error("Error updating product:", error);
@@ -164,6 +168,7 @@ const WorkdoneEditModal = ({
       >
         {clickedProducts.map((product) => (
           <>
+          {console.log(product.basic_details.assignment,"product?.basic_details?.assignment")}
             <div className="Basic_detail">
               <>
                 <div className="master_modal">
@@ -405,6 +410,18 @@ const WorkdoneEditModal = ({
                     required
                   />
                 </div>
+                {/* <div className="workdone_modal">
+                  <span>Approx mrp</span>
+                  <input
+                  style={{background:"white",padding:"6px 0px"}}
+                    type="number"
+                    onChange={handleInput}
+                    value={formData.approx_mrp}
+                    name="approx_mrp"
+                    onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
+                    required
+                  />
+                </div> */}
                 <div className="workdone_modal">
                   <span>Tags</span>
 

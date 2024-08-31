@@ -12,7 +12,10 @@ import { CircularProgress } from "@mui/material";
 import ThreeDViewer from "../../ThreeDViewer/ThreeDViewer";
 import InstructionModal from "../../InstructionModal/InstructionModal";
 import { Select } from "antd";
-import { Cad2DUpdateImage, Cad3DUpdateImage } from "../../AssignmentDetailsViewsAll/Api";
+import {
+  Cad2DUpdateImage,
+  Cad3DUpdateImage,
+} from "../../AssignmentDetailsViewsAll/Api";
 import SuccessModal from "../../SuccessModal/SuccessModal";
 
 const FolderDetailsCard = ({
@@ -31,7 +34,6 @@ const FolderDetailsCard = ({
   const [isLoading, setIsLoading] = useState(false);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
 
-
   console.log("file2d_status", file2d_status);
 
   const handleopenModal = () => {
@@ -44,7 +46,7 @@ const FolderDetailsCard = ({
     content: printRef.current,
   });
 
-  const handleDownload = (imageUrl, model) => {
+  const handleDownload = (imageUrl, model,designCode) => {
     fetch(imageUrl, {
       method: "GET",
       mode: "cors",
@@ -55,7 +57,7 @@ const FolderDetailsCard = ({
         const link = document.createElement("a");
         link.href = blobUrl;
         link.download =
-          model === "2d" ? "downloaded_image.jpg" : "downloaded_image.3dm";
+          model === "2d" ? `${designCode}.jpg` : `${designCode}.3dm`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -92,7 +94,7 @@ const FolderDetailsCard = ({
 
   const handle2DChange = async (value) => {
     setFile2d_status(value);
-    let updatedStatus = value
+    let updatedStatus = value;
 
     await Cad2DUpdateImage(
       setIsLoading,
@@ -104,7 +106,7 @@ const FolderDetailsCard = ({
 
   const handle3DChange = async (value) => {
     setFile3d_status(value);
-    let updatedStatus = value
+    let updatedStatus = value;
 
     await Cad3DUpdateImage(
       setIsLoading,
@@ -114,7 +116,7 @@ const FolderDetailsCard = ({
     );
   };
 
- 
+  console.log(folderDetails, "folderDetails===>Cad");
   return (
     <div
       className="ParentCad"
@@ -211,7 +213,9 @@ const FolderDetailsCard = ({
                   </p>
                   <button
                     className="Download_btn_hub"
-                    onClick={() => handleDownload(folderDetails?.file_2d, "2d")}
+                    onClick={() =>
+                      handleDownload(folderDetails?.file_2d, "2d", folderDetails?.designcode)
+                    }
                   >
                     DOWNLOAD
                     <GoDownload />
@@ -260,7 +264,7 @@ const FolderDetailsCard = ({
                   <button
                     className="Download_btn_hub"
                     style={{ background: "#126E72" }}
-                    onClick={() => handleDownload(folderDetails?.file_3d, "3d")}
+                    onClick={() => handleDownload(folderDetails?.file_3d, "3d",folderDetails?.designcode)}
                   >
                     DOWNLOAD
                     <GoDownload />
