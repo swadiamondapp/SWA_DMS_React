@@ -228,7 +228,7 @@ const ScanTable = ({ sidebarExpanded }) => {
                       ))}
                     </select> */}
                       {/* <span className="scan_select_span">{item.status}</span> */}
-                      <span className="scan_select_span">Recieved</span>
+                      <span className="scan_select_span">{item.status}</span>
                     </td>
 
                     <td style={{ borderLeft: "none" }}>

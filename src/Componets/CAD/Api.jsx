@@ -13,7 +13,9 @@ import {
   FOLDER_DETAILS,
   CAD_RE_UPLOAD,
   BASIC_DETAILS,
+  CAD_LOGOUT,
 } from "../../Pages/Services/EndPoints";
+import axios from "axios";
 
 export const list_assigned_cad_design = async (
   setIsLoading,
@@ -285,3 +287,41 @@ export const reUploadFile = async (
 };
 
 
+// export const cadLogut = async (timerValue) => {
+//   const body  ={
+//     timer_value : timerValue
+//   }
+//   try {
+//     const response = await apiService.post(CAD_LOGOUT,body);
+//     if (checkApiStatus(response)) {
+//       // setData(response.data.results.data);
+//     }
+//   } catch (error) {
+//     console.log(error);
+//   } 
+// };
+
+export const cadLogut = (timerValue) => {
+  const token = "e596f5c5513296ef1ac85579f80154db6505f009"; // Replace with your actual token
+
+  // setLoading(true);
+  axios
+    .post(
+      "https://dmstestapi.zinfog.in/dms/logout/",
+      { timer_value: timerValue }, // Add any data to be sent in the POST request if needed
+      {
+        headers: {
+          Authorization: `token ${token}`, // Add the token in the Authorization header
+          "Content-Type": "application/json", // Set the Content-Type header
+        },
+      }
+    )
+    .then((res) => {
+      // setUserList(res.data.data);
+      // setLoading(false);
+    })
+    .catch((error) => {
+      console.error("Error fetching user list:", error);
+      // setLoading(false);
+    });
+};

@@ -46,7 +46,7 @@ const Transfer = ({ sidebarExpanded }) => {
   const [error, setError] = useState("");
   const [transferStatus, setTransferStatus] = useState("Created");
   const [DeleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
-  const [dltId,setDltId] = useState("")
+  const [dltId, setDltId] = useState("");
 
   const handlePrintSlotModalClose = () => {
     setPrintSlotModalOpen(false);
@@ -165,7 +165,7 @@ const Transfer = ({ sidebarExpanded }) => {
   };
   const handleDeleteOpen = (Id) => {
     setDeleteConfirmationOpen(true);
-    setDltId(Id)
+    setDltId(Id);
   };
 
   console.log(CentralHubStatus, "CentralHubStatus");
@@ -317,10 +317,13 @@ const Transfer = ({ sidebarExpanded }) => {
                           <p
                             style={{
                               color: "white",
-                              background: "#0464D5",
                               padding: "6px 10px",
                               fontWeight: 700,
                               borderRadius: "26px",
+                              background:
+                                item.status === "Transfered"
+                                  ? "#0464D5"
+                                  : "#45A065", 
                             }}
                           >
                             {item.status}

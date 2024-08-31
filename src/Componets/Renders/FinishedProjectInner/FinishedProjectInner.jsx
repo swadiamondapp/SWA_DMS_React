@@ -1,12 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./FinishedProjectInner.css";
 import ShareIcon from "../../../assets/shareIcon.png";
 import { LiaCloudUploadAltSolid } from "react-icons/lia";
 import UploadFile from "../../UploadFile/UploadFile";
-import { createFinsishedProjects } from "../../../Pages/Renders/Apis";
+import {
+  createFinsishedProjects,
+  finishedProjectList,
+  reuploadFinishedProject,
+} from "../../../Pages/Renders/Apis";
 import { useLocation } from "react-router-dom";
 import { IoEye } from "react-icons/io5";
 import InstructionModal from "../../InstructionModal/InstructionModal";
+import SuccessModal from "../../SuccessModal/SuccessModal";
 
 const FinishedProjectInner = (props) => {
   const location = useLocation();
@@ -15,12 +20,19 @@ const FinishedProjectInner = (props) => {
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
   const [openModal, setOpenmodal] = useState(false);
   const [modalHeading, setmodalHeading] = useState("");
-  const [modalTitle, setmodalTitle] = useState("")
+  const [modalTitle, setmodalTitle] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [finishedProjectData, setFinishedProjectData] = useState([]);
+  const [success, setSuccess] = useState(false);
+
+  useEffect(() => {
+    finishedProjectList(setFinishedProjectData, setIsLoading);
+  }, []);
 
   const handleopenModal = () => {
     setOpenmodal(!openModal);
-    setmodalHeading("Add Render Instractions");
-    setmodalTitle("instraction")
+    setmodalHeading("Render Instructions");
+    setmodalTitle("instruction");
   };
 
   const handleOpenModal = () => {
@@ -28,6 +40,9 @@ const FinishedProjectInner = (props) => {
   };
 
   const productId = props?.folderItem[0]?.designcode;
+  const id = props?.id;
+
+  console.log(location.pathname, "pathname");
 
   return (
     <div
@@ -65,6 +80,7 @@ const FinishedProjectInner = (props) => {
               style={{ display: "none" }}
             />
           </div>
+
           <button
             style={{
               display: "flex",
@@ -92,6 +108,10 @@ const FinishedProjectInner = (props) => {
           props?.folderItem[0]?.images?.map((imgObj, index) => {
             const imageUrl = Object.values(imgObj)[0];
             const createdAt = imgObj.created_at;
+            const statusKey = Object.keys(imgObj).find((key) =>
+              key.endsWith("_status")
+            );
+            const statusValue = imgObj[statusKey];
             {
               console.log(imageUrl, "imageUrl");
             }
@@ -114,7 +134,7 @@ const FinishedProjectInner = (props) => {
                       borderRadius: "32px",
                     }}
                   >
-                    Approved
+                    {statusValue}
                   </button>
                   <div>
                     <button className="shareButton_finished">
@@ -150,6 +170,7 @@ const FinishedProjectInner = (props) => {
             setOpenmodal={setOpenmodal}
             modalHeading={modalHeading}
             modalTitle={modalTitle}
+            renderData={props?.folderItem[0]?.remark}
           />
         )}
       </div>
@@ -159,10 +180,21 @@ const FinishedProjectInner = (props) => {
           open={uploadModalOpen}
           setUploadModalOpen
           onClose={() => setUploadModalOpen(false)}
-          createFinsishedProjects={createFinsishedProjects}
+          createFinsishedProjects={reuploadFinishedProject}
+          setFinishedProjectData={setFinishedProjectData}
+          setSuccess={setSuccess}
           pid={productId}
+          fid={id}
+          setFolderItem={props?.setFolderItem}
+          Images={props?.folderItem[0]?.images}
         />
       )}
+
+      <SuccessModal
+        successModalOpen={success}
+        handleClose={() => setSuccess(false)}
+        successMessage={"Files uploaded succesfully"}
+      />
     </div>
   );
 };

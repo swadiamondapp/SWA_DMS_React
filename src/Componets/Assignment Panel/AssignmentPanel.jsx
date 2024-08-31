@@ -14,6 +14,7 @@ import {
   deleteItemFromAssignmentPanel,
   sort_assignmentpanel_bydesigner,
   sort_assignmentpanel_byadmin,
+  adminFolderRename,
 } from "./Api";
 import { list_assignment_folder } from "../ADMIN PANEL/Design Pool/Api";
 import DesignPools from "../DesignPoolExtended/DesignPools";
@@ -67,6 +68,9 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
   const [filterMinPrice, setFilterMinPrice] = useState("");
   const [dd, setDd] = useState();
   const [value, setValue] = React.useState("1");
+  const [grid, setGrid] = useState(true);
+  const [detail, setDetail] = useState(false);
+  const [tiles, setTiles] = useState(false);
 
   const location = useLocation();
   const dotsRef = useRef(null);
@@ -165,6 +169,30 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
       setSelectedDesignCode([...selectedDesignCode, tickedDesings]);
     }
   };
+
+  const handleSelectAll = () => {
+    const allDesignCodes = Data.flatMap(
+      (item) => item?.items?.map((i) => i?.paper_design?.id) || []
+    );
+    const allImages = Data.flatMap(
+      (item) => item?.items?.map((i) => i?.paper_design?.image) || []
+    );
+    const allIds = Data.flatMap((item) => item?.items?.map((i) => i?.id) || []);
+
+    setSelectedAssignment(allIds);
+    setSelectedDesignCode(allDesignCodes);
+    setSelectedImages(allImages);
+    setSelectedIdsForDelet(allIds);
+  };
+
+  const handleDeselectAll = () => {
+    setSelectedAssignment([]);
+    setSelectedDesignCode([]);
+    setSelectedImages([]);
+    setSelectedIdsForDelet([]);
+  };
+
+  console.log("selectedAssignment", selectedAssignment);
 
   const handleOpenDesignPool = () => {
     setOpenDesignPool(true);
@@ -270,7 +298,50 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
     return count + dataItem.items.length;
   }, 0);
 
-  console.log(filter, "filter");
+  const formatDateTwo = (isoString) => {
+    if (!isoString) {
+      return "";
+    }
+
+    const date = new Date(isoString);
+
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+
+    let hours = date.getHours();
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const ampm = hours >= 12 ? "PM" : "AM";
+
+    hours = hours % 12;
+    hours = hours ? String(hours).padStart(2, "0") : "12";
+
+    return `${day}/${month}/${year} ${hours}:${minutes} ${ampm}`;
+  };
+
+  const [editingId, setEditingId] = useState(null);
+  const [text, setText] = useState("");
+
+  const handleDoubleClick = (id, name) => {
+    setEditingId(id);
+    setText(name);
+  };
+
+  const handleChangeEdit = (event) => {
+    setText(event.target.value);
+  };
+
+  const handleBlur = async () => {
+    if (editingId) {
+      await adminFolderRename(
+        setIsLoading,
+        editingId,
+        text,
+        setAssignmentFolder
+      );
+      setEditingId(null);
+    }
+  };
 
   return (
     <div
@@ -281,13 +352,13 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
         <div className="AssignmentPanel_FileUpload" style={{ padding: "10px" }}>
           {uploadInstructionsVisible && !uploadedImage && (
             <>
-              <p>Create new assignment</p>
-              <p>You can create Assignment directly</p>
+              <p>Direct Selection</p>
+              <p>Admin can select</p>
               <span
                 className="assignmentPanal_upload_text"
                 onClick={handleAdminBasicModal}
               >
-                Create Assignment
+                Directly Selection
               </span>
             </>
           )}
@@ -301,30 +372,39 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
             style={{ display: "none" }}
           />
         </div>
-        { value == 1 && (
-        <DesignBtn
-          toggleDownloadOptions={toggleDownloadOptions}
-          selectButtonLabel={selectButtonLabel}
-          toggleRadioButtons={toggleRadioButtons}
-          toggleMoveOptions={toggleMoveOptions}
-          showDownloadOptions={showDownloadOptions}
-          showMoveOptions={showMoveOptions}
-          selectedAssignment={selectedAssignment}
-          setSelectedAssignment={setSelectedAssignment}
-          setAssignmentFolder={setAssignmentFolder}
-          selectedDesignCode={selectedDesignCode}
-          handleCreatedFolder={handleCreatedFolder}
-          handleSortByDesigner={handleSortByDesigner}
-          handleSortByAdmin={handleSortByAdmin}
-          handleSortByAll={handleSortByAll}
-          assignmentFolder={assignmentFolder}
-          filter={filter}
-          setFilter={setFilter}
-          activeFilter={activeFilter}
-          // setcreateFolderModal={setcreateFolderModal}
-          // handleCreateFolderModal
-        />
-      )}
+        {value == 1 && (
+          <DesignBtn
+            toggleDownloadOptions={toggleDownloadOptions}
+            selectButtonLabel={selectButtonLabel}
+            toggleRadioButtons={toggleRadioButtons}
+            toggleMoveOptions={toggleMoveOptions}
+            showDownloadOptions={showDownloadOptions}
+            showMoveOptions={showMoveOptions}
+            selectedAssignment={selectedAssignment}
+            setSelectedAssignment={setSelectedAssignment}
+            setAssignmentFolder={setAssignmentFolder}
+            selectedDesignCode={selectedDesignCode}
+            handleCreatedFolder={handleCreatedFolder}
+            handleSortByDesigner={handleSortByDesigner}
+            handleSortByAdmin={handleSortByAdmin}
+            handleSortByAll={handleSortByAll}
+            assignmentFolder={assignmentFolder}
+            filter={filter}
+            setFilter={setFilter}
+            activeFilter={activeFilter}
+            setGrid={setGrid}
+            setDetail={setDetail}
+            setTiles={setTiles}
+            grid={grid}
+            detail={detail}
+            tiles={tiles}
+            handleSelectAll={handleSelectAll}
+            handleDeselectAll={handleDeselectAll}
+            showRadioButtons={showRadioButtons}
+            // setcreateFolderModal={setcreateFolderModal}
+            // handleCreateFolderModal
+          />
+        )}
       </div>
 
       <div className="Assignment_Panel_desc">
@@ -364,147 +444,582 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
                     <span style={{ marginTop: "100px" }}>No Data Found</span>
                   </div>
                 ) : (
-                  <div className="Card_Design_Parent">
-                    {Data.map((dataItem, dataIndex) =>
-                      dataItem?.items?.map((item, itemIndex) => {
-                        const paperDesign = item?.paper_design;
-                        const itemId = item?.id;
-                        const createdAt = item?.paper_design?.uploaded_date;
-                        const updatedAt = item?.updated_at;
-                        const designer = paperDesign?.designer;
-                        const designCode = paperDesign?.designcode;
-                        const image = paperDesign?.image;
-                        const likesCount = paperDesign?.likes_count;
-                        if (!image) {
-                          return null;
-                        }
+                  <>
+                    {grid && (
+                      <div>
+                        {/* Buttons for select and deselect all */}
 
-                        return (
-                          <div
-                            className="New_Design_card"
-                            key={`${dataIndex}-${itemIndex}`}
-                          >
-                            <div
-                              className="Card_img"
-                              onClick={() =>
-                                handleForlderDetailsVeiw(item, designCode)
+                        <div className="Card_Design_Parent">
+                          {Data.map((dataItem, dataIndex) =>
+                            dataItem?.items?.map((item, itemIndex) => {
+                              const paperDesign = item?.paper_design;
+                              const itemId = item?.id;
+                              const createdAt =
+                                item?.paper_design?.uploaded_date;
+                              const updatedAt = item?.updated_at;
+                              const designer = paperDesign?.designer;
+                              const designCode = paperDesign?.designcode;
+                              const image = paperDesign?.image;
+                              const likesCount = paperDesign?.likes_count;
+                              if (!image) {
+                                return null;
                               }
-                            >
-                              <img
-                                src={image}
-                                alt={`Design by ${designer}`}
-                                onClick={() => handleDrawModal(image)}
-                              />
-                              {showDeleteMoveButtons && (
-                                <div className="Overlay" />
-                              )}
-                            </div>
-                            <div className="Card_Details">
-                              <h3>ID : {designCode}</h3>
-                              <div
-                                className=""
-                                style={{ display: "flex", gap: "5px" }}
-                              >
-                                <span style={{ color: "#23A064" }}>
-                                  Status :
-                                </span>
-                                <span>{item.current_status || ""}</span>
-                              </div>
-                              <div className="Card_Details_Inner">
-                                <div className="Inner_Left">
-                                  <p>{designer}</p>
-                                  <p>
-                                    <span className="dateUpdate_fix">
-                                      created at :{" "}
+
+                              return (
+                                <div
+                                  className="New_Design_card"
+                                  key={`${dataIndex}-${itemIndex}`}
+                                >
+                                  <div
+                                    className="Card_img"
+                                    onClick={() =>
+                                      handleForlderDetailsVeiw(item, designCode)
+                                    }
+                                  >
+                                    <img
+                                      src={image}
+                                      alt={`Design by ${designer}`}
+                                      onClick={() => handleDrawModal(image)}
+                                    />
+                                    {showDeleteMoveButtons && (
+                                      <div className="Overlay" />
+                                    )}
+                                  </div>
+                                  <div className="Card_Details">
+                                    <h3>ID : {designCode}</h3>
+                                    <div
+                                      className=""
+                                      style={{ display: "flex", gap: "5px" }}
+                                    >
+                                      <span
+                                        style={{
+                                          color: "#23A064",
+                                          fontSize: "13px",
+                                        }}
+                                      >
+                                        Track status :{" "}
+                                        <span
+                                          style={{
+                                            color: "black",
+                                            fontSize: "12px",
+                                          }}
+                                        >
+                                          {
+                                            item?.status_track[0]
+                                              ?.current_status
+                                          }{" "}
+                                          -
+                                          {formatDateTwo(
+                                            item?.status_track[0]?.date
+                                          )}
+                                        </span>
+                                      </span>
+                                    </div>
+                                    <span
+                                      style={{
+                                        color: "#23A064",
+                                        fontSize: "12px",
+                                      }}
+                                    >
+                                      CAD status :{" "}
+                                      <span
+                                        style={{
+                                          color: "black",
+                                          fontSize: "12px",
+                                        }}
+                                      >
+                                        {item.timer_status} - {item.timer_value}
+                                      </span>
                                     </span>
-                                    {formatDate(createdAt)}
-                                  </p>
-                                  <p>
-                                    <span className="dateUpdate_fix">
-                                      {" "}
-                                      updated at :{" "}
-                                    </span>
-                                    {formatDate(updatedAt)}
-                                  </p>
+
+                                    <div className="Card_Details_Inner">
+                                      <div className="Inner_Left">
+                                        <p>{designer}</p>
+                                        <p>
+                                          <span className="dateUpdate_fix">
+                                            created at :{" "}
+                                          </span>
+                                          {formatDate(createdAt)}
+                                        </p>
+                                        <p>
+                                          <span className="dateUpdate_fix">
+                                            {" "}
+                                            updated at :{" "}
+                                          </span>
+                                          {formatDate(updatedAt)}
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <div
+                                      className=""
+                                      style={{
+                                        display: "flex",
+                                        width: "100%",
+                                        justifyContent: "end",
+                                        gap: "5px",
+                                      }}
+                                    >
+                                      <button
+                                        style={{
+                                          padding: "7px 5px ",
+                                          borderRadius: "4px",
+                                          color: "white",
+                                          backgroundColor: "#0464D5",
+                                          border: "none",
+                                          fontSize: "13px",
+                                          fontWeight: "900",
+                                        }}
+                                        onClick={() =>
+                                          handleTrack(item, designCode)
+                                        }
+                                      >
+                                        Track
+                                      </button>
+                                      <div className="Inner_Right">
+                                        <p>
+                                          {item.likes_count}
+                                          <img src={like} alt="" />
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  {showRadioButtons && (
+                                    <input
+                                      className="Radio_select"
+                                      type="checkbox"
+                                      id={itemId}
+                                      name="fav_language"
+                                      value={itemId}
+                                      onChange={() =>
+                                        handleCheckboxChange(itemId, designCode)
+                                      }
+                                      checked={selectedAssignment.includes(
+                                        itemId
+                                      )}
+                                    />
+                                  )}
+                                  {!showRadioButtons &&
+                                    location.pathname ===
+                                      "/assignmentpanel" && (
+                                      <div
+                                        onClick={() =>
+                                          toggleDeleteMoveButtons(itemId)
+                                        }
+                                        ref={dotsRef}
+                                      >
+                                        <BsThreeDotsVertical
+                                          className="A_dots"
+                                          style={{ fontSize: "20px" }}
+                                        />
+                                      </div>
+                                    )}
+                                  {activeCardId === itemId && (
+                                    <div
+                                      className="Dots_Delete_DesignPool_btns"
+                                      ref={dropdownRef}
+                                    >
+                                      <p
+                                        onClick={() =>
+                                          handleDeleteSingle(itemId)
+                                        }
+                                      >
+                                        Delete
+                                      </p>
+                                      <p
+                                        onClick={() => moveToDesignPool(itemId)}
+                                      >
+                                        Move to Design pool
+                                      </p>
+                                    </div>
+                                  )}
                                 </div>
+                              );
+                            })
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    {detail && (
+                      <div className="Card_Design_Parent3">
+                        {Data.map((dataItem, dataIndex) =>
+                          dataItem?.items?.map((item, itemIndex) => {
+                            const paperDesign = item?.paper_design;
+                            const itemId = item?.id;
+                            const createdAt = item?.paper_design?.uploaded_date;
+                            const updatedAt = item?.updated_at;
+                            const designer = paperDesign?.designer;
+                            const designCode = paperDesign?.designcode;
+                            const image = paperDesign?.image;
+                            const likesCount = paperDesign?.likes_count;
+                            if (!image) {
+                              return null;
+                            }
+
+                            return (
+                              <div
+                                className="New_Design_card"
+                                key={`${dataIndex}-${itemIndex}`}
+                              >
+                                <div
+                                  className="Card_img"
+                                  onClick={() =>
+                                    handleForlderDetailsVeiw(item, designCode)
+                                  }
+                                >
+                                  <img
+                                    src={image}
+                                    alt={`Design by ${designer}`}
+                                    onClick={() => handleDrawModal(image)}
+                                  />
+                                  {showDeleteMoveButtons && (
+                                    <div className="Overlay" />
+                                  )}
+                                </div>
+                                <div className="Card_Details_Designer">
+                                  <h3>ID : {designCode}</h3>
+                                  <div
+                                    className=""
+                                    style={{ display: "flex", gap: "5px" }}
+                                  >
+                                    <span
+                                      style={{
+                                        color: "#23A064",
+                                        fontSize: "13px",
+                                      }}
+                                    >
+                                      Track status :{" "}
+                                      <span
+                                        style={{
+                                          color: "black",
+                                          fontSize: "12px",
+                                        }}
+                                      >
+                                        {item?.status_track[0]?.current_status}{" "}
+                                        -
+                                        {formatDateTwo(
+                                          item?.status_track[0]?.date
+                                        )}
+                                      </span>
+                                    </span>
+
+                                    {/* <span>{item.current_status || ""}</span> */}
+                                  </div>
+                                  <span
+                                    style={{
+                                      color: "#23A064",
+                                      fontSize: "12px",
+                                    }}
+                                  >
+                                    CAD status :{" "}
+                                    <span
+                                      style={{
+                                        color: "black",
+                                        fontSize: "12px",
+                                      }}
+                                    >
+                                      {item.timer_status} - {item.timer_value}
+                                    </span>
+                                  </span>
+
+                                  <div className="Card_Details_Inner">
+                                    <div className="Inner_Left">
+                                      <p>{designer}</p>
+                                      <p>
+                                        <span className="dateUpdate_fix">
+                                          created at :{" "}
+                                        </span>
+                                        {formatDate(createdAt)}
+                                      </p>
+                                      <p>
+                                        <span className="dateUpdate_fix">
+                                          {" "}
+                                          updated at :{" "}
+                                        </span>
+                                        {formatDate(updatedAt)}
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <div
+                                    className=""
+                                    style={{
+                                      display: "flex",
+                                      width: "100%",
+                                      justifyContent: "end",
+                                      gap: "5px",
+                                    }}
+                                  >
+                                    <button
+                                      style={{
+                                        padding: "7px 5px ",
+                                        borderRadius: "4px",
+                                        color: "white",
+                                        backgroundColor: "#0464D5",
+                                        border: "none",
+                                        fontSize: "13px",
+                                        fontWeight: "900",
+                                      }}
+                                      onClick={() =>
+                                        handleTrack(item, designCode)
+                                      }
+                                    >
+                                      Track
+                                    </button>
+                                    <div className="Inner_Right">
+                                      <p>
+                                        {item.likes_count}
+                                        <img src={like} alt="" />
+                                      </p>
+                                    </div>
+                                  </div>
+                                </div>
+                                {showRadioButtons && (
+                                  <input
+                                    className="Radio_select"
+                                    type="checkbox"
+                                    id={itemId}
+                                    name="fav_language"
+                                    value={itemId}
+                                    onChange={() =>
+                                      handleCheckboxChange(itemId, designCode)
+                                    }
+                                    checked={selectedAssignment.includes(
+                                      itemId
+                                    )}
+                                  />
+                                )}
+                                {!showRadioButtons &&
+                                  location.pathname === "/assignmentpanel" && (
+                                    <div
+                                      onClick={() =>
+                                        toggleDeleteMoveButtons(itemId)
+                                      }
+                                      ref={dotsRef}
+                                    >
+                                      <BsThreeDotsVertical
+                                        className="A_dots"
+                                        style={{ fontSize: "20px" }}
+                                      />
+                                    </div>
+                                  )}
+                                {activeCardId === itemId && (
+                                  <div
+                                    className="Dots_Delete_DesignPool_btns"
+                                    ref={dropdownRef}
+                                  >
+                                    <p
+                                      onClick={() => handleDeleteSingle(itemId)}
+                                    >
+                                      Delete
+                                    </p>
+                                    <p onClick={() => moveToDesignPool(itemId)}>
+                                      Move to Design pool
+                                    </p>
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          })
+                        )}
+                      </div>
+                    )}
+
+                    {tiles && (
+                      <div className="Card_Design_Parent2">
+                        {Data.map((dataItem, dataIndex) =>
+                          dataItem?.items?.map((item, itemIndex) => {
+                            const paperDesign = item?.paper_design;
+                            const itemId = item?.id;
+                            const createdAt = item?.paper_design?.uploaded_date;
+                            const updatedAt = item?.updated_at;
+                            const designer = paperDesign?.designer;
+                            const designCode = paperDesign?.designcode;
+                            const image = paperDesign?.image;
+                            const likesCount = paperDesign?.likes_count;
+                            if (!image) {
+                              return null;
+                            }
+
+                            return (
+                              <div
+                                className="New_Design_card_3"
+                                key={`${dataIndex}-${itemIndex}`}
+                              >
                                 <div
                                   className=""
                                   style={{
+                                    width: "100%",
+                                    height: "70vh",
                                     display: "flex",
-                                    width: "auto",
-                                    gap: "5px",
+                                    alignItems: "center",
+                                    justifyContent: "center",
                                   }}
+                                  onClick={() =>
+                                    handleForlderDetailsVeiw(item, designCode)
+                                  }
                                 >
-                                  <button
+                                  <img
                                     style={{
-                                      padding: "7px 5px ",
-                                      borderRadius: "4px",
-                                      color: "white",
-                                      backgroundColor: "#0464D5",
-                                      border: "none",
-                                      fontSize: "13px",
-                                      fontWeight: "900",
+                                      backgroundSize: "contain",
+                                      width: "90%",
+                                      height: "100%",
                                     }}
-                                    onClick={() =>
-                                      handleTrack(item, designCode)
-                                    }
+                                    src={image}
+                                    alt={`Design by ${designer}`}
+                                    onClick={() => handleDrawModal(image)}
+                                  />
+                                  {showDeleteMoveButtons && (
+                                    <div className="Overlay" />
+                                  )}
+                                </div>
+                                <div className="Card_Details_Designer">
+                                  <h3>ID : {designCode}</h3>
+                                  <div
+                                    className=""
+                                    style={{ display: "flex", gap: "5px" }}
                                   >
-                                    Track
-                                  </button>
-                                  <div className="Inner_Right">
-                                    <p>
-                                      {likesCount}
-                                      <img src={like} alt="Likes" />
-                                    </p>
+                                    <span
+                                      style={{
+                                        color: "#23A064",
+                                        fontSize: "13px",
+                                      }}
+                                    >
+                                      Track status :{" "}
+                                      <span
+                                        style={{
+                                          color: "black",
+                                          fontSize: "12px",
+                                        }}
+                                      >
+                                        {item?.status_track[0]?.current_status}{" "}
+                                        -
+                                        {formatDateTwo(
+                                          item?.status_track[0]?.date
+                                        )}
+                                      </span>
+                                    </span>
+
+                                    {/* <span>{item.current_status || ""}</span> */}
+                                  </div>
+                                  <span
+                                    style={{
+                                      color: "#23A064",
+                                      fontSize: "12px",
+                                    }}
+                                  >
+                                    CAD status :{" "}
+                                    <span
+                                      style={{
+                                        color: "black",
+                                        fontSize: "12px",
+                                      }}
+                                    >
+                                      {item.timer_status} - {item.timer_value}
+                                    </span>
+                                  </span>
+
+                                  <div className="Card_Details_Inner">
+                                    <div className="Inner_Left">
+                                      <p>{designer}</p>
+                                      <p>
+                                        <span className="dateUpdate_fix">
+                                          created at :{" "}
+                                        </span>
+                                        {formatDate(createdAt)}
+                                      </p>
+                                      <p>
+                                        <span className="dateUpdate_fix">
+                                          {" "}
+                                          updated at :{" "}
+                                        </span>
+                                        {formatDate(updatedAt)}
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <div
+                                    className=""
+                                    style={{
+                                      display: "flex",
+                                      width: "100%",
+                                      justifyContent: "end",
+                                      gap: "5px",
+                                    }}
+                                  >
+                                    <button
+                                      style={{
+                                        padding: "7px 5px ",
+                                        borderRadius: "4px",
+                                        color: "white",
+                                        backgroundColor: "#0464D5",
+                                        border: "none",
+                                        fontSize: "13px",
+                                        fontWeight: "900",
+                                      }}
+                                      onClick={() =>
+                                        handleTrack(item, designCode)
+                                      }
+                                    >
+                                      Track
+                                    </button>
+                                    <div className="Inner_Right">
+                                      <p>
+                                        {item.likes_count}
+                                        <img src={like} alt="" />
+                                      </p>
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
-                            </div>
-                            {showRadioButtons && (
-                              <input
-                                className="Radio_select"
-                                type="checkbox"
-                                id={itemId}
-                                name="fav_language"
-                                value={itemId}
-                                onChange={() =>
-                                  handleCheckboxChange(itemId, designCode)
-                                }
-                                checked={selectedAssignment.includes(itemId)}
-                              />
-                            )}
-                            {!showRadioButtons &&
-                              location.pathname === "/assignmentpanel" && (
-                                <div
-                                  onClick={() =>
-                                    toggleDeleteMoveButtons(itemId)
-                                  }
-                                  ref={dotsRef}
-                                >
-                                  <BsThreeDotsVertical
-                                    className="A_dots"
-                                    style={{ fontSize: "20px" }}
+                                {showRadioButtons && (
+                                  <input
+                                    className="Radio_select"
+                                    type="checkbox"
+                                    id={itemId}
+                                    name="fav_language"
+                                    value={itemId}
+                                    onChange={() =>
+                                      handleCheckboxChange(itemId, designCode)
+                                    }
+                                    checked={selectedAssignment.includes(
+                                      itemId
+                                    )}
                                   />
-                                </div>
-                              )}
-                            {activeCardId === itemId && (
-                              <div
-                                className="Dots_Delete_DesignPool_btns"
-                                ref={dropdownRef}
-                              >
-                                <p onClick={() => handleDeleteSingle(itemId)}>
-                                  Delete
-                                </p>
-                                <p onClick={() => moveToDesignPool(itemId)}>
-                                  Move to Design pool
-                                </p>
+                                )}
+                                {!showRadioButtons &&
+                                  location.pathname === "/assignmentpanel" && (
+                                    <div
+                                      onClick={() =>
+                                        toggleDeleteMoveButtons(itemId)
+                                      }
+                                      ref={dotsRef}
+                                    >
+                                      <BsThreeDotsVertical
+                                        className="A_dots"
+                                        style={{ fontSize: "20px" }}
+                                      />
+                                    </div>
+                                  )}
+                                {activeCardId === itemId && (
+                                  <div
+                                    className="Dots_Delete_DesignPool_btns"
+                                    ref={dropdownRef}
+                                  >
+                                    <p
+                                      onClick={() => handleDeleteSingle(itemId)}
+                                    >
+                                      Delete
+                                    </p>
+                                    <p onClick={() => moveToDesignPool(itemId)}>
+                                      Move to Design pool
+                                    </p>
+                                  </div>
+                                )}
                               </div>
-                            )}
-                          </div>
-                        );
-                      })
+                            );
+                          })
+                        )}
+                      </div>
                     )}
-                  </div>
+                  </>
                 )}
 
                 {filter && (
@@ -536,22 +1051,38 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
               <div className="Parent_Folder_section">
                 <h3 className="HeadNewdesign">Folders</h3>
                 <div className="folderCard_parent">
-                  {assignmentFolder.map((item) => (
-                    <div
-                      className="folder__card"
-                      key={item.id}
-                      onClick={() => handleFolderNaviate(item)}
-                    >
-                      {/* <Link
-                  to={`/assignmentpaneldetailsview/${
-                    item.id
-                  }?name=${encodeURIComponent(item.name)}`}
-                > */}
-                      <img src={folderimg} alt="" />
-                      {/* </Link> */}
-                      <p style={{ wordWrap: "break-word", maxWidth: "100px" }}>
-                        {item.name}
-                      </p>
+                  {assignmentFolder?.map((item) => (
+                    <div className="folder__card" key={item.id}>
+                      <img
+                        src={folderimg}
+                        alt=""
+                        style={{ cursor: "pointer" }}
+                        onClick={() => handleFolderNaviate(item)}
+                      />
+                      <div
+                        onDoubleClick={() =>
+                          handleDoubleClick(item.id, item.name)
+                        }
+                        style={{
+                          width: "100%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        {editingId === item.id ? (
+                          <input
+                            type="text"
+                            value={text}
+                            onChange={handleChangeEdit}
+                            onBlur={handleBlur}
+                            autoFocus
+                            style={{ width: "100px" }}
+                          />
+                        ) : (
+                          <span style={{ fontSize: "12px" }}>{item.name}</span>
+                        )}
+                      </div>
                     </div>
                   ))}
                 </div>

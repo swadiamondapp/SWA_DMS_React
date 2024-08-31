@@ -12,6 +12,10 @@ import {
   UPDATE_DESIGNPOOL_IMAGE,
   DELETE_ITEM_FROM_DESIGNPOOL,
   DELETE_TRASFER_DATA,
+  LIST_CENTRAL_FOLDERS,
+  CENTRALHUB_SEARCH,
+  LIST_FOLDER_DESIGNER,
+  DESIGNER_ASSIAN_SEARCH,
 } from "../../../Pages/Services/EndPoints";
 import { centralTransfer } from "../../../Pages/CENTRAL HUB/Api";
 
@@ -41,6 +45,50 @@ export const designPoolSearchById = async (searchListId, setData) => {
     } else {
       const response = await apiService.get(
         `${DESIGNPOOL_SEARCHBY_ID}${searchListId}`
+      );
+      if (checkApiStatus(response)) {
+        setData(response?.data?.results?.data);
+      }
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const centralHubSearchById = async (searchListId, setData) => {
+  try {
+    if (!searchListId) {
+      const response = await apiService.get(
+        `${LIST_CENTRAL_FOLDERS}`
+      );
+      if (checkApiStatus(response)) {
+        setData(response.data.results.data);
+      }
+    } else {
+      const response = await apiService.get(
+        `${CENTRALHUB_SEARCH}${searchListId}`
+      );
+      if (checkApiStatus(response)) {
+        setData(response?.data?.results?.data);
+      }
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const designerSearchById = async (searchListId, setData) => {
+  try {
+    if (!searchListId) {
+      const response = await apiService.get(
+        `${LIST_FOLDER_DESIGNER}`
+      );
+      if (checkApiStatus(response)) {
+        setData(response.data.results.data);
+      }
+    } else {
+      const response = await apiService.get(
+        `${DESIGNER_ASSIAN_SEARCH}${searchListId}`
       );
       if (checkApiStatus(response)) {
         setData(response?.data?.results?.data);

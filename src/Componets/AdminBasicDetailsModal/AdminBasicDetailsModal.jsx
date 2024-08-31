@@ -85,7 +85,7 @@ const AdminBasicDetailsModal = ({
   const [ImageSingleError, setImageSingleError] = useState("");
   const [uploadedImage, setUploadedImage] = useState(null);
   const [uploadedFileName, setUploadedFileName] = useState("");
-  const [AdminUploadedImageFile, setAdminUploadedImageFile] = useState(false);
+  const [AdminUploadedImageFile, setAdminUploadedImageFile] = useState(null);
   const [AdminBasicDetailsOpen, setAdminBasicDetailsOpen] = useState(false);
   const [selected, setSelected] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
@@ -298,19 +298,51 @@ const AdminBasicDetailsModal = ({
     }
   };
 
-  const handleImageUpload = (event) => {
-    const file = event.target.files[0];
+  // const [uploadedImage, setUploadedImage] = useState(null);
+  // const [uploadedFileName, setUploadedFileName] = useState('');
+  // const [adminUploadedImageFile, setAdminUploadedImageFile] = useState(null);
+  // const [imageSingleError, setImageSingleError] = useState('');
+
+  const handleImageUpload = (file) => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
         setUploadedImage(reader.result);
         setUploadedFileName(file.name);
         setAdminUploadedImageFile(file);
-        setImageSingleError("");
+        setImageSingleError('');
       };
       reader.readAsDataURL(file);
     }
   };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      handleImageUpload(file);
+    }
+  };
+
+  const handleDrop = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    const file = event.dataTransfer.files[0];
+    if (file) {
+      handleImageUpload(file);
+    }
+  };
+
+  const handleDragOver = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+  };
+
+  const handleImageRemover = () => {
+    setUploadedImage(null);
+    setUploadedFileName('');
+    setAdminUploadedImageFile(null);
+  };
+
   const handleBasicModalEye = () => {
     setBasicModalEyeOpen(true);
   };
@@ -872,7 +904,7 @@ const AdminBasicDetailsModal = ({
                                     length
                                   </label>
                                   <input
-                                    type="number"
+                                    type="text"
                                     className="inputFields"
                                     name="length"
                                     value={formData.length}
@@ -900,7 +932,7 @@ const AdminBasicDetailsModal = ({
                                     Width
                                   </label>
                                   <input
-                                    type="number"
+                                    type="text"
                                     className="inputFields"
                                     name="width"
                                     value={formData.width}
@@ -928,7 +960,7 @@ const AdminBasicDetailsModal = ({
                                     Height
                                   </label>
                                   <input
-                                    type="number"
+                                    type="text"
                                     className="inputFields"
                                     name="height"
                                     value={formData.height}
@@ -1031,6 +1063,7 @@ const AdminBasicDetailsModal = ({
                                     Approx Diamond weight
                                   </label>
                                   <input
+                                   style={{ background: "#ADD8E6" }}
                                     type="number"
                                     className="inputFields"
                                     name="approxDiamondWeight"
@@ -1061,6 +1094,7 @@ const AdminBasicDetailsModal = ({
                                     Approx metal weight
                                   </label>
                                   <input
+                                  style={{ background: "#FEDD56" }}
                                     type="number"
                                     className="inputFields"
                                     name="approxMetalWeights"
@@ -1132,6 +1166,8 @@ const AdminBasicDetailsModal = ({
                                     Findings
                                   </label>
                                   <Select
+                                  onSearch={onSearch}
+                                  filterOption={filterOption}
                                     mode="multiple"
                                     style={{
                                       width: "100%",
@@ -1196,6 +1232,8 @@ const AdminBasicDetailsModal = ({
                           classNames="inputTag"
                         /> */}
                                   <Select
+                                  onSearch={onSearch}
+                                  filterOption={filterOption}
                                     mode="multiple"
                                     style={{
                                       width: "100%",
@@ -1264,95 +1302,98 @@ const AdminBasicDetailsModal = ({
                     </>
                   ) : (
                     <>
-                      <div className="title_upload_container">
-                        <div>
-                          <p>Upload File</p>
-                          <div className="upload_admin_image">
-                            {uploadedImage ? (
-                              <div className="image_contianer_upload">
-                                <img
-                                  src={uploadedImage}
-                                  alt="Uploaded"
-                                  style={{ width: "80%", marginBottom: "10px" }}
-                                />
-                                <div>
-                                  <div
-                                    style={{
-                                      display: "flex",
-                                      justifyContent: "center",
-                                      alignItems: "center",
-                                      gap: "5px",
-                                    }}
-                                  >
-                                    {uploadedFileName}
-                                    <button
-                                      className="delete_uploaded_image"
-                                      onClick={handleImageRemove}
-                                    >
-                                      <img src={DeleteICon} alt="" />
-                                    </button>
-                                  </div>
-                                </div>
-                              </div>
-                            ) : (
-                              <div style={{ textAlign: "center" }}>
-                                <div>
-                                  <p>PNG/JPEG</p>
-                                </div>
-                                <input
-                                  type="file"
-                                  accept="image/jpeg, image/png, image/jpg"
-                                  onChange={handleImageUpload}
-                                  style={{ display: "none" }}
-                                  id="upload-input"
-                                />
-                                <div className="dragText">
-                                  Drag & Drop or{" "}
-                                  <label
-                                    htmlFor="upload-input"
-                                    style={{
-                                      color: "#0464D5",
-                                      fontSize: "13px",
-                                      padding: "0px 5px",
-                                    }}
-                                  >
-                                    choose File
-                                  </label>
-                                  to upload{" "}
-                                </div>
-                              </div>
-                            )}
-                          </div>
-                          <div style={{ position: "relative" }}>
-                            {ImageSingleError && (
-                              <span className="error_select">
-                                {ImageSingleError}
-                              </span>
-                            )}
-                          </div>
-                        </div>
+                     <div className="title_upload_container">
+      <div>
+        <p>Upload File</p>
+        <div
+          className="upload_admin_image"
+          onDrop={handleDrop}
+          onDragOver={handleDragOver}
+        >
+          {uploadedImage ? (
+            <div className="image_container_upload"  style={{display:"flex",alignItems:"center",justifyContent:"center", textAlign: 'center',flexDirection:"column" }}>
+              <img
+                src={uploadedImage}
+                alt="Uploaded"
+                style={{ width: '80%', marginBottom: '10px' }}
+              />
+              <div>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    gap: '5px',
+                    fontSize:"12px"
+                  }}
+                >
+                  {uploadedFileName}
+                  <button
+                    className="delete_uploaded_image"
+                    onClick={handleImageRemover}
+                  >
+                    <img src={DeleteICon} alt="Delete" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div>
+              <div>
+                <p>PNG/JPEG</p>
+              </div>
+              <input
+                type="file"
+                accept="image/jpeg, image/png, image/jpg"
+                onChange={handleFileChange}
+                style={{ display: 'none' }}
+                id="upload-input"
+              />
+              <div className="dragText">
+                Drag & Drop or{' '}
+                <label
+                  htmlFor="upload-input"
+                  style={{
+                    color: '#0464D5',
+                    fontSize: '13px',
+                    padding: '0px 5px',
+                  }}
+                >
+                  choose File
+                </label>{' '}
+                to upload
+              </div>
+            </div>
+          )}
+        </div>
+        <div style={{ position: 'relative' }}>
+          {ImageSingleError && (
+            <span className="error_select">{ImageSingleError}</span>
+          )}
+        </div>
+      </div>
 
-                        <div>
-                          {!AdminBasicDetailsOpen && (
-                            <div
-                              style={{
-                                // position: "absolute",
-                                width: "100%",
-                                // bottom: "0",
-                              }}
-                            >
-                              <button
-                                className="next-button"
-                                type="submit"
-                                // onClick={() => handleNextClick()}
-                                onClick={() => handleUploadAdminImageClick()}
-                              >
-                                Next
-                              </button>
-                            </div>
-                          )}
-                        </div>
-                      </div>
+      <div>
+        {!AdminBasicDetailsOpen && (
+          <div
+            style={{
+              // position: "absolute",
+              width: '100%',
+              // bottom: "0",
+            }}
+          >
+            <button
+              className="next-button"
+              type="submit"
+              onClick={() => handleUploadAdminImageClick()}
+            >
+              Next
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+                      
                     </>
                   )}
 

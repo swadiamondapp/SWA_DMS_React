@@ -10,7 +10,10 @@ import Joi from "joi";
 import AssignmentModal from "../AssignmentModal/AssignmentModal";
 import EyeIcons from "../../assets/bmEye.png";
 import closeButton from "../../assets/closeButton.svg";
+import like from "../../assets/like.png";
+
 import {
+  assignmentPanelSelectedEdit,
   basic_calculation,
   diamond_type_dropdown_basicDetails,
   editBasicDetails,
@@ -27,16 +30,15 @@ import closeButtonBM from "../../assets/closeButtonBM.png";
 
 const style = {
   position: "absolute",
-
   right: "0px",
-  width: 330,
+  width: "100%",
   height: "100%",
-  bgcolor: "background.paper",
+  // bgcolor: "background.paper",
   border: "none",
   boxShadow: 24,
   borderRadius: "8px 0 0 8px",
   overflowY: "scroll",
-  p: 2,
+  // p: 2,
 };
 const BasicEye = {
   position: "absolute",
@@ -72,6 +74,10 @@ const BasicDetailModal = ({
   basicDetails,
   updateEditFunction,
   setSelectedIdsForDelet,
+  pid,
+  setFolderDetailsView,
+  detailId,
+  Data,
 }) => {
   // create modal
 
@@ -141,14 +147,14 @@ const BasicDetailModal = ({
       }));
     }
   }, [name, DetailsProductId, basicDetails]);
-  console.log(successMessage, "success");
-  console.log(formData, "basicFormdData");
-  console.log(selectedAssignment, "basic=====>");
-  console.log(formData.approxMetalWeights, "metalWieght");
-  console.log(metalTypeDropDown, "metalTypeDropDown");
-  console.log(ProudctCategory, "taggggg");
-  console.log(CalculationData, "CalculationData");
-  console.log(basicDetails && basicDetails.approx_metal_weight, "basicDtails");
+  // console.log(successMessage, "success");
+  // console.log(formData, "basicFormdData");
+  // console.log(selectedAssignment, "basic=====>");
+  // console.log(formData.approxMetalWeights, "metalWieght");
+  // console.log(metalTypeDropDown, "metalTypeDropDown");
+  // console.log(ProudctCategory, "taggggg");
+  // console.log(CalculationData, "CalculationData");
+  // console.log(basicDetails && basicDetails.approx_metal_weight, "basicDtails");
 
   const schema = Joi.object({
     SKU: Joi.required().messages({
@@ -250,14 +256,12 @@ const BasicDetailModal = ({
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Validate form data using Joi schema
     const { error } = schema.validate(formData, {
       abortEarly: false,
       allowUnknown: true,
     });
 
     if (error) {
-      // Form is invalid, display validation errors
       const validationErrors = error.details.reduce((errors, err) => {
         errors[err.path[0]] = err.message;
         return errors;
@@ -283,6 +287,11 @@ const BasicDetailModal = ({
   };
   const filterOption = (input, option) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
+
+  const pathname = location.pathname;
+  const isStatusPage = pathname === "/assignmentviewsAll/";
+  const isStatusPageWithId = pathname.startsWith("/assignmentviewsAll/");
+  const isStatusPageName = pathname.startsWith("/assignmentview/");
 
   const handleNextClick = () => {
     const { error } = schema.validate(formData, {
@@ -337,16 +346,13 @@ const BasicDetailModal = ({
     });
 
     if (error) {
-      // Form is invalid, display validation errors
       const validationErrors = error.details.reduce((errors, err) => {
         errors[err.path[0]] = err.message;
         return errors;
       }, {});
       setErrors(validationErrors);
-    } else {
-      // Form is valid, proceed with submission
+    } else if (isStatusPageName) {
       console.log("Form submitted:", formData);
-      // onClose();
       editBasicDetails(
         formData,
         folderIdA,
@@ -356,9 +362,20 @@ const BasicDetailModal = ({
         onClose,
         updateEditFunction
       );
-      // setShowAssignmentModal(true);
-      // Clear errors
       setErrors({ undefined });
+    } else if (isStatusPageWithId) {
+      console.log("Form submitted:", formData);
+      assignmentPanelSelectedEdit(
+        formData,
+        pid,
+        setSuccessMessage,
+        setSuccessModalOpen,
+        onClose,
+        updateEditFunction,
+        setIsLoading,
+        setFolderDetailsView,
+        detailId
+      );
     }
   };
   console.log(errors, "eeeeeeeee==>");
@@ -529,6 +546,12 @@ const BasicDetailModal = ({
     setCalculationData([]);
   };
 
+  const filteredData = Data?.filter((item) =>
+    getSelectedDesign.includes(item.designcode)
+  );
+
+  console.log("filteredData", filteredData);
+
   return (
     <div>
       <div className="">
@@ -548,7 +571,57 @@ const BasicDetailModal = ({
             }}
           >
             <Box sx={style}>
-              <Typography>
+              <div className="modal_card_images">
+                {filteredData?.map((item, index) => (
+                  <>
+                    <div
+                      className="New_Design_card"
+                      key={item.id}
+                      style={{ width: "250px" }}
+                    >
+                      <div
+                        className="Card_img"
+                        style={{
+                          marginTop: "12px",
+                          height: "170px",
+                          cursor: "pointer",
+                        }}
+                      >
+                        <img
+                          src={item.image}
+                          alt="image"
+                          // onClick={() => OpenAnntaitionmodal(item)}
+                        />
+                      </div>
+                      <div className="Card_Details">
+                        <h3>ID : {item.designcode}</h3>
+                        <div className="Card_Details_Inner">
+                          <div className="Inner_Left">
+                            <p>{item.user_name}</p>
+                            <p>{item.created_at}</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        className=""
+                        style={{
+                          display: "flex",
+                          justifyContent: "end",
+                          width: "100%",
+                          alignItems: "end",
+                        }}
+                      >
+                        <div className="Inner_Right" style={{ width: "50px" }}>
+                          <p style={{ color: "white", fontSize: "12px" }}>
+                            {item?.likes_count} <img src={like} alt="" />
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                ))}
+              </div>
+              <Typography className="modal_edit_section">
                 <div className="container">
                   <div className="basicClosModalIcon">
                     <div>
@@ -558,7 +631,11 @@ const BasicDetailModal = ({
                       className="closeButtonImageBm"
                       onClick={handleCLoseButton}
                     >
-                      <img src={closeButtonBM} alt="" />
+                      <img
+                        src={closeButtonBM}
+                        alt=""
+                        style={{ cursor: "pointer" }}
+                      />
                     </div>
                   </div>
                   <form onSubmit={handleSubmit}>
@@ -637,7 +714,7 @@ const BasicDetailModal = ({
                           length
                         </label>
                         <input
-                          type="number"
+                          type="text"
                           className="inputFields"
                           name="length"
                           value={formData.length}
@@ -665,7 +742,7 @@ const BasicDetailModal = ({
                           Width
                         </label>
                         <input
-                          type="number"
+                          type="text"
                           className="inputFields"
                           name="width"
                           value={formData.width}
@@ -693,7 +770,7 @@ const BasicDetailModal = ({
                           Height
                         </label>
                         <input
-                          type="number"
+                          type="text"
                           className="inputFields"
                           name="height"
                           value={formData.height}
@@ -799,7 +876,8 @@ const BasicDetailModal = ({
                           Approx Diamond weight
                         </label>
                         <input
-                          type="number"
+                          style={{ background: "#ADD8E6" }}
+                          type="text"
                           className="inputFields"
                           name="approxDiamondWeight"
                           value={formData.approxDiamondWeight}
@@ -829,7 +907,8 @@ const BasicDetailModal = ({
                           Approx metal weight
                         </label>
                         <input
-                          type="number"
+                          style={{ background: "#FEDD56" }}
+                          type="text"
                           className="inputFields"
                           name="approxMetalWeights"
                           value={formData.approxMetalWeights}
@@ -857,7 +936,7 @@ const BasicDetailModal = ({
                           Approx MRP
                         </label>
                         <input
-                          type="number"
+                          type="text"
                           className="inputFields"
                           name="approxMRP"
                           value={formData.approxMRP}
@@ -901,6 +980,8 @@ const BasicDetailModal = ({
                         </label>
                         {name === "editbasicDetails" ? (
                           <Select
+                            onSearch={onSearch}
+                            filterOption={filterOption}
                             mode="multiple"
                             style={{
                               width: "100%",
@@ -923,6 +1004,8 @@ const BasicDetailModal = ({
                           />
                         ) : (
                           <Select
+                            onSearch={onSearch}
+                            filterOption={filterOption}
                             mode="multiple"
                             style={{
                               width: "100%",
@@ -994,7 +1077,10 @@ const BasicDetailModal = ({
                               width: "100%",
                               zIndex: "9999999",
                               background: "#006E7F1A",
+                              border: "1px solid #e0e1e1 !import",
                             }}
+                            onSearch={onSearch}
+                            filterOption={filterOption}
                             value={formData.tag}
                             placeholder="Select tags"
                             onChange={(value) => {
@@ -1011,6 +1097,8 @@ const BasicDetailModal = ({
                           />
                         ) : (
                           <Select
+                            onSearch={onSearch}
+                            filterOption={filterOption}
                             mode="multiple"
                             style={{
                               width: "100%",

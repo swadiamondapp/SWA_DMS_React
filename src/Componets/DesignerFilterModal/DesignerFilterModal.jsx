@@ -5,8 +5,14 @@ import close from "../../assets/close.png";
 import "./DesignerFilterModal.css";
 import { DatePicker, Select } from "antd";
 import { tag_table_data } from "../MastersSection/ApiMasters/ApiMasters";
-import { product_category_basicDetails, tag_List_basicDetails } from "../Assignment Panel/Api";
 import {
+  list_all_designers_get,
+  product_category_basicDetails,
+  tag_List_basicDetails,
+} from "../Assignment Panel/Api";
+import {
+  designerAssignToFilter,
+  designerDashboradFilter,
   designerFilter,
   designerFilterBasedOnCategory,
 } from "../DESIGNER PANEL/Designer Dashboard/Api";
@@ -24,6 +30,8 @@ const DesignerFilterModal = ({
   setFilteredData,
   setDd,
   dd,
+  page,
+  sethide,
 }) => {
   const { id } = useParams();
   const [filterTag, setFilterTag] = useState("");
@@ -36,32 +44,38 @@ const DesignerFilterModal = ({
   const [ProudctCategory, setListProductCategory] = useState([""]);
   const [selectedTags, setSelectedTags] = useState([]);
   const [selectedFechedTags, setSelectedFechedTags] = useState([]);
-  const [forlderId,setFolderId] = useState(id)
-
+  const [forlderId, setFolderId] = useState(id);
+  const [designers, setDesigners] = useState([]);
+  const [filterDesigner, setFilterDesigner] = useState("");
+  const [designCode, setDesignCode] = useState("");
 
   const [formData, setFormData] = useState({
     productCategory: "",
-    tag:[]
+    tag: [],
   });
 
   useEffect(() => {
     tag_table_data(setTags, setIsLoading);
     product_category_basicDetails(setListProductCategory);
     tag_List_basicDetails(setSelectedTags);
+    list_all_designers_get(setIsLoading, setDesigners);
   }, []);
+
+  const pathname = location.pathname;
+  const assignSection = pathname.startsWith("/designerassignview/");
 
   const clearAllFilters = () => {
     setFormData({
       productCategory: "",
-      tag:[]
-    })
-    setStartDate(null)
-    setEndDate(null)
-    onClearCall()
-    setOpenFilterModal(false)
-    setDd(null)
+      tag: [],
+    });
+    setStartDate(null);
+    setEndDate(null);
+    onClearCall();
+    setOpenFilterModal(false);
+    setDd(null);
+    sethide(false);
   };
-
 
   const handleChange = (values) => {
     if (values) {
@@ -73,9 +87,7 @@ const DesignerFilterModal = ({
       setEndDate(formattedEnd);
     }
   };
-  
 
-  console.log(startDate, "sartssdfsd");
   useEffect(() => {
     AOS.init({
       duration: 500,
@@ -86,10 +98,9 @@ const DesignerFilterModal = ({
     setOpenFilterModal(false);
     setFormData({
       productCategory: "",
-      tag:[],
+      tag: [],
     });
-    setFolderId(null)
-  
+    setFolderId(null);
   };
   useEffect(() => {
     if (selectedTags.length > 0) {
@@ -104,19 +115,43 @@ const DesignerFilterModal = ({
   const filterOption = (input, option) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
   filterTag;
-  //   console.log("filter", filter);
 
   const handleFilterModal = () => {
-    designerFilter(
-      setIsLoading,
-      forlderId,
-      formData,
-      setFolderDetails,
-      startDate,
-      endDate,
-      setFilteredData
-    );
-  };  
+    if (location.pathname == "/designdashboard") {
+      designerDashboradFilter(
+        setIsLoading,
+        forlderId,
+        formData,
+        setFolderDetails,
+        startDate,
+        endDate,
+        setFilteredData,
+        setOpenFilterModal,
+        sethide
+      );
+    } else if (assignSection) {
+      designerFilter(
+        setIsLoading,
+        forlderId,
+        formData,
+        setFolderDetails,
+        startDate,
+        endDate,
+        setFilteredData
+      );
+    } else if (location.pathname === "/unassigneddesigner") {
+      designerAssignToFilter(
+        setIsLoading,
+        designCode,
+        setFolderDetails,
+        startDate,
+        endDate
+        // setFilteredData
+      );
+    }
+  };
+
+  console.log("page", page);
 
   return (
     <>
@@ -166,9 +201,7 @@ const DesignerFilterModal = ({
               marginTop: "20px",
             }}
           >
-            <span className="edit_fields_span">
-              Select From Date & End Date
-            </span>
+            <span className="edit_fields">Select From Date & End Date</span>
             <RangePicker
               style={{
                 width: "70%",
@@ -180,45 +213,70 @@ const DesignerFilterModal = ({
             />
           </div>
 
-          <div>
-            {" "}
-            <div className="productCategory">
-              <label
-                htmlFor=""
-                className="label-text"
-                style={{ marginBottom: "10px" }}
-              >
-                Product Category
-              </label>
-              <Select
-                showSearch
-                placeholder="-Select-"
-                optionFilterProp="children"
-                value={formData.productCategory}
-                onChange={(value) =>
-                  setFormData((prevState) => ({
-                    ...prevState,
-                    productCategory: [value],
-                  }))
-                }
-                onSearch={onSearch}
-                filterOption={filterOption}
+          {page == "assignto" ? (
+            <div
+              className="edit_fields"
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                marginTop: "20px",
+              }}
+            >
+              <span className="label-text">Design Code</span>
+              <input
+                type="text"
                 style={{
                   width: "100%",
-                  zIndex: "9999999",
-                  background: "#006E7F1A",
+                  padding: "6px",
+                  borderRadius: "4px",
+                  border: "1px solid lightgray",
+                  fontSize: "14px",
+                  outline: "none",
                 }}
-                options={ProudctCategory.map((tag) => ({
-                  label: tag.name,
-                  value: tag.id,
-                }))}
+                value={designCode.toUpperCase()}
+                onChange={(e) => setDesignCode(e.target.value.toUpperCase())}
               />
             </div>
-            <div className="tagsInputfeild">
-              <label htmlFor="" className="label-text">
-                Tags
-              </label>
-              {/* <TagsInput
+          ) : (
+            <div>
+              {" "}
+              <div className="productCategory">
+                <label
+                  htmlFor=""
+                  className="label-text"
+                  style={{ marginBottom: "10px" }}
+                >
+                  Product Category
+                </label>
+                <Select
+                  showSearch
+                  placeholder="-Select-"
+                  optionFilterProp="children"
+                  value={formData.productCategory}
+                  onChange={(value) =>
+                    setFormData((prevState) => ({
+                      ...prevState,
+                      productCategory: [value],
+                    }))
+                  }
+                  onSearch={onSearch}
+                  filterOption={filterOption}
+                  style={{
+                    width: "100%",
+                    zIndex: "9999999",
+                    background: "#006E7F1A",
+                  }}
+                  options={ProudctCategory.map((tag) => ({
+                    label: tag.name,
+                    value: tag.id,
+                  }))}
+                />
+              </div>
+              <div className="tagsInputfeild">
+                <label htmlFor="" className="label-text">
+                  Tags
+                </label>
+                {/* <TagsInput
                           value={selectedFechedTags}
                           onChange={(value) => {
                             console.log("Tag changed to:", value); // Log the tag value to the console
@@ -231,7 +289,7 @@ const DesignerFilterModal = ({
                           // placeHolder="Tags"
                           classNames="inputTag"
                         /> */}
-           
+
                 <Select
                   mode="multiple"
                   style={{
@@ -252,10 +310,63 @@ const DesignerFilterModal = ({
                     value: tag.id,
                   }))}
                 />
-             
+              </div>
+              <div className="tagsInputfeild">
+                <label htmlFor="" className="label-text">
+                  Designer Wise
+                </label>
+                {/* <Select
+              showSearch
+              placeholder="-Select-"
+              optionFilterProp="children"
+              value={filterDesigner}
+              onChange={(value) => setFilterDesigner(value)}
+              onSearch={onSearch}
+              filterOption={filterOption}
+              style={{
+                width: "100%",
+                height: "40px",
+                zIndex: "9999999",
+                background: "#006E7F1A",
+              }}
+              options={designers.map((designer) => ({
+                label: designer.name,
+                value: designer.name,
+              }))}
+            /> */}
+
+                <Select
+                  showSearch
+                  placeholder="-Select-"
+                  optionFilterProp="children"
+                  value={filterDesigner}
+                  onChange={(value) => setFilterDesigner(value)}
+                  onSearch={onSearch}
+                  filterOption={filterOption}
+                  style={{
+                    width: "100%",
+                    height: "40px",
+                    zIndex: "9999999",
+                    background: "#006E7F1A",
+                  }}
+                  notFoundContent={!isLoading ? "Nithin" : null}
+                >
+                  {designers.map((designer) => (
+                    <Option key={designer.name} value={designer.name}>
+                      {designer.name}
+                    </Option>
+                  ))}
+                </Select>
+              </div>
             </div>
-          </div>
-          <div style={{display:'grid',gridTemplateColumns:"1fr 1fr ",gap:"10px"}}>
+          )}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr ",
+              gap: "10px",
+            }}
+          >
             <div style={{ marginTop: "10px" }}>
               <button
                 className="next-button"

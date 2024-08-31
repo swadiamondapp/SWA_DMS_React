@@ -11,8 +11,9 @@ button {
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  /* width: 90%; */
+  width: 80%;
   margin-left: 225px;
+  /* background-color: red; */
 }
 .D_downlodBtn {
   display: flex;
@@ -150,13 +151,15 @@ button {
   color: #fff;
   font-weight: 600;
   /* font-size: 16px; */
-  border-radius: 8px;
+  border-radius: 4px;
 }
 .Inner_Right p {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 7px 10px;
+  gap: 5px;
+  padding: 4px 5px;
+  color: #fff;
+  font-size:14px;
 }
 .Parent_unvoted {
   padding: 50px 0px;

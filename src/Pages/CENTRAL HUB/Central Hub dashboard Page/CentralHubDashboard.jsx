@@ -4,6 +4,7 @@ import Sidebar from "../../../Componets/Sidebar/Sidebar";
 import Header from "../../../Componets/Header/Header";
 import CentralDashboard from "../../../Componets/CENTRAL HUB/Central Dashboard/CentralDashboard";
 import { listFoldersCentralHub } from "../Api";
+import { centralHubSearchById } from "../../../Componets/ADMIN PANEL/Design Pool/Api";
 
 const CentralHubDashboard = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -13,12 +14,22 @@ const CentralHubDashboard = () => {
     // list_all_designs_from_cad(setIsLoading, setData);
     listFoldersCentralHub(setIsLoading, setFolders);
   }, []);
+
+  const [searchListId, setsearchListId] = useState("");
+
+  const handleInputChange = async (event) => {
+    const { value } = event.target;
+    setsearchListId(value.toUpperCase());
+
+    await centralHubSearchById(value.toUpperCase(), setFolders);
+  };
+
   
   // const folderNameCentralHub = Folders.map((item,index))
   return (
     <div className="centralhubDashboard">
       <Sidebar  sidebarExpanded={sidebarExpanded} setSidebarExpanded={setSidebarExpanded}/>
-      <Header sidebarExpanded={sidebarExpanded}/>
+      <Header sidebarExpanded={sidebarExpanded} searchListId={searchListId} handleInputChange={handleInputChange}/>
       <CentralDashboard sidebarExpanded={sidebarExpanded} Folders={Folders}/>
     </div>
   );
