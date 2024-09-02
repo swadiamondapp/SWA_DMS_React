@@ -72,7 +72,7 @@ const DesignBtn = ({
   Data,
   handleDeselectAll,
   handleSelectAll,
-  showRadioButtons
+  showRadioButtons,
 }) => {
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -228,41 +228,42 @@ const DesignBtn = ({
               {selectButtonLabel}
             </button>
           )}
-          {showRadioButtons && (
-           <div style={{width:"200px"}}>
-        <button
-          style={{
-            padding: "9px 15px",
-            borderRadius: "4px",
-            color: "white",
-            backgroundColor: "#0464D5",
-            border: "none",
-            fontSize: "13px",
-            fontWeight: "900",
-            marginRight: "10px",
-            borderRadius:"30px"
-          }}
-          onClick={handleSelectAll}
-        >
-          Select All
-        </button>
-        <button
-          style={{
-            padding: "9px 15px",
-            borderRadius: "4px",
-            color: "white",
-            backgroundColor: "#FF4C4C",
-            border: "none",
-            fontSize: "13px",
-            fontWeight: "900",
-            borderRadius:"30px"
-          }}
-          onClick={handleDeselectAll}
-        >
-          Deselect All
-        </button>
-      </div>
-)}
+
+        {showRadioButtons && (
+          <div style={{ width: "200px" }}>
+            <button
+              style={{
+                padding: "9px 15px",
+                borderRadius: "4px",
+                color: "white",
+                backgroundColor: "#0464D5",
+                border: "none",
+                fontSize: "13px",
+                fontWeight: "900",
+                marginRight: "10px",
+                borderRadius: "30px",
+              }}
+              onClick={handleSelectAll}
+            >
+              Select All
+            </button>
+            <button
+              style={{
+                padding: "9px 15px",
+                borderRadius: "4px",
+                color: "white",
+                backgroundColor: "#FF4C4C",
+                border: "none",
+                fontSize: "13px",
+                fontWeight: "900",
+                borderRadius: "30px",
+              }}
+              onClick={handleDeselectAll}
+            >
+              Deselect All
+            </button>
+          </div>
+        )}
 
         {location.pathname !== "/assignmentpanel" &&
           location.pathname !== "/designdashboard" &&
@@ -346,8 +347,8 @@ const DesignBtn = ({
               )}
             </button>
           )}
-          {location.pathname === "/assignmentpanel" && (
-            <button
+        {location.pathname === "/assignmentpanel" && (
+          <button
             className="D_View_Sort_Filter"
             onClick={handleView}
             style={{ position: "relative" }}
@@ -376,38 +377,38 @@ const DesignBtn = ({
               </div>
             )}
           </button>
-          )}
-            {location.pathname === "/designpool" && (
-            <button
-              className="D_View_Sort_Filter"
-              onClick={handleView}
-              style={{ position: "relative" }}
-            >
-              <MdViewModule /> View
-              {view && (
-                <div className="sortData" style={{ left: "-20px" }}>
-                  <span
-                    className={grid === true ? "setcolor" : ""}
-                    onClick={gridView}
-                  >
-                    Grid
-                  </span>
-                  <span
-                    className={detail === true ? "setcolor2" : ""}
-                    onClick={detailView}
-                  >
-                    Details
-                  </span>
-                  <span
-                    className={tiles === true ? "setcolor3" : ""}
-                    onClick={tileView}
-                  >
-                    Tiles
-                  </span>
-                </div>
-              )}
-            </button>
-          )}
+        )}
+        {location.pathname === "/designpool" && (
+          <button
+            className="D_View_Sort_Filter"
+            onClick={handleView}
+            style={{ position: "relative" }}
+          >
+            <MdViewModule /> View
+            {view && (
+              <div className="sortData" style={{ left: "-20px" }}>
+                <span
+                  className={grid === true ? "setcolor" : ""}
+                  onClick={gridView}
+                >
+                  Grid
+                </span>
+                <span
+                  className={detail === true ? "setcolor2" : ""}
+                  onClick={detailView}
+                >
+                  Details
+                </span>
+                <span
+                  className={tiles === true ? "setcolor3" : ""}
+                  onClick={tileView}
+                >
+                  Tiles
+                </span>
+              </div>
+            )}
+          </button>
+        )}
         {location.pathname === "/designdashboard" && (
           <button
             //  onClick={handleSort}
@@ -475,7 +476,7 @@ const DesignBtn = ({
             <RiFilter3Line /> Filter
           </button>
         )}
-        
+
         {location.pathname === "/votorscustomization" && (
           <button
             className="D_downlodBtn"
