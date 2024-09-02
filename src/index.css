@@ -114,12 +114,18 @@ background:none;
 :where(.css-dev-only-do-not-override-1c0na6j).ant-select-outlined:not(.ant-select-customize-input) .ant-select-selector {
   background-color: white !important;
 }
-
-
-:where(.css-dev-only-do-not-override-1c0na6j).ant-select-outlined:not(.ant-select-customize-input) .ant-select-selector {
-  /* border: none; */
+.Detail_Card :where(.css-dev-only-do-not-override-1c0na6j).ant-select-outlined:not(.ant-select-customize-input) .ant-select-selector{
+background: transparent !important;
 }
 
-:where(.css-dev-only-do-not-override-1c0na6j).ant-select-outlined:not(.ant-select-customize-input) .ant-select-selector {
-  /* background-color: none; */
+.Detail_Card :where(.css-dev-only-do-not-override-1c0na6j).ant-select-outlined:not(.ant-select-customize-input) .ant-select-selector {
+  border: none !important;
+}
+
+ /* :where(.css-dev-only-do-not-override-1c0na6j).ant-select-outlined:not(.ant-select-customize-input) .ant-select-selector {
+  background-color: none;
+} */
+
+:where(.css-dev-only-do-not-override-1c0na6j).ant-select-single.ant-select-show-arrow .ant-select-selection-item, :where(.css-dev-only-do-not-override-1c0na6j).ant-select-single.ant-select-show-arrow .ant-select-selection-placeholder {
+  font-size: 14px;
 }

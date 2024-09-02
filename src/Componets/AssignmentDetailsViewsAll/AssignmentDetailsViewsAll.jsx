@@ -27,6 +27,8 @@ import {
   product_type_drop_down,
 } from "../ADMIN PANEL/Api_dropDown";
 import {
+  Cad2DUpdateImage,
+  Cad3DUpdateImage,
   detailsViewOfItems,
   detailsViewOfItemsRenders,
   rendersDetailByCode,
@@ -69,6 +71,8 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
   const [successModalOpen, setSuccessModalOpen] = useState(false);
   // const [renderRemark, setRenderRemark] = useState("");
   // const [cadRemark, setCadRemark] = useState("");
+  const [file2d_status, setFile2d_status] = useState("");
+  const [file3d_status, setFile3d_status] = useState("");
 
   const handleopenModal = () => {
     setOpenmodal(!openModal);
@@ -91,8 +95,9 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
   }, [id, renderMessage]);
 
   useEffect(() => {
+    // Assuming rendersDetailByCode is a function that fetches the data
     rendersDetailByCode(setIsLoading, setRendesrDetail, detailsViewFolderName);
-  }, [id]);
+  }, [id, detailsViewFolderName]);
 
   const handleDownload = (imageUrl, fileName = "downloaded_file") => {
     fetch(imageUrl, {
@@ -231,6 +236,62 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
     );
   };
 
+  const handleChangee = async (imgKey, newValue) => {
+    // Update local state immediately
+    setStatus((prevStatus) => ({
+      ...prevStatus,
+      [`${imgKey}_status`]: newValue,
+    }));
+    console.log(status,"status")
+
+    // Perform async update
+    try {
+      await updateImageStatuses(
+        setIsLoading,
+        { ...status, [`${imgKey}_status`]: newValue },
+        setRendesrDetail,
+        setSuccessModalOpen
+      );
+    } catch (error) {
+      console.error("Error updating image statuses:", error);
+      // Handle error case (e.g., revert local state if needed)
+    }
+  };
+
+  const handle2DChangee = async (value) => {
+    setFile2d_status(value);
+    let updatedStatus = value;
+
+    await Cad2DUpdateImage(
+      setIsLoading,
+      updatedStatus,
+      folderDetails?.designcode,
+      setSuccessModalOpen
+    );
+  };
+
+  const handle2DChange = async (value) => {
+    setFile2d_status(value);
+
+    await Cad2DUpdateImage(
+      setIsLoading,
+      value, 
+      detailsViewFolderName,
+      setSuccessModalOpen
+    );
+  };
+
+  const handle3DChange = async (value) => {
+    setFile3d_status(value);
+
+    await Cad3DUpdateImage(
+      setIsLoading,
+      value,
+      detailsViewFolderName,
+      setSuccessModalOpen
+    );
+  };
+
   // const updateImageStatuses = async (updatedStatus) => {
   //   const body = {
   //     ...updatedStatus,
@@ -248,10 +309,38 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
   //     setIsLoading(false);
   //   }
   // };
-  
-  const pid = assignment_details?.id
 
-  console.log(assignment_details?.id, "assignment_details");
+
+
+
+  const pid = assignment_details?.id;
+  const currentUsertype = localStorage.getItem("Usertype");
+  const images = rendesrDetail?.images || [];
+
+  const file3dStatus = cardDatas[0]?.file3d_status;
+  const file2dStatus = cardDatas[0]?.file2d_status;
+  console.log(file3dStatus,"file3dStatus")
+
+  const getBackgroundColor = (status) => {
+    switch (status) {
+      case 'Approved':
+        return '#23A0641A'; 
+      case 'Rejected':
+        return 'FCEBEB' ;
+      default:
+        return '#E6EFFB'; 
+    }
+  };
+  const getTextColor = (status) => {
+    switch (status) {
+      case 'Approved':
+        return '#23A0641A'; 
+      case 'Rejected':
+        return '#FA3838' ;
+      default:
+        return '#0464D5'; 
+    }
+  };
 
   return (
     <div>
@@ -280,22 +369,25 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
                   }}
                 >
                   <h4>Cad Output file</h4>
-                  <button
-                    style={{
-                      padding: "10px 16px 10px 16px",
-                      background: "#0464D5",
-                      color: "white",
-                      borderRadius: "30px",
-                      border: "none",
-                      outline: "none",
-                      fontSize: "16px",
-                      fontWeight: "600",
-                      cursor: "pointer",
-                    }}
-                    onClick={handleopenModal}
-                  >
-                    Add instraction
-                  </button>
+
+                  {currentUsertype === "DESIGNER" && (
+                    <button
+                      style={{
+                        padding: "10px 16px 10px 16px",
+                        background: "#0464D5",
+                        color: "white",
+                        borderRadius: "30px",
+                        border: "none",
+                        outline: "none",
+                        fontSize: "16px",
+                        fontWeight: "600",
+                        cursor: "pointer",
+                      }}
+                      onClick={handleopenModal}
+                    >
+                      Add instruction
+                    </button>
+                  )}
                 </div>
                 <div
                   className=""
@@ -327,18 +419,58 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
                       DOWNLOAD
                       <GoDownload />
                     </button>
-                    <button
+
+                    {currentUsertype === "ADMIN" && (
+                      <button
                       style={{
-                        padding: "3px 6px 3px 6px",
-                        color: "#23A064",
-                        border: "1px solid #23A064",
-                        background: "#23A0641A",
-                        width: "auto",
+                        padding: "13px 6px ",
+                        color:
+                        file3dStatus === 'Approved' 
+                        ? '#23A064' 
+                        : file3dStatus === 'Rejected'
+                          ? 'red' 
+                          : '#0464D5', 
+                        border: `1px solid ${file3dStatus === 'Approved' 
+                          ? '#23A0641A' 
+                          : file3dStatus === 'Rejected'
+                            ? '#FA38381A' 
+                            : '#0464D5'}`,
+                        background: 
+                        file3dStatus === 'Approved' 
+                          ? '#23A0641A' 
+                          : file3dStatus === 'Rejected'
+                            ? '#FA38381A' 
+                            : '#0464D51A',
+                         width: "auto",
                         borderRadius: "32px",
+                        fontWeight:"600"
                       }}
-                    >
-                      {cardDatas[0]?.file2d_status}
-                    </button>
+                      >
+                        {file2dStatus}
+                      </button>
+                    )}
+                    {currentUsertype === "DESIGNER" && (
+                      <Select
+                        value={
+                          file2d_status ? file2d_status : cardDatas[0]?.file2d_status
+                        }
+                        style={{
+                          width: 120,
+                          padding: "6px 6px 6px 2px",
+                          color: "#23A064",
+                          border: "1px solid #23A064",
+                          background: "#23A0641A",
+                          borderRadius: "32px",
+                          marginTop: "13px",
+                          fontSize:"23px"
+                        }}
+                        onChange={(value) => handle2DChange(value)}
+                        options={[
+                          { value: "Approved", label: "Approved" },
+                          { value: "Rejected", label: "Rejected" },
+                        ]}
+                      />
+                    )}
                   </div>
                   <div
                     className="Detail_Card"
@@ -359,18 +491,56 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
                       DOWNLOAD
                       <GoDownload />
                     </button>
-                    <button
-                      style={{
-                        padding: "13px 6px ",
-                        color: "#23A064",
-                        border: "1px solid #23A064",
-                        background: "#23A0641A",
-                        width: "auto",
-                        borderRadius: "32px",
-                      }}
-                    >
-                      {cardDatas[0]?.file3d_status}
-                    </button>
+                    {currentUsertype === "DESIGNER" && (
+                      <Select
+                        value={
+                          file3d_status ? file3d_status : cardDatas[0]?.file3d_status
+                        }
+                        style={{
+                          width: 120,
+                          padding: "6px 6px 6px 2px",
+                          color: "#23A064",
+                          border: "1px solid #23A064",
+                          background: "#23A0641A",
+                          borderRadius: "32px",
+                          marginTop: "13px",
+                        }}
+                        onChange={(value) => handle3DChange(value)}
+                        options={[
+                          { value: "Approved", label: "Approved" },
+                          { value: "Rejected", label: "Rejected" },
+                        ]}
+                      />
+                    )}
+                    {currentUsertype === "ADMIN" && (
+                      <button
+                        style={{
+                          padding: "13px 6px ",
+                          color:
+                          file3dStatus === 'Approved' 
+                          ? '#23A064' 
+                          : file3dStatus === 'Rejected'
+                            ? 'red' 
+                            : '#0464D5', 
+                          border: `1px solid ${file3dStatus === 'Approved' 
+                            ? '#23A0641A' 
+                            : file3dStatus === 'Rejected'
+                              ? '#FA38381A' 
+                              : '#0464D5'}`,
+                          background: 
+                          file3dStatus === 'Approved' 
+                            ? '#23A0641A' 
+                            : file3dStatus === 'Rejected'
+                              ? '#FA38381A' 
+                              : '#0464D51A',
+                           width: "auto",
+                          borderRadius: "32px",
+                          fontWeight:"600"
+                        }}
+                      >
+                        {cardDatas[0]?.file3d_status}
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
@@ -537,22 +707,25 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
               }}
             >
               <h4>Render Output file</h4>
-              <button
-                style={{
-                  padding: "10px 16px 10px 16px",
-                  background: "#0464D5",
-                  color: "white",
-                  borderRadius: "30px",
-                  border: "none",
-                  outline: "none",
-                  fontSize: "16px",
-                  fontWeight: "600",
-                  cursor: "pointer",
-                }}
-                onClick={handleopenModalRender}
-              >
-                Add instraction
-              </button>
+
+              {currentUsertype === "DESIGNER" && (
+                <button
+                  style={{
+                    padding: "10px 16px 10px 16px",
+                    background: "#0464D5",
+                    color: "white",
+                    borderRadius: "30px",
+                    border: "none",
+                    outline: "none",
+                    fontSize: "16px",
+                    fontWeight: "600",
+                    cursor: "pointer",
+                  }}
+                  onClick={handleopenModalRender}
+                >
+                  Add instruction
+                </button>
+              )}
             </div>
             <div
               style={{
@@ -647,20 +820,29 @@ console.log("Initial", status);0,
                   }
                 })} */}
 
-              {rendesrDetail?.images?.map((imgObj, index) => {
-                const [imageKey, imageUrl] = Object.entries(imgObj).find(
-                  ([key, value]) =>
-                    key.startsWith("img") && !key.endsWith("_status")
+              {images.map((imgObj, index) => {
+                if (!imgObj) return null;
+
+                const imageKey = Object.keys(imgObj).find(
+                  (key) => key.startsWith("img") && !key.endsWith("_status")
                 );
+                if (!imageKey) return null;
 
                 const statusKey = `${imageKey}_status`;
-                const statusValue = imgObj[statusKey];
+                const statusValue =
+                  (status && status[statusKey]) ||
+                  (imgObj && imgObj[statusKey]) ||
+                  "Unknown";
+                console.log(statusValue, "statusValue");
+                console.log('status:', status);
+console.log('imgObj:', imgObj);
+console.log('statusKey:', statusKey);
 
-                if (!imageUrl) return null;
 
+                if (!imgObj[imageKey]) return null;
                 return (
                   <div key={index} className="finishedCardContainer2">
-                    <img src={imageUrl} alt="card_image" />
+                    <img src={imgObj[imageKey]} alt="card_image" />
                     <span className="postedOn">
                       POSTED ON:{" "}
                       <span className="postedOn_data">
@@ -669,26 +851,49 @@ console.log("Initial", status);0,
                         )}
                       </span>
                     </span>
-                    <Select
-                      value={statusValue}
-                      style={{
-                        width: 120,
-                        padding: "6px 6px 6px 2px",
-                        color: "#23A064",
-                        border: "1px solid #23A064",
-                        background: "#23A0641A",
-                        borderRadius: "32px",
-                      }}
-                      onChange={(value) => handleChange(imageKey, value)}
-                      options={[
-                        { value: "Approved", label: "Approved" },
-                        { value: "Rejected", label: "Rejected" },
-                      ]}
-                    />
+                    {currentUsertype === "ADMIN" && (
+                      <button
+                        style={{
+                          padding: "3px 6px",
+                          color: "#23A064",
+                          border: "1px solid #23A064",
+                          background: "#23A0641A",
+                          width: "auto",
+                          borderRadius: "32px",
+                        }}
+                      >
+                        {statusValue}
+                      </button>
+                    )}
+                    {currentUsertype === "DESIGNER" && (
+                      <>
+                      {/* <span>{statusValue}</span> */}
+                      <Select
+                        value={{
+                          value: statusValue,
+                          label: statusValue ,
+                        }}
+                        style={{
+                          width: 120,
+                          padding: "6px",
+                          color: "#23A064",
+                          border: "1px solid #23A064",
+                          background: "#23A0641A",
+                          borderRadius: "32px",
+                        }}
+                        onChange={(value) =>
+                          handleChange(imageKey, value)
+                        }
+                        options={[
+                          { value: "Approved", label: "Approved" },
+                          { value: "Rejected", label: "Rejected" },
+                        ]}
+                      />
+                      </>
+                    )}
                   </div>
                 );
               })}
-
               {/* <button onClick={updateImageStatuses}>Update Status</button> */}
 
               {rendesrDetail.length === 0 && (

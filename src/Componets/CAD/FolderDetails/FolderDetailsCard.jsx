@@ -115,8 +115,7 @@ const FolderDetailsCard = ({
       setSuccessModalOpen
     );
   };
-
-  console.log(folderDetails, "folderDetails===>Cad");
+  
   return (
     <div
       className="ParentCad"
@@ -221,7 +220,7 @@ const FolderDetailsCard = ({
                     <GoDownload />
                   </button>
 
-                  <Select
+                  {/* <Select
                     value={
                       file2d_status
                         ? file2d_status
@@ -241,7 +240,36 @@ const FolderDetailsCard = ({
                       { value: "Approved", label: "Approved" },
                       { value: "Rejected", label: "Rejected" },
                     ]}
-                  />
+                  /> */}
+
+                  <button
+                    style={{
+                      width: 120,
+                      padding: "6px 6px 6px 2px",
+                      color:
+                      folderDetails?.file2d_status === 'Approved' 
+                      ? '#23A064' 
+                      : folderDetails?.file2d_status === 'Rejected'
+                        ? 'red' 
+                        : '#0464D5', 
+                      border: `1px solid ${folderDetails?.file2d_status === 'Approved' 
+                        ? '#23A0641A' 
+                        : folderDetails?.file2d_status === 'Rejected'
+                          ? '#FA38381A' 
+                          : '#0464D5'}`,
+                      background: 
+                      folderDetails?.file2d_status === 'Approved' 
+                        ? '#23A0641A' 
+                        : folderDetails?.file2d_status === 'Rejected'
+                          ? '#FA38381A' 
+                          : '#0464D51A',
+                      borderRadius: "32px",
+                      fontWeight:"600",
+                      marginTop: "13px",
+                    }}
+                  >
+                    {folderDetails?.file2d_status}
+                  </button>
                 </div>
               </div>
             </div>
@@ -269,25 +297,8 @@ const FolderDetailsCard = ({
                     DOWNLOAD
                     <GoDownload />
                   </button>
-                  {/* <select
-                    name=""
-                    id=""
-                    style={{
-                      padding: "6px 6px 6px 6px",
-                      color: "#23A064",
-                      border: "1px solid #23A064",
-                      background: "#23A0641A",
-                      width: "auto",
-                      borderRadius: "32px",
-                      outline: "none",
-                      
-                    }}
-                  >
-                    <option value="">Pending</option>
-                    <option value="">Accepted</option>
-                    <option value="">Rejected</option>
-                  </select> */}
-                  <Select
+
+                  {/* <Select
                     value={
                       file3d_status
                         ? file3d_status
@@ -307,7 +318,36 @@ const FolderDetailsCard = ({
                       { value: "Approved", label: "Approved" },
                       { value: "Rejected", label: "Rejected" },
                     ]}
-                  />
+                  /> */}
+
+                  <button
+                    style={{
+                      width: 120,
+                      padding: "6px 6px 6px 2px",
+                      color:
+                      folderDetails?.file2d_status === 'Approved' 
+                      ? '#23A064' 
+                      : folderDetails?.file2d_status === 'Rejected'
+                        ? 'red' 
+                        : '#0464D5', 
+                      border: `1px solid ${folderDetails?.file2d_status === 'Approved' 
+                        ? '#23A0641A' 
+                        : folderDetails?.file2d_status === 'Rejected'
+                          ? '#FA3838' 
+                          : '#0464D5'}`,
+                      background: 
+                      folderDetails?.file2d_status === 'Approved' 
+                        ? '#23A0641A' 
+                        : folderDetails?.file2d_status === 'Rejected'
+                          ? '#FA38381A' 
+                          : '#0464D51A',
+                      borderRadius: "32px",
+                      fontWeight:"600",
+                      marginTop: "13px",
+                    }}
+                  >
+                    {folderDetails?.file3d_status}
+                  </button>
                 </div>
               </div>
             </div>

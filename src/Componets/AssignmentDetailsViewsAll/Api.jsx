@@ -58,7 +58,6 @@ export const updateImageStatuses = async (
   setRendesrDetail,
   setSuccessModalOpen
 ) => {
-  debugger
   const body = {
     ...status,
   };
