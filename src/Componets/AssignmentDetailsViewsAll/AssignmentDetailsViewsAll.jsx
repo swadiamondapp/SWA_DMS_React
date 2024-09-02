@@ -944,53 +944,52 @@ console.log("Initial", status);0,
                     )}
                     {currentUsertype === "DESIGNER" && (
                       <>
-{/* <span>{statusValue}</span> */}
-                      <Select
-                        value={{
-                          value: statusValue,
-                          label: statusValue 
-                        }}
-                        // style={{
-                        //   width: 120,
-                        //   padding: "6px",
-                        //   color: "#23A064",
-                        //   border: "1px solid #23A064",
-                        //   background: "#23A0641A",
-                        //   borderRadius: "32px",
-                        // }}
-                        style={{
-                          width: 120,
-                        padding: "6px 6px 6px 6px",
-                          color:
-                          statusValue === 'Approved' 
-                          ? '#23A064' 
-                          : statusValue === 'Rejected'
-                            ? 'red' 
-                            : '#0464D5', 
-                          border: `1px solid ${statusValue === 'Approved' 
-                            ? '#23A064' 
-                            : statusValue === 'Rejected'
-                              ? '#FA3838' 
-                              : '#0464D5'}`,
-                          background: 
-                          statusValue === 'Approved' 
-                            ? '#23A0641A' 
-                            : statusValue === 'Rejected'
-                              ? '#FA38381A' 
-                              : '#0464D51A',
-                           width: "auto",
-                          borderRadius: "32px",
-                          fontWeight:"600"
-                        }}
-                        
-                        onChange={(value) =>
-                          handleChange(imageKey, value)
-                        }
-                        options={[
-                          { value: "Approved", label: "Approved" },
-                          { value: "Rejected", label: "Rejected" },
-                        ]}
-                      />
+                        {/* <span>{statusValue}</span> */}
+                        <Select
+                          value={{
+                            value: statusValue,
+                            label: statusValue,
+                          }}
+                          // style={{
+                          //   width: 120,
+                          //   padding: "6px",
+                          //   color: "#23A064",
+                          //   border: "1px solid #23A064",
+                          //   background: "#23A0641A",
+                          //   borderRadius: "32px",
+                          // }}
+                          style={{
+                            // width: 120,
+                            padding: "6px 6px 6px 6px",
+                            color:
+                              statusValue === "Approved"
+                                ? "#23A064"
+                                : statusValue === "Rejected"
+                                ? "red"
+                                : "#0464D5",
+                            border: `1px solid ${
+                              statusValue === "Approved"
+                                ? "#23A064"
+                                : statusValue === "Rejected"
+                                ? "#FA3838"
+                                : "#0464D5"
+                            }`,
+                            background:
+                              statusValue === "Approved"
+                                ? "#23A0641A"
+                                : statusValue === "Rejected"
+                                ? "#FA38381A"
+                                : "#0464D51A",
+                            width: "auto",
+                            borderRadius: "32px",
+                            fontWeight: "600",
+                          }}
+                          onChange={(value) => handleChange(imageKey, value)}
+                          options={[
+                            { value: "Approved", label: "Approved" },
+                            { value: "Rejected", label: "Rejected" },
+                          ]}
+                        />
                       </>
                     )}
                   </div>
