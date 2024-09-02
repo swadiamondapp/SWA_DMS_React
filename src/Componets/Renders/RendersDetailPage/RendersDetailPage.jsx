@@ -41,7 +41,7 @@ const RendersDetailPage = ({ folderDetails, sidebarExpanded }) => {
   //     .catch((error) => console.error("Error downloading the image:", error));
   // };
 
-  const handleDownload = (imageUrl, fileName = "downloaded_file") => {
+  const handleDownload = (imageUrl, fileName = "downloaded_file", code) => {
     fetch(imageUrl, {
       method: "GET",
       mode: "cors",
@@ -51,13 +51,18 @@ const RendersDetailPage = ({ folderDetails, sidebarExpanded }) => {
         const blobUrl = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = blobUrl;
-        link.download = fileName;
+        
+        const extension = imageUrl.split('.').pop(); 
+        link.download = `${fileName}_${code}.${extension}`;
+        
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+        URL.revokeObjectURL(blobUrl); 
       })
       .catch((error) => console.error("Error downloading the file:", error));
   };
+  
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -105,7 +110,7 @@ const RendersDetailPage = ({ folderDetails, sidebarExpanded }) => {
             </span>
             <button
               className="Download_btn_hub"
-              onClick={() => handleDownload(item.file_2d, "image_2d.jpg")}
+              onClick={() => handleDownload(item.file_2d, "image_2d", item.designcode)}
             >
               DOWNLOAD
               <GoDownload />
@@ -118,7 +123,7 @@ const RendersDetailPage = ({ folderDetails, sidebarExpanded }) => {
             </span>
             <button
               className="Download_btn_hub"
-              onClick={() => handleDownload(item.file_3d, "model_3d.3dm")}
+              onClick={() => handleDownload(item.file_3d, "model_3d" , item.designcode)}
             >
               DOWNLOAD
               <GoDownload />
