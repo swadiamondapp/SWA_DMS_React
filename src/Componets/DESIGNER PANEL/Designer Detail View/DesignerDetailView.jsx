@@ -123,6 +123,14 @@ const DesignerDetailView = (props) => {
     // Logs to check if `folderDetails` is updated correctly
     console.log("Updated folderDetails:", props.folderDetails);
   }, [props.folderDetails]);
+
+  const handleTrack = (item, designCode) => {
+    navigate(`/statusPage/${item.item_id}`, {
+      state: {
+        code: designCode,
+      },
+    });
+  };
     
  
 console.log("showRadioButtons",showRadioButtons)
@@ -185,6 +193,22 @@ console.log("showRadioButtons",showRadioButtons)
                         <p>Time Taken : {item.time_taken} </p>
                       </div>
                     </div>
+                    <button
+                                    style={{
+                                      padding: "7px 5px ",
+                                      borderRadius: "4px",
+                                      color: "white",
+                                      backgroundColor: "#0464D5",
+                                      border: "none",
+                                      fontSize: "13px",
+                                      fontWeight: "900"
+                                     }}
+                                    onClick={() =>
+                                      handleTrack(item,item?.paper_design?.designcode)
+                                    }
+                                  >
+                                    Track
+                                  </button>
                     <div
                       style={{
                         padding: "4px 10px",
@@ -206,6 +230,7 @@ console.log("showRadioButtons",showRadioButtons)
                         ? "On Going"
                         : "Not Started"}
                     </div>
+                    
                   </div>
 
                   {showRadioButtons &&  (

@@ -41,13 +41,7 @@ const RendersDetailPage = ({ folderDetails, sidebarExpanded }) => {
   //     .catch((error) => console.error("Error downloading the image:", error));
   // };
 
-  const handleDownload = (
-    imageUrl,
-    fileName = "downloaded_file",
-    designCode,
-    model
-
-  ) => {
+  const handleDownload = (imageUrl, fileName = "downloaded_file", code) => {
     fetch(imageUrl, {
       method: "GET",
       mode: "cors",
@@ -57,14 +51,18 @@ const RendersDetailPage = ({ folderDetails, sidebarExpanded }) => {
         const blobUrl = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = blobUrl;
-        link.download =
-          model === "2d" ? `${designCode}.jpg` : `${designCode}.3dm`;
+        
+        const extension = imageUrl.split('.').pop(); 
+        link.download = `${fileName}_${code}.${extension}`;
+        
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+        URL.revokeObjectURL(blobUrl); 
       })
       .catch((error) => console.error("Error downloading the file:", error));
   };
+  
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -112,9 +110,7 @@ const RendersDetailPage = ({ folderDetails, sidebarExpanded }) => {
             </span>
             <button
               className="Download_btn_hub"
-              onClick={() =>
-                handleDownload(item.file_2d, "image_2d.jpg", item.designcode,"2d")
-              }
+              onClick={() => handleDownload(item.file_2d, "image_2d", item.designcode)}
             >
               DOWNLOAD
               <GoDownload />
@@ -127,7 +123,7 @@ const RendersDetailPage = ({ folderDetails, sidebarExpanded }) => {
             </span>
             <button
               className="Download_btn_hub"
-              onClick={() => handleDownload(item.file_3d, "model_3d.3dm", item.designcode,"3d")}
+              onClick={() => handleDownload(item.file_3d, "model_3d" , item.designcode)}
             >
               DOWNLOAD
               <GoDownload />

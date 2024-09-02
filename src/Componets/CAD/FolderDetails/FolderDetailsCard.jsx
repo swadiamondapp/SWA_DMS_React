@@ -34,7 +34,7 @@ const FolderDetailsCard = ({
   const [isLoading, setIsLoading] = useState(false);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
 
-  console.log("file2d_status", file2d_status);
+  console.log("folderDetails", folderDetails);
 
   const handleopenModal = () => {
     setOpenmodal(!openModal);
@@ -46,7 +46,7 @@ const FolderDetailsCard = ({
     content: printRef.current,
   });
 
-  const handleDownload = (imageUrl, model,designCode) => {
+  const handleDownload = (imageUrl, model, code) => {
     fetch(imageUrl, {
       method: "GET",
       mode: "cors",
@@ -56,14 +56,18 @@ const FolderDetailsCard = ({
         const blobUrl = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = blobUrl;
-        link.download =
-          model === "2d" ? `${designCode}.jpg` : `${designCode}.3dm`;
+  
+        // Set the download filename based on the model and code
+        const extension = model === "2d" ? ".jpg" : ".3dm";
+        link.download = `downloaded_image_${code}${extension}`;
+  
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
       })
       .catch((error) => console.error("Error downloading the image:", error));
   };
+  
 
   const downloadImage = () => {
     const canvas = canvasRef.current;
@@ -212,9 +216,7 @@ const FolderDetailsCard = ({
                   </p>
                   <button
                     className="Download_btn_hub"
-                    onClick={() =>
-                      handleDownload(folderDetails?.file_2d, "2d", folderDetails?.designcode)
-                    }
+                    onClick={() => handleDownload(folderDetails?.file_2d, "2d",folderDetails?.designcode)}
                   >
                     DOWNLOAD
                     <GoDownload />
