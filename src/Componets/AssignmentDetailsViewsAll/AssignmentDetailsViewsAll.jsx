@@ -71,8 +71,8 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
   const [successModalOpen, setSuccessModalOpen] = useState(false);
   // const [renderRemark, setRenderRemark] = useState("");
   // const [cadRemark, setCadRemark] = useState("");
-  const [file2d_status, setFile2d_status] = useState("");
-  const [file3d_status, setFile3d_status] = useState("");
+  const [file2d_status, setFile2d_status] = useState(cardDatas[0]?.file2d_status);
+  const [file3d_status, setFile3d_status] = useState(cardDatas[0]?.file3d_status);
 
   const handleopenModal = () => {
     setOpenmodal(!openModal);
@@ -425,20 +425,20 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
                       style={{
                         padding: "13px 6px ",
                         color:
-                        file3dStatus === 'Approved' 
+                        file2dStatus === 'Approved' 
                         ? '#23A064' 
-                        : file3dStatus === 'Rejected'
+                        : file2dStatus === 'Rejected'
                           ? 'red' 
                           : '#0464D5', 
-                        border: `1px solid ${file3dStatus === 'Approved' 
-                          ? '#23A0641A' 
-                          : file3dStatus === 'Rejected'
-                            ? '#FA38381A' 
+                        border: `1px solid ${file2dStatus === 'Approved' 
+                          ? '#23A064' 
+                          : file2dStatus === 'Rejected'
+                            ? '#FA3838' 
                             : '#0464D5'}`,
                         background: 
-                        file3dStatus === 'Approved' 
+                        file2dStatus === 'Approved' 
                           ? '#23A0641A' 
-                          : file3dStatus === 'Rejected'
+                          : file2dStatus === 'Rejected'
                             ? '#FA38381A' 
                             : '#0464D51A',
                          width: "auto",
@@ -454,15 +454,39 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
                         value={
                           file2d_status ? file2d_status : cardDatas[0]?.file2d_status
                         }
+                        // style={{
+                        //   width: 120,
+                        //   padding: "6px 6px 6px 2px",
+                        //   color: "#23A064",
+                        //   border: "1px solid #23A064",
+                        //   background: "#23A0641A",
+                        //   borderRadius: "32px",
+                        //   marginTop: "13px",
+                        //   fontSize:"23px"
+                        // }}
                         style={{
                           width: 120,
                           padding: "6px 6px 6px 2px",
-                          color: "#23A064",
-                          border: "1px solid #23A064",
-                          background: "#23A0641A",
+                          color:
+                          file2d_status === 'Approved' 
+                          ? '#23A064' 
+                          : file2d_status === 'Rejected'
+                            ? 'red' 
+                            : '#0464D5', 
+                          border: `1px solid ${file2d_status === 'Approved' 
+                            ? '#23A064' 
+                            : file2d_status === 'Rejected'
+                              ? '#FA3838' 
+                              : '#0464D5'}`,
+                          background: 
+                          file2d_status === 'Approved' 
+                            ? '#23A0641A' 
+                            : file2d_status === 'Rejected'
+                              ? '#FA38381A' 
+                              : '#0464D51A',
                           borderRadius: "32px",
+                          fontWeight:"600",
                           marginTop: "13px",
-                          fontSize:"23px"
                         }}
                         onChange={(value) => handle2DChange(value)}
                         options={[
@@ -496,14 +520,37 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
                         value={
                           file3d_status ? file3d_status : cardDatas[0]?.file3d_status
                         }
+                        // style={{
+                        //   width: 120,
+                        //   padding: "6px 6px 6px 2px",
+                        //   color: "#23A064",
+                        //   border: "1px solid #23A064",
+                        //   background: "#23A0641A",
+                        //   borderRadius: "32px",
+                        //   marginTop: "13px",
+                        // }}
                         style={{
-                          width: 120,
-                          padding: "6px 6px 6px 2px",
-                          color: "#23A064",
-                          border: "1px solid #23A064",
-                          background: "#23A0641A",
+                          padding: "13px 6px ",
+                          color:
+                          file3d_status === 'Approved' 
+                          ? '#23A064' 
+                          : file3d_status === 'Rejected'
+                            ? 'red' 
+                            : '#0464D5', 
+                          border: `1px solid ${file3d_status === 'Approved' 
+                            ? '#23A064' 
+                            : file3d_status === 'Rejected'
+                              ? '#FA3838' 
+                              : '#0464D5'}`,
+                          background: 
+                          file3d_status === 'Approved' 
+                            ? '#23A0641A' 
+                            : file3d_status === 'Rejected'
+                              ? '#FA38381A' 
+                              : '#0464D51A',
+                           width: "auto",
                           borderRadius: "32px",
-                          marginTop: "13px",
+                          fontWeight:"600"
                         }}
                         onChange={(value) => handle3DChange(value)}
                         options={[
@@ -523,9 +570,9 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
                             ? 'red' 
                             : '#0464D5', 
                           border: `1px solid ${file3dStatus === 'Approved' 
-                            ? '#23A0641A' 
+                            ? '#23A064' 
                             : file3dStatus === 'Rejected'
-                              ? '#FA38381A' 
+                              ? '#FA3838' 
                               : '#0464D5'}`,
                           background: 
                           file3dStatus === 'Approved' 
@@ -853,14 +900,30 @@ console.log('statusKey:', statusKey);
                     </span>
                     {currentUsertype === "ADMIN" && (
                       <button
-                        style={{
-                          padding: "3px 6px",
-                          color: "#23A064",
-                          border: "1px solid #23A064",
-                          background: "#23A0641A",
-                          width: "auto",
-                          borderRadius: "32px",
-                        }}
+                      style={{
+                        width: 120,
+                      padding: "6px 6px 6px 6px",
+                        color:
+                        statusValue === 'Approved' 
+                        ? '#23A064' 
+                        : statusValue === 'Rejected'
+                          ? 'red' 
+                          : '#0464D5', 
+                        border: `1px solid ${statusValue === 'Approved' 
+                          ? '#23A064' 
+                          : statusValue === 'Rejected'
+                            ? '#FA3838' 
+                            : '#0464D5'}`,
+                        background: 
+                        statusValue === 'Approved' 
+                          ? '#23A0641A' 
+                          : statusValue === 'Rejected'
+                            ? '#FA38381A' 
+                            : '#0464D51A',
+                         width: "auto",
+                        borderRadius: "32px",
+                        fontWeight:"600"
+                      }}
                       >
                         {statusValue}
                       </button>
@@ -871,7 +934,7 @@ console.log('statusKey:', statusKey);
                       <Select
                         value={{
                           value: statusValue,
-                          label: statusValue ,
+                          label: statusValue 
                         }}
                         style={{
                           width: 120,
@@ -881,6 +944,7 @@ console.log('statusKey:', statusKey);
                           background: "#23A0641A",
                           borderRadius: "32px",
                         }}
+                        
                         onChange={(value) =>
                           handleChange(imageKey, value)
                         }
