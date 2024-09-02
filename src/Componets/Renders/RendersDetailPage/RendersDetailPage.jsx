@@ -12,10 +12,10 @@ import { GoDownload } from "react-icons/go";
 const RendersDetailPage = ({ folderDetails, sidebarExpanded }) => {
   const navigate = useNavigate();
   console.log("folderDetails", folderDetails);
-  const location = useLocation()
+  const location = useLocation();
   const { page } = location.state || {};
 
-  console.log("page",page)
+  console.log("page", page);
 
   const printRef = useRef();
 
@@ -41,7 +41,13 @@ const RendersDetailPage = ({ folderDetails, sidebarExpanded }) => {
   //     .catch((error) => console.error("Error downloading the image:", error));
   // };
 
-  const handleDownload = (imageUrl, fileName = "downloaded_file") => {
+  const handleDownload = (
+    imageUrl,
+    fileName = "downloaded_file",
+    designCode,
+    model
+
+  ) => {
     fetch(imageUrl, {
       method: "GET",
       mode: "cors",
@@ -51,7 +57,8 @@ const RendersDetailPage = ({ folderDetails, sidebarExpanded }) => {
         const blobUrl = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = blobUrl;
-        link.download = fileName;
+        link.download =
+          model === "2d" ? `${designCode}.jpg` : `${designCode}.3dm`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -105,7 +112,9 @@ const RendersDetailPage = ({ folderDetails, sidebarExpanded }) => {
             </span>
             <button
               className="Download_btn_hub"
-              onClick={() => handleDownload(item.file_2d, "image_2d.jpg")}
+              onClick={() =>
+                handleDownload(item.file_2d, "image_2d.jpg", item.designcode,"2d")
+              }
             >
               DOWNLOAD
               <GoDownload />
@@ -118,7 +127,7 @@ const RendersDetailPage = ({ folderDetails, sidebarExpanded }) => {
             </span>
             <button
               className="Download_btn_hub"
-              onClick={() => handleDownload(item.file_3d, "model_3d.3dm")}
+              onClick={() => handleDownload(item.file_3d, "model_3d.3dm", item.designcode,"3d")}
             >
               DOWNLOAD
               <GoDownload />

@@ -46,7 +46,7 @@ const FolderDetailsCard = ({
     content: printRef.current,
   });
 
-  const handleDownload = (imageUrl, model) => {
+  const handleDownload = (imageUrl, model,designCode) => {
     fetch(imageUrl, {
       method: "GET",
       mode: "cors",
@@ -57,7 +57,7 @@ const FolderDetailsCard = ({
         const link = document.createElement("a");
         link.href = blobUrl;
         link.download =
-          model === "2d" ? "downloaded_image.jpg" : "downloaded_image.3dm";
+          model === "2d" ? `${designCode}.jpg` : `${designCode}.3dm`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -115,7 +115,7 @@ const FolderDetailsCard = ({
       setSuccessModalOpen
     );
   };
-
+  
   return (
     <div
       className="ParentCad"
@@ -212,7 +212,9 @@ const FolderDetailsCard = ({
                   </p>
                   <button
                     className="Download_btn_hub"
-                    onClick={() => handleDownload(folderDetails?.file_2d, "2d")}
+                    onClick={() =>
+                      handleDownload(folderDetails?.file_2d, "2d", folderDetails?.designcode)
+                    }
                   >
                     DOWNLOAD
                     <GoDownload />
@@ -290,7 +292,7 @@ const FolderDetailsCard = ({
                   <button
                     className="Download_btn_hub"
                     style={{ background: "#126E72" }}
-                    onClick={() => handleDownload(folderDetails?.file_3d, "3d")}
+                    onClick={() => handleDownload(folderDetails?.file_3d, "3d",folderDetails?.designcode)}
                   >
                     DOWNLOAD
                     <GoDownload />
