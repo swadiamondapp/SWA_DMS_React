@@ -251,9 +251,9 @@ const FolderDetailsCard = ({
                         ? 'red' 
                         : '#0464D5', 
                       border: `1px solid ${folderDetails?.file2d_status === 'Approved' 
-                        ? '#23A0641A' 
+                        ? '#23A064' 
                         : folderDetails?.file2d_status === 'Rejected'
-                          ? '#FA38381A' 
+                          ? '#FA3838' 
                           : '#0464D5'}`,
                       background: 
                       folderDetails?.file2d_status === 'Approved' 
@@ -323,20 +323,20 @@ const FolderDetailsCard = ({
                       width: 120,
                       padding: "6px 6px 6px 2px",
                       color:
-                      folderDetails?.file2d_status === 'Approved' 
+                      folderDetails?.file3d_status === 'Approved' 
                       ? '#23A064' 
-                      : folderDetails?.file2d_status === 'Rejected'
+                      : folderDetails?.file3d_status === 'Rejected'
                         ? 'red' 
                         : '#0464D5', 
-                      border: `1px solid ${folderDetails?.file2d_status === 'Approved' 
-                        ? '#23A0641A' 
-                        : folderDetails?.file2d_status === 'Rejected'
+                      border: `1px solid ${folderDetails?.file3d_status === 'Approved' 
+                        ? '#23A064' 
+                        : folderDetails?.file3d_status === 'Rejected'
                           ? '#FA3838' 
                           : '#0464D5'}`,
                       background: 
-                      folderDetails?.file2d_status === 'Approved' 
+                      folderDetails?.file3d_status === 'Approved' 
                         ? '#23A0641A' 
-                        : folderDetails?.file2d_status === 'Rejected'
+                        : folderDetails?.file3d_status === 'Rejected'
                           ? '#FA38381A' 
                           : '#0464D51A',
                       borderRadius: "32px",
