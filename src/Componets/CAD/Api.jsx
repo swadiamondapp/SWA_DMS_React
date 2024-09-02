@@ -302,9 +302,14 @@ export const reUploadFile = async (
 // };
 
 export const cadLogut = (timerValue) => {
-  const token = "e596f5c5513296ef1ac85579f80154db6505f009"; // Replace with your actual token
-
-  // setLoading(true);
+   debugger
+  const userType = localStorage.getItem("Usertype")
+ 
+  if (userType === "CAD"){
+    var cadToken = localStorage.getItem("token")
+}
+  const token = cadToken
+  console.log(token,"token")
   axios
     .post(
       "https://dmstestapi.zinfog.in/dms/logout/",
