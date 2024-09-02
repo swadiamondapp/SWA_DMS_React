@@ -248,6 +248,12 @@ const WorkDoneModal = ({ setOpen, clickedProductId }) => {
                     {product?.approx_metal_weight} ct
                   </span>
                 </div>
+                {/* <div className="workdone_modal">
+                  <span className="workdone_modal_span1">Approx mrp</span>
+                  <span className="workdone_modal_span2">
+                    {product?.approx_metal_weight} ct
+                  </span>
+                </div> */}
                 <div className="workdone_modal">
                   <>
                     <span className="workdone_modal_span1">Tags</span>

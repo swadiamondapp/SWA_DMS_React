@@ -71,8 +71,12 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
   const [successModalOpen, setSuccessModalOpen] = useState(false);
   // const [renderRemark, setRenderRemark] = useState("");
   // const [cadRemark, setCadRemark] = useState("");
-  const [file2d_status, setFile2d_status] = useState(cardDatas[0]?.file2d_status);
-  const [file3d_status, setFile3d_status] = useState(cardDatas[0]?.file3d_status);
+  const [file2d_status, setFile2d_status] = useState(
+    cardDatas[0]?.file2d_status
+  );
+  const [file3d_status, setFile3d_status] = useState(
+    cardDatas[0]?.file3d_status
+  );
 
   const handleopenModal = () => {
     setOpenmodal(!openModal);
@@ -242,7 +246,7 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
       ...prevStatus,
       [`${imgKey}_status`]: newValue,
     }));
-    console.log(status,"status")
+    console.log(status, "status");
 
     // Perform async update
     try {
@@ -275,7 +279,7 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
 
     await Cad2DUpdateImage(
       setIsLoading,
-      value, 
+      value,
       detailsViewFolderName,
       setSuccessModalOpen
     );
@@ -310,35 +314,32 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
   //   }
   // };
 
-
-
-
   const pid = assignment_details?.id;
   const currentUsertype = localStorage.getItem("Usertype");
   const images = rendesrDetail?.images || [];
 
   const file3dStatus = cardDatas[0]?.file3d_status;
   const file2dStatus = cardDatas[0]?.file2d_status;
-  console.log(file3dStatus,"file3dStatus")
+  console.log(file3dStatus, "file3dStatus");
 
   const getBackgroundColor = (status) => {
     switch (status) {
-      case 'Approved':
-        return '#23A0641A'; 
-      case 'Rejected':
-        return 'FCEBEB' ;
+      case "Approved":
+        return "#23A0641A";
+      case "Rejected":
+        return "FCEBEB";
       default:
-        return '#E6EFFB'; 
+        return "#E6EFFB";
     }
   };
   const getTextColor = (status) => {
     switch (status) {
-      case 'Approved':
-        return '#23A0641A'; 
-      case 'Rejected':
-        return '#FA3838' ;
+      case "Approved":
+        return "#23A0641A";
+      case "Rejected":
+        return "#FA3838";
       default:
-        return '#0464D5'; 
+        return "#0464D5";
     }
   };
 
@@ -422,29 +423,31 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
 
                     {currentUsertype === "ADMIN" && (
                       <button
-                      style={{
-                        padding: "13px 6px ",
-                        color:
-                        file2dStatus === 'Approved' 
-                        ? '#23A064' 
-                        : file2dStatus === 'Rejected'
-                          ? 'red' 
-                          : '#0464D5', 
-                        border: `1px solid ${file2dStatus === 'Approved' 
-                          ? '#23A064' 
-                          : file2dStatus === 'Rejected'
-                            ? '#FA3838' 
-                            : '#0464D5'}`,
-                        background: 
-                        file2dStatus === 'Approved' 
-                          ? '#23A0641A' 
-                          : file2dStatus === 'Rejected'
-                            ? '#FA38381A' 
-                            : '#0464D51A',
-                         width: "auto",
-                        borderRadius: "32px",
-                        fontWeight:"600"
-                      }}
+                        style={{
+                          padding: "13px 6px ",
+                          color:
+                            file2dStatus === "Approved"
+                              ? "#23A064"
+                              : file2dStatus === "Rejected"
+                              ? "red"
+                              : "#0464D5",
+                          border: `1px solid ${
+                            file2dStatus === "Approved"
+                              ? "#23A064"
+                              : file2dStatus === "Rejected"
+                              ? "#FA3838"
+                              : "#0464D5"
+                          }`,
+                          background:
+                            file2dStatus === "Approved"
+                              ? "#23A0641A"
+                              : file2dStatus === "Rejected"
+                              ? "#FA38381A"
+                              : "#0464D51A",
+                          width: "auto",
+                          borderRadius: "32px",
+                          fontWeight: "600",
+                        }}
                       >
                         {file2dStatus}
                       </button>
@@ -452,7 +455,9 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
                     {currentUsertype === "DESIGNER" && (
                       <Select
                         value={
-                          file2d_status ? file2d_status : cardDatas[0]?.file2d_status
+                          file2d_status
+                            ? file2d_status
+                            : cardDatas[0]?.file2d_status
                         }
                         // style={{
                         //   width: 120,
@@ -468,24 +473,26 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
                           width: 120,
                           padding: "6px 6px 6px 2px",
                           color:
-                          file2d_status === 'Approved' 
-                          ? '#23A064' 
-                          : file2d_status === 'Rejected'
-                            ? 'red' 
-                            : '#0464D5', 
-                          border: `1px solid ${file2d_status === 'Approved' 
-                            ? '#23A064' 
-                            : file2d_status === 'Rejected'
-                              ? '#FA3838' 
-                              : '#0464D5'}`,
-                          background: 
-                          file2d_status === 'Approved' 
-                            ? '#23A0641A' 
-                            : file2d_status === 'Rejected'
-                              ? '#FA38381A' 
-                              : '#0464D51A',
+                            file2d_status === "Approved"
+                              ? "#23A064"
+                              : file2d_status === "Rejected"
+                              ? "red"
+                              : "#0464D5",
+                          border: `1px solid ${
+                            file2d_status === "Approved"
+                              ? "#23A064"
+                              : file2d_status === "Rejected"
+                              ? "#FA3838"
+                              : "#0464D5"
+                          }`,
+                          background:
+                            file2d_status === "Approved"
+                              ? "#23A0641A"
+                              : file2d_status === "Rejected"
+                              ? "#FA38381A"
+                              : "#0464D51A",
                           borderRadius: "32px",
-                          fontWeight:"600",
+                          fontWeight: "600",
                           marginTop: "13px",
                         }}
                         onChange={(value) => handle2DChange(value)}
@@ -518,7 +525,9 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
                     {currentUsertype === "DESIGNER" && (
                       <Select
                         value={
-                          file3d_status ? file3d_status : cardDatas[0]?.file3d_status
+                          file3d_status
+                            ? file3d_status
+                            : cardDatas[0]?.file3d_status
                         }
                         // style={{
                         //   width: 120,
@@ -532,25 +541,27 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
                         style={{
                           padding: "13px 6px ",
                           color:
-                          file3d_status === 'Approved' 
-                          ? '#23A064' 
-                          : file3d_status === 'Rejected'
-                            ? 'red' 
-                            : '#0464D5', 
-                          border: `1px solid ${file3d_status === 'Approved' 
-                            ? '#23A064' 
-                            : file3d_status === 'Rejected'
-                              ? '#FA3838' 
-                              : '#0464D5'}`,
-                          background: 
-                          file3d_status === 'Approved' 
-                            ? '#23A0641A' 
-                            : file3d_status === 'Rejected'
-                              ? '#FA38381A' 
-                              : '#0464D51A',
-                           width: "auto",
+                            file3d_status === "Approved"
+                              ? "#23A064"
+                              : file3d_status === "Rejected"
+                              ? "red"
+                              : "#0464D5",
+                          border: `1px solid ${
+                            file3d_status === "Approved"
+                              ? "#23A064"
+                              : file3d_status === "Rejected"
+                              ? "#FA3838"
+                              : "#0464D5"
+                          }`,
+                          background:
+                            file3d_status === "Approved"
+                              ? "#23A0641A"
+                              : file3d_status === "Rejected"
+                              ? "#FA38381A"
+                              : "#0464D51A",
+                          width: "auto",
                           borderRadius: "32px",
-                          fontWeight:"600"
+                          fontWeight: "600",
                         }}
                         onChange={(value) => handle3DChange(value)}
                         options={[
@@ -564,25 +575,27 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
                         style={{
                           padding: "13px 6px ",
                           color:
-                          file3dStatus === 'Approved' 
-                          ? '#23A064' 
-                          : file3dStatus === 'Rejected'
-                            ? 'red' 
-                            : '#0464D5', 
-                          border: `1px solid ${file3dStatus === 'Approved' 
-                            ? '#23A064' 
-                            : file3dStatus === 'Rejected'
-                              ? '#FA3838' 
-                              : '#0464D5'}`,
-                          background: 
-                          file3dStatus === 'Approved' 
-                            ? '#23A0641A' 
-                            : file3dStatus === 'Rejected'
-                              ? '#FA38381A' 
-                              : '#0464D51A',
-                           width: "auto",
+                            file3dStatus === "Approved"
+                              ? "#23A064"
+                              : file3dStatus === "Rejected"
+                              ? "red"
+                              : "#0464D5",
+                          border: `1px solid ${
+                            file3dStatus === "Approved"
+                              ? "#23A064"
+                              : file3dStatus === "Rejected"
+                              ? "#FA3838"
+                              : "#0464D5"
+                          }`,
+                          background:
+                            file3dStatus === "Approved"
+                              ? "#23A0641A"
+                              : file3dStatus === "Rejected"
+                              ? "#FA38381A"
+                              : "#0464D51A",
+                          width: "auto",
                           borderRadius: "32px",
-                          fontWeight:"600"
+                          fontWeight: "600",
                         }}
                       >
                         {cardDatas[0]?.file3d_status}
@@ -881,10 +894,9 @@ console.log("Initial", status);0,
                   (imgObj && imgObj[statusKey]) ||
                   "Unknown";
                 console.log(statusValue, "statusValue");
-                console.log('status:', status);
-console.log('imgObj:', imgObj);
-console.log('statusKey:', statusKey);
-
+                console.log("status:", status);
+                console.log("imgObj:", imgObj);
+                console.log("statusKey:", statusKey);
 
                 if (!imgObj[imageKey]) return null;
                 return (
@@ -900,37 +912,39 @@ console.log('statusKey:', statusKey);
                     </span>
                     {currentUsertype === "ADMIN" && (
                       <button
-                      style={{
-                        width: 120,
-                      padding: "6px 6px 6px 6px",
-                        color:
-                        statusValue === 'Approved' 
-                        ? '#23A064' 
-                        : statusValue === 'Rejected'
-                          ? 'red' 
-                          : '#0464D5', 
-                        border: `1px solid ${statusValue === 'Approved' 
-                          ? '#23A064' 
-                          : statusValue === 'Rejected'
-                            ? '#FA3838' 
-                            : '#0464D5'}`,
-                        background: 
-                        statusValue === 'Approved' 
-                          ? '#23A0641A' 
-                          : statusValue === 'Rejected'
-                            ? '#FA38381A' 
-                            : '#0464D51A',
-                         width: "auto",
-                        borderRadius: "32px",
-                        fontWeight:"600"
-                      }}
+                        style={{
+                          // width: 120,
+                          padding: "6px 6px 6px 6px",
+                          color:
+                            statusValue === "Approved"
+                              ? "#23A064"
+                              : statusValue === "Rejected"
+                              ? "red"
+                              : "#0464D5",
+                          border: `1px solid ${
+                            statusValue === "Approved"
+                              ? "#23A064"
+                              : statusValue === "Rejected"
+                              ? "#FA3838"
+                              : "#0464D5"
+                          }`,
+                          background:
+                            statusValue === "Approved"
+                              ? "#23A0641A"
+                              : statusValue === "Rejected"
+                              ? "#FA38381A"
+                              : "#0464D51A",
+                          width: "auto",
+                          borderRadius: "32px",
+                          fontWeight: "600",
+                        }}
                       >
                         {statusValue}
                       </button>
                     )}
                     {currentUsertype === "DESIGNER" && (
                       <>
-                      {/* <span>{statusValue}</span> */}
+{/* <span>{statusValue}</span> */}
                       <Select
                         value={{
                           value: statusValue,

@@ -119,7 +119,7 @@ const FolderDetailsCard = ({
       setSuccessModalOpen
     );
   };
-
+  
   return (
     <div
       className="ParentCad"

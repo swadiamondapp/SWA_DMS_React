@@ -25,7 +25,7 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 480,
-  height: "60%",
+  height: "70%",
   bgcolor: "background.paper",
   border: "none",
   boxShadow: 24,
@@ -49,7 +49,7 @@ const MultipleImageUpload = ({
   handleFileSelect,
   setUploadedDesigns,
   setMultipleImageModalOpen,
-  upDateUploadImagesView
+  upDateUploadImagesView,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   //   const [images, setImages] = useState(Array(initialImageSlots).fill(null));
@@ -62,7 +62,11 @@ const MultipleImageUpload = ({
   const [fileList, setFileList] = useState([]);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
-  console.log(fileList, "uploadedImage");
+  const [formDataId, setFormData] = useState({
+    productCategory: "",
+    tag: [],
+  });
+  // console.log(formData, "uploadedImage");
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
@@ -101,6 +105,11 @@ const MultipleImageUpload = ({
   const handleclose = () => {
     onClose();
     setFileList([]);
+    setErrors({})
+    setFormData({
+      productCategory: "",
+      tag: [],
+    })
   };
 
   useEffect(() => {
@@ -121,15 +130,54 @@ const MultipleImageUpload = ({
   }, [selectedTags]);
 
   const handleUploadImages = () => {
+    // Initialize error object
+    const errors = {};
+  
+    // Check if productCategory is selected
+    if (!formDataId.productCategory || formDataId.productCategory.length === 0) {
+      errors.productCategory = "Product Category cannot be empty";
+    }
+  
+    // Check if at least one tag is selected
+    if (!formDataId.tag || formDataId.tag.length === 0) {
+      errors.tag = "Tags cannot be empty";
+    }
+  
+    // Check if any files are selected for upload
+    if (!fileList || fileList.length === 0) {
+      errors.fileList = "Please select at least one file to upload";
+    }
+  
+    // Log errors for debugging
+    console.log("Errors:", errors);
+  
+    // If there are errors, set them in state and do not proceed with the upload
+    if (Object.keys(errors).length > 0) {
+      setErrors(errors);
+      return;
+    }
+  
+    // Clear errors and proceed with the upload
+    setErrors({});
+  
+    // Log formDataId and fileList for debugging
+    console.log("Form Data:", formDataId);
+    console.log("File List:", fileList);
+  
     upload_multiple_designs_items(
       setIsLoading,
       fileList,
       upDateUploadImagesView,
       setSuccessModalOpen,
       setSuccessMessage,
-      handleclose
+      handleclose,
+      formDataId,
+      setErrors,
+      setFormData
     );
   };
+
+  console.log(errors,"erraorrr")
 
   return (
     <div>
@@ -213,9 +261,14 @@ const MultipleImageUpload = ({
                         src={previewImage}
                       />
                     )}
+                      <div>
+                          {errors.fileList && (
+                            <span className="error_input_p">{errors.fileList}</span>
+                          )}
+                        </div>
 
                     <div className="UploadFileSelectConteainer">
-                      {/* <div className="uploadProductCategory">
+                      <div className="uploadProductCategory">
                         <label htmlFor="" className="label-text">
                           Product Category
                         </label>
@@ -236,7 +289,7 @@ const MultipleImageUpload = ({
                             width: "100%",
                             zIndex: "9999999",
                             background: "#006E7F1A",
-                            minHeight: "38px",
+                            // minHeight: "38px",
                           }}
                           options={ProudctCategory.map((tag) => ({
                             label: tag.name,
@@ -250,8 +303,8 @@ const MultipleImageUpload = ({
                             </span>
                           )}
                         </div>
-                      </div> */}
-                      {/* <div className="uploadTagsCategory">
+                      </div>
+                      <div className="uploadTagsCategory">
                         <label htmlFor="" className="label-text">
                           Tags
                         </label>
@@ -281,7 +334,7 @@ const MultipleImageUpload = ({
                             <span className="error_input_p">{errors.tag}</span>
                           )}
                         </div>
-                      </div> */}
+                      </div>
                       <div></div>
                     </div>
                   </div>
@@ -293,14 +346,17 @@ const MultipleImageUpload = ({
                       >
                         Cancel
                       </button>
-                      
+
                       <button
                         className="upload_of_multiModal"
                         onClick={handleUploadImages}
-                        disabled={fileList.length === 0}
+                        
                       >
-                      {isLoading? <CircularProgress size={16} sx={{ color: "#fff" }} /> : "Upload"}
-                      
+                        {isLoading ? (
+                          <CircularProgress size={16} sx={{ color: "#fff" }} />
+                        ) : (
+                          "Upload"
+                        )}
                       </button>
                     </div>
                   </div>
@@ -312,7 +368,6 @@ const MultipleImageUpload = ({
       </div>
       <SuccessModal
         successModalOpen={successModalOpen}
-     
         successMessage={successMessage}
       />
     </div>

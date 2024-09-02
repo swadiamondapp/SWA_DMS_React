@@ -12,10 +12,10 @@ import { GoDownload } from "react-icons/go";
 const RendersDetailPage = ({ folderDetails, sidebarExpanded }) => {
   const navigate = useNavigate();
   console.log("folderDetails", folderDetails);
-  const location = useLocation()
+  const location = useLocation();
   const { page } = location.state || {};
 
-  console.log("page",page)
+  console.log("page", page);
 
   const printRef = useRef();
 

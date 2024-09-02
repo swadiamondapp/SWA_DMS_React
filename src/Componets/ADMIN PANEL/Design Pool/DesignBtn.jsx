@@ -228,13 +228,11 @@ const DesignBtn = ({
               {selectButtonLabel}
             </button>
           )}
-
         {showRadioButtons && (
           <div style={{ width: "200px" }}>
             <button
               style={{
                 padding: "9px 15px",
-                borderRadius: "4px",
                 color: "white",
                 backgroundColor: "#0464D5",
                 border: "none",
@@ -250,7 +248,6 @@ const DesignBtn = ({
             <button
               style={{
                 padding: "9px 15px",
-                borderRadius: "4px",
                 color: "white",
                 backgroundColor: "#FF4C4C",
                 border: "none",
