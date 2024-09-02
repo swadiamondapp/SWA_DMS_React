@@ -167,7 +167,7 @@ const FolderDetailsCard = ({
           }}
           onClick={handleopenModal}
         >
-          View Instraction{" "}
+          View Instruction{" "}
           <IoEye style={{ color: "white", fontSize: "20px" }} />
         </button>
       </div>

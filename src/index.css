@@ -121,7 +121,10 @@ background: transparent !important;
 .Detail_Card :where(.css-dev-only-do-not-override-1c0na6j).ant-select-outlined:not(.ant-select-customize-input) .ant-select-selector {
   border: none !important;
 }
-
+.finishedCardContainer2 :where(.css-dev-only-do-not-override-1c0na6j).ant-select-outlined:not(.ant-select-customize-input) .ant-select-selector {
+  border: none !important;
+  background-color: transparent !important;
+}
  /* :where(.css-dev-only-do-not-override-1c0na6j).ant-select-outlined:not(.ant-select-customize-input) .ant-select-selector {
   background-color: none;
 } */
