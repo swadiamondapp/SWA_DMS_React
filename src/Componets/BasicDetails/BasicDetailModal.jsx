@@ -98,8 +98,8 @@ const BasicDetailModal = ({
   const [successModalOpen, setSuccessModalOpen] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [SelectedMetalId, setSelectedMetalId] = useState([]);
-  const [SelectedDiamondId, setSelectedDiamondId] = useState([]);
+  const [SelectedMetalId, setSelectedMetalId] = useState( localStorage.getItem("selectedMetalType") ?  localStorage.getItem("selectedMetalType") : []);
+  const [SelectedDiamondId, setSelectedDiamondId] = useState( localStorage.getItem("selectedDiamondType") ?  localStorage.getItem("selectedDiamondType") : []);
   const [CalculationData, setCalculationData] = useState([]);
   const [MovedItemsId, setMovedItemsId] = useState([]);
   const [IsLoadingCalculation, setIsLoadingCalculation] = useState(false);
@@ -550,25 +550,14 @@ const BasicDetailModal = ({
     getSelectedDesign.includes(item.designcode)
   );
 
-  const [selectedValue, setSelectedValue] = useState(null);
-  const [selectedLabel, setSelectedLabel] = useState(null);
+  // const [selectedValue, setSelectedValue] = useState(null);
+  // const [selectedLabel, setSelectedLabel] = useState(null);
 
-  const [selectedDiamond, setSelectedDiamond] = useState(null);
-  const [selectedLabelDiamond, setSelectedLabelDiamond] = useState(null);
-
-  // useEffect(() => {
-  //   const storedValue = Number(localStorage.getItem("selectedDiamondType"))
-  //   if (storedValue) {
-  //     setSelectedDiamond(storedValue);
-  //     setFormData((prevState) => ({
-  //       ...prevState,
-  //       typeOfMetal: storedValue,
-  //     }));
-  //   }
-  // }, [setFormData]);
+  // const [selectedDiamond, setSelectedDiamond] = useState(null);
+  // const [selectedLabelDiamond, setSelectedLabelDiamond] = useState(null);
 
   // useEffect(() => {
-  //   const storedIdDiamond = localStorage.getItem("selectedDiamondType");
+  //   const storedIdDiamond = Number(localStorage.getItem("selectedDiamondType"));
   //   console.log(storedIdDiamond,"storedIdDiamond")
   //   if (storedIdDiamond) {
   //     const matchedItem = diamonType.find((item) => item.id === storedIdDiamond);
@@ -583,29 +572,77 @@ const BasicDetailModal = ({
   //   }
   // }, [ setFormData]);
 
+  // useEffect(() => {
+  //   const storedId = Number(localStorage.getItem("selectedMetalType"));
+  //   console.log(storedId,"storedId")
+  //   if (storedId) {
+  //     const matchedItem = metalTypeDropDown.filter((item) => item.id === storedId);
+  //     console.log(matchedItem,"matchedItem")
+  //     if (matchedItem) {
+  //       setSelectedValue(storedId);
+  //       setSelectedLabel(matchedItem.metal_name);
+  //       setFormData((prevState) => ({
+  //         ...prevState,
+  //         typeOfMetal: storedId,
+  //       }));
+  //     }
+  //   }
+  // }, [ setFormData]);
+
+  // const currentMetal = Number(localStorage.getItem("selectedMetalType"));
+  // const filterData = metalTypeDropDown.filter((item) => item.id === currentMetal);
+
+  // console.log("filterData", filterData);
+  // console.log("selectedLabel", selectedLabel);
+  // console.log(filterData,"filterData")
+  const metalValue = localStorage.getItem("selectedMetalType")
+  const [selectedValue, setSelectedValue] = useState( metalValue || null);
+  const [selectedLabel, setSelectedLabel] = useState(null);
+
+  const [selectedDiamond, setSelectedDiamond] = useState(null);
+  const [selectedLabelDiamond, setSelectedLabelDiamond] = useState(null);
+
+  // Effect to set diamond type from localStorage
+  useEffect(() => {
+    const storedIdDiamond = Number(localStorage.getItem("selectedDiamondType"));
+    const diamondValue = localStorage.getItem("selectedDiamondType")
+    console.log(storedIdDiamond, "storedIdDiamond");
+    if (storedIdDiamond) {
+      const matchedItem = diamonType.find(
+        (item) => item.id === storedIdDiamond
+      );
+      if (matchedItem) {
+        setSelectedDiamond(storedIdDiamond);
+        setSelectedLabelDiamond(matchedItem.name);
+        setFormData((prevState) => ({
+          ...prevState,
+          diamondType: [storedIdDiamond],
+        }));
+      }
+    }
+  }, [diamonType, setFormData]);
+
+  // Effect to set metal type from localStorage
   useEffect(() => {
     const storedId = Number(localStorage.getItem("selectedMetalType"));
-    console.log(storedId,"storedId")
+    console.log(storedId, "storedId");
     if (storedId) {
-      const matchedItem = metalTypeDropDown.filter((item) => item.id === storedId);
-      console.log(matchedItem,"matchedItem")
+      const matchedItem = metalTypeDropDown.find(
+        (item) => item.id === storedId
+      );
+      console.log(matchedItem, "matchedItem");
       if (matchedItem) {
         setSelectedValue(storedId);
         setSelectedLabel(matchedItem.metal_name);
         setFormData((prevState) => ({
           ...prevState,
-          typeOfMetal: storedId,
+          typeOfMetal: [storedId],
         }));
       }
     }
-  }, [ setFormData]);
+  }, [metalTypeDropDown, setFormData]);
 
-  const currentMetal = Number(localStorage.getItem("selectedMetalType")); 
-  const filterData = metalTypeDropDown.filter((item) => item.id === currentMetal);
- 
-  console.log("filterData", filterData);
-  console.log("selectedLabel", selectedLabel);
-  // console.log(filterData,"filterData")
+  console.log(SelectedDiamondId,"SelectedDiamondId")
 
   return (
     <div>
@@ -718,7 +755,6 @@ const BasicDetailModal = ({
                             }))
                           }
                           name="SKU"
-                          // placeHolder="Findings"
                           classNames="inputTag"
                         />
                       )}
@@ -856,12 +892,13 @@ const BasicDetailModal = ({
                         </label>
                         <Select
                           showSearch
-                          placeholder={selectedLabel ? selectedLabel : "-Select-"}
+                          placeholder={selectedLabel || "-Select-"}
                           optionFilterProp="children"
-                          // value={formData.typeOfMetal}
                           value={selectedValue}
                           onChange={(value) => {
-                            const selectedItem = metalTypeDropDown.find((item) => item.id === value);
+                            const selectedItem = metalTypeDropDown.find(
+                              (item) => item.id === value
+                            );
                             if (selectedItem) {
                               setSelectedValue(value);
                               setSelectedLabel(selectedItem.metal_name);
@@ -877,7 +914,7 @@ const BasicDetailModal = ({
                           filterOption={filterOption}
                           style={{
                             width: "100%",
-                            zIndex: "9999999",
+                            zIndex: 9999999,
                             background: "#006E7F1A",
                             cursor: "pointer",
                           }}
@@ -900,17 +937,22 @@ const BasicDetailModal = ({
                         </label>
                         <Select
                           showSearch
-                          placeholder="-Select-"
+                          placeholder={selectedLabelDiamond || "-Select-"}
                           optionFilterProp="children"
-                          // value={formData.diamondType}
                           value={selectedDiamond}
                           onChange={(value) => {
-                            setSelectedDiamond(value)
+                            const selectedItem = diamonType.find(
+                              (item) => item.id === value
+                            );
+                            if (selectedItem) {
+                              setSelectedDiamond(value);
+                              setSelectedLabelDiamond(selectedItem.name);
+                            }
                             setFormData((prevState) => ({
                               ...prevState,
                               diamondType: [value],
                             }));
-                            setSelectedDiamondId(value); 
+                            setSelectedDiamondId(value);
                             localStorage.setItem("selectedDiamondType", value);
                           }}
                           onSearch={onSearch}
