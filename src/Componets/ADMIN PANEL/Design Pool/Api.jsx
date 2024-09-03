@@ -55,8 +55,9 @@ export const designPoolSearchById = async (searchListId, setData) => {
   }
 };
 
-export const centralHubSearchById = async (searchListId, setData) => {
+export const centralHubSearchById = async (searchListId, setData ,setIsLoading) => {
   try {
+    setIsLoading(true)
     if (!searchListId) {
       const response = await apiService.get(
         `${LIST_CENTRAL_FOLDERS}`
@@ -74,6 +75,8 @@ export const centralHubSearchById = async (searchListId, setData) => {
     }
   } catch (error) {
     console.log(error);
+  }finally{
+    setIsLoading(false)
   }
 };
 

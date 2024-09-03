@@ -21,7 +21,7 @@ const CentralHubDashboard = () => {
     const { value } = event.target;
     setsearchListId(value.toUpperCase());
 
-    await centralHubSearchById(value.toUpperCase(), setFolders);
+    await centralHubSearchById(value.toUpperCase(), setFolders ,setIsLoading);
   };
 
   
@@ -30,7 +30,7 @@ const CentralHubDashboard = () => {
     <div className="centralhubDashboard">
       <Sidebar  sidebarExpanded={sidebarExpanded} setSidebarExpanded={setSidebarExpanded}/>
       <Header sidebarExpanded={sidebarExpanded} searchListId={searchListId} handleInputChange={handleInputChange}/>
-      <CentralDashboard sidebarExpanded={sidebarExpanded} Folders={Folders}/>
+      <CentralDashboard sidebarExpanded={sidebarExpanded} Folders={Folders} isLoading={isLoading}/>
     </div>
   );
 };

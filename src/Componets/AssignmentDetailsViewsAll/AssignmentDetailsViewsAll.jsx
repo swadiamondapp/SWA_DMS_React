@@ -72,10 +72,10 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
   // const [renderRemark, setRenderRemark] = useState("");
   // const [cadRemark, setCadRemark] = useState("");
   const [file2d_status, setFile2d_status] = useState(
-    cardDatas[0]?.file2d_status
+    cardDatas?.file2d_status
   );
   const [file3d_status, setFile3d_status] = useState(
-    cardDatas[0]?.file3d_status
+    cardDatas?.file3d_status
   );
 
   const handleopenModal = () => {
@@ -318,8 +318,8 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
   const currentUsertype = localStorage.getItem("Usertype");
   const images = rendesrDetail?.images || [];
 
-  const file3dStatus = cardDatas[0]?.file3d_status;
-  const file2dStatus = cardDatas[0]?.file2d_status;
+  const file3dStatus = cardDatas?.file3d_status;
+  const file2dStatus = cardDatas?.file2d_status;
   console.log(file3dStatus, "file3dStatus");
 
   const getBackgroundColor = (status) => {
