@@ -565,6 +565,53 @@ const AdminBasicDetailsModal = ({
     listDesignersByName(setIsLoading, setAllDesigners, SearchDesigners);
   };
 
+  const metalValue = localStorage.getItem("selectedMetalType")
+  const [selectedValue, setSelectedValue] = useState( metalValue || null);
+  const [selectedLabel, setSelectedLabel] = useState(null);
+
+  const [selectedDiamond, setSelectedDiamond] = useState(null);
+  const [selectedLabelDiamond, setSelectedLabelDiamond] = useState(null);
+
+  // Effect to set diamond type from localStorage
+  useEffect(() => {
+    const storedIdDiamond = Number(localStorage.getItem("selectedDiamondType"));
+    const diamondValue = localStorage.getItem("selectedDiamondType")
+    console.log(storedIdDiamond, "storedIdDiamond");
+    if (storedIdDiamond) {
+      const matchedItem = diamonType.find(
+        (item) => item.id === storedIdDiamond
+      );
+      if (matchedItem) {
+        setSelectedDiamond(storedIdDiamond);
+        setSelectedLabelDiamond(matchedItem.name);
+        setFormData((prevState) => ({
+          ...prevState,
+          diamondType: [storedIdDiamond],
+        }));
+      }
+    }
+  }, [diamonType, setFormData]);
+
+  // Effect to set metal type from localStorage
+  useEffect(() => {
+    const storedId = Number(localStorage.getItem("selectedMetalType"));
+    console.log(storedId, "storedId");
+    if (storedId) {
+      const matchedItem = metalTypeDropDown.find(
+        (item) => item.id === storedId
+      );
+      console.log(matchedItem, "matchedItem");
+      if (matchedItem) {
+        setSelectedValue(storedId);
+        setSelectedLabel(matchedItem.metal_name);
+        setFormData((prevState) => ({
+          ...prevState,
+          typeOfMetal: [storedId],
+        }));
+      }
+    }
+  }, [metalTypeDropDown, setFormData]);
+
   console.log(assignedDesignerId, "assignedDesignerId");
   console.log(SearchDesigners, "SearchDesigners");
   return (
@@ -984,7 +1031,7 @@ const AdminBasicDetailsModal = ({
                                   </div>
                                 </div>
                               </div>
-                              <div className="gridfifty">
+                              {/* <div className="gridfifty">
                                 <div className="select_field">
                                   <label htmlFor="" className="label-text">
                                     Type of metal
@@ -999,7 +1046,7 @@ const AdminBasicDetailsModal = ({
                                         ...prevState,
                                         typeOfMetal: [value],
                                       }));
-                                      setSelectedMetalId(value); // Update the state with the selected metal ID
+                                      setSelectedMetalId(value); 
                                     }}
                                     onSearch={onSearch}
                                     filterOption={filterOption}
@@ -1056,7 +1103,99 @@ const AdminBasicDetailsModal = ({
                                     )}
                                   </div>
                                 </div>
-                              </div>
+                              </div> */}
+                              <div className="gridfifty">
+                      <div className="select_field">
+                        <label htmlFor="" className="label-text">
+                          Type of metal
+                        </label>
+                        <Select
+                          showSearch
+                          placeholder={selectedLabel || "-Select-"}
+                          optionFilterProp="children"
+                          value={selectedValue}
+                          onChange={(value) => {
+                            const selectedItem = metalTypeDropDown.find(
+                              (item) => item.id === value
+                            );
+                            if (selectedItem) {
+                              setSelectedValue(value);
+                              setSelectedLabel(selectedItem.metal_name);
+                            }
+                            setFormData((prevState) => ({
+                              ...prevState,
+                              typeOfMetal: [value],
+                            }));
+                            setSelectedMetalId(value);
+                            localStorage.setItem("selectedMetalType", value);
+                          }}
+                          onSearch={onSearch}
+                          filterOption={filterOption}
+                          style={{
+                            width: "100%",
+                            zIndex: 9999999,
+                            background: "#006E7F1A",
+                            cursor: "pointer",
+                          }}
+                          options={metalTypeDropDown.map((item) => ({
+                            value: item.id,
+                            label: item.metal_name,
+                          }))}
+                        />
+                        <div>
+                          {errors.typeOfMetal && (
+                            <span className="error_input_p">
+                              {errors.typeOfMetal}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <div className="select_field">
+                        <label htmlFor="" className="label-text">
+                          Diamond Type
+                        </label>
+                        <Select
+                          showSearch
+                          placeholder={selectedLabelDiamond || "-Select-"}
+                          optionFilterProp="children"
+                          value={selectedDiamond}
+                          onChange={(value) => {
+                            const selectedItem = diamonType.find(
+                              (item) => item.id === value
+                            );
+                            if (selectedItem) {
+                              setSelectedDiamond(value);
+                              setSelectedLabelDiamond(selectedItem.name);
+                            }
+                            setFormData((prevState) => ({
+                              ...prevState,
+                              diamondType: [value],
+                            }));
+                            setSelectedDiamondId(value);
+                            localStorage.setItem("selectedDiamondType", value);
+                          }}
+                          onSearch={onSearch}
+                          filterOption={filterOption}
+                          style={{
+                            width: "100%",
+                            zIndex: 999999999,
+                            background: "#006E7F1A",
+                            cursor: "pointer",
+                          }}
+                          options={diamonType.map((item) => ({
+                            value: item.id,
+                            label: item.name,
+                          }))}
+                        />
+                        <div>
+                          {errors.diamondType && (
+                            <span className="error_input_p">
+                              {errors.diamondType}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
                               <div className="">
                                 <div>
                                   <label htmlFor="" className="label-text">

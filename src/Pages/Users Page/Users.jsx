@@ -17,6 +17,7 @@ const Users = () => {
   useEffect(() => {
     searchNamesAdmin(setIsLoading, setUserList, SearchWithName);
   }, [SearchWithName]);
+  
   useEffect(() => {
     list_all_users(setIsLoading, setUserList);
   }, []);

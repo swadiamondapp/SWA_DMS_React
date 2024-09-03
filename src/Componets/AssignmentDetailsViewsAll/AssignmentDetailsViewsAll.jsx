@@ -318,30 +318,10 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
   const currentUsertype = localStorage.getItem("Usertype");
   const images = rendesrDetail?.images || [];
 
-  const file3dStatus = cardDatas?.file3d_status;
-  const file2dStatus = cardDatas?.file2d_status;
-  console.log(file3dStatus, "file3dStatus");
+  const file3dStatus = cardDatas && cardDatas[0]?.file3d_status;
+  const file2dStatus = cardDatas && cardDatas[0]?.file2d_status;
 
-  const getBackgroundColor = (status) => {
-    switch (status) {
-      case "Approved":
-        return "#23A0641A";
-      case "Rejected":
-        return "FCEBEB";
-      default:
-        return "#E6EFFB";
-    }
-  };
-  const getTextColor = (status) => {
-    switch (status) {
-      case "Approved":
-        return "#23A0641A";
-      case "Rejected":
-        return "#FA3838";
-      default:
-        return "#0464D5";
-    }
-  };
+ 
 
   return (
     <div>

@@ -55,22 +55,28 @@ export const designPoolSearchById = async (searchListId, setData) => {
   }
 };
 
-export const centralHubSearchById = async (searchListId, setData ,setIsLoading) => {
+export const centralHubSearchById = async (searchListId, setFolders ,setIsLoading) => {
   try {
     setIsLoading(true)
-    if (!searchListId) {
+    // console.log(searchListId,"searchListId3")
+    if (searchListId === "") {
+      console.log(searchListId,"searchListId4")
       const response = await apiService.get(
         `${LIST_CENTRAL_FOLDERS}`
       );
-      if (checkApiStatus(response)) {
-        setData(response.data.results.data);
+      if (response.data.results.status_code === 200) {
+        setFolders(response.data.results.data);
       }
-    } else {
-      const response = await apiService.get(
+    } 
+    else {
+      console.log(searchListId,"searchListId5")
+      const res = await  apiService.get(
         `${CENTRALHUB_SEARCH}${searchListId}`
       );
-      if (checkApiStatus(response)) {
-        setData(response?.data?.results?.data);
+      if (res.data.results.status_code === 200) {
+        console.log(res,"res--")
+        console.log(searchListId,"searchListId--")
+        setFolders(res?.data?.results?.data);
       }
     }
   } catch (error) {
@@ -79,6 +85,25 @@ export const centralHubSearchById = async (searchListId, setData ,setIsLoading) 
     setIsLoading(false)
   }
 };
+
+// export const centralHubSearchById = async (
+//   searchListId, setFolders ,setIsLoading
+// ) => {
+//   try {
+//     setIsLoading(true)
+//     const response = await apiService.get(
+//       `${CENTRALHUB_SEARCH}${searchListId}`
+//     );
+//     if (response.data.results.status_code === 200) {
+//       setFolders(response?.data?.results?.data);
+//       console.log(response?.data?.results?.data,"response")
+//     }
+//   } catch (error) {
+//     console.log(error);
+//   }finally {
+//     setIsLoading(false)
+//   }
+// };
 
 export const designerSearchById = async (searchListId, setData) => {
   try {
@@ -128,12 +153,15 @@ export const designerSearchById = async (searchListId, setData) => {
 
 export const unvoted_design = async (setIsLoading, setUnvotedData) => {
   try {
+    setIsLoading(true)
     const response = await apiService.get(UNVOTED_DESIGN);
     if (checkApiStatus(response)) {
       setUnvotedData(response.data.results.data);
     }
   } catch (error) {
     console.log(error);
+  }finally{
+    setIsLoading(false)
   }
 };
 

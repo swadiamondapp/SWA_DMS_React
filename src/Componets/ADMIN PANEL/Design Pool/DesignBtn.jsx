@@ -73,6 +73,8 @@ const DesignBtn = ({
   handleDeselectAll,
   handleSelectAll,
   showRadioButtons,
+  unvotedData,
+  selectedDesigns
 }) => {
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -124,34 +126,57 @@ const DesignBtn = ({
     setDetail(false);
     setTiles(true);
   };
+  
+  console.log(selectedDesigns,"selectedDesigns")
 
-  const handleDownloadMultiple = (imageUrls) => {
+  const handleDownloadMultiple = (imageUrls, selectedDesigns) => {
+    if (imageUrls.length !== selectedDesigns.length) {
+      console.error("The length of imageUrls and selectedDesigns must be the same.");
+      return;
+    }
+  
     imageUrls.forEach((imageUrl, index) => {
+      const designId = selectedDesigns[index];
+      if (!designId) {
+        console.error(`Design ID not found for index ${index}`);
+        return;
+      }
+  
       fetch(imageUrl, {
         method: "GET",
         mode: "cors",
       })
-        .then((response) => response.blob())
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`Network response was not ok: ${response.statusText}`);
+          }
+          return response.blob();
+        })
         .then((blob) => {
           const blobUrl = URL.createObjectURL(blob);
           const link = document.createElement("a");
           link.href = blobUrl;
-          // Use index or extract the image name from the URL to create a unique file name
-          link.download = `design_pool_${index}.jpg`;
+          // Use designId to create a unique file name
+          link.download = `design_${designId}.jpg`;
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
+          // Release the object URL after downloading
+          URL.revokeObjectURL(blobUrl);
         })
         .catch((error) => console.error("Error downloading the image:", error));
     });
+  
+    // Clear the state or UI elements as needed
     setSelectedImages([]);
     setAllSelected([]);
     setSelectedDesigns([]);
-
+  
     setSelectButtonLabel("Select");
     setShowRadioButtons(false);
     setShowDownloadOptions(false);
   };
+  
 
   const handleAllDownload = () => {
     selectAllDesigns();
@@ -213,7 +238,7 @@ const DesignBtn = ({
               {showDownloadOptions && (
                 <div className="Download_Sub">
                   <p onClick={handleAllDownload}>All</p>
-                  <p onClick={() => handleDownloadMultiple(selectedImages)}>
+                  <p onClick={() => handleDownloadMultiple(selectedImages,selectedDesigns)}>
                     Selected
                   </p>
                 </div>
@@ -497,6 +522,7 @@ const DesignBtn = ({
         setSelectButtonLabel={setSelectButtonLabel}
         setSelectedIdsForDelet={setSelectedIdsForDelet}
         Data={Data}
+        unvotedData={unvotedData}
       />
       <AssignToModal
         open={isModalOpenAssign}
