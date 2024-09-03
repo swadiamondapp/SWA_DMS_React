@@ -28,6 +28,7 @@ import {
 import {
   all_Designs,
   list_assignment_folder,
+  unvoted_design,
 } from "../ADMIN PANEL/Design Pool/Api";
 import { detailsViewOfItems } from "../AssignmentDetailsViewsAll/Api";
 
@@ -230,7 +231,8 @@ export const move_to_assignment = async (
   setFormData,
   getSelectedDesign,
   callBack,
-  setSelectedIdsForDelet
+  setSelectedIdsForDelet,
+  setUnvotedData
 ) => {
   try {
     const body = {
@@ -256,6 +258,7 @@ export const move_to_assignment = async (
       (await apiService.post(ASSIGNMENT_MOVE, body));
     if (response.data.results.status_code === 200) {
       all_Designs(setIsLoading, setData);
+      unvoted_design(setIsLoading, setUnvotedData)
       onClose();
       setSuccessMessage("Moved to Assignment Panel Successfully");
       setSuccessModalOpen(true);

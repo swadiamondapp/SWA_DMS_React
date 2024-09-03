@@ -63,7 +63,7 @@ export const listFoldersCentralHub = async (setIsLoading, setFolders) => {
     setIsLoading(true)
     const response = await apiService.get(LIST_CENTRAL_FOLDERS);
     if (checkApiStatus(response)) {
-      setFolders(response.data.results.data);
+      setFolders.current = response.data.results.data;
     }
   } catch (error) {
     console.log(error);

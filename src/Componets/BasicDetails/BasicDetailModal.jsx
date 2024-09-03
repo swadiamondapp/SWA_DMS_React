@@ -78,7 +78,8 @@ const BasicDetailModal = ({
   setFolderDetailsView,
   detailId,
   Data,
-  unvotedData
+  unvotedData,
+  setUnvotedData
 }) => {
   // create modal
 
@@ -124,7 +125,7 @@ const BasicDetailModal = ({
     notes: "",
   });
 
-  console.log(errors, "errroCOnodf");
+  console.log(basicDetails, "basicDetails");
 
   useEffect(() => {
     if (name === "editbasicDetails" && basicDetails) {
@@ -332,7 +333,8 @@ const BasicDetailModal = ({
           () => {
             setCalculationData([]);
           },
-          setSelectedIdsForDelet
+          setSelectedIdsForDelet,
+          setUnvotedData
         );
       }
       // setShowAssignmentModal(true);
@@ -610,15 +612,10 @@ const BasicDetailModal = ({
   const [selectedDiamond, setSelectedDiamond] = useState(null);
   const [selectedLabelDiamond, setSelectedLabelDiamond] = useState(null);
 
-  // Effect to set diamond type from localStorage
   useEffect(() => {
-    const storedIdDiamond = Number(localStorage.getItem("selectedDiamondType"));
-    const diamondValue = localStorage.getItem("selectedDiamondType")
-    console.log(storedIdDiamond, "storedIdDiamond");
+    const storedIdDiamond = Number(basicDetails?.diamond_type) || Number(localStorage.getItem("selectedDiamondType"));
     if (storedIdDiamond) {
-      const matchedItem = diamonType.find(
-        (item) => item.id === storedIdDiamond
-      );
+      const matchedItem = diamonType.find((item) => item.id === storedIdDiamond);
       if (matchedItem) {
         setSelectedDiamond(storedIdDiamond);
         setSelectedLabelDiamond(matchedItem.name);
@@ -628,17 +625,13 @@ const BasicDetailModal = ({
         }));
       }
     }
-  }, [diamonType, setFormData]);
-
-  // Effect to set metal type from localStorage
+  }, [diamonType, basicDetails, localStorage.getItem("selectedDiamondType")]);
+  
+  // Effect to set metal type from localStorage or basicDetails
   useEffect(() => {
-    const storedId = Number(localStorage.getItem("selectedMetalType"));
-    console.log(storedId, "storedId");
+    const storedId = Number(basicDetails?.type_of_metal) || Number(localStorage.getItem("selectedMetalType"));
     if (storedId) {
-      const matchedItem = metalTypeDropDown.find(
-        (item) => item.id === storedId
-      );
-      console.log(matchedItem, "matchedItem");
+      const matchedItem = metalTypeDropDown.find((item) => item.id === storedId);
       if (matchedItem) {
         setSelectedValue(storedId);
         setSelectedLabel(matchedItem.metal_name);
@@ -648,7 +641,7 @@ const BasicDetailModal = ({
         }));
       }
     }
-  }, [metalTypeDropDown, setFormData]);
+  }, [metalTypeDropDown, basicDetails, localStorage.getItem("selectedMetalType")]);
 
   console.log(SelectedDiamondId,"SelectedDiamondId")
 
@@ -947,38 +940,36 @@ const BasicDetailModal = ({
                           Type of metal
                         </label>
                         <Select
-                          showSearch
-                          placeholder={selectedLabel || "-Select-"}
-                          optionFilterProp="children"
-                          value={selectedValue}
-                          onChange={(value) => {
-                            const selectedItem = metalTypeDropDown.find(
-                              (item) => item.id === value
-                            );
-                            if (selectedItem) {
-                              setSelectedValue(value);
-                              setSelectedLabel(selectedItem.metal_name);
-                            }
-                            setFormData((prevState) => ({
-                              ...prevState,
-                              typeOfMetal: [value],
-                            }));
-                            setSelectedMetalId(value);
-                            localStorage.setItem("selectedMetalType", value);
-                          }}
-                          onSearch={onSearch}
-                          filterOption={filterOption}
-                          style={{
-                            width: "100%",
-                            zIndex: 9999999,
-                            background: "#006E7F1A",
-                            cursor: "pointer",
-                          }}
-                          options={metalTypeDropDown.map((item) => ({
-                            value: item.id,
-                            label: item.metal_name,
-                          }))}
-                        />
+  showSearch
+  placeholder={selectedLabel || "-Select-"}
+  optionFilterProp="children"
+  value={selectedValue}
+  onChange={(value) => {
+    const selectedItem = metalTypeDropDown.find((item) => item.id === value);
+    if (selectedItem) {
+      setSelectedValue(value);
+      setSelectedLabel(selectedItem.metal_name);
+    }
+    setFormData((prevState) => ({
+      ...prevState,
+      typeOfMetal: [value],
+    }));
+    setSelectedMetalId(value);
+    localStorage.setItem("selectedMetalType", value);
+  }}
+  onSearch={onSearch}
+  filterOption={filterOption}
+  style={{
+    width: "100%",
+    zIndex: 9999999,
+    background: "#006E7F1A",
+    cursor: "pointer",
+  }}
+  options={metalTypeDropDown.map((item) => ({
+    value: item.id,
+    label: item.metal_name,
+  }))}
+/>
                         <div>
                           {errors.typeOfMetal && (
                             <span className="error_input_p">
@@ -992,38 +983,36 @@ const BasicDetailModal = ({
                           Diamond Type
                         </label>
                         <Select
-                          showSearch
-                          placeholder={selectedLabelDiamond || "-Select-"}
-                          optionFilterProp="children"
-                          value={selectedDiamond}
-                          onChange={(value) => {
-                            const selectedItem = diamonType.find(
-                              (item) => item.id === value
-                            );
-                            if (selectedItem) {
-                              setSelectedDiamond(value);
-                              setSelectedLabelDiamond(selectedItem.name);
-                            }
-                            setFormData((prevState) => ({
-                              ...prevState,
-                              diamondType: [value],
-                            }));
-                            setSelectedDiamondId(value);
-                            localStorage.setItem("selectedDiamondType", value);
-                          }}
-                          onSearch={onSearch}
-                          filterOption={filterOption}
-                          style={{
-                            width: "100%",
-                            zIndex: 999999999,
-                            background: "#006E7F1A",
-                            cursor: "pointer",
-                          }}
-                          options={diamonType.map((item) => ({
-                            value: item.id,
-                            label: item.name,
-                          }))}
-                        />
+  showSearch
+  placeholder={selectedLabelDiamond || "-Select-"}
+  optionFilterProp="children"
+  value={selectedDiamond}
+  onChange={(value) => {
+    const selectedItem = diamonType.find((item) => item.id === value);
+    if (selectedItem) {
+      setSelectedDiamond(value);
+      setSelectedLabelDiamond(selectedItem.name);
+    }
+    setFormData((prevState) => ({
+      ...prevState,
+      diamondType: [value],
+    }));
+    setSelectedDiamondId(value);
+    localStorage.setItem("selectedDiamondType", value);
+  }}
+  onSearch={onSearch}
+  filterOption={filterOption}
+  style={{
+    width: "100%",
+    zIndex: 999999999,
+    background: "#006E7F1A",
+    cursor: "pointer",
+  }}
+  options={diamonType.map((item) => ({
+    value: item.id,
+    label: item.name,
+  }))}
+/>
                         <div>
                           {errors.diamondType && (
                             <span className="error_input_p">

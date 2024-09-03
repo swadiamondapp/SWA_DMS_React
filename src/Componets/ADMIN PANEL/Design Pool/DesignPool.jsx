@@ -468,6 +468,7 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
             showRadioButtons={showRadioButtons}
             unvotedData={unvotedData}
             selectedDesigns={selectedDesigns}
+            setUnvotedData={setUnvotedData}
           />
         </div>
         {/* new design section */}

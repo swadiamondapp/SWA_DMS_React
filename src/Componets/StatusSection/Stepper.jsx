@@ -72,9 +72,8 @@ const Stepper = ({ code }) => {
 
   const cadstatus = [
     { id: 1, title: "Pending" },
-    { id: 2, title: "Approved" },
+    { id: 2, title: "File Action" },
   ];
-
   const status = steppretDta?.Tracking_data?.status_message || "";
 
   const status2 =
@@ -246,7 +245,6 @@ const Stepper = ({ code }) => {
         return "";
     }
   };
-  
 
   const getStatusActive = (statusTitle) => {
     const fileAction = steppretDta?.Tracking_data?.status_details?.file_action;
@@ -265,26 +263,31 @@ const Stepper = ({ code }) => {
     return false;
   };
 
+  const statusDetails = steppretDta?.Tracking_data?.status_details;
+  const statusDates = steppretDta?.Tracking_data?.status_dates[0];
+  
+  const pendingActive = Boolean(statusDates?.cad_finished);
+  const fileActionStatus = statusDetails?.file_action;
+  const fileActionActive = Boolean(fileActionStatus) && fileActionStatus !== "Pending";
+
+
   const formatDateTime = (dateString) => {
     const date = new Date(dateString);
-    
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
     const year = date.getFullYear();
-    
+
     let hours = date.getHours();
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+
+    const ampm = hours >= 12 ? "PM" : "AM";
+
     hours = hours % 12;
-    hours = hours ? String(hours).padStart(2, '0') : '12'; // Hour '0' should be '12'
-    
+    hours = hours ? String(hours).padStart(2, "0") : "12"; // Hour '0' should be '12'
+
     return `${day}/${month}/${year} - ${hours}:${minutes} ${ampm}`;
   };
-  
- 
-  
 
   return (
     <>
@@ -896,7 +899,7 @@ const Stepper = ({ code }) => {
                                     // background:"red"
                                   }}
                                 >
-                                  Rendering Finished Projects
+                                  Pending
                                 </span>
                                 <span
                                   style={{ fontSize: "11px", marginTop: "5px" }}
@@ -909,89 +912,77 @@ const Stepper = ({ code }) => {
                         </div> */}
 
 <div className="dropdown-container" style={{ marginTop: "70px" }}>
-      {cadstatus.map((sub, index) => {
-        const Active = getStatusActive(sub.title);
-        let displayDate = null;
-        const statusDetails = steppretDta?.Tracking_data?.status_details;
-        const statusDates = steppretDta?.Tracking_data?.status_dates[0];
-        
-
-        if (sub.title === "Pending" && Active) {
-          // Show cad_finished date for Pending
-          displayDate = statusDates?.cad_finished;
-        }
-
-        if (sub.title === "Approved" && Active) {
-          // Show action_date_at for Approved
-          displayDate = statusDetails?.action_date_at;
-        }
-
-        return (
-          <div className="vertical-stepper" key={index}>
-            <React.Fragment>
-              <div className="vertical-step">
-                {Active ? (
-                  <span
-                    className={`vertical-step-number ${
-                      Active ? "vertical-step-complete" : ""
-                    }`}
-                    style={{ color: Active ? "white" : "" }}
-                  >
-                    &#10003;
-                  </span>
-                ) : (
-                  <span className="vertical-step-number">
-                    &#10003;
-                  </span>
-                )}
-
-                <div
-                  className="step-heading"
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    width: "150px",
-                    paddingLeft: "10px",
-                  }}
-                >
-                  <span
-                    style={{
-                      color: "black",
-                      fontSize: "13px",
-                    }}
-                  >
-                    {sub.title}
-                  </span>
-                  {displayDate && (
-                    <span
-                      style={{
-                        fontSize: "10px",
-                        width: "auto",
-                      }}
-                    >
-                      {/* {new Date(displayDate).toLocaleDateString("en-US", {
-                        weekday: "long",
-                        day: "numeric",
-                        month: "long",
-                        year: "numeric",
-                      })}{" "} */}
-                      {formatDateTime(displayDate)}
-                    </span>
-                  )}
-                </div>
-              </div>
-              {index < cadstatus.length - 1 && (
-                <div
-                  className="vertical-connector"
-                  style={{
-                    backgroundColor: Active ? "#002427" : "#ddd",
-                  }}
-                />
-              )}
-            </React.Fragment>
+      {/* Pending Status */}
+      <div className="vertical-stepper">
+        <div className="vertical-step">
+          <span
+            className={`vertical-step-number ${
+              pendingActive ? "vertical-step-complete" : ""
+            }`}
+            style={{ color: pendingActive ? "white" : "" }}
+          >
+            &#10003;
+          </span>
+          <div
+            className="step-heading"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              width: "150px",
+              paddingLeft: "10px",
+            }}
+          >
+            <span style={{ color: "black", fontSize: "13px" }}>
+              Pending
+            </span>
+            <span style={{ fontSize: "10px", width: "auto" }}>
+              {pendingActive ? formatDateTime(statusDates?.cad_finished) : 'N/A'}
+            </span>
           </div>
-        );
-      })}
+        </div>
+
+        {fileActionActive && (
+          <div
+            className="vertical-connector"
+            style={{
+              backgroundColor: "#002427",
+              height: "50px", 
+            }}
+          />
+        )}
+      </div>
+
+      {/* File Action Status */}
+      {fileActionActive && (
+        <div className="vertical-stepper">
+          <div className="vertical-step">
+            <span
+              className={`vertical-step-number ${
+                fileActionActive ? "vertical-step-complete" : ""
+              }`}
+              style={{ color: fileActionActive ? "white" : "" }}
+            >
+              &#10003;
+            </span>
+            <div
+              className="step-heading"
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                width: "150px",
+                paddingLeft: "10px",
+              }}
+            >
+              <span style={{ color: "black", fontSize: "13px" }}>
+               {fileActionStatus}
+              </span>
+              <span style={{ fontSize: "10px", width: "auto" }}>
+                {formatDateTime(statusDetails?.action_date_at)}
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
                       </>
                     )}

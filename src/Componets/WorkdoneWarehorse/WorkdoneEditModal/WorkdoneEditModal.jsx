@@ -260,6 +260,13 @@ const WorkdoneEditModal = ({
                       </div>
                     </>
                   </div>
+                  <div className="workdone_modal">
+                    <span className="workdone_modal_span1">Approx Mrp</span>
+                    <span className="workdone_modal_span2">
+                      {product?.basic_details?.assignment.approx_price}{" "}
+                    
+                    </span>
+                  </div>
                   <div
                     className="workdone_modal"
                     style={{ borderBottom: "none" }}
@@ -410,7 +417,7 @@ const WorkdoneEditModal = ({
                     required
                   />
                 </div>
-                {/* <div className="workdone_modal">
+                <div className="workdone_modal">
                   <span>Approx mrp</span>
                   <input
                   style={{background:"white",padding:"6px 0px"}}
@@ -421,7 +428,7 @@ const WorkdoneEditModal = ({
                     onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
                     required
                   />
-                </div> */}
+                </div>
                 <div className="workdone_modal">
                   <span>Tags</span>
 

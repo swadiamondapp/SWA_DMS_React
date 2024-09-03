@@ -59,7 +59,7 @@ const CentralDashboard = ({sidebarExpanded,Folders,isLoading}) => {
                   </div>
                 )} */}
 
-                {isLoading !== true && Folders.length === 0 && (
+                {isLoading !== true && Folders && Folders.length === 0 && (
                   <div
                     style={{
                       display: "flex",
