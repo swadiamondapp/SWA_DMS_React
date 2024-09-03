@@ -205,7 +205,7 @@
 
 .modal_card_images {
   position: absolute;
-  width: 78%; 
+  width: 75%; 
   height: auto; 
   /* background-color: red; */
   left: 0; 
@@ -219,7 +219,7 @@
 
 .modal_edit_section{
   position: absolute;
-  width: 22%;
+  width: 25%;
   height: auto;
   padding: 4px;
   right: 0;

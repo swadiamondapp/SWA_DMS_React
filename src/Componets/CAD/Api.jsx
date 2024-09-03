@@ -302,7 +302,6 @@ export const reUploadFile = async (
 // };
 
 export const cadLogut = (timerValue) => {
-   debugger
   const userType = localStorage.getItem("Usertype")
  
   if (userType === "CAD"){

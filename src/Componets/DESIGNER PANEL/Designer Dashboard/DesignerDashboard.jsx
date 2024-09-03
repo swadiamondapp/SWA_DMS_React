@@ -282,7 +282,9 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
                                   style={{ color: "black", fontSize: "12px" }}
                                 >
                                   {item?.currentstatus_track[0]?.current_status}{" "}
-                                  {formatDateTwo(item?.currentstatus_track[0]?.date)}
+                                  {formatDateTwo(
+                                    item?.currentstatus_track[0]?.date
+                                  )}
                                 </span>
                               </span>
                             </div>
@@ -293,7 +295,9 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
                               <span
                                 style={{ color: "black", fontSize: "12px" }}
                               >
-                                {item.timer_status} - {item.timer_value}
+                                {item.timer_status}
+                                {item.timer_status !== "on-going" &&
+                                  ` - ${item.timer_value}`}
                               </span>
                             </span>
                             <div className="Card_Details_Inner">
@@ -339,8 +343,7 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
                             <div
                               className=""
                               style={{ display: "flex", gap: "5px" }}
-                            >
-                            </div>
+                            ></div>
                             <h3>ID : {item.designcode}</h3>
                             <div className="Card_Details_Inner">
                               <div className="Inner_Left">
@@ -365,7 +368,9 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
                                         item?.currentstatus_track[0]
                                           ?.current_status
                                       }{" "}
-                                      {formatDateTwo(item?.currentstatus_track[0]?.date)}
+                                      {formatDateTwo(
+                                        item?.currentstatus_track[0]?.date
+                                      )}
                                     </span>
                                   </span>
                                 </div>
@@ -381,7 +386,9 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
                                 </span>
 
                                 <p>{item.name}</p>
-                                <p style={{fontSize:"12px",color:"gray"}}>{item.created_at}</p>
+                                <p style={{ fontSize: "12px", color: "gray" }}>
+                                  {item.created_at}
+                                </p>
                               </div>
 
                               <button
@@ -444,8 +451,7 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
                             <div
                               className=""
                               style={{ display: "flex", gap: "5px" }}
-                            >
-                            </div>
+                            ></div>
                             <div className="Card_Details_Inner">
                               <div className="Inner_Left">
                                 <div
@@ -469,7 +475,9 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
                                         item?.currentstatus_track[0]
                                           ?.current_status
                                       }{" "}
-                                      {formatDateTwo(item?.currentstatus_track[0]?.date)}
+                                      {formatDateTwo(
+                                        item?.currentstatus_track[0]?.date
+                                      )}
                                     </span>
                                   </span>
                                 </div>
@@ -482,9 +490,11 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
                                   >
                                     {item.timer_status} - {item.timer_value}
                                   </span>
-                                  </span>
+                                </span>
                                 <p>{item.name}</p>
-                                <p style={{fontSize:"12px",color:"gray"}}>{item.created_at}</p>
+                                <p style={{ fontSize: "12px", color: "gray" }}>
+                                  {item.created_at}
+                                </p>
                                 <button
                                   style={{
                                     padding: "7px 10px ",

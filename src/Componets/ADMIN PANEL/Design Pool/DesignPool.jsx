@@ -380,6 +380,7 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
           </button>
         </div> */}
         {/* Use the DesignButtons component */}
+        {value == 1 && (
         <div className="" style={{ padding: "10px" }}>
           <DesignBtn
             toggleDownloadOptions={toggleDownloadOptions}
@@ -421,6 +422,7 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
             showRadioButtons={showRadioButtons}
           />
         </div>
+        )}
         {/* new design section */}
         {/* new design section */}
 

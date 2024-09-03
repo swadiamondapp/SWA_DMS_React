@@ -9,8 +9,9 @@ import {
 } from "../../../Pages/CENTRAL HUB/Api";
 import folderimg from "../../../assets/folder.png";
 import { useLocation, Link, useNavigate } from "react-router-dom";
+import { CircularProgress } from "@mui/material";
 
-const CentralDashboard = ({sidebarExpanded,Folders}) => {
+const CentralDashboard = ({sidebarExpanded,Folders,isLoading}) => {
   const  navigate = useNavigate()
   const [Data, setData] = useState([]);
 
@@ -37,7 +38,65 @@ const CentralDashboard = ({sidebarExpanded,Folders}) => {
     <div className="parentCentral"  style={{paddingLeft:sidebarExpanded? "225px":"130px"}}>
       <div className="CadAssignmentCard">
         <div className="folderCard_parent">
-          {Folders.map((item) => (
+        {/* {isLoading && (
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <CircularProgress
+                      // filter={filter}
+                      // setFilter={setFilter}
+                      size={50}
+                      sx={{
+                        color: "#126e72",
+                        padding: "8px 10px",
+                        width: "35px",
+                      }}
+                    />
+                  </div>
+                )} */}
+
+                {isLoading !== true && Folders.length === 0 && (
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      width:"100%",
+                      height:"300px"
+                    }}
+                  >
+                    <span style={{ marginTop: "100px" }}>No Data Found</span>
+                  </div>
+                )}
+
+{isLoading  ? (
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      width:"100%",
+                      height:"300px"
+                    }}
+                  >
+                    <CircularProgress
+                      // filter={filter}
+                      // setFilter={setFilter}
+                      size={50}
+                      sx={{
+                        color: "#126e72",
+                        padding: "8px 10px",
+                        width: "35px",
+                      }}
+                    />
+                  </div>
+                ) : (
+<>
+          {Folders?.map((item) => (
             <div className="folder__card" key={item.id} onClick={()=>handleFolderNaviate(item)}>
               {/* <Link to={`/centralfolderdetails/${item.id}`}> */}
                 <img src={folderimg} alt="" />
@@ -45,6 +104,9 @@ const CentralDashboard = ({sidebarExpanded,Folders}) => {
               <p>{item.name}</p>
             </div>
           ))}
+          </>
+        )} 
+
         </div>
 
         {/* <div className="Card_Design_Parent">

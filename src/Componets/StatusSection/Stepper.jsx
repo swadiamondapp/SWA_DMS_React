@@ -72,8 +72,7 @@ const Stepper = ({ code }) => {
 
   const cadstatus = [
     { id: 1, title: "Pending" },
-    { id: 2, title: "Rejected" },
-    { id: 3, title: "Approved" },
+    { id: 2, title: "Approved" },
   ];
 
   const status = steppretDta?.Tracking_data?.status_message || "";
@@ -239,14 +238,53 @@ const Stepper = ({ code }) => {
         return formatDateTrack(dates?.slotted);
       case 8:
         return formatDateTrack(dates?.transfer_to_warehouse);
-        case 9:
-          return formatDateTrack(dates?.warehouse_received);
+      case 9:
+        return formatDateTrack(dates?.warehouse_received);
       case 11:
         return formatDateTrack(dates?.workdone);
       default:
         return "";
     }
   };
+  
+
+  const getStatusActive = (statusTitle) => {
+    const fileAction = steppretDta?.Tracking_data?.status_details?.file_action;
+    const cadFinished =
+      steppretDta?.Tracking_data?.status_dates[0]?.cad_finished;
+    console.log(cadFinished, "cadFinished");
+
+    if (statusTitle === "Pending") {
+      return cadFinished;
+    }
+
+    if (statusTitle === "Approved") {
+      return fileAction === "Approved";
+    }
+
+    return false;
+  };
+
+  const formatDateTime = (dateString) => {
+    const date = new Date(dateString);
+    
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const year = date.getFullYear();
+    
+    let hours = date.getHours();
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    
+    hours = hours % 12;
+    hours = hours ? String(hours).padStart(2, '0') : '12'; // Hour '0' should be '12'
+    
+    return `${day}/${month}/${year} - ${hours}:${minutes} ${ampm}`;
+  };
+  
+ 
+  
 
   return (
     <>
@@ -486,8 +524,7 @@ const Stepper = ({ code }) => {
                           .ch_status_history.length > 0 ? (
                           steppretDta.Tracking_data.status_details.ch_status_history.map(
                             (chStatusHistory, index) => {
-                              const isCurrentStatus =
-                                chStatusHistory?.status;
+                              const isCurrentStatus = chStatusHistory?.status;
                               const formattedDate = new Date(
                                 chStatusHistory?.changed_at
                               ).toLocaleDateString("en-US", {
@@ -737,7 +774,6 @@ const Stepper = ({ code }) => {
                                   minute: "numeric",
                                   hour12: true,
                                 });
-                                
 
                                 return (
                                   <div key={index} className="vertical-step">
@@ -872,128 +908,91 @@ const Stepper = ({ code }) => {
                           </div>
                         </div> */}
 
-                        <div
-                          className="dropdown-container"
-                          style={{ marginTop: "70px" }}
-                        >
-                          {cadstatus?.map((sub, index) => {
-                            // const warehouseStatusHistory =
-                            //   Array.isArray(
-                            //     steppretDta?.Tracking_data?.status_details
-                            //       ?.warehouse_status_history
-                            //   ) &&
-                            //   steppretDta?.Tracking_data?.status_details
-                            //     ?.warehouse_status_history.length > 0
-                            //     ? steppretDta.Tracking_data.status_details
-                            //         .warehouse_status_history[0]
-                            //     : {};
+<div className="dropdown-container" style={{ marginTop: "70px" }}>
+      {cadstatus.map((sub, index) => {
+        const Active = getStatusActive(sub.title);
+        let displayDate = null;
+        const statusDetails = steppretDta?.Tracking_data?.status_details;
+        const statusDates = steppretDta?.Tracking_data?.status_dates[0];
+        
 
-                            // const matchedStatus =
-                            //   warehouseStatusHistory?.previous_status?.find(
-                            //     (status) => status.status === sub.name
-                            //   );
+        if (sub.title === "Pending" && Active) {
+          // Show cad_finished date for Pending
+          displayDate = statusDates?.cad_finished;
+        }
 
-                            // const isCurrentStatus =
-                            //   warehouseStatusHistory?.current_status === sub.name;
+        if (sub.title === "Approved" && Active) {
+          // Show action_date_at for Approved
+          displayDate = statusDetails?.action_date_at;
+        }
 
-                            // const WHDate = isCurrentStatus
-                            //   ? new Date(
-                            //       warehouseStatusHistory?.updated_at
-                            //     ).toLocaleDateString("en-US", {
-                            //       weekday: "long",
-                            //       day: "numeric",
-                            //       month: "long",
-                            //       // year: 'numeric',
-                            //     })
-                            //   : matchedStatus
-                            //   ? new Date(
-                            //       matchedStatus.changed_at
-                            //     ).toLocaleDateString("en-US", {
-                            //       weekday: "long",
-                            //       day: "numeric",
-                            //       month: "long",
-                            //       // year: 'numeric',
-                            //     })
-                            //   : null;
+        return (
+          <div className="vertical-stepper" key={index}>
+            <React.Fragment>
+              <div className="vertical-step">
+                {Active ? (
+                  <span
+                    className={`vertical-step-number ${
+                      Active ? "vertical-step-complete" : ""
+                    }`}
+                    style={{ color: Active ? "white" : "" }}
+                  >
+                    &#10003;
+                  </span>
+                ) : (
+                  <span className="vertical-step-number">
+                    &#10003;
+                  </span>
+                )}
 
-                            // const WHTime = isCurrentStatus
-                            //   ? new Date(
-                            //       warehouseStatusHistory?.updated_at
-                            //     ).toLocaleTimeString()
-                            //   : matchedStatus
-                            //   ? new Date(
-                            //       matchedStatus.changed_at
-                            //     ).toLocaleTimeString()
-                            //   : null;
-
-                            const Active = ""
-                              // wHdata.findIndex((s) => s.name === warehouse) >=
-                              // index;
-
-                            return (
-                              <div className="vertical-stepper" key={index}>
-                                <React.Fragment>
-                                  <div className="vertical-step">
-                                    {Active ? (
-                                      <span
-                                        className={`vertical-step-number ${
-                                          Active ? "vertical-step-complete" : ""
-                                        } `}
-                                        style={{ color: Active ? "white" : "" }}
-                                      >
-                                        &#10003;
-                                      </span>
-                                    ) : (
-                                      <span className="vertical-step-number">
-                                        &#10003;
-                                      </span>
-                                    )}
-
-                                    <div
-                                      className="step-heading"
-                                      style={{
-                                        display: "flex",
-                                        flexDirection: "column",
-                                        width: "150px",
-                                        // background:"green",
-                                        paddingLeft: "10px",
-                                      }}
-                                    >
-                                      <span
-                                        style={{
-                                          color: "black",
-                                          fontSize: "13px",
-                                        }}
-                                      >
-                                        {sub.title}
-                                      </span>
-                                      {/* {WHDate && (
-                                      <span
-                                        style={{
-                                          fontSize: "10px",
-                                          width: "auto",
-                                        }}
-                                      >
-                                        {WHDate} {WHTime}
-                                      </span>
-                                    )} */}
-                                    </div>
-                                  </div>
-                                  {index < cadstatus.length - 1 && (
-                                    <div
-                                      className="vertical-connector"
-                                      style={{
-                                        backgroundColor: Active
-                                          ? "#002427"
-                                          : "#ddd",
-                                      }}
-                                    />
-                                  )}
-                                </React.Fragment>
-                              </div>
-                            );
-                          })}
-                        </div>
+                <div
+                  className="step-heading"
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    width: "150px",
+                    paddingLeft: "10px",
+                  }}
+                >
+                  <span
+                    style={{
+                      color: "black",
+                      fontSize: "13px",
+                    }}
+                  >
+                    {sub.title}
+                  </span>
+                  {displayDate && (
+                    <span
+                      style={{
+                        fontSize: "10px",
+                        width: "auto",
+                      }}
+                    >
+                      {/* {new Date(displayDate).toLocaleDateString("en-US", {
+                        weekday: "long",
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                      })}{" "} */}
+                      {formatDateTime(displayDate)}
+                    </span>
+                  )}
+                </div>
+              </div>
+              {index < cadstatus.length - 1 && (
+                <div
+                  className="vertical-connector"
+                  style={{
+                    backgroundColor: Active ? "#002427" : "#ddd",
+                  }}
+                />
+              )}
+            </React.Fragment>
+          </div>
+        );
+      })}
+    </div>
                       </>
                     )}
                   </div>

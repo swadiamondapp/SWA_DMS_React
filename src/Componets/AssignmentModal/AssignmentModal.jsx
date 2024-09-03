@@ -72,25 +72,32 @@ const AssignmentModal = ({
     // } else {
     if (folderName.trim() === "") {
       setError("Please enter the folder name.");
-    } else {
-      move_to_folder(
-        setIsLoading,
-        folderName,
-        selectedAssignment,
-        setAssignmentFolder,
-        setData,
-        onClose,
-        setSuccessMessage,
-        setSuccessModalOpen,
-        setFolderName,
-        setSelectedAssignment,
-        setError,
-        setShowRadioButtons,
-        setSelectButtonLabel
-      );
-      // ToCloseCreatefolder(false)
+      return;
     }
-    // }
+    const existingFolderNames = assignmentFolder.map((folder) =>
+      folder.name.toLowerCase()
+    );
+     if (existingFolderNames.includes(folderName.trim().toLowerCase())) {
+      setError("Folder already exists.");
+      return;
+    }
+     setError("");
+
+    move_to_folder(
+      setIsLoading,
+      folderName,
+      selectedAssignment,
+      setAssignmentFolder,
+      setData,
+      onClose,
+      setSuccessMessage,
+      setSuccessModalOpen,
+      setFolderName,
+      setSelectedAssignment,
+      setError,
+      setShowRadioButtons,
+      setSelectButtonLabel
+    );
   };
 
   const handleClose = () => {
