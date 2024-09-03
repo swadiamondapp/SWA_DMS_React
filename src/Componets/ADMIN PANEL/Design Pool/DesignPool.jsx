@@ -70,11 +70,11 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
   const dropdownRefDD = useRef(null);
   const dropdownRef = useRef(null);
   const dotsRef = useRef(null);
+
   const toggleRadioButtons = () => {
     setShowRadioButtons(!showRadioButtons);
     setSelectButtonLabel(showRadioButtons ? "Select" : "Unselect");
     if (showRadioButtons) {
-      // If toggling to "Unselect", clear the selected designs
       setSelectedDesigns([]);
     }
     if (SelectedIdsForDelet) {
@@ -105,24 +105,50 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
   // console.log(selectedImages, "selectedImages");
 
   const handleCheckboxChange = (designcode, image, id) => {
-    if (selectedDesigns.includes(designcode)) {
-      setSelectedDesigns(selectedDesigns.filter((item) => item !== designcode));
-      setSelectedImages(selectedImages.filter((img) => img !== image));
-      setSelectedIdsForDelet(SelectedIdsForDelet.filter((item) => item !== id));
-    } else {
-      setSelectedDesigns([...selectedDesigns, designcode]);
-      setSelectedImages([...selectedImages, image]);
-      setSelectedIdsForDelet([...SelectedIdsForDelet, id]);
+    if (value === "1") {
+      // Handle selection for Data (TabPanel 1)
+      if (selectedDesigns.includes(designcode)) {
+        setSelectedDesigns(selectedDesigns.filter((item) => item !== designcode));
+        setSelectedImages(selectedImages.filter((img) => img !== image));
+        setSelectedIdsForDelet(SelectedIdsForDelet.filter((item) => item !== id));
+      } else {
+        setSelectedDesigns([...selectedDesigns, designcode]);
+        setSelectedImages([...selectedImages, image]);
+        setSelectedIdsForDelet([...SelectedIdsForDelet, id]);
+      }
+    } else if (value === "2") {
+      // Handle selection for unvotedData (TabPanel 2)
+      if (selectedDesigns.includes(designcode)) {
+        setSelectedDesigns(selectedDesigns.filter((item) => item !== designcode));
+        setSelectedImages(selectedImages.filter((img) => img !== image));
+        setSelectedIdsForDelet(SelectedIdsForDelet.filter((item) => item !== id));
+      } else {
+        setSelectedDesigns([...selectedDesigns, designcode]);
+        setSelectedImages([...selectedImages, image]);
+        setSelectedIdsForDelet([...SelectedIdsForDelet, id]);
+      }
     }
   };
 
+  console.log(selectedImages,"selectedImages")
+  
   const handleSelectAll = () => {
-    const allDesignCodes = Data.map((item) => item.designcode);
-    const allImages = Data.map((item) => item.image);
-    const allIds = Data.map((item) => item.id);
-    setSelectedDesigns(allDesignCodes);
-    setSelectedImages(allImages);
-    setSelectedIdsForDelet(allIds);
+    if (value == 1) {
+      const allDesignCodes = Data.map((item) => item.designcode);
+      const allImages = Data.map((item) => item.image);
+      const allIds = Data.map((item) => item.id);
+      setSelectedDesigns(allDesignCodes);
+      setSelectedImages(allImages);
+      setSelectedIdsForDelet(allIds);
+    }
+    if (value == 2) {
+      const allDesignCodes = unvotedData.map((item) => item.designcode);
+      const allImages = unvotedData.map((item) => item.image);
+      const allIds = unvotedData.map((item) => item.id);
+      setSelectedDesigns(allDesignCodes);
+      setSelectedImages(allImages);
+      setSelectedIdsForDelet(allIds);
+    }
   };
 
   const handleDeselectAll = () => {
@@ -192,32 +218,37 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
 
   const handleDownloadMultiple = async (imageData) => {
     for (const { image, designcode } of imageData) {
-      try {  const handleCheckboxChange = (designcode, image, id) => {
-        if (selectedDesigns.includes(designcode)) {
-          setSelectedDesigns(selectedDesigns.filter((item) => item !== designcode));
-          setSelectedImages(selectedImages.filter((img) => img !== image));
-          setSelectedIdsForDelet(SelectedIdsForDelet.filter((item) => item !== id));
-        } else {
-          setSelectedDesigns([...selectedDesigns, designcode]);
-          setSelectedImages([...selectedImages, image]);
-          setSelectedIdsForDelet([...SelectedIdsForDelet, id]);
-        }
-      };
-    
-      const handleSelectAll = () => {
-        const allDesignCodes = Data.map((item) => item.designcode);
-        const allImages = Data.map((item) => item.image);
-        const allIds = Data.map((item) => item.id);
-        setSelectedDesigns(allDesignCodes);
-        setSelectedImages(allImages);
-        setSelectedIdsForDelet(allIds);
-      };
-    
-      const handleDeselectAll = () => {
-        setSelectedDesigns([]);
-        setSelectedImages([]);
-        setSelectedIdsForDelet([]);
-      };
+      try {
+        const handleCheckboxChange = (designcode, image, id) => {
+          if (selectedDesigns.includes(designcode)) {
+            setSelectedDesigns(
+              selectedDesigns.filter((item) => item !== designcode)
+            );
+            setSelectedImages(selectedImages.filter((img) => img !== image));
+            setSelectedIdsForDelet(
+              SelectedIdsForDelet.filter((item) => item !== id)
+            );
+          } else {
+            setSelectedDesigns([...selectedDesigns, designcode]);
+            setSelectedImages([...selectedImages, image]);
+            setSelectedIdsForDelet([...SelectedIdsForDelet, id]);
+          }
+        };
+
+        const handleSelectAll = () => {
+          const allDesignCodes = Data.map((item) => item.designcode);
+          const allImages = Data.map((item) => item.image);
+          const allIds = Data.map((item) => item.id);
+          setSelectedDesigns(allDesignCodes);
+          setSelectedImages(allImages);
+          setSelectedIdsForDelet(allIds);
+        };
+
+        const handleDeselectAll = () => {
+          setSelectedDesigns([]);
+          setSelectedImages([]);
+          setSelectedIdsForDelet([]);
+        };
         const response = await fetch(image, {
           method: "GET",
           mode: "cors",
@@ -244,6 +275,7 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
   };
 
   const selectAllDesigns = () => {
+    if (value == 1 ){
     if (allSelected) {
       setSelectedDesigns([]);
       setSelectedImages([]);
@@ -255,6 +287,20 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
       );
     }
     setAllSelected(!allSelected);
+  }
+  if (value == 2 ){
+    if (allSelected) {
+      setSelectedDesigns([]);
+      setSelectedImages([]);
+    } else {
+      setSelectedDesigns(unvotedData.map((item) => item.designcode));
+      setSelectedImages(unvotedData.map((item) => item.image));
+      handleDownloadMultiple(
+        unvotedData.map((item) => ({ image: item.image, designcode: item.designcode }))
+      );
+    }
+    setAllSelected(!allSelected);
+  }
   };
 
   // console.log("selectedDesign====>", selectedDesign);
@@ -336,7 +382,7 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
     return `${day}/${month}/${year} ${hours}:${minutes} ${ampm}`;
   };
 
-  // console.log("unvoted", unvotedData)
+  console.log("selectedDesigns", selectedDesigns)
 
   return (
     <div>
@@ -380,7 +426,7 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
           </button>
         </div> */}
         {/* Use the DesignButtons component */}
-        {value == 1 && (
+
         <div className="" style={{ padding: "10px" }}>
           <DesignBtn
             toggleDownloadOptions={toggleDownloadOptions}
@@ -420,9 +466,10 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
             handleSelectAll={handleSelectAll}
             handleDeselectAll={handleDeselectAll}
             showRadioButtons={showRadioButtons}
+            unvotedData={unvotedData}
+            selectedDesigns={selectedDesigns}
           />
         </div>
-        )}
         {/* new design section */}
         {/* new design section */}
 
@@ -483,7 +530,6 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
                   </div>
                 )}
                 <>
-               
                   {grid && (
                     <div className="Card_Design_Parent">
                       {Data.map((item, index) => (
@@ -518,11 +564,11 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
                                     {item?.currentstatus_track &&
                                       item?.currentstatus_track[0]
                                         ?.current_status}{" "}
-                                    -
+                                    {/* -
                                     {item?.currentstatus_track &&
                                       formatDateTwo(
                                         item?.currentstatus_track[0]?.date
-                                      )}
+                                      )} */}
                                   </span>
                                 </span>
                               </div>
@@ -747,11 +793,11 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
                                     {item?.currentstatus_track &&
                                       item?.currentstatus_track[0]
                                         ?.current_status}{" "}
-                                    -
+                                    {/* -
                                     {item?.currentstatus_track &&
                                       formatDateTwo(
                                         item?.currentstatus_track[0]?.date
-                                      )}
+                                      )} */}
                                   </span>
                                 </span>
                               </div>
@@ -824,71 +870,288 @@ const DesignPool = ({ sidebarExpanded, setData, Data }) => {
                 <h3 className="HeadNewdesign">
                   Unvoted (&nbsp; {unvotedData.length}&nbsp; )
                 </h3>
-                <div className="Card_Design_Parent">
-                  {unvotedData?.map((item) => (
-                    <div className="New_Design_card">
-                      <div className="Card_img">
-                        <img src={item.image} alt="" />
-                      </div>
-                      <div className="Card_Details">
-                        <h3>ID : {item.designcode}</h3>
-                        <div className="Card_Details_Inner">
-                          <div className="Inner_Left">
-                            <p>{item.user_name}</p>
-                            <p>{item.created_at}</p>
-                            <span
-                              style={{ color: "#23A064", fontSize: "13px" }}
-                            >
-                              Track status :{" "}
-                              <span
-                                style={{ color: "black", fontSize: "12px" }}
-                              >
-                                {item?.currentstatus_track &&
-                                  item?.currentstatus_track[0]
-                                    ?.current_status}{" "}
-                                -
+
+                {isLoading &&  unvotedData.length === 0 && (
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <CircularProgress
+                      filter={filter}
+                      setFilter={setFilter}
+                      size={50}
+                      sx={{
+                        color: "#126e72",
+                        padding: "8px 10px",
+                        width: "35px",
+                      }}
+                    />
+                  </div>
+                )}
+
+                {isLoading !== true && unvotedData.length === 0 && (
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <span style={{ marginTop: "100px" }}>No Data Found</span>
+                  </div>
+                )}
+
+                <>
+                  {grid && (
+                    <div className="Card_Design_Parent">
+                      {unvotedData?.map((item) => (
+                        <div className="New_Design_card">
+                          <div className="Card_img">
+                            <img src={item.image} alt="" />
+                          </div>
+                          <div className="Card_Details">
+                            <h3>ID : {item.designcode}</h3>
+                            <div className="Card_Details_Inner">
+                              <div className="Inner_Left">
+                                <p>{item.user_name}</p>
+                                <p>{item.created_at}</p>
+                                <span
+                                  style={{ color: "#23A064", fontSize: "13px" }}
+                                >
+                                  Track status :{" "}
+                                  <span
+                                    style={{ color: "black", fontSize: "12px" }}
+                                  >
+                                    {item?.currentstatus_track &&
+                                      item?.currentstatus_track[0]
+                                        ?.current_status}{" "}
+                                    {/* -
                                 {item?.currentstatus_track &&
                                   formatDateTwo(
                                     item?.currentstatus_track[0]?.date
-                                  )}
-                              </span>
-                            </span>
-                          </div>
-                        </div>
+                                  )} */}
+                                  </span>
+                                </span>
+                              </div>
+                            </div>
 
-                        <div
-                          className=""
-                          style={{
-                            display: "flex",
-                            gap: "5px",
-                            width: "100%",
-                            justifyContent: "end",
-                          }}
-                        >
-                          <button
-                            style={{
-                              padding: "7px 5px ",
-                              borderRadius: "4px",
-                              color: "white",
-                              backgroundColor: "#0464D5",
-                              border: "none",
-                              fontSize: "13px",
-                              fontWeight: "900",
-                            }}
-                            onClick={() => handleTrack(item, item.designcode)}
-                          >
-                            Track
-                          </button>
-                          <div className="Inner_Right">
-                            <p>
-                              {item.likes_count} <img src={like} alt="" />
-                            </p>
+                            <div
+                              className=""
+                              style={{
+                                display: "flex",
+                                gap: "5px",
+                                width: "100%",
+                                justifyContent: "end",
+                              }}
+                            >
+                              <button
+                                style={{
+                                  padding: "7px 5px ",
+                                  borderRadius: "4px",
+                                  color: "white",
+                                  backgroundColor: "#0464D5",
+                                  border: "none",
+                                  fontSize: "13px",
+                                  fontWeight: "900",
+                                }}
+                                onClick={() =>
+                                  handleTrack(item, item.designcode)
+                                }
+                              >
+                                Track
+                              </button>
+                              <div className="Inner_Right">
+                                <p>
+                                  {item.likes_count} <img src={like} alt="" />
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                          {showRadioButtons && (
+                            <input
+                              className="Radio_select"
+                              type="checkbox"
+                              id={item.designcode}
+                              name="fav_language"
+                              value={item.designcode}
+                              onChange={() =>
+                                handleCheckboxChange(
+                                  item.designcode,
+                                  item.image,
+                                  item.id
+                                )
+                              }
+                              checked={selectedDesigns.includes(
+                                item.designcode
+                              )}
+                            />
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {detail && (
+                    <div className="Card_Design_Parent3">
+                      {unvotedData?.map((item) => (
+                        <div className="New_Design_card">
+                          <div className="Card_img">
+                            <img src={item.image} alt="" />
+                          </div>
+                          <div className="Card_Details">
+                            <h3>ID : {item.designcode}</h3>
+                            <div className="Card_Details_Inner">
+                              <div className="Inner_Left">
+                                <p>{item.user_name}</p>
+                                <p>{item.created_at}</p>
+                                <span
+                                  style={{ color: "#23A064", fontSize: "13px" }}
+                                >
+                                  Track status :{" "}
+                                  <span
+                                    style={{ color: "black", fontSize: "12px" }}
+                                  >
+                                    {item?.currentstatus_track &&
+                                      item?.currentstatus_track[0]
+                                        ?.current_status}{" "}
+                                    {/* -
+                                {item?.currentstatus_track &&
+                                  formatDateTwo(
+                                    item?.currentstatus_track[0]?.date
+                                  )} */}
+                                  </span>
+                                </span>
+                              </div>
+                            </div>
+
+                            <div
+                              className=""
+                              style={{
+                                display: "flex",
+                                gap: "5px",
+                                width: "100%",
+                                justifyContent: "end",
+                              }}
+                            >
+                              <button
+                                style={{
+                                  padding: "7px 5px ",
+                                  borderRadius: "4px",
+                                  color: "white",
+                                  backgroundColor: "#0464D5",
+                                  border: "none",
+                                  fontSize: "13px",
+                                  fontWeight: "900",
+                                }}
+                                onClick={() =>
+                                  handleTrack(item, item.designcode)
+                                }
+                              >
+                                Track
+                              </button>
+                              <div className="Inner_Right">
+                                <p>
+                                  {item.likes_count} <img src={like} alt="" />
+                                </p>
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
+                  )}
+
+                  {tiles && (
+                    <div className="Card_Design_Parent2">
+                      {unvotedData?.map((item) => (
+                        <div className="New_Design_card_3">
+                          <div
+                            className=""
+                            style={{
+                              width: "100%",
+                              height: "70vh",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              cursor: "pointer",
+                            }}
+                          >
+                            <img
+                              style={{
+                                backgroundSize: "contain",
+                                width: "90%",
+                                height: "100%",
+                              }}
+                              src={item.image}
+                              alt=""
+                            />
+                          </div>
+                          <div className="Card_Details">
+                            <h3>ID : {item.designcode}</h3>
+                            <div className="Card_Details_Inner">
+                              <div className="Inner_Left">
+                                <p>{item.user_name}</p>
+                                <p>{item.created_at}</p>
+                                <span
+                                  style={{ color: "#23A064", fontSize: "13px" }}
+                                >
+                                  Track status :{" "}
+                                  <span
+                                    style={{ color: "black", fontSize: "12px" }}
+                                  >
+                                    {item?.currentstatus_track &&
+                                      item?.currentstatus_track[0]
+                                        ?.current_status}{" "}
+                                    {/* -
+                                {item?.currentstatus_track &&
+                                  formatDateTwo(
+                                    item?.currentstatus_track[0]?.date
+                                  )} */}
+                                  </span>
+                                </span>
+                              </div>
+                            </div>
+
+                            <div
+                              className=""
+                              style={{
+                                display: "flex",
+                                gap: "5px",
+                                width: "100%",
+                                justifyContent: "end",
+                              }}
+                            >
+                              <button
+                                style={{
+                                  padding: "7px 5px ",
+                                  borderRadius: "4px",
+                                  color: "white",
+                                  backgroundColor: "#0464D5",
+                                  border: "none",
+                                  fontSize: "13px",
+                                  fontWeight: "900",
+                                }}
+                                onClick={() =>
+                                  handleTrack(item, item.designcode)
+                                }
+                              >
+                                Track
+                              </button>
+                              <div className="Inner_Right">
+                                <p>
+                                  {item.likes_count} <img src={like} alt="" />
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </>
               </div>
             </TabPanel>
           </TabContext>

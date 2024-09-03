@@ -78,6 +78,7 @@ const BasicDetailModal = ({
   setFolderDetailsView,
   detailId,
   Data,
+  unvotedData
 }) => {
   // create modal
 
@@ -550,6 +551,13 @@ const BasicDetailModal = ({
     getSelectedDesign.includes(item.designcode)
   );
 
+  const filteredUvoted = unvotedData?.filter((item) =>
+    getSelectedDesign.includes(item.designcode)
+  );
+
+
+  console.log(filteredData,"filteredData")
+
   // const [selectedValue, setSelectedValue] = useState(null);
   // const [selectedLabel, setSelectedLabel] = useState(null);
 
@@ -665,6 +673,54 @@ const BasicDetailModal = ({
             <Box sx={style}>
               <div className="modal_card_images">
                 {filteredData?.map((item, index) => (
+                  <>
+                    <div
+                      className="New_Design_card"
+                      key={item.id}
+                      style={{ width: "250px" }}
+                    >
+                      <div
+                        className="Card_img"
+                        style={{
+                          marginTop: "12px",
+                          height: "170px",
+                          cursor: "pointer",
+                        }}
+                      >
+                        <img
+                          src={item.image}
+                          alt="image"
+                          // onClick={() => OpenAnntaitionmodal(item)}
+                        />
+                      </div>
+                      <div className="Card_Details">
+                        <h3>ID : {item.designcode}</h3>
+                        <div className="Card_Details_Inner">
+                          <div className="Inner_Left">
+                            <p>{item.user_name}</p>
+                            <p>{item.created_at}</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        className=""
+                        style={{
+                          display: "flex",
+                          justifyContent: "end",
+                          width: "100%",
+                          alignItems: "end",
+                        }}
+                      >
+                        <div className="Inner_Right" style={{ width: "50px" }}>
+                          <p style={{ color: "white", fontSize: "12px" }}>
+                            {item?.likes_count} <img src={like} alt="" />
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                ))}
+                { filteredData?.length === 0 && filteredUvoted?.map((item, index) => (
                   <>
                     <div
                       className="New_Design_card"
