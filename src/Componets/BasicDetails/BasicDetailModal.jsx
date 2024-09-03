@@ -79,7 +79,7 @@ const BasicDetailModal = ({
   detailId,
   Data,
   unvotedData,
-  setUnvotedData
+  setUnvotedData,
 }) => {
   // create modal
 
@@ -100,8 +100,16 @@ const BasicDetailModal = ({
   const [successModalOpen, setSuccessModalOpen] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [SelectedMetalId, setSelectedMetalId] = useState( localStorage.getItem("selectedMetalType") ?  localStorage.getItem("selectedMetalType") : []);
-  const [SelectedDiamondId, setSelectedDiamondId] = useState( localStorage.getItem("selectedDiamondType") ?  localStorage.getItem("selectedDiamondType") : []);
+  const [SelectedMetalId, setSelectedMetalId] = useState(
+    localStorage.getItem("selectedMetalType")
+      ? localStorage.getItem("selectedMetalType")
+      : []
+  );
+  const [SelectedDiamondId, setSelectedDiamondId] = useState(
+    localStorage.getItem("selectedDiamondType")
+      ? localStorage.getItem("selectedDiamondType")
+      : []
+  );
   const [CalculationData, setCalculationData] = useState([]);
   const [MovedItemsId, setMovedItemsId] = useState([]);
   const [IsLoadingCalculation, setIsLoadingCalculation] = useState(false);
@@ -557,8 +565,7 @@ const BasicDetailModal = ({
     getSelectedDesign.includes(item.designcode)
   );
 
-
-  console.log(filteredData,"filteredData")
+  console.log(filteredData, "filteredData");
 
   // const [selectedValue, setSelectedValue] = useState(null);
   // const [selectedLabel, setSelectedLabel] = useState(null);
@@ -605,17 +612,21 @@ const BasicDetailModal = ({
   // console.log("filterData", filterData);
   // console.log("selectedLabel", selectedLabel);
   // console.log(filterData,"filterData")
-  const metalValue = localStorage.getItem("selectedMetalType")
-  const [selectedValue, setSelectedValue] = useState( metalValue || null);
+  const metalValue = localStorage.getItem("selectedMetalType");
+  const [selectedValue, setSelectedValue] = useState(metalValue || null);
   const [selectedLabel, setSelectedLabel] = useState(null);
 
   const [selectedDiamond, setSelectedDiamond] = useState(null);
   const [selectedLabelDiamond, setSelectedLabelDiamond] = useState(null);
 
   useEffect(() => {
-    const storedIdDiamond = Number(basicDetails?.diamond_type) || Number(localStorage.getItem("selectedDiamondType"));
+    const storedIdDiamond =
+      Number(basicDetails?.diamond_type) ||
+      Number(localStorage.getItem("selectedDiamondType"));
     if (storedIdDiamond) {
-      const matchedItem = diamonType.find((item) => item.id === storedIdDiamond);
+      const matchedItem = diamonType.find(
+        (item) => item.id === storedIdDiamond
+      );
       if (matchedItem) {
         setSelectedDiamond(storedIdDiamond);
         setSelectedLabelDiamond(matchedItem.name);
@@ -626,12 +637,16 @@ const BasicDetailModal = ({
       }
     }
   }, [diamonType, basicDetails, localStorage.getItem("selectedDiamondType")]);
-  
+
   // Effect to set metal type from localStorage or basicDetails
   useEffect(() => {
-    const storedId = Number(basicDetails?.type_of_metal) || Number(localStorage.getItem("selectedMetalType"));
+    const storedId =
+      Number(basicDetails?.type_of_metal) ||
+      Number(localStorage.getItem("selectedMetalType"));
     if (storedId) {
-      const matchedItem = metalTypeDropDown.find((item) => item.id === storedId);
+      const matchedItem = metalTypeDropDown.find(
+        (item) => item.id === storedId
+      );
       if (matchedItem) {
         setSelectedValue(storedId);
         setSelectedLabel(matchedItem.metal_name);
@@ -641,9 +656,13 @@ const BasicDetailModal = ({
         }));
       }
     }
-  }, [metalTypeDropDown, basicDetails, localStorage.getItem("selectedMetalType")]);
+  }, [
+    metalTypeDropDown,
+    basicDetails,
+    localStorage.getItem("selectedMetalType"),
+  ]);
 
-  console.log(SelectedDiamondId,"SelectedDiamondId")
+  console.log(SelectedDiamondId, "SelectedDiamondId");
 
   return (
     <div>
@@ -713,54 +732,58 @@ const BasicDetailModal = ({
                     </div>
                   </>
                 ))}
-                { filteredData?.length === 0 && filteredUvoted?.map((item, index) => (
-                  <>
-                    <div
-                      className="New_Design_card"
-                      key={item.id}
-                      style={{ width: "250px" }}
-                    >
+                {filteredData?.length === 0 &&
+                  filteredUvoted?.map((item, index) => (
+                    <>
                       <div
-                        className="Card_img"
-                        style={{
-                          marginTop: "12px",
-                          height: "170px",
-                          cursor: "pointer",
-                        }}
+                        className="New_Design_card"
+                        key={item.id}
+                        style={{ width: "250px" }}
                       >
-                        <img
-                          src={item.image}
-                          alt="image"
-                          // onClick={() => OpenAnntaitionmodal(item)}
-                        />
-                      </div>
-                      <div className="Card_Details">
-                        <h3>ID : {item.designcode}</h3>
-                        <div className="Card_Details_Inner">
-                          <div className="Inner_Left">
-                            <p>{item.user_name}</p>
-                            <p>{item.created_at}</p>
+                        <div
+                          className="Card_img"
+                          style={{
+                            marginTop: "12px",
+                            height: "170px",
+                            cursor: "pointer",
+                          }}
+                        >
+                          <img
+                            src={item.image}
+                            alt="image"
+                            // onClick={() => OpenAnntaitionmodal(item)}
+                          />
+                        </div>
+                        <div className="Card_Details">
+                          <h3>ID : {item.designcode}</h3>
+                          <div className="Card_Details_Inner">
+                            <div className="Inner_Left">
+                              <p>{item.user_name}</p>
+                              <p>{item.created_at}</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          className=""
+                          style={{
+                            display: "flex",
+                            justifyContent: "end",
+                            width: "100%",
+                            alignItems: "end",
+                          }}
+                        >
+                          <div
+                            className="Inner_Right"
+                            style={{ width: "50px" }}
+                          >
+                            <p style={{ color: "white", fontSize: "12px" }}>
+                              {item?.likes_count} <img src={like} alt="" />
+                            </p>
                           </div>
                         </div>
                       </div>
-                      <div
-                        className=""
-                        style={{
-                          display: "flex",
-                          justifyContent: "end",
-                          width: "100%",
-                          alignItems: "end",
-                        }}
-                      >
-                        <div className="Inner_Right" style={{ width: "50px" }}>
-                          <p style={{ color: "white", fontSize: "12px" }}>
-                            {item?.likes_count} <img src={like} alt="" />
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </>
-                ))}
+                    </>
+                  ))}
               </div>
               <Typography className="modal_edit_section">
                 <div className="container">
@@ -940,36 +963,38 @@ const BasicDetailModal = ({
                           Type of metal
                         </label>
                         <Select
-  showSearch
-  placeholder={selectedLabel || "-Select-"}
-  optionFilterProp="children"
-  value={selectedValue}
-  onChange={(value) => {
-    const selectedItem = metalTypeDropDown.find((item) => item.id === value);
-    if (selectedItem) {
-      setSelectedValue(value);
-      setSelectedLabel(selectedItem.metal_name);
-    }
-    setFormData((prevState) => ({
-      ...prevState,
-      typeOfMetal: [value],
-    }));
-    setSelectedMetalId(value);
-    localStorage.setItem("selectedMetalType", value);
-  }}
-  onSearch={onSearch}
-  filterOption={filterOption}
-  style={{
-    width: "100%",
-    zIndex: 9999999,
-    background: "#006E7F1A",
-    cursor: "pointer",
-  }}
-  options={metalTypeDropDown.map((item) => ({
-    value: item.id,
-    label: item.metal_name,
-  }))}
-/>
+                          showSearch
+                          placeholder={selectedLabel || "-Select-"}
+                          optionFilterProp="children"
+                          value={selectedValue}
+                          onChange={(value) => {
+                            const selectedItem = metalTypeDropDown.find(
+                              (item) => item.id === value
+                            );
+                            if (selectedItem) {
+                              setSelectedValue(value);
+                              setSelectedLabel(selectedItem.metal_name);
+                            }
+                            setFormData((prevState) => ({
+                              ...prevState,
+                              typeOfMetal: [value],
+                            }));
+                            setSelectedMetalId(value);
+                            localStorage.setItem("selectedMetalType", value);
+                          }}
+                          onSearch={onSearch}
+                          filterOption={filterOption}
+                          style={{
+                            width: "100%",
+                            zIndex: 9999999,
+                            background: "#006E7F1A",
+                            cursor: "pointer",
+                          }}
+                          options={metalTypeDropDown.map((item) => ({
+                            value: item.id,
+                            label: item.metal_name,
+                          }))}
+                        />
                         <div>
                           {errors.typeOfMetal && (
                             <span className="error_input_p">
@@ -983,36 +1008,38 @@ const BasicDetailModal = ({
                           Diamond Type
                         </label>
                         <Select
-  showSearch
-  placeholder={selectedLabelDiamond || "-Select-"}
-  optionFilterProp="children"
-  value={selectedDiamond}
-  onChange={(value) => {
-    const selectedItem = diamonType.find((item) => item.id === value);
-    if (selectedItem) {
-      setSelectedDiamond(value);
-      setSelectedLabelDiamond(selectedItem.name);
-    }
-    setFormData((prevState) => ({
-      ...prevState,
-      diamondType: [value],
-    }));
-    setSelectedDiamondId(value);
-    localStorage.setItem("selectedDiamondType", value);
-  }}
-  onSearch={onSearch}
-  filterOption={filterOption}
-  style={{
-    width: "100%",
-    zIndex: 999999999,
-    background: "#006E7F1A",
-    cursor: "pointer",
-  }}
-  options={diamonType.map((item) => ({
-    value: item.id,
-    label: item.name,
-  }))}
-/>
+                          showSearch
+                          placeholder={selectedLabelDiamond || "-Select-"}
+                          optionFilterProp="children"
+                          value={selectedDiamond}
+                          onChange={(value) => {
+                            const selectedItem = diamonType.find(
+                              (item) => item.id === value
+                            );
+                            if (selectedItem) {
+                              setSelectedDiamond(value);
+                              setSelectedLabelDiamond(selectedItem.name);
+                            }
+                            setFormData((prevState) => ({
+                              ...prevState,
+                              diamondType: [value],
+                            }));
+                            setSelectedDiamondId(value);
+                            localStorage.setItem("selectedDiamondType", value);
+                          }}
+                          onSearch={onSearch}
+                          filterOption={filterOption}
+                          style={{
+                            width: "100%",
+                            zIndex: 999999999,
+                            background: "#006E7F1A",
+                            cursor: "pointer",
+                          }}
+                          options={diamonType.map((item) => ({
+                            value: item.id,
+                            label: item.name,
+                          }))}
+                        />
                         <div>
                           {errors.diamondType && (
                             <span className="error_input_p">
