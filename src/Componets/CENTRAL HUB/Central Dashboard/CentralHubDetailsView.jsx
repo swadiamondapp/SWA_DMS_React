@@ -49,7 +49,10 @@ const CentralHubDetailsView = ({ CentralFolderDetails, sidebarExpanded }) => {
   //     .catch((error) => console.error("Error downloading the image:", error));
   // };
 
-  const handleDownload = (imageUrl, fileName = "downloaded_file") => {
+  const handleDownload = (imageUrl, fileName = "downloaded_file", code) => {
+  
+    const fullFileName = code ? `${code}_${fileName}` : fileName;
+  
     fetch(imageUrl, {
       method: "GET",
       mode: "cors",
@@ -59,13 +62,15 @@ const CentralHubDetailsView = ({ CentralFolderDetails, sidebarExpanded }) => {
         const blobUrl = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = blobUrl;
-        link.download = fileName;
+        link.download = fullFileName; 
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+        URL.revokeObjectURL(blobUrl);
       })
       .catch((error) => console.error("Error downloading the file:", error));
   };
+  
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -112,13 +117,14 @@ const CentralHubDetailsView = ({ CentralFolderDetails, sidebarExpanded }) => {
                       className=""
                       style={{
                         display: "flex",
-                        gap: "5px",
+                        // gap: "px",
                         justifyContent: "space-between",
                         width: "100%",
+                        alignItems:"center"
                       }}
                     >
-                      <span style={{ color: "#23A064" }}>Status :</span>
-                      <span>{item.current_status || ""}</span>
+                      <span style={{ color: "#23A064",fontSize:"13px" }}>Status :</span>
+                      <span  style={{fontSize:"13px" }}>{item.current_status[0]?.current_status || ""}</span>
 
                       <button
                         style={{
@@ -139,7 +145,7 @@ const CentralHubDetailsView = ({ CentralFolderDetails, sidebarExpanded }) => {
                     <button
                       className="Download_btn_hub"
                       onClick={() =>
-                        handleDownload(item.file_2d, "image_2d.jpg")
+                        handleDownload(item.file_2d, "image_2d.jpg",item.designcode)
                       }
                     >
                       DOWNLOAD
@@ -182,7 +188,7 @@ const CentralHubDetailsView = ({ CentralFolderDetails, sidebarExpanded }) => {
                     </button> */}
                     <button
                       className="Download_btn_hub"
-                      onClick={() => handleDownload(item.file_3d, "model_3d.3dm")}
+                      onClick={() => handleDownload(item.file_3d, "model_3d.3dm",item.designcode)}
                     >
                       DOWNLOAD
                       <GoDownload />

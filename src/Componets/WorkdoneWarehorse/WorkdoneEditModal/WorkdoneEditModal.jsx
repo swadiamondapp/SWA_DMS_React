@@ -35,7 +35,7 @@ const WorkdoneEditModal = ({
     approx_diamond_weight: "",
     findings: [],
     approx_metal_weight: "",
-    // approx_mrp:"",
+    actual_price:"",
     tag: [],
     notes: "",
   });
@@ -111,7 +111,7 @@ const WorkdoneEditModal = ({
       !formData.approx_diamond_weight ||
       !formData.findings ||
       !formData.approx_metal_weight ||
-      // !formData.approx_mrp ||
+      !formData.actual_price ||
       !formData.tag ||
       !formData.notes
     ) {
@@ -418,13 +418,13 @@ const WorkdoneEditModal = ({
                   />
                 </div>
                 <div className="workdone_modal">
-                  <span>Approx mrp</span>
+                  <span>Actual Mrp</span>
                   <input
                   style={{background:"white",padding:"6px 0px"}}
                     type="number"
                     onChange={handleInput}
-                    value={formData.approx_mrp}
-                    name="approx_mrp"
+                    value={formData.actual_price}
+                    name="actual_price"
                     onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
                     required
                   />

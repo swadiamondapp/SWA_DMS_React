@@ -144,8 +144,8 @@ const BasicDetailModal = ({
         length: basicDetails.length || "",
         width: basicDetails.width || "",
         height: basicDetails.height || "",
-        typeOfMetal: basicDetails.type_of_metal || "",
-        diamondType: basicDetails.diamond_type || "",
+        typeOfMetal: SelectedMetalId || basicDetails.type_of_metal || "",
+        diamondType: SelectedDiamondId || basicDetails.diamond_type || "",        
         approxDiamondWeight: basicDetails.approx_diamond_weight || "",
         findings: basicDetails.findings || "",
         approxMetalWeights: basicDetails
@@ -185,16 +185,16 @@ const BasicDetailModal = ({
     height: Joi.string().required().messages({
       "string.empty": `cannot be empty`,
     }),
-    typeOfMetal: Joi.array().min(1).required().messages({
-      "array.base": "cannot be empty",
-      "array.empty": "Product category cannot be empty",
-      "array.min": "Product category cannot be empty",
-    }),
-    diamondType: Joi.array().min(1).required().messages({
-      "array.base": "cannot be empty",
-      "array.empty": "Product category cannot be empty",
-      "array.min": "Product category cannot be empty",
-    }),
+    // typeOfMetal: Joi.array().min(1).required().messages({
+    //   "array.base": "cannot be empty",
+    //   "array.empty": "Product category cannot be empty",
+    //   "array.min": "Product category cannot be empty",
+    // }),
+    // diamondType: Joi.array().min(1).required().messages({
+    //   "array.base": "cannot be empty",
+    //   "array.empty": "Product category cannot be empty",
+    //   "array.min": "Product category cannot be empty",
+    // }),
     approxDiamondWeight: Joi.alternatives()
       .try(
         Joi.number().custom((value, helpers) => {
@@ -531,6 +531,19 @@ const BasicDetailModal = ({
     }
   }, [MovedItemsId]);
 
+  useEffect(() => {
+    if (
+      formData.approxMetalWeights &&
+      formData.approxDiamondWeight &&
+      SelectedDiamondId &&
+      SelectedMetalId
+    ) {
+      CalculateApproxAmount();
+    }
+  }, [SelectedDiamondId, SelectedMetalId, formData.approxMetalWeights, formData.approxDiamondWeight]);
+
+
+
   const handleCLoseButton = () => {
     onClose();
     setSelectedDesigns([]);
@@ -613,10 +626,10 @@ const BasicDetailModal = ({
   // console.log("selectedLabel", selectedLabel);
   // console.log(filterData,"filterData")
   const metalValue = localStorage.getItem("selectedMetalType");
-  const [selectedValue, setSelectedValue] = useState(metalValue || null);
+  const [selectedValue, setSelectedValue] = useState([]);
   const [selectedLabel, setSelectedLabel] = useState(null);
 
-  const [selectedDiamond, setSelectedDiamond] = useState(null);
+  const [selectedDiamond, setSelectedDiamond] = useState([]);
   const [selectedLabelDiamond, setSelectedLabelDiamond] = useState(null);
 
   useEffect(() => {
@@ -662,7 +675,11 @@ const BasicDetailModal = ({
     localStorage.getItem("selectedMetalType"),
   ]);
 
-  console.log(SelectedDiamondId, "SelectedDiamondId");
+  useEffect(() => {
+    console.log("SelectedDiamondId:", SelectedDiamondId);
+    console.log("SelectedMetalId:", SelectedMetalId);
+  }, [SelectedDiamondId, SelectedMetalId]);
+
 
   return (
     <div>
@@ -702,7 +719,7 @@ const BasicDetailModal = ({
                         <img
                           src={item.image}
                           alt="image"
-                          // onClick={() => OpenAnntaitionmodal(item)}
+                        // onClick={() => OpenAnntaitionmodal(item)}
                         />
                       </div>
                       <div className="Card_Details">
@@ -751,7 +768,7 @@ const BasicDetailModal = ({
                           <img
                             src={item.image}
                             alt="image"
-                            // onClick={() => OpenAnntaitionmodal(item)}
+                          // onClick={() => OpenAnntaitionmodal(item)}
                           />
                         </div>
                         <div className="Card_Details">
@@ -968,39 +985,27 @@ const BasicDetailModal = ({
                           optionFilterProp="children"
                           value={selectedValue}
                           onChange={(value) => {
-                            const selectedItem = metalTypeDropDown.find(
-                              (item) => item.id === value
-                            );
+                            const selectedItem = metalTypeDropDown.find(item => item.id === value);
                             if (selectedItem) {
                               setSelectedValue(value);
                               setSelectedLabel(selectedItem.metal_name);
+                              setFormData(prevState => ({ ...prevState, typeOfMetal: [value] }));
+                              setSelectedMetalId(value); // Ensure this updates correctly
+                              localStorage.setItem("selectedMetalType", value);
                             }
-                            setFormData((prevState) => ({
-                              ...prevState,
-                              typeOfMetal: [value],
-                            }));
-                            setSelectedMetalId(value);
-                            localStorage.setItem("selectedMetalType", value);
                           }}
                           onSearch={onSearch}
                           filterOption={filterOption}
-                          style={{
-                            width: "100%",
-                            zIndex: 9999999,
-                            background: "#006E7F1A",
-                            cursor: "pointer",
-                          }}
-                          options={metalTypeDropDown.map((item) => ({
-                            value: item.id,
-                            label: item.metal_name,
-                          }))}
+                          style={{ width: "100%", zIndex: 9999999, background: "#006E7F1A", cursor: "pointer" }}
+                          options={metalTypeDropDown.map(item => ({ value: item.id, label: item.metal_name }))}
                         />
+
                         <div>
-                          {errors.typeOfMetal && (
+                          {errors.typeOfMetal || !SelectedMetalId || !selectedValue ? (
                             <span className="error_input_p">
-                              {errors.typeOfMetal}
+                              {errors.typeOfMetal || "Metal Type cannot be empty"}
                             </span>
-                          )}
+                          ) : null}
                         </div>
                       </div>
                       <div className="select_field">
@@ -1013,32 +1018,19 @@ const BasicDetailModal = ({
                           optionFilterProp="children"
                           value={selectedDiamond}
                           onChange={(value) => {
-                            const selectedItem = diamonType.find(
-                              (item) => item.id === value
-                            );
+                            const selectedItem = diamonType.find(item => item.id === value);
                             if (selectedItem) {
                               setSelectedDiamond(value);
                               setSelectedLabelDiamond(selectedItem.name);
+                              setFormData(prevState => ({ ...prevState, diamondType: [value] }));
+                              setSelectedDiamondId(value); // Ensure this updates correctly
+                              localStorage.setItem("selectedDiamondType", value);
                             }
-                            setFormData((prevState) => ({
-                              ...prevState,
-                              diamondType: [value],
-                            }));
-                            setSelectedDiamondId(value);
-                            localStorage.setItem("selectedDiamondType", value);
                           }}
                           onSearch={onSearch}
                           filterOption={filterOption}
-                          style={{
-                            width: "100%",
-                            zIndex: 999999999,
-                            background: "#006E7F1A",
-                            cursor: "pointer",
-                          }}
-                          options={diamonType.map((item) => ({
-                            value: item.id,
-                            label: item.name,
-                          }))}
+                          style={{ width: "100%", zIndex: 999999999, background: "#006E7F1A", cursor: "pointer" }}
+                          options={diamonType.map(item => ({ value: item.id, label: item.name }))}
                         />
                         <div>
                           {errors.diamondType && (
@@ -1046,6 +1038,11 @@ const BasicDetailModal = ({
                               {errors.diamondType}
                             </span>
                           )}
+                           {errors.diamondType || !SelectedDiamondId || !selectedDiamond ? (
+                            <span className="error_input_p">
+                              {errors.diamondType || "Diamond Type cannot be empty"}
+                            </span>
+                          ) : null}
                         </div>
                       </div>
                     </div>
