@@ -508,10 +508,10 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
                                             item?.status_track[0]
                                               ?.current_status
                                           }{" "}
-                                          -
+                                          {/* -
                                           {formatDateTwo(
                                             item?.status_track[0]?.date
-                                          )}
+                                          )} */}
                                         </span>
                                       </span>
                                     </div>
