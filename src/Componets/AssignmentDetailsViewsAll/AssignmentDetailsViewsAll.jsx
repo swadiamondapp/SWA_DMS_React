@@ -141,7 +141,7 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
   const productCode = itemDetails?.designcode || "";
   // const designCode = itemDetails?.paper_design?.designcode || detailsViewFolderName ;
 
-  console.log(page, "pageeeee");
+  // console.log(page, "pageeeee");
 
   const handleEditBasicDetails = () => {
     setIsOpen(true);
