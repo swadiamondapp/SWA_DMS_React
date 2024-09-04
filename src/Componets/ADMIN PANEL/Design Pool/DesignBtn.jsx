@@ -74,7 +74,8 @@ const DesignBtn = ({
   handleSelectAll,
   showRadioButtons,
   unvotedData,
-  selectedDesigns
+  selectedDesigns,
+  setUnvotedData
 }) => {
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -523,6 +524,7 @@ const DesignBtn = ({
         setSelectedIdsForDelet={setSelectedIdsForDelet}
         Data={Data}
         unvotedData={unvotedData}
+        setUnvotedData={setUnvotedData}
       />
       <AssignToModal
         open={isModalOpenAssign}

@@ -281,11 +281,11 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
                                 <span
                                   style={{ color: "black", fontSize: "12px" }}
                                 >
-                                  {item?.currentstatus_track[0]?.current_status}{" "}
-                                  {formatDateTwo(
+                                  {item?.currentstatus_track[0] && item?.currentstatus_track[0]?.current_status}
+                                  </span>
+                                  {/* {formatDateTwo(
                                     item?.currentstatus_track[0]?.date
-                                  )}
-                                </span>
+                                  )} */}
                               </span>
                             </div>
                             <span

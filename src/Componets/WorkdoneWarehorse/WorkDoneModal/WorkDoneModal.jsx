@@ -47,7 +47,7 @@ const WorkDoneModal = ({ setOpen, clickedProductId }) => {
     setOpen(false);
   };
 
-  console.log("products", clickedProducts);
+  console.log("products",basicDetails);
   console.log("basic", clickedProducts[0]?.productID);
 
   return (
@@ -243,17 +243,17 @@ const WorkDoneModal = ({ setOpen, clickedProductId }) => {
                   </>
                 </div>
                 <div className="workdone_modal">
+                  <span className="workdone_modal_span1">Approx mrp </span>
+                  <span className="workdone_modal_span2">
+                    {product?.approx_price} 
+                  </span>
+                </div>
+                <div className="workdone_modal">
                   <span className="workdone_modal_span1">Approx weight</span>
                   <span className="workdone_modal_span2">
                     {product?.approx_metal_weight} ct
                   </span>
                 </div>
-                {/* <div className="workdone_modal">
-                  <span className="workdone_modal_span1">Approx mrp</span>
-                  <span className="workdone_modal_span2">
-                    {product?.approx_metal_weight} ct
-                  </span>
-                </div> */}
                 <div className="workdone_modal">
                   <>
                     <span className="workdone_modal_span1">Tags</span>
@@ -264,6 +264,7 @@ const WorkDoneModal = ({ setOpen, clickedProductId }) => {
                     </div>
                   </>
                 </div>
+                  
                 <div
                   className="workdone_modal"
                   style={{ borderBottom: "none" }}

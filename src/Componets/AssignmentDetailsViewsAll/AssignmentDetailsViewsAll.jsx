@@ -103,7 +103,11 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
     rendersDetailByCode(setIsLoading, setRendesrDetail, detailsViewFolderName);
   }, [id, detailsViewFolderName]);
 
-  const handleDownload = (imageUrl, fileName = "downloaded_file") => {
+  const handleDownload = (imageUrl, fileName = "downloaded_file", detailsViewFolderName = "") => {
+    const sanitizedFolderName = detailsViewFolderName 
+    
+    const fullFileName = `${sanitizedFolderName}_${fileName}` 
+  
     fetch(imageUrl, {
       method: "GET",
       mode: "cors",
@@ -113,13 +117,14 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
         const blobUrl = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = blobUrl;
-        link.download = fileName;
+        link.download = fullFileName; // Use the combined file name
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
       })
       .catch((error) => console.error("Error downloading the file:", error));
   };
+  
 
   useEffect(() => {
     if (folderDetailView) {
@@ -394,7 +399,7 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
                     <button
                       className="Download_btn_hub"
                       onClick={() =>
-                        handleDownload(cardDatas[0]?.file_2d, "image_2d.jpg")
+                        handleDownload(cardDatas[0]?.file_2d, "image_2d.jpg",detailsViewFolderName)
                       }
                     >
                       DOWNLOAD
@@ -495,7 +500,7 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
                     <button
                       className="Download_btn_hub"
                       onClick={() =>
-                        handleDownload(cardDatas[0]?.file_3d, "model_3d.3dm")
+                        handleDownload(cardDatas[0]?.file_3d, "model_3d.3dm",detailsViewFolderName)
                       }
                       style={{ background: "#126E72" }}
                     >

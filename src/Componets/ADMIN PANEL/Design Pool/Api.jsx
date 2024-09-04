@@ -55,34 +55,32 @@ export const designPoolSearchById = async (searchListId, setData) => {
   }
 };
 
-export const centralHubSearchById = async (searchListId, setFolders ,setIsLoading) => {
+export const centralHubSearchById = async (searchListId) => {
   try {
-    setIsLoading(true)
+    // setIsLoading(true)
     // console.log(searchListId,"searchListId3")
-    if (searchListId === "") {
-      console.log(searchListId,"searchListId4")
-      const response = await apiService.get(
-        `${LIST_CENTRAL_FOLDERS}`
-      );
-      if (response.data.results.status_code === 200) {
-        setFolders(response.data.results.data);
-      }
-    } 
-    else {
+    // if (searchListId === "") {
+    //   console.log(searchListId,"searchListId4")
+    //   const response = await apiService.get(
+    //     `${LIST_CENTRAL_FOLDERS}`
+    //   );
+    //   if (response.data.results.status_code === 200) {
+    //     setFolders.current = response.data.results.data;
+    //   }
+    // }
+    // else {
       console.log(searchListId,"searchListId5")
       const res = await  apiService.get(
         `${CENTRALHUB_SEARCH}${searchListId}`
       );
       if (res.data.results.status_code === 200) {
-        console.log(res,"res--")
-        console.log(searchListId,"searchListId--")
-        setFolders(res?.data?.results?.data);
-      }
-    }
+        // console.log(res,"res--")
+        // console.log(searchListId,"searchListId--")
+        return res.data.results.data
+        }
+    // }
   } catch (error) {
     console.log(error);
-  }finally{
-    setIsLoading(false)
   }
 };
 
