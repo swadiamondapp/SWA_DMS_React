@@ -104,10 +104,10 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
   }, [id, detailsViewFolderName]);
 
   const handleDownload = (imageUrl, fileName = "downloaded_file", detailsViewFolderName = "") => {
-    const sanitizedFolderName = detailsViewFolderName 
-    
-    const fullFileName = `${sanitizedFolderName}_${fileName}` 
-  
+    const sanitizedFolderName = detailsViewFolderName
+
+    const fullFileName = `${sanitizedFolderName}_${fileName}`
+
     fetch(imageUrl, {
       method: "GET",
       mode: "cors",
@@ -124,7 +124,7 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
       })
       .catch((error) => console.error("Error downloading the file:", error));
   };
-  
+
 
   useEffect(() => {
     if (folderDetailView) {
@@ -326,7 +326,6 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
   const file3dStatus = cardDatas && cardDatas[0]?.file3d_status;
   const file2dStatus = cardDatas && cardDatas[0]?.file2d_status;
 
- 
 
   return (
     <div>
@@ -390,7 +389,7 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
                     <img
                       src={cardDatas[0]?.file_2d}
                       alt=""
-                      // onClick={() => handleForlderDetailsVeiw(item.id, item.designcode)}
+                    // onClick={() => handleForlderDetailsVeiw(item.id, item.designcode)}
                     />
                     <span>
                       POSTED ON:
@@ -399,7 +398,7 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
                     <button
                       className="Download_btn_hub"
                       onClick={() =>
-                        handleDownload(cardDatas[0]?.file_2d, "image_2d.jpg",detailsViewFolderName)
+                        handleDownload(cardDatas[0]?.file_2d, "image_2d.jpg", detailsViewFolderName)
                       }
                     >
                       DOWNLOAD
@@ -414,21 +413,20 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
                             file2dStatus === "Approved"
                               ? "#23A064"
                               : file2dStatus === "Rejected"
-                              ? "red"
-                              : "#0464D5",
-                          border: `1px solid ${
-                            file2dStatus === "Approved"
+                                ? "red"
+                                : "#0464D5",
+                          border: `1px solid ${file2dStatus === "Approved"
                               ? "#23A064"
                               : file2dStatus === "Rejected"
-                              ? "#FA3838"
-                              : "#0464D5"
-                          }`,
+                                ? "#FA3838"
+                                : "#0464D5"
+                            }`,
                           background:
                             file2dStatus === "Approved"
                               ? "#23A0641A"
                               : file2dStatus === "Rejected"
-                              ? "#FA38381A"
-                              : "#0464D51A",
+                                ? "#FA38381A"
+                                : "#0464D51A",
                           width: "auto",
                           borderRadius: "32px",
                           fontWeight: "600",
@@ -461,21 +459,20 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
                             file2d_status === "Approved"
                               ? "#23A064"
                               : file2d_status === "Rejected"
-                              ? "red"
-                              : "#0464D5",
-                          border: `1px solid ${
-                            file2d_status === "Approved"
+                                ? "red"
+                                : "#0464D5",
+                          border: `1px solid ${file2d_status === "Approved"
                               ? "#23A064"
                               : file2d_status === "Rejected"
-                              ? "#FA3838"
-                              : "#0464D5"
-                          }`,
+                                ? "#FA3838"
+                                : "#0464D5"
+                            }`,
                           background:
                             file2d_status === "Approved"
                               ? "#23A0641A"
                               : file2d_status === "Rejected"
-                              ? "#FA38381A"
-                              : "#0464D51A",
+                                ? "#FA38381A"
+                                : "#0464D51A",
                           borderRadius: "32px",
                           fontWeight: "600",
                           marginTop: "13px",
@@ -500,7 +497,7 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
                     <button
                       className="Download_btn_hub"
                       onClick={() =>
-                        handleDownload(cardDatas[0]?.file_3d, "model_3d.3dm",detailsViewFolderName)
+                        handleDownload(cardDatas[0]?.file_3d, "model_3d.3dm", detailsViewFolderName)
                       }
                       style={{ background: "#126E72" }}
                     >
@@ -529,21 +526,20 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
                             file3d_status === "Approved"
                               ? "#23A064"
                               : file3d_status === "Rejected"
-                              ? "red"
-                              : "#0464D5",
-                          border: `1px solid ${
-                            file3d_status === "Approved"
+                                ? "red"
+                                : "#0464D5",
+                          border: `1px solid ${file3d_status === "Approved"
                               ? "#23A064"
                               : file3d_status === "Rejected"
-                              ? "#FA3838"
-                              : "#0464D5"
-                          }`,
+                                ? "#FA3838"
+                                : "#0464D5"
+                            }`,
                           background:
                             file3d_status === "Approved"
                               ? "#23A0641A"
                               : file3d_status === "Rejected"
-                              ? "#FA38381A"
-                              : "#0464D51A",
+                                ? "#FA38381A"
+                                : "#0464D51A",
                           width: "auto",
                           borderRadius: "32px",
                           fontWeight: "600",
@@ -563,21 +559,20 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
                             file3dStatus === "Approved"
                               ? "#23A064"
                               : file3dStatus === "Rejected"
-                              ? "red"
-                              : "#0464D5",
-                          border: `1px solid ${
-                            file3dStatus === "Approved"
+                                ? "red"
+                                : "#0464D5",
+                          border: `1px solid ${file3dStatus === "Approved"
                               ? "#23A064"
                               : file3dStatus === "Rejected"
-                              ? "#FA3838"
-                              : "#0464D5"
-                          }`,
+                                ? "#FA3838"
+                                : "#0464D5"
+                            }`,
                           background:
                             file3dStatus === "Approved"
                               ? "#23A0641A"
                               : file3dStatus === "Rejected"
-                              ? "#FA38381A"
-                              : "#0464D51A",
+                                ? "#FA38381A"
+                                : "#0464D51A",
                           width: "auto",
                           borderRadius: "32px",
                           fontWeight: "600",
@@ -610,16 +605,18 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
               >
                 <h3>Basic details</h3>
 
-                <button
-                  className="btn_scan"
-                  onClick={() => handleEditBasicDetails()}
-                >
-                  <MdOutlineEdit
-                    style={{ color: "#0464D5" }}
-                    className="btn_scan_img1"
-                  />{" "}
-                  <span>Edit Details</span>
-                </button>
+                { page !== "renders" && (
+                  <button
+                    className="btn_scan"
+                    onClick={() => handleEditBasicDetails()}
+                  >
+                    <MdOutlineEdit
+                      style={{ color: "#0464D5" }}
+                      className="btn_scan_img1"
+                    />{" "}
+                    <span>Edit Details</span>
+                  </button>
+                )}
               </div>
 
               <div className="Assignment_Details">
@@ -904,21 +901,20 @@ console.log("Initial", status);0,
                             statusValue === "Approved"
                               ? "#23A064"
                               : statusValue === "Rejected"
-                              ? "red"
-                              : "#0464D5",
-                          border: `1px solid ${
-                            statusValue === "Approved"
+                                ? "red"
+                                : "#0464D5",
+                          border: `1px solid ${statusValue === "Approved"
                               ? "#23A064"
                               : statusValue === "Rejected"
-                              ? "#FA3838"
-                              : "#0464D5"
-                          }`,
+                                ? "#FA3838"
+                                : "#0464D5"
+                            }`,
                           background:
                             statusValue === "Approved"
                               ? "#23A0641A"
                               : statusValue === "Rejected"
-                              ? "#FA38381A"
-                              : "#0464D51A",
+                                ? "#FA38381A"
+                                : "#0464D51A",
                           width: "auto",
                           borderRadius: "32px",
                           fontWeight: "600",
@@ -950,21 +946,20 @@ console.log("Initial", status);0,
                               statusValue === "Approved"
                                 ? "#23A064"
                                 : statusValue === "Rejected"
-                                ? "red"
-                                : "#0464D5",
-                            border: `1px solid ${
-                              statusValue === "Approved"
+                                  ? "red"
+                                  : "#0464D5",
+                            border: `1px solid ${statusValue === "Approved"
                                 ? "#23A064"
                                 : statusValue === "Rejected"
-                                ? "#FA3838"
-                                : "#0464D5"
-                            }`,
+                                  ? "#FA3838"
+                                  : "#0464D5"
+                              }`,
                             background:
                               statusValue === "Approved"
                                 ? "#23A0641A"
                                 : statusValue === "Rejected"
-                                ? "#FA38381A"
-                                : "#0464D51A",
+                                  ? "#FA38381A"
+                                  : "#0464D51A",
                             width: "auto",
                             borderRadius: "32px",
                             fontWeight: "600",
@@ -1020,9 +1015,9 @@ console.log("Initial", status);0,
           setSuccessModalOpen={setSuccessModalOpen}
           setIsLoading={setIsLoading}
           detailsViewFolderName={detailsViewFolderName}
-          // setCadRemark={setCadRemark}
-          // setRenderRemark={setRenderRemark}
-          // renderRemark={renderRemark}
+        // setCadRemark={setCadRemark}
+        // setRenderRemark={setRenderRemark}
+        // renderRemark={renderRemark}
         />
       )}
 
