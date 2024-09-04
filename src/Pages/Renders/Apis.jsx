@@ -5,12 +5,13 @@ import {
   CREATE_FINISHED_PROJECTS,
   RENDESR_ALL_FINISHED_PROJECTS,
   RENDERS_REUPLOAD,
+  LIST_CENTRAL_FOLDERS,
 } from "../Services/EndPoints";
 import { apiService, checkApiStatus } from "../Services/ApiInstants";
 
 export const cadDesignList = async (setData) => {
   try {
-    const response = await apiService.get(DESIGN_LIST_CAD);
+    const response = await apiService.get(LIST_CENTRAL_FOLDERS);
     if (checkApiStatus(response)) {
       setData(response?.data?.results?.data);
     }

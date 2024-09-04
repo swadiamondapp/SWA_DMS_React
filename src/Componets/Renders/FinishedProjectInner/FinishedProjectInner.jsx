@@ -126,12 +126,30 @@ const FinishedProjectInner = (props) => {
 
                   <button
                     style={{
-                      padding: "3px 6px 3px 6px",
-                      color: "#23A064",
-                      border: "1px solid #23A064",
-                      background: "#23A0641A",
+                      // width: 120,
+                      padding: "6px 6px 6px 6px",
+                      color:
+                        statusValue === "Approved"
+                          ? "#23A064"
+                          : statusValue === "Rejected"
+                          ? "red"
+                          : "#0464D5",
+                      border: `1px solid ${
+                        statusValue === "Approved"
+                          ? "#23A064"
+                          : statusValue === "Rejected"
+                          ? "#FA3838"
+                          : "#0464D5"
+                      }`,
+                      background:
+                        statusValue === "Approved"
+                          ? "#23A0641A"
+                          : statusValue === "Rejected"
+                          ? "#FA38381A"
+                          : "#0464D51A",
                       width: "auto",
                       borderRadius: "32px",
+                      fontWeight: "600",
                     }}
                   >
                     {statusValue}
