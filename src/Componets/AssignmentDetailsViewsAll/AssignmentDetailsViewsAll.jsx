@@ -141,7 +141,7 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
   const productCode = itemDetails?.designcode || "";
   // const designCode = itemDetails?.paper_design?.designcode || detailsViewFolderName ;
 
-  // console.log(detailsViewFolderName, "productId");
+  // console.log(page, "pageeeee");
 
   const handleEditBasicDetails = () => {
     setIsOpen(true);
@@ -605,7 +605,8 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
               >
                 <h3>Basic details</h3>
 
-                { page !== "renders" && (
+                { page !== "renders" &&
+                 page !== "CADdetail" && (
                   <button
                     className="btn_scan"
                     onClick={() => handleEditBasicDetails()}
@@ -617,6 +618,7 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
                     <span>Edit Details</span>
                   </button>
                 )}
+                 
               </div>
 
               <div className="Assignment_Details">

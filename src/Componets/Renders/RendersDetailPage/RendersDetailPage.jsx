@@ -85,7 +85,7 @@ const RendersDetailPage = ({ folderDetails, sidebarExpanded }) => {
         detailsViewFolderName: designCode,
         renderMessage: true,
         cardDatas: folderDetails,
-        page: "renders",
+        page: page,
       },
     });
     console.log(designCode, "renderDesignCode");

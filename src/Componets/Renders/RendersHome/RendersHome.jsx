@@ -21,6 +21,7 @@ const RendersHome = ({ designListData, sidebarExpanded }) => {
     navigate(`/rendersdetailing/${item.id}`, {
       state: {
         folderName: item.name,
+        page :"renders"
       },
     });
   };
