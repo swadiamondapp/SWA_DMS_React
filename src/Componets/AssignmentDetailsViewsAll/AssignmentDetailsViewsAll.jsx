@@ -4,7 +4,10 @@ import product from "../../assets/p1.png";
 // import "./assignmentviewsAll.css";
 import { LiaRupeeSignSolid } from "react-icons/lia";
 import { list_assignment_folder } from "../ADMIN PANEL/Design Pool/Api";
-import { FOLDER_DETAIL_API } from "../../Pages/Services/EndPoints";
+import {
+  DEATAILS_SATUS_UPDATE,
+  FOLDER_DETAIL_API,
+} from "../../Pages/Services/EndPoints";
 import axios from "axios";
 import {
   diamond_type_dropdown_basicDetails,
@@ -23,12 +26,29 @@ import {
   metal_type_drop_down,
   product_type_drop_down,
 } from "../ADMIN PANEL/Api_dropDown";
-import { detailsViewOfItems, detailsViewOfItemsRenders } from "./Api";
+import {
+  Cad2DUpdateImage,
+  Cad3DUpdateImage,
+  detailsViewOfItems,
+  detailsViewOfItemsRenders,
+  rendersDetailByCode,
+  updateImageStatuses,
+} from "./Api";
+import { GoDownload } from "react-icons/go";
+import ThreeDViewer from "../ThreeDViewer/ThreeDViewer";
+import InstructionModal from "../InstructionModal/InstructionModal";
+import ShareIcon from "../../assets/shareIcon.png";
+import { Select } from "antd";
+import { AiOutlineEdit } from "react-icons/ai";
+import { apiService, checkApiStatus } from "../../Pages/Services/ApiInstants";
+import SuccessModal from "../SuccessModal/SuccessModal";
+import { MdOutlineEdit } from "react-icons/md";
 
 const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
   const location = useLocation();
   const { id } = useParams();
-  const { detailsViewFolderName, renderMessage } = location.state || {};
+  const { detailsViewFolderName, renderMessage, cardDatas, page } =
+    location.state || {};
   const [folderDetails, setFolderDetails] = useState([]);
   const [folderDetailView, setFolderDetailsView] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -45,6 +65,28 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
   const [selectedTags, setSelectedTags] = useState([]);
   const [FindingsList, setFindingsList] = useState([]);
   const [DetailsData, setDetailsData] = useState([]);
+  const [openModal, setOpenmodal] = useState(false);
+  const [modalHeading, setmodalHeading] = useState("");
+  const [rendesrDetail, setRendesrDetail] = useState([]);
+  const [successModalOpen, setSuccessModalOpen] = useState(false);
+  // const [renderRemark, setRenderRemark] = useState("");
+  // const [cadRemark, setCadRemark] = useState("");
+  const [file2d_status, setFile2d_status] = useState(
+    cardDatas?.file2d_status
+  );
+  const [file3d_status, setFile3d_status] = useState(
+    cardDatas?.file3d_status
+  );
+
+  const handleopenModal = () => {
+    setOpenmodal(!openModal);
+    setmodalHeading("Add cad Instructions");
+  };
+
+  const handleopenModalRender = () => {
+    setOpenmodal(!openModal);
+    setmodalHeading("Add Render Instructions");
+  };
 
   useEffect(() => {
     if (renderMessage === true) {
@@ -54,11 +96,35 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
     }
 
     // list_folderDetails(setIsLoading,setFolderDetails,id)
-  }, [id,renderMessage]);
+  }, [id, renderMessage]);
 
-  console.log(renderMessage, "renderMessage");
+  useEffect(() => {
+    // Assuming rendersDetailByCode is a function that fetches the data
+    rendersDetailByCode(setIsLoading, setRendesrDetail, detailsViewFolderName);
+  }, [id, detailsViewFolderName]);
 
-  console.log(designId, "designId");
+  const handleDownload = (imageUrl, fileName = "downloaded_file", detailsViewFolderName = "") => {
+    const sanitizedFolderName = detailsViewFolderName 
+    
+    const fullFileName = `${sanitizedFolderName}_${fileName}` 
+  
+    fetch(imageUrl, {
+      method: "GET",
+      mode: "cors",
+    })
+      .then((response) => response.blob())
+      .then((blob) => {
+        const blobUrl = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = blobUrl;
+        link.download = fullFileName; // Use the combined file name
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      })
+      .catch((error) => console.error("Error downloading the file:", error));
+  };
+  
 
   useEffect(() => {
     if (folderDetailView) {
@@ -70,6 +136,12 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
     }
   }, [folderDetailView]);
   const { assignment_details, itemDetails } = folderDetails;
+
+  const productId = itemDetails?.id || "";
+  const productCode = itemDetails?.designcode || "";
+  // const designCode = itemDetails?.paper_design?.designcode || detailsViewFolderName ;
+
+  // console.log(detailsViewFolderName, "productId");
 
   const handleEditBasicDetails = () => {
     setIsOpen(true);
@@ -130,9 +202,132 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
     return item ? item.name : "Note Found";
   };
 
-  //   console.log(selectedTags, "fghjkl");
-  //   console.log(itemDetails, "itemDetails");
-  // console.log(FindingsList,"finsdfasfd")
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+    const year = date.getFullYear();
+
+    return `${day} ${month} ${year}`;
+  };
+
+  const initialStatuses = rendesrDetail?.images
+    ?.filter((imgObj) => {
+      const [key, value] = Object.entries(imgObj)[0] || [];
+      return value && !key.includes("_status");
+    })
+    .reduce((acc, imgObj) => {
+      const [key] = Object.entries(imgObj)[0];
+      const imgKey = key.replace(/\d+/g, "");
+      acc[`${key}_status`] = "Pending";
+      return acc;
+    }, {});
+
+  const [status, setStatus] = useState(initialStatuses);
+
+  const handleChange = async (imgKey, value) => {
+    let updatedStatus;
+    setStatus((prevStatus) => {
+      updatedStatus = {
+        ...prevStatus,
+        [`${imgKey}_status`]: value,
+      };
+      return updatedStatus;
+    });
+
+    await updateImageStatuses(
+      setIsLoading,
+      updatedStatus,
+      setFolderDetailsView,
+      detailsViewFolderName,
+      setRendesrDetail,
+      setSuccessModalOpen
+    );
+  };
+
+  const handleChangee = async (imgKey, newValue) => {
+    // Update local state immediately
+    setStatus((prevStatus) => ({
+      ...prevStatus,
+      [`${imgKey}_status`]: newValue,
+    }));
+    console.log(status, "status");
+
+    // Perform async update
+    try {
+      await updateImageStatuses(
+        setIsLoading,
+        { ...status, [`${imgKey}_status`]: newValue },
+        setRendesrDetail,
+        setSuccessModalOpen
+      );
+    } catch (error) {
+      console.error("Error updating image statuses:", error);
+      // Handle error case (e.g., revert local state if needed)
+    }
+  };
+
+  const handle2DChangee = async (value) => {
+    setFile2d_status(value);
+    let updatedStatus = value;
+
+    await Cad2DUpdateImage(
+      setIsLoading,
+      updatedStatus,
+      folderDetails?.designcode,
+      setSuccessModalOpen
+    );
+  };
+
+  const handle2DChange = async (value) => {
+    setFile2d_status(value);
+
+    await Cad2DUpdateImage(
+      setIsLoading,
+      value,
+      detailsViewFolderName,
+      setSuccessModalOpen
+    );
+  };
+
+  const handle3DChange = async (value) => {
+    setFile3d_status(value);
+
+    await Cad3DUpdateImage(
+      setIsLoading,
+      value,
+      detailsViewFolderName,
+      setSuccessModalOpen
+    );
+  };
+
+  // const updateImageStatuses = async (updatedStatus) => {
+  //   const body = {
+  //     ...updatedStatus,
+  //     remark: ""
+  //   };
+  //   try {
+  //     setIsLoading(true);
+  //     const response = await apiService.patch(`${DEATAILS_SATUS_UPDATE}${detailsViewFolderName}`, body);
+  //     if (checkApiStatus(response)) {
+  //       setFolderDetailsView(response.data.results.data);
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
+  const pid = assignment_details?.id;
+  const currentUsertype = localStorage.getItem("Usertype");
+  const images = rendesrDetail?.images || [];
+
+  const file3dStatus = cardDatas && cardDatas[0]?.file3d_status;
+  const file2dStatus = cardDatas && cardDatas[0]?.file2d_status;
+
+ 
+
   return (
     <div>
       <div
@@ -140,8 +335,261 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
         style={{ paddingLeft: sidebarExpanded ? "225px" : "130px" }}
       >
         <div className="AssignmentView">
-          <div className="Left_img_View">
-            <img src={itemDetails?.paper_design?.image || itemDetails?.image} alt="" />
+          <div className="detail_left_part">
+            <div className="Left_img_View">
+              <img
+                src={itemDetails?.paper_design?.image || itemDetails?.image}
+                alt=""
+              />
+            </div>
+            {page === "CADdetail" && (
+              <div className="cad_uploaded_admin">
+                <div
+                  className=""
+                  style={{
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "end",
+                    fontSize: "18px",
+                  }}
+                >
+                  <h4>Cad Output file</h4>
+
+                  {currentUsertype === "DESIGNER" && (
+                    <button
+                      style={{
+                        padding: "10px 16px 10px 16px",
+                        background: "#0464D5",
+                        color: "white",
+                        borderRadius: "30px",
+                        border: "none",
+                        outline: "none",
+                        fontSize: "16px",
+                        fontWeight: "600",
+                        cursor: "pointer",
+                      }}
+                      onClick={handleopenModal}
+                    >
+                      Add instruction
+                    </button>
+                  )}
+                </div>
+                <div
+                  className=""
+                  style={{
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <div
+                    className="Detail_Card"
+                    style={{ width: "48%", height: "300px", gap: "5px" }}
+                  >
+                    <img
+                      src={cardDatas[0]?.file_2d}
+                      alt=""
+                      // onClick={() => handleForlderDetailsVeiw(item.id, item.designcode)}
+                    />
+                    <span>
+                      POSTED ON:
+                      <b>{formatDate(cardDatas[0]?.created_at)}</b>
+                    </span>
+                    <button
+                      className="Download_btn_hub"
+                      onClick={() =>
+                        handleDownload(cardDatas[0]?.file_2d, "image_2d.jpg",detailsViewFolderName)
+                      }
+                    >
+                      DOWNLOAD
+                      <GoDownload />
+                    </button>
+
+                    {currentUsertype === "ADMIN" && (
+                      <button
+                        style={{
+                          padding: "13px 6px ",
+                          color:
+                            file2dStatus === "Approved"
+                              ? "#23A064"
+                              : file2dStatus === "Rejected"
+                              ? "red"
+                              : "#0464D5",
+                          border: `1px solid ${
+                            file2dStatus === "Approved"
+                              ? "#23A064"
+                              : file2dStatus === "Rejected"
+                              ? "#FA3838"
+                              : "#0464D5"
+                          }`,
+                          background:
+                            file2dStatus === "Approved"
+                              ? "#23A0641A"
+                              : file2dStatus === "Rejected"
+                              ? "#FA38381A"
+                              : "#0464D51A",
+                          width: "auto",
+                          borderRadius: "32px",
+                          fontWeight: "600",
+                        }}
+                      >
+                        {file2dStatus}
+                      </button>
+                    )}
+                    {currentUsertype === "DESIGNER" && (
+                      <Select
+                        value={
+                          file2d_status
+                            ? file2d_status
+                            : cardDatas[0]?.file2d_status
+                        }
+                        // style={{
+                        //   width: 120,
+                        //   padding: "6px 6px 6px 2px",
+                        //   color: "#23A064",
+                        //   border: "1px solid #23A064",
+                        //   background: "#23A0641A",
+                        //   borderRadius: "32px",
+                        //   marginTop: "13px",
+                        //   fontSize:"23px"
+                        // }}
+                        style={{
+                          width: 120,
+                          padding: "6px 6px 6px 2px",
+                          color:
+                            file2d_status === "Approved"
+                              ? "#23A064"
+                              : file2d_status === "Rejected"
+                              ? "red"
+                              : "#0464D5",
+                          border: `1px solid ${
+                            file2d_status === "Approved"
+                              ? "#23A064"
+                              : file2d_status === "Rejected"
+                              ? "#FA3838"
+                              : "#0464D5"
+                          }`,
+                          background:
+                            file2d_status === "Approved"
+                              ? "#23A0641A"
+                              : file2d_status === "Rejected"
+                              ? "#FA38381A"
+                              : "#0464D51A",
+                          borderRadius: "32px",
+                          fontWeight: "600",
+                          marginTop: "13px",
+                        }}
+                        onChange={(value) => handle2DChange(value)}
+                        options={[
+                          { value: "Approved", label: "Approved" },
+                          { value: "Rejected", label: "Rejected" },
+                        ]}
+                      />
+                    )}
+                  </div>
+                  <div
+                    className="Detail_Card"
+                    style={{ width: "48%", height: "300px", gap: "10px" }}
+                  >
+                    <ThreeDViewer url={cardDatas[0]?.file_3d} />
+                    <span>
+                      POSTED ON:
+                      <b> {formatDate(cardDatas[0]?.created_at)} </b>
+                    </span>
+                    <button
+                      className="Download_btn_hub"
+                      onClick={() =>
+                        handleDownload(cardDatas[0]?.file_3d, "model_3d.3dm",detailsViewFolderName)
+                      }
+                      style={{ background: "#126E72" }}
+                    >
+                      DOWNLOAD
+                      <GoDownload />
+                    </button>
+                    {currentUsertype === "DESIGNER" && (
+                      <Select
+                        value={
+                          file3d_status
+                            ? file3d_status
+                            : cardDatas[0]?.file3d_status
+                        }
+                        // style={{
+                        //   width: 120,
+                        //   padding: "6px 6px 6px 2px",
+                        //   color: "#23A064",
+                        //   border: "1px solid #23A064",
+                        //   background: "#23A0641A",
+                        //   borderRadius: "32px",
+                        //   marginTop: "13px",
+                        // }}
+                        style={{
+                          padding: "13px 6px ",
+                          color:
+                            file3d_status === "Approved"
+                              ? "#23A064"
+                              : file3d_status === "Rejected"
+                              ? "red"
+                              : "#0464D5",
+                          border: `1px solid ${
+                            file3d_status === "Approved"
+                              ? "#23A064"
+                              : file3d_status === "Rejected"
+                              ? "#FA3838"
+                              : "#0464D5"
+                          }`,
+                          background:
+                            file3d_status === "Approved"
+                              ? "#23A0641A"
+                              : file3d_status === "Rejected"
+                              ? "#FA38381A"
+                              : "#0464D51A",
+                          width: "auto",
+                          borderRadius: "32px",
+                          fontWeight: "600",
+                        }}
+                        onChange={(value) => handle3DChange(value)}
+                        options={[
+                          { value: "Approved", label: "Approved" },
+                          { value: "Rejected", label: "Rejected" },
+                        ]}
+                      />
+                    )}
+                    {currentUsertype === "ADMIN" && (
+                      <button
+                        style={{
+                          padding: "13px 6px ",
+                          color:
+                            file3dStatus === "Approved"
+                              ? "#23A064"
+                              : file3dStatus === "Rejected"
+                              ? "red"
+                              : "#0464D5",
+                          border: `1px solid ${
+                            file3dStatus === "Approved"
+                              ? "#23A064"
+                              : file3dStatus === "Rejected"
+                              ? "#FA3838"
+                              : "#0464D5"
+                          }`,
+                          background:
+                            file3dStatus === "Approved"
+                              ? "#23A0641A"
+                              : file3dStatus === "Rejected"
+                              ? "#FA38381A"
+                              : "#0464D51A",
+                          width: "auto",
+                          borderRadius: "32px",
+                          fontWeight: "600",
+                        }}
+                      >
+                        {cardDatas[0]?.file3d_status}
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
           <div className="right_Assignment_View">
             {/* <div
@@ -152,11 +600,35 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
               <p>Edit</p>
             </div> */}
             <div className="Assignment_contents">
-              <h3>Basic details</h3>
+              <div
+                className=""
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "space-between",
+                }}
+              >
+                <h3>Basic details</h3>
+
+                <button
+                  className="btn_scan"
+                  onClick={() => handleEditBasicDetails()}
+                >
+                  <MdOutlineEdit
+                    style={{ color: "#0464D5" }}
+                    className="btn_scan_img1"
+                  />{" "}
+                  <span>Edit Details</span>
+                </button>
+              </div>
+
               <div className="Assignment_Details">
                 <div className="A1_text">
                   <p>Product Id</p>
-                  <p>{itemDetails?.paper_design?.designcode || detailsViewFolderName}</p>
+                  <p>
+                    {itemDetails?.paper_design?.designcode ||
+                      detailsViewFolderName}
+                  </p>
                 </div>
                 <div className="A1_text">
                   <p>Category</p>
@@ -168,15 +640,15 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
                 </div>
                 <div className="A1_text">
                   <p>Length</p>
-                  <p>{assignment_details?.length} mm </p>
+                  <p>{assignment_details?.length} </p>
                 </div>
                 <div className="A1_text">
                   <p>Width</p>
-                  <p>{assignment_details?.width} mm</p>
+                  <p>{assignment_details?.width} </p>
                 </div>
                 <div className="A1_text">
                   <p>Height</p>
-                  <p>{assignment_details?.height} mm</p>
+                  <p>{assignment_details?.height} </p>
                 </div>
                 <div className="A1_text">
                   <p>Type of metal</p>
@@ -255,15 +727,278 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
             </div>
           </div>
         </div>
+
+        {page === "CADdetail" && rendesrDetail && (
+          <div
+            className=""
+            handleopenModalRender
+            style={{
+              width: "100%",
+              display: "flex",
+              gap: "6px",
+              // flexWrap: "wrap",
+              flexDirection: "column",
+              height: "auto",
+            }}
+          >
+            <div
+              className=""
+              style={{
+                width: "57%",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "end",
+                fontSize: "18px",
+              }}
+            >
+              <h4>Render Output file</h4>
+
+              {currentUsertype === "DESIGNER" && (
+                <button
+                  style={{
+                    padding: "10px 16px 10px 16px",
+                    background: "#0464D5",
+                    color: "white",
+                    borderRadius: "30px",
+                    border: "none",
+                    outline: "none",
+                    fontSize: "16px",
+                    fontWeight: "600",
+                    cursor: "pointer",
+                  }}
+                  onClick={handleopenModalRender}
+                >
+                  Add instruction
+                </button>
+              )}
+            </div>
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                gap: "4px",
+                flexWrap: "wrap",
+                height: "auto",
+                paddingBottom: "10px",
+              }}
+            >
+              {/* {rendesrDetail &&
+                rendesrDetail?.images?.map((imgObj, index) => {
+                  const imageUrl = Object.values(imgObj)[0];
+                  const createdAt = imgObj.created_at;
+                  console.log("imgurl---->", imageUrl);
+                  if (imageUrl) {
+                    return (
+                      <div className="finishedCardContainer2">
+                        <img src={imageUrl} alt="card_image" />
+                        <span className="postedOn">
+                          POSTED ON:{" "}
+                          <span className="postedOn_data">
+                            {new Date(createdAt).toLocaleDateString("en-GB")}{" "}
+                          </span>
+                        </span>
+                        <Select
+                          defaultValue="lucy"
+                          style={{
+                            width: 12  const initialStatuses = rendesrDetail?.images
+  ?.filter((imgObj) => {
+    const [key, value] = Object.entries(imgObj)[0] || [];
+    return value && !key.includes("_status");
+  })
+  .reduce((acc, imgObj) => {
+    const [key] = Object.entries(imgObj)[0];
+    const imgKey = key.replace(/\d+/g, ''); // Remove digits to match img status keys
+    acc[`${imgKey}_status`] = 'Pending'; // Default status
+    return acc;
+  }, {});
+
+const [status, setStatus] = useState(initialStatuses);
+
+// Update image statuses in the API
+const updateImageStatuses = async () => {
+  const body = {
+    ...status,
+    remark: "" // Add remark if needed
+  };
+
+  try {
+    setIsLoading(true);
+    const response = await apiService.post(`${DEATAILS_SATUS_UPDATE}${detailsViewFolderName}`, body);
+    if (checkApiStatus(response)) {
+      setFolderDetailsView(response.data.results.data);
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+const handleChange = (imgKey, value) => {
+  setStatus(prevStatus => ({
+    ...prevStatus,
+    [`${imgKey}_status`]: value
+  }));
+};
+
+console.log("Initial", status);0,
+                            padding: "6px 6px 6px 2px",
+                            color: "#23A064",
+                            border: "1px solid #23A064",
+                            background: "#23A0641A",
+                            borderRadius: "32px",
+                          }}
+                          onChange={handleChange}
+                          options={[
+                            { value: "jack", label: "Jack" },
+                            { value: "lucy", label: "Lucy" },
+                            { value: "Yiminghe", label: "Yiminghe" },
+                            {
+                              value: "disabled",
+                              label: "Disabled",
+                              disabled: true,
+                            },
+                          ]}
+                        />
+                      </div>
+                    );
+                  }
+                })} */}
+
+              {images.map((imgObj, index) => {
+                if (!imgObj) return null;
+
+                const imageKey = Object.keys(imgObj).find(
+                  (key) => key.startsWith("img") && !key.endsWith("_status")
+                );
+                if (!imageKey) return null;
+
+                const statusKey = `${imageKey}_status`;
+                const statusValue =
+                  (status && status[statusKey]) ||
+                  (imgObj && imgObj[statusKey]) ||
+                  "Unknown";
+                console.log(statusValue, "statusValue");
+                console.log("status:", status);
+                console.log("imgObj:", imgObj);
+                console.log("statusKey:", statusKey);
+
+                if (!imgObj[imageKey]) return null;
+                return (
+                  <div key={index} className="finishedCardContainer2">
+                    <img src={imgObj[imageKey]} alt="card_image" />
+                    <span className="postedOn">
+                      POSTED ON:{" "}
+                      <span className="postedOn_data">
+                        {new Date(imgObj.created_at).toLocaleDateString(
+                          "en-GB"
+                        )}
+                      </span>
+                    </span>
+                    {currentUsertype === "ADMIN" && (
+                      <button
+                        style={{
+                          // width: 120,
+                          padding: "6px 6px 6px 6px",
+                          color:
+                            statusValue === "Approved"
+                              ? "#23A064"
+                              : statusValue === "Rejected"
+                              ? "red"
+                              : "#0464D5",
+                          border: `1px solid ${
+                            statusValue === "Approved"
+                              ? "#23A064"
+                              : statusValue === "Rejected"
+                              ? "#FA3838"
+                              : "#0464D5"
+                          }`,
+                          background:
+                            statusValue === "Approved"
+                              ? "#23A0641A"
+                              : statusValue === "Rejected"
+                              ? "#FA38381A"
+                              : "#0464D51A",
+                          width: "auto",
+                          borderRadius: "32px",
+                          fontWeight: "600",
+                        }}
+                      >
+                        {statusValue}
+                      </button>
+                    )}
+                    {currentUsertype === "DESIGNER" && (
+                      <>
+                        {/* <span>{statusValue}</span> */}
+                        <Select
+                          value={{
+                            value: statusValue,
+                            label: statusValue,
+                          }}
+                          // style={{
+                          //   width: 120,
+                          //   padding: "6px",
+                          //   color: "#23A064",
+                          //   border: "1px solid #23A064",
+                          //   background: "#23A0641A",
+                          //   borderRadius: "32px",
+                          // }}
+                          style={{
+                            // width: 120,
+                            padding: "6px 6px 6px 6px",
+                            color:
+                              statusValue === "Approved"
+                                ? "#23A064"
+                                : statusValue === "Rejected"
+                                ? "red"
+                                : "#0464D5",
+                            border: `1px solid ${
+                              statusValue === "Approved"
+                                ? "#23A064"
+                                : statusValue === "Rejected"
+                                ? "#FA3838"
+                                : "#0464D5"
+                            }`,
+                            background:
+                              statusValue === "Approved"
+                                ? "#23A0641A"
+                                : statusValue === "Rejected"
+                                ? "#FA38381A"
+                                : "#0464D51A",
+                            width: "auto",
+                            borderRadius: "32px",
+                            fontWeight: "600",
+                          }}
+                          onChange={(value) => handleChange(imageKey, value)}
+                          options={[
+                            { value: "Approved", label: "Approved" },
+                            { value: "Rejected", label: "Rejected" },
+                          ]}
+                        />
+                      </>
+                    )}
+                  </div>
+                );
+              })}
+              {/* <button onClick={updateImageStatuses}>Update Status</button> */}
+
+              {rendesrDetail.length === 0 && (
+                <span>No Renders uploaded Currespond to this Product</span>
+              )}
+            </div>
+          </div>
+        )}
       </div>
-      {/* <BasicDetailModal
+
+      <BasicDetailModal
         name={"editbasicDetails"}
         open={open}
         onClose={() => setIsOpen(false)}
         folderIdA={id}
-        designId={designId}
+        // designId={designId}
+        designId={productId}
         DetailsProductId={itemDetails?.paper_design?.designcode}
-        basicDetails={basicDetails}
+        basicDetails={assignment_details}
         updateEditFunction={() =>
           listFolderDetailVeiwAssignmentPanel(
             setIsLoading,
@@ -272,7 +1007,31 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
             designId
           )
         }
-      /> */}
+        pid={pid}
+        setFolderDetailsView={setFolderDetailsView}
+        detailId={id}
+      />
+
+      {openModal && (
+        <InstructionModal
+          open={handleopenModal}
+          setOpenmodal={setOpenmodal}
+          modalHeading={modalHeading}
+          setSuccessModalOpen={setSuccessModalOpen}
+          setIsLoading={setIsLoading}
+          detailsViewFolderName={detailsViewFolderName}
+          // setCadRemark={setCadRemark}
+          // setRenderRemark={setRenderRemark}
+          // renderRemark={renderRemark}
+        />
+      )}
+
+      <SuccessModal
+        successModalOpen={successModalOpen}
+        // handleOpen={handleOpen}
+        // handleClose={handleClose}
+        successMessage={"Updated Successfully"}
+      />
     </div>
   );
 };

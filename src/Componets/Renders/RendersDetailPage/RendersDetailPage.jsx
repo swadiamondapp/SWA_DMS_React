@@ -12,6 +12,10 @@ import { GoDownload } from "react-icons/go";
 const RendersDetailPage = ({ folderDetails, sidebarExpanded }) => {
   const navigate = useNavigate();
   console.log("folderDetails", folderDetails);
+  const location = useLocation();
+  const { page } = location.state || {};
+
+  console.log("page", page);
 
   const printRef = useRef();
 
@@ -37,7 +41,7 @@ const RendersDetailPage = ({ folderDetails, sidebarExpanded }) => {
   //     .catch((error) => console.error("Error downloading the image:", error));
   // };
 
-  const handleDownload = (imageUrl, fileName = "downloaded_file") => {
+  const handleDownload = (imageUrl, fileName = "downloaded_file", code) => {
     fetch(imageUrl, {
       method: "GET",
       mode: "cors",
@@ -47,13 +51,18 @@ const RendersDetailPage = ({ folderDetails, sidebarExpanded }) => {
         const blobUrl = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = blobUrl;
-link.download = fileName;
+        
+        const extension = imageUrl.split('.').pop(); 
+        link.download = `${fileName}_${code}.${extension}`;
+        
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+        URL.revokeObjectURL(blobUrl); 
       })
-.catch((error) => console.error("Error downloading the file:", error));
+      .catch((error) => console.error("Error downloading the file:", error));
   };
+  
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -74,7 +83,9 @@ link.download = fileName;
     navigate(`/assignmentviewsAll/${id}`, {
       state: {
         detailsViewFolderName: designCode,
-renderMessage: true,
+        renderMessage: true,
+        cardDatas: folderDetails,
+        page: page,
       },
     });
     console.log(designCode, "renderDesignCode");
@@ -88,7 +99,7 @@ renderMessage: true,
           key={item.id}
           style={{ marginLeft: sidebarExpanded ? "218px" : "120px" }}
         >
-<div className="Detail_Card">
+          <div className="Detail_Card">
             <img
               src={item.file_2d}
               alt=""
@@ -99,7 +110,7 @@ renderMessage: true,
             </span>
             <button
               className="Download_btn_hub"
-              onClick={() => handleDownload(item.file_2d, "image_2d.jpg")}
+              onClick={() => handleDownload(item.file_2d, "image_2d", item.designcode)}
             >
               DOWNLOAD
               <GoDownload />
@@ -112,7 +123,7 @@ renderMessage: true,
             </span>
             <button
               className="Download_btn_hub"
-              onClick={() => handleDownload(item.file_3d, "model_3d.3dm")}
+              onClick={() => handleDownload(item.file_3d, "model_3d" , item.designcode)}
             >
               DOWNLOAD
               <GoDownload />

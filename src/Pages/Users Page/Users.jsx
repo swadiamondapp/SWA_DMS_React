@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../../Componets/Sidebar/Sidebar";
-import Header from "../../Componets/Header/Header";
 import UsersList from "../../Componets/ADMIN PANEL/Users/UsersList";
 import "./Users.css";
 import { searchNamesAdmin } from "./Api";
 import { list_all_users } from "../../Componets/ADMIN PANEL/Users/Api";
-
+import Header from "../../Componets/Header/Header";
 
 const Users = () => {
-  
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
- 
+
   const [SearchWithName, setSearchWithName] = useState("");
   const [Data, setData] = useState([]);
   const [IsLoading, setIsLoading] = useState(false);
@@ -19,6 +17,7 @@ const Users = () => {
   useEffect(() => {
     searchNamesAdmin(setIsLoading, setUserList, SearchWithName);
   }, [SearchWithName]);
+  
   useEffect(() => {
     list_all_users(setIsLoading, setUserList);
   }, []);
@@ -26,7 +25,7 @@ const Users = () => {
   const SearchedNamesGet = Data.filter((item) =>
     item.name.toLowerCase().includes(SearchWithName.toLowerCase())
   );
- 
+
   console.log(Data, "searchedData");
   return (
     <div className="Parent_Userlist">
@@ -43,7 +42,7 @@ const Users = () => {
         SearchedNamesGet={SearchedNamesGet}
         userList={userList}
         setUserList={setUserList}
-IsLoading={IsLoading}
+        IsLoading={IsLoading}
       />
     </div>
   );

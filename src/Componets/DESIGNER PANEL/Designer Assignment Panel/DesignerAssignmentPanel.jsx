@@ -5,9 +5,12 @@ import folderimg from "../../../assets/folder.png";
 import { list_designer_folder, list_designer_folder_new } from "./Api";
 import { useNavigate } from 'react-router-dom';
 
-const DesignerAssignmentPanel = ({sidebarExpanded}) => {
+const DesignerAssignmentPanel = ({sidebarExpanded,
+  designerFolder,
+  setDesignerFolder
+}) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [designerFolder, setDesignerFolder] = useState([]);
+  
 
   useEffect(() => {
     list_designer_folder_new(setIsLoading, setDesignerFolder);

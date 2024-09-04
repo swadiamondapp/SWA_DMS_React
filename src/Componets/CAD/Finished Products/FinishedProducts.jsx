@@ -17,6 +17,8 @@ const FinishedProducts = ({ sidebarExpanded }) => {
     navigate(`/folderdetails/${id}`);
   };
 
+  
+
   return (
     <div
       className="ParentCad"

@@ -4,7 +4,9 @@ import {
 } from "../../../Pages/Services/ApiInstants";
 import { setToLocalstorage } from "../../../Pages/Utils/Common";
 import {
+  DESIGNER_ASSIGNTO_FILTER,
   DESIGNER_CATEGORY_FILTER,
+  DESIGNER_DASHBOARD_FILTER,
   LIST_ALL_CAD_DESIGNERS,
   LIST_ALL_USER,
   LIST_UPLOAD_DESIGN,
@@ -72,7 +74,10 @@ export const upload_multiple_designs_items = async (
   upDateUploadImagesView,
   setSuccessModalOpen,
   setSuccessMessage,
-  handleclose
+  handleclose,
+  formDataId,
+  setErrors,
+  setFormData
 ) => {
   try {
     setIsLoading(true);
@@ -81,6 +86,8 @@ export const upload_multiple_designs_items = async (
       formData.append(`image${index + 1}`, file.originFileObj);
       console.log(file.originFileObj, "uploaedImageweew");
     });
+    formData.append('tag', formDataId.tag);
+    formData.append('product_type', formDataId.productCategory);
     const body = formData;
     console.log(body, "body==>Upload");
     const response = await apiService.post(UPLOAD_MULTIPLE_IMAGES, body);
@@ -94,6 +101,11 @@ export const upload_multiple_designs_items = async (
         setSuccessModalOpen(false);
       }, 1600);
       handleclose();
+      setErrors({})
+      setFormData({
+        productCategory: "",
+        tag: [],
+      })
     }
     return res;
   } catch (error) {
@@ -155,7 +167,7 @@ export const designerFilterBasedDate = async (
   }
 };
 
-export const designerFilter = async (
+export const  designerFilter = async (
   setIsLoading,
   id,
   formData,
@@ -164,6 +176,7 @@ export const designerFilter = async (
   endDate,
   setFilteredData
 ) => {
+  
   try {
     setIsLoading(true);
     let apiUrl = `${DESIGNER_CATEGORY_FILTER}${id}?category_ids=${
@@ -174,6 +187,67 @@ export const designerFilter = async (
     const response = await apiService.get(apiUrl);
     if (response.data.results.status_code === 200) {
       setFolderDetails(response.data.results.data);
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+export const designerDashboradFilter = async (
+  setIsLoading,
+  id,
+  formData,
+  setFolderDetails,
+  startDate,
+  endDate,
+  setFilteredData,
+  setOpenFilterModal,
+  sethide
+) => {
+  try {
+    setIsLoading(true);
+    let apiUrl = `${DESIGNER_DASHBOARD_FILTER}?category_type=${
+      formData.productCategory
+    }&date_from=${startDate ? startDate : ""}&date_to=${
+      endDate ? endDate : ""
+    }&tags=${ formData.tag ? formData.tag : "" }`;
+    const response = await apiService.get(apiUrl);
+    if (response.data.results.status_code === 200) {
+      setFolderDetails(response.data.results.data);
+      setOpenFilterModal(false)
+      sethide(true)
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+
+export const designerAssignToFilter = async (
+  setIsLoading,
+  designCode,
+  setFolderDetails,
+  startDate,
+  endDate,
+) => {
+  
+  try {
+    setIsLoading(true);
+    let apiUrl = `${DESIGNER_ASSIGNTO_FILTER
+    }?design_code=${
+      designCode
+    }&date_from=${startDate ? startDate : ""}&date_to=${
+      endDate ? endDate : ""
+    }`;
+    const response = await apiService.get(apiUrl);
+    if (response.data.results.status_code === 200) {
+      setFolderDetails(response.data.results.data);
+      setOpenFilterModal(false)
+      sethide(true)
     }
   } catch (error) {
     console.log(error);

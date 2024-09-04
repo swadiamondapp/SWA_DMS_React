@@ -42,6 +42,28 @@ const WareHouse = (props) => {
     setValue(newValue);
   };
 
+  const formatDateTwo = (isoString) => {
+    if (!isoString) {
+      return "";
+    }
+  
+    const date = new Date(isoString);
+    
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    
+    let hours = date.getHours();
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    
+    hours = hours % 12;
+    hours = hours ? String(hours).padStart(2, "0") : '12'; 
+    
+    return `${day}/${month}/${year} ${hours}:${minutes} ${ampm}`;
+  };
+  
+
   return (
     <div>
       <div
@@ -148,7 +170,9 @@ const WareHouse = (props) => {
                   )}
 
                 <div className="Card_Design_Parent">
-                  {props.DesignWareHouse.map((item) => (
+                  {props.DesignWareHouse.map((item) =>{
+                    console.log("itemssssss",item)
+                    return (
                     <div className="New_Design_card">
                       <div className="Card_img">
                         <img src={item.image} alt="" />
@@ -159,8 +183,18 @@ const WareHouse = (props) => {
                           className=""
                           style={{ display: "flex", gap: "5px" }}
                         >
-                          <span style={{ color: "#23A064" }}>Status :</span>
-                          <span>{item.current_status || ""}</span>
+                          <span
+                                  style={{ color: "#23A064", fontSize: "13px" }}
+                                >
+                                  Track status :{" "}
+                                  <span
+                                    style={{ color: "black", fontSize: "12px" }}
+                                  >
+                                    {item?.currentstatus_track && item?.currentstatus_track[0]?.current_status} -
+                                    {item?.currentstatus_track && formatDateTwo(item?.currentstatus_track[0]?.date)}
+                                  </span>
+                                </span>
+                          {/* <span>{item.current_status || ""}</span> */}
                         </div>
                         <div className="Card_Details_Inner">
                           <div className="Inner_Left">
@@ -207,7 +241,7 @@ const WareHouse = (props) => {
                       )}
                       {/* radio btn */}
                     </div>
-                  ))}
+                  )})}
                 </div>
               </div>
             </TabPanel>

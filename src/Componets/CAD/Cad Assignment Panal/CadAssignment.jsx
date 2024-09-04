@@ -69,7 +69,7 @@ const CadAssignment = ({
 
   console.log("designList", designList);
 
-  const handleDownload = (imageUrl) => {
+  const handleDownload = (imageUrl, code) => {
     fetch(imageUrl, {
       method: "GET",
       mode: "cors",
@@ -79,13 +79,16 @@ const CadAssignment = ({
         const blobUrl = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = blobUrl;
-        link.download = "downloaded_image.jpg";
+        // Use the code in the filename
+        link.download = `image_${code}.jpg`; // or any other extension depending on the image type
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+        URL.revokeObjectURL(blobUrl); // Clean up the blob URL
       })
       .catch((error) => console.error("Error downloading the image:", error));
   };
+  
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -263,7 +266,7 @@ const CadAssignment = ({
                         //     extractFilename(item.design_image)
                         //   )
                         // }
-                        onClick={() => handleDownload(item.design_image)}
+                        onClick={() => handleDownload(item.design_image,item.design_code)}
                         // onClick={() => downloadImage(item.design_image)}
                       >
                         <TbDownload />
@@ -275,7 +278,7 @@ const CadAssignment = ({
                       style={{ background: "#006E7F" }}
                       onClick={() => {
                         onButtonClick(item.item_id);
-                        handleDownload(item.design_image);
+                        handleDownload(item.design_image,item.design_code);
                       }}
                       disabled={designList.some(
                         (d) => d.timer_status === "on-going"

@@ -20,7 +20,7 @@ const RendersPage = () => {
     <div className="Parent_RendersPage">
       <Sidebar sidebarExpanded={sidebarExpanded} setSidebarExpanded={setSidebarExpanded}/>
       <Header sidebarExpanded={sidebarExpanded}/>
-      <FinishedProjectInner folderItem={folderItem} sidebarExpanded={sidebarExpanded}/>
+      <FinishedProjectInner folderItem={folderItem} sidebarExpanded={sidebarExpanded} id={id} setFolderItem={setFolderItem}/>
     </div>
   );
 };

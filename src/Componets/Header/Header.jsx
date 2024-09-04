@@ -21,6 +21,7 @@ const Header = ({
   searchListId,
   handleInputChange,
   headerDetails,
+  handleCADLogout
   // handleSearchDesignPoool
 }) => {
   const location = useLocation();
@@ -96,9 +97,10 @@ const Header = ({
               >
                 <h3>ID : {basicDetails?.design_code}</h3>
                 <span
+                style={{padding:"5px 10px"}}
                   className={
                     basicDetails.timer_status === "Completed"
-                      ? "completed"
+                      ? "completed1"
                       : basicDetails.timer_status === "on-going"
                       ? "ongoing"
                       : "notstarted"
@@ -319,6 +321,34 @@ const Header = ({
                     </div>
                   </div>
                 )}
+                {location.pathname === "/centralDashboard" && (
+                  <div className="Search_Admin">
+                    <div className="Search_User">
+                      <input
+                        type="text"
+                        placeholder="Search ID"
+                        value={searchListId}
+                        onChange={handleInputChange}
+                      />
+                      {/* <img onClick={handleSearchDesignPoool} src={searchimg} alt="" /> */}
+                      <img src={searchimg} alt="" />
+                    </div>
+                  </div>
+                )}
+                {location.pathname === "/designerassign" && (
+                  <div className="Search_Admin">
+                    <div className="Search_User">
+                      <input
+                        type="text"
+                        placeholder="Search ID"
+                        value={searchListId}
+                        onChange={handleInputChange}
+                      />
+                      {/* <img onClick={handleSearchDesignPoool} src={searchimg} alt="" /> */}
+                      <img src={searchimg} alt="" />
+                    </div>
+                  </div>
+                )}
 
                 {headerDetails?.paper_design &&
                 headerDetails.paper_design.designer_img !== "N/A" &&
@@ -367,7 +397,14 @@ const Header = ({
                       className="log_out__btns"
                       ref={dropdownRef}
                       onClick={() => {
+                        // const res = handleCADLogout()
+                        // console.log("res8734", res)
+                        if (userType == "CAD") {
+                           handleCADLogout()
                         removeLocalstorage(navigate);
+                        } else {
+                          removeLocalstorage(navigate);
+                        }
                       }}
                     >
                       <button>
@@ -386,3 +423,4 @@ const Header = ({
 };
 
 export default Header;
+

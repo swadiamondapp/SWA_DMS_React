@@ -72,26 +72,65 @@ const AssignmentModal = ({
     // } else {
     if (folderName.trim() === "") {
       setError("Please enter the folder name.");
-    } else {
-      move_to_folder(
-        setIsLoading,
-        folderName,
-        selectedAssignment,
-        setAssignmentFolder,
-        setData,
-        onClose,
-        setSuccessMessage,
-        setSuccessModalOpen,
-        setFolderName,
-        setSelectedAssignment,
-        setError,
-        setShowRadioButtons,
-        setSelectButtonLabel
-      );
-      // ToCloseCreatefolder(false)
+      return;
     }
-    // }
+    const existingFolderNames = assignmentFolder.map((folder) =>
+      folder.name.toLowerCase()
+    );
+    if (existingFolderNames.includes(folderName.trim().toLowerCase())) {
+      setError("Folder already exists.");
+      return;
+    }
+    setTimeout(() => {
+      setError("");
+    }, 3000);
+
+    move_to_folder(
+      setIsLoading,
+      folderName,
+      selectedAssignment,
+      setAssignmentFolder,
+      setData,
+      onClose,
+      setSuccessMessage,
+      setSuccessModalOpen,
+      setFolderName,
+      setSelectedAssignment,
+      setError,
+      setShowRadioButtons,
+      setSelectButtonLabel
+    );
   };
+
+  const handleCreateButtonSelect = () => {
+    if (folderName.trim() === "") {
+      setError("Please enter the folder name.");
+      return;
+    }
+    setTimeout(() => {
+      setError("");
+    }, 3000);
+
+    move_to_folder(
+      setIsLoading,
+      folderName,
+      selectedAssignment,
+      setAssignmentFolder,
+      setData,
+      onClose,
+      setSuccessMessage,
+      setSuccessModalOpen,
+      setFolderName,
+      setSelectedAssignment,
+      setError,
+      setShowRadioButtons,
+      setSelectButtonLabel
+    );
+  };
+
+  // setTimeout(() => {
+  //   setError("")
+  // }, 5000);
 
   const handleClose = () => {
     setSuccessModalOpen(false);
@@ -184,7 +223,12 @@ const AssignmentModal = ({
                 >
                   {create ? "Create new Folder" : "Add to Existing folder"}
                 </span>
-                <button className="button-create" onClick={handleCreateButton}>
+                <button
+                  className="button-create"
+                  onClick={
+                    create ? handleCreateButtonSelect : handleCreateButton
+                  }
+                >
                   {create ? "Move to the Folder" : "Create"}
                 </button>
               </div>

@@ -16,6 +16,7 @@ import {
   SCAN_TABLE_STATUS_CHANGE,
   SCAN_TABLE_STATUS_GET,
   VOTERS_CUSTOMIZATION_LIST,
+  WORKDONE_ACTUAL_DETAIL_TABLE_UPDATE,
   WORKDONE_CUSTOMIZATION_APPROVE,
   WORKDONE_TABLE_LIST,
   WORKDONE_TABLE_PRODUCT_DETAIL,
@@ -661,27 +662,48 @@ export const workDone_table_product_detail = async (
   }
 };
 
+export const workDone_table_product_detail_actual = async (
+  clickedProductId,
+  setclickedProducts
+) => {
+  try {
+    const response = await apiService.get(
+      `${WORKDONE_ACTUAL_DETAIL_TABLE_UPDATE}${clickedProductId}/detail/`
+    );
+    if (checkApiStatus(response)) {
+      setclickedProducts(response.data.results.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const workDone_table_product_update = async (
   pId,
   formData,
   setOpenLeftbar,
   setSuccessModalOpen,
-  setSuccessMessage
+  setSuccessMessage,
+  refreshList
 ) => {
+  debugger
   try {
     // setIsLoading(true);
-    const response = await apiService.patch(
-      `${WORKDONE_TABLE_PRODUCT_UPDATE}${pId}/update/`,
+    const response = await apiService.post(
+      `${WORKDONE_ACTUAL_DETAIL_TABLE_UPDATE}${pId}/create/`,
       formData
     );
 
     if (checkApiStatus(response)) {
       setSuccessModalOpen(true);
       setSuccessMessage("Data Updated Successfully");
+
       setTimeout(() => {
         setSuccessModalOpen(false);
       }, 1700);
       setOpenLeftbar(false);
+      refreshList()
+      
     }
   } catch (error) {
     console.error("Update Failed", error);

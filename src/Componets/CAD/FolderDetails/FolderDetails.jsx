@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import Sidebar from "../../Sidebar/Sidebar";
 import Header from "../../Header/Header";
 import CentalHub from "../../CentalHub/CentalHub";
 import FolderDetailsCard from "./FolderDetailsCard";
 import SuccessModal from "../../SuccessModal/SuccessModal";
-import { projectDetails, reUploadFile } from "../Api";
+import { cadLogut, projectDetails, reUploadFile } from "../Api";
 import { useLocation } from "react-router";
+import { ContextTime } from "../../../Pages/CAD PANAL/TimerContext";
 
 const FolderDetails = () => {
   const { id } = useParams();
@@ -87,6 +88,13 @@ const FolderDetails = () => {
     }
   };
 
+  const {cadTime , setCadTime} = useContext(ContextTime)
+
+  const handleCADLogout =()=>{
+    cadLogut(cadTime)
+  }
+
+
   console.log("imagesName--->", imagesName);
 
   return (
@@ -98,6 +106,7 @@ const FolderDetails = () => {
       <Header
         leftHeader={folderDetails[0]?.designcode}
         sidebarExpanded={sidebarExpanded}
+        handleCADLogout={handleCADLogout}
       />
       <FolderDetailsCard
         folderDetails={folderDetails[0]}

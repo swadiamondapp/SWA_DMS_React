@@ -214,7 +214,7 @@ const FinishedProjects = (props) => {
             showMoveOptions={showMoveOptions}
           /> */}
 
-        {props?.isLoading && props?.finishedProjectData?.length === 0 ? (
+        {props?.isLoading && props?.finishedProjectData?.length === 0 && (
           <div
             style={{
               display: "flex",
@@ -232,13 +232,16 @@ const FinishedProjects = (props) => {
               }}
             />
           </div>
-        ) : (
+        )}
+           
+        { props?.isLoading === false && props?.finishedProjectData?.length === 0 && (
         <div className="" style={{width:"100%",
           height:"400px",display:"flex",alignItems:"center",justifyContent:"center"
         }}>
           <span>No Data found</span>
           </div>
-        )}
+        )}  
+
         <div className="folderCard_parent RendersHome_folders_top">
           {props?.finishedProjectData?.map((item, index) => (
             <>

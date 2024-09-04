@@ -37,7 +37,7 @@ const WorkDoneTable = ({ sidebarExpanded }) => {
       setTimeout(() => {
         setError("");
       }, 3000);
-      return
+      return;
     }
     try {
       await workDone_list_search(
@@ -51,7 +51,7 @@ const WorkDoneTable = ({ sidebarExpanded }) => {
       );
     } catch (error) {
       console.error("Error searching scan list:", error);
-    } 
+    }
   };
 
   console.log("workTableData", workTableData);
@@ -101,7 +101,13 @@ const WorkDoneTable = ({ sidebarExpanded }) => {
     // <div className="" style={{width:"100%"}}>
     <div
       className=""
-      style={{ marginLeft: sidebarExpanded ? "225px" : "130px",marginTop:"30px",display:"flex",flexDirection:"column",gap:"20px" }}
+      style={{
+        marginLeft: sidebarExpanded ? "225px" : "130px",
+        marginTop: "30px",
+        display: "flex",
+        flexDirection: "column",
+        gap: "20px",
+      }}
     >
       <div className="Search_Admin scan_search">
         <div className="Search_User">
@@ -113,7 +119,12 @@ const WorkDoneTable = ({ sidebarExpanded }) => {
             onChange={handleInputChange}
             onKeyPress={handleKeyPress}
           />
-          <img onClick={handleSearch} src={searchimg} alt="" style={{cursor:"pointer"}}/>
+          <img
+            onClick={handleSearch}
+            src={searchimg}
+            alt=""
+            style={{ cursor: "pointer" }}
+          />
         </div>
         {error && (
           <p style={{ color: "red", fontSize: "10px", marginTop: "3px" }}>
@@ -121,8 +132,8 @@ const WorkDoneTable = ({ sidebarExpanded }) => {
           </p>
         )}
       </div>
-      <div className="ScanTable" >
-        <div className="table-container" style={{width:"100%"}}>
+      <div className="ScanTable">
+        <div className="table-container" style={{ width: "100%" }}>
           <table>
             <thead>
               <tr>
@@ -143,28 +154,43 @@ const WorkDoneTable = ({ sidebarExpanded }) => {
                   <td style={{ borderLeft: "none" }}>{item.productID}</td>
 
                   <td style={{ borderLeft: "none" }}>
-                    <div className="completed_wd"> completed</div>
+                    <div
+                      className="completed_wd"
+                      style={{
+                        backgroundColor:
+                          item.status === "pending" ? "red" : "green",
+                      }}
+                    >
+                      {item.status}
+                    </div>
                   </td>
 
                   <td style={{ borderLeft: "none" }}>
-                    <div className="scan_btn_div">
+                    <div
+                      className="scan_btn_div"
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
                       <button
-                        className="btn_scan"
+                        className="btn_scan1"
                         onClick={() => handleopenLeftBar(item.id)}
                       >
                         <AiOutlineEdit
                           style={{ color: "#0464D5" }}
                           className="btn_scan_img1"
                         />{" "}
-                        <span>Edit Details</span>
+                        <span style={{ color: "#216CD8" }}>Edit Details</span>
                       </button>
                       <button
                         onClick={() => openModal(item.id)}
-                        className="btn_scan"
+                        className="btn_scan1"
                       >
                         <IoEye className="btn_scan_img1" />
                       </button>
-                      <button className="btn_scan">
+                      <button className="btn_scan1">
                         <img
                           className="btn_scan_img2"
                           src={ThreeDot}
@@ -203,6 +229,9 @@ const WorkDoneTable = ({ sidebarExpanded }) => {
           clickedProductId={clickedProductId}
           setSuccessMessage={setSuccessMessage}
           setSuccessModalOpen={setSuccessModalOpen}
+          refreshList={() =>
+            workDone_list_datas(setIsLoading, setworkTableData)
+          }
         />
       )}
 

@@ -11,7 +11,13 @@ import {
   DESIGNPOOL_SEARCHBY_ID,
   UPDATE_DESIGNPOOL_IMAGE,
   DELETE_ITEM_FROM_DESIGNPOOL,
+  DELETE_TRASFER_DATA,
+  LIST_CENTRAL_FOLDERS,
+  CENTRALHUB_SEARCH,
+  LIST_FOLDER_DESIGNER,
+  DESIGNER_ASSIAN_SEARCH,
 } from "../../../Pages/Services/EndPoints";
+import { centralTransfer } from "../../../Pages/CENTRAL HUB/Api";
 
 export const all_Designs = async (setIsLoading, setData) => {
   try {
@@ -49,6 +55,76 @@ export const designPoolSearchById = async (searchListId, setData) => {
   }
 };
 
+export const centralHubSearchById = async (searchListId) => {
+  try {
+    // setIsLoading(true)
+    // console.log(searchListId,"searchListId3")
+    // if (searchListId === "") {
+    //   console.log(searchListId,"searchListId4")
+    //   const response = await apiService.get(
+    //     `${LIST_CENTRAL_FOLDERS}`
+    //   );
+    //   if (response.data.results.status_code === 200) {
+    //     setFolders.current = response.data.results.data;
+    //   }
+    // }
+    // else {
+      console.log(searchListId,"searchListId5")
+      const res = await  apiService.get(
+        `${CENTRALHUB_SEARCH}${searchListId}`
+      );
+      if (res.data.results.status_code === 200) {
+        // console.log(res,"res--")
+        // console.log(searchListId,"searchListId--")
+        return res.data.results.data
+        }
+    // }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// export const centralHubSearchById = async (
+//   searchListId, setFolders ,setIsLoading
+// ) => {
+//   try {
+//     setIsLoading(true)
+//     const response = await apiService.get(
+//       `${CENTRALHUB_SEARCH}${searchListId}`
+//     );
+//     if (response.data.results.status_code === 200) {
+//       setFolders(response?.data?.results?.data);
+//       console.log(response?.data?.results?.data,"response")
+//     }
+//   } catch (error) {
+//     console.log(error);
+//   }finally {
+//     setIsLoading(false)
+//   }
+// };
+
+export const designerSearchById = async (searchListId, setData) => {
+  try {
+    if (!searchListId) {
+      const response = await apiService.get(
+        `${LIST_FOLDER_DESIGNER}`
+      );
+      if (checkApiStatus(response)) {
+        setData(response.data.results.data);
+      }
+    } else {
+      const response = await apiService.get(
+        `${DESIGNER_ASSIAN_SEARCH}${searchListId}`
+      );
+      if (checkApiStatus(response)) {
+        setData(response?.data?.results?.data);
+      }
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 // export const designPoolSearchById = async (
 //   searchListId,
 //   setData,
@@ -75,12 +151,15 @@ export const designPoolSearchById = async (searchListId, setData) => {
 
 export const unvoted_design = async (setIsLoading, setUnvotedData) => {
   try {
+    setIsLoading(true)
     const response = await apiService.get(UNVOTED_DESIGN);
     if (checkApiStatus(response)) {
       setUnvotedData(response.data.results.data);
     }
   } catch (error) {
     console.log(error);
+  }finally{
+    setIsLoading(false)
   }
 };
 
