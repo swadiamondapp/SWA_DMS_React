@@ -27,7 +27,7 @@ const folders = useRef([])
           
   };
 
-  const b =async()=>{
+  const handleSearchCHData =async()=>{
     setIsLoading(true)
     let a = await centralHubSearchById(searchListId);
     folders.current = a
@@ -35,15 +35,15 @@ const folders = useRef([])
   }
 
   useEffect(()=>{
-  b()
-  },[searchListId])
+    handleSearchCHData()
+  },[])
   
   // const folderNameCentralHub = Folders.map((item,index))
   return (
     <div className="centralhubDashboard">
       <Sidebar  sidebarExpanded={sidebarExpanded} setSidebarExpanded={setSidebarExpanded}/>
       <Header sidebarExpanded={sidebarExpanded} searchListId={searchListId} handleInputChange={ handleInputChange}/>
-      <CentralDashboard sidebarExpanded={sidebarExpanded} Folders={folders.current}/>
+      <CentralDashboard sidebarExpanded={sidebarExpanded} Folders={folders.current} searchListId={searchListId}/>
     </div>
   );
 };
