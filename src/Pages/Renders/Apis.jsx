@@ -11,6 +11,17 @@ import { apiService, checkApiStatus } from "../Services/ApiInstants";
 
 export const cadDesignList = async (setData) => {
   try {
+    const response = await apiService.get(DESIGN_LIST_CAD);
+    if (checkApiStatus(response)) {
+      setData(response?.data?.results?.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const cadDesignListApproved = async (setData) => {
+  try {
     const response = await apiService.get(LIST_CENTRAL_FOLDERS);
     if (checkApiStatus(response)) {
       setData(response?.data?.results?.data);
