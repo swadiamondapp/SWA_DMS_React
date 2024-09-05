@@ -26,7 +26,8 @@ const CADuploadedFiles = ({sidebarExpanded }) => {
     navigate(`/rendersdetailing/${item.id}`, {
       state: {
         folderName: item.name,
-        page:"CADdetail"
+        page:"CADdetail",
+        fid:item.id
       },
     });
   };

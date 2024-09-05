@@ -43,12 +43,14 @@ import { AiOutlineEdit } from "react-icons/ai";
 import { apiService, checkApiStatus } from "../../Pages/Services/ApiInstants";
 import SuccessModal from "../SuccessModal/SuccessModal";
 import { MdOutlineEdit } from "react-icons/md";
+import { renderFolderDetails } from "../DESIGNER PANEL/Designer Detail View/Api";
 
-const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
+const AssignmentDetailsViewsAll = ({ sidebarExpanded}) => {
   const location = useLocation();
   const { id } = useParams();
-  const { detailsViewFolderName, renderMessage, cardDatas, page } =
+  const { detailsViewFolderName, renderMessage, cardDatas, page ,fid  } =
     location.state || {};
+    const [detailData, setDetailData] = useState([]);
   const [folderDetails, setFolderDetails] = useState([]);
   const [folderDetailView, setFolderDetailsView] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -71,12 +73,40 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
   const [successModalOpen, setSuccessModalOpen] = useState(false);
   // const [renderRemark, setRenderRemark] = useState("");
   // const [cadRemark, setCadRemark] = useState("");
-  const [file2d_status, setFile2d_status] = useState(
-    cardDatas?.file2d_status
-  );
-  const [file3d_status, setFile3d_status] = useState(
-    cardDatas?.file3d_status
-  );
+  // const [file2d_status, setFile2d_status] = useState(
+  //   detailData[0]?.file2d_status
+  // );
+  // const [file3d_status, setFile3d_status] = useState(
+  //   detailData?.file3d_status
+  // );
+
+  // useEffect(() => {
+  //   renderFolderDetails(setIsLoading, setDetailData, fid);
+  // }, [])
+  
+  // console.log(fid, "fid");
+  // console.log(detailData[0]?.file2d_status,"detailData")
+  // console.log(file2d_status,"file2d_status")
+
+  const [file2d_status, setFile2d_status] = useState(undefined);
+  const [file3d_status, setFile3d_status] = useState(undefined);
+
+  useEffect(() => {
+    renderFolderDetails(setIsLoading, setDetailData, fid);
+  }, [fid]);
+
+  useEffect(() => {
+    if (detailData.length > 0) {
+      setFile2d_status(detailData[0]?.file2d_status);
+      setFile3d_status(detailData[0]?.file3d_status);
+    }
+  }, [detailData]);
+
+  console.log(fid, "fid");
+  console.log(detailData, "detailData");
+  console.log(file2d_status, "file2d_status");
+  console.log(file3d_status, "file3d_status");
+
 
   const handleopenModal = () => {
     setOpenmodal(!openModal);
@@ -326,6 +356,8 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
   const file3dStatus = cardDatas && cardDatas[0]?.file3d_status;
   const file2dStatus = cardDatas && cardDatas[0]?.file2d_status;
 
+ 
+  console.log(file2dStatus,"file2dStatus")
 
   return (
     <div>
@@ -440,7 +472,7 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
                         value={
                           file2d_status
                             ? file2d_status
-                            : cardDatas[0]?.file2d_status
+                            : detailData[0]?.file2d_status
                         }
                         // style={{
                         //   width: 120,
@@ -509,7 +541,7 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
                         value={
                           file3d_status
                             ? file3d_status
-                            : cardDatas[0]?.file3d_status
+                            : detailData[0]?.file3d_status
                         }
                         // style={{
                         //   width: 120,

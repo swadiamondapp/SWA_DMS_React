@@ -147,52 +147,53 @@ const VotorsPanal = ({ sidebarExpanded }) => {
                             className=""
                             style={{ display: "flex", gap: "5px" }}
                           >
-                            <span style={{ color: "#23A064" }}>Status :</span>
-                            <span>{item.current_status || ""}</span>
+                            <span style={{ color: "#23A064", fontSize: "12px" }}>Status : <span style={{ color: "black", fontSize: "12px" }}>{item.currentstatus_track && item.currentstatus_track[0]?.current_status || ""}</span></span>
+
                           </div>
                           <div className="Card_Details_Inner">
                             <div className="Inner_Left">
                               <p>{item.user_name}</p>
                               <p>{item.created_at}</p>
                             </div>
-                            <div
-                              className=""
-                              style={{
-                                display: "flex",
-                                width: "auto",
-                                gap: "10px",
-                              }}
-                            >
-                              <button
-                                style={{
-                                  padding: "7px 10px ",
-                                  borderRadius: "4px",
-                                  color: "white",
-                                  backgroundColor: "#0464D5",
-                                  border: "none",
-                                  fontSize: "15px",
-                                  fontWeight: "900",
-                                }}
-                                onClick={() =>
-                                  handleTrack(item, item.designcode)
-                                }
-                              >
-                                Track
-                              </button>
-                              <div
-                                // className="Inner_Right"
-                                className={`Inner_Right ${
-                                  animate[item.id] ? "wobble" : ""
-                                }`}
-                                style={{ borderRadius: "4px" }}
-                                onClick={() => handleLikeClicks(item.id)}
-                              >
-                                <p style={{ padding: "8px 18px",cursor:"pointer" }}>
-                                  <FaRegThumbsUp size={20} />
-                                </p>
-                                {/* <p style={{ padding: "8px 18px" }}>{item.likes_count}</p> */}
-                              </div>
-                            </div>
+                          </div>
+                        </div>
+                        <div
+                          className=""
+                          style={{
+                            display: "flex",
+                            width: "auto",
+                            gap: "10px",
+                            width: "100%",
+                            justifyContent: "end"
+                          }}
+                        >
+                          <button
+                            style={{
+                              padding: "7px 10px ",
+                              borderRadius: "4px",
+                              color: "white",
+                              backgroundColor: "#0464D5",
+                              border: "none",
+                              fontSize: "15px",
+                              fontWeight: "900",
+                            }}
+                            onClick={() =>
+                              handleTrack(item, item.designcode)
+                            }
+                          >
+                            Track
+                          </button>
+                          <div
+                            // className="Inner_Right"
+                            className={`Inner_Right ${animate[item.id] ? "wobble" : ""
+                              }`}
+                            style={{ borderRadius: "4px" }}
+                            onClick={() => handleLikeClicks(item.id)}
+                          >
+                            <p style={{ padding: "8px 18px", cursor: "pointer" }}>
+                              <FaRegThumbsUp size={20} />
+                            </p>
+                            {/* <p style={{ padding: "8px 18px" }}>{item.likes_count}</p> */}
                           </div>
                         </div>
                       </div>
@@ -214,20 +215,47 @@ const VotorsPanal = ({ sidebarExpanded }) => {
                           </div>
                           <div className="Card_Details">
                             <h3>ID : {item.designcode}</h3>
+                            <span style={{ color: "#23A064", fontSize: "12px" }}>Status : <span style={{ color: "black", fontSize: "12px" }}>{item.currentstatus_track && item.currentstatus_track[0]?.current_status || ""}</span></span>
                             <div className="Card_Details_Inner">
                               <div className="Inner_Left">
                                 <p>{item.user_name}</p>
                                 <p>{item.created_at}</p>
                               </div>
+                            </div>
+                            <div
+                              className=""
+                              style={{
+                                display: "flex",
+                                width: "auto",
+                                gap: "10px",
+                                width: "100%",
+                                justifyContent: "end"
+                              }}
+                            >
+                              <button
+                                style={{
+                                  padding: "7px 10px ",
+                                  borderRadius: "4px",
+                                  color: "white",
+                                  backgroundColor: "#0464D5",
+                                  border: "none",
+                                  fontSize: "15px",
+                                  fontWeight: "900",
+                                }}
+                                onClick={() =>
+                                  handleTrack(item, item.designcode)
+                                }
+                              >
+                                Track
+                              </button>
                               <div
                                 // className="Inner_Right"
-                                className={`Inner_Right ${
-                                  animate[item.id] ? "wobble" : ""
-                                }`}
+                                className={`Inner_Right ${animate[item.id] ? "wobble" : ""
+                                  }`}
                                 style={{ borderRadius: "4px" }}
                                 onClick={() => handleLikeClicks(item.id)}
                               >
-                                <p style={{ padding: "8px 18px",cursor:"pointer" }}>
+                                <p style={{ padding: "7px 18px", cursor: "pointer" }}>
                                   <FaThumbsUp size={20} />
                                 </p>
                                 {/* <p style={{ padding: "8px 18px" }}>{item.likes_count}</p> */}

@@ -7,6 +7,7 @@ import AssignmentDetailsViewsAll from "../../Componets/AssignmentDetailsViewsAll
 
 const AssignmentDetailsViewsAllPageView = () => {
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
+
   return (
     <div className="Parent_AssignmentpanalPage">
       <Sidebar sidebarExpanded={sidebarExpanded} setSidebarExpanded={setSidebarExpanded} />

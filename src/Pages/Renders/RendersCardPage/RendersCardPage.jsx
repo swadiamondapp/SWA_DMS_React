@@ -11,8 +11,9 @@ const RendersPage = () => {
   const [designListData, setDesignListData] = useState([]);
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
 
+
   useEffect(() => {
-    cadDesignListApproved(setDesignListData);
+    cadDesignListApproved(setIsLoading,setDesignListData);
   }, []);
 
   return (
@@ -27,6 +28,7 @@ const RendersPage = () => {
       <RendersHome
         designListData={designListData}
         sidebarExpanded={sidebarExpanded}
+        setDesignListData={setDesignListData}
       />
     </div>
   );

@@ -120,11 +120,12 @@ const CentralHubDetailsView = ({ CentralFolderDetails, sidebarExpanded }) => {
                         // gap: "px",
                         justifyContent: "space-between",
                         width: "100%",
-                        alignItems:"center"
+                        alignItems:"center",
+                        flexDirection:"column"
                       }}
                     >
-                      <span style={{ color: "#23A064",fontSize:"13px" }}>Status :</span>
-                      <span  style={{fontSize:"13px" }}>{item.current_status[0]?.current_status || ""}</span>
+                      <span style={{ color: "#23A064",fontSize:"13px" }}>Status :  <span  style={{fontSize:"13px",color:"black" }}>{item.current_status[0]?.current_status || ""}</span></span>
+                     
 
                       <button
                         style={{
@@ -135,6 +136,8 @@ const CentralHubDetailsView = ({ CentralFolderDetails, sidebarExpanded }) => {
                           border: "none",
                           fontSize: "15px",
                           fontWeight: "900",
+                          width:"100%",
+                          marginTop:"10px"
                         }}
                         onClick={() => handleTrack(item, item.designcode)}
                       >
