@@ -11,11 +11,11 @@ import { GoDownload } from "react-icons/go";
 
 const RendersDetailPage = ({ folderDetails, sidebarExpanded }) => {
   const navigate = useNavigate();
-  console.log("folderDetails", folderDetails);
+  // console.log("folderDetailsoooo", folderDetails);
   const location = useLocation();
-  const { page } = location.state || {};
+  const { page, fid } = location.state || {};
 
-  console.log("page", page);
+  console.log("fid", fid);
 
   const printRef = useRef();
 
@@ -86,9 +86,9 @@ const RendersDetailPage = ({ folderDetails, sidebarExpanded }) => {
         renderMessage: true,
         cardDatas: folderDetails,
         page: page,
+        fid:fid
       },
     });
-    console.log(designCode, "renderDesignCode");
   };
 
   return (

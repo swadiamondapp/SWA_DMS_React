@@ -1,4 +1,4 @@
-import React, {  useEffect, useState } from "react";
+import React, {  useCallback, useEffect, useState } from "react";
 import "./RendersHome.css";
 import view from "../../../assets/view.png";
 import sort from "../../../assets/sort.png";
@@ -8,12 +8,21 @@ import { Link, useNavigate } from "react-router-dom";
 import DesignBtn from "../../ADMIN PANEL/Design Pool/DesignBtn";
 import { CircularProgress } from "@mui/material";
 import { MdViewModule } from "react-icons/md";
+import DesignerFilterModal from "../../DesignerFilterModal/DesignerFilterModal";
+import { cadDesignListApproved } from "../../../Pages/Renders/Apis";
 
-const RendersHome = ({ designListData, sidebarExpanded }) => {
+const RendersHome = ({ designListData, sidebarExpanded ,setDesignListData }) => {
+  const [openFilterModal, setOpenFilterModal] = useState(false);
   const [view, setView] = useState(false);
   const [grid, setGrid] = useState(true);
   const [detail, setDetail] = useState(false);
   const [tiles, setTiles] = useState(false);
+  const [startTime, setStartTime] = useState('');
+  const [endTime, setEndTime] = useState('');
+  const [dd, setDd] = useState();
+  const [hide, sethide] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
 
   const navigate = useNavigate();
 
@@ -45,6 +54,15 @@ const RendersHome = ({ designListData, sidebarExpanded }) => {
     setDetail(false);
     setTiles(true);
   };
+
+  const handleFilderModal = () => {
+    setOpenFilterModal(true);
+  };
+
+  const fetchDesigns = useCallback(async () => {
+    await cadDesignListApproved(setIsLoading,setDesignListData);;
+  }, []);
+
 
   return (
     <div
@@ -81,17 +99,17 @@ const RendersHome = ({ designListData, sidebarExpanded }) => {
             </div>
           )}
         </button>
-        <button>
+        {/* <button>
           {" "}
           <img className="RendersHome_img" src={sort} alt="" srcset="" /> Sort
-        </button>
-        <button>
+        </button> */}
+        <button onClick={handleFilderModal}>
           {" "}
           <img className="RendersHome_img" src={filter} alt="" srcset="" />{" "}
           Filter
         </button>
       </div>
-      {designListData.length === 0 && (
+      {isLoading && designListData.length !== 0 && (
         <div
           style={{
             display: "flex",
@@ -107,6 +125,18 @@ const RendersHome = ({ designListData, sidebarExpanded }) => {
               width: "35px",
             }}
           />
+          <span>No Data Found</span>
+        </div>
+      )}
+      { !isLoading && designListData.length === 0 && (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <span>No Data Found</span>
         </div>
       )}
       <div
@@ -168,6 +198,26 @@ const RendersHome = ({ designListData, sidebarExpanded }) => {
           </>
         )}
       </div>
+
+      {openFilterModal && (
+        <DesignerFilterModal
+          open={openFilterModal}
+          onClose={() => setOpenFilterModal(false)}
+          setOpenFilterModal={setOpenFilterModal}
+          setFolderDetails={setDesignListData}
+          onClearCall={() => fetchDesigns()}
+          // folderDetails={props.folderDetails}
+          // setFilteredData={setFilteredData}
+          page="renderPage"
+          setStartTime={setStartTime}
+          startTime={startTime}
+          endTime={endTime}
+          setEndTime={setEndTime}
+          setDd={setDd}
+          dd={dd}
+          sethide={sethide}
+        />
+      )}
     </div>
   );
 };

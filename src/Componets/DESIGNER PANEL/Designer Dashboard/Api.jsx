@@ -10,6 +10,7 @@ import {
   LIST_ALL_CAD_DESIGNERS,
   LIST_ALL_USER,
   LIST_UPLOAD_DESIGN,
+  RENDER_FILTER,
   UPLOAD_MULTIPLE_IMAGES,
 } from "../../../Pages/Services/EndPoints";
 
@@ -243,6 +244,36 @@ export const designerAssignToFilter = async (
     }&date_from=${startDate ? startDate : ""}&date_to=${
       endDate ? endDate : ""
     }`;
+    const response = await apiService.get(apiUrl);
+    if (response.data.results.status_code === 200) {
+      setFolderDetails(response.data.results.data);
+      setOpenFilterModal(false)
+      sethide(true)
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+export const renderFilter = async (
+  setIsLoading,
+  designCode,
+  setFolderDetails,
+  startDate,
+  endDate,
+  startTime,
+  endTime
+) => {
+  try {
+    setIsLoading(true);
+    let apiUrl = `${RENDER_FILTER
+    }?design_code=${
+      designCode
+    }&date_from=${startDate ? startDate : ""}&date_to=${
+      endDate ? endDate : ""
+    }&time_from=${startTime ? startTime :""}&time_to=${endTime ? endTime : ""}`;
     const response = await apiService.get(apiUrl);
     if (response.data.results.status_code === 200) {
       setFolderDetails(response.data.results.data);

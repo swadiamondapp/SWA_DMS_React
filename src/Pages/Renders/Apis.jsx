@@ -20,14 +20,17 @@ export const cadDesignList = async (setData) => {
   }
 };
 
-export const cadDesignListApproved = async (setData) => {
+export const cadDesignListApproved = async (setIsLoading,setData) => {
   try {
+    setIsLoading(true)
     const response = await apiService.get(LIST_CENTRAL_FOLDERS);
     if (checkApiStatus(response)) {
       setData(response?.data?.results?.data);
     }
   } catch (error) {
     console.log(error);
+  }finally{
+    setIsLoading(false)
   }
 };
 
