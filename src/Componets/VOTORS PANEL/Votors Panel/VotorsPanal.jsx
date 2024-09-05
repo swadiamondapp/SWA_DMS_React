@@ -161,7 +161,6 @@ const VotorsPanal = ({ sidebarExpanded }) => {
                           className=""
                           style={{
                             display: "flex",
-                            width: "auto",
                             gap: "10px",
                             width: "100%",
                             justifyContent: "end"
@@ -226,7 +225,6 @@ const VotorsPanal = ({ sidebarExpanded }) => {
                               className=""
                               style={{
                                 display: "flex",
-                                width: "auto",
                                 gap: "10px",
                                 width: "100%",
                                 justifyContent: "end"
