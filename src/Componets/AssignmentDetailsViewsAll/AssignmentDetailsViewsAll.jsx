@@ -424,8 +424,7 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded}) => {
                     // onClick={() => handleForlderDetailsVeiw(item.id, item.designcode)}
                     />
                     <span>
-                      POSTED ON:
-                      <b>{formatDate(cardDatas[0]?.created_at)}</b>
+                      POSTED ON: <b>{formatDate(cardDatas[0]?.created_at)}</b>
                     </span>
                     <button
                       className="Download_btn_hub"
