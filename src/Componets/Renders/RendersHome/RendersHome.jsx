@@ -22,6 +22,8 @@ const RendersHome = ({ designListData, sidebarExpanded ,setDesignListData }) => 
   const [dd, setDd] = useState();
   const [hide, sethide] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [designCode, setDesignCode] = useState("");
+  const [Time, setTime] = useState(null);
 
 
   const navigate = useNavigate();
@@ -216,6 +218,10 @@ const RendersHome = ({ designListData, sidebarExpanded ,setDesignListData }) => 
           setDd={setDd}
           dd={dd}
           sethide={sethide}
+          designCode={designCode}
+          setDesignCode={setDesignCode}
+          Time={Time}
+          setTime={setTime}
         />
       )}
     </div>

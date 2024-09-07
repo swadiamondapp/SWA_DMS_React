@@ -221,3 +221,4 @@ export const CENTRALHUB_SEARCH = "all/folderlist/?design_code=";
 export const DESIGNER_ASSIAN_SEARCH = "designer/getlist-folder/?foldername=";
 
 export const RENDER_FILTER = "all/folderlist/"
+export const RENDER_FINISHED_FILTER = "list/finished/projects/"

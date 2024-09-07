@@ -11,6 +11,7 @@ import {
   LIST_ALL_USER,
   LIST_UPLOAD_DESIGN,
   RENDER_FILTER,
+  RENDER_FINISHED_FILTER,
   UPLOAD_MULTIPLE_IMAGES,
 } from "../../../Pages/Services/EndPoints";
 
@@ -264,7 +265,8 @@ export const renderFilter = async (
   startDate,
   endDate,
   startTime,
-  endTime
+  endTime,
+  setOpenFilterModal
 ) => {
   try {
     setIsLoading(true);
@@ -279,6 +281,37 @@ export const renderFilter = async (
       setFolderDetails(response.data.results.data);
       setOpenFilterModal(false)
       sethide(true)
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+export const renderFinishedFilter = async (
+  setIsLoading,
+  designCode,
+  setFolderDetails,
+  startDate,
+  endDate,
+  startTime,
+  endTime,
+  setOpenFilterModal
+) => {
+  try {
+    setIsLoading(true);
+    let apiUrl = `${RENDER_FINISHED_FILTER
+    }?foldername=${
+      designCode
+    }&date_from=${startDate ? startDate : ""}&date_to=${
+      endDate ? endDate : ""
+    }&time_from=${startTime ? startTime :""}&time_to=${endTime ? endTime : ""}`;
+    const response = await apiService.get(apiUrl);
+    if (response.data.results.status_code === 200) {
+      setFolderDetails(response.data.results.data);
+      setOpenFilterModal(false)
+      // sethide(true)
     }
   } catch (error) {
     console.log(error);

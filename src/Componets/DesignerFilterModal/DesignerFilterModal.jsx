@@ -16,6 +16,7 @@ import {
   designerFilter,
   designerFilterBasedOnCategory,
   renderFilter,
+  renderFinishedFilter,
 } from "../DESIGNER PANEL/Designer Dashboard/Api";
 import { useParams } from "react-router-dom";
 import moment from "moment/moment";
@@ -37,6 +38,10 @@ const DesignerFilterModal = ({
   startTime,
   endTime,
   setEndTime,
+  designCode,
+  setDesignCode,
+  Time,
+  setTime,
 }) => {
   const { id } = useParams();
   const [filterTag, setFilterTag] = useState("");
@@ -52,8 +57,8 @@ const DesignerFilterModal = ({
   const [forlderId, setFolderId] = useState(id);
   const [designers, setDesigners] = useState([]);
   const [filterDesigner, setFilterDesigner] = useState("");
-  const [designCode, setDesignCode] = useState("");
-  const [Time, setTime] = useState(null);
+  // const [designCode, setDesignCode] = useState("");
+  // const [Time, setTime] = useState(null);
 
 
   const [formData, setFormData] = useState({
@@ -61,7 +66,7 @@ const DesignerFilterModal = ({
     tag: [],
   });
 
-  console.log(startDate, "startDate")
+  console.log(startTime, "startTime")
   console.log(endTime, "endTime")
 
   useEffect(() => {
@@ -87,6 +92,8 @@ const DesignerFilterModal = ({
     sethide(false);
     setEndTime("")
     setStartTime("")
+    setTime("")
+    setDesignCode("")
   };
 
   const handleChange = (values) => {
@@ -186,7 +193,21 @@ const DesignerFilterModal = ({
         startDate,
         endDate,
         startTime,
-        endTime
+        endTime,
+        setOpenFilterModal
+        // setFilteredData
+      );
+    }
+    else if (location.pathname === "/finishedProject") {
+      renderFinishedFilter(
+        setIsLoading,
+        designCode,
+        setFolderDetails,
+        startDate,
+        endDate,
+        startTime,
+        endTime,
+        setOpenFilterModal
         // setFilteredData
       );
     }
@@ -253,7 +274,8 @@ const DesignerFilterModal = ({
             />
           </div>
 
-          {location.pathname === "/renderCard" && (
+          {location.pathname === "/renderCard" ||
+          location.pathname === "/finishedProject" ? (
             <>
               <div
                 className="edit_fields"
@@ -294,9 +316,14 @@ const DesignerFilterModal = ({
                 />
               </div>
             </>
-          )}
+            ) : (
+              null
+            )
+          }
 
-          {location.pathname !== "/renderCard" && (
+
+          {location.pathname !== "/renderCard" &&
+          location.pathname !== "/finishedProject" && (
             <>
               {page == "assignto" ? (
                 <div
