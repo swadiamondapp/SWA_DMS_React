@@ -60,7 +60,7 @@ tbody tr:last-child .print-table-cell {
   gap: 4px;
 }
 .slot_items {
-  height: 355px;
+  height: auto;
   width: 99%;
   border-radius: 8px;
   border: 1px solid black;

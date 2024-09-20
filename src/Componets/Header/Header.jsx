@@ -21,7 +21,8 @@ const Header = ({
   searchListId,
   handleInputChange,
   headerDetails,
-  handleCADLogout
+  handleCADLogout,
+  soltData
   // handleSearchDesignPoool
 }) => {
   const location = useLocation();
@@ -245,6 +246,7 @@ const Header = ({
                 {location.pathname === "/workdone" && <h3>Work Done</h3>}
                 {location.pathname === "/newscanmodule" && <h3>Scan</h3>}
                 {location.pathname === "/centralhubscan" && <h3>Scan</h3>}
+                {location.pathname === `/slotPreview/${id}` && <h3>	Slot ID : {soltData[0].slotnumber}</h3>}
               </div>
 
               <div className="Right_User_Section">
@@ -294,7 +296,8 @@ const Header = ({
                   location.pathname !== "/rendersuploaded" &&
                   location.pathname !== `/centralfolderdetails/${id}` &&
                   location.pathname !== `/assignmentview/${assignmentId}` &&
-                  location.pathname !== `/assignmentviewsAll/${id}` && (
+                  location.pathname !== `/assignmentviewsAll/${id}` && 
+                  location.pathname !== `/slotPreview/${id}` && (
                     <div className="Search_Admin">
                       <div className="Search_User">
                         <input
