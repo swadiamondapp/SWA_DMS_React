@@ -12,7 +12,7 @@ const chunkArray = (arr, chunkSize) => {
 
 const SlotePrint = forwardRef(({ slotView }, ref) => {
   return (
-    <div className="NewSlotPrint" ref={ref} style={{padding:"5px",paddingTop:"20px"}}>
+    <div className="NewSlotPrint" ref={ref} style={{padding:"5px",paddingTop:"20px",justifyContent:"space-evenly"}}>
       {slotView?.flatMap((item) =>
         chunkArray(item.caddesigns, 4).map((chunk, chunkIndex) => (
           <>
