@@ -77,7 +77,7 @@ const PreviewTab = ({ sidebarExpanded, soltData }) => {
                                                 ))}</span>
                                             </div>
                                         </div>
-                                        <div className="print_qr" style={{marginLeft:"-66px"}}>
+                                        <div className="print_qr" style={{marginLeft:"-45px"}}>
                                             <QRCodeGenerator value={design.designcode} />
                                         </div>
                                     </div>
