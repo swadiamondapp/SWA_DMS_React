@@ -67,6 +67,7 @@ import StatusPage from "./Pages/StatusPage/StatusPage";
 import NewSlotPrint from "./Componets/CENTRAL HUB/Slot/NewSlotPrint";
 import CadUploaded from "./Componets/CadUploaded/CadUploaded";
 import RendersUploaded from "./Componets/RendersUploaded/RendersUploaded";
+import CentralHubSlotPreview from "./Pages/CENTRAL HUB/CentralHubSlotPreview/CentralHubSlotPreview";
 
 function App() {
   return (
@@ -165,6 +166,7 @@ function App() {
             <Route path="/folderdetails/:id" element={<FolderDetails />} />
             <Route path="/centralDashboard" element={<CentralHubDashboard />} />
             <Route path="/slot" element={<HubSlot />} />
+            <Route path="/slotPreview/:id" element={<CentralHubSlotPreview />} />
 
             <Route path="/mastertable" element={<MastersTable />} />
 
