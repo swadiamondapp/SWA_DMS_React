@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import Sidebar from "../../../Componets/Sidebar/Sidebar";
 import Header from "../../../Componets/Header/Header";
 import RenderCard from "../../../Componets/RenderCard/RenderCard";
-import { cadDesignList } from "../Apis";
+import { cadDesignList, cadDesignListApproved } from "../Apis";
 import AnnotationCanvas from "../../../Componets/AnnotationCanvas/AnnotationCanvas";
 import RendersHome from "../../../Componets/Renders/RendersHome/RendersHome";
 
@@ -11,8 +11,9 @@ const RendersPage = () => {
   const [designListData, setDesignListData] = useState([]);
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
 
+
   useEffect(() => {
-    cadDesignList(setDesignListData);
+    cadDesignListApproved(setIsLoading,setDesignListData);
   }, []);
 
   return (
@@ -27,6 +28,7 @@ const RendersPage = () => {
       <RendersHome
         designListData={designListData}
         sidebarExpanded={sidebarExpanded}
+        setDesignListData={setDesignListData}
       />
     </div>
   );

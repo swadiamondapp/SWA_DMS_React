@@ -18,8 +18,11 @@
   import ReactToPrint, { useReactToPrint } from "react-to-print";
   import { LuPrinter } from "react-icons/lu";
   import SlotePrint from "./SlotePrint";
+import { useNavigate } from "react-router-dom";
 
   const Slots = ({sidebarExpanded}) => {
+
+    const navigate = useNavigate()
     const [showEditDelete, setShowEditDelete] = useState(null);
     const [isModalOpenslot, setIsModalOpenslot] = useState(false);
     const [isModalOpenslotview, setIsModalOpenslotview] = useState(false);
@@ -142,6 +145,16 @@
     const handlePrint = useReactToPrint({
       content: printRef.current,
     });
+    
+    const handlePreviewData = (item) => {
+      console.log(item[0]?.slotnumber,"uuuuuuuuuu")
+      navigate(`/slotPreview/${item[0].slotnumber}`, {
+        state: {
+          soltData: item,
+        },
+      });
+    };
+
     // const sortedData = Data.sort((a, b) => a.id - b.id);
     // console.log(sortedData, "sortedData");
     return (
@@ -238,24 +251,25 @@
                     />
                     Print
                   </button> */}
-                  <ReactToPrint
-                      trigger={() => (
+                  {/* <ReactToPrint
+                      trigger={() => ( */}
                         <div
                           className="slotPrintButton"
-                          onClick={handlePrint}
+                          // onClick={handlePrint}
+                          onClick={()=>handlePreviewData(slotView)}
                                style={{cursor:"pointer"}}
                         >
                           <LuPrinter /> Print
                         </div>
-                      )}
+                      {/* )}
                       content={() => printRef.current}
-                    />
-                    <div style={{display:'none'}}>
+                    /> */}
+                    {/* <div style={{display:'none'}}>
                       <SlotePrint                        
                         ref={printRef}
                         slotView={slotView}
                       />
-                    </div>
+                    </div> */}
 
 
                 </div>

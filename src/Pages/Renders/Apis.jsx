@@ -5,6 +5,7 @@ import {
   CREATE_FINISHED_PROJECTS,
   RENDESR_ALL_FINISHED_PROJECTS,
   RENDERS_REUPLOAD,
+  LIST_CENTRAL_FOLDERS,
 } from "../Services/EndPoints";
 import { apiService, checkApiStatus } from "../Services/ApiInstants";
 
@@ -16,6 +17,20 @@ export const cadDesignList = async (setData) => {
     }
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const cadDesignListApproved = async (setIsLoading,setData) => {
+  try {
+    setIsLoading(true)
+    const response = await apiService.get(LIST_CENTRAL_FOLDERS);
+    if (checkApiStatus(response)) {
+      setData(response?.data?.results?.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }finally{
+    setIsLoading(false)
   }
 };
 

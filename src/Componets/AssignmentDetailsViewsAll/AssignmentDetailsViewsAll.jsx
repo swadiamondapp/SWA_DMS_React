@@ -43,12 +43,14 @@ import { AiOutlineEdit } from "react-icons/ai";
 import { apiService, checkApiStatus } from "../../Pages/Services/ApiInstants";
 import SuccessModal from "../SuccessModal/SuccessModal";
 import { MdOutlineEdit } from "react-icons/md";
+import { renderFolderDetails } from "../DESIGNER PANEL/Designer Detail View/Api";
 
-const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
+const AssignmentDetailsViewsAll = ({ sidebarExpanded}) => {
   const location = useLocation();
   const { id } = useParams();
-  const { detailsViewFolderName, renderMessage, cardDatas, page } =
+  const { detailsViewFolderName, renderMessage, cardDatas, page ,fid  } =
     location.state || {};
+    const [detailData, setDetailData] = useState([]);
   const [folderDetails, setFolderDetails] = useState([]);
   const [folderDetailView, setFolderDetailsView] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -71,12 +73,40 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
   const [successModalOpen, setSuccessModalOpen] = useState(false);
   // const [renderRemark, setRenderRemark] = useState("");
   // const [cadRemark, setCadRemark] = useState("");
-  const [file2d_status, setFile2d_status] = useState(
-    cardDatas?.file2d_status
-  );
-  const [file3d_status, setFile3d_status] = useState(
-    cardDatas?.file3d_status
-  );
+  // const [file2d_status, setFile2d_status] = useState(
+  //   detailData[0]?.file2d_status
+  // );
+  // const [file3d_status, setFile3d_status] = useState(
+  //   detailData?.file3d_status
+  // );
+
+  // useEffect(() => {
+  //   renderFolderDetails(setIsLoading, setDetailData, fid);
+  // }, [])
+  
+  // console.log(fid, "fid");
+  // console.log(detailData[0]?.file2d_status,"detailData")
+  // console.log(file2d_status,"file2d_status")
+
+  const [file2d_status, setFile2d_status] = useState(undefined);
+  const [file3d_status, setFile3d_status] = useState(undefined);
+
+  useEffect(() => {
+    renderFolderDetails(setIsLoading, setDetailData, fid);
+  }, [fid]);
+
+  useEffect(() => {
+    if (detailData.length > 0) {
+      setFile2d_status(detailData[0]?.file2d_status);
+      setFile3d_status(detailData[0]?.file3d_status);
+    }
+  }, [detailData]);
+
+  console.log(fid, "fid");
+  console.log(detailData, "detailData");
+  console.log(file2d_status, "file2d_status");
+  console.log(file3d_status, "file3d_status");
+
 
   const handleopenModal = () => {
     setOpenmodal(!openModal);
@@ -104,10 +134,10 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
   }, [id, detailsViewFolderName]);
 
   const handleDownload = (imageUrl, fileName = "downloaded_file", detailsViewFolderName = "") => {
-    const sanitizedFolderName = detailsViewFolderName 
-    
-    const fullFileName = `${sanitizedFolderName}_${fileName}` 
-  
+    const sanitizedFolderName = detailsViewFolderName
+
+    const fullFileName = `${sanitizedFolderName}_${fileName}`
+
     fetch(imageUrl, {
       method: "GET",
       mode: "cors",
@@ -124,7 +154,7 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
       })
       .catch((error) => console.error("Error downloading the file:", error));
   };
-  
+
 
   useEffect(() => {
     if (folderDetailView) {
@@ -141,7 +171,7 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
   const productCode = itemDetails?.designcode || "";
   // const designCode = itemDetails?.paper_design?.designcode || detailsViewFolderName ;
 
-  // console.log(detailsViewFolderName, "productId");
+  // console.log(page, "pageeeee");
 
   const handleEditBasicDetails = () => {
     setIsOpen(true);
@@ -327,6 +357,7 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
   const file2dStatus = cardDatas && cardDatas[0]?.file2d_status;
 
  
+  console.log(file2dStatus,"file2dStatus")
 
   return (
     <div>
@@ -390,16 +421,15 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
                     <img
                       src={cardDatas[0]?.file_2d}
                       alt=""
-                      // onClick={() => handleForlderDetailsVeiw(item.id, item.designcode)}
+                    // onClick={() => handleForlderDetailsVeiw(item.id, item.designcode)}
                     />
                     <span>
-                      POSTED ON:
-                      <b>{formatDate(cardDatas[0]?.created_at)}</b>
+                      POSTED ON: <b>{formatDate(cardDatas[0]?.created_at)}</b>
                     </span>
                     <button
                       className="Download_btn_hub"
                       onClick={() =>
-                        handleDownload(cardDatas[0]?.file_2d, "image_2d.jpg",detailsViewFolderName)
+                        handleDownload(cardDatas[0]?.file_2d, "image_2d.jpg", detailsViewFolderName)
                       }
                     >
                       DOWNLOAD
@@ -414,21 +444,20 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
                             file2dStatus === "Approved"
                               ? "#23A064"
                               : file2dStatus === "Rejected"
-                              ? "red"
-                              : "#0464D5",
-                          border: `1px solid ${
-                            file2dStatus === "Approved"
+                                ? "red"
+                                : "#0464D5",
+                          border: `1px solid ${file2dStatus === "Approved"
                               ? "#23A064"
                               : file2dStatus === "Rejected"
-                              ? "#FA3838"
-                              : "#0464D5"
-                          }`,
+                                ? "#FA3838"
+                                : "#0464D5"
+                            }`,
                           background:
                             file2dStatus === "Approved"
                               ? "#23A0641A"
                               : file2dStatus === "Rejected"
-                              ? "#FA38381A"
-                              : "#0464D51A",
+                                ? "#FA38381A"
+                                : "#0464D51A",
                           width: "auto",
                           borderRadius: "32px",
                           fontWeight: "600",
@@ -442,7 +471,7 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
                         value={
                           file2d_status
                             ? file2d_status
-                            : cardDatas[0]?.file2d_status
+                            : detailData[0]?.file2d_status
                         }
                         // style={{
                         //   width: 120,
@@ -461,21 +490,20 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
                             file2d_status === "Approved"
                               ? "#23A064"
                               : file2d_status === "Rejected"
-                              ? "red"
-                              : "#0464D5",
-                          border: `1px solid ${
-                            file2d_status === "Approved"
+                                ? "red"
+                                : "#0464D5",
+                          border: `1px solid ${file2d_status === "Approved"
                               ? "#23A064"
                               : file2d_status === "Rejected"
-                              ? "#FA3838"
-                              : "#0464D5"
-                          }`,
+                                ? "#FA3838"
+                                : "#0464D5"
+                            }`,
                           background:
                             file2d_status === "Approved"
                               ? "#23A0641A"
                               : file2d_status === "Rejected"
-                              ? "#FA38381A"
-                              : "#0464D51A",
+                                ? "#FA38381A"
+                                : "#0464D51A",
                           borderRadius: "32px",
                           fontWeight: "600",
                           marginTop: "13px",
@@ -500,7 +528,7 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
                     <button
                       className="Download_btn_hub"
                       onClick={() =>
-                        handleDownload(cardDatas[0]?.file_3d, "model_3d.3dm",detailsViewFolderName)
+                        handleDownload(cardDatas[0]?.file_3d, "model_3d.3dm", detailsViewFolderName)
                       }
                       style={{ background: "#126E72" }}
                     >
@@ -512,7 +540,7 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
                         value={
                           file3d_status
                             ? file3d_status
-                            : cardDatas[0]?.file3d_status
+                            : detailData[0]?.file3d_status
                         }
                         // style={{
                         //   width: 120,
@@ -529,21 +557,20 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
                             file3d_status === "Approved"
                               ? "#23A064"
                               : file3d_status === "Rejected"
-                              ? "red"
-                              : "#0464D5",
-                          border: `1px solid ${
-                            file3d_status === "Approved"
+                                ? "red"
+                                : "#0464D5",
+                          border: `1px solid ${file3d_status === "Approved"
                               ? "#23A064"
                               : file3d_status === "Rejected"
-                              ? "#FA3838"
-                              : "#0464D5"
-                          }`,
+                                ? "#FA3838"
+                                : "#0464D5"
+                            }`,
                           background:
                             file3d_status === "Approved"
                               ? "#23A0641A"
                               : file3d_status === "Rejected"
-                              ? "#FA38381A"
-                              : "#0464D51A",
+                                ? "#FA38381A"
+                                : "#0464D51A",
                           width: "auto",
                           borderRadius: "32px",
                           fontWeight: "600",
@@ -563,21 +590,20 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
                             file3dStatus === "Approved"
                               ? "#23A064"
                               : file3dStatus === "Rejected"
-                              ? "red"
-                              : "#0464D5",
-                          border: `1px solid ${
-                            file3dStatus === "Approved"
+                                ? "red"
+                                : "#0464D5",
+                          border: `1px solid ${file3dStatus === "Approved"
                               ? "#23A064"
                               : file3dStatus === "Rejected"
-                              ? "#FA3838"
-                              : "#0464D5"
-                          }`,
+                                ? "#FA3838"
+                                : "#0464D5"
+                            }`,
                           background:
                             file3dStatus === "Approved"
                               ? "#23A0641A"
                               : file3dStatus === "Rejected"
-                              ? "#FA38381A"
-                              : "#0464D51A",
+                                ? "#FA38381A"
+                                : "#0464D51A",
                           width: "auto",
                           borderRadius: "32px",
                           fontWeight: "600",
@@ -610,16 +636,20 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
               >
                 <h3>Basic details</h3>
 
-                <button
-                  className="btn_scan"
-                  onClick={() => handleEditBasicDetails()}
-                >
-                  <MdOutlineEdit
-                    style={{ color: "#0464D5" }}
-                    className="btn_scan_img1"
-                  />{" "}
-                  <span>Edit Details</span>
-                </button>
+                { page !== "renders" &&
+                 page !== "CADdetail" && (
+                  <button
+                    className="btn_scan"
+                    onClick={() => handleEditBasicDetails()}
+                  >
+                    <MdOutlineEdit
+                      style={{ color: "#0464D5" }}
+                      className="btn_scan_img1"
+                    />{" "}
+                    <span>Edit Details</span>
+                  </button>
+                )}
+                 
               </div>
 
               <div className="Assignment_Details">
@@ -904,21 +934,20 @@ console.log("Initial", status);0,
                             statusValue === "Approved"
                               ? "#23A064"
                               : statusValue === "Rejected"
-                              ? "red"
-                              : "#0464D5",
-                          border: `1px solid ${
-                            statusValue === "Approved"
+                                ? "red"
+                                : "#0464D5",
+                          border: `1px solid ${statusValue === "Approved"
                               ? "#23A064"
                               : statusValue === "Rejected"
-                              ? "#FA3838"
-                              : "#0464D5"
-                          }`,
+                                ? "#FA3838"
+                                : "#0464D5"
+                            }`,
                           background:
                             statusValue === "Approved"
                               ? "#23A0641A"
                               : statusValue === "Rejected"
-                              ? "#FA38381A"
-                              : "#0464D51A",
+                                ? "#FA38381A"
+                                : "#0464D51A",
                           width: "auto",
                           borderRadius: "32px",
                           fontWeight: "600",
@@ -950,21 +979,20 @@ console.log("Initial", status);0,
                               statusValue === "Approved"
                                 ? "#23A064"
                                 : statusValue === "Rejected"
-                                ? "red"
-                                : "#0464D5",
-                            border: `1px solid ${
-                              statusValue === "Approved"
+                                  ? "red"
+                                  : "#0464D5",
+                            border: `1px solid ${statusValue === "Approved"
                                 ? "#23A064"
                                 : statusValue === "Rejected"
-                                ? "#FA3838"
-                                : "#0464D5"
-                            }`,
+                                  ? "#FA3838"
+                                  : "#0464D5"
+                              }`,
                             background:
                               statusValue === "Approved"
                                 ? "#23A0641A"
                                 : statusValue === "Rejected"
-                                ? "#FA38381A"
-                                : "#0464D51A",
+                                  ? "#FA38381A"
+                                  : "#0464D51A",
                             width: "auto",
                             borderRadius: "32px",
                             fontWeight: "600",
@@ -1020,9 +1048,9 @@ console.log("Initial", status);0,
           setSuccessModalOpen={setSuccessModalOpen}
           setIsLoading={setIsLoading}
           detailsViewFolderName={detailsViewFolderName}
-          // setCadRemark={setCadRemark}
-          // setRenderRemark={setRenderRemark}
-          // renderRemark={renderRemark}
+        // setCadRemark={setCadRemark}
+        // setRenderRemark={setRenderRemark}
+        // renderRemark={renderRemark}
         />
       )}
 

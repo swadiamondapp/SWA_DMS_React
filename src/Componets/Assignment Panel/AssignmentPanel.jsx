@@ -508,10 +508,10 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
                                             item?.status_track[0]
                                               ?.current_status
                                           }{" "}
-                                          -
+                                          {/* -
                                           {formatDateTwo(
                                             item?.status_track[0]?.date
-                                          )}
+                                          )} */}
                                         </span>
                                       </span>
                                     </div>
@@ -987,6 +987,7 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
                                 {!showRadioButtons &&
                                   location.pathname === "/assignmentpanel" && (
                                     <div
+                                    className="Dots_Delete_DesignPool_btns1"
                                       onClick={() =>
                                         toggleDeleteMoveButtons(itemId)
                                       }
@@ -1000,7 +1001,7 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
                                   )}
                                 {activeCardId === itemId && (
                                   <div
-                                    className="Dots_Delete_DesignPool_btns"
+                                    className="Dots_Delete_DesignPool_btns1 Dots_Delete_shadow"
                                     ref={dropdownRef}
                                   >
                                     <p
