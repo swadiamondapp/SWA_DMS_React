@@ -26,6 +26,7 @@ const OtherLogin = ({sidebarExpanded}) => {
             </p>
           </div>
           </a>
+          <a href="https://onixorder.zinfog.in/" target="_blank" style={{color:"black"}}>
           <div className="login_card">
             <p className="LogeLabel">OMS Onyks</p>
             <p className="LogedDtae">Last logged in : 5:34 AM</p>
@@ -33,6 +34,7 @@ const OtherLogin = ({sidebarExpanded}) => {
               Login <img src={login} alt="" />
             </p>
           </div>
+          </a>
           <a href="https://oms.mirrordiamonds.com/" target="_blank" style={{color:"black"}}>
           <div className="login_card">
             <p className="LogeLabel">OMS mirror</p>

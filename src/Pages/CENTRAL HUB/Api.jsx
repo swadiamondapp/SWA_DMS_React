@@ -3,6 +3,7 @@ import {
   CENTRAL_HUB_FOLDER_DETAILS,
   CENTRAL_HUB_TRANSFER,
   CHANGE_CENTRAL_HUB_STATUS,
+  DELETE_TRASFER_DATA,
   GENERATE_SLOT_NUMBER,
   LIST_CENTRAL_FOLDERS,
   LIST_FROM_DESIGN_CAD,
@@ -59,12 +60,15 @@ export const slot_view_by_id = async (Id, setSloteView) => {
 
 export const listFoldersCentralHub = async (setIsLoading, setFolders) => {
   try {
+    setIsLoading(true)
     const response = await apiService.get(LIST_CENTRAL_FOLDERS);
     if (checkApiStatus(response)) {
-      setFolders(response.data.results.data);
+      setFolders.current = response.data.results.data;
     }
   } catch (error) {
     console.log(error);
+  } finally{
+    setIsLoading(false)
   }
 };
 
@@ -187,5 +191,36 @@ export const changeCentralHubStatus = async (
     }
   } catch (error) {
     console.error("Error moving designs:", error);
+  }
+};
+
+
+
+
+export const deleteTrasferItem = async (
+  setIsLoading,
+  setSuccessModalOpen,
+  setSuccessMessage,
+  setDeleteConfirmationOpen,
+  dltId,
+  setTransferData
+) => {
+  
+  try {
+    setIsLoading(true);
+    const response = await apiService.delete(`${DELETE_TRASFER_DATA}${dltId}/`);
+    if (checkApiStatus(response)) {
+      setSuccessMessage("item Deleted Successfully");
+      setSuccessModalOpen(true);
+      centralTransfer(setIsLoading,setTransferData)
+      setTimeout(() => {
+        setSuccessModalOpen(false);
+        setDeleteConfirmationOpen(false);
+      }, 1600);
+    }
+  } catch (error) {
+    console.error("Error moving designs:", error);
+  } finally {
+    setIsLoading(false);
   }
 };

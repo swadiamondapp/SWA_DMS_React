@@ -15,7 +15,9 @@ import {
 } from "./Api";
 import MultipleImageUpload from "../../MultipleImageUploadModal/MultipleImageUpload";
 import { useLocation, Link, useNavigate } from "react-router-dom";
+import DesignerFilterModal from "../../DesignerFilterModal/DesignerFilterModal";
 // import DesignerFilterModal from "../../DesignerFilterModal/DesignerFilterModal";
+
 const DesignerDashboard = ({ sidebarExpanded }) => {
   const [uploadInstructionsVisible, setUploadInstructionsVisible] =
     useState(true);
@@ -28,7 +30,10 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
   const [uploadImage, setUploadImage] = useState([]);
   const [previewImages, setPreviewImages] = useState([]);
   const [multipleImageModalOpen, setMultipleImageModalOpen] = useState(false);
-
+  const [openFilterModal, setOpenFilterModal] = useState(false);
+  const [filteredDta, setFilteredData] = useState([]);
+  const [dd, setDd] = useState();
+  const [hide, sethide] = useState(false);
 
   const navigate = useNavigate();
   const [grid, setGrid] = useState(true);
@@ -120,6 +125,26 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
       },
     });
   };
+  const formatDateTwo = (isoString) => {
+    if (!isoString) {
+      return "";
+    }
+
+    const date = new Date(isoString);
+
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+
+    let hours = date.getHours();
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const ampm = hours >= 12 ? "PM" : "AM";
+
+    hours = hours % 12;
+    hours = hours ? String(hours).padStart(2, "0") : "12";
+
+    return `${day}/${month}/${year} ${hours}:${minutes} ${ampm}`;
+  };
 
   console.log("uploadImage-->", uploadedDesigns);
 
@@ -141,7 +166,7 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
             zIndex: "99",
             backgroundColor: "#F6F5F1",
             height: "160px",
-            paddingBottom:"10px"
+            paddingBottom: "10px",
           }}
         >
           <div className="Design_FileUpload" style={{ marginTop: "20px" }}>
@@ -195,14 +220,20 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
             grid={grid}
             detail={detail}
             tiles={tiles}
-      
+            openFilterModal={openFilterModal}
+            setOpenFilterModal={setOpenFilterModal}
           />
         </div>
 
         <div className="Uploaded___list">
           <div className="DesignerDashboardcard">
-            <h3 className="HeadNewdesign">Uploaded</h3>
+            <h3 className="HeadNewdesign">
+              Uploaded (&nbsp; {currentItems.length}&nbsp; )
+            </h3>
 
+            {!isLoading && currentItems.length === 0 && (
+              <span>No Data Found</span>
+            )}
             {isLoading ? (
               <div
                 style={{
@@ -217,7 +248,7 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
                 }}
               >
                 <CircularProgress
-                  size={60}
+                  size={40}
                   sx={{
                     color: "#000000",
                     // padding: "8px 10px",
@@ -243,9 +274,32 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
                               className=""
                               style={{ display: "flex", gap: "5px" }}
                             >
-                              <span style={{ color: "#23A064" }}>Status :</span>
-                              <span>{item.current_status || ""}</span>
+                              <span
+                                style={{ color: "#23A064", fontSize: "13px" }}
+                              >
+                                Track status :{" "}
+                                <span
+                                  style={{ color: "black", fontSize: "12px" }}
+                                >
+                                  {item?.currentstatus_track && item?.currentstatus_track[0]?.current_status}
+                                  </span>
+                                  {/* {formatDateTwo(
+                                    item?.currentstatus_track[0]?.date
+                                  )} */}
+                              </span>
                             </div>
+                            <span
+                              style={{ color: "#23A064", fontSize: "12px" }}
+                            >
+                              CAD status :{" "}
+                              <span
+                                style={{ color: "black", fontSize: "12px" }}
+                              >
+                                {item.timer_status}
+                                {item.timer_status !== "on-going" &&
+                                  ` - ${item.timer_value}`}
+                              </span>
+                            </span>
                             <div className="Card_Details_Inner">
                               <div className="Inner_Left">
                                 <p>{item.name}</p>
@@ -289,16 +343,54 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
                             <div
                               className=""
                               style={{ display: "flex", gap: "5px" }}
-                            >
-                              <span style={{ color: "#23A064" }}>Status :</span>
-                              <span>{item.current_status || ""}</span>
-                            </div>
+                            ></div>
                             <h3>ID : {item.designcode}</h3>
                             <div className="Card_Details_Inner">
                               <div className="Inner_Left">
+                                <div
+                                  className=""
+                                  style={{ display: "flex", gap: "5px" }}
+                                >
+                                  <span
+                                    style={{
+                                      color: "#23A064",
+                                      fontSize: "13px",
+                                    }}
+                                  >
+                                    Track status :{" "}
+                                    <span
+                                      style={{
+                                        color: "black",
+                                        fontSize: "12px",
+                                      }}
+                                    >
+                                      {
+                                        item?.currentstatus_track[0]
+                                          ?.current_status
+                                      }{" "}
+                                      {formatDateTwo(
+                                        item?.currentstatus_track[0]?.date
+                                      )}
+                                    </span>
+                                  </span>
+                                </div>
+                                <span
+                                  style={{ color: "#23A064", fontSize: "12px" }}
+                                >
+                                  CAD status :{" "}
+                                  <span
+                                    style={{ color: "black", fontSize: "12px" }}
+                                  >
+                                    {item.timer_status} - {item.timer_value}
+                                  </span>
+                                </span>
+
                                 <p>{item.name}</p>
-                                <p>{item.created_at}</p>
+                                <p style={{ fontSize: "12px", color: "gray" }}>
+                                  {item.created_at}
+                                </p>
                               </div>
+
                               <button
                                 style={{
                                   padding: "7px 10px ",
@@ -350,20 +442,59 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
                             {/* <LazyLoad height={900} offset={100}>
                              </LazyLoad> */}
                           </div>
-                          <div className="parent_border" style={{ width: "100%" }}></div>
+                          <div
+                            className="parent_border"
+                            style={{ width: "100%" }}
+                          ></div>
                           <div className="Card_Details_Designer_3">
                             <h3>ID : {item.designcode}</h3>
                             <div
                               className=""
                               style={{ display: "flex", gap: "5px" }}
-                            >
-                              <span style={{ color: "#23A064" }}>Status :</span>
-                              <span>{item.current_status || ""}</span>
-                            </div>
+                            ></div>
                             <div className="Card_Details_Inner">
                               <div className="Inner_Left">
+                                <div
+                                  className=""
+                                  style={{ display: "flex", gap: "5px" }}
+                                >
+                                  <span
+                                    style={{
+                                      color: "#23A064",
+                                      fontSize: "13px",
+                                    }}
+                                  >
+                                    Track status :{" "}
+                                    <span
+                                      style={{
+                                        color: "black",
+                                        fontSize: "12px",
+                                      }}
+                                    >
+                                      {
+                                        item?.currentstatus_track[0]
+                                          ?.current_status
+                                      }{" "}
+                                      {formatDateTwo(
+                                        item?.currentstatus_track[0]?.date
+                                      )}
+                                    </span>
+                                  </span>
+                                </div>
+                                <span
+                                  style={{ color: "#23A064", fontSize: "12px" }}
+                                >
+                                  CAD status :{" "}
+                                  <span
+                                    style={{ color: "black", fontSize: "12px" }}
+                                  >
+                                    {item.timer_status} - {item.timer_value}
+                                  </span>
+                                </span>
                                 <p>{item.name}</p>
-                                <p>{item.created_at}</p>
+                                <p style={{ fontSize: "12px", color: "gray" }}>
+                                  {item.created_at}
+                                </p>
                                 <button
                                   style={{
                                     padding: "7px 10px ",
@@ -391,6 +522,17 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
               </>
             )}
           </div>
+
+          {!hide && (
+            <div className="pagination">
+              <Pagination
+                count={Math.ceil(uploadedDesigns.length / 20)}
+                page={currentPage}
+                onChange={handlePageChange}
+                color="primary"
+              />
+            </div>
+          )}
         </div>
         <MultipleImageUpload
           open={multipleImageModalOpen}
@@ -405,15 +547,21 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
         />
       </div>
 
-
-      <div className="pagination">
-        <Pagination
-          count={Math.ceil(uploadedDesigns.length / 20)}
-          page={currentPage}
-          onChange={handlePageChange}
-          color="primary"
+      {openFilterModal && (
+        <DesignerFilterModal
+          open={openFilterModal}
+          onClose={() => setOpenFilterModal(false)}
+          setOpenFilterModal={setOpenFilterModal}
+          setFolderDetails={setCurrentItems}
+          onClearCall={() => fetchDesigns()}
+          // folderDetails={props.folderDetails}
+          setFilteredData={setFilteredData}
+          setDd={setDd}
+          dd={dd}
+          page="designerDashboard"
+          sethide={sethide}
         />
-      </div>
+      )}
     </div>
   );
 };

@@ -29,6 +29,7 @@ export const LIST_ASSIGNED_CAD_DESIGN = "list/myassigned-data/";
 export const CUSTOMIZATION_DETAILS = "customization-detail/";
 export const DESIGN_LIST_CAD = "all-designlistof-cad/";
 export const FINISHED_PROJECTS = "list/finished/projects/";
+export const RENDESR_ALL_FINISHED_PROJECTS ="list/folderby/Renders"
 export const FOLDER_ITEM = "innerproject/detail/";
 export const LIST_SLOT_HUB = "slot/list/";
 export const LIST_FROM_DESIGN_CAD = "all-designlistof-cad/";
@@ -103,6 +104,8 @@ export const WORKDONE_TABLE_LIST = "workdone/scan/list";
 export const WORKDONE_TABLE_PRODUCT_SEARCH = "workdone/scan/";
 export const WORKDONE_TABLE_PRODUCT_DETAIL = "workdone/";
 export const WORKDONE_TABLE_PRODUCT_UPDATE = "assignment/";
+
+
 
 export const WORKDONE_CUSTOMIZATION_APPROVE = "confirm/customizations/";
 
@@ -194,5 +197,28 @@ export const DESIGNER_STATUS_BASED_FILTER = "designer/folder-detail/526/?item_st
 export const DESIGNER_CATEGORY_FILTER = "designer/folder-detail/"
 export const DESIGNER_TAG_BASED_FILTER = "designer/folder-detail/526/?tag_ids=54"
 export const DESIGNER_DATE_RANGE_FILTER = "designer/folder-detail/"
+export const REDNERS_DETAILS_VIEW = "cad/folderItem/basicdata/"
+export const DELETE_TRASFER_DATA = "transfer/delete/"
 
+export const RENDERS_REUPLOAD = "render/reupload/"
+export const DESIGNER_DASHBOARD_FILTER = "/upload-design/"
+export const DESIGNER_ASSIGNTO_FILTER = "list/myassigned-data/"
+export const REDNERS_FOLDER_ITEM = "innerproject/detailbydesigncode/"
 
+export const DESIGNPOOL_FILTER = "list-all-design/?not_assigned=true"
+
+export const DEATAILS_SATUS_UPDATE = "designer/action/render-img/"
+export const DEATAILS_CAD_SATUS_UPDATE = "designer/action/cad-img/"
+
+export const CAD_IMAGE_SATUS_UPDATE = "designer/action/cad-img/"
+export const EDIT_ASSSI_SELECTED_DETAILS = "assignment/";
+
+export const CAD_LOGOUT = "logout/";
+export const ADMIN_FOLDER_RENAME = "folder/edit/";
+
+export const WORKDONE_ACTUAL_DETAIL_TABLE_UPDATE = "workdone/";
+export const CENTRALHUB_SEARCH = "all/folderlist/?design_code=";
+export const DESIGNER_ASSIAN_SEARCH = "designer/getlist-folder/?foldername=";
+
+export const RENDER_FILTER = "all/folderlist/"
+export const RENDER_FINISHED_FILTER = "list/finished/projects/"

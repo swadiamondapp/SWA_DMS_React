@@ -83,6 +83,14 @@ const AssignmentPanelFolderCards = (props) => {
     return date.toLocaleDateString("en-GB", options);
   };
 
+  const handleTrack = (item, designCode) => {
+    navigate(`/statusPage/${item.item_id}`, {
+      state: {
+        code: designCode,
+      },
+    });
+  };
+
   return (
     <div
       className="DesignerAssignmentPanel"
@@ -122,6 +130,22 @@ const AssignmentPanelFolderCards = (props) => {
                         <p>{formatDate(item.paper_design.created_at)}</p>
                       </div>
                     </div>
+                    <button
+                                    style={{
+                                      padding: "7px 5px ",
+                                      borderRadius: "4px",
+                                      color: "white",
+                                      backgroundColor: "#0464D5",
+                                      border: "none",
+                                      fontSize: "13px",
+                                      fontWeight: "900",
+                                    }}
+                                    onClick={() =>
+                                      handleTrack(item, item?.paper_design?.designcode)
+                                    }
+                                  >
+                                    Track
+                                  </button>
                   </div>
                   {/* radio btn */}
 

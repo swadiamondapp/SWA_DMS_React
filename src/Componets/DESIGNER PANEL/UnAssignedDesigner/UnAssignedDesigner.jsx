@@ -9,16 +9,21 @@ import {
 import avatar from "../../../assets/avataprofile.png";
 import SuccessModal from "../../SuccessModal/SuccessModal";
 import DesignBtn from "../../ADMIN PANEL/Design Pool/DesignBtn";
+import DesignerFilterModal from "../../DesignerFilterModal/DesignerFilterModal";
 
 const CustomizedOrder = ({ sidebarExpanded }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [UnAssignedLists, setUnAssignedLists] = useState([]);
   const [successMessage, setSuccessMessage] = useState("");
   const [successModalOpen, setSuccessModalOpen] = useState(false);
+  const [openFilterModal, setOpenFilterModal] = useState(false);
+  const [dd, setDd] = useState();
 
   useEffect(() => {
     listUnAssignedLists(setIsLoading, setUnAssignedLists);
   }, []);
+
+
   const handleUnassign = (id, userId) => {
     unassignDesigner(
       setIsLoading,
@@ -53,65 +58,90 @@ const CustomizedOrder = ({ sidebarExpanded }) => {
   console.log(UnAssignedLists, "customizattion");
   return (
     <>
-    <DesignBtn />
-    <div
-      className="DesignerAssignmentPanel"
-      style={{ paddingLeft: sidebarExpanded ? "225px" : "130px" }}
-    >
-      <div className="CustomizedOrderParent">
-        <div className="Parent_NewDesign">
-          <div className="Card_Design_Parent">
-            {UnAssignedLists.map((item) => (
-              <div className="New_Design_card">
-                <div className="Card_img" style={{ minHeight: "190px" }}>
-                  <img src={item.design_image} alt="" />
-                </div>
-                <div className="Card_Details">
-                  <div className="parent_UnAssignedD">
-                    <div>
-                      <h3 style={{ marginBottom: "0px" }}>
-                        ID : {item.design_code}
-                      </h3>
+      <DesignBtn
+        openFilterModal={openFilterModal}
+        setOpenFilterModal={setOpenFilterModal}
+      />
+      <div
+        className="DesignerAssignmentPanel"
+        style={{ paddingLeft: sidebarExpanded ? "225px" : "130px" }}
+      >
+        <div className="CustomizedOrderParent">
+          <div className="Parent_NewDesign">
+            <div className="Card_Design_Parent">
+              {UnAssignedLists.map((item) => (
+                <div className="New_Design_card">
+                  <div className="Card_img" style={{ minHeight: "190px" }}>
+                    <img src={item.design_image} alt="" />
+                  </div>
+                  <div className="Card_Details">
+                    <div className="parent_UnAssignedD">
+                      <div>
+                        <h3 style={{ marginBottom: "0px" }}>
+                          ID : {item.design_code}
+                        </h3>
+                      </div>
+                      <div className="Card_Details_Inner">
+                        <div className="unassign_name">
+                          <h3 style={{ color: "#455173" }}>{item.designer}</h3>
+                          <h5 style={{ color: "#455173" }}>
+                            {item.created_at}
+                          </h5>
+                        </div>
+                      </div>
+
+                      {/* <p className="OrderHigh">High</p> */}
+                      {/* <p className="OrderMedium">Medium</p> */}
+                      {/* <p className="OrderLow">Low</p> */}
                     </div>
-                    <div className="Card_Details_Inner">
-                      <div className="unassign_name">
-                        <h3 style={{ color: "#455173" }}>{item.designer}</h3>
-                        <h5 style={{ color: "#455173" }}>{item.created_at}</h5>
+                    <div className="unasignCardDetails">
+                      <div className="unassignbuttondetails">
+                        <div className="unassign_avatar">
+                          <img src={item.CadDesigner.image} alt="" />
+                        </div>{" "}
+                        <div>{item.CadDesigner.name}</div>
+                      </div>
+                      <div className="UnassignDesigner">
+                        <button
+                          onClick={() =>
+                            handleUnassign(item.item_id, item.CadDesigner.id)
+                          }
+                        >
+                          Unassign
+                        </button>
                       </div>
                     </div>
-
-                    {/* <p className="OrderHigh">High</p> */}
-                    {/* <p className="OrderMedium">Medium</p> */}
-                    {/* <p className="OrderLow">Low</p> */}
-                  </div>
-                  <div className="unasignCardDetails">
-                    <div className="unassignbuttondetails">
-                      <div className="unassign_avatar">
-                        <img src={item.CadDesigner.image} alt="" />
-                      </div>{" "}
-                      <div>{item.CadDesigner.name}</div>
-                    </div>
-                    <div className="UnassignDesigner">
-                      <button
-                        onClick={() =>
-                          handleUnassign(item.item_id, item.CadDesigner.id)
-                        }
-                      >
-                        Unassign
-                      </button>
-                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+              {UnAssignedLists.length === 0 && (
+                <span>No Data Found</span>
+              )}
+            </div>
           </div>
+
+          {openFilterModal && (
+            <DesignerFilterModal
+              open={openFilterModal}
+              onClose={() => setOpenFilterModal(false)}
+              setOpenFilterModal={setOpenFilterModal}
+              setFolderDetails={setUnAssignedLists}
+              onClearCall={() =>
+                listUnAssignedLists(setIsLoading, setUnAssignedLists)
+              }
+              folderDetails={UnAssignedLists}
+              // setFilteredData={setFilteredData}
+              setDd={setDd}
+              dd={dd}
+              page="assignto"
+            />
+          )}
         </div>
+        <SuccessModal
+          successModalOpen={successModalOpen}
+          successMessage={successMessage}
+        />
       </div>
-      <SuccessModal
-        successModalOpen={successModalOpen}
-        successMessage={successMessage}
-      />
-    </div>
     </>
   );
 };

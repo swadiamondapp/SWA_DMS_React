@@ -68,7 +68,7 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 .workdone_modal .rti--container {
-  background: transparent !important;
+  /* background: transparent !important; */
   border: none !important;
   width: 200px !important;
 }
@@ -93,4 +93,60 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .css-13xfq8m-MuiTabPanel-root{
   padding: 0px !important;
+}
+
+
+:where(.css-dev-only-do-not-override-1c0na6j).ant-select-outlined:not(.ant-select-customize-input) .ant-select-selector {
+border: 0.75px solid #e0e1e1;
+background:none;
+
+}
+.ant-select-focused:where(.css-dev-only-do-not-override-1c0na6j).ant-select-outlined:not(.ant-select-disabled):not(.ant-select-customize-input):not(.ant-pagination-size-changer) .ant-select-selector {
+  border-color: none;
+  box-shadow: none;
+}
+
+
+:where(.css-dev-only-do-not-override-1c0na6j).ant-select:not(.ant-select-customize-input) .ant-select-selector .ant-select-selection-search-input {
+  background-color: white !important;
+}
+
+:where(.css-dev-only-do-not-override-1c0na6j).ant-select-outlined:not(.ant-select-customize-input) .ant-select-selector {
+  background-color: white !important;
+}
+.Detail_Card :where(.css-dev-only-do-not-override-1c0na6j).ant-select-outlined:not(.ant-select-customize-input) .ant-select-selector{
+background: transparent !important;
+}
+
+.Detail_Card :where(.css-dev-only-do-not-override-1c0na6j).ant-select-outlined:not(.ant-select-customize-input) .ant-select-selector {
+  border: none !important;
+}
+
+.Detail_Card :where(.css-1c0na6j).ant-select-outlined:not(.ant-select-customize-input) .ant-select-selector {
+  background: transparent !important;
+  border: none !important;
+}
+
+.finishedCardContainer2 :where(.css-dev-only-do-not-override-1c0na6j).ant-select-outlined:not(.ant-select-customize-input) .ant-select-selector {
+  border: none !important;
+  background-color: transparent !important;
+}
+ /* :where(.css-dev-only-do-not-override-1c0na6j).ant-select-outlined:not(.ant-select-customize-input) .ant-select-selector {
+  background-color: none;
+} */
+
+:where(.css-dev-only-do-not-override-1c0na6j).ant-select-single.ant-select-show-arrow .ant-select-selection-item, :where(.css-dev-only-do-not-override-1c0na6j).ant-select-single.ant-select-show-arrow .ant-select-selection-placeholder {
+  font-size: 14px;
+}
+.Detail_Card :where(.css-1c0na6j).ant-select .ant-select-selection-item {
+  font-size: 14px;
+}
+
+/* .Detail_Card :where(.css-dev-only-do-not-override-1c0na6j).ant-select-single .ant-select-selector {
+  color: ;
+} */
+
+.finishedCardContainer2 :where(.css-1c0na6j).ant-select-outlined:not(.ant-select-customize-input) .ant-select-selector {
+  border: none !important;
+  background-color: transparent !important;
 }

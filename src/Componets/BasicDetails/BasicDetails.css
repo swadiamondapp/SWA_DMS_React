@@ -116,10 +116,9 @@
 }
 .error_input_p {
   color: red;
-  font-size: 10px;
+  font-size: 9px;
   background: transparent;
   border-radius: 6px;
-  font-size: 10px;
 }
 .textArea_feild {
   border-radius: 4px;
@@ -200,4 +199,29 @@
 }
 .closeButtonImageBm img {
   width: 14px;
+}
+
+
+.modal_card_images {
+  position: absolute;
+  width: 75%; 
+  height: auto; 
+  /* background-color: red; */
+  left: 0; 
+  top: 0;
+  z-index: 1; 
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  padding: 6px;
+}
+
+.modal_edit_section{
+  position: absolute;
+  width: 25%;
+  height: auto;
+  padding: 4px;
+  right: 0;
+  border-radius: 6px 0px 0px 6px;
+  background-color: white;
 }

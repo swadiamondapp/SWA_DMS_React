@@ -59,12 +59,15 @@ export const create_customization = async (
 
 export const all_Designs_items = async (setIsLoading, setData) => {
   try {
+    setIsLoading(true)
     const response = await apiService.get(UNVOTED_VOTERS_LIST);
     if (checkApiStatus(response)) {
       setData(response.data.results.data);
     }
   } catch (error) {
     console.log(error);
+  }finally{
+    setIsLoading(false)
   }
 };
 

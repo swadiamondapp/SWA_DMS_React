@@ -3,14 +3,23 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import close from "../../assets/close.png";
 import "./DesignerFilterModal.css";
-import { DatePicker, Select } from "antd";
+import { DatePicker, Select, TimePicker } from "antd";
 import { tag_table_data } from "../MastersSection/ApiMasters/ApiMasters";
-import { product_category_basicDetails, tag_List_basicDetails } from "../Assignment Panel/Api";
 import {
+  list_all_designers_get,
+  product_category_basicDetails,
+  tag_List_basicDetails,
+} from "../Assignment Panel/Api";
+import {
+  designerAssignToFilter,
+  designerDashboradFilter,
   designerFilter,
   designerFilterBasedOnCategory,
+  renderFilter,
+  renderFinishedFilter,
 } from "../DESIGNER PANEL/Designer Dashboard/Api";
 import { useParams } from "react-router-dom";
+import moment from "moment/moment";
 
 const { RangePicker } = DatePicker;
 
@@ -20,7 +29,19 @@ const DesignerFilterModal = ({
   setFolderDetails,
   onClearCall,
   folderDetails,
-  setFilteredData
+  setFilteredData,
+  setDd,
+  dd,
+  page,
+  sethide,
+  setStartTime,
+  startTime,
+  endTime,
+  setEndTime,
+  designCode,
+  setDesignCode,
+  Time,
+  setTime,
 }) => {
   const { id } = useParams();
   const [filterTag, setFilterTag] = useState("");
@@ -33,44 +54,76 @@ const DesignerFilterModal = ({
   const [ProudctCategory, setListProductCategory] = useState([""]);
   const [selectedTags, setSelectedTags] = useState([]);
   const [selectedFechedTags, setSelectedFechedTags] = useState([]);
-  const [forlderId,setFolderId] = useState(id)
+  const [forlderId, setFolderId] = useState(id);
+  const [designers, setDesigners] = useState([]);
+  const [filterDesigner, setFilterDesigner] = useState("");
+  // const [designCode, setDesignCode] = useState("");
+  // const [Time, setTime] = useState(null);
+
 
   const [formData, setFormData] = useState({
     productCategory: "",
-    tag:[]
+    tag: [],
   });
+
+  console.log(startTime, "startTime")
+  console.log(endTime, "endTime")
 
   useEffect(() => {
     tag_table_data(setTags, setIsLoading);
     product_category_basicDetails(setListProductCategory);
     tag_List_basicDetails(setSelectedTags);
+    list_all_designers_get(setIsLoading, setDesigners);
   }, []);
+
+  const pathname = location.pathname;
+  const assignSection = pathname.startsWith("/designerassignview/");
 
   const clearAllFilters = () => {
     setFormData({
       productCategory: "",
-      tag:[]
+      tag: [],
     });
-    setStartDate([])
-    setEndDate([])
-    onClearCall()
-
+    setStartDate(null);
+    setEndDate(null);
+    onClearCall();
+    setOpenFilterModal(false);
+    setDd(null);
+    sethide(false);
+    setEndTime("")
+    setStartTime("")
+    setTime("")
+    setDesignCode("")
   };
 
-  const handleDateChange = (dates, dateStrings) => {
-    const [startDate, endDate] = dates;
-    console.log("Start Date: ", startDate);
-    console.log("End Date: ", endDate);
-    // You can also use dateStrings for formatted strings:
-    console.log("Start Date (formatted): ", dateStrings[0]);
-    console.log("End Date (formatted): ", dateStrings[1]);
-
-    // If you want to store the dates in state, you can use:
-    setStartDate(dateStrings[0]);
-    setEndDate(dateStrings[1]);
+  const handleChange = (values) => {
+    if (values) {
+      const [start, end] = values;
+      setDd(values);
+      const formattedStart = start.format("YYYY-MM-DD");
+      const formattedEnd = end.format("YYYY-MM-DD");
+      setStartDate(formattedStart);
+      setEndDate(formattedEnd);
+    }
   };
 
-  console.log(startDate, "sartssdfsd");
+
+  const handleChangeTime = (values) => {
+    if (values && values.length === 2) {
+      const [start, end] = values;
+      setTime(values);
+
+      const formattedStart = start.format("HH:mm:ss");
+      const formattedEnd = end.format("HH:mm:ss");
+      setStartTime(formattedStart);
+      setEndTime(formattedEnd);
+    } else {
+      setTime(null);
+      setStartTime('');
+      setEndTime('');
+    }
+  };
+
   useEffect(() => {
     AOS.init({
       duration: 500,
@@ -81,10 +134,9 @@ const DesignerFilterModal = ({
     setOpenFilterModal(false);
     setFormData({
       productCategory: "",
-      tag:[]
+      tag: [],
     });
-    setFolderId(null)
-  
+    setFolderId(null);
   };
   useEffect(() => {
     if (selectedTags.length > 0) {
@@ -99,19 +151,68 @@ const DesignerFilterModal = ({
   const filterOption = (input, option) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
   filterTag;
-  //   console.log("filter", filter);
 
   const handleFilterModal = () => {
-    designerFilter(
-      setIsLoading,
-      forlderId,
-      formData,
-      setFolderDetails,
-      startDate,
-      endDate,
-      setFilteredData
-    );
+    if (location.pathname == "/designdashboard") {
+      designerDashboradFilter(
+        setIsLoading,
+        forlderId,
+        formData,
+        setFolderDetails,
+        startDate,
+        endDate,
+        setFilteredData,
+        setOpenFilterModal,
+        sethide
+      );
+    } else if (assignSection) {
+      designerFilter(
+        setIsLoading,
+        forlderId,
+        formData,
+        setFolderDetails,
+        startDate,
+        endDate,
+        setFilteredData
+      );
+    } else if (location.pathname === "/unassigneddesigner") {
+      designerAssignToFilter(
+        setIsLoading,
+        designCode,
+        setFolderDetails,
+        startDate,
+        endDate
+        // setFilteredData
+      );
+    }
+    else if (location.pathname === "/renderCard") {
+      renderFilter(
+        setIsLoading,
+        designCode,
+        setFolderDetails,
+        startDate,
+        endDate,
+        startTime,
+        endTime,
+        setOpenFilterModal
+        // setFilteredData
+      );
+    }
+    else if (location.pathname === "/finishedProject") {
+      renderFinishedFilter(
+        setIsLoading,
+        designCode,
+        setFolderDetails,
+        startDate,
+        endDate,
+        startTime,
+        endTime,
+        setOpenFilterModal
+        // setFilteredData
+      );
+    }
   };
+
 
   return (
     <>
@@ -161,58 +262,133 @@ const DesignerFilterModal = ({
               marginTop: "20px",
             }}
           >
-            <span className="edit_fields_span">
-              Select From Date & End Date
-            </span>
+            <span className="edit_fields">Select From Date & End Date</span>
             <RangePicker
               style={{
                 width: "70%",
                 height: "40px",
               }}
               size={12}
-              onChange={handleDateChange}
+              value={dd}
+              onChange={handleChange}
             />
           </div>
 
-          <div>
-            {" "}
-            <div className="productCategory">
-              <label
-                htmlFor=""
-                className="label-text"
-                style={{ marginBottom: "10px" }}
-              >
-                Product Category
-              </label>
-              <Select
-                showSearch
-                placeholder="-Select-"
-                optionFilterProp="children"
-                value={formData.productCategory}
-                onChange={(value) =>
-                  setFormData((prevState) => ({
-                    ...prevState,
-                    productCategory: [value],
-                  }))
-                }
-                onSearch={onSearch}
-                filterOption={filterOption}
+          {location.pathname === "/renderCard" ||
+          location.pathname === "/finishedProject" ? (
+            <>
+              <div
+                className="edit_fields"
                 style={{
-                  width: "100%",
-                  zIndex: "9999999",
-                  background: "#006E7F1A",
+                  display: "flex",
+                  flexDirection: "column",
+                  marginTop: "20px",
                 }}
-                options={ProudctCategory.map((tag) => ({
-                  label: tag.name,
-                  value: tag.id,
-                }))}
-              />
-            </div>
-            <div className="tagsInputfeild">
-              <label htmlFor="" className="label-text">
-                Tags
-              </label>
-              {/* <TagsInput
+              >
+                <span className="label-text">Design Code</span>
+                <input
+                  type="text"
+                  style={{
+                    width: "100%",
+                    padding: "6px",
+                    borderRadius: "4px",
+                    border: "1px solid lightgray",
+                    fontSize: "14px",
+                    outline: "none",
+                  }}
+                  value={designCode.toUpperCase()}
+                  onChange={(e) => setDesignCode(e.target.value.toUpperCase())}
+                />
+              </div>
+              <div
+                className="edit_fields"
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  marginTop: "20px",
+                }}
+              >
+                <span className="edit_fields">Select From Time & End Time</span>
+                <TimePicker.RangePicker
+                  format="HH:mm:ss" // Specify the time format
+                  value={Time} // Use null if no value is selected
+                  onChange={handleChangeTime}
+                />
+              </div>
+            </>
+            ) : (
+              null
+            )
+          }
+
+
+          {location.pathname !== "/renderCard" &&
+          location.pathname !== "/finishedProject" && (
+            <>
+              {page == "assignto" ? (
+                <div
+                  className="edit_fields"
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    marginTop: "20px",
+                  }}
+                >
+                  <span className="label-text">Design Code</span>
+                  <input
+                    type="text"
+                    style={{
+                      width: "100%",
+                      padding: "6px",
+                      borderRadius: "4px",
+                      border: "1px solid lightgray",
+                      fontSize: "14px",
+                      outline: "none",
+                    }}
+                    value={designCode.toUpperCase()}
+                    onChange={(e) => setDesignCode(e.target.value.toUpperCase())}
+                  />
+                </div>
+              ) : (
+                <div>
+                  {" "}
+                  <div className="productCategory">
+                    <label
+                      htmlFor=""
+                      className="label-text"
+                      style={{ marginBottom: "10px" }}
+                    >
+                      Product Category
+                    </label>
+                    <Select
+                      showSearch
+                      placeholder="-Select-"
+                      optionFilterProp="children"
+                      value={formData.productCategory}
+                      onChange={(value) =>
+                        setFormData((prevState) => ({
+                          ...prevState,
+                          productCategory: [value],
+                        }))
+                      }
+                      onSearch={onSearch}
+                      filterOption={filterOption}
+                      style={{
+                        width: "100%",
+                        zIndex: "9999999",
+                        background: "#006E7F1A",
+                      }}
+                      options={ProudctCategory.map((tag) => ({
+                        label: tag.name,
+                        value: tag.id,
+                      }))}
+                    />
+                  </div>
+                  <div className="tagsInputfeild">
+                    <label htmlFor="" className="label-text">
+                      Tags
+                    </label>
+                    {/* <TagsInput
                           value={selectedFechedTags}
                           onChange={(value) => {
                             console.log("Tag changed to:", value); // Log the tag value to the console
@@ -225,31 +401,86 @@ const DesignerFilterModal = ({
                           // placeHolder="Tags"
                           classNames="inputTag"
                         /> */}
-           
-                <Select
-                  mode="multiple"
-                  style={{
-                    width: "100%",
-                    zIndex: "9999999",
-                    background: "#006E7F1A",
-                  }}
-                  placeholder="Select tags"
-                  onChange={(value) => {
-                    console.log("Tag changed to:", value);
-                    setFormData((prevState) => ({
-                      ...prevState,
-                      tag: value,
-                    }));
-                  }}
-                  options={selectedFechedTags.map((tag) => ({
-                    label: tag.name,
-                    value: tag.id,
-                  }))}
-                />
-             
-            </div>
-          </div>
-          <div style={{display:'grid',gridTemplateColumns:"1fr 1fr ",gap:"10px"}}>
+
+                    <Select
+                      mode="multiple"
+                      style={{
+                        width: "100%",
+                        zIndex: "9999999",
+                        background: "#006E7F1A",
+                      }}
+                      placeholder="Select tags"
+                      onChange={(value) => {
+                        console.log("Tag changed to:", value);
+                        setFormData((prevState) => ({
+                          ...prevState,
+                          tag: value,
+                        }));
+                      }}
+                      options={selectedFechedTags.map((tag) => ({
+                        label: tag.name,
+                        value: tag.id,
+                      }))}
+                    />
+                  </div>
+                  <div className="tagsInputfeild">
+                    <label htmlFor="" className="label-text">
+                      Designer Wise
+                    </label>
+                    {/* <Select
+              showSearch
+              placeholder="-Select-"
+              optionFilterProp="children"
+              value={filterDesigner}
+              onChange={(value) => setFilterDesigner(value)}
+              onSearch={onSearch}
+              filterOption={filterOption}
+              style={{
+                width: "100%",
+                height: "40px",
+                zIndex: "9999999",
+                background: "#006E7F1A",
+              }}
+              options={designers.map((designer) => ({
+                label: designer.name,
+                value: designer.name,
+              }))}
+            /> */}
+
+                    <Select
+                      showSearch
+                      placeholder="-Select-"
+                      optionFilterProp="children"
+                      value={filterDesigner}
+                      onChange={(value) => setFilterDesigner(value)}
+                      onSearch={onSearch}
+                      filterOption={filterOption}
+                      style={{
+                        width: "100%",
+                        height: "40px",
+                        zIndex: "9999999",
+                        background: "#006E7F1A",
+                      }}
+                      notFoundContent={!isLoading ? "Nithin" : null}
+                    >
+                      {designers.map((designer) => (
+                        <Option key={designer.name} value={designer.name}>
+                          {designer.name}
+                        </Option>
+                      ))}
+                    </Select>
+                  </div>
+                </div>
+              )}
+            </>
+          )}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr ",
+              gap: "10px",
+            }}
+          >
             <div style={{ marginTop: "10px" }}>
               <button
                 className="next-button"

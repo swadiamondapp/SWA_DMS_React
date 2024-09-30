@@ -21,7 +21,7 @@ const Stepper = ({ code }) => {
     setProductId(value);
   };
 
-  console.log("code",code)
+  console.log("code", code);
 
   useEffect(() => {
     if (code) {
@@ -65,10 +65,15 @@ const Stepper = ({ code }) => {
     { id: 6, title: "Slotted" },
     { id: 7, title: "Central Hub status" },
     { id: 8, title: "Transferred to warehouse" },
-    { id: 9, title: "Warehouse status" },
-    { id: 10, title: "Work done", text: "Workdone" },
+    { id: 9, title: "Warehouse Received" },
+    { id: 10, title: "Warehouse status" },
+    { id: 11, title: "Work done", text: "Workdone" },
   ];
 
+  const cadstatus = [
+    { id: 1, title: "Pending" },
+    { id: 2, title: "File Action" },
+  ];
   const status = steppretDta?.Tracking_data?.status_message || "";
 
   const status2 =
@@ -189,33 +194,32 @@ const Stepper = ({ code }) => {
 
   const formatDateTrack = (isoString) => {
     if (!isoString) return "";
-  
+
     const date = new Date(isoString);
-    
+
     // Date Formatting
     const day = String(date.getDate()).padStart(2, "0");
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const year = date.getFullYear();
-  
+
     // Time Formatting
     let hours = date.getHours();
     const minutes = String(date.getMinutes()).padStart(2, "0");
     const seconds = String(date.getSeconds()).padStart(2, "0");
-    
+
     // Determine AM/PM
     const period = hours >= 12 ? "PM" : "AM";
-    
+
     // Convert to 12-hour format
     hours = hours % 12;
     hours = hours ? hours : 12; // Hour '0' should be '12'
-    
+
     // Format hours
     const formattedHours = String(hours).padStart(2, "0");
-    
+
     // Combine date and time
     return `${day}/${month}/${year} ${formattedHours}:${minutes} ${period}`;
   };
-  
 
   const getFormattedDate = (stepId, dates) => {
     switch (stepId) {
@@ -230,39 +234,86 @@ const Stepper = ({ code }) => {
       case 5:
         return formatDateTrack(dates?.cad_finished);
       case 6:
-        return formatDateTrack(dates?.cad_finished);
+        return formatDateTrack(dates?.slotted);
       case 8:
         return formatDateTrack(dates?.transfer_to_warehouse);
-      case 10:
+      case 9:
+        return formatDateTrack(dates?.warehouse_received);
+      case 11:
         return formatDateTrack(dates?.workdone);
       default:
-        return ""; 
+        return "";
     }
   };
+
+  const getStatusActive = (statusTitle) => {
+    const fileAction = steppretDta?.Tracking_data?.status_details?.file_action;
+    const cadFinished =
+      steppretDta?.Tracking_data?.status_dates[0]?.cad_finished;
+    console.log(cadFinished, "cadFinished");
+
+    if (statusTitle === "Pending") {
+      return cadFinished;
+    }
+
+    if (statusTitle === "Approved") {
+      return fileAction === "Approved";
+    }
+
+    return false;
+  };
+
+  const statusDetails = steppretDta?.Tracking_data?.status_details;
+  const statusDates = steppretDta?.Tracking_data?.status_dates[0];
   
-  
+  const pendingActive = Boolean(statusDates?.cad_finished);
+  const fileActionStatus = statusDetails?.file_action;
+  const fileActionActive = Boolean(fileActionStatus) && fileActionStatus !== "Pending";
+
+
+  const formatDateTime = (dateString) => {
+    const date = new Date(dateString);
+
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+    const year = date.getFullYear();
+
+    let hours = date.getHours();
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+
+    const ampm = hours >= 12 ? "PM" : "AM";
+
+    hours = hours % 12;
+    hours = hours ? String(hours).padStart(2, "0") : "12"; // Hour '0' should be '12'
+
+    return `${day}/${month}/${year} - ${hours}:${minutes} ${ampm}`;
+  };
 
   return (
     <>
-      <div className="">
-        <div className="staus_search">
-          {/* Search Input */}
-          <input
-            type="text"
-            name="search"
-            placeholder="Enter Product Id"
-            value={productId}
-            onChange={(e) => setProductId(e.target.value.toUpperCase())}
-            onKeyPress={(e) => {
-              if (e.key === "Enter") handleTrackProduct(productId);
-            }}
-          />
-          <button onClick={() => handleTrackProduct(productId)}>Track</button>
+      {code ? (
+        <div className=""></div>
+      ) : (
+        <div className="">
+          <div className="staus_search">
+            {/* Search Input */}
+            <input
+              type="text"
+              name="search"
+              placeholder="Enter Product Id"
+              value={productId}
+              onChange={(e) => setProductId(e.target.value.toUpperCase())}
+              onKeyPress={(e) => {
+                if (e.key === "Enter") handleTrackProduct(productId);
+              }}
+            />
+            <button onClick={() => handleTrackProduct(productId)}>Track</button>
+          </div>
+          {error && (
+            <span style={{ color: "red", fontSize: "10px" }}>{error}</span>
+          )}
         </div>
-        {error && (
-          <span style={{ color: "red", fontSize: "10px" }}>{error}</span>
-        )}
-      </div>
+      )}
 
       <div className="stepper-container" style={{ marginTop: "3%" }}>
         <h3 style={{ marginBottom: "50px" }}>
@@ -280,7 +331,7 @@ const Stepper = ({ code }) => {
                   className="step-wrapper"
                   onClick={() =>
                     (step.id === 7 && toggleDropdown()) ||
-                    (step.id === 9 && toggleDropdown2()) ||
+                    (step.id === 10 && toggleDropdown2()) ||
                     (step.id === 5 && toggleDropdown3())
                   }
                 >
@@ -290,7 +341,7 @@ const Stepper = ({ code }) => {
                       position: "relative",
                       backgroundColor: isActive ? "#00474d" : "inherit",
                       cursor:
-                        step.id === 7 || step.id === 9 || step.id === 5
+                        step.id === 7 || step.id === 10 || step.id === 5
                           ? "pointer"
                           : "",
                     }}
@@ -339,17 +390,17 @@ const Stepper = ({ code }) => {
                           color: "black",
                           fontSize: "13px",
                           textAlign: "center",
-                          width:"90px",
+                          width: "90px",
                           // backgroundColor:"red"
                         }}
                       >
                         {getFormattedDate(step.id, dates)}
                       </span>
                     </div>
-                    {step.id === 7 && dropdownVisible && (
+                    {/* {step.id === 7 && dropdownVisible && (
                       <div
                         className="dropdown-container"
-                        style={{ marginTop: "40px" }}
+                        style={{ marginTop: "70px",marginLeft:"10px" }}
                       >
                         {cHdata?.map((sub, index) => {
                           const chStatusHistory =
@@ -461,11 +512,120 @@ const Stepper = ({ code }) => {
                           );
                         })}
                       </div>
-                    )}
-                    {step.id === 9 && dropdownVisible2 && (
+                    )} */}
+
+                    {step.id === 7 && dropdownVisible && (
                       <div
                         className="dropdown-container"
-                        style={{ marginTop: "40px" }}
+                        style={{ marginTop: "70px", marginLeft: "10px" }}
+                      >
+                        {Array.isArray(
+                          steppretDta?.Tracking_data?.status_details
+                            ?.ch_status_history
+                        ) &&
+                        steppretDta.Tracking_data.status_details
+                          .ch_status_history.length > 0 ? (
+                          steppretDta.Tracking_data.status_details.ch_status_history.map(
+                            (chStatusHistory, index) => {
+                              const isCurrentStatus = chStatusHistory?.status;
+                              const formattedDate = new Date(
+                                chStatusHistory?.changed_at
+                              ).toLocaleDateString("en-US", {
+                                weekday: "long",
+                                day: "numeric",
+                                month: "long",
+                              });
+                              const formattedTime = new Date(
+                                chStatusHistory?.changed_at
+                              ).toLocaleTimeString("en-US", {
+                                hour: "numeric",
+                                minute: "numeric",
+                                hour12: true,
+                              });
+
+                              return (
+                                <div key={index} className="vertical-stepper">
+                                  <div className="vertical-step">
+                                    <span
+                                      className="vertical-step-number"
+                                      style={{
+                                        color: isCurrentStatus
+                                          ? "white"
+                                          : "#00474d",
+                                        backgroundColor: isCurrentStatus
+                                          ? "#00474d"
+                                          : "inherit",
+                                      }}
+                                    >
+                                      &#10003;
+                                    </span>
+                                    <div
+                                      className="step-heading"
+                                      style={{
+                                        width: "150px",
+                                        paddingLeft: "10px",
+                                        display: "flex",
+                                        flexDirection: "column",
+                                      }}
+                                    >
+                                      <span
+                                        style={{
+                                          color: isCurrentStatus
+                                            ? "black"
+                                            : "#888",
+                                          fontSize: "13px",
+                                        }}
+                                      >
+                                        {isCurrentStatus
+                                          ? isCurrentStatus
+                                          : "No Central Hub Status"}
+                                      </span>
+                                      {isCurrentStatus && (
+                                        <span style={{ fontSize: "10px" }}>
+                                          {formattedDate} {formattedTime}
+                                        </span>
+                                      )}
+                                    </div>
+                                  </div>
+                                  {/* No connector needed if only one status */}
+                                </div>
+                              );
+                            }
+                          )
+                        ) : (
+                          <div className="vertical-stepper">
+                            <div className="vertical-step">
+                              <span
+                                className="vertical-step-number"
+                                style={{ color: "#ddd" }}
+                              >
+                                &#10003;
+                              </span>
+                              <div
+                                className="step-heading"
+                                style={{
+                                  width: "150px",
+                                  paddingLeft: "10px",
+                                  display: "flex",
+                                  flexDirection: "column",
+                                }}
+                              >
+                                <span
+                                  style={{ color: "#888", fontSize: "13px" }}
+                                >
+                                  No Central Hub Status
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {/* {step.id === 10 && dropdownVisible2 && (
+                      <div
+                        className="dropdown-container"
+                        style={{ marginTop: "70px" }}
                       >
                         {wHdata?.map((sub, index) => {
                           const warehouseStatusHistory =
@@ -585,13 +745,122 @@ const Stepper = ({ code }) => {
                           );
                         })}
                       </div>
+                    )} */}
+
+                    {step.id === 10 && dropdownVisible2 && (
+                      <div
+                        className="dropdown-container"
+                        style={{ marginTop: "70px" }}
+                      >
+                        {Array.isArray(
+                          steppretDta?.Tracking_data?.status_details
+                            ?.warehouse_status_history
+                        ) &&
+                        steppretDta.Tracking_data.status_details
+                          .warehouse_status_history.length > 0 ? (
+                          <div className="vertical-stepper">
+                            {steppretDta.Tracking_data.status_details.warehouse_status_history.map(
+                              (warehouseStatusHistory, index) => {
+                                const isCurrentStatus =
+                                  warehouseStatusHistory?.status;
+                                const formattedDate = new Date(
+                                  warehouseStatusHistory?.changed_at
+                                ).toLocaleDateString("en-US", {
+                                  weekday: "long",
+                                  day: "numeric",
+                                  month: "long",
+                                });
+                                const formattedTime = new Date(
+                                  warehouseStatusHistory?.changed_at
+                                ).toLocaleTimeString("en-US", {
+                                  hour: "numeric",
+                                  minute: "numeric",
+                                  hour12: true,
+                                });
+
+                                return (
+                                  <div key={index} className="vertical-step">
+                                    <span
+                                      className="vertical-step-number"
+                                      style={{
+                                        color: isCurrentStatus
+                                          ? "white"
+                                          : "#00474d",
+                                        backgroundColor: isCurrentStatus
+                                          ? "#00474d"
+                                          : "inherit",
+                                      }}
+                                    >
+                                      &#10003;
+                                    </span>
+                                    <div
+                                      className="step-heading"
+                                      style={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        width: "150px",
+                                        paddingLeft: "10px",
+                                      }}
+                                    >
+                                      <span
+                                        style={{
+                                          color: isCurrentStatus
+                                            ? "black"
+                                            : "#888",
+                                          fontSize: "13px",
+                                        }}
+                                      >
+                                        {isCurrentStatus ||
+                                          "No Warehouse Status"}
+                                      </span>
+                                      {isCurrentStatus && (
+                                        <span style={{ fontSize: "10px" }}>
+                                          {formattedDate} {formattedTime}
+                                        </span>
+                                      )}
+                                    </div>
+                                    {/* No connector needed if only one status */}
+                                  </div>
+                                );
+                              }
+                            )}
+                          </div>
+                        ) : (
+                          <div className="vertical-stepper">
+                            <div className="vertical-step">
+                              <span
+                                className="vertical-step-number"
+                                style={{ color: "#ddd" }}
+                              >
+                                &#10003;
+                              </span>
+                              <div
+                                className="step-heading"
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "column",
+                                  width: "150px",
+                                  paddingLeft: "10px",
+                                }}
+                              >
+                                <span
+                                  style={{ color: "#888", fontSize: "13px" }}
+                                >
+                                  No Warehouse Status
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
                     )}
+
                     {step.id === 5 && dropdownVisible3 && (
                       <>
-                        <div
+                        {/* <div
                           className="dropdown-container"
                           style={{
-                            marginTop: "40px",
+                            marginTop: "70px",
                             height: "50px",
                             width: "210px",
                           }}
@@ -630,7 +899,7 @@ const Stepper = ({ code }) => {
                                     // background:"red"
                                   }}
                                 >
-                                  Rendering Finished Projects
+                                  Pending
                                 </span>
                                 <span
                                   style={{ fontSize: "11px", marginTop: "5px" }}
@@ -640,7 +909,81 @@ const Stepper = ({ code }) => {
                               </div>
                             </div>
                           </div>
-                        </div>
+                        </div> */}
+
+<div className="dropdown-container" style={{ marginTop: "70px" }}>
+      {/* Pending Status */}
+      <div className="vertical-stepper">
+        <div className="vertical-step">
+          <span
+            className={`vertical-step-number ${
+              pendingActive ? "vertical-step-complete" : ""
+            }`}
+            style={{ color: pendingActive ? "white" : "" }}
+          >
+            &#10003;
+          </span>
+          <div
+            className="step-heading"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              width: "150px",
+              paddingLeft: "10px",
+            }}
+          >
+            <span style={{ color: "black", fontSize: "13px" }}>
+              Pending
+            </span>
+            <span style={{ fontSize: "10px", width: "auto" }}>
+              {pendingActive ? formatDateTime(statusDates?.cad_finished) : 'N/A'}
+            </span>
+          </div>
+        </div>
+
+        {fileActionActive && (
+          <div
+            className="vertical-connector"
+            style={{
+              backgroundColor: "#002427",
+              height: "50px", 
+            }}
+          />
+        )}
+      </div>
+
+      {/* File Action Status */}
+      {fileActionActive && (
+        <div className="vertical-stepper">
+          <div className="vertical-step">
+            <span
+              className={`vertical-step-number ${
+                fileActionActive ? "vertical-step-complete" : ""
+              }`}
+              style={{ color: fileActionActive ? "white" : "" }}
+            >
+              &#10003;
+            </span>
+            <div
+              className="step-heading"
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                width: "150px",
+                paddingLeft: "10px",
+              }}
+            >
+              <span style={{ color: "black", fontSize: "13px" }}>
+               {fileActionStatus}
+              </span>
+              <span style={{ fontSize: "10px", width: "auto" }}>
+                {formatDateTime(statusDetails?.action_date_at)}
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
                       </>
                     )}
                   </div>

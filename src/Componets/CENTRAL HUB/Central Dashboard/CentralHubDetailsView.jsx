@@ -8,10 +8,10 @@ import ReactToPrint, { useReactToPrint } from "react-to-print";
 import { LuPrinter } from "react-icons/lu";
 import Base64Downloader from "react-base64-downloader";
 import { useNavigate } from "react-router-dom";
+import ThreeDViewer from "../../ThreeDViewer/ThreeDViewer";
 
 const CentralHubDetailsView = ({ CentralFolderDetails, sidebarExpanded }) => {
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [imageBlobConverted, setImageBlobConverted] = useState([]);
   const base64 =
     "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjEuNv1OCegAAAAMSURBVBhXY/jPYAwAAzQBM849AKsAAAAASUVORK5CYII=";
@@ -31,7 +31,28 @@ const CentralHubDetailsView = ({ CentralFolderDetails, sidebarExpanded }) => {
     content: printRef.current,
   });
 
-  const handleDownload = (imageUrl) => {
+  // const handleDownload = (imageUrl) => {
+  //   fetch(imageUrl, {
+  //     method: "GET",
+  //     mode: "cors",
+  //   })
+  //     .then((response) => response.blob())
+  //     .then((blob) => {
+  //       const blobUrl = URL.createObjectURL(blob);
+  //       const link = document.createElement("a");
+  //       link.href = blobUrl;
+  //       link.download = "downloaded_image.jpg";
+  //       document.body.appendChild(link);
+  //       link.click();
+  //       document.body.removeChild(link);
+  //     })
+  //     .catch((error) => console.error("Error downloading the image:", error));
+  // };
+
+  const handleDownload = (imageUrl, fileName = "downloaded_file", code) => {
+  
+    const fullFileName = code ? `${code}_${fileName}` : fileName;
+  
     fetch(imageUrl, {
       method: "GET",
       mode: "cors",
@@ -41,13 +62,15 @@ const CentralHubDetailsView = ({ CentralFolderDetails, sidebarExpanded }) => {
         const blobUrl = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = blobUrl;
-        link.download = "downloaded_image.jpg";
+        link.download = fullFileName; 
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+        URL.revokeObjectURL(blobUrl);
       })
-      .catch((error) => console.error("Error downloading the image:", error));
+      .catch((error) => console.error("Error downloading the file:", error));
   };
+  
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -90,9 +113,19 @@ const CentralHubDetailsView = ({ CentralFolderDetails, sidebarExpanded }) => {
                       posted on : {formatDate(item.created_at)}
                     </p>
 
-                    <div className="" style={{ display: "flex", gap: "5px",justifyContent:"space-between",width:"100%"}}>
-                      <span style={{ color: "#23A064" }}>Status :</span>
-                      <span>{item.current_status || ""}</span>
+                    <div
+                      className=""
+                      style={{
+                        display: "flex",
+                        // gap: "px",
+                        justifyContent: "space-between",
+                        width: "100%",
+                        alignItems:"center",
+                        flexDirection:"column"
+                      }}
+                    >
+                      <span style={{ color: "#23A064",fontSize:"13px" }}>Status :  <span  style={{fontSize:"13px",color:"black" }}>{item.current_status[0]?.current_status || ""}</span></span>
+                     
 
                       <button
                         style={{
@@ -103,6 +136,8 @@ const CentralHubDetailsView = ({ CentralFolderDetails, sidebarExpanded }) => {
                           border: "none",
                           fontSize: "15px",
                           fontWeight: "900",
+                          width:"100%",
+                          marginTop:"10px"
                         }}
                         onClick={() => handleTrack(item, item.designcode)}
                       >
@@ -112,9 +147,9 @@ const CentralHubDetailsView = ({ CentralFolderDetails, sidebarExpanded }) => {
 
                     <button
                       className="Download_btn_hub"
-                      onClick={() => {
-                        handleDownload(item.file_2d);
-                      }}
+                      onClick={() =>
+                        handleDownload(item.file_2d, "image_2d.jpg",item.designcode)
+                      }
                     >
                       DOWNLOAD
                       <GoDownload />
@@ -141,7 +176,7 @@ const CentralHubDetailsView = ({ CentralFolderDetails, sidebarExpanded }) => {
                     className="Card_img"
                     style={{ borderBottom: "0px", minHeight: "180px" }}
                   >
-                    <img src={item.file_3d} alt="" />
+                    <ThreeDViewer url={item.file_3d} />
                   </div>
                   <div className="Card_Details_Inner_cad_Hub">
                     <p
@@ -154,14 +189,13 @@ const CentralHubDetailsView = ({ CentralFolderDetails, sidebarExpanded }) => {
                       Print
                       <IoPrintOutline />
                     </button> */}
-                    <ReactToPrint
-                      trigger={() => (
-                        <div className="Prinit_btn_hub" onClick={handlePrint}>
-                          <LuPrinter /> Print
-                        </div>
-                      )}
-                      content={() => printRef.current}
-                    />
+                    <button
+                      className="Download_btn_hub"
+                      onClick={() => handleDownload(item.file_3d, "model_3d.3dm",item.designcode)}
+                    >
+                      DOWNLOAD
+                      <GoDownload />
+                    </button>
                     <div style={{ display: "none" }}>
                       <CentralHubImagePrint
                         CentralFolderDetails={CentralFolderDetails}

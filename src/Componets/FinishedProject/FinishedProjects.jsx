@@ -1,16 +1,17 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import "../FinishedProject/FinishedProject.css";
 import folderimg from "../../assets/folder.png";
 import DesignBtn from "../ADMIN PANEL/Design Pool/DesignBtn";
 import { LiaCloudUploadAltSolid } from "react-icons/lia";
 import UploadFile from "../UploadFile/UploadFile";
-import { createFinsishedProjects } from "../../Pages/Renders/Apis";
+import { createFinsishedProjects, finishedProjectList } from "../../Pages/Renders/Apis";
 import SuccessModal from "../SuccessModal/SuccessModal";
 import { CircularProgress } from "@mui/material";
 import { MdViewModule } from "react-icons/md";
 import sort from "../../assets/sort.png";
 import filter from "../../assets/filter.png";
+import DesignerFilterModal from "../DesignerFilterModal/DesignerFilterModal";
 
 const FinishedProjects = (props) => {
   const navigate = useNavigate();
@@ -27,6 +28,16 @@ const FinishedProjects = (props) => {
   const [grid, setGrid] = useState(true);
   const [detail, setDetail] = useState(false);
   const [tiles, setTiles] = useState(false);
+  const [startTime, setStartTime] = useState('');
+  const [endTime, setEndTime] = useState('');
+  const [dd, setDd] = useState();
+  const [hide, sethide] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [openFilterModal, setOpenFilterModal] = useState(false);
+  const [designCode, setDesignCode] = useState("");
+  const [Time, setTime] = useState(null);
+
+  console.log("startTime---",startTime)
 
   const handleView = () => {
     setView(!view);
@@ -111,8 +122,18 @@ const FinishedProjects = (props) => {
     }
     return text;
   };
-  sort;
-  console.log("props?.finishedProjectData", props?.finishedProjectData);
+
+  const handleFilderModal = () => {
+    setOpenFilterModal(true);
+  };
+
+  const fetchDesigns = useCallback(async () => {
+    await finishedProjectList(props?.setFinishedProjectData,setIsLoading);;
+  }, []);
+
+
+  // console.log("props?.finishedProjectData", props?.finishedProjectData);
+  // console.log("loading", props?.isLoading);
 
   return (
     <>
@@ -188,11 +209,11 @@ const FinishedProjects = (props) => {
               </div>
             )}
           </button>
-          <button>
+          {/* <button>
             {" "}
             <img className="RendersHome_img" src={sort} alt="" srcset="" /> Sort
-          </button>
-          <button>
+          </button> */}
+          <button onClick={handleFilderModal}>
             {" "}
             <img
               className="RendersHome_img"
@@ -213,7 +234,7 @@ const FinishedProjects = (props) => {
             showMoveOptions={showMoveOptions}
           /> */}
 
-        {props?.finishedProjectData?.length === 0 && (
+        {props?.isLoading && props?.finishedProjectData?.length === 0 && (
           <div
             style={{
               display: "flex",
@@ -232,12 +253,22 @@ const FinishedProjects = (props) => {
             />
           </div>
         )}
+           
+        { props?.isLoading === false && props?.finishedProjectData?.length === 0 && (
+        <div className="" style={{width:"100%",
+          height:"400px",display:"flex",alignItems:"center",justifyContent:"center"
+        }}>
+          <span>No Data found</span>
+          </div>
+        )}  
+
         <div className="folderCard_parent RendersHome_folders_top">
-          {props?.finishedProjectData?.map((item, index) => (
+          {props?.finishedProjectData && props?.finishedProjectData?.map((item, index) => (
             <>
               {grid && (
                 <>
                   <div
+                    style={{ cursor: "pointer" }}
                     className="folder__card"
                     onClick={() => handleFolderClick(item)}
                   >
@@ -268,9 +299,9 @@ const FinishedProjects = (props) => {
                   <div
                     className="folder__card"
                     onClick={() => handleFolderClick(item)}
-                    style={{display:"flex",width:"110px"}}
+                    style={{ display: "flex", width: "110px",cursor:"pointer" }}
                   >
-                    <img src={folderimg} alt="" style={{width:"26px"}} />
+                    <img src={folderimg} alt="" style={{ width: "26px" }} />
 
                     <p className="text-truncate">
                       {truncateText(item.name, 10)}
@@ -284,14 +315,19 @@ const FinishedProjects = (props) => {
                   <div
                     className="folder__card"
                     onClick={() => handleFolderClick(item)}
-                    style={{display:"flex",width:"140px"}}
+                    style={{ display: "flex", width: "140px",cursor:"pointer" }}
                   >
-                    <img src={folderimg} alt="" style={{width:"40px"}} />
+                    <img src={folderimg} alt="" style={{ width: "40px" }} />
 
                     <p className="text-truncate">
                       {truncateText(item.name, 10)}
                     </p>
-                    <span className="text-truncate_hover" style={{fontSize:"11px"}}>{item.name}</span>
+                    <span
+                      className="text-truncate_hover"
+                      style={{ fontSize: "11px" }}
+                    >
+                      {item.name}
+                    </span>
                   </div>
                 </>
               )}
@@ -313,6 +349,30 @@ const FinishedProjects = (props) => {
         handleClose={() => setSuccess(false)}
         successMessage={"Files uploaded succesfully"}
       />
+
+{openFilterModal && (
+        <DesignerFilterModal
+          open={openFilterModal}
+          onClose={() => setOpenFilterModal(false)}
+          setOpenFilterModal={setOpenFilterModal}
+          setFolderDetails={props?.setFinishedProjectData}
+          onClearCall={() => fetchDesigns()}
+          // folderDetails={props.folderDetails}
+          // setFilteredData={setFilteredData}
+          page="renderPage"
+          setStartTime={setStartTime}
+          startTime={startTime}
+          endTime={endTime}
+          setEndTime={setEndTime}
+          setDd={setDd}
+          dd={dd}
+          sethide={sethide}
+          designCode={designCode}
+          setDesignCode={setDesignCode}
+          Time={Time}
+          setTime={setTime}
+        />
+)}
     </>
   );
 };

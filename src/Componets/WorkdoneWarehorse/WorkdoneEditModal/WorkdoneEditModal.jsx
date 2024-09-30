@@ -24,6 +24,7 @@ const WorkdoneEditModal = ({
   clickedProductId,
   setSuccessModalOpen,
   setSuccessMessage,
+  refreshList
 }) => {
   const [formData, setFormData] = useState({
     length: "",
@@ -34,6 +35,7 @@ const WorkdoneEditModal = ({
     approx_diamond_weight: "",
     findings: [],
     approx_metal_weight: "",
+    actual_price:"",
     tag: [],
     notes: "",
   });
@@ -109,6 +111,7 @@ const WorkdoneEditModal = ({
       !formData.approx_diamond_weight ||
       !formData.findings ||
       !formData.approx_metal_weight ||
+      !formData.actual_price ||
       !formData.tag ||
       !formData.notes
     ) {
@@ -125,7 +128,8 @@ const WorkdoneEditModal = ({
         formData,
         setOpenLeftbar,
         setSuccessModalOpen,
-        setSuccessMessage
+        setSuccessMessage,
+        refreshList
       );
     } catch (error) {
       console.error("Error updating product:", error);
@@ -164,6 +168,7 @@ const WorkdoneEditModal = ({
       >
         {clickedProducts.map((product) => (
           <>
+          {console.log(product.basic_details.assignment,"product?.basic_details?.assignment")}
             <div className="Basic_detail">
               <>
                 <div className="master_modal">
@@ -182,19 +187,19 @@ const WorkdoneEditModal = ({
                   <div className="workdone_modal">
                     <span className="workdone_modal_span1">Length</span>
                     <span className="workdone_modal_span2">
-                      {product?.basic_details?.assignment.length} mm
+                      {product?.basic_details?.assignment.length} 
                     </span>
                   </div>
                   <div className="workdone_modal">
                     <span className="workdone_modal_span1">Width</span>
                     <span className="workdone_modal_span2">
-                      {product?.basic_details?.assignment.width} mm
+                      {product?.basic_details?.assignment.width} 
                     </span>
                   </div>
                   <div className="workdone_modal">
                     <span className="workdone_modal_span1">Height</span>
                     <span className="workdone_modal_span2">
-                      {product?.basic_details?.assignment.height} mm
+                      {product?.basic_details?.assignment.height} 
                     </span>
                   </div>
                   <div className="workdone_modal">
@@ -255,6 +260,13 @@ const WorkdoneEditModal = ({
                       </div>
                     </>
                   </div>
+                  <div className="workdone_modal">
+                    <span className="workdone_modal_span1">Approx Mrp</span>
+                    <span className="workdone_modal_span2">
+                      {product?.basic_details?.assignment.approx_price}{" "}
+                    
+                    </span>
+                  </div>
                   <div
                     className="workdone_modal"
                     style={{ borderBottom: "none" }}
@@ -287,7 +299,8 @@ const WorkdoneEditModal = ({
                 <div className="workdone_modal">
                   <span>Length</span>
                   <input
-                    type="number"
+                  style={{background:"white",padding:"6px 0px"}}
+                    type="text"
                     onChange={handleInput}
                     value={formData.length}
                     name="length"
@@ -298,7 +311,8 @@ const WorkdoneEditModal = ({
                 <div className="workdone_modal">
                   <span>Width</span>
                   <input
-                    type="number"
+                  style={{background:"white",padding:"6px 0px"}}
+                    type="text"
                     onChange={handleInput}
                     value={formData.width}
                     name="width"
@@ -309,7 +323,8 @@ const WorkdoneEditModal = ({
                 <div className="workdone_modal">
                   <span>Height</span>
                   <input
-                    type="number"
+                  style={{background:"white",padding:"6px 0px"}}
+                    type="text"
                     onChange={handleInput}
                     value={formData.height}
                     name="height"
@@ -326,7 +341,7 @@ const WorkdoneEditModal = ({
                     onChange={(value) =>
                       handleSelectChange(value, "type_of_metal")
                     }
-                    style={{ width: "50%" }}
+                    style={{ width: "46%" }}
                     options={MetalTypeDropDown.map((item) => ({
                       value: item.id,
                       label: item.metal_name,
@@ -345,7 +360,7 @@ const WorkdoneEditModal = ({
                     }
                     onSearch={onSearch}
                     filterOption={filterOption}
-                    style={{ width: "50%" }}
+                    style={{ width: "46%" }}
                     options={diamonType.map((item) => ({
                       value: item.id,
                       label: item.name,
@@ -363,7 +378,8 @@ const WorkdoneEditModal = ({
                 <div className="workdone_modal">
                   <span>APPROX DIAMOND WEIGHT</span>
                   <input
-                    type="number"
+                  style={{background:"white",padding:"6px 0px"}}
+                    type="text"
                     onChange={handleInput}
                     value={formData.approx_diamond_weight}
                     name="approx_diamond_weight"
@@ -381,7 +397,7 @@ const WorkdoneEditModal = ({
                     onChange={(value) => handleSelectChange2(value, "findings")}
                     onSearch={onSearch}
                     filterOption={filterOption}
-                    style={{ width: "50%" }}
+                    style={{ width: "46%" }}
                     options={findings.map((item) => ({
                       value: item.id,
                       label: item.find_name,
@@ -392,10 +408,23 @@ const WorkdoneEditModal = ({
                 <div className="workdone_modal">
                   <span>Approx weight</span>
                   <input
-                    type="number"
+                  style={{background:"white",padding:"6px 0px"}}
+                    type="text"
                     onChange={handleInput}
                     value={formData.approx_metal_weight}
                     name="approx_metal_weight"
+                    onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
+                    required
+                  />
+                </div>
+                <div className="workdone_modal">
+                  <span>Actual Mrp</span>
+                  <input
+                  style={{background:"white",padding:"6px 0px"}}
+                    type="number"
+                    onChange={handleInput}
+                    value={formData.actual_price}
+                    name="actual_price"
                     onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
                     required
                   />
@@ -413,7 +442,7 @@ const WorkdoneEditModal = ({
                       onSearch={onSearch}
                       filterOption={filterOption}
                       // style={{ width: "100%", background: "none" }}
-                      style={{ width: "50%" }}
+                      style={{ width: "46%" }}
                       options={tags.map((item) => ({
                         value: item.id,
                         label: item.name,
@@ -438,6 +467,7 @@ const WorkdoneEditModal = ({
                 >
                   <span>Note</span>
                   <textarea
+                  style={{background:"white"}}
                     name="notes"
                     onChange={handleInput}
                     value={formData.notes}
@@ -459,7 +489,7 @@ const WorkdoneEditModal = ({
                   <button
                     onClick={() =>
                       handleProductUpdate(
-                        product?.basic_details?.assignment?.id
+                        product?.id
                       )
                     }
                   >

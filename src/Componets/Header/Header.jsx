@@ -21,6 +21,8 @@ const Header = ({
   searchListId,
   handleInputChange,
   headerDetails,
+  handleCADLogout,
+  soltData
   // handleSearchDesignPoool
 }) => {
   const location = useLocation();
@@ -73,6 +75,7 @@ const Header = ({
     };
   }, []);
   console.log(userImage, "userImagge");
+  console.log( detailsViewFolderName," detailsViewFolderName")
   const handleSearchWithName = (event) => {
     setSearchWithName(event.target.value, "nameSarch");
   };
@@ -95,9 +98,10 @@ const Header = ({
               >
                 <h3>ID : {basicDetails?.design_code}</h3>
                 <span
+                style={{padding:"5px 10px"}}
                   className={
                     basicDetails.timer_status === "Completed"
-                      ? "completed"
+                      ? "completed1"
                       : basicDetails.timer_status === "on-going"
                       ? "ongoing"
                       : "notstarted"
@@ -148,7 +152,7 @@ const Header = ({
                 {location.pathname === "/customRequestTable" && (
                   <h3>Customize Request</h3>
                 )}
-                {location.pathname === "/wareHouse" && <h3>Votors panel</h3>}
+                {location.pathname === "/wareHouse" && <h3>Voters panel</h3>}
                 {location.pathname === "/votorspanal" && <h3>Voters panel</h3>}
                 {location.pathname === "/gallery" && <h3>Gallery</h3>}
                 {location.pathname === "/finishedProject" && (
@@ -242,6 +246,7 @@ const Header = ({
                 {location.pathname === "/workdone" && <h3>Work Done</h3>}
                 {location.pathname === "/newscanmodule" && <h3>Scan</h3>}
                 {location.pathname === "/centralhubscan" && <h3>Scan</h3>}
+                {location.pathname === `/slotPreview/${id}` && <h3>	Slot ID : {soltData[0].slotnumber}</h3>}
               </div>
 
               <div className="Right_User_Section">
@@ -284,13 +289,15 @@ const Header = ({
                   location.pathname !== "/scan" &&
                   location.pathname !== "/designpool" &&
                   location.pathname !== "/statusPage" &&
+                  location.pathname !== `/statusPage/${id}` &&
                   location.pathname !== "/centralhubscan" &&
                   location.pathname !== "/otherlogin" &&
                   location.pathname !== "/caduploaded" &&
                   location.pathname !== "/rendersuploaded" &&
                   location.pathname !== `/centralfolderdetails/${id}` &&
                   location.pathname !== `/assignmentview/${assignmentId}` &&
-                  location.pathname !== `/assignmentviewsAll/${id}` && (
+                  location.pathname !== `/assignmentviewsAll/${id}` && 
+                  location.pathname !== `/slotPreview/${id}` && (
                     <div className="Search_Admin">
                       <div className="Search_User">
                         <input
@@ -304,6 +311,34 @@ const Header = ({
                   )}
 
                 {location.pathname === "/designpool" && (
+                  <div className="Search_Admin">
+                    <div className="Search_User">
+                      <input
+                        type="text"
+                        placeholder="Search ID"
+                        value={searchListId}
+                        onChange={handleInputChange}
+                      />
+                      {/* <img onClick={handleSearchDesignPoool} src={searchimg} alt="" /> */}
+                      <img src={searchimg} alt="" />
+                    </div>
+                  </div>
+                )}
+                {location.pathname === "/centralDashboard" && (
+                  <div className="Search_Admin">
+                    <div className="Search_User">
+                      <input
+                        type="text"
+                        placeholder="Search ID"
+                        value={searchListId}
+                        onChange={handleInputChange}
+                      />
+                      {/* <img onClick={handleSearchDesignPoool} src={searchimg} alt="" /> */}
+                      <img src={searchimg} alt="" />
+                    </div>
+                  </div>
+                )}
+                {location.pathname === "/designerassign" && (
                   <div className="Search_Admin">
                     <div className="Search_User">
                       <input
@@ -365,7 +400,14 @@ const Header = ({
                       className="log_out__btns"
                       ref={dropdownRef}
                       onClick={() => {
+                        // const res = handleCADLogout()
+                        // console.log("res8734", res)
+                        if (userType == "CAD") {
+                           handleCADLogout()
                         removeLocalstorage(navigate);
+                        } else {
+                          removeLocalstorage(navigate);
+                        }
                       }}
                     >
                       <button>
@@ -384,3 +426,4 @@ const Header = ({
 };
 
 export default Header;
+

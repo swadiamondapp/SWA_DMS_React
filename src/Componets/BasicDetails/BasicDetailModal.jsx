@@ -3,14 +3,17 @@ import "./BasicDetails.css";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { Modal, Backdrop, Fade } from '@mui/material';
+import { Modal, Backdrop, Fade } from "@mui/material";
 import { Select, Space } from "antd";
 import { TagsInput } from "react-tag-input-component";
 import Joi from "joi";
 import AssignmentModal from "../AssignmentModal/AssignmentModal";
 import EyeIcons from "../../assets/bmEye.png";
 import closeButton from "../../assets/closeButton.svg";
+import like from "../../assets/like.png";
+
 import {
+  assignmentPanelSelectedEdit,
   basic_calculation,
   diamond_type_dropdown_basicDetails,
   editBasicDetails,
@@ -23,20 +26,19 @@ import {
 } from "../Assignment Panel/Api";
 import SuccessModal from "../SuccessModal/SuccessModal";
 import CircularProgress from "@mui/material/CircularProgress";
-import closeButtonBM from '../../assets/closeButtonBM.png'
+import closeButtonBM from "../../assets/closeButtonBM.png";
 
 const style = {
   position: "absolute",
-
   right: "0px",
-  width: 330,
+  width: "100%",
   height: "100%",
-  bgcolor: "background.paper",
+  // bgcolor: "background.paper",
   border: "none",
   boxShadow: 24,
   borderRadius: "8px 0 0 8px",
   overflowY: "scroll",
-  p: 2,
+  // p: 2,
 };
 const BasicEye = {
   position: "absolute",
@@ -71,7 +73,13 @@ const BasicDetailModal = ({
   designId,
   basicDetails,
   updateEditFunction,
-  setSelectedIdsForDelet
+  setSelectedIdsForDelet,
+  pid,
+  setFolderDetailsView,
+  detailId,
+  Data,
+  unvotedData,
+  setUnvotedData,
 }) => {
   // create modal
 
@@ -92,13 +100,20 @@ const BasicDetailModal = ({
   const [successModalOpen, setSuccessModalOpen] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [SelectedMetalId, setSelectedMetalId] = useState([]);
-  const [SelectedDiamondId, setSelectedDiamondId] = useState([]);
+  const [SelectedMetalId, setSelectedMetalId] = useState(
+    localStorage.getItem("selectedMetalType")
+      ? localStorage.getItem("selectedMetalType")
+      : []
+  );
+  const [SelectedDiamondId, setSelectedDiamondId] = useState(
+    localStorage.getItem("selectedDiamondType")
+      ? localStorage.getItem("selectedDiamondType")
+      : []
+  );
   const [CalculationData, setCalculationData] = useState([]);
   const [MovedItemsId, setMovedItemsId] = useState([]);
   const [IsLoadingCalculation, setIsLoadingCalculation] = useState(false);
-  const [showMrp,setShowMrp] = useState([])
-
+  const [showMrp, setShowMrp] = useState([]);
 
   const [ItemMovedToAssignment, setItemMovedToAssignment] = useState([]);
 
@@ -118,7 +133,7 @@ const BasicDetailModal = ({
     notes: "",
   });
 
-  console.log(errors,"errroCOnodf")
+  console.log(basicDetails, "basicDetails");
 
   useEffect(() => {
     if (name === "editbasicDetails" && basicDetails) {
@@ -130,7 +145,7 @@ const BasicDetailModal = ({
         width: basicDetails.width || "",
         height: basicDetails.height || "",
         typeOfMetal: basicDetails.type_of_metal || "",
-        diamondType: basicDetails.diamond_type || "",
+        diamondType:  basicDetails.diamond_type || "",        
         approxDiamondWeight: basicDetails.approx_diamond_weight || "",
         findings: basicDetails.findings || "",
         approxMetalWeights: basicDetails
@@ -142,14 +157,14 @@ const BasicDetailModal = ({
       }));
     }
   }, [name, DetailsProductId, basicDetails]);
-  console.log(successMessage, "success");
-  console.log(formData, "basicFormdData");
-  console.log(selectedAssignment, "basic=====>");
-  console.log(formData.approxMetalWeights, "metalWieght");
-  console.log(metalTypeDropDown, "metalTypeDropDown");
-  console.log(ProudctCategory, "taggggg");
-  console.log(CalculationData, "CalculationData");
-  console.log(basicDetails && basicDetails.approx_metal_weight, "basicDtails");
+  // console.log(successMessage, "success");
+  // console.log(formData, "basicFormdData");
+  // console.log(selectedAssignment, "basic=====>");
+  // console.log(formData.approxMetalWeights, "metalWieght");
+  // console.log(metalTypeDropDown, "metalTypeDropDown");
+  // console.log(ProudctCategory, "taggggg");
+  // console.log(CalculationData, "CalculationData");
+  // console.log(basicDetails && basicDetails.approx_metal_weight, "basicDtails");
 
   const schema = Joi.object({
     SKU: Joi.required().messages({
@@ -157,9 +172,9 @@ const BasicDetailModal = ({
       "any.required": `SKU field is required and cannot be empty.`,
     }),
     productCategory: Joi.array().min(1).required().messages({
-      'array.base': 'cannot be empty',
-      'array.empty': 'Product category cannot be empty',
-      'array.min': 'Product category cannot be empty',
+      "array.base": "cannot be empty",
+      "array.empty": "Product category cannot be empty",
+      "array.min": "Product category cannot be empty",
     }),
     length: Joi.string().required().messages({
       "string.empty": ` cannot be empty`,
@@ -170,43 +185,67 @@ const BasicDetailModal = ({
     height: Joi.string().required().messages({
       "string.empty": `cannot be empty`,
     }),
-    typeOfMetal: Joi.array().min(1).required().messages({
-      'array.base': 'cannot be empty',
-      'array.empty': 'Product category cannot be empty',
-      'array.min': 'Product category cannot be empty',
-    }),
-    diamondType: Joi.array().min(1).required().messages({
-      'array.base': 'cannot be empty',
-      'array.empty': 'Product category cannot be empty',
-      'array.min': 'Product category cannot be empty',
-    }),
-    approxDiamondWeight: Joi.string().custom((value, helpers) => {
-      if (value === "0") {
-        return helpers.message("cannot be zero");
-      }
-      return value;
-    }).required().messages({
-      "string.empty": `cannot be empty`,
-    }),
-    approxMetalWeights: Joi.string().custom((value, helpers) => {
-      if (value === "0") {
-        return helpers.message("cannot be zero");
-      }
-      return value;
-    }).required().messages({
-      "string.empty": `cannot be empty`,
-    }),
+    // typeOfMetal: Joi.array().min(1).required().messages({
+    //   "array.base": "cannot be empty",
+    //   "array.empty": "Product category cannot be empty",
+    //   "array.min": "Product category cannot be empty",
+    // }),
+    // diamondType: Joi.array().min(1).required().messages({
+    //   "array.base": "cannot be empty",
+    //   "array.empty": "Product category cannot be empty",
+    //   "array.min": "Product category cannot be empty",
+    // }),
+    approxDiamondWeight: Joi.alternatives()
+      .try(
+        Joi.number().custom((value, helpers) => {
+          if (value === 0) {
+            return helpers.message("cannot be zero");
+          }
+          return value;
+        }),
+        Joi.string().custom((value, helpers) => {
+          if (value === "0") {
+            return helpers.message("cannot be zero");
+          }
+          return value;
+        })
+      )
+      .required()
+      .messages({
+        "alternatives.match": "must be a valid number or string",
+        "string.empty": "cannot be empty",
+      }),
+    approxMetalWeights: Joi.alternatives()
+      .try(
+        Joi.number().custom((value, helpers) => {
+          if (value === 0) {
+            return helpers.message("cannot be zero");
+          }
+          return value;
+        }),
+        Joi.string().custom((value, helpers) => {
+          if (value === "0") {
+            return helpers.message("cannot be zero");
+          }
+          return value;
+        })
+      )
+      .required()
+      .messages({
+        "alternatives.match": "must be a valid number or string",
+        "string.empty": "cannot be empty",
+      }),
     approxMRP: Joi.number().required().messages({
-      'number.base': 'Approximate MRP must be a number',
-      'number.empty': 'Approximate MRP cannot be empty', // Handles cases where it is empty but should be a number
-      'any.required': 'cannot be empty', // Handles cases where the field is missing
+      "number.base": "Approximate MRP must be a number",
+      "number.empty": "Approximate MRP cannot be empty", // Handles cases where it is empty but should be a number
+      "any.required": "cannot be empty", // Handles cases where the field is missing
     }),
-    tag: Joi.array().allow(null).allow('').messages({
+    tag: Joi.array().allow(null).allow("").messages({
       "array.base": "cannot be empty",
       "array.empty": "cannot be empty",
       "array.min": " cannot be empty",
     }),
-    findings: Joi.array().allow(null).allow('').messages({
+    findings: Joi.array().allow(null).allow("").messages({
       "array.base": "cannot be empty",
       "array.empty": " cannot be empty",
       "array.min": "cannot be empty",
@@ -227,14 +266,12 @@ const BasicDetailModal = ({
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Validate form data using Joi schema
     const { error } = schema.validate(formData, {
       abortEarly: false,
       allowUnknown: true,
     });
 
     if (error) {
-      // Form is invalid, display validation errors
       const validationErrors = error.details.reduce((errors, err) => {
         errors[err.path[0]] = err.message;
         return errors;
@@ -260,6 +297,11 @@ const BasicDetailModal = ({
   };
   const filterOption = (input, option) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
+
+  const pathname = location.pathname;
+  const isStatusPage = pathname === "/assignmentviewsAll/";
+  const isStatusPageWithId = pathname.startsWith("/assignmentviewsAll/");
+  const isStatusPageName = pathname.startsWith("/assignmentview/");
 
   const handleNextClick = () => {
     const { error } = schema.validate(formData, {
@@ -296,11 +338,11 @@ const BasicDetailModal = ({
           setMovedItemsId,
           setFormData,
           getSelectedDesign,
-          ()=>{
-            setCalculationData([])
+          () => {
+            setCalculationData([]);
           },
-          setSelectedIdsForDelet
-
+          setSelectedIdsForDelet,
+          setUnvotedData
         );
       }
       // setShowAssignmentModal(true);
@@ -315,16 +357,13 @@ const BasicDetailModal = ({
     });
 
     if (error) {
-      // Form is invalid, display validation errors
       const validationErrors = error.details.reduce((errors, err) => {
         errors[err.path[0]] = err.message;
         return errors;
       }, {});
       setErrors(validationErrors);
-    } else {
-      // Form is valid, proceed with submission
+    } else if (isStatusPageName) {
       console.log("Form submitted:", formData);
-      // onClose();
       editBasicDetails(
         formData,
         folderIdA,
@@ -334,9 +373,20 @@ const BasicDetailModal = ({
         onClose,
         updateEditFunction
       );
-      // setShowAssignmentModal(true);
-      // Clear errors
       setErrors({ undefined });
+    } else if (isStatusPageWithId) {
+      console.log("Form submitted:", formData);
+      assignmentPanelSelectedEdit(
+        formData,
+        pid,
+        setSuccessMessage,
+        setSuccessModalOpen,
+        onClose,
+        updateEditFunction,
+        setIsLoading,
+        setFolderDetailsView,
+        detailId
+      );
     }
   };
   console.log(errors, "eeeeeeeee==>");
@@ -415,9 +465,9 @@ const BasicDetailModal = ({
       formData.diamondType &&
       formData.typeOfMetal
     ) {
-      CalculateApproxAmount()
+      CalculateApproxAmount();
     } else {
-      setFormData(prevFormData => ({
+      setFormData((prevFormData) => ({
         ...prevFormData,
         approxMRP: CalculationData?.calculated_mrp,
       }));
@@ -430,11 +480,41 @@ const BasicDetailModal = ({
     formData.diamondType,
     formData.typeOfMetal,
   ]);
+  useEffect(() => {
+    if (name === "editbasicDetails" && basicDetails) {
+      // Update selected IDs based on basicDetails
+      setSelectedMetalId(Number(basicDetails.type_of_metal));
+      setSelectedDiamondId(Number(basicDetails.diamond_type));
+
+      // Call calculation if all values are present
+      if (
+        formData.approxMetalWeights &&
+        formData.approxDiamondWeight &&
+        basicDetails.type_of_metal &&
+        basicDetails.diamond_type
+      ) {
+        CalculateApproxAmount();
+      }
+    }
+  }, [
+    name,
+    basicDetails,
+    formData.approxMetalWeights,
+    formData.approxDiamondWeight,
+  ]);
+
+  console.log(
+    SelectedMetalId,
+    SelectedDiamondId,
+    formData.approxMetalWeights,
+    formData.approxDiamondWeight,
+    "metalId=diamondId+metalW=diamonW"
+  );
 
   useEffect(() => {
     if (CalculationData) {
       // setShowMrp(CalculationData.calculated_mrp);
-      setFormData(prevFormData => ({
+      setFormData((prevFormData) => ({
         ...prevFormData,
         approxMRP: CalculationData.calculated_mrp,
       }));
@@ -451,35 +531,209 @@ const BasicDetailModal = ({
     }
   }, [MovedItemsId]);
 
-  const handleCLoseButton = ()=> {
-    onClose()
+  useEffect(() => {
+    if (
+      formData.approxMetalWeights &&
+      formData.approxDiamondWeight &&
+      SelectedDiamondId &&
+      SelectedMetalId
+    ) {
+      CalculateApproxAmount();
+    }
+  }, [SelectedDiamondId, SelectedMetalId, formData.approxMetalWeights, formData.approxDiamondWeight]);
+
+
+
+  const handleCLoseButton = () => {
+    onClose();
     setSelectedDesigns([]);
     setShowRadioButtons(false);
     setSelectButtonLabel("Select");
-    setSelectedIdsForDelet([])
-    setFormData(
-      {
-        SKU: "",
-        productCategory: "",
-        length: "",
-        width: "",
-        height: "",
-        typeOfMetal: "",
-        diamondType: "",
-        approxDiamondWeight: "",
-        findings: "",
-        approxMetalWeights: "",
-        approxMRP: "",
-        tag: [],
-        notes: "",
-      }
-    )
-    setErrors({})
-    
-    setCalculationData([])
+    setSelectedIdsForDelet([]);
+    setFormData({
+      SKU: "",
+      productCategory: "",
+      length: "",
+      width: "",
+      height: "",
+      typeOfMetal: "",
+      diamondType: "",
+      approxDiamondWeight: "",
+      findings: "",
+      approxMetalWeights: "",
+      approxMRP: "",
+      tag: [],
+      notes: "",
+    });
+    setErrors({});
 
+    setCalculationData([]);
+  };
+
+  const filteredData = Data?.filter((item) =>
+    getSelectedDesign.includes(item.designcode)
+  );
+
+  const filteredUvoted = unvotedData?.filter((item) =>
+    getSelectedDesign.includes(item.designcode)
+  );
+
+  console.log(filteredData, "filteredData");
+
+  // const [selectedValue, setSelectedValue] = useState(null);
+  // const [selectedLabel, setSelectedLabel] = useState(null);
+
+  // const [selectedDiamond, setSelectedDiamond] = useState(null);
+  // const [selectedLabelDiamond, setSelectedLabelDiamond] = useState(null);
+
+  // useEffect(() => {
+  //   const storedIdDiamond = Number(localStorage.getItem("selectedDiamondType"));
+  //   console.log(storedIdDiamond,"storedIdDiamond")
+  //   if (storedIdDiamond) {
+  //     const matchedItem = diamonType.find((item) => item.id === storedIdDiamond);
+  //     if (matchedItem) {
+  //       setSelectedDiamond(storedIdDiamond);
+  //       setSelectedLabelDiamond(matchedItem.name);
+  //       setFormData((prevState) => ({
+  //         ...prevState,
+  //         typeOfMetal: storedIdDiamond,
+  //       }));
+  //     }
+  //   }
+  // }, [ setFormData]);
+
+  // useEffect(() => {
+  //   const storedId = Number(localStorage.getItem("selectedMetalType"));
+  //   console.log(storedId,"storedId")
+  //   if (storedId) {
+  //     const matchedItem = metalTypeDropDown.filter((item) => item.id === storedId);
+  //     console.log(matchedItem,"matchedItem")
+  //     if (matchedItem) {
+  //       setSelectedValue(storedId);
+  //       setSelectedLabel(matchedItem.metal_name);
+  //       setFormData((prevState) => ({
+  //         ...prevState,
+  //         typeOfMetal: storedId,
+  //       }));
+  //     }
+  //   }
+  // }, [ setFormData]);
+
+  // const currentMetal = Number(localStorage.getItem("selectedMetalType"));
+  // const filterData = metalTypeDropDown.filter((item) => item.id === currentMetal);
+
+  // console.log("filterData", filterData);
+  // console.log("selectedLabel", selectedLabel);
+  // console.log(filterData,"filterData")
+  // const metalValue = localStorage.getItem("selectedMetalType");
+  // const [selectedValue, setSelectedValue] = useState([]);
+  // const [selectedLabel, setSelectedLabel] = useState(null);
+
+  // const [selectedDiamond, setSelectedDiamond] = useState([]);
+  // const [selectedLabelDiamond, setSelectedLabelDiamond] = useState(null);
+
+  // useEffect(() => {
+  //   const storedIdDiamond =
+  //     Number(basicDetails?.diamond_type) ||
+  //     Number(localStorage.getItem("selectedDiamondType"));
+  //   if (storedIdDiamond) {
+  //     const matchedItem = diamonType.find(
+  //       (item) => item.id === storedIdDiamond
+  //     );
+  //     if (matchedItem) {
+  //       setSelectedDiamond(storedIdDiamond);
+  //       setSelectedLabelDiamond(matchedItem.name);
+  //       setFormData((prevState) => ({
+  //         ...prevState,
+  //         diamondType: [storedIdDiamond],
+  //       }));
+  //     }
+  //   }
+  // }, [diamonType, basicDetails, localStorage.getItem("selectedDiamondType")]);
+
+  // // Effect to set metal type from localStorage or basicDetails
+  // useEffect(() => {
+  //   const storedId =
+  //     Number(basicDetails?.type_of_metal) ||
+  //     Number(localStorage.getItem("selectedMetalType"));
+  //   if (storedId) {
+  //     const matchedItem = metalTypeDropDown.find(
+  //       (item) => item.id === storedId
+  //     );
+  //     if (matchedItem) {
+  //       setSelectedValue(storedId);
+  //       setSelectedLabel(matchedItem.metal_name);
+  //       setFormData((prevState) => ({
+  //         ...prevState,
+  //         typeOfMetal: [storedId],
+  //       }));
+  //     }
+  //   }
+  // }, [
+  //   metalTypeDropDown,
+  //   basicDetails,
+  //   localStorage.getItem("selectedMetalType"),
+  // ]);
+
+  const [selectedValue, setSelectedValue] = useState([]);
+const [selectedLabel, setSelectedLabel] = useState(null);
+const [selectedDiamond, setSelectedDiamond] = useState([]);
+const [selectedLabelDiamond, setSelectedLabelDiamond] = useState(null);
+
+// Ensure `metalTypeDropDown` and `diamonType` are updated properly
+useEffect(() => {
+  const storedIdMetal = Number(basicDetails?.type_of_metal) || Number(localStorage.getItem("selectedMetalType"));
+  if (storedIdMetal) {
+    const matchedItem = metalTypeDropDown.find(item => item.id === storedIdMetal);
+    if (matchedItem) {
+      setSelectedValue(storedIdMetal);
+      setSelectedLabel(matchedItem.metal_name);
+      setFormData(prevState => ({ ...prevState, typeOfMetal: [storedIdMetal] }));
+    }
   }
-  
+}, [basicDetails, metalTypeDropDown]);
+
+useEffect(() => {
+  const storedIdDiamond = Number(basicDetails?.diamond_type) || Number(localStorage.getItem("selectedDiamondType"));
+  if (storedIdDiamond) {
+    const matchedItem = diamonType.find(item => item.id === storedIdDiamond);
+    if (matchedItem) {
+      setSelectedDiamond(storedIdDiamond);
+      setSelectedLabelDiamond(matchedItem.name);
+      setFormData(prevState => ({ ...prevState, diamondType: [storedIdDiamond] }));
+    }
+  }
+}, [basicDetails, diamonType]);
+
+const handleMetalChange = (value) => {
+  const selectedItem = metalTypeDropDown.find(item => item.id === value);
+  if (selectedItem) {
+    setSelectedValue(value);
+    setSelectedLabel(selectedItem.metal_name);
+    setFormData(prevState => ({ ...prevState, typeOfMetal: [value] }));
+    setSelectedMetalId(value);
+    localStorage.setItem("selectedMetalType", value);
+  }
+};
+
+const handleDiamondChange = (value) => {
+  const selectedItem = diamonType.find(item => item.id === value);
+  if (selectedItem) {
+    setSelectedDiamond(value);
+    setSelectedLabelDiamond(selectedItem.name);
+    setFormData(prevState => ({ ...prevState, diamondType: [value] }));
+    setSelectedDiamondId(value);
+    localStorage.setItem("selectedDiamondType", value);
+  }
+};
+
+
+  useEffect(() => {
+    console.log("SelectedDiamondId:", SelectedDiamondId);
+    console.log("SelectedMetalId:", SelectedMetalId);
+  }, [SelectedDiamondId, SelectedMetalId]);
+
+
   return (
     <div>
       <div className="">
@@ -499,17 +753,124 @@ const BasicDetailModal = ({
             }}
           >
             <Box sx={style}>
-              <Typography>
+              <div className="modal_card_images">
+                {filteredData?.map((item, index) => (
+                  <>
+                    <div
+                      className="New_Design_card"
+                      key={item.id}
+                      style={{ width: "250px" }}
+                    >
+                      <div
+                        className="Card_img"
+                        style={{
+                          marginTop: "12px",
+                          height: "170px",
+                          cursor: "pointer",
+                        }}
+                      >
+                        <img
+                          src={item.image}
+                          alt="image"
+                        // onClick={() => OpenAnntaitionmodal(item)}
+                        />
+                      </div>
+                      <div className="Card_Details">
+                        <h3>ID : {item.designcode}</h3>
+                        <div className="Card_Details_Inner">
+                          <div className="Inner_Left">
+                            <p>{item.user_name}</p>
+                            <p>{item.created_at}</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        className=""
+                        style={{
+                          display: "flex",
+                          justifyContent: "end",
+                          width: "100%",
+                          alignItems: "end",
+                        }}
+                      >
+                        <div className="Inner_Right" style={{ width: "50px" }}>
+                          <p style={{ color: "white", fontSize: "12px" }}>
+                            {item?.likes_count} <img src={like} alt="" />
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                ))}
+                {filteredData?.length === 0 &&
+                  filteredUvoted?.map((item, index) => (
+                    <>
+                      <div
+                        className="New_Design_card"
+                        key={item.id}
+                        style={{ width: "250px" }}
+                      >
+                        <div
+                          className="Card_img"
+                          style={{
+                            marginTop: "12px",
+                            height: "170px",
+                            cursor: "pointer",
+                          }}
+                        >
+                          <img
+                            src={item.image}
+                            alt="image"
+                          // onClick={() => OpenAnntaitionmodal(item)}
+                          />
+                        </div>
+                        <div className="Card_Details">
+                          <h3>ID : {item.designcode}</h3>
+                          <div className="Card_Details_Inner">
+                            <div className="Inner_Left">
+                              <p>{item.user_name}</p>
+                              <p>{item.created_at}</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          className=""
+                          style={{
+                            display: "flex",
+                            justifyContent: "end",
+                            width: "100%",
+                            alignItems: "end",
+                          }}
+                        >
+                          <div
+                            className="Inner_Right"
+                            style={{ width: "50px" }}
+                          >
+                            <p style={{ color: "white", fontSize: "12px" }}>
+                              {item?.likes_count} <img src={like} alt="" />
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  ))}
+              </div>
+              <Typography className="modal_edit_section">
                 <div className="container">
                   <div className="basicClosModalIcon">
                     <div>
-
-                  <span className="titleBasic">Basic details</span>
+                      <span className="titleBasic">Basic details</span>
                     </div>
-                    <div className="closeButtonImageBm" onClick={handleCLoseButton}>
-                      <img src={closeButtonBM} alt="" />
+                    <div
+                      className="closeButtonImageBm"
+                      onClick={handleCLoseButton}
+                    >
+                      <img
+                        src={closeButtonBM}
+                        alt=""
+                        style={{ cursor: "pointer" }}
+                      />
                     </div>
-
                   </div>
                   <form onSubmit={handleSubmit}>
                     <div className="formContainer">
@@ -536,7 +897,6 @@ const BasicDetailModal = ({
                             }))
                           }
                           name="SKU"
-                          // placeHolder="Findings"
                           classNames="inputTag"
                         />
                       )}
@@ -587,12 +947,20 @@ const BasicDetailModal = ({
                           length
                         </label>
                         <input
-                          type="number"
+                          type="text"
                           className="inputFields"
                           name="length"
                           value={formData.length}
                           onChange={handleInput}
-                          onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
+                          onFocus={(e) =>
+                            e.target.addEventListener(
+                              "wheel",
+                              function (e) {
+                                e.preventDefault();
+                              },
+                              { passive: false }
+                            )
+                          }
                         />
                         <div>
                           {errors.length && (
@@ -607,12 +975,20 @@ const BasicDetailModal = ({
                           Width
                         </label>
                         <input
-                          type="number"
+                          type="text"
                           className="inputFields"
                           name="width"
                           value={formData.width}
                           onChange={handleInput}
-                          onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
+                          onFocus={(e) =>
+                            e.target.addEventListener(
+                              "wheel",
+                              function (e) {
+                                e.preventDefault();
+                              },
+                              { passive: false }
+                            )
+                          }
                         />
                         <div>
                           {errors.width && (
@@ -627,12 +1003,20 @@ const BasicDetailModal = ({
                           Height
                         </label>
                         <input
-                          type="number"
+                          type="text"
                           className="inputFields"
                           name="height"
                           value={formData.height}
                           onChange={handleInput}
-                          onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
+                          onFocus={(e) =>
+                            e.target.addEventListener(
+                              "wheel",
+                              function (e) {
+                                e.preventDefault();
+                              },
+                              { passive: false }
+                            )
+                          }
                         />
                         <div>
                           {errors.height && (
@@ -650,35 +1034,32 @@ const BasicDetailModal = ({
                         </label>
                         <Select
                           showSearch
-                          placeholder="-Select-"
+                          placeholder={selectedLabel || "-Select-"}
                           optionFilterProp="children"
-                          value={formData.typeOfMetal}
-                          onChange={(value) => {
-                            setFormData((prevState) => ({
-                              ...prevState,
-                              typeOfMetal: [value],
-                            }));
-                            setSelectedMetalId(value);
-                          }}
+                          value={selectedValue}
+                          // onChange={(value) => {
+                          //   const selectedItem = metalTypeDropDown.find(item => item.id === value);
+                          //   if (selectedItem) {
+                          //     setSelectedValue(value);
+                          //     setSelectedLabel(selectedItem.metal_name);
+                          //     setFormData(prevState => ({ ...prevState, typeOfMetal: [value] }));
+                          //     setSelectedMetalId(value); // Ensure this updates correctly
+                          //     localStorage.setItem("selectedMetalType", value);
+                          //   }
+                          // }}
+                          onChange={handleMetalChange}
                           onSearch={onSearch}
                           filterOption={filterOption}
-                          style={{
-                            width: "100%",
-                            zIndex: "9999999",
-                            background: "#006E7F1A",
-                            cursor:'pointer'
-                          }}
-                          options={metalTypeDropDown.map((item) => ({
-                            value: item.id,
-                            label: item.metal_name,
-                          }))}
+                          style={{ width: "100%", zIndex: 9999999, background: "#006E7F1A", cursor: "pointer" }}
+                          options={metalTypeDropDown.map(item => ({ value: item.id, label: item.metal_name }))}
                         />
+
                         <div>
-                          {errors.typeOfMetal && (
+                          {errors.typeOfMetal || !SelectedMetalId || !selectedValue ? (
                             <span className="error_input_p">
-                              {errors.typeOfMetal}
+                              {errors.typeOfMetal || "Metal Type cannot be empty"}
                             </span>
-                          )}
+                          ) : null}
                         </div>
                       </div>
                       <div className="select_field">
@@ -687,28 +1068,24 @@ const BasicDetailModal = ({
                         </label>
                         <Select
                           showSearch
-                          placeholder="-Select-"
+                          placeholder={selectedLabelDiamond || "-Select-"}
                           optionFilterProp="children"
-                          value={formData.diamondType}
-                          onChange={(value) => {
-                            setFormData((prevState) => ({
-                              ...prevState,
-                              diamondType: [value],
-                            }));
-                            setSelectedDiamondId(value); // Update the state with the selected diamond ID
-                          }}
+                          value={selectedDiamond}
+                          // onChange={(value) => {
+                          //   const selectedItem = diamonType.find(item => item.id === value);
+                          //   if (selectedItem) {
+                          //     setSelectedDiamond(value);
+                          //     setSelectedLabelDiamond(selectedItem.name);
+                          //     setFormData(prevState => ({ ...prevState, diamondType: [value] }));
+                          //     setSelectedDiamondId(value); // Ensure this updates correctly
+                          //     localStorage.setItem("selectedDiamondType", value);
+                          //   }
+                          // }}
+                          onChange={handleDiamondChange}
                           onSearch={onSearch}
                           filterOption={filterOption}
-                          style={{
-                            width: "100%",
-                            zIndex: 999999999,
-                            background: "#006E7F1A",
-                            cursor:'pointer'
-                          }}
-                          options={diamonType.map((item) => ({
-                            value: item.id,
-                            label: item.name,
-                          }))}
+                          style={{ width: "100%", zIndex: 999999999, background: "#006E7F1A", cursor: "pointer" }}
+                          options={diamonType.map(item => ({ value: item.id, label: item.name }))}
                         />
                         <div>
                           {errors.diamondType && (
@@ -716,6 +1093,11 @@ const BasicDetailModal = ({
                               {errors.diamondType}
                             </span>
                           )}
+                           {errors.diamondType || !SelectedDiamondId || !selectedDiamond ? (
+                            <span className="error_input_p">
+                              {errors.diamondType || "Diamond Type cannot be empty"}
+                            </span>
+                          ) : null}
                         </div>
                       </div>
                     </div>
@@ -725,12 +1107,21 @@ const BasicDetailModal = ({
                           Approx Diamond weight
                         </label>
                         <input
-                          type="number"
+                          style={{ background: "#ADD8E6" }}
+                          type="text"
                           className="inputFields"
                           name="approxDiamondWeight"
                           value={formData.approxDiamondWeight}
                           onChange={handleInput}
-                          onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
+                          onFocus={(e) =>
+                            e.target.addEventListener(
+                              "wheel",
+                              function (e) {
+                                e.preventDefault();
+                              },
+                              { passive: false }
+                            )
+                          }
                         />
                         <div>
                           {errors.approxDiamondWeight && (
@@ -747,12 +1138,21 @@ const BasicDetailModal = ({
                           Approx metal weight
                         </label>
                         <input
-                          type="number"
+                          style={{ background: "#FEDD56" }}
+                          type="text"
                           className="inputFields"
                           name="approxMetalWeights"
                           value={formData.approxMetalWeights}
                           onChange={handleInput}
-                          onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
+                          onFocus={(e) =>
+                            e.target.addEventListener(
+                              "wheel",
+                              function (e) {
+                                e.preventDefault();
+                              },
+                              { passive: false }
+                            )
+                          }
                         />
                         <div>
                           {errors.approxMetalWeights && (
@@ -767,12 +1167,11 @@ const BasicDetailModal = ({
                           Approx MRP
                         </label>
                         <input
-                          type="number"
+                          type="text"
                           className="inputFields"
                           name="approxMRP"
                           value={formData.approxMRP}
                           onChange={handleInput}
-
                           readOnly
                         />
                         {IsLoadingCalculation ? (
@@ -812,6 +1211,8 @@ const BasicDetailModal = ({
                         </label>
                         {name === "editbasicDetails" ? (
                           <Select
+                            onSearch={onSearch}
+                            filterOption={filterOption}
                             mode="multiple"
                             style={{
                               width: "100%",
@@ -834,6 +1235,8 @@ const BasicDetailModal = ({
                           />
                         ) : (
                           <Select
+                            onSearch={onSearch}
+                            filterOption={filterOption}
                             mode="multiple"
                             style={{
                               width: "100%",
@@ -905,7 +1308,10 @@ const BasicDetailModal = ({
                               width: "100%",
                               zIndex: "9999999",
                               background: "#006E7F1A",
+                              border: "1px solid #e0e1e1 !import",
                             }}
+                            onSearch={onSearch}
+                            filterOption={filterOption}
                             value={formData.tag}
                             placeholder="Select tags"
                             onChange={(value) => {
@@ -922,6 +1328,8 @@ const BasicDetailModal = ({
                           />
                         ) : (
                           <Select
+                            onSearch={onSearch}
+                            filterOption={filterOption}
                             mode="multiple"
                             style={{
                               width: "100%",

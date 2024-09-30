@@ -7,6 +7,7 @@ import SlotView from "../../SlotVIew/SlotView";
 import {
   centralTransfer,
   changeCentralHubStatus,
+  deleteTrasferItem,
   listCentralHubStatus,
   list_slot_central_hub,
   scanSloteTransfer,
@@ -23,6 +24,8 @@ import searchimg from "../../../assets/search.png";
 import bluesearch from "../../../assets/bluesearch.png";
 import SuccessModal from "../../SuccessModal/SuccessModal";
 import { CircularProgress } from "@mui/material";
+import dlt from "../../../assets/deleticon.png";
+import DeleteConfirmationModal from "../../ConfirmationModal/DeleteConfirmationModal";
 
 const Transfer = ({ sidebarExpanded }) => {
   const [showEditDelete, setShowEditDelete] = useState(null);
@@ -42,6 +45,8 @@ const Transfer = ({ sidebarExpanded }) => {
   const [CentralHubStatus, setCentralHubStatus] = useState([]);
   const [error, setError] = useState("");
   const [transferStatus, setTransferStatus] = useState("Created");
+  const [DeleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
+  const [dltId, setDltId] = useState("");
 
   const handlePrintSlotModalClose = () => {
     setPrintSlotModalOpen(false);
@@ -154,6 +159,15 @@ const Transfer = ({ sidebarExpanded }) => {
     }
   };
 
+  const handleDeleteClose = () => {
+    setDeleteConfirmationOpen(false);
+    // setSelectedIdsForDelet([]);
+  };
+  const handleDeleteOpen = (Id) => {
+    setDeleteConfirmationOpen(true);
+    setDltId(Id);
+  };
+
   console.log(CentralHubStatus, "CentralHubStatus");
   return (
     <div
@@ -199,7 +213,12 @@ const Transfer = ({ sidebarExpanded }) => {
                   onChange={handleScanChange}
                   onKeyPress={handleKeyPress}
                 />
-                <img onClick={handleTransferScan} src={searchimg} alt="" />
+                <img
+                  onClick={handleTransferScan}
+                  src={searchimg}
+                  alt=""
+                  style={{ cursor: "pointer" }}
+                />
               </div>
               {error && (
                 <span
@@ -242,11 +261,16 @@ const Transfer = ({ sidebarExpanded }) => {
                 <th style={{}}>Product Category</th>
                 <th>Weight</th>
                 <th>Status</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
               {TransferData?.map((item, index) => (
-                <tr key={index} style={{ color: "#2E364C" }}>
+                <tr
+                  key={index}
+                  style={{ color: "#2E364C" }}
+                  className="table_row"
+                >
                   <td className="serialNumber_cell">{index + 1}</td>
                   <td style={{ width: "25%" }}>
                     {formatDate(item.created_at)}
@@ -269,7 +293,7 @@ const Transfer = ({ sidebarExpanded }) => {
                         }}
                       >
                         <div>
-                          <select
+                          {/* <select
                             className="scan_select_Central"
                             name="centralStatus"
                             id="centralHubStatus"
@@ -278,6 +302,7 @@ const Transfer = ({ sidebarExpanded }) => {
                               handleStatusChange(event, item.id)
                             }
                             style={{
+                              cursor:"pointer",
                               backgroundColor:
                                 item.status === "Created"
                                   ? "#23A064"
@@ -288,7 +313,21 @@ const Transfer = ({ sidebarExpanded }) => {
                           >
                             <option value="Created">Created</option>
                             <option value="Transfered">Transfered</option>
-                          </select>
+                          </select> */}
+                          <p
+                            style={{
+                              color: "white",
+                              padding: "6px 10px",
+                              fontWeight: 700,
+                              borderRadius: "26px",
+                              background:
+                                item.status === "Transfered"
+                                  ? "#0464D5"
+                                  : "#45A065", 
+                            }}
+                          >
+                            {item.status}
+                          </p>
                         </div>
 
                         {/* <div>
@@ -303,16 +342,24 @@ const Transfer = ({ sidebarExpanded }) => {
                         />
                       </div> */}
                       </div>
-                      {/* <div className="DOTSBTNS">
-                      <BsThreeDotsVertical
-                        className="Action_dots"
-                        onClick={() =>
-                          setShowEditDelete(
-                            showEditDelete === index ? null : index
-                          )
-                        }
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      className="DOTSBTNS"
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        width: "100px",
+                      }}
+                    >
+                      <img
+                        onClick={() => handleDeleteOpen(item.id)}
+                        style={{ width: "16px", height: "20px" }}
+                        src={dlt}
+                        alt="Delete"
                       />
-                    </div> */}
                     </div>
                   </td>
                 </tr>
@@ -434,6 +481,25 @@ const Transfer = ({ sidebarExpanded }) => {
         userId={userId}
         slotView={slotView}
       />
+
+      <DeleteConfirmationModal
+        DeleteConfirmationOpen={DeleteConfirmationOpen}
+        handleDeleteClose={handleDeleteClose}
+        setDeleteConfirmationOpen={setDeleteConfirmationOpen}
+        handleDeleteOpen={handleDeleteOpen}
+        isLoading={isLoading}
+        deleteFunction={() => {
+          deleteTrasferItem(
+            setIsLoading,
+            setSuccessModalOpen,
+            setSuccessMessage,
+            setDeleteConfirmationOpen,
+            dltId,
+            setTransferData
+          );
+        }}
+      />
+
       <SuccessModal
         successModalOpen={successModalOpen}
         successMessage={successMessage}

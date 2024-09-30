@@ -6,7 +6,7 @@ import { all_Designs_items, like_design, voted_design_list } from "../Api";
 import thumb from "../../../assets/thumb2.png";
 import { FaRegThumbsUp, FaThumbsUp } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
-import { Box, Tab } from "@mui/material";
+import { Box, CircularProgress, Tab } from "@mui/material";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
@@ -15,7 +15,7 @@ const VotorsPanal = ({ sidebarExpanded }) => {
   const navigate = useNavigate();
 
   const [Data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [votedList, setVotedList] = useState([]);
   const [animate, setAnimate] = useState({});
   const [value, setValue] = React.useState("1");
@@ -40,7 +40,7 @@ const VotorsPanal = ({ sidebarExpanded }) => {
       setAnimate((prev) => ({ ...prev, [id]: false })); // Reset the animation state after it completes
     }, 800); // Duration of the animation
   };
-   
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -98,6 +98,43 @@ const VotorsPanal = ({ sidebarExpanded }) => {
                   <h3 className="HeadNewdesign">
                     Newly added (&nbsp;{Data.length}&nbsp;)
                   </h3>
+
+                  {isLoading && (
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <CircularProgress
+                        // filter={filter}
+                        // setFilter={setFilter}
+                        size={50}
+                        sx={{
+                          color: "#126e72",
+                          padding: "8px 10px",
+                          width: "35px",
+                        }}
+                      />
+                    </div>
+                  )}
+
+                  {!isLoading && Data.length === 0 && (
+                    <div
+                      className=""
+                      style={{
+                        width: "100%",
+                        height: "200px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <span>No Data Found</span>
+                    </div>
+                  )}
+
                   <div className="Card_Design_Parent">
                     {Data.map((item) => (
                       <div className="New_Design_card">
@@ -110,52 +147,52 @@ const VotorsPanal = ({ sidebarExpanded }) => {
                             className=""
                             style={{ display: "flex", gap: "5px" }}
                           >
-                            <span style={{ color: "#23A064" }}>Status :</span>
-                            <span>{item.current_status || ""}</span>
+                            <span style={{ color: "#23A064", fontSize: "12px" }}>Status : <span style={{ color: "black", fontSize: "12px" }}>{item.currentstatus_track && item.currentstatus_track[0]?.current_status || ""}</span></span>
+
                           </div>
                           <div className="Card_Details_Inner">
                             <div className="Inner_Left">
                               <p>{item.user_name}</p>
                               <p>{item.created_at}</p>
                             </div>
-                            <div
-                              className=""
-                              style={{
-                                display: "flex",
-                                width: "auto",
-                                gap: "10px",
-                              }}
-                            >
-                              <button
-                                style={{
-                                  padding: "7px 10px ",
-                                  borderRadius: "4px",
-                                  color: "white",
-                                  backgroundColor: "#0464D5",
-                                  border: "none",
-                                  fontSize: "15px",
-                                  fontWeight: "900",
-                                }}
-                                onClick={() =>
-                                  handleTrack(item, item.designcode)
-                                }
-                              >
-                                Track
-                              </button>
-                              <div
-                                // className="Inner_Right"
-                                className={`Inner_Right ${
-                                  animate[item.id] ? "wobble" : ""
-                                }`}
-                                style={{ borderRadius: "4px" }}
-                                onClick={() => handleLikeClicks(item.id)}
-                              >
-                                <p style={{ padding: "8px 18px" }}>
-                                  <FaRegThumbsUp size={20} />
-                                </p>
-                                {/* <p style={{ padding: "8px 18px" }}>{item.likes_count}</p> */}
-                              </div>
-                            </div>
+                          </div>
+                        </div>
+                        <div
+                          className=""
+                          style={{
+                            display: "flex",
+                            gap: "10px",
+                            width: "100%",
+                            justifyContent: "end"
+                          }}
+                        >
+                          <button
+                            style={{
+                              padding: "7px 10px ",
+                              borderRadius: "4px",
+                              color: "white",
+                              backgroundColor: "#0464D5",
+                              border: "none",
+                              fontSize: "15px",
+                              fontWeight: "900",
+                            }}
+                            onClick={() =>
+                              handleTrack(item, item.designcode)
+                            }
+                          >
+                            Track
+                          </button>
+                          <div
+                            // className="Inner_Right"
+                            className={`Inner_Right ${animate[item.id] ? "wobble" : ""
+                              }`}
+                            style={{ borderRadius: "4px" }}
+                            onClick={() => handleLikeClicks(item.id)}
+                          >
+                            <p style={{ padding: "8px 18px", cursor: "pointer" }}>
+                              <FaRegThumbsUp size={20} />
+                            </p>
+                            {/* <p style={{ padding: "8px 18px" }}>{item.likes_count}</p> */}
                           </div>
                         </div>
                       </div>
@@ -177,20 +214,46 @@ const VotorsPanal = ({ sidebarExpanded }) => {
                           </div>
                           <div className="Card_Details">
                             <h3>ID : {item.designcode}</h3>
+                            <span style={{ color: "#23A064", fontSize: "12px" }}>Status : <span style={{ color: "black", fontSize: "12px" }}>{item.currentstatus_track && item.currentstatus_track[0]?.current_status || ""}</span></span>
                             <div className="Card_Details_Inner">
                               <div className="Inner_Left">
                                 <p>{item.user_name}</p>
                                 <p>{item.created_at}</p>
                               </div>
+                            </div>
+                            <div
+                              className=""
+                              style={{
+                                display: "flex",
+                                gap: "10px",
+                                width: "100%",
+                                justifyContent: "end"
+                              }}
+                            >
+                              <button
+                                style={{
+                                  padding: "7px 10px ",
+                                  borderRadius: "4px",
+                                  color: "white",
+                                  backgroundColor: "#0464D5",
+                                  border: "none",
+                                  fontSize: "15px",
+                                  fontWeight: "900",
+                                }}
+                                onClick={() =>
+                                  handleTrack(item, item.designcode)
+                                }
+                              >
+                                Track
+                              </button>
                               <div
                                 // className="Inner_Right"
-                                className={`Inner_Right ${
-                                  animate[item.id] ? "wobble" : ""
-                                }`}
+                                className={`Inner_Right ${animate[item.id] ? "wobble" : ""
+                                  }`}
                                 style={{ borderRadius: "4px" }}
                                 onClick={() => handleLikeClicks(item.id)}
                               >
-                                <p style={{ padding: "8px 18px" }}>
+                                <p style={{ padding: "7px 18px", cursor: "pointer" }}>
                                   <FaThumbsUp size={20} />
                                 </p>
                                 {/* <p style={{ padding: "8px 18px" }}>{item.likes_count}</p> */}

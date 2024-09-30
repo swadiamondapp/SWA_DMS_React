@@ -15,7 +15,7 @@ const DesignerDetailView = (props) => {
   const [selectedAssignment, setSelectedAssignment] = useState([]);
  
   const [filteredDta,setFilteredData]= useState([])
-
+  const [dd, setDd] = useState();
   const [openFilterModal, setOpenFilterModal] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -39,7 +39,7 @@ const DesignerDetailView = (props) => {
     setShowMoveOptions(!showMoveOptions);
   };
 
-  const handleCheckboxChange = (designcode) => {
+ const handleCheckboxChange = (designcode) => {
     if (selectedAssignment.includes(designcode)) {
       setSelectedAssignment(
         selectedAssignment.filter((item) => item !== designcode)
@@ -48,6 +48,17 @@ const DesignerDetailView = (props) => {
       setSelectedAssignment([...selectedAssignment, designcode]);
     }
   };
+
+  const handleSelectAll = () => {
+    const allItemIds = props.folderDetails?.assignment_items?.filter((item) => item.items_status !== "ALLOCATED")
+      .map((item) => item.item_id);
+    setSelectedAssignment(allItemIds);
+  };
+
+  const handleDeselectAll = () => {
+    setSelectedAssignment([]);
+  };
+
   // const handleAssignmentCad = () => {
   //   assign_to_cad(setIsLoading,folderId,userId,selectedDesigns)
   // }
@@ -112,7 +123,18 @@ const DesignerDetailView = (props) => {
     // Logs to check if `folderDetails` is updated correctly
     console.log("Updated folderDetails:", props.folderDetails);
   }, [props.folderDetails]);
+
+  const handleTrack = (item, designCode) => {
+    navigate(`/statusPage/${item.item_id}`, {
+      state: {
+        code: designCode,
+      },
+    });
+  };
     
+ 
+console.log("showRadioButtons",showRadioButtons)
+
   return (
     <div
       className="DesignerAssignmentPanel"
@@ -134,11 +156,14 @@ const DesignerDetailView = (props) => {
         setShowRadioButtons={setShowRadioButtons}
         openFilterModal={openFilterModal}
         setOpenFilterModal={setOpenFilterModal}
+        handleSelectAll={handleSelectAll}
+            handleDeselectAll={handleDeselectAll}
+            showRadioButtons={showRadioButtons}
       />
       <div className="DesignerAssignment___panel_Cards">
         <div className="Parent_NewDesign">
           <div className="Card_Design_Parent" style={{ marginTop: "50px" }}>
-           
+         
           {props.folderDetails?.assignment_items?.length === 0 && <h6>No Data Found</h6>}
 
             {props.folderDetails &&
@@ -161,13 +186,29 @@ const DesignerDetailView = (props) => {
                   </div>
                   <div className="Card_Details">
                     <h3>ID : {item.paper_design.designcode}</h3>
-
                     <div className="Card_Details_Inner">
                       <div className="Inner_Left">
                         <p>{item.paper_design.designer_name}</p>
                         <p>{formatDate(item.paper_design.created_at)}</p>
+                        <p>Time Taken : {item.time_taken} </p>
                       </div>
                     </div>
+                    <button
+                                    style={{
+                                      padding: "7px 5px ",
+                                      borderRadius: "4px",
+                                      color: "white",
+                                      backgroundColor: "#0464D5",
+                                      border: "none",
+                                      fontSize: "13px",
+                                      fontWeight: "900"
+                                     }}
+                                    onClick={() =>
+                                      handleTrack(item,item?.paper_design?.designcode)
+                                    }
+                                  >
+                                    Track
+                                  </button>
                     <div
                       style={{
                         padding: "4px 10px",
@@ -189,19 +230,22 @@ const DesignerDetailView = (props) => {
                         ? "On Going"
                         : "Not Started"}
                     </div>
+                    
                   </div>
 
-                  {showRadioButtons && (
-                    <input
-                      className="Radio_select"
-                      type="checkbox"
-                      id="html"
-                      name="fav_language"
-                      value=""
-                      onChange={() => handleCheckboxChange(item.item_id)}
-                      disabled={item.items_status === "ALLOCATED"}
-                    ></input>
-                  )}
+                  {showRadioButtons &&  (
+        <input
+          key={item.item_id}
+          className="Radio_select"
+          type="checkbox"
+          id={item.item_id}
+          name="fav_language"
+          value={item.item_id}
+          onChange={() => handleCheckboxChange(item.item_id)}
+          checked={selectedAssignment.includes(item.item_id)}
+          disabled={item.items_status === "ALLOCATED"}
+        />
+      )}
                 </div>
               ))}
           </div>
@@ -215,6 +259,8 @@ const DesignerDetailView = (props) => {
           onClearCall={props.onClearCall}
           folderDetails={props.folderDetails}
           setFilteredData={setFilteredData}
+          setDd={setDd}
+          dd={dd}
         />
       )}
       </div>
