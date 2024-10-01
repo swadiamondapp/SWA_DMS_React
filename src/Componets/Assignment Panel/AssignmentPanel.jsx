@@ -343,6 +343,13 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
     }
   };
 
+  const truncateText = (text, maxLength) => {
+    if (text.length > maxLength) {
+      return text.slice(0, maxLength) + "...";
+    }
+    return text;
+  };
+
   return (
     <div
       className={`Parent_AssignmentView ${filter ? "no-scroll" : ""}`}
@@ -1081,7 +1088,10 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
                             style={{ width: "100px" }}
                           />
                         ) : (
-                          <span style={{ fontSize: "12px" }}>{item.name}</span>
+                          <div  className="assingment_folder">
+                          <span style={{ fontSize: "12px" }}>{truncateText(item.name,10)}</span>
+                          <span className="assingment_folder_hover">{item.name}</span>
+                          </div>
                         )}
                       </div>
                     </div>
