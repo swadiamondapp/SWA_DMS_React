@@ -119,4 +119,5 @@ padding: 3px;
 font-size:12px;
 text-align: center;
 border-radius: 4px;
+word-break: break-all;
 }
