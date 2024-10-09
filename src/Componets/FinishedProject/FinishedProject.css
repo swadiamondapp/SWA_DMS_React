@@ -90,3 +90,34 @@
   
 
 }
+
+.assingment_folder{
+  position: relative;
+  cursor: pointer;
+  width: 100%;
+  /* background-color: yellow; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.assingment_folder_hover{
+  display: none;
+}
+.assingment_folder:hover .assingment_folder_hover{
+display: block;
+align-items: center;
+justify-content: center;
+position: absolute;
+background-color: rgba(0, 0, 0, 0.795);
+color: white;
+top: 14px;
+/* left: -28px; */
+z-index: 999;
+width: 100px;
+height: auto;
+padding: 3px;
+font-size:12px;
+text-align: center;
+border-radius: 4px;
+word-break: break-all;
+}
