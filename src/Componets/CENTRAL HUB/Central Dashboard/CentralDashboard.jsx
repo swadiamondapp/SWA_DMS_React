@@ -157,14 +157,14 @@ const CentralDashboard = ({
     >
       <div className="CadAssignmentCard">
         <div className="folderCard_parent">
-          {isLoading ? (
+          { Folders.length === 0 && isLoading ? (
             <div
               style={{
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
                 width: "100%",
-                height: "300px",
+                height: "400px",
               }}
             >
               <CircularProgress
@@ -178,7 +178,7 @@ const CentralDashboard = ({
             </div>
           ) : (
             <>
-              {Folders.filter((x) => x.name.includes(searchListId)).length > 0 ? (
+              { Folders.filter((x) => x.name.includes(searchListId)).length > 0 ? (
                 Folders.filter((x) => x.name.includes(searchListId)).map(
                   (item) => (
                     <div
@@ -191,7 +191,7 @@ const CentralDashboard = ({
                     </div>
                   )
                 )
-              ) : (
+              ) :  !isLoading && Folders.length === 0 &&  (
                 <div
                   style={{
                     display: "flex",
