@@ -59,8 +59,8 @@ export const slot_view_by_id = async (Id, setSloteView) => {
 };
 
 export const listFoldersCentralHub = async (setIsLoading, setFolders) => {
+  setIsLoading(true)
   try {
-    setIsLoading(true)
     const response = await apiService.get(LIST_CENTRAL_FOLDERS);
     if (checkApiStatus(response)) {
       setFolders.current = response.data.results.data;

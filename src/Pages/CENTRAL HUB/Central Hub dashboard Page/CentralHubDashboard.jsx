@@ -43,7 +43,7 @@ const folders = useRef([])
     <div className="centralhubDashboard">
       <Sidebar  sidebarExpanded={sidebarExpanded} setSidebarExpanded={setSidebarExpanded}/>
       <Header sidebarExpanded={sidebarExpanded} searchListId={searchListId} handleInputChange={ handleInputChange}/>
-      <CentralDashboard sidebarExpanded={sidebarExpanded} Folders={folders.current} searchListId={searchListId}/>
+      <CentralDashboard sidebarExpanded={sidebarExpanded} Folders={folders.current} searchListId={searchListId} isLoading={isLoading}/>
     </div>
   );
 };
