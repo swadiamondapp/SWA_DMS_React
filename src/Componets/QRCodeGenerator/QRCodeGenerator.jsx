@@ -4,7 +4,7 @@ import QRCode from "qrcode.react";
 const QRCodeGenerator = ({ value }) => {
   return (
     <div>
-      <QRCode value={value} size={50} />
+      <QRCode value={value} size={80} />
       {/* <QRCode
         value={value}
         size={256} // Size of the QR code
