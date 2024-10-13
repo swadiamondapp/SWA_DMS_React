@@ -45,7 +45,7 @@ const PreviewTab = ({ sidebarExpanded, soltData }) => {
     }, [handleKeyDown]);
 
     return (
-        <div className="parentCentral" style={{ paddingLeft: sidebarExpanded ? "225px" : "130px" }}>
+        <div className="parentCentral" style={{ paddingLeft: sidebarExpanded ? "225px" : "130px",position:"relative" }}>
             <div className="NewSlotPrint" ref={printRef}>
                 {soltData?.map((item, index) =>
                     item.caddesigns.map((design, designIndex) => (
@@ -152,7 +152,7 @@ const PreviewTab = ({ sidebarExpanded, soltData }) => {
                 )}
             </div>
 
-            <div className="" style={{ width: "100%", display: "flex", justifyContent: "end", alignItems: "end",marginTop:"20px" }}>
+            <div className="" style={{ width: "87%", display: "flex", justifyContent: "end", alignItems: "end",marginTop:"20px",position:"fixed",top:"90vh",zIndex:"9999"}}>
               <ReactToPrint
                       trigger={() => (
                         <div
