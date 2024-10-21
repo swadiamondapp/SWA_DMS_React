@@ -72,8 +72,8 @@ tbody tr:last-child .print-table-cell {
   /* padding: 5px; */
 }
 .slot_items {
-  height: auto;
   width: 49%;
+  height:auto;
   border-radius: 8px;
   border: 1px solid black;
   margin-bottom: 5px;
@@ -91,10 +91,11 @@ tbody tr:last-child .print-table-cell {
   align-items: center;
   justify-content: space-between;
   color: white;
-  font-size: 16px;
+  font-size: 12px;
   font-weight: 900;
   position: relative;
   z-index: 9;
+  font-size: 14px;
 }
 
 .print_head img {
@@ -144,7 +145,7 @@ tbody tr:last-child .print-table-cell {
 }
 .img_section {
   border: 1px solid black;
-  border-radius: 8px;
+  border-radius: 2px;
   width: 28%;
   height: 80px;
   overflow: hidden;
@@ -175,7 +176,7 @@ tbody tr:last-child .print-table-cell {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
   gap: 5px;
 }
@@ -263,4 +264,9 @@ tbody tr:last-child .print-table-cell {
   justify-content: start;
   /* grid-template-columns: 1fr 1fr ; */
   flex-wrap: wrap;
+}
+
+.page-break {
+  page-break-inside: avoid;
+  page-break-after: always;
 }
