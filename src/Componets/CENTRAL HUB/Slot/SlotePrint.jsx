@@ -114,13 +114,16 @@ const SlotePrint = forwardRef(({ slotView }, ref) => {
         className="slot_items"
         key={index}
         style={{
-          width: "267.25px",
-          height: "240.25px",
+          width: "372.25px",
+          height: "346.25px",
           borderRadius: "4px",
           marginTop: "8px",
+          display:"flex",
+          flexDirection:"column",
+          justifyContent:"space-between"
         }}
       >
-        <div className="print_head" style={{ borderRadius: "4px",fontSize:"12px",padding:"3px" }}>
+        <div className="print_head" style={{ borderRadius: "4px",fontSize:"16px",padding:"5px" }}>
           <span>DMS</span>
           <span>ID : {design.designcode}</span>
         </div>
@@ -128,14 +131,17 @@ const SlotePrint = forwardRef(({ slotView }, ref) => {
           className="print_detail"
           style={{
             width: "100%",
-            justifyContent: "space-between",
+            height:"auto",
+            display:"flex",
+            justifyContent: "space-evenly",
             alignItems: "center",
+            // gap:"15px"
           }}
         >
           <div style={{ height: "72px", width: "72px" }}>
             <QRCodeGenerator value={design.designcode} />
           </div>
-          <div className="img_section" style={{ height: "142px", width: "142px" }}>
+          <div className="img_section" style={{ height: "182px", width: "182px",marginLeft:"50px" }}>
             <img
               style={{ width: "100%", height: "100%" }}
               src={design.design_image}
@@ -143,22 +149,23 @@ const SlotePrint = forwardRef(({ slotView }, ref) => {
             />
           </div>
         </div>
-        <div className="approx_details" style={{ fontSize: "10px" }}>
+        <div className="approx_details" style={{ fontSize: "12px" }}>
           <div
             style={{
-              width: "40%",
+              width: "48%",
               height: "auto",
               display: "flex",
               flexDirection: "column",
-              fontSize: "9px",
+              fontSize: "13px",
               justifyContent: "space-evenly",
+              // background:"red"
             }}
           >
             <h6
               style={{
                 borderBottom: ".5px solid black",
-                fontSize: "9px",
-                width: "60%",
+                fontSize: "13px",
+                width: "56%",
               }}
             >
               Approx Details
@@ -172,7 +179,7 @@ const SlotePrint = forwardRef(({ slotView }, ref) => {
               height: "auto",
               display: "flex",
               flexDirection: "column",
-              fontSize: "9px",
+              fontSize: "13px",
               justifyContent: "space-evenly",
             }}
           >
@@ -191,7 +198,8 @@ const SlotePrint = forwardRef(({ slotView }, ref) => {
       // className="NewSlotPrint"
       ref={ref}
       style={{
-        width:"100%"
+        width:"100%",
+        margin:"17px"
       }}
     >
       {slotView?.flatMap((item) =>
@@ -206,8 +214,10 @@ const SlotePrint = forwardRef(({ slotView }, ref) => {
               justifyContent:"space-evenly",
               gridTemplateColumns:"1fr 1fr",
               // background:"red",
-              marginLeft:"6px"
+              // marginLeft:"6px",
               // gap: "5px",
+              gap:"0px"
+            
             }}
           >
             {renderDesigns(chunk)}
