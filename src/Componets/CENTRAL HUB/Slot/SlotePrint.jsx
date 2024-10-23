@@ -114,10 +114,10 @@ const SlotePrint = forwardRef(({ slotView }, ref) => {
         className="slot_items"
         key={index}
         style={{
-          width: "372.25px",
-          height: "346.25px",
+          width: "383.25px",
+          height: "356.25px",
           borderRadius: "4px",
-          marginTop: "8px",
+          marginTop: "6px",
           display:"flex",
           flexDirection:"column",
           justifyContent:"space-between"
@@ -199,7 +199,7 @@ const SlotePrint = forwardRef(({ slotView }, ref) => {
       ref={ref}
       style={{
         width:"100%",
-        margin:"17px"
+        margin:"10px"
       }}
     >
       {slotView?.flatMap((item) =>
