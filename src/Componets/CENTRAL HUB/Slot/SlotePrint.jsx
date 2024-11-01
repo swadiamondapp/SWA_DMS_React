@@ -212,7 +212,7 @@ const SlotePrint = forwardRef(({ slotView }, ref) => {
               paddingBottom: "5px",
               display:"grid",
               justifyContent:"space-evenly",
-              gridTemplateColumns:"1fr 1fr",
+              gridTemplateColumns:"1fr 1.0099fr",
               // background:"red",
               // marginLeft:"6px",
               // gap: "5px",
