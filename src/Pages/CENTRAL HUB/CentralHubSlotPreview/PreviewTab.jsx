@@ -44,6 +44,8 @@ const PreviewTab = ({ sidebarExpanded, soltData }) => {
         };
     }, [handleKeyDown]);
 
+    console.log(soltData,"soltData--")
+
     return (
         <div className="parentCentral" style={{ paddingLeft: sidebarExpanded ? "225px" : "130px",position:"relative" }}>
             <div className="NewSlotPrint" ref={printRef}>
