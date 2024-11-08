@@ -167,7 +167,7 @@ tbody tr:last-child .print-table-cell {
   width: 100%;
   height: auto;
   display: flex;
-
+  
   /* background: red; */
 }
 .approx {

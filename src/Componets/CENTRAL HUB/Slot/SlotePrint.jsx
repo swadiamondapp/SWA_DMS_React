@@ -118,12 +118,12 @@ const SlotePrint = forwardRef(({ slotView }, ref) => {
           height: "356.25px",
           borderRadius: "4px",
           marginTop: "6px",
-          display:"flex",
-          flexDirection:"column",
-          justifyContent:"space-between"
+          display: "flex",
+          flexDirection: "column",
+          // justifyContent: "space-between"
         }}
       >
-        <div className="print_head" style={{ borderRadius: "4px",fontSize:"16px",padding:"5px" }}>
+        <div className="print_head" style={{ borderRadius: "4px", fontSize: "16px", padding: "5px" }}>
           <span>DMS</span>
           <span>ID : {design.designcode}</span>
         </div>
@@ -131,17 +131,46 @@ const SlotePrint = forwardRef(({ slotView }, ref) => {
           className="print_detail"
           style={{
             width: "100%",
-            height:"auto",
-            display:"flex",
-            justifyContent: "space-evenly",
+            height: "auto",
+            display: "flex",
+            justifyContent: "space-between",
             alignItems: "center",
             // gap:"15px"
           }}
         >
-          <div style={{ height: "72px", width: "72px" }}>
+          <div style={{ height: "auto", width: "55%" }}>
             <QRCodeGenerator value={design.designcode} />
+            <div
+            style={{
+              width: "100%",
+              height: "auto",
+              display: "flex",
+              flexDirection: "column",
+              fontSize: "13px",
+              justifyContent: "space-evenly",
+              marginTop:"5px",
+              gap:"5px"
+            }}
+          >
+            <span>Gold Type : {design.metal_type}</span>
+            <span>Gold Color :
+               {/* {design.product_category.join(", ")} */}
+               </span>
+            <span>Net Weight :
+               {/* {design.Tag.join(", ")} */}
+               </span>
+            <span>Gross Weight :
+               {/* {design.metal_type} */}
+               </span>
+            <span>SKU : 
+              {design.designcode}
+              </span>
+            <span>DY number : 
+              {/* {design.metal_type} */}
+              </span>
           </div>
-          <div className="img_section" style={{ height: "182px", width: "182px",marginLeft:"50px" }}>
+          </div>
+          <div className="img_section" style={{ height: "182px", width: "182px", marginLeft: "10px" }}>
             <img
               style={{ width: "100%", height: "100%" }}
               src={design.design_image}
@@ -150,6 +179,23 @@ const SlotePrint = forwardRef(({ slotView }, ref) => {
           </div>
         </div>
         <div className="approx_details" style={{ fontSize: "12px" }}>
+
+          <div
+            style={{
+              width: "58%",
+              height: "auto",
+              display: "flex",
+              flexDirection: "column",
+              fontSize: "13px",
+              justifyContent: "space-evenly",
+              gap:"6px"
+            }}
+          >
+            {/* <span>Folder Name : {design.folder_name}</span> */}
+            <span>Product Category : {design.product_category.join(", ")}</span>
+            <span>Tag SWA: {design.Tag.join(", ")}</span>
+            {/* <span>Metal Type : {design.metal_type}</span> */}
+          </div>
           <div
             style={{
               width: "48%",
@@ -158,6 +204,7 @@ const SlotePrint = forwardRef(({ slotView }, ref) => {
               flexDirection: "column",
               fontSize: "13px",
               justifyContent: "space-evenly",
+              gap:"5px"
               // background:"red"
             }}
           >
@@ -173,21 +220,6 @@ const SlotePrint = forwardRef(({ slotView }, ref) => {
             <span>Metal Weight : {design.approx_metal_weight}</span>
             <span>MRP : {design.approx_price}</span>
           </div>
-          <div
-            style={{
-              width: "58%",
-              height: "auto",
-              display: "flex",
-              flexDirection: "column",
-              fontSize: "13px",
-              justifyContent: "space-evenly",
-            }}
-          >
-            <span>Folder Name : {design.folder_name}</span>
-            <span>Category : {design.product_category.join(", ")}</span>
-            <span>Tag : {design.Tag.join(", ")}</span>
-            <span>Metal Type : {design.metal_type}</span>
-          </div>
         </div>
       </div>
     ));
@@ -198,8 +230,8 @@ const SlotePrint = forwardRef(({ slotView }, ref) => {
       // className="NewSlotPrint"
       ref={ref}
       style={{
-        width:"100%",
-        margin:"10px"
+        width: "100%",
+        margin: "10px"
       }}
     >
       {slotView?.flatMap((item) =>
@@ -210,15 +242,15 @@ const SlotePrint = forwardRef(({ slotView }, ref) => {
             style={{
               paddingTop: "10px",
               paddingBottom: "5px",
-              display:"grid",
-              justifyContent:"space-evenly",
-              gridTemplateColumns:"1fr 1.028fr",
+              display: "grid",
+              justifyContent: "space-evenly",
+              gridTemplateColumns: "1fr 1.028fr",
               // background:"red",
               // marginLeft:"6px",
               // gap: "5px",
-              gap:"0px",
-              marginLeft:"4px"
-            
+              gap: "0px",
+              marginLeft: "4px"
+
             }}
           >
             {renderDesigns(chunk)}
