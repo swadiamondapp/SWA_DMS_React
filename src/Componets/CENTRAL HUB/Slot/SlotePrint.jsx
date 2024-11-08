@@ -163,7 +163,7 @@ const SlotePrint = forwardRef(({ slotView }, ref) => {
                {/* {design.metal_type} */}
                </span>
             <span>SKU : 
-              {/* {design.metal_type} */}
+              {design.designcode}
               </span>
             <span>DY number : 
               {/* {design.metal_type} */}
