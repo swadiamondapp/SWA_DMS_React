@@ -157,7 +157,7 @@ const SlotePrint = forwardRef(({ slotView }, ref) => {
               <span>
                 Gold Color :{/* {design.product_category.join(", ")} */}
               </span>
-              <span>
+<span>
                 Findings :{/* {design.product_category.join(", ")} */}
               </span>
               <span>Net Weight :{/* {design.Tag.join(", ")} */}</span>
@@ -216,7 +216,7 @@ const SlotePrint = forwardRef(({ slotView }, ref) => {
               Approx Details
             </h6>
             <span>Metal Weight : {design.approx_metal_weight}</span>
-            <span>MRP : {design.approx_price}</span>
+            {/* <span>MRP : {design.approx_price}</span> */}
           </div>
         </div>
       </div>

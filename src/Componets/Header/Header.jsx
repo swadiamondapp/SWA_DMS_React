@@ -22,7 +22,7 @@ const Header = ({
   handleInputChange,
   headerDetails,
   handleCADLogout,
-  soltData
+  soltData,
   // handleSearchDesignPoool
 }) => {
   const location = useLocation();
@@ -75,7 +75,7 @@ const Header = ({
     };
   }, []);
   console.log(userImage, "userImagge");
-  console.log( detailsViewFolderName," detailsViewFolderName")
+  console.log(detailsViewFolderName, " detailsViewFolderName");
   const handleSearchWithName = (event) => {
     setSearchWithName(event.target.value, "nameSarch");
   };
@@ -98,7 +98,7 @@ const Header = ({
               >
                 <h3>ID : {basicDetails?.design_code}</h3>
                 <span
-                style={{padding:"5px 10px"}}
+                  style={{ padding: "5px 10px" }}
                   className={
                     basicDetails.timer_status === "Completed"
                       ? "completed1"
@@ -246,7 +246,9 @@ const Header = ({
                 {location.pathname === "/workdone" && <h3>Work Done</h3>}
                 {location.pathname === "/newscanmodule" && <h3>Scan</h3>}
                 {location.pathname === "/centralhubscan" && <h3>Scan</h3>}
-                {location.pathname === `/slotPreview/${id}` && <h3>	Slot ID : {soltData[0].slotnumber}</h3>}
+                {location.pathname === `/slotPreview/${id}` && (
+                  <h3> Slot ID : {soltData[0].slotnumber}</h3>
+                )}
               </div>
 
               <div className="Right_User_Section">
@@ -296,7 +298,7 @@ const Header = ({
                   location.pathname !== "/rendersuploaded" &&
                   location.pathname !== `/centralfolderdetails/${id}` &&
                   location.pathname !== `/assignmentview/${assignmentId}` &&
-                  location.pathname !== `/assignmentviewsAll/${id}` && 
+                  location.pathname !== `/assignmentviewsAll/${id}` &&
                   location.pathname !== `/slotPreview/${id}` && (
                     <div className="Search_Admin">
                       <div className="Search_User">
@@ -390,8 +392,8 @@ const Header = ({
                   <div className="Name_Sub">
                     <p style={{ fontSize: "15px" }}>{userName}</p>
                     <p className="Name_Sub_admin">
-                      {userType.charAt(0).toUpperCase() +
-                        userType.slice(1).toLowerCase()}
+                      {userType?.charAt(0).toUpperCase() +
+                        userType?.slice(1).toLowerCase()}
                     </p>
                   </div>
                   <IoChevronDown style={{ color: "#1AA1A1" }} />
@@ -403,8 +405,8 @@ const Header = ({
                         // const res = handleCADLogout()
                         // console.log("res8734", res)
                         if (userType == "CAD") {
-                           handleCADLogout()
-                        removeLocalstorage(navigate);
+                          handleCADLogout();
+                          removeLocalstorage(navigate);
                         } else {
                           removeLocalstorage(navigate);
                         }
@@ -426,4 +428,3 @@ const Header = ({
 };
 
 export default Header;
-
