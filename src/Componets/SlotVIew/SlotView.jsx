@@ -16,14 +16,13 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: "auto",
-  height: "auto",
+  height: "80vh",
   bgcolor: "background.transparent",
   border: "none",
   boxShadow: "none",
   p: 0,
   overflowY: "auto",
   borderRadius: 0,
-  
 };
 
 const SlotView = ({ open, onClose, userId, slotView }) => {
@@ -80,21 +79,27 @@ const SlotView = ({ open, onClose, userId, slotView }) => {
           >
             <div>
               <Box sx={style}>
-                <button
-                  onClick={() => handleClose()}
-                  className="overLayButton_cht"
-                >
-                  <img src={roundedClose} />
-                  CLOSE
-                </button>
-                <Typography id="modal-modal-title" variant="h6" component="h2">
-                  <div
-                    className="headerModal"
-                    style={{ background: "#F2F2F2", padding: "0px 15px" }}
+                <div>
+                  <button
+                    onClick={() => handleClose()}
+                    className="overLayButton_cht"
                   >
-                    <span className="assignTitle">Slot List</span>
-                  </div>
-                </Typography>
+                    <img src={roundedClose} />
+                    CLOSE
+                  </button>
+                  <Typography
+                    id="modal-modal-title"
+                    variant="h6"
+                    component="h2"
+                  >
+                    <div
+                      className="headerModal"
+                      style={{ background: "#F2F2F2", padding: "0px 15px" }}
+                    >
+                      <span className="assignTitle">Slot List</span>
+                    </div>
+                  </Typography>
+                </div>
 
                 <Typography id="modal-modal-description">
                   <div className="Slote_Container">
@@ -126,36 +131,6 @@ const SlotView = ({ open, onClose, userId, slotView }) => {
                             </tr>
                           ))
                         )}
-                        {/* <tr>
-                          <td class="table-cell">SWA34R56</td>
-                          <td class="table-cell">12-02-23</td>
-                          <td class="table-cell">Bangles</td>
-                          <td class="table-cell">16 Gram</td>
-                        </tr>
-                        <tr>
-                          <td class="table-cell">SWA34R56</td>
-                          <td class="table-cell">12-02-23</td>
-                          <td class="table-cell">Bangles</td>
-                          <td class="table-cell">16 Gram</td>
-                        </tr>
-                        <tr>
-                          <td class="table-cell">SWA34R56</td>
-                          <td class="table-cell">12-02-23</td>
-                          <td class="table-cell">Bangles</td>
-                          <td class="table-cell">16 Gram</td>
-                        </tr>
-                        <tr>
-                          <td class="table-cell">SWA34R56</td>
-                          <td class="table-cell">12-02-23</td>
-                          <td class="table-cell">Bangles</td>
-                          <td class="table-cell">16 Gram</td>
-                        </tr>
-                        <tr className="lastrow">
-                          <td class="table-cell">SWA34R56</td>
-                          <td class="table-cell">12-02-23</td>
-                          <td class="table-cell">Bangles</td>
-                          <td class="table-cell">16 Gram</td>
-                        </tr> */}
                       </tbody>
                     </table>
                   </div>
