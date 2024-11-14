@@ -157,12 +157,11 @@ const SlotePrint = forwardRef(({ slotView }, ref) => {
               <span>
                 Gold Color :{/* {design.product_category.join(", ")} */}
               </span>
-              {/* <span>Net Weight : */}
-              {/* {design.Tag.join(", ")} */}
-              {/* </span> */}
-              {/* <span>Gross Weight : */}
-              {/* {design.metal_type} */}
-              {/* </span> */}
+<span>
+                Findings :{/* {design.product_category.join(", ")} */}
+              </span>
+              <span>Net Weight :{/* {design.Tag.join(", ")} */}</span>
+              <span>Gross Weight :{/* {design.metal_type} */}</span>
               <span>SKU :{design.designcode}</span>
               <span>DY number :{/* {design.metal_type} */}</span>
             </div>
