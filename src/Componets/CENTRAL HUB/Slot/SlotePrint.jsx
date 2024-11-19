@@ -107,6 +107,7 @@ const SlotePrint = forwardRef(({ slotView }, ref) => {
   };
 
   const renderDesigns = (designs) => {
+    console.log("design", designs);
     return designs.map((design, index) => (
       <div
         className="slot_items"
@@ -125,7 +126,9 @@ const SlotePrint = forwardRef(({ slotView }, ref) => {
           className="print_head"
           style={{ borderRadius: "4px", fontSize: "16px", padding: "5px" }}
         >
-          <span>DMS</span>
+          <span>
+            DMS - <span style={{ fontSize: "10px" }}>{design.folder_name}</span>
+          </span>
           <span>ID : {design.designcode}</span>
         </div>
         <div
@@ -157,12 +160,8 @@ const SlotePrint = forwardRef(({ slotView }, ref) => {
               <span>
                 Gold Color :{/* {design.product_category.join(", ")} */}
               </span>
-              {/* <span>Net Weight : */}
-              {/* {design.Tag.join(", ")} */}
-              {/* </span> */}
-              {/* <span>Gross Weight : */}
-              {/* {design.metal_type} */}
-              {/* </span> */}
+              <span>Net Weight :</span>
+              <span>Gross Weight :</span>
               <span>SKU :{design.designcode}</span>
               <span>DY number :{/* {design.metal_type} */}</span>
             </div>
@@ -194,6 +193,7 @@ const SlotePrint = forwardRef(({ slotView }, ref) => {
             <span>Product Category : {design.product_category.join(", ")}</span>
             <span>Tag SWA: {design.Tag.join(", ")}</span>
             {/* <span>Metal Type : {design.metal_type}</span> */}
+            <span>Findings : {design.Findings}</span>
           </div>
           <div
             style={{
@@ -217,7 +217,7 @@ const SlotePrint = forwardRef(({ slotView }, ref) => {
               Approx Details
             </h6>
             <span>Metal Weight : {design.approx_metal_weight}</span>
-            {/* <span>MRP : {design.approx_price}</span> */}
+            <span>MRP : {design.approx_price}</span>
           </div>
         </div>
       </div>
