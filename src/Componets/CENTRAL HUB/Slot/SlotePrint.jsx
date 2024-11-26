@@ -168,7 +168,11 @@ const SlotePrint = forwardRef(({ slotView }, ref) => {
           </div>
           <div
             className="img_section"
-            style={{ height: "182px", width: "182px", marginLeft: "10px" }}
+            style={{
+              height: "202px",
+              width: "252px",
+              marginLeft: "10px",
+            }}
           >
             <img
               style={{ width: "100%", height: "100%" }}
