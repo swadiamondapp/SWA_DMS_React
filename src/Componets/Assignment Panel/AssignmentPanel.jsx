@@ -994,7 +994,7 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
                                 {!showRadioButtons &&
                                   location.pathname === "/assignmentpanel" && (
                                     <div
-                                    className="Dots_Delete_DesignPool_btns1"
+                                      className="Dots_Delete_DesignPool_btns1"
                                       onClick={() =>
                                         toggleDeleteMoveButtons(itemId)
                                       }
@@ -1060,7 +1060,11 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
                 <h3 className="HeadNewdesign">Folders</h3>
                 <div className="folderCard_parent">
                   {assignmentFolder?.map((item) => (
-                    <div className="folder__card" key={item.id}>
+                    <div
+                      className="folder__card"
+                      key={item.id}
+                      style={{ position: "relative" }}
+                    >
                       <img
                         src={folderimg}
                         alt=""
@@ -1088,11 +1092,26 @@ const AssignmentPanel = ({ sidebarExpanded }) => {
                             style={{ width: "100px" }}
                           />
                         ) : (
-                          <div  className="assingment_folder">
-                          <span style={{ fontSize: "12px" }}>{truncateText(item.name,10)}</span>
-                          <span className="assingment_folder_hover">{item.name}</span>
+                          <div className="assingment_folder">
+                            <span style={{ fontSize: "12px" }}>
+                              {truncateText(item.name, 10)}
+                            </span>
+                            <span className="assingment_folder_hover">
+                              {item.name}
+                            </span>
                           </div>
                         )}
+                      </div>
+                      <div className="folderInnerCount">
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
+                          {item.counts_of_item}
+                        </div>
                       </div>
                     </div>
                   ))}

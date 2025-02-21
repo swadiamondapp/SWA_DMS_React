@@ -6,6 +6,8 @@ import {
   RENDESR_ALL_FINISHED_PROJECTS,
   RENDERS_REUPLOAD,
   LIST_CENTRAL_FOLDERS,
+  APPROVE_CAD_DESIGNS,
+  DOWNLOAD_BY_FILETYPE,
 } from "../Services/EndPoints";
 import { apiService, checkApiStatus } from "../Services/ApiInstants";
 
@@ -20,31 +22,45 @@ export const cadDesignList = async (setData) => {
   }
 };
 
-export const cadDesignListApproved = async (setIsLoading,setData) => {
+export const downloadCadByFileType = async (setIsLoading,setData,fileType,selectedCadFolder) => {
   try {
     setIsLoading(true)
+    const response = await apiService.get(`${DESIGN_LIST_CAD}?filetype=${fileType}&folder_ids=${selectedCadFolder}`);
+    if (checkApiStatus(response)) {
+      setData(response?.data?.results?.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }finally {
+    setIsLoading(false)
+  }
+};
+
+export const cadDesignListApproved = async (setIsLoading, setData) => {
+  try {
+    setIsLoading(true);
     const response = await apiService.get(LIST_CENTRAL_FOLDERS);
     if (checkApiStatus(response)) {
       setData(response?.data?.results?.data);
     }
   } catch (error) {
     console.log(error);
-  }finally{
-    setIsLoading(false)
+  } finally {
+    setIsLoading(false);
   }
 };
 
-export const finishedProjectList = async (setData,setIsLoading) => {
+export const finishedProjectList = async (setData, setIsLoading) => {
   try {
-    setIsLoading(true)
+    setIsLoading(true);
     const response = await apiService.get(FINISHED_PROJECTS);
     if (checkApiStatus(response)) {
       setData(response?.data?.results?.data);
     }
   } catch (error) {
     console.log(error);
-  } finally{
-    setIsLoading(false)
+  } finally {
+    setIsLoading(false);
   }
 };
 
@@ -74,19 +90,16 @@ export const createFinsishedProjects = async (
     setIsLoading(true);
     const response = await apiService.post(CREATE_FINISHED_PROJECTS, data);
     if (checkApiStatus(response)) {
-      finishedProjectList(setFinishedProjectData,setIsLoading);
+      finishedProjectList(setFinishedProjectData, setIsLoading);
       setSuccess(true);
       onClose();
       setTimeout(() => {
         setSuccess(false);
-      }, 1600);   
-  }  else if (
-    response.data
-  ) {
-    setErrors(response.data.name);
-  }
-}
-  catch (error) {
+      }, 1600);
+    } else if (response.data) {
+      setErrors(response.data.name);
+    }
+  } catch (error) {
     console.log(error);
   } finally {
     setIsLoading(false);
@@ -101,7 +114,7 @@ export const rendersAllFinishedProjectList = async (setData) => {
     }
   } catch (error) {
     console.log(error);
-  } 
+  }
 };
 
 export const reuploadFinishedProject = async (
@@ -119,18 +132,42 @@ export const reuploadFinishedProject = async (
     const response = await apiService.patch(`${RENDERS_REUPLOAD}${fId}`, data);
     if (checkApiStatus(response)) {
       setSuccess(true);
-      folderItemList(setIsLoading,setFolderItem,fId)
+      folderItemList(setIsLoading, setFolderItem, fId);
       onClose();
       setTimeout(() => {
         setSuccess(false);
-      }, 1600);   
-  }  else if (
-    response.data
-  ) {
-    setErrors(response.data.name);
+      }, 1600);
+    } else if (response.data) {
+      setErrors(response.data.name);
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setIsLoading(false);
   }
-}
-  catch (error) {
+};
+
+export const cadApprovalByDesinger = async (setIsLoading, status) => {
+  const body = {
+    img1_status: status,
+  };
+  try {
+    setIsLoading(true);
+    const response = await apiService.patch(
+      `${APPROVE_CAD_DESIGNS}/${"SWAD0028"}`,
+      body
+    );
+    if (checkApiStatus(response)) {
+      // setSuccess(true);
+      // folderItemList(setIsLoading, setFolderItem, fId);
+      // onClose();
+      // setTimeout(() => {
+      //   setSuccess(false);
+      // }, 1600);
+    } else if (response.data) {
+      setErrors(response.data.name);
+    }
+  } catch (error) {
     console.log(error);
   } finally {
     setIsLoading(false);

@@ -1,4 +1,5 @@
 .Slote_Container {
+  /* height: 55vh; */
 }
 .tHead {
   border: 1px solid #e7edf4;
@@ -38,7 +39,7 @@
   font-family: "Gilroy medium";
   color: #455173;
   font-weight: 600;
-  text-align: center
+  text-align: center;
 }
 .table-cell {
   font-family: "Gilroy medium";

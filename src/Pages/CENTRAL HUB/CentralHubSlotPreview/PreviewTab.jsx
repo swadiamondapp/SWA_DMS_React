@@ -279,7 +279,7 @@ const PreviewTab = ({ sidebarExpanded, soltData }) => {
                       style={{
                         borderBottom: ".5px solid black",
                         fontSize: "13px",
-                        width: "56%",
+                        width: "38%",
                       }}
                     >
                       Approx Details
