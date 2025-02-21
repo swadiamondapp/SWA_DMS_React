@@ -3,14 +3,14 @@ import "./DesignerAssignmentPanel.css";
 import { useLocation, Link } from "react-router-dom";
 import folderimg from "../../../assets/folder.png";
 import { list_designer_folder, list_designer_folder_new } from "./Api";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
-const DesignerAssignmentPanel = ({sidebarExpanded,
+const DesignerAssignmentPanel = ({
+  sidebarExpanded,
   designerFolder,
-  setDesignerFolder
+  setDesignerFolder,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
-  
 
   useEffect(() => {
     list_designer_folder_new(setIsLoading, setDesignerFolder);
@@ -26,24 +26,46 @@ const DesignerAssignmentPanel = ({sidebarExpanded,
 
   const truncateText = (text, maxLength) => {
     if (text.length > maxLength) {
-      return text.slice(0, maxLength) + '...';
+      return text.slice(0, maxLength) + "...";
     }
     return text;
   };
 
   return (
-    <div className="DesignerAssignmentPanel" style={{paddingLeft:sidebarExpanded? "225px":"130px"}}>
+    <div
+      className="DesignerAssignmentPanel"
+      style={{ paddingLeft: sidebarExpanded ? "225px" : "130px" }}
+    >
       <div className="Parent_Folder_section_Designer">
-        <h3 className="HeadNewdesign">Folders</h3>
+        <h3 className="HeadNewdesign">
+          Folders (&nbsp; {designerFolder.length}&nbsp; )
+        </h3>
+
         <div className="folderCard_parent">
           {designerFolder.map((item, index) => (
-            <div className="folder__card" key={index}  onClick={() => handleNavigate(item.id, item.name)}>
-            {/* <Link to={`/designerassignview/${item.id}?name=${encodeURIComponent(item.name)}`}> */}
-                <img src={folderimg} alt={item.name} />
+            <div
+              className="folder__card"
+              key={index}
+              onClick={() => handleNavigate(item.id, item.name)}
+              style={{ position: "relative" }}
+            >
+              {/* <Link to={`/designerassignview/${item.id}?name=${encodeURIComponent(item.name)}`}> */}
+              <img src={folderimg} alt={item.name} />
               {/* </Link> */}
 
-              <p className="text-truncate" >{truncateText(item.name, 10)}</p>
-              <span className="text-truncate_hover" >{item.name}</span>
+              <p className="text-truncate">{truncateText(item.name, 10)}</p>
+              <span className="text-truncate_hover">{item.name}</span>
+              <div className="folderInnerCount">
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  {item.count_of_items}
+                </div>
+              </div>
             </div>
           ))}
         </div>

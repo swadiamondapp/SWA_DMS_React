@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import folderimg from "../../../assets/folder.png";
+import greenFolder from "../../../assets/greenFolder.png"
 import { finishedProjectFolder } from "../Api";
 import { CircularProgress } from "@mui/material";
 
@@ -76,7 +77,7 @@ const FinishedProducts = ({ sidebarExpanded }) => {
                 className="folder__card"
                 onClick={() => handleFolderClick(item.id)}
               >
-                <img src={folderimg} alt="" />
+                <img src={item.completion_status === "Completed" ? greenFolder :folderimg} alt="" />
                 <p>{item.name}</p>
               </div>
             </div>
