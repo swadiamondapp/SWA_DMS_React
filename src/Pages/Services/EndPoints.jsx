@@ -28,6 +28,7 @@ export const EDIT_CUTOMIZATION = "edit-customizations/";
 export const LIST_ASSIGNED_CAD_DESIGN = "list/myassigned-data/";
 export const CUSTOMIZATION_DETAILS = "customization-detail/";
 export const DESIGN_LIST_CAD = "all-designlistof-cad/";
+export const DOWNLOAD_BY_FILETYPE = "all/folderlist/"
 export const FINISHED_PROJECTS = "list/finished/projects/";
 export const RENDESR_ALL_FINISHED_PROJECTS ="list/folderby/Renders"
 export const FOLDER_ITEM = "innerproject/detail/";
@@ -222,3 +223,5 @@ export const DESIGNER_ASSIAN_SEARCH = "designer/getlist-folder/?foldername=";
 
 export const RENDER_FILTER = "all/folderlist/"
 export const RENDER_FINISHED_FILTER = "list/finished/projects/"
+
+export const APPROVE_CAD_DESIGNS = "designer/action/render-img"
