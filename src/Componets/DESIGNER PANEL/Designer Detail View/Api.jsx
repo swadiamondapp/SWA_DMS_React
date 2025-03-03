@@ -77,7 +77,6 @@ export const assign_to_cad = async (
   setSuccessModalOpen
 ) => {
   try {
- 
     setIsLoading(true);
     const body = {
       folder: assignToCadId,
@@ -138,11 +137,14 @@ export const unAssignCadDesigner = async (
 
 export const list_all_cutomization_paper_design = async (
   setIsLoading,
-  setCustomizationDesign
+  setCustomizationDesign,
+  SearchWithName
 ) => {
   setIsLoading(true);
   try {
-    const response = await apiService.get(LIST_ALL_CUSTOMIZATION_DESIGNS);
+    const response =
+      await apiService.get(`${LIST_ALL_CUSTOMIZATION_DESIGNS}&customization_code=${SearchWithName}
+ `);
     if (response.data.results.status_code === 200) {
       setCustomizationDesign(response.data.results.data);
     }
@@ -152,9 +154,9 @@ export const list_all_cutomization_paper_design = async (
     setIsLoading(false);
   }
 };
-export const listUnAssignedLists = async (setIsLoading, setUnAssignedLists) => {
+export const listUnAssignedLists = async (setIsLoading, setUnAssignedLists,SearchWithName) => {
   try {
-    const response = await apiService.get(LIST_ASSIGN_TO_LIST_ITEMS);
+    const response = await apiService.get(`${LIST_ASSIGN_TO_LIST_ITEMS}?design_code=${SearchWithName}`);
     if (response.data.results.status_code === 200) {
       setUnAssignedLists(response.data.results.data);
     }

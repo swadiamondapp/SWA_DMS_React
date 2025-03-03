@@ -5,13 +5,14 @@ import RendersUploadedFile from "./RendersUploadedFile";
 import { rendersAllFinishedProjectList } from "../../Pages/Renders/Apis";
 
 const RendersUploaded = () => {
+  const [SearchWithName, setSearchWithName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [finishedProjectData, setFinishedProjectData] = useState([]);
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
 
   useEffect(() => {
-    rendersAllFinishedProjectList(setFinishedProjectData);
-  }, []);
+    rendersAllFinishedProjectList(setFinishedProjectData,SearchWithName);
+  }, [SearchWithName]);
 
   console.log("finished",finishedProjectData)
    
@@ -21,7 +22,7 @@ const RendersUploaded = () => {
         sidebarExpanded={sidebarExpanded}
         setSidebarExpanded={setSidebarExpanded}
       />
-      <Header sidebarExpanded={sidebarExpanded} />
+      <Header sidebarExpanded={sidebarExpanded} setSearchWithName={setSearchWithName}/>
       <RendersUploadedFile
         finishedProjectData={finishedProjectData}
         setFinishedProjectData={setFinishedProjectData}

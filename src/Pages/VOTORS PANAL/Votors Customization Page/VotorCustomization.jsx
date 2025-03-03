@@ -5,11 +5,13 @@ import VotorsCustomization from "../../../Componets/VOTORS PANEL/Votor Customiza
 
 const VotorCustomization = () => {
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
+  const [SearchWithName, setSearchWithName] = useState("");
+
   return (
     <div className="ParentVotorPage">
       <Sidebar  sidebarExpanded={sidebarExpanded} setSidebarExpanded={setSidebarExpanded} />
-      <Header sidebarExpanded={sidebarExpanded} />
-      <VotorsCustomization  sidebarExpanded={sidebarExpanded}/>
+      <Header sidebarExpanded={sidebarExpanded} setSearchWithName={setSearchWithName}/>
+      <VotorsCustomization  sidebarExpanded={sidebarExpanded} SearchWithName={SearchWithName} />
     </div>
   );
 };

@@ -92,8 +92,8 @@ const CustomizationTable = (props) => {
   const dropdownRefs = useRef([]);
 
   useEffect(() => {
-    customizaztion_list_wareHouse(setIsLoading, setCustomizationListData);
-  }, []);
+    customizaztion_list_wareHouse(setIsLoading, setCustomizationListData,props.SearchWithName);
+  }, [props.SearchWithName]);
 
   console.log(CustomizationListData, "CustomizationListData");
   const handleEyeClick = (wareHouseId) => {

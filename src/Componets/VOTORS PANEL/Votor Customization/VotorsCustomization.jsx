@@ -14,7 +14,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { choose_outlet_drop_down } from "../../ADMIN PANEL/Api_dropDown";
 import { product_category_basicDetails } from "../../Assignment Panel/Api";
 
-const VotorsCustomization = ({ sidebarExpanded }) => {
+const VotorsCustomization = ({ sidebarExpanded ,SearchWithName}) => {
   const [showEditDelete, setShowEditDelete] = useState(null);
   const [IsModalOpen, setIsModalOpen] = useState(false);
   const [Data, setData] = useState([]);
@@ -32,8 +32,8 @@ const VotorsCustomization = ({ sidebarExpanded }) => {
   const dropdownRef = useRef(null);
 
   useEffect(() => {
-    voters_customization_list(setIsLoading, setData);
-  }, []);
+    voters_customization_list(setIsLoading, setData,SearchWithName);
+  }, [SearchWithName]);
 
   const handleDeleteCustomization = (cuzId) => {
     setDeleteId(cuzId);

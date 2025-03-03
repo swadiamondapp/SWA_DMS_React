@@ -9,7 +9,7 @@ import { CircularProgress } from "@mui/material";
 import greenFolder from "../../assets/greenFolder.png";
 import DownloadImageModal from "../DownloadImageModal/DownloadImageModal";
 
-const CADuploadedFiles = ({ sidebarExpanded }) => {
+const CADuploadedFiles = ({ sidebarExpanded ,SearchWithName}) => {
   const [view, setView] = useState(false);
   const [grid, setGrid] = useState(true);
   const [detail, setDetail] = useState(false);
@@ -28,8 +28,8 @@ const CADuploadedFiles = ({ sidebarExpanded }) => {
   const [designListData, setDesignListData] = useState([]);
 
   useEffect(() => {
-    cadDesignList(setDesignListData);
-  }, []);
+    cadDesignList(setDesignListData,SearchWithName);
+  }, [SearchWithName]);
 
   const toggleRadioButtons = () => {
     setShowRadioButtons(!showRadioButtons);

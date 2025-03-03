@@ -5,14 +5,14 @@ import greenFolder from "../../../assets/greenFolder.png"
 import { finishedProjectFolder } from "../Api";
 import { CircularProgress } from "@mui/material";
 
-const FinishedProducts = ({ sidebarExpanded }) => {
+const FinishedProducts = ({ sidebarExpanded,SearchWithName }) => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [finishedProjects, setFinishedProjects] = useState([]);
 
   useEffect(() => {
-    finishedProjectFolder(setIsLoading, setFinishedProjects);
-  }, []);
+    finishedProjectFolder(setIsLoading, setFinishedProjects,SearchWithName);
+  }, [SearchWithName]);
 
   const handleFolderClick = (id) => {
     navigate(`/folderdetails/${id}`);
