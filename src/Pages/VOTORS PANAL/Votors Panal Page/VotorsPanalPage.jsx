@@ -6,11 +6,13 @@ import "./VotorsPanalPage.css";
 
 const VotorsPanalPage = () => {
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
+  const [SearchWithName, setSearchWithName] = useState("");
+
   return (
     <div className="ParentVotorPage">
       <Sidebar  sidebarExpanded={sidebarExpanded} setSidebarExpanded={setSidebarExpanded}/>
-      <Header sidebarExpanded={sidebarExpanded} />
-      <VotorsPanal sidebarExpanded={sidebarExpanded} />
+      <Header sidebarExpanded={sidebarExpanded} setSearchWithName={setSearchWithName}/>
+      <VotorsPanal sidebarExpanded={sidebarExpanded} SearchWithName={SearchWithName}/>
     </div>
   );
 };

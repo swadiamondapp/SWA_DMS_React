@@ -10,10 +10,12 @@ const WareHousePage = () => {
   const [LastVotedDesign, setLastVotedDesigns] = useState([]);
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
   const [warehouseStatus, setWarehouseStatus] = useState();
+  const [SearchWithName, setSearchWithName] = useState("");
+
 
   useEffect(() => {
-    list_warehouse_design(setIsLoading, setDesignWareHouse, setWarehouseStatus);
-  }, []);
+    list_warehouse_design(setIsLoading, setDesignWareHouse, setWarehouseStatus,SearchWithName);
+  }, [SearchWithName]);
 
   useEffect(() => {
     if (warehouseStatus == 200) {
@@ -29,12 +31,13 @@ const WareHousePage = () => {
         sidebarExpanded={sidebarExpanded}
         setSidebarExpanded={setSidebarExpanded}
       />
-      <Header sidebarExpanded={sidebarExpanded} />
+      <Header sidebarExpanded={sidebarExpanded} setSearchWithName={setSearchWithName}  />
       <WareHouse
         DesignWareHouse={DesignWareHouse}
         LastVotedDesign={LastVotedDesign}
         sidebarExpanded={sidebarExpanded}
         isLoading={isLoading}
+      
       />
     </div>
   );

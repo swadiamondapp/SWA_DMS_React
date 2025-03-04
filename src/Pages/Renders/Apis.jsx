@@ -11,9 +11,9 @@ import {
 } from "../Services/EndPoints";
 import { apiService, checkApiStatus } from "../Services/ApiInstants";
 
-export const cadDesignList = async (setData) => {
+export const cadDesignList = async (setData,SearchWithName) => {
   try {
-    const response = await apiService.get(DESIGN_LIST_CAD);
+    const response = await apiService.get(`${DESIGN_LIST_CAD}?name=${SearchWithName}`);
     if (checkApiStatus(response)) {
       setData(response?.data?.results?.data);
     }
@@ -106,9 +106,9 @@ export const createFinsishedProjects = async (
   }
 };
 
-export const rendersAllFinishedProjectList = async (setData) => {
+export const rendersAllFinishedProjectList = async (setData,SearchWithName) => {
   try {
-    const response = await apiService.get(RENDESR_ALL_FINISHED_PROJECTS);
+    const response = await apiService.get(`${RENDESR_ALL_FINISHED_PROJECTS}?designcode=${SearchWithName}`);
     if (checkApiStatus(response)) {
       setData(response?.data?.results?.data);
     }

@@ -7,7 +7,8 @@ import { cadLogut } from "../../../Componets/CAD/Api";
 
 const FinishedProductsPage = () => {
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
-   
+  const [SearchWithName, setSearchWithName] = useState("");
+
   const {cadTime , setCadTime} = useContext(ContextTime)
 
   const handleCADLogout =()=>{
@@ -17,8 +18,8 @@ const FinishedProductsPage = () => {
   return (
     <div className="ParentVotorPage">
       <Sidebar sidebarExpanded={sidebarExpanded} setSidebarExpanded={setSidebarExpanded}/>
-      <Header sidebarExpanded={sidebarExpanded} handleCADLogout={handleCADLogout}/>
-      <FinishedProducts sidebarExpanded={sidebarExpanded}  />
+      <Header sidebarExpanded={sidebarExpanded} handleCADLogout={handleCADLogout} setSearchWithName={setSearchWithName}/>
+      <FinishedProducts sidebarExpanded={sidebarExpanded} SearchWithName={SearchWithName}  />
     </div>
   );
 };

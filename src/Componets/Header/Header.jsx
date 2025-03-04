@@ -79,6 +79,46 @@ const Header = ({
   const handleSearchWithName = (event) => {
     setSearchWithName(event.target.value, "nameSarch");
   };
+  const getPlaceholderText = (pathname) => {
+    if (pathname === "/rendersuploaded") {
+      return "Search Render Uplaods";
+    }
+    if (pathname === "/caduploaded") {
+      return "Search Cad Uploads";
+    }
+    if (pathname === "/designdashboard") {
+      return "Search ID";
+    }
+    if (pathname === "/designerassign") {
+      return "Search ID";
+    }
+    if (pathname === "/Customizedorder") {
+      return "Search ID";
+    }
+    if (pathname === "/unassigneddesigner") {
+      return "Search ID";
+    }
+    if (pathname === "/CadAssignment") {
+      return "Search ID";
+    }
+    if (pathname === "/FinishedProduct") {
+      return "Search Folder";
+    }
+    if (pathname === "/votorspanal") {
+      return "Search ID";
+    }
+    if (pathname === "/votorscustomization") {
+      return "Search ID";
+    }
+    if (pathname === "/wareHouse") {
+      return "Search ID";
+    }
+    if (pathname === "/customRequestTable") {
+      return "Search ID";
+    }
+    return "Search";
+  };
+  const placeholderText = getPlaceholderText(location.pathname);
   return (
     <div>
       <div
@@ -254,19 +294,19 @@ const Header = ({
               <div className="Right_User_Section">
                 {location.pathname !== "/assignmentpanel" &&
                   location.pathname !== "/masterspage" &&
-                  location.pathname !== "/designdashboard" &&
-                  location.pathname !== "/votorscustomization" &&
+                  // location.pathname !== "/designdashboard" &&
+                  // location.pathname !== "/votorscustomization" &&
                   location.pathname !== "/gallery" &&
-                  location.pathname !== "/CadAssignment" &&
+                  // location.pathname !== "/CadAssignment" &&
                   location.pathname !== "/renderCard" &&
-                  location.pathname !== "/votorspanal" &&
+                  // location.pathname !== "/votorspanal" &&
                   location.pathname !== "/centralDashboard" &&
                   location.pathname !== "/slot" &&
                   location.pathname !== `/designerassignview/${id}` &&
                   location.pathname !== "/designerassign" &&
                   location.pathname !== "/warehouseDetails" &&
                   location.pathname !== `/CadAssignmentcard` &&
-                  location.pathname !== "/customRequestTable" &&
+                  // location.pathname !== "/customRequestTable" &&
                   location.pathname !== "/workdone" &&
                   location.pathname !== "/newscanmodule" &&
                   location.pathname !== "/centralhubtransfer" &&
@@ -283,19 +323,19 @@ const Header = ({
                   location.pathname !== `/assignmentpaneldetailsview/${id}` &&
                   location.pathname !== `/rendersdetailing/${id}` &&
                   location.pathname !== `/finished/${id}` &&
-                  location.pathname !== `/Customizedorder` &&
-                  location.pathname !== `/unassigneddesigner` &&
-                  location.pathname !== `/FinishedProduct` &&
+                  // location.pathname !== `/Customizedorder` &&
+                  // location.pathname !== `/unassigneddesigner` &&
+                  // location.pathname !== `/FinishedProduct` &&
                   location.pathname !== `/folderdetails/${id}` &&
-                  location.pathname !== "/wareHouse" &&
+                  // location.pathname !== "/wareHouse" &&
                   location.pathname !== "/scan" &&
                   location.pathname !== "/designpool" &&
                   location.pathname !== "/statusPage" &&
                   location.pathname !== `/statusPage/${id}` &&
                   location.pathname !== "/centralhubscan" &&
                   location.pathname !== "/otherlogin" &&
-                  location.pathname !== "/caduploaded" &&
-                  location.pathname !== "/rendersuploaded" &&
+                  // location.pathname !== "/caduploaded" &&
+                  // location.pathname !== "/rendersuploaded" &&
                   location.pathname !== `/centralfolderdetails/${id}` &&
                   location.pathname !== `/assignmentview/${assignmentId}` &&
                   location.pathname !== `/assignmentviewsAll/${id}` &&
@@ -304,7 +344,7 @@ const Header = ({
                       <div className="Search_User">
                         <input
                           type="text"
-                          placeholder="Search User"
+                          placeholder={placeholderText}
                           onChange={handleSearchWithName}
                         />
                         <img src={searchimg} alt="" />
@@ -345,7 +385,7 @@ const Header = ({
                     <div className="Search_User">
                       <input
                         type="text"
-                        placeholder="Search ID"
+                        placeholder={placeholderText}
                         value={searchListId}
                         onChange={handleInputChange}
                       />

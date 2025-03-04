@@ -4,13 +4,13 @@ import "./CustomizedOrder.css";
 import { CircularProgress } from "@mui/material";
 import { list_all_cutomization_paper_design } from "../Designer Detail View/Api";
 
-const CustomizedOrder = ({ sidebarExpanded }) => {
+const CustomizedOrder = ({ sidebarExpanded,SearchWithName }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [customizationDesign, setCustomizationDesign] = useState([]);
 
   useEffect(() => {
-    list_all_cutomization_paper_design(setIsLoading, setCustomizationDesign);
-  }, []);
+    list_all_cutomization_paper_design(setIsLoading, setCustomizationDesign,SearchWithName);
+  }, [SearchWithName]);
   const card = [
     {
       product: "SWAD3456",
