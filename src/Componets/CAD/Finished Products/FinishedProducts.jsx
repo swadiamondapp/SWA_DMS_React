@@ -94,6 +94,7 @@ const FinishedProducts = ({ sidebarExpanded, SearchWithName }) => {
                       objectFit: "cover",
                       minHeight: "150px",
                       minHeight: "150px",
+                      borderRadius:"10px"
                     }}
                   />
                 )}
