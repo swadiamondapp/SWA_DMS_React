@@ -15,9 +15,9 @@ import {
   UPLOAD_MULTIPLE_IMAGES,
 } from "../../../Pages/Services/EndPoints";
 
-export const list_uploaded_designs = async (setIsLoading, setData) => {
+export const list_uploaded_designs = async (setIsLoading, setData,SearchWithName) => {
   try {
-    const response = await apiService.get(LIST_UPLOAD_DESIGN);
+    const response = await apiService.get(`${LIST_UPLOAD_DESIGN}?design_code=${SearchWithName}`);
     if (checkApiStatus(response)) {
       setData(response.data.results.data);
     }

@@ -5,11 +5,13 @@ import CustomizedOrder from "../../../Componets/DESIGNER PANEL/Customized Order/
 
 const CustomizedOrderPage = () => {
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
+    const [SearchWithName, setSearchWithName] = useState("");
+  
   return (
     <div className="DesignerDashboardPage">
       <Sidebar  sidebarExpanded={sidebarExpanded} setSidebarExpanded={setSidebarExpanded} />
-      <Header sidebarExpanded={sidebarExpanded} />
-      <CustomizedOrder sidebarExpanded={sidebarExpanded} />
+      <Header sidebarExpanded={sidebarExpanded} setSearchWithName={setSearchWithName}/>
+      <CustomizedOrder sidebarExpanded={sidebarExpanded} SearchWithName={SearchWithName} />
     </div>
   );
 };

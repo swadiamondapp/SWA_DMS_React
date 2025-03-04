@@ -5,11 +5,13 @@ import UnAssignedDesigner from "../../../Componets/DESIGNER PANEL/UnAssignedDesi
 
 const UnAssignedDesignerView = () => {
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
+  const [SearchWithName, setSearchWithName] = useState("");
+
   return (
     <div className="DesignerDashboardPage">
       <Sidebar  sidebarExpanded={sidebarExpanded} setSidebarExpanded={setSidebarExpanded} />
-      <Header sidebarExpanded={sidebarExpanded} />
-      <UnAssignedDesigner sidebarExpanded={sidebarExpanded} />
+      <Header sidebarExpanded={sidebarExpanded} setSearchWithName={setSearchWithName}/>
+      <UnAssignedDesigner sidebarExpanded={sidebarExpanded} SearchWithName={SearchWithName} />
     </div>
   );
 };

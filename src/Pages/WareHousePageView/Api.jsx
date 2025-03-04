@@ -31,11 +31,12 @@ import {
 export const list_warehouse_design = async (
   setIsLoading,
   setDesignWareHouse,
-  setWarehouseStatus
+  setWarehouseStatus,
+  SearchWithName
 ) => {
   try {
     setIsLoading(true)
-    const response = await apiService.get(LIST_WAREHOUSE_DESIGNS);
+    const response = await apiService.get(`${LIST_WAREHOUSE_DESIGNS}?design_code=${SearchWithName}`);
     if (checkApiStatus(response)) {
       setDesignWareHouse(response.data.results.data);
       setWarehouseStatus(response.data.results.status_code);
@@ -60,11 +61,12 @@ export const list_voted_designs = async (setIsLoading, setLastVotedDesigns) => {
 
 export const customizaztion_list_wareHouse = async (
   setIsLoading,
-  setCustomizationListData
+  setCustomizationListData,
+  SearchWithName
 ) => {
   try {
     setIsLoading(true);
-    const response = await apiService.get(VOTERS_CUSTOMIZATION_LIST);
+    const response = await apiService.get(`${VOTERS_CUSTOMIZATION_LIST}?customization_code=${SearchWithName}`);
     if (checkApiStatus(response)) {
       setCustomizationListData(response.data.results.data);
     }
