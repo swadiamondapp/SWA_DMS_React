@@ -15,9 +15,9 @@ import {
   UPLOAD_MULTIPLE_IMAGES,
 } from "../../../Pages/Services/EndPoints";
 
-export const list_uploaded_designs = async (setIsLoading, setData,SearchWithName) => {
+export const list_uploaded_designs = async (setIsLoading, setData) => {
   try {
-    const response = await apiService.get(`${LIST_UPLOAD_DESIGN}?design_code=${SearchWithName}`);
+    const response = await apiService.get(`${LIST_UPLOAD_DESIGN}`);
     if (checkApiStatus(response)) {
       setData(response.data.results.data);
     }
@@ -29,12 +29,13 @@ export const list_uploaded_designs = async (setIsLoading, setData,SearchWithName
 export const uplodedDesignPagination = async (
   setIsLoading,
   setData,
-  currentPage
+  currentPage,
+  SearchWithName
 ) => {
   setIsLoading(true);
   try {
     const response = await apiService.get(
-      `${LIST_UPLOAD_DESIGN}?page=${currentPage}`
+      `${LIST_UPLOAD_DESIGN}?page=${currentPage}&design_code=${SearchWithName}`
     );
     if (checkApiStatus(response)) {
       setData(response.data.results.data);

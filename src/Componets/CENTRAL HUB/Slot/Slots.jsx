@@ -20,7 +20,7 @@ import { LuPrinter } from "react-icons/lu";
 import SlotePrint from "./SlotePrint";
 import { useNavigate } from "react-router-dom";
 
-const Slots = ({ sidebarExpanded }) => {
+const Slots = ({ sidebarExpanded,SearchWithName }) => {
 
   const navigate = useNavigate()
   const [showEditDelete, setShowEditDelete] = useState(null);
@@ -101,8 +101,8 @@ const Slots = ({ sidebarExpanded }) => {
     slot_view_by_id(Id, setSloteView);
   };
   useEffect(() => {
-    list_slot_central_hub(setIsLoading, setData);
-  }, []);
+    list_slot_central_hub(setIsLoading, setData,SearchWithName);
+  }, [SearchWithName]);
 
   const handlePrintButton = (Id) => {
     setPrintSlotModalOpen(true);
@@ -285,7 +285,7 @@ const Slots = ({ sidebarExpanded }) => {
         open={isModalOpenslot}
         onClose={() => setIsModalOpenslot(false)}
         generatSloteNum={generatSloteNum}
-        slotListUpdate={() => list_slot_central_hub(setIsLoading, setData)}
+        slotListUpdate={() => list_slot_central_hub(setIsLoading, setData,SearchWithName)}
       />
       <SlotView
         open={isModalOpenslotview}

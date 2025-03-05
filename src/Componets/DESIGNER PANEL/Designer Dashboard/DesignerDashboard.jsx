@@ -103,12 +103,12 @@ const DesignerDashboard = ({ sidebarExpanded,SearchWithName }) => {
   // }, [currentPage]);
 
   const fetchDesigns = useCallback(async () => {
-    await uplodedDesignPagination(setIsLoading, setCurrentItems, currentPage);
-  }, [currentPage]);
+    await uplodedDesignPagination(setIsLoading, setCurrentItems, currentPage,SearchWithName);
+  }, [currentPage,SearchWithName]);
 
   useEffect(() => {
-    list_uploaded_designs(setIsLoading, setUploadedDesigns,SearchWithName);
-  }, [SearchWithName]);
+    list_uploaded_designs(setIsLoading, setUploadedDesigns);
+  }, []);
 
   useEffect(() => {
     fetchDesigns();

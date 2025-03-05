@@ -71,10 +71,7 @@ const FinishedProducts = ({ sidebarExpanded, SearchWithName }) => {
         {finishedProjects &&
           finishedProjects.map((item) => (
             <div className="folderCard_parent">
-              <div
-                className="folder__card"
-                onClick={() => handleFolderClick(item.id)}
-              >
+              <div className="folder__card">
                 {/* <img
                   src={
                     item.completion_status === "Completed"
@@ -93,9 +90,9 @@ const FinishedProducts = ({ sidebarExpanded, SearchWithName }) => {
                       maxHeight: "150px",
                       objectFit: "cover",
                       minHeight: "150px",
-                      minHeight: "150px",
-                      borderRadius:"10px"
+                      borderRadius: "10px",
                     }}
+                    onClick={() => handleFolderClick(item.id)}
                   />
                 )}
                 <p>{item.name}</p>
