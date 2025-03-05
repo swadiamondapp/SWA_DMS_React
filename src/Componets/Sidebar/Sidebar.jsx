@@ -176,7 +176,8 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
             </div>
           </Link>
           <Link to="/caduploaded">
-            <div className="Links">
+          <div className={`Links ${activeLink === "/caduploaded" ? "activeLinks" : ""}`}>
+
             <div className="horizontal_line_sidebar"></div>
             <div className="lin_container"></div>
               <img src={cad} alt="" style={{width:"19px",height:"19px"}} />
@@ -184,7 +185,8 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
             </div>
           </Link>
           <Link to="/rendersuploaded">
-            <div className="Links">
+          <div className={`Links ${activeLink === "/rendersuploaded" ? "activeLinks" : ""}`}>
+
             <div className="horizontal_line_sidebar"></div>
             <div className="lin_container"></div>
               <img src={render} alt="" style={{width:"19px",height:"19px"}} />
@@ -192,7 +194,8 @@ const Sidebar = ({sidebarExpanded,setSidebarExpanded}) => {
             </div>
           </Link>
           <Link to="/statusPage">
-            <div className="Links">
+          <div className={`Links ${activeLink === "/statusPage" ? "activeLinks" : ""}`}>
+
             <div className="horizontal_line_sidebar"></div>
             <div className="lin_container"></div>
               <img src={track} alt="" style={{width:"22px",height:"22px"}} />

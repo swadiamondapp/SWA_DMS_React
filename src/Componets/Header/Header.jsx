@@ -301,7 +301,7 @@ const Header = ({
                   location.pathname !== "/renderCard" &&
                   // location.pathname !== "/votorspanal" &&
                   location.pathname !== "/centralDashboard" &&
-                  location.pathname !== "/slot" &&
+                  // location.pathname !== "/slot" &&
                   location.pathname !== `/designerassignview/${id}` &&
                   location.pathname !== "/designerassign" &&
                   location.pathname !== "/warehouseDetails" &&

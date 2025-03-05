@@ -1,9 +1,11 @@
-import React, {  useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "./RendersHome.css";
 import view from "../../../assets/view.png";
 import sort from "../../../assets/sort.png";
 import filter from "../../../assets/filter.png";
 import folderimg from "../../../assets/folder.png";
+import greenFolder from "../../../assets/greenFolder.png";
+
 import { Link, useNavigate } from "react-router-dom";
 import DesignBtn from "../../ADMIN PANEL/Design Pool/DesignBtn";
 import { CircularProgress } from "@mui/material";
@@ -11,20 +13,23 @@ import { MdViewModule } from "react-icons/md";
 import DesignerFilterModal from "../../DesignerFilterModal/DesignerFilterModal";
 import { cadDesignListApproved } from "../../../Pages/Renders/Apis";
 
-const RendersHome = ({ designListData, sidebarExpanded ,setDesignListData }) => {
+const RendersHome = ({
+  designListData,
+  sidebarExpanded,
+  setDesignListData,
+}) => {
   const [openFilterModal, setOpenFilterModal] = useState(false);
   const [view, setView] = useState(false);
   const [grid, setGrid] = useState(true);
   const [detail, setDetail] = useState(false);
   const [tiles, setTiles] = useState(false);
-  const [startTime, setStartTime] = useState('');
-  const [endTime, setEndTime] = useState('');
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
   const [dd, setDd] = useState();
   const [hide, sethide] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [designCode, setDesignCode] = useState("");
   const [Time, setTime] = useState(null);
-
 
   const navigate = useNavigate();
 
@@ -32,7 +37,7 @@ const RendersHome = ({ designListData, sidebarExpanded ,setDesignListData }) => 
     navigate(`/rendersdetailing/${item.id}`, {
       state: {
         folderName: item.name,
-        page :"renders"
+        page: "renders",
       },
     });
   };
@@ -62,9 +67,8 @@ const RendersHome = ({ designListData, sidebarExpanded ,setDesignListData }) => 
   };
 
   const fetchDesigns = useCallback(async () => {
-    await cadDesignListApproved(setIsLoading,setDesignListData);;
+    await cadDesignListApproved(setIsLoading, setDesignListData);
   }, []);
-
 
   return (
     <div
@@ -130,7 +134,7 @@ const RendersHome = ({ designListData, sidebarExpanded ,setDesignListData }) => 
           <span>No Data Found</span>
         </div>
       )}
-      { !isLoading && designListData.length === 0 && (
+      {!isLoading && designListData.length === 0 && (
         <div
           style={{
             display: "flex",
@@ -154,7 +158,14 @@ const RendersHome = ({ designListData, sidebarExpanded ,setDesignListData }) => 
                   key={item.id}
                   onClick={() => handleFolderClick(item)}
                 >
-                  <img src={folderimg} alt="" />
+                  <img
+                    src={
+                      item.completion_status === "Completed"
+                        ? greenFolder
+                        : folderimg
+                    }
+                    alt=""
+                  />
                   <p className="folder_name">{item.name}</p>
                 </div>
               </div>
