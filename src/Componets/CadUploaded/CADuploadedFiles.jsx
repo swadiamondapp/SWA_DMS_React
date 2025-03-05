@@ -196,7 +196,11 @@ const CADuploadedFiles = ({ sidebarExpanded ,SearchWithName}) => {
               <div className="folderCard_parent" style={{ cursor: "pointer" }}>
                 <div className="folder__card" key={item.id}>
                   <img
-                    src={folderimg}
+                     src={
+                      item.completion_status === "Completed"
+                        ? greenFolder
+                        : folderimg
+                    }
                     alt=""
                     onClick={() => handleFolderClick(item)}
                   />

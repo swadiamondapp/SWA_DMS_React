@@ -149,7 +149,6 @@ const CentralDashboard = ({
   //   </div>
   // );
 
-
   return (
     <div
       className="parentCentral"
@@ -157,7 +156,7 @@ const CentralDashboard = ({
     >
       <div className="CadAssignmentCard">
         <div className="folderCard_parent">
-          { Folders.length === 0 && isLoading ? (
+          {Folders.length === 0 && isLoading ? (
             <div
               style={{
                 display: "flex",
@@ -178,32 +177,33 @@ const CentralDashboard = ({
             </div>
           ) : (
             <>
-              { Folders.filter((x) => x.name.includes(searchListId)).length > 0 ? (
-                Folders.filter((x) => x.name.includes(searchListId)).map(
-                  (item) => (
-                    <div
-                      className="folder__card"
-                      key={item.id}
-                      onClick={() => handleFolderNaviate(item)}
-                    >
-                      <img src={folderimg} alt="" />
-                      <p>{item.name}</p>
-                    </div>
+              {Folders.filter((x) => x.name.includes(searchListId)).length > 0
+                ? Folders.filter((x) => x.name.includes(searchListId)).map(
+                    (item) => (
+                      <div className="folder__card" key={item.id}>
+                        <img
+                          src={folderimg}
+                          alt=""
+                          onClick={() => handleFolderNaviate(item)}
+                        />
+                        <p>{item.name}</p>
+                      </div>
+                    )
                   )
-                )
-              ) :  !isLoading && Folders.length === 0 &&  (
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: "100%",
-                    height: "300px",
-                  }}
-                >
-                  <span style={{ marginTop: "100px" }}>No Data Found</span>
-                </div>
-              )}
+                : !isLoading &&
+                  Folders.length === 0 && (
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        width: "100%",
+                        height: "300px",
+                      }}
+                    >
+                      <span style={{ marginTop: "100px" }}>No Data Found</span>
+                    </div>
+                  )}
             </>
           )}
         </div>
