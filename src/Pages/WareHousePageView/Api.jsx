@@ -35,16 +35,18 @@ export const list_warehouse_design = async (
   SearchWithName
 ) => {
   try {
-    setIsLoading(true)
-    const response = await apiService.get(`${LIST_WAREHOUSE_DESIGNS}?design_code=${SearchWithName}`);
+    setIsLoading(true);
+    const response = await apiService.get(
+      `${LIST_WAREHOUSE_DESIGNS}?design_code=${SearchWithName}`
+    );
     if (checkApiStatus(response)) {
       setDesignWareHouse(response.data.results.data);
       setWarehouseStatus(response.data.results.status_code);
     }
   } catch (error) {
     console.log(error);
-  }finally{
-    setIsLoading(false)
+  } finally {
+    setIsLoading(false);
   }
 };
 
@@ -66,7 +68,9 @@ export const customizaztion_list_wareHouse = async (
 ) => {
   try {
     setIsLoading(true);
-    const response = await apiService.get(`${VOTERS_CUSTOMIZATION_LIST}?customization_code=${SearchWithName}`);
+    const response = await apiService.get(
+      `${VOTERS_CUSTOMIZATION_LIST}?customization_code=${SearchWithName}`
+    );
     if (checkApiStatus(response)) {
       setCustomizationListData(response.data.results.data);
     }
@@ -396,6 +400,10 @@ export const create_customizaion_warehouse = async (
     // Append form data fields to FormData
     body.append("salesman", formData.sallerName);
     body.append("mobile_number", formData.mobileNumber);
+    body.append("customername", formData.customerName);
+    body.append("customer_mobile", formData.customerMobile);
+    body.append("recived_advance", formData.recivedAdvance);
+    body.append("customer_email", formData.customerEmail);
     body.append("outlet", formData.chooseOutlet);
     body.append("product_type", formData.productType);
     body.append("previously_made", formData.modelPrevioslyMade);
@@ -429,7 +437,7 @@ export const create_customizaion_warehouse = async (
     if (response.data.results.status_code === 200) {
       // Update states upon successful response
       // await customization_details(setIsLoading, setCustomization, userId);
-      voters_customization_list(setIsLoading, votersSetData);
+      voters_customization_list(setIsLoading, votersSetData, "");
       onClose();
       setSuccessMessage("Customization Created Successfully");
       setSuccessModalOpen(true);
@@ -688,7 +696,7 @@ export const workDone_table_product_update = async (
   setSuccessMessage,
   refreshList
 ) => {
-  debugger
+  debugger;
   try {
     // setIsLoading(true);
     const response = await apiService.post(
@@ -704,8 +712,7 @@ export const workDone_table_product_update = async (
         setSuccessModalOpen(false);
       }, 1700);
       setOpenLeftbar(false);
-      refreshList()
-      
+      refreshList();
     }
   } catch (error) {
     console.error("Update Failed", error);
@@ -719,12 +726,11 @@ export const customizationApprove = async (
   setSuccessMessage
 ) => {
   try {
-
     const response = await apiService.patch(
       `${WORKDONE_CUSTOMIZATION_APPROVE}${approveId}/`
     );
     if (checkApiStatus(response)) {
-      customizaztion_list_wareHouse(setIsLoading, setCustomizationListData);
+      customizaztion_list_wareHouse(setIsLoading, setCustomizationListData, "");
       setSuccessModalOpen(true);
       setSuccessMessage("Approved Successfully");
       setTimeout(() => {

@@ -27,6 +27,16 @@ import {
   choose_outlet_drop_down,
   product_type_drop_down,
 } from "../ADMIN PANEL/Api_dropDown";
+import { PlusOutlined } from "@ant-design/icons";
+import { Image, Upload, Checkbox } from "antd";
+
+const getBase64 = (file) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+  });
 
 const CustomiseRequest = ({
   open,
@@ -55,6 +65,17 @@ const CustomiseRequest = ({
   );
   const [isModalOpenCreateCutomize, setIsCreateCustomizeModalOpen] =
     useState(false);
+
+  const dataToDisplay = CustomizationWareHouseData || customization;
+  const dataById = wareHouseuserId || userId;
+
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewImage, setPreviewImage] = useState("");
+
+  const imagePreview = (image) => {
+    setPreviewImage(image);
+    setPreviewOpen(true);
+  };
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -106,9 +127,6 @@ const CustomiseRequest = ({
       });
     }
   };
-
-  const dataToDisplay = CustomizationWareHouseData || customization;
-  const dataById = wareHouseuserId || userId;
 
   const style = {
     position: "absolute",
@@ -175,7 +193,7 @@ const CustomiseRequest = ({
 
   return (
     <div>
-      <div className="">
+      <div className="content-modal">
         <div className="modalContainer" style={{ position: "relative" }}>
           <Modal
             open={open}
@@ -183,17 +201,17 @@ const CustomiseRequest = ({
             onClose={onClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
-            style={{ position: "absolute", right: "0px"  }}
+            style={{ position: "absolute", right: "0px" }}
             className="modal"
           >
             <Box sx={style}>
               <Typography id="modal-modal-description" sx={{ mx: 1, pb: 1 }}>
                 <div>
-                  <div >
+                  <div>
                     <div
                       style={{
                         display: "flex",
-                        justifyContent: "space-between"
+                        justifyContent: "space-between",
                       }}
                     >
                       <span className="headerTitle">
@@ -228,6 +246,26 @@ const CustomiseRequest = ({
                     </div>
                     <div className="lineCR"></div>
                     <div style={{ marginBottom: "5px" }}>
+                      <span className="basic-Details-title">Customer Details</span>
+                    </div>
+                    <div className="subTitle">
+                      <div className="ProductInformation">
+                        <span>Customer man</span>
+                        <span>{dataToDisplay.salesman}</span>
+                      </div>
+                      <div className="ProductInformation">
+                        <span>Phone Number</span>
+                        <span>{dataToDisplay.mobile_number}</span>
+                      </div>
+                      {/* <div className="ProductInformation">
+                        <span>Outlet</span>
+                        <span>
+                          {findOutLetNameByID(Number(dataToDisplay.outlet))}
+                        </span>
+                      </div> */}
+                    </div>
+                    <div className="lineCR"></div>
+                    <div style={{ marginBottom: "5px" }}>
                       <span className="basic-Details-title">
                         Product Information
                       </span>
@@ -255,26 +293,70 @@ const CustomiseRequest = ({
                               dataToDisplay.previously_made.slice(1)}
                         </span>
                       </div>
+                      <div className="ProductInformation">
+                        <span>Metal Detail</span>
+                        <span></span>
+                      </div>
+                      <div className="ProductInformation">
+                        <span>Metal Size</span>
+                        <span></span>
+                      </div>
                     </div>
                     <div>
                       <div style={{ margin: "5px 0px" }}>
                         <span className="imgTitleCR">Images</span>
                       </div>
                       <div className="ringImages">
-                        <div className="imageContainer">
-                          <img className="" src={dataToDisplay.image} alt="" />
+                        <div
+                          className="imageContainer"
+                          style={{ position: "relative" }}
+                        >
+                          <img
+                            src={dataToDisplay.image}
+                            alt=""
+                            onClick={() => imagePreview(dataToDisplay.image)}
+                          />
+                          {previewImage && (
+                            <div className="content-modal2">
+                              <Image
+                                preview={{
+                                  visible: previewOpen,
+                                  onVisibleChange: (visible) =>
+                                    setPreviewOpen(visible),
+                                }}
+                                src={previewImage}
+                                style={{ display: "none" }}
+                              />
+                            </div>
+                          )}
                         </div>
                         <div className="imageContainer">
-                          <img src={dataToDisplay.image2} alt="" />
+                          <img
+                            src={dataToDisplay.image2}
+                            onClick={() => imagePreview(dataToDisplay.image2)}
+                            alt=""
+                          />
                         </div>
                         <div className="imageContainer">
-                          <img src={dataToDisplay.image3} alt="" />
+                          <img
+                            src={dataToDisplay.image3}
+                            onClick={() => imagePreview(dataToDisplay.image3)}
+                            alt=""
+                          />
                         </div>
                         <div className="imageContainer">
-                          <img src={dataToDisplay.image4} alt="" />
+                          <img
+                            src={dataToDisplay.image4}
+                            onClick={() => imagePreview(dataToDisplay.image4)}
+                            alt=""
+                          />
                         </div>
                         <div className="imageContainer">
-                          <img src={dataToDisplay.image5} alt="" />
+                          <img
+                            src={dataToDisplay.image5}
+                            onClick={() => imagePreview(dataToDisplay.image5)}
+                            alt=""
+                          />
                         </div>
                       </div>
                     </div>
@@ -337,6 +419,10 @@ const CustomiseRequest = ({
                         </span>
                       </div>
                       <div className="ProductInformation">
+                        <span>Actual Price</span>
+                        <span> {Math.floor(dataToDisplay.actual_price)}</span>
+                      </div>
+                      <div className="ProductInformation">
                         <span>SWA Product SKU</span>
                         <span>{dataToDisplay.sku_of_swa_product}</span>
                       </div>
@@ -382,8 +468,7 @@ const CustomiseRequest = ({
 
                       {dataToDisplay.status !== "Rejected" && (
                         <>
-                          {dataToDisplay.status === "Updated" ||
-                          dataToDisplay.status === "Confirmed" ? (
+                          {dataToDisplay.status === "Confirmed" ? (
                             <span>Already Updated</span>
                           ) : (
                             <button

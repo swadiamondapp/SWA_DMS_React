@@ -102,6 +102,10 @@ const CreateCustomisation = ({
   const formRef = useRef(null);
   const sallerNameRef = useRef(null);
   const mobileNumberRef = useRef(null);
+  const customerNameRef = useRef(null);
+  const customerMobileRef = useRef(null);
+  const recivedAdvanceRef = useRef(null);
+  const customerEmailRef = useRef(null);
   const chooseOutletRef = useRef(null);
   const productTypeRef = useRef(null);
   const modelPrevioslyMadeRef = useRef(null);
@@ -142,6 +146,11 @@ const CreateCustomisation = ({
     Budget: "",
     swaProductSKU: "",
     notes: "",
+
+    customerName: "",
+    customerMobile: "",
+    recivedAdvance: "",
+    customerEmail: "",
   });
 
   useEffect(() => {
@@ -183,6 +192,11 @@ const CreateCustomisation = ({
         image: dataToDisplaytomodal.image || "",
         image2: dataToDisplaytomodal.image2 || "",
         image3: dataToDisplaytomodal.image3 || "",
+        // <....ToDo....>
+        // customerName: dataToDisplaytomodal.image3 || "",
+        // customerMobile: dataToDisplaytomodal.image3 || "",
+        // recivedAdvance: dataToDisplaytomodal.image3 || "",
+        // customerEmail: dataToDisplaytomodal.image3 || "",
       });
     }
   }, [dataToDisplaytomodal]);
@@ -205,6 +219,31 @@ const CreateCustomisation = ({
         "string.min": `Mobile number must be exactly 10 digits`,
         "string.max": `Mobile number must be exactly 10 digits`,
       }),
+    customerName: Joi.string().required().messages({
+      "string.empty": `cannot be empty`,
+      "string.pattern.base": "cannot contain numbers.",
+    }),
+    customerMobile: Joi.string()
+      .pattern(/^\d{10}$/)
+      .min(10)
+      .max(10)
+      .required()
+      .messages({
+        "string.empty": `Mobile number required`,
+        "string.min": `Mobile number must be exactly 10 digits`,
+        "string.max": `Mobile number must be exactly 10 digits`,
+      }),
+    customerEmail: Joi.string()
+      .email({ tlds: { allow: false } }) // Disallow specific TLDs (optional)
+      .required()
+      .messages({
+        "string.empty": "Email is required",
+        "string.email": "Please provide a valid email address",
+      }),
+    recivedAdvance: Joi.string().required().messages({
+      "string.empty": `cannot be empty`,
+      "string.pattern.base": "cannot contain numbers.",
+    }),
     chooseOutlet: Joi.any()
       .required()
       .custom((value, helpers) => {
@@ -255,15 +294,15 @@ const CreateCustomisation = ({
     weight: Joi.string().required().messages({
       "string.empty": `cannot be  empty`,
     }),
-    size: Joi.string().required().messages({
-      "string.empty": `cannot be  empty`,
-    }),
-    diamondWeight: Joi.string().required().messages({
-      "string.empty": `cannot be  empty `,
-    }),
-    numberOfDiamonds: Joi.required().messages({
-      "string.empty": `cannot be  empty`,
-    }),
+    // size: Joi.string().required().messages({
+    //   "string.empty": `cannot be  empty`,
+    // }),
+    // diamondWeight: Joi.string().required().messages({
+    //   "string.empty": `cannot be  empty `,
+    // }),
+    // numberOfDiamonds: Joi.required().messages({
+    //   "string.empty": `cannot be  empty`,
+    // }),
     diamondClarity: Joi.string().required().messages({
       "string.empty": `cannot be  empty`,
     }),
@@ -273,33 +312,33 @@ const CreateCustomisation = ({
     Budget: Joi.string().required().messages({
       "string.empty": `cannot be  empty`,
     }),
-    swaProductSKU: Joi.string().required().messages({
-      "string.empty": `cannot be  empty`,
-    }),
-    notes: Joi.string().required().messages({
-      "string.empty": `cannot be empty`,
-    }),
-    width: Joi.string().required().messages({
-      "string.empty": `cannot be  empty`,
-    }),
-    height: Joi.string().required().messages({
-      "string.empty": `cannot be  empty`,
-    }),
-    diamond_type: Joi.any()
-      .required()
-      .custom((value, helpers) => {
-        if (value === "" || value === null || value === undefined) {
-          return helpers.error("any.empty");
-        }
-        return value;
-      })
-      .messages({
-        "any.required": "cannot be empty",
-        "any.empty": "cannot be empty",
-      }),
-    length_of_item: Joi.string().required().messages({
-      "string.empty": `cannot be  empty`,
-    }),
+    // swaProductSKU: Joi.string().required().messages({
+    //   "string.empty": `cannot be  empty`,
+    // }),
+    // notes: Joi.string().required().messages({
+    //   "string.empty": `cannot be empty`,
+    // }),
+    // width: Joi.string().required().messages({
+    //   "string.empty": `cannot be  empty`,
+    // }),
+    // height: Joi.string().required().messages({
+    //   "string.empty": `cannot be  empty`,
+    // }),
+    // diamond_type: Joi.any()
+    //   .required()
+    //   .custom((value, helpers) => {
+    //     if (value === "" || value === null || value === undefined) {
+    //       return helpers.error("any.empty");
+    //     }
+    //     return value;
+    //   })
+    //   .messages({
+    //     "any.required": "cannot be empty",
+    //     "any.empty": "cannot be empty",
+    //   }),
+    // length_of_item: Joi.string().required().messages({
+    //   "string.empty": `cannot be  empty`,
+    // }),
   });
   console.log(ProudctCategory, "diamonType");
   console.log(errors, "errors");
@@ -488,6 +527,30 @@ const CreateCustomisation = ({
         break;
       case "mobileNumber":
         mobileNumberRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+        break;
+      case "customerName":
+        customerNameRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+        break;
+      case "customerMobile":
+        customerMobileRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+        break;
+      case "recivedAdvance":
+        recivedAdvanceRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+        break;
+      case "customerEmail":
+        customerEmailRef.current?.scrollIntoView({
           behavior: "smooth",
           block: "center",
         });
@@ -683,7 +746,16 @@ const CreateCustomisation = ({
                     <div className="FormContainer">
                       <div className="parant_relative">
                         <label htmlFor="" className="label_text">
-                          Sales man
+                          Sales man{" "}
+                          <span
+                            style={{
+                              color: "red",
+                              fontSize: "20px",
+                              textAlign: "center",
+                            }}
+                          >
+                            *
+                          </span>
                         </label>
                         <input
                           type="text"
@@ -706,6 +778,15 @@ const CreateCustomisation = ({
                           ref={mobileNumberRef}
                         >
                           Mobile Number
+                          <span
+                            style={{
+                              color: "red",
+                              fontSize: "20px",
+                              textAlign: "center",
+                            }}
+                          >
+                            *
+                          </span>
                         </label>
                         <input
                           type="number"
@@ -727,9 +808,166 @@ const CreateCustomisation = ({
                           <p className="error_input">{errors.mobileNumber}</p>
                         )}
                       </div>
+                      <div className="parant_relative">
+                        <label
+                          htmlFor=""
+                          className="label_text"
+                          ref={customerNameRef}
+                        >
+                          Customer Name
+                          <span
+                            style={{
+                              color: "red",
+                              fontSize: "20px",
+                              textAlign: "center",
+                            }}
+                          >
+                            *
+                          </span>
+                        </label>
+                        <input
+                          type="text"
+                          className="input_feild"
+                          name="customerName"
+                          value={formData.customerName}
+                          onChange={handleInput}
+                          onFocus={(e) =>
+                            e.target.addEventListener(
+                              "wheel",
+                              function (e) {
+                                e.preventDefault();
+                              },
+                              { passive: false }
+                            )
+                          }
+                        />
+                        {errors.customerName && (
+                          <p className="error_input">{errors.customerName}</p>
+                        )}
+                      </div>
+                      <div className="parant_relative">
+                        <label
+                          htmlFor=""
+                          className="label_text"
+                          ref={customerMobileRef}
+                        >
+                          Customer Mobile Number
+                          <span
+                            style={{
+                              color: "red",
+                              fontSize: "20px",
+                              textAlign: "center",
+                            }}
+                          >
+                            *
+                          </span>
+                        </label>
+                        <input
+                          type="number"
+                          className="input_feild"
+                          name="customerMobile"
+                          value={formData.customerMobile}
+                          onChange={handleInput}
+                          onFocus={(e) =>
+                            e.target.addEventListener(
+                              "wheel",
+                              function (e) {
+                                e.preventDefault();
+                              },
+                              { passive: false }
+                            )
+                          }
+                        />
+                        {errors.customerMobile && (
+                          <p className="error_input">{errors.customerMobile}</p>
+                        )}
+                      </div>
+                      <div className="parant_relative">
+                        <label
+                          htmlFor=""
+                          className="label_text"
+                          ref={recivedAdvanceRef}
+                        >
+                          Recived Advance
+                          <span
+                            style={{
+                              color: "red",
+                              fontSize: "20px",
+                              textAlign: "center",
+                            }}
+                          >
+                            *
+                          </span>
+                        </label>
+                        <input
+                          type="number"
+                          className="input_feild"
+                          name="recivedAdvance"
+                          value={formData.recivedAdvance}
+                          onChange={handleInput}
+                          onFocus={(e) =>
+                            e.target.addEventListener(
+                              "wheel",
+                              function (e) {
+                                e.preventDefault();
+                              },
+                              { passive: false }
+                            )
+                          }
+                        />
+                        {errors.recivedAdvance && (
+                          <p className="error_input">{errors.recivedAdvance}</p>
+                        )}
+                      </div>
+                      <div className="parant_relative">
+                        <label
+                          htmlFor=""
+                          className="label_text"
+                          ref={customerEmailRef}
+                        >
+                          Customer Email
+                          <span
+                            style={{
+                              color: "red",
+                              fontSize: "20px",
+                              textAlign: "center",
+                            }}
+                          >
+                            *
+                          </span>
+                        </label>
+                        <input
+                          type="text"
+                          className="input_feild"
+                          name="customerEmail"
+                          value={formData.customerEmail}
+                          onChange={handleInput}
+                          onFocus={(e) =>
+                            e.target.addEventListener(
+                              "wheel",
+                              function (e) {
+                                e.preventDefault();
+                              },
+                              { passive: false }
+                            )
+                          }
+                        />
+                        {errors.customerEmail && (
+                          <p className="error_input">{errors.customerEmail}</p>
+                        )}
+                      </div>
                       <div className="parant_relative" ref={chooseOutletRef}>
                         <label htmlFor="" className="label_text">
                           Choose Outlet
+                          <span
+                            style={{
+                              color: "red",
+                              fontSize: "20px",
+                              textAlign: "center",
+                            }}
+                          >
+                            *
+                          </span>
                         </label>
                         <Select
                           showSearch
@@ -763,6 +1001,15 @@ const CreateCustomisation = ({
                       >
                         <label htmlFor="" className="label_text">
                           Product Type
+                          <span
+                            style={{
+                              color: "red",
+                              fontSize: "20px",
+                              textAlign: "center",
+                            }}
+                          >
+                            *
+                          </span>
                         </label>
                         <Select
                           showSearch
@@ -799,6 +1046,15 @@ const CreateCustomisation = ({
                       >
                         <label htmlFor="" className="label_text">
                           Model previously made
+                          <span
+                            style={{
+                              color: "red",
+                              fontSize: "20px",
+                              textAlign: "center",
+                            }}
+                          >
+                            *
+                          </span>
                         </label>
                         <Select
                           showSearch
@@ -846,7 +1102,16 @@ const CreateCustomisation = ({
                         ref={prevMadeSKURef}
                       >
                         <label htmlFor="" className="label_text">
-                          If previously made please enter the SKU
+                          If previously made please enter the SKU{" "}
+                          <span
+                            style={{
+                              color: "red",
+                              fontSize: "20px",
+                              textAlign: "center",
+                            }}
+                          >
+                            *
+                          </span>
                         </label>
                         <input
                           type="number"
@@ -971,63 +1236,77 @@ const CreateCustomisation = ({
                         </div>
                       </div> */}
                       {name === "editModalOpen" ? (
-                        <div className="uploadImageContainer">
-                          <div className="rightw">
-                            <div
-                              id="fileUpload"
-                              // className="uploadButton"
-                              // onClick={() =>
-                              //   document.getElementById("fileUploadImage").click()
-                              // }
-                            >
-                              <div className="dashed_imageContainer">
-                                {images.map((image, index) => (
-                                  <div
-                                    key={index}
-                                    className="dashedImage"
-                                    style={{
-                                      width: "50px",
-                                      height: "50px",
-                                      position: "relative",
-                                    }}
-                                  >
-                                    {(images[index] || serverImage[index]) && (
-                                      <img
-                                        src={
-                                          images[index]
-                                            ? URL.createObjectURL(images[index])
-                                            : serverImage[index]
-                                        }
-                                        alt=""
-                                        style={{
-                                          height: "50px",
-                                          width: "50px",
-                                        }}
-                                      />
-                                    )}
+                        <>
+                          <div className="uploadImageContainer">
+                            <div className="rightw">
+                              <div
+                                id="fileUpload"
+                                // className="uploadButton"
+                                // onClick={() =>
+                                //   document.getElementById("fileUploadImage").click()
+                                // }
+                              >
+                                <div className="dashed_imageContainer">
+                                  {images.map((image, index) => (
                                     <div
+                                      key={index}
+                                      className="dashedImage"
                                       style={{
-                                        position: "absolute",
+                                        width: "50px",
+                                        height: "50px",
+                                        position: "relative",
                                       }}
                                     >
-                                      <label>
-                                        <img src={plusICon} alt="" />
-                                        <input
-                                          type="file"
-                                          accept="image/png, image/jpeg"
-                                          style={{ display: "none" }}
-                                          onChange={(e) =>
-                                            handleImageUpload(index, e)
+                                      {(images[index] ||
+                                        serverImage[index]) && (
+                                        <img
+                                          src={
+                                            images[index]
+                                              ? URL.createObjectURL(
+                                                  images[index]
+                                                )
+                                              : serverImage[index]
                                           }
+                                          alt=""
+                                          style={{
+                                            height: "50px",
+                                            width: "50px",
+                                          }}
                                         />
-                                      </label>
+                                      )}
+                                      <div
+                                        style={{
+                                          position: "absolute",
+                                        }}
+                                      >
+                                        <label>
+                                          <img src={plusICon} alt="" />
+                                          <input
+                                            type="file"
+                                            accept="image/png, image/jpeg"
+                                            style={{ display: "none" }}
+                                            onChange={(e) =>
+                                              handleImageUpload(index, e)
+                                            }
+                                          />
+                                        </label>
+                                      </div>
                                     </div>
-                                  </div>
-                                ))}
+                                  ))}
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
+                          <span
+                            style={{
+                              color: "red",
+                              fontSize: "20px",
+                              textAlign: "center",
+                            }}
+                          >
+                            *
+                          </span>
+                        </>
                       ) : (
                         <div
                           className="uploadImageContainer"
@@ -1089,6 +1368,15 @@ const CreateCustomisation = ({
                           ref={metalTypeRef}
                         >
                           Metal Type
+                          <span
+                            style={{
+                              color: "red",
+                              fontSize: "20px",
+                              textAlign: "center",
+                            }}
+                          >
+                            *
+                          </span>
                         </label>
                         <Select
                           showSearch
@@ -1166,7 +1454,7 @@ const CreateCustomisation = ({
                           <span className="error_select">{errors.size}</span>
                         )}
                       </div>
-                      <div className="parant_relative">
+                      {/* <div className="parant_relative">
                         <label htmlFor="" className="label_text">
                           width
                         </label>
@@ -1190,8 +1478,8 @@ const CreateCustomisation = ({
                         {errors.width && (
                           <span className="error_select">{errors.width}</span>
                         )}
-                      </div>
-                      <div className="parant_relative">
+                      </div> */}
+                      {/* <div className="parant_relative">
                         <label htmlFor="" className="label_text">
                           length
                         </label>
@@ -1209,8 +1497,8 @@ const CreateCustomisation = ({
                             {errors.length_of_item}
                           </span>
                         )}
-                      </div>
-                      <div className="parant_relative">
+                      </div> */}
+                      {/* <div className="parant_relative">
                         <label htmlFor="" className="label_text">
                           height
                         </label>
@@ -1226,8 +1514,8 @@ const CreateCustomisation = ({
                         {errors.height && (
                           <span className="error_select">{errors.height}</span>
                         )}
-                      </div>
-                      <div className="parant_relative">
+                      </div> */}
+                      {/* <div className="parant_relative">
                         <label
                           htmlFor=""
                           className="label_text"
@@ -1260,7 +1548,7 @@ const CreateCustomisation = ({
                             {errors.diamond_type}
                           </span>
                         )}
-                      </div>
+                      </div> */}
                       <div className="parant_relative">
                         <label htmlFor="" className="label_text">
                           Diamond weight ( ct )
@@ -1272,7 +1560,15 @@ const CreateCustomisation = ({
                           ref={diamondWeightRef}
                           value={formData.diamondWeight}
                           onChange={handleInput}
-                          onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
+                          onFocus={(e) =>
+                            e.target.addEventListener(
+                              "wheel",
+                              function (e) {
+                                e.preventDefault();
+                              },
+                              { passive: false }
+                            )
+                          }
                         />
                         {errors.diamondWeight && (
                           <span className="error_input">
@@ -1291,7 +1587,15 @@ const CreateCustomisation = ({
                           ref={numberOfDiamondsRef}
                           value={formData.numberOfDiamonds}
                           onChange={handleInput}
-                          onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
+                          onFocus={(e) =>
+                            e.target.addEventListener(
+                              "wheel",
+                              function (e) {
+                                e.preventDefault();
+                              },
+                              { passive: false }
+                            )
+                          }
                         />
                         {errors.numberOfDiamonds && (
                           <span className="error_input">
@@ -1306,6 +1610,15 @@ const CreateCustomisation = ({
                           ref={diamondClarityRef}
                         >
                           Diamond Clarity
+                          <span
+                            style={{
+                              color: "red",
+                              fontSize: "20px",
+                              textAlign: "center",
+                            }}
+                          >
+                            *
+                          </span>
                         </label>
                         <Select
                           showSearch
@@ -1336,6 +1649,15 @@ const CreateCustomisation = ({
                           ref={diamondColorRef}
                         >
                           Diamond Colour
+                          <span
+                            style={{
+                              color: "red",
+                              fontSize: "20px",
+                              textAlign: "center",
+                            }}
+                          >
+                            *
+                          </span>
                         </label>
                         <Select
                           showSearch
@@ -1362,6 +1684,15 @@ const CreateCustomisation = ({
                       <div className="parant_relative">
                         <label htmlFor="" className="label_text">
                           Budget
+                          <span
+                            style={{
+                              color: "red",
+                              fontSize: "20px",
+                              textAlign: "center",
+                            }}
+                          >
+                            *
+                          </span>
                         </label>
                         <input
                           type="number"
@@ -1370,13 +1701,21 @@ const CreateCustomisation = ({
                           ref={budgetRef}
                           value={formData.Budget}
                           onChange={handleInput}
-                          onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
+                          onFocus={(e) =>
+                            e.target.addEventListener(
+                              "wheel",
+                              function (e) {
+                                e.preventDefault();
+                              },
+                              { passive: false }
+                            )
+                          }
                         />
                         {errors.Budget && (
                           <span className="error_input">{errors.Budget}</span>
                         )}
                       </div>
-                      <div className="parant_relative">
+                      {/* <div className="parant_relative">
                         <label htmlFor="" className="label_text">
                           Swa Product ( SKU)
                         </label>
@@ -1393,7 +1732,7 @@ const CreateCustomisation = ({
                             {errors.swaProductSKU}
                           </span>
                         )}
-                      </div>
+                      </div> */}
                       <div className="parant_relative">
                         <label htmlFor="">Notes</label>
                         <textarea

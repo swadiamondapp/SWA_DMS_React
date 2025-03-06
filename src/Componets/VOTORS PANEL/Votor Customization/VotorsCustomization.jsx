@@ -179,7 +179,7 @@ const VotorsCustomization = ({ sidebarExpanded ,SearchWithName}) => {
                           <button
                             className={
                               item.customer_response === "Confirmed"
-                                ? "requested_btn"
+                                ? "updated_btn"
                                 : "votersConfirm_btn"
                             }
                             onClick={() => handleConfirmButton(item.id)}
@@ -193,7 +193,7 @@ const VotorsCustomization = ({ sidebarExpanded ,SearchWithName}) => {
                       <td style={{ position: "relative" }}>
                         <div className="status_votors">
                           {/* <button className="requested_btn">Requested</button> */}
-                          <button className="updated_btn">{item.status}</button>
+                          <button className={item.status === "Updated" ? "requested_btn" : item.status === "Requested" ? "Requested_btn" : "updated_btn"}>{item.status}</button>
                           {/* <button className="votersConfirm_btn">{item.status}</button> */}
 
                           <IoEye
