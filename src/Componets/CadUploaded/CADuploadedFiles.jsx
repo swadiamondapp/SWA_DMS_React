@@ -141,6 +141,8 @@ const CADuploadedFiles = ({ sidebarExpanded ,SearchWithName}) => {
         </button>
         {selectedCadFolder.length > 0 && (
           <>
+           {location.pathname !== "/caduploaded" && (
+            <>
             <button style={{backgroundColor:"rgba(18, 110, 114, 1)",color:"#ffff"}} onClick={() => ApproveCadDesign("Approve")}>
               {" "}
               Approve
@@ -149,6 +151,8 @@ const CADuploadedFiles = ({ sidebarExpanded ,SearchWithName}) => {
               {" "}
               Reject
             </button>
+            </>
+            )}
             <button style={{backgroundColor:"rgba(18, 110, 114, 1)",color:"#ffff"}} onClick={() => setIsModalOpen(true)}>
               {" "}
             download
