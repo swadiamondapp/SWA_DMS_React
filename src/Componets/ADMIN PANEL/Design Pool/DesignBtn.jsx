@@ -13,6 +13,7 @@ import { useParams } from "react-router-dom";
 import AssignmentModal from "../../AssignmentModal/AssignmentModal";
 import { View } from "@react-three/drei";
 import DesignerFilterModal from "../../DesignerFilterModal/DesignerFilterModal";
+import { message, Upload, Select } from "antd";
 // import DesignerFilterModal from "../../DesignerFilterModal/DesignerFilterModal";
 
 const DesignBtn = ({
@@ -75,7 +76,8 @@ const DesignBtn = ({
   showRadioButtons,
   unvotedData,
   selectedDesigns,
-  setUnvotedData
+  setUnvotedData,
+  setStatus
 }) => {
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -97,6 +99,10 @@ const DesignBtn = ({
   const { id } = useParams();
 
   console.log("selectedAssignmentbtnnnnnn", setSelectedAssignment);
+
+  const onSearch = (value) => {
+    console.log("search:", value);
+  };
 
   const handleSort = () => {
     setSort(!sort);
@@ -127,29 +133,33 @@ const DesignBtn = ({
     setDetail(false);
     setTiles(true);
   };
-  
-  console.log(selectedDesigns,"selectedDesigns")
+
+  console.log(selectedDesigns, "selectedDesigns");
 
   const handleDownloadMultiple = (imageUrls, selectedDesigns) => {
     if (imageUrls.length !== selectedDesigns.length) {
-      console.error("The length of imageUrls and selectedDesigns must be the same.");
+      console.error(
+        "The length of imageUrls and selectedDesigns must be the same."
+      );
       return;
     }
-  
+
     imageUrls.forEach((imageUrl, index) => {
       const designId = selectedDesigns[index];
       if (!designId) {
         console.error(`Design ID not found for index ${index}`);
         return;
       }
-  
+
       fetch(imageUrl, {
         method: "GET",
         mode: "cors",
       })
         .then((response) => {
           if (!response.ok) {
-            throw new Error(`Network response was not ok: ${response.statusText}`);
+            throw new Error(
+              `Network response was not ok: ${response.statusText}`
+            );
           }
           return response.blob();
         })
@@ -167,17 +177,16 @@ const DesignBtn = ({
         })
         .catch((error) => console.error("Error downloading the image:", error));
     });
-  
+
     // Clear the state or UI elements as needed
     setSelectedImages([]);
     setAllSelected([]);
     setSelectedDesigns([]);
-  
+
     setSelectButtonLabel("Select");
     setShowRadioButtons(false);
     setShowDownloadOptions(false);
   };
-  
 
   const handleAllDownload = () => {
     selectAllDesigns();
@@ -190,6 +199,10 @@ const DesignBtn = ({
     setOpenFilterModal(true);
   };
 
+  const handleFilterStatus = (value) => {
+    setStatus && setStatus(value);
+  };
+
   return (
     <div
       style={
@@ -198,7 +211,14 @@ const DesignBtn = ({
     >
       <div
         className="DesignPool_btns"
-        style={{ position: "relative", display: "flex", justifyContent: "end" }}
+        style={{
+          position: "relative",
+          display: "flex",
+          justifyContent:
+            location.pathname === "/votorscustomization"
+              ? "space-between"
+              : "end",
+        }}
       >
         {location.pathname === "/unassigneddesigner" && (
           <h4 style={{ marginRight: "59%" }}>Not Started Assignments</h4>
@@ -239,7 +259,11 @@ const DesignBtn = ({
               {showDownloadOptions && (
                 <div className="Download_Sub">
                   <p onClick={handleAllDownload}>All</p>
-                  <p onClick={() => handleDownloadMultiple(selectedImages,selectedDesigns)}>
+                  <p
+                    onClick={() =>
+                      handleDownloadMultiple(selectedImages, selectedDesigns)
+                    }
+                  >
                     Selected
                   </p>
                 </div>
@@ -501,12 +525,29 @@ const DesignBtn = ({
         )}
 
         {location.pathname === "/votorscustomization" && (
-          <button
-            className="D_downlodBtn"
-            onClick={() => setIsCreateCustomizeModalOpen(true)}
-          >
-            Create Customization
-          </button>
+          <>
+            <Select
+              showSearch
+              placeholder="Filter with status"
+              onSearch={onSearch}
+              style={{ width: "150px", borderRadius: "34px", height: "40px" }}
+              options={[
+                { value: "", label: "All" },
+                { value: "true", label: "Confirmed" },
+                { value: "rejected", label: "Rejected" },
+                { value: "updated", label: "Updated" },
+                { value: "requested", label: "Requested" },
+              ]}
+              onChange={handleFilterStatus}
+            />
+
+            <button
+              className="D_downlodBtn"
+              onClick={() => setIsCreateCustomizeModalOpen(true)}
+            >
+              Create Customization
+            </button>
+          </>
         )}
         {/* </div> */}
       </div>

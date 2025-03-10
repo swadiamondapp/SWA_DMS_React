@@ -16,10 +16,10 @@ import {
 } from "../../Pages/Services/EndPoints";
 import { ALL_DESIGNS, VOTED_DESIGN_LIST } from "../../Pages/Services/EndPoints";
 
-export const voters_customization_list = async (setIsLoading, setData,SearchWithName) => {
+export const voters_customization_list = async (setIsLoading, setData,SearchWithName,orderstatus) => {
   try {
     setIsLoading(true);
-    const response = await apiService.get(`${VOTERS_CUSTOMIZATION_LIST}?customization_code=${SearchWithName}`);
+    const response = await apiService.get(`${VOTERS_CUSTOMIZATION_LIST}?customization_code=${SearchWithName && SearchWithName}&orderstatus=${orderstatus && orderstatus}`);
     if (checkApiStatus(response)) {
       setData(response.data.results.data);
     }
@@ -296,7 +296,7 @@ export const confirVotersStatus = async (setIsLoading, userId, setData) => {
       body
     );
     if (checkApiStatus(response)) {
-      voters_customization_list(setIsLoading, setData);
+      voters_customization_list(setIsLoading, setData,"");
     }
   } catch (error) {
     console.log(error);
