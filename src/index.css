@@ -160,3 +160,7 @@ background: transparent !important;
   position: absolute !important;
   z-index: 9999999999 !important;
 }
+:where(.css-1c0na6j).ant-image-preview-root .ant-image-preview-wrap{
+  position: absolute !important;
+  z-index: 9999999999 !important;
+}
