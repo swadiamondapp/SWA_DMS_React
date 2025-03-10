@@ -160,7 +160,14 @@ background: transparent !important;
   position: absolute !important;
   z-index: 9999999999 !important;
 }
-:where(.css-1c0na6j).ant-image-preview-root .ant-image-preview-wrap{
+
+
+/* 2nd...//// */
+
+:where(.css-1c0na6j).ant-image-preview-operations-wrapper{
   position: absolute !important;
   z-index: 9999999999 !important;
+}
+:where(.css-1c0na6j)[class^="ant-image"] [class^="ant-image"], :where(.css-1c0na6j)[class*=" ant-image"] [class^="ant-image"], :where(.css-1c0na6j)[class^="ant-image"] [class*=" ant-image"], :where(.css-1c0na6j)[class*=" ant-image"] [class*=" ant-image"] {
+  z-index: 999999999 !important;
 }
