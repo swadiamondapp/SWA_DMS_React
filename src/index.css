@@ -150,3 +150,17 @@ background: transparent !important;
   border: none !important;
   background-color: transparent !important;
 }
+
+ :where(.css-dev-only-do-not-override-1c0na6j).ant-image-preview-root .ant-image-preview-wrap{
+  z-index: 9999999999 !important;
+  background-color: rgba(0, 0, 0, 0.414);
+}
+
+ :where(.css-dev-only-do-not-override-1c0na6j).ant-image-preview-operations-wrapper {
+  position: absolute !important;
+  z-index: 9999999999 !important;
+}
+:where(.css-1c0na6j).ant-image-preview-root .ant-image-preview-wrap{
+  position: absolute !important;
+  z-index: 9999999999 !important;
+}

@@ -37,6 +37,16 @@
   font-weight: 500;
   cursor: pointer;
 }
+.Requested_btn {
+  color: rgb(255, 183, 0);
+  border: 0.5px solid rgb(255, 183, 0);
+  background: rgba(255, 183, 0, 0.095);
+  padding: 8px 15px;
+  font-family: "Inter";
+  border-radius: 32px;
+  font-weight: 500;
+  cursor: pointer;
+}
 .votersConfirm_btn {
   color: #fff;
   border: 0.5px solid #23a06496;

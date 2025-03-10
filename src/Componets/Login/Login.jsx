@@ -5,6 +5,7 @@ import { useLocation, Link, useNavigate } from "react-router-dom";
 import Joi from "joi";
 import { userLogin } from "./Api";
 import EyeIcons from "../../assets/eyeIcon.png";
+import { CircularProgress } from "@mui/material";
 
 const Login = () => {
   const usertype = localStorage.getItem("Usertype");
@@ -154,7 +155,18 @@ const Login = () => {
                   </Link>
                 </div>
                 <div className="Submit_btn">
-                  <button>Login</button>
+                  <button>
+                    {isLoading ? (
+                      <CircularProgress
+                        size={15}
+                        sx={{
+                          color: "white",
+                        }}
+                      />
+                    ) : (
+                      "Login"
+                    )}
+                  </button>
                 </div>
               </div>
             </form>
