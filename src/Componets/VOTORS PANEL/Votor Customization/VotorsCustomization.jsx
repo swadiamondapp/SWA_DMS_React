@@ -14,7 +14,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { choose_outlet_drop_down } from "../../ADMIN PANEL/Api_dropDown";
 import { product_category_basicDetails } from "../../Assignment Panel/Api";
 
-const VotorsCustomization = ({ sidebarExpanded ,SearchWithName}) => {
+const VotorsCustomization = ({ sidebarExpanded, SearchWithName }) => {
   const [showEditDelete, setShowEditDelete] = useState(null);
   const [IsModalOpen, setIsModalOpen] = useState(false);
   const [Data, setData] = useState([]);
@@ -30,10 +30,11 @@ const VotorsCustomization = ({ sidebarExpanded ,SearchWithName}) => {
   const [DeleteID, setDeleteId] = useState("");
   const [refresh, setRefresh] = useState(false);
   const dropdownRef = useRef(null);
+  const [status, setStatus] = useState("");
 
   useEffect(() => {
-    voters_customization_list(setIsLoading, setData,SearchWithName);
-  }, [SearchWithName]);
+    voters_customization_list(setIsLoading, setData, SearchWithName, status);
+  }, [SearchWithName, status]);
 
   const handleDeleteCustomization = (cuzId) => {
     setDeleteId(cuzId);
@@ -102,7 +103,7 @@ const VotorsCustomization = ({ sidebarExpanded ,SearchWithName}) => {
   return (
     <>
       <div className="votors_btns">
-        <DesignBtn votersSetData={setData} />
+        <DesignBtn votersSetData={setData} setStatus={setStatus} />
       </div>
       <div
         className="ParentVotors"
@@ -115,7 +116,7 @@ const VotorsCustomization = ({ sidebarExpanded ,SearchWithName}) => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                height:"90vh"
+                height: "90vh",
               }}
             >
               <CircularProgress
@@ -163,12 +164,7 @@ const VotorsCustomization = ({ sidebarExpanded ,SearchWithName}) => {
                           {item.mobile_number}
                         </div>
                       </td>
-                      <td>
-                        {" "}
-                        {productCategoryByID(
-                          Number(item.product_type)
-                        )}
-                      </td>
+                      <td> {productCategoryByID(Number(item.product_type))}</td>
                       {/* <td>
                     <div className="active_sendmail">
                       <button className="sendmail_btn">Send Mail</button>
@@ -193,7 +189,17 @@ const VotorsCustomization = ({ sidebarExpanded ,SearchWithName}) => {
                       <td style={{ position: "relative" }}>
                         <div className="status_votors">
                           {/* <button className="requested_btn">Requested</button> */}
-                          <button className={item.status === "Updated" ? "requested_btn" : item.status === "Requested" ? "Requested_btn" : "updated_btn"}>{item.status}</button>
+                          <button
+                            className={
+                              item.status === "Updated"
+                                ? "requested_btn"
+                                : item.status === "Requested"
+                                ? "Requested_btn"
+                                : "updated_btn"
+                            }
+                          >
+                            {item.status}
+                          </button>
                           {/* <button className="votersConfirm_btn">{item.status}</button> */}
 
                           <IoEye
@@ -241,6 +247,7 @@ const VotorsCustomization = ({ sidebarExpanded ,SearchWithName}) => {
             </div>
           )}
         </div>
+          {!isLoading && Data.length === 0 && <div style={{width:"100%",height:"50vh",display:"flex",alignItems:"center",justifyContent:"center"}}> No Data found</div>}
         <CustomiseRequest
           open={IsModalOpen}
           onClose={() => setIsModalOpen(false)}

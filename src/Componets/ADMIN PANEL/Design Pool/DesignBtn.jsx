@@ -77,6 +77,7 @@ const DesignBtn = ({
   unvotedData,
   selectedDesigns,
   setUnvotedData,
+  setStatus
 }) => {
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -198,6 +199,10 @@ const DesignBtn = ({
     setOpenFilterModal(true);
   };
 
+  const handleFilterStatus = (value) => {
+    setStatus && setStatus(value);
+  };
+
   return (
     <div
       style={
@@ -206,7 +211,14 @@ const DesignBtn = ({
     >
       <div
         className="DesignPool_btns"
-        style={{ position: "relative", display: "flex", justifyContent:location.pathname === "/votorscustomization" ? "space-between" : "end" }}
+        style={{
+          position: "relative",
+          display: "flex",
+          justifyContent:
+            location.pathname === "/votorscustomization"
+              ? "space-between"
+              : "end",
+        }}
       >
         {location.pathname === "/unassigneddesigner" && (
           <h4 style={{ marginRight: "59%" }}>Not Started Assignments</h4>
@@ -518,17 +530,15 @@ const DesignBtn = ({
               showSearch
               placeholder="Filter with status"
               onSearch={onSearch}
-              style={{ width: "150px",borderRadius:"34px",height:"40px" }}
-              // options={ProudctCategory.map((item) => ({
-              //   value: item.id,
-              //   label: item.name,
-              // }))}
+              style={{ width: "150px", borderRadius: "34px", height: "40px" }}
               options={[
                 { value: "", label: "All" },
-                { value: "1", label: "confirmed" },
-                { value: "2", label: "rejected" }
-              ]}              
-              // value={formData.productType || undefined} // Ensure it's either undefined or a valid option value
+                { value: "true", label: "Confirmed" },
+                { value: "rejected", label: "Rejected" },
+                { value: "updated", label: "Updated" },
+                { value: "requested", label: "Requested" },
+              ]}
+              onChange={handleFilterStatus}
             />
 
             <button

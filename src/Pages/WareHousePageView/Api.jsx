@@ -400,9 +400,9 @@ export const create_customizaion_warehouse = async (
     // Append form data fields to FormData
     body.append("salesman", formData.sallerName);
     body.append("mobile_number", formData.mobileNumber);
-    body.append("customername", formData.customerName);
-    body.append("customer_mobile", formData.customerMobile);
-    body.append("recived_advance", formData.recivedAdvance);
+    body.append("customer_name", formData.customerName);
+    body.append("customer_number", formData.customerMobile);
+    body.append("received_advance", formData.receivedAdvance);
     body.append("customer_email", formData.customerEmail);
     body.append("outlet", formData.chooseOutlet);
     body.append("product_type", formData.productType);

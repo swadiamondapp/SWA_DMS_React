@@ -219,7 +219,7 @@ const CustomiseRequest = ({
                       </span>
                       <img
                         onClick={onClose}
-                        style={{ width: "16px", height: "18px" }}
+                        style={{ width: "16px", height: "18px",cursor:"pointer" }}
                         src={close}
                         alt=""
                       />
@@ -251,11 +251,19 @@ const CustomiseRequest = ({
                     <div className="subTitle">
                       <div className="ProductInformation">
                         <span>Customer man</span>
-                        <span>{dataToDisplay.salesman}</span>
+                        <span>{dataToDisplay.customer_name}</span>
                       </div>
                       <div className="ProductInformation">
                         <span>Phone Number</span>
-                        <span>{dataToDisplay.mobile_number}</span>
+                        <span>{dataToDisplay.customer_number}</span>
+                      </div>
+                      <div className="ProductInformation">
+                        <span>Email</span>
+                        <span>{dataToDisplay.customer_email}</span>
+                      </div>
+                      <div className="ProductInformation">
+                        <span>Recived Advance</span>
+                        <span>{dataToDisplay.received_advance}</span>
                       </div>
                       {/* <div className="ProductInformation">
                         <span>Outlet</span>
@@ -294,12 +302,8 @@ const CustomiseRequest = ({
                         </span>
                       </div>
                       <div className="ProductInformation">
-                        <span>Metal Detail</span>
-                        <span></span>
-                      </div>
-                      <div className="ProductInformation">
                         <span>Metal Size</span>
-                        <span></span>
+                        <span>{dataToDisplay.size}</span>
                       </div>
                     </div>
                     <div>
@@ -375,10 +379,10 @@ const CustomiseRequest = ({
                         <span>Weight</span>
                         <span>{dataToDisplay.weight} GM</span>
                       </div>
-                      <div className="ProductInformation">
+                      {/* <div className="ProductInformation">
                         <span>Size</span>
                         <span>{dataToDisplay.size}</span>
-                      </div>
+                      </div> */}
                     </div>
                     <div className="lineCR"></div>
                     <div style={{ marginBottom: "5px" }}>
@@ -412,10 +416,10 @@ const CustomiseRequest = ({
                       <div className="ProductInformation">
                         <span>Budget</span>
                         <span>
-                          {" "}
-                          {dataToDisplay.actual_price === 0
+                          {dataToDisplay.budget}
+                          {/* {dataToDisplay.actual_price === 0
                             ? Math.floor(dataToDisplay.budget)
-                            : Math.floor(dataToDisplay.actual_price)}
+                            : Math.floor(dataToDisplay.actual_price)} */}
                         </span>
                       </div>
                       <div className="ProductInformation">
@@ -424,7 +428,7 @@ const CustomiseRequest = ({
                       </div>
                       <div className="ProductInformation">
                         <span>SWA Product SKU</span>
-                        <span>{dataToDisplay.sku_of_swa_product}</span>
+                        <span>{dataToDisplay.sku}</span>
                       </div>
                       <div className="ProductInformation">
                         <span>Note</span>

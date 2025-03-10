@@ -104,7 +104,7 @@ const CreateCustomisation = ({
   const mobileNumberRef = useRef(null);
   const customerNameRef = useRef(null);
   const customerMobileRef = useRef(null);
-  const recivedAdvanceRef = useRef(null);
+  const receivedAdvanceRef = useRef(null);
   const customerEmailRef = useRef(null);
   const chooseOutletRef = useRef(null);
   const productTypeRef = useRef(null);
@@ -149,7 +149,7 @@ const CreateCustomisation = ({
 
     customerName: "",
     customerMobile: "",
-    recivedAdvance: "",
+    receivedAdvance: "",
     customerEmail: "",
   });
 
@@ -174,7 +174,7 @@ const CreateCustomisation = ({
         chooseOutlet: dataToDisplaytomodal.outlet || "",
         productType: dataToDisplaytomodal.product_type || "",
         modelPrevioslyMade: dataToDisplaytomodal.previously_made || "",
-        prevMadeSKU: dataToDisplaytomodal.sku_of_swa_product || "",
+        prevMadeSKU: dataToDisplaytomodal.sku || "",
         metalType: dataToDisplaytomodal.metal_type || "",
         weight: dataToDisplaytomodal.weight || "",
         size: dataToDisplaytomodal.size || "",
@@ -193,10 +193,10 @@ const CreateCustomisation = ({
         image2: dataToDisplaytomodal.image2 || "",
         image3: dataToDisplaytomodal.image3 || "",
         // <....ToDo....>
-        // customerName: dataToDisplaytomodal.image3 || "",
-        // customerMobile: dataToDisplaytomodal.image3 || "",
-        // recivedAdvance: dataToDisplaytomodal.image3 || "",
-        // customerEmail: dataToDisplaytomodal.image3 || "",
+        customerName: dataToDisplaytomodal.customer_name || "",
+        customerMobile: dataToDisplaytomodal.customer_number || "",
+        receivedAdvance: dataToDisplaytomodal.received_advance || "",
+        customerEmail: dataToDisplaytomodal.customer_email || "",
       });
     }
   }, [dataToDisplaytomodal]);
@@ -240,7 +240,7 @@ const CreateCustomisation = ({
         "string.empty": "Email is required",
         "string.email": "Please provide a valid email address",
       }),
-    recivedAdvance: Joi.string().required().messages({
+    receivedAdvance: Joi.string().required().messages({
       "string.empty": `cannot be empty`,
       "string.pattern.base": "cannot contain numbers.",
     }),
@@ -543,8 +543,8 @@ const CreateCustomisation = ({
           block: "center",
         });
         break;
-      case "recivedAdvance":
-        recivedAdvanceRef.current?.scrollIntoView({
+      case "receivedAdvance":
+        receivedAdvanceRef.current?.scrollIntoView({
           behavior: "smooth",
           block: "center",
         });
@@ -886,7 +886,7 @@ const CreateCustomisation = ({
                         <label
                           htmlFor=""
                           className="label_text"
-                          ref={recivedAdvanceRef}
+                          ref={receivedAdvanceRef}
                         >
                           Recived Advance
                           <span
@@ -902,8 +902,8 @@ const CreateCustomisation = ({
                         <input
                           type="number"
                           className="input_feild"
-                          name="recivedAdvance"
-                          value={formData.recivedAdvance}
+                          name="receivedAdvance"
+                          value={formData.receivedAdvance}
                           onChange={handleInput}
                           onFocus={(e) =>
                             e.target.addEventListener(
@@ -915,8 +915,10 @@ const CreateCustomisation = ({
                             )
                           }
                         />
-                        {errors.recivedAdvance && (
-                          <p className="error_input">{errors.recivedAdvance}</p>
+                        {errors.receivedAdvance && (
+                          <p className="error_input">
+                            {errors.receivedAdvance}
+                          </p>
                         )}
                       </div>
                       <div className="parant_relative">
