@@ -219,7 +219,11 @@ const CustomiseRequest = ({
                       </span>
                       <img
                         onClick={onClose}
-                        style={{ width: "16px", height: "18px",cursor:"pointer" }}
+                        style={{
+                          width: "16px",
+                          height: "18px",
+                          cursor: "pointer",
+                        }}
                         src={close}
                         alt=""
                       />
@@ -246,7 +250,9 @@ const CustomiseRequest = ({
                     </div>
                     <div className="lineCR"></div>
                     <div style={{ marginBottom: "5px" }}>
-                      <span className="basic-Details-title">Customer Details</span>
+                      <span className="basic-Details-title">
+                        Customer Details
+                      </span>
                     </div>
                     <div className="subTitle">
                       <div className="ProductInformation">
@@ -259,7 +265,12 @@ const CustomiseRequest = ({
                       </div>
                       <div className="ProductInformation">
                         <span>Email</span>
-                        <span>{dataToDisplay.customer_email}</span>
+                        <span>
+                          {dataToDisplay.customer_email === "undefined" ||
+                          "null"
+                            ? "N/A"
+                            : dataToDisplay.customer_email}
+                        </span>
                       </div>
                       <div className="ProductInformation">
                         <span>Recived Advance</span>
@@ -303,7 +314,14 @@ const CustomiseRequest = ({
                       </div>
                       <div className="ProductInformation">
                         <span>Metal Size</span>
-                        <span>{dataToDisplay.size}</span>
+                        {/* <span>{dataToDisplay.size}</span> */}
+                        <span>
+                          {dataToDisplay.size === undefined ||
+                          dataToDisplay.size === null ||
+                          dataToDisplay.size === ""
+                            ? "N/A"
+                            : dataToDisplay.size}
+                        </span>
                       </div>
                     </div>
                     <div>
@@ -377,7 +395,13 @@ const CustomiseRequest = ({
                       </div>
                       <div className="ProductInformation">
                         <span>Weight</span>
-                        <span>{dataToDisplay.weight} GM</span>
+                        {/* <span>{dataToDisplay.weight} GM</spa  n> */}
+                        <span>
+                          {dataToDisplay.weight === undefined ||
+                          dataToDisplay.weight === null
+                            ? "N/A"
+                            : `${dataToDisplay.weight} GM`}
+                        </span>
                       </div>
                       {/* <div className="ProductInformation">
                         <span>Size</span>
@@ -393,11 +417,22 @@ const CustomiseRequest = ({
                     <div className="DiamondType">
                       <div className="ProductInformation">
                         <span>Diamond Weight</span>
-                        <span>{dataToDisplay.diamond_weight} CT</span>
+                        <span>
+                          {dataToDisplay.diamond_weight === undefined ||
+                          dataToDisplay.diamond_weight === null
+                            ? "N/A"
+                            : `${dataToDisplay.diamond_weight} CT`}
+                        </span>
                       </div>
                       <div className="ProductInformation">
                         <span>Number of Diamonds</span>
-                        <span>{dataToDisplay.no_of_diamond}</span>
+                        {/* <span>{dataToDisplay.no_of_diamond}</span> */}
+                        <span>
+                          {dataToDisplay.no_of_diamond === undefined ||
+                          dataToDisplay.no_of_diamond === null
+                            ? "N/A"
+                            : `${dataToDisplay.no_of_diamond} `}
+                        </span>
                       </div>
                       <div className="ProductInformation">
                         <span>Diamond Clarity</span>
@@ -432,9 +467,17 @@ const CustomiseRequest = ({
                       </div>
                       <div className="ProductInformation">
                         <span>Note</span>
-                        <span style={{ wordBreak: "break-word" }}>
+                        {/* <span style={{ wordBreak: "break-word" }}>
                           {dataToDisplay.notes}
-                        </span>
+                          </span> */}
+                          <span style={{ wordBreak: "break-word" }}>
+                            {dataToDisplay.notes === undefined ||
+                            dataToDisplay.notes === null ||
+                            dataToDisplay.notes === ""
+                              ? "N/A"
+                              : `${dataToDisplay.notes}`}
+                          </span>
+                     
                       </div>
                     </div>
                     <div className="lineCR"></div>

@@ -21,8 +21,8 @@
     display: flex;
     gap: 40px;
     justify-content: flex-start;
-    align-items: center
-    ;
+    align-items: center;
+    flex-wrap: wrap;
   }
 .headerTitle {
   color: #2d364d;
