@@ -23,18 +23,19 @@ const CadAssignmentPage = () => {
   const [errorss, setErrors] = useState();
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
   const [itemId, setItemId] = useState("");
+  const [SearchWithName, setSearchWithName] = useState("");
+
   const [images, setImages] = useState({
     normal: null,
     threeD: null,
   });
 
-  const {cadTime , setCadTime} = useContext(ContextTime)
-  setCadTime(timer)
-
+  const { cadTime, setCadTime } = useContext(ContextTime);
+  setCadTime(timer);
 
   useEffect(() => {
-    getDesignList(setIsLoading, setDesignList);
-  }, []);
+    getDesignList(setIsLoading, setDesignList,SearchWithName);
+  }, [SearchWithName]);
 
   // useEffect(() => {
   //   const ongoingItem = designList.find(
@@ -68,35 +69,34 @@ const CadAssignmentPage = () => {
     const ongoingItem = designList.find(
       (item) => item.timer_status === "on-going"
     );
-  
+
     if (ongoingItem) {
       const localStorageKey = `start_time_${ongoingItem.item_id}`;
       let storedStartTime = localStorage.getItem(localStorageKey);
-  
+
       if (!storedStartTime) {
         // If no start time in local storage, calculate the start time based on the timer_value
         const [hours, minutes, seconds] = ongoingItem.timer_value
           .split(":")
           .map(Number);
-        const elapsedTimeInMs =
-          (hours * 3600 + minutes * 60 + seconds) * 1000;
-  
+        const elapsedTimeInMs = (hours * 3600 + minutes * 60 + seconds) * 1000;
+
         const startTime = new Date().getTime() - elapsedTimeInMs;
         storedStartTime = new Date(startTime).toISOString();
-  
+
         // Store the calculated start time in local storage
         localStorage.setItem(localStorageKey, storedStartTime);
       }
-  
+
       // Start the timer
       const interval = setInterval(() => {
         const now = new Date().getTime();
         const startTime = new Date(storedStartTime).getTime();
         const elapsedTime = now - startTime;
         const formattedTime = formatTime(elapsedTime);
-  
+
         setTimer(formattedTime);
-  
+
         setDesignList((prevList) =>
           prevList.map((item) =>
             item.item_id === ongoingItem.item_id
@@ -104,16 +104,16 @@ const CadAssignmentPage = () => {
               : item
           )
         );
-  
+
         console.log(`Timer for item ${ongoingItem.item_id}: ${formattedTime}`);
       }, 1000);
-  
+
       setProductCode(ongoingItem.design_code);
       setItemId(ongoingItem.item_id);
-  
+
       return () => clearInterval(interval);
     }
-  }, [designList]);    
+  }, [designList]);
 
   const formatTime = (milliseconds) => {
     const totalSeconds = Math.floor(milliseconds / 1000);
@@ -180,9 +180,9 @@ const CadAssignmentPage = () => {
     }
   };
 
-  const handleCADLogout =()=>{
-    cadLogut(timer)
-  }
+  const handleCADLogout = () => {
+    cadLogut(timer);
+  };
 
   console.log("images cddd", images);
 
@@ -193,8 +193,10 @@ const CadAssignmentPage = () => {
         setSidebarExpanded={setSidebarExpanded}
         timer={timer}
       />
-      <Header sidebarExpanded={sidebarExpanded}
-       handleCADLogout={handleCADLogout}
+      <Header
+        sidebarExpanded={sidebarExpanded}
+        handleCADLogout={handleCADLogout}
+        setSearchWithName={setSearchWithName}
       />
       <CadAssignment
         designList={designList}
@@ -203,6 +205,7 @@ const CadAssignmentPage = () => {
         setIsModalOpen={setIsModalOpen}
         sidebarExpanded={sidebarExpanded}
         isLoadingMain={isLoading}
+        SearchWithName={SearchWithName}
       />
       <CentalHub
         open={isModalOpen}

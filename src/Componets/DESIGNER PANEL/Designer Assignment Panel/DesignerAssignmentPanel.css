@@ -5,3 +5,16 @@
 .Parent_Folder_section_Designer {
   padding: 20px 0px 50px 0px;
 }
+.folderInnerCount {
+  position: absolute;
+  right: -10px;
+  top:-10px;
+  background: #2466a4;;
+  border-radius: 32px;
+  width: 25px;
+  height: 25px;
+  color:#ffff;
+  font-size: 12px;
+  text-align: center;
+  padding: 5px 0px 0px 0px;
+}

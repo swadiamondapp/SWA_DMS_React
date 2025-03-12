@@ -4,21 +4,40 @@ import { useNavigate } from "react-router-dom";
 import { MdViewModule } from "react-icons/md";
 import sort from "../../assets/sort.png";
 import filter from "../../assets/filter.png";
-import { cadDesignList } from "../../Pages/Renders/Apis";
+import { cadApprovalByDesinger, cadDesignList } from "../../Pages/Renders/Apis";
 import { CircularProgress } from "@mui/material";
+import greenFolder from "../../assets/greenFolder.png";
+import DownloadImageModal from "../DownloadImageModal/DownloadImageModal";
 
-const CADuploadedFiles = ({sidebarExpanded }) => {
+const CADuploadedFiles = ({ sidebarExpanded ,SearchWithName}) => {
   const [view, setView] = useState(false);
   const [grid, setGrid] = useState(true);
   const [detail, setDetail] = useState(false);
   const [tiles, setTiles] = useState(false);
+  const [selectButtonLabel, setSelectButtonLabel] = useState("Select");
+  const [showRadioButtons, setShowRadioButtons] = useState(false);
+  const [selectedCadFolder, setSelectedCadFolder] = useState([]);
+  const [selectedCadFolderName, setSelectedCadFolderName] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [fileType,setFyleType] = useState("")
+    const [is2DSelected, setIs2DSelected] = useState(false);
+    const [is3DSelected, setIs3DSelected] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const [designListData, setDesignListData] = useState([]);
 
   useEffect(() => {
-    cadDesignList(setDesignListData);
-  }, []);
+    cadDesignList(setDesignListData,SearchWithName);
+  }, [SearchWithName]);
 
+  const toggleRadioButtons = () => {
+    setShowRadioButtons(!showRadioButtons);
+    setSelectButtonLabel(showRadioButtons ? "Select" : "Unselect");
+    if (showRadioButtons) {
+      setSelectedCadFolder([]);
+    }
+  };
 
   const navigate = useNavigate();
 
@@ -26,8 +45,8 @@ const CADuploadedFiles = ({sidebarExpanded }) => {
     navigate(`/rendersdetailing/${item.id}`, {
       state: {
         folderName: item.name,
-        page:"CADdetail",
-        fid:item.id
+        page: "CADdetail",
+        fid: item.id,
       },
     });
   };
@@ -51,6 +70,39 @@ const CADuploadedFiles = ({sidebarExpanded }) => {
     setDetail(false);
     setTiles(true);
   };
+
+  const handleCheckboxChange = (id, name) => {
+    if (selectedCadFolder.includes(id)) {
+      setSelectedCadFolder(selectedCadFolder.filter((item) => item !== id));
+      setSelectedCadFolderName(
+        selectedCadFolderName.filter((name) => name !== name.name)
+      );
+    } else {
+      setSelectedCadFolder([...selectedCadFolder, id]);
+      setSelectedCadFolderName([...selectedCadFolderName, name]);
+    }
+  };
+
+  const ApproveCadDesign = (status) => {
+    cadApprovalByDesinger(setIsLoading, status);
+  };
+  // const handleApprove = (someid) => {
+  //   const status = "Approve";
+  //   const id = someId; // Replace `someId` with actual value
+  //   cadApprovalByDesinger(setIsLoading, status, id);
+  // };
+
+  const onCloseDownloadModal = () => {
+    setIs3DSelected(false)
+    setIs2DSelected(false)
+    setFyleType("")
+    setIsModalOpen(false)
+
+
+  }
+
+  console.log(selectedCadFolder, selectedCadFolderName, "selectedCard");
+  console.log(designListData, "designListData");
 
   return (
     <div
@@ -87,10 +139,33 @@ const CADuploadedFiles = ({sidebarExpanded }) => {
             </div>
           )}
         </button>
+        {selectedCadFolder.length > 0 && (
+          <>
+           {location.pathname !== "/caduploaded" && (
+            <>
+            <button style={{backgroundColor:"rgba(18, 110, 114, 1)",color:"#ffff"}} onClick={() => ApproveCadDesign("Approve")}>
+              {" "}
+              Approve
+            </button>
+            <button style={{backgroundColor:'red',color:'#ffff'}} onClick={() => ApproveCadDesign("Reject")}>
+              {" "}
+              Reject
+            </button>
+            </>
+            )}
+            <button style={{backgroundColor:"rgba(18, 110, 114, 1)",color:"#ffff"}} onClick={() => setIsModalOpen(true)}>
+              {" "}
+            download
+            </button>
+
+          </>
+        )}
+        <button onClick={toggleRadioButtons}> {selectButtonLabel}</button>
         <button>
           {" "}
           <img className="RendersHome_img" src={sort} alt="" srcset="" /> Sort
         </button>
+
         <button>
           {" "}
           <img className="RendersHome_img" src={filter} alt="" srcset="" />{" "}
@@ -123,13 +198,32 @@ const CADuploadedFiles = ({sidebarExpanded }) => {
           <>
             {designListData.map((item) => (
               <div className="folderCard_parent" style={{ cursor: "pointer" }}>
-                <div
-                  className="folder__card"
-                  key={item.id}
-                  onClick={() => handleFolderClick(item)}
-                >
-                  <img src={folderimg} alt="" />
+                <div className="folder__card" key={item.id}>
+                  <img
+                     src={
+                      item.completion_status === "Completed"
+                        ? greenFolder
+                        : folderimg
+                    }
+                    alt=""
+                    onClick={() => handleFolderClick(item)}
+                  />
                   <p className="folder_name">{item.name}</p>
+                  <div style={{ position: "absolute", top: 0, right: 0 }}>
+                    {showRadioButtons && (
+                      <input
+                        className="Radio_select"
+                        type="checkbox"
+                        id={item.id}
+                        name="fav_language"
+                        value={item.id}
+                        onChange={() =>
+                          handleCheckboxChange(item.id, item.name)
+                        }
+                        // checked={selectedDesigns.includes(item.designcode)}
+                      ></input>
+                    )}
+                  </div>
                 </div>
               </div>
             ))}
@@ -143,12 +237,28 @@ const CADuploadedFiles = ({sidebarExpanded }) => {
                   className="folder__card"
                   style={{ display: "flex", width: "110px" }}
                   key={item.id}
-                  onClick={() => handleFolderClick(item)}
                 >
-                  <img src={folderimg} alt="" style={{ width: "26px" }} />
+                  <img src={greenFolder} alt="" style={{ width: "26px" }}
+                  onClick={() => handleFolderClick(item)}
+                  />
                   <p className="folder_name" style={{ fontSize: "9px" }}>
                     {item.name}
                   </p>
+                  <div style={{ position: "absolute",right:0 }}>
+                    {showRadioButtons && (
+                      <input
+                        className="Radio_select"
+                        type="checkbox"
+                        id={item.id}
+                        name="fav_language"
+                        value={item.id}
+                        onChange={() =>
+                          handleCheckboxChange(item.id, item.name)
+                        }
+                        // checked={selectedDesigns.includes(item.designcode)}
+                      ></input>
+                    )}
+                  </div>
                 </div>
               </div>
             ))}
@@ -162,18 +272,48 @@ const CADuploadedFiles = ({sidebarExpanded }) => {
                   className="folder__card"
                   style={{ display: "flex", width: "140px" }}
                   key={item.id}
-                  onClick={() => handleFolderClick(item)}
                 >
-                  <img src={folderimg} alt="" style={{ width: "40px" }} />
+                  <img src={greenFolder} alt="" style={{ width: "40px" }}  
+                  onClick={() => handleFolderClick(item)}
+                  
+                  />
                   <p className="folder_name" style={{ fontSize: "11px" }}>
                     {item.name}
                   </p>
+                  <div style={{ position: "absolute",left:0 }}>
+                    {showRadioButtons && (
+                      <input
+                        className="Radio_select"
+                        type="checkbox"
+                        id={item.id}
+                        name="fav_language"
+                        value={item.id}
+                        onChange={() =>
+                          handleCheckboxChange(item.id, item.name)
+                        }
+                        // checked={selectedDesigns.includes(item.designcode)}
+                      ></input>
+                    )}
+                  </div>
                 </div>
               </div>
             ))}
           </>
         )}
       </div>
+      <DownloadImageModal
+        open={isModalOpen}
+        onClose={ onCloseDownloadModal}
+        setFyleType={setFyleType}
+        fileType={fileType}
+        designListData={designListData}
+        selectedCadFolder={selectedCadFolder}
+        is3DSelected={is3DSelected}
+        is2DSelected={is2DSelected}
+        setIs3DSelected={setIs3DSelected}
+        setIs2DSelected={setIs2DSelected}
+        // onDownload={handleDownload}
+      />
     </div>
   );
 };

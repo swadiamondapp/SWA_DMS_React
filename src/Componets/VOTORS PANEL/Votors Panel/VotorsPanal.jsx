@@ -11,7 +11,7 @@ import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 
-const VotorsPanal = ({ sidebarExpanded }) => {
+const VotorsPanal = ({ sidebarExpanded,SearchWithName }) => {
   const navigate = useNavigate();
 
   const [Data, setData] = useState([]);
@@ -29,9 +29,9 @@ const VotorsPanal = ({ sidebarExpanded }) => {
   };
 
   useEffect(() => {
-    all_Designs_items(setIsLoading, setData);
+    all_Designs_items(setIsLoading, setData,SearchWithName);
     voted_design_list(setIsLoading, setVotedList);
-  }, []);
+  }, [SearchWithName]);
 
   const handleLikeClicks = (id) => {
     like_design(setIsLoading, id, setData, setVotedList);

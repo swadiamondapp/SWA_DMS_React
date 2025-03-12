@@ -11,7 +11,7 @@ import SuccessModal from "../../SuccessModal/SuccessModal";
 import DesignBtn from "../../ADMIN PANEL/Design Pool/DesignBtn";
 import DesignerFilterModal from "../../DesignerFilterModal/DesignerFilterModal";
 
-const CustomizedOrder = ({ sidebarExpanded }) => {
+const CustomizedOrder = ({ sidebarExpanded,SearchWithName}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [UnAssignedLists, setUnAssignedLists] = useState([]);
   const [successMessage, setSuccessMessage] = useState("");
@@ -20,8 +20,8 @@ const CustomizedOrder = ({ sidebarExpanded }) => {
   const [dd, setDd] = useState();
 
   useEffect(() => {
-    listUnAssignedLists(setIsLoading, setUnAssignedLists);
-  }, []);
+    listUnAssignedLists(setIsLoading, setUnAssignedLists,SearchWithName);
+  }, [SearchWithName]);
 
 
   const handleUnassign = (id, userId) => {

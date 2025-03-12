@@ -133,10 +133,10 @@ export const finished_product_list_cad = async (
   }
 };
 
-export const getDesignList = async (setIsLoading, setData) => {
+export const getDesignList = async (setIsLoading, setData,SearchWithName) => {
   try {
     setIsLoading(true);
-    const response = await apiService.get(CAD_DESIGNS);
+    const response = await apiService.get(`${CAD_DESIGNS}?design_code=${SearchWithName}`);
     if (checkApiStatus(response)) {
       setData(response.data.results.data);
     }
@@ -207,10 +207,10 @@ export const uploadFile = async (
   }
 };
 
-export const finishedProjectFolder = async (setIsLoading, setData) => {
+export const finishedProjectFolder = async (setIsLoading, setData,SearchWithName) => {
   try {
     setIsLoading(true);
-    const response = await apiService.get(FINISHED_FOLDERS);
+    const response = await apiService.get(`${FINISHED_FOLDERS}?search_name=${SearchWithName}`);
     if (checkApiStatus(response)) {
       setData(response.data.results.data);
     }

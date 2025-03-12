@@ -144,7 +144,7 @@ const TagTable = () => {
                   <td>{item.priority}</td>
                   <td>
                     <img
-                      style={{ width: "70px", height: "50px" }}
+                      style={{ width: "60px", height: "60px",objectFit:"contain" }}
                       src={item.image}
                       alt=""
                       srcset=""

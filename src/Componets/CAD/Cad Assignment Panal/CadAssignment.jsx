@@ -13,7 +13,7 @@ const CadAssignment = ({
   timer,
   setIsModalOpen,
   sidebarExpanded,
-  isLoadingMain
+  isLoadingMain,
 }) => {
   const navigate = useNavigate();
   const [uploadInstructionsVisible, setUploadInstructionsVisible] =

@@ -7,12 +7,14 @@ import "./warehouse.css";
 
 const WareHouseTablePage = () => {
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
+    const [SearchWithName, setSearchWithName] = useState("");
+  
  
   return (
     <div className="Parent_WareHouseTable">
       <Sidebar  sidebarExpanded={sidebarExpanded} setSidebarExpanded={setSidebarExpanded} />
-      <Header  sidebarExpanded={sidebarExpanded}/>
-      <CustomiseRequiestTable  sidebarExpanded={sidebarExpanded}/>
+      <Header  sidebarExpanded={sidebarExpanded} setSearchWithName={setSearchWithName}/>
+      <CustomiseRequiestTable  sidebarExpanded={sidebarExpanded} SearchWithName={SearchWithName}/>
     </div>
   );
 };

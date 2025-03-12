@@ -86,14 +86,19 @@ const CustomizationTable = (props) => {
   );
   const [CustomizationListData, setCustomizationListData] = useState([]);
   const [printItem, setPrintItem] = useState(null);
-  const [printData , setPrintData] = useState([])
-  const [isPrintLoad , setIsPrintLoad] = useState(false)
+  const [printData, setPrintData] = useState([]);
+  const [isPrintLoad, setIsPrintLoad] = useState(false);
+  const [loadingItemId, setLoadingItemId] = useState(null);
 
   const dropdownRefs = useRef([]);
 
   useEffect(() => {
-    customizaztion_list_wareHouse(setIsLoading, setCustomizationListData);
-  }, []);
+    customizaztion_list_wareHouse(
+      setIsLoading,
+      setCustomizationListData,
+      props.SearchWithName
+    );
+  }, [props.SearchWithName]);
 
   console.log(CustomizationListData, "CustomizationListData");
   const handleEyeClick = (wareHouseId) => {
@@ -154,7 +159,13 @@ const CustomizationTable = (props) => {
   const handleApprove = async (aId) => {
     try {
       setApproveId(aId);
-      await customizationApprove(setIsLoading, aId, setCustomizationListData,setSuccessModalOpen,setSuccessMessage);
+      await customizationApprove(
+        setIsLoading,
+        aId,
+        setCustomizationListData,
+        setSuccessModalOpen,
+        setSuccessMessage
+      );
     } catch (error) {
       console.error("Approve Failed", error);
     }
@@ -182,25 +193,27 @@ const CustomizationTable = (props) => {
     return item ? item.name : "Not Found";
   };
 
+  let clickedId;
   const onLoadWareHousePrint = async (wareHouseId) => {
     // Set loading state
     setIsPrintLoad(true);
-    
+    setLoadingItemId(wareHouseId);
+
     // Fetch the data and wait until it's done
     await customization_details_view_warehouse(
       setIsLoading,
       setPrintData,
       wareHouseId
     );
-  
+
     // Ensure the state update is processed
     await new Promise((resolve) => setTimeout(resolve, 0));
-  
+
     // Unset loading state
     setIsPrintLoad(false);
   };
 
-  console.log("printItem", printItem);
+  console.log("isLoading>>>", isPrintLoad);
 
   return (
     <>
@@ -274,7 +287,7 @@ const CustomizationTable = (props) => {
                     <td>{item.mobile_number}</td>
                     <td> {productCategoryByID(Number(item.product_type))}</td>
 
-                    <td style={{width:'23%'}} >
+                    <td style={{ width: "23%" }}>
                       <button
                         className="PrintButton_CT"
                         // onClick={() => handlePrintClick(item)}
@@ -282,12 +295,29 @@ const CustomizationTable = (props) => {
                         <ReactToPrint
                           trigger={() => (
                             <div className="scan_list">
-                              <LuPrinter style={{fontSize:"14px"}} /> Print
+                              {isPrintLoad && loadingItemId === item.id ? (
+                                <div className="" style={{width:"40px"}}>
+                                  <CircularProgress
+                                    size={15}
+                                    sx={{
+                                      color: "white",
+                                      width: "100px",
+                                    }}
+                                  />
+                                </div>
+                              ) : (
+                                <>
+                                  <LuPrinter style={{ fontSize: "14px" }} />{" "}
+                                  Print
+                                </>
+                              )}
                             </div>
                           )}
                           content={() => printRef.current}
                           // onBeforePrint={()=>onLoadWareHousePrint(item.id)}
-                          onBeforeGetContent={()=>onLoadWareHousePrint(item.id)}
+                          onBeforeGetContent={() =>
+                            onLoadWareHousePrint(item.id)
+                          }
                         />
                       </button>
 

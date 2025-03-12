@@ -18,7 +18,7 @@ import { useLocation, Link, useNavigate } from "react-router-dom";
 import DesignerFilterModal from "../../DesignerFilterModal/DesignerFilterModal";
 // import DesignerFilterModal from "../../DesignerFilterModal/DesignerFilterModal";
 
-const DesignerDashboard = ({ sidebarExpanded }) => {
+const DesignerDashboard = ({ sidebarExpanded,SearchWithName }) => {
   const [uploadInstructionsVisible, setUploadInstructionsVisible] =
     useState(true);
   const [showDownloadOptions, setShowDownloadOptions] = useState(false);
@@ -103,8 +103,8 @@ const DesignerDashboard = ({ sidebarExpanded }) => {
   // }, [currentPage]);
 
   const fetchDesigns = useCallback(async () => {
-    await uplodedDesignPagination(setIsLoading, setCurrentItems, currentPage);
-  }, [currentPage]);
+    await uplodedDesignPagination(setIsLoading, setCurrentItems, currentPage,SearchWithName);
+  }, [currentPage,SearchWithName]);
 
   useEffect(() => {
     list_uploaded_designs(setIsLoading, setUploadedDesigns);

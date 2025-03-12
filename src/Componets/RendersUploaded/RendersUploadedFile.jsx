@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
 import folderimg from "../../assets/folder.png";
+import greenFolder from "../../assets/greenFolder.png";
+
 import DesignBtn from "../ADMIN PANEL/Design Pool/DesignBtn";
 import { LiaCloudUploadAltSolid } from "react-icons/lia";
 import UploadFile from "../UploadFile/UploadFile";
@@ -9,8 +11,7 @@ import { CircularProgress } from "@mui/material";
 import { MdViewModule } from "react-icons/md";
 import sort from "../../assets/sort.png";
 import filter from "../../assets/filter.png";
-import { useNavigate } from 'react-router-dom';
-
+import { useNavigate } from "react-router-dom";
 
 const RendersUploadedFile = (props) => {
   const navigate = useNavigate();
@@ -66,13 +67,11 @@ const RendersUploadedFile = (props) => {
     }
   }, [activeDesignCode]);
 
-
-
   const handleFolderClick = (item) => {
     navigate(`/finished/${item.id}`, {
       state: {
         folderName: item.name,
-        path:"rendersUploaded"
+        path: "rendersUploaded",
       },
     });
   };
@@ -211,9 +210,13 @@ const RendersUploadedFile = (props) => {
                   <div
                     style={{ cursor: "pointer" }}
                     className="folder__card"
-                    onClick={() => handleFolderClick(item)}
+                    // onClick={() => handleFolderClick(item)}
                   >
-                    <img src={folderimg} alt="" />
+                    <img
+                      src={folderimg}
+                      alt=""
+                      onClick={() => handleFolderClick(item)}
+                    />
 
                     <p className="text-truncate">
                       {truncateText(item.name, 10)}
@@ -240,7 +243,11 @@ const RendersUploadedFile = (props) => {
                   <div
                     className="folder__card"
                     onClick={() => handleFolderClick(item)}
-                    style={{ display: "flex", width: "110px",cursor:"pointer" }}
+                    style={{
+                      display: "flex",
+                      width: "110px",
+                      cursor: "pointer",
+                    }}
                   >
                     <img src={folderimg} alt="" style={{ width: "26px" }} />
 
@@ -256,7 +263,11 @@ const RendersUploadedFile = (props) => {
                   <div
                     className="folder__card"
                     onClick={() => handleFolderClick(item)}
-                    style={{ display: "flex", width: "140px",cursor:"pointer" }}
+                    style={{
+                      display: "flex",
+                      width: "140px",
+                      cursor: "pointer",
+                    }}
                   >
                     <img src={folderimg} alt="" style={{ width: "40px" }} />
 
@@ -294,4 +305,4 @@ const RendersUploadedFile = (props) => {
   );
 };
 
-export default RendersUploadedFile
+export default RendersUploadedFile;
