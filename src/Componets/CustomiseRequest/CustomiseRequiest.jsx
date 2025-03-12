@@ -29,6 +29,7 @@ import {
 } from "../ADMIN PANEL/Api_dropDown";
 import { PlusOutlined } from "@ant-design/icons";
 import { Image, Upload, Checkbox } from "antd";
+import { CircularProgress } from "@mui/material";
 
 const getBase64 = (file) =>
   new Promise((resolve, reject) => {
@@ -45,6 +46,7 @@ const CustomiseRequest = ({
   wareHouseuserId,
   CustomizationWareHouseData,
   setData,
+  isLoadingDetail,
 }) => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -98,9 +100,11 @@ const CustomiseRequest = ({
   const filterOption = (input, option) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
 
-  useEffect(() => {
-    customization_details(setIsLoading, setCustomization, userId);
-  }, [userId]);
+  // useEffect(() => {
+  //   if (userId !== undefined || userId !== "") {
+  //     customization_details(setIsLoading, setCustomization, userId);
+  //   }
+  // }, [userId]);
 
   console.log(customization, "custoooo>>");
   console.log(userId, "userId================>");
@@ -190,6 +194,7 @@ const CustomiseRequest = ({
   console.log(dataToDisplay.status, "metalListType");
 
   console.log("dataToDisplay---", dataToDisplay);
+  console.log("isLoading---", isLoadingDetail);
 
   return (
     <div>
@@ -207,267 +212,299 @@ const CustomiseRequest = ({
             <Box sx={style}>
               <Typography id="modal-modal-description" sx={{ mx: 1, pb: 1 }}>
                 <div>
-                  <div>
+                  {isLoadingDetail ? (
                     <div
                       style={{
                         display: "flex",
-                        justifyContent: "space-between",
+                        justifyContent: "center",
+                        alignItems: "center",
                       }}
                     >
-                      <span className="headerTitle">
-                        Customization ID :{dataToDisplay.customizationcode}
-                      </span>
-                      <img
-                        onClick={onClose}
-                        style={{
-                          width: "16px",
-                          height: "18px",
-                          cursor: "pointer",
+                      <CircularProgress
+                        size={50}
+                        sx={{
+                          color: "black",
+                          padding: "8px 10px",
+                          width: "35px",
                         }}
-                        src={close}
-                        alt=""
                       />
                     </div>
-                    <div className="lineCR"></div>
-                    <div style={{ marginBottom: "5px" }}>
-                      <span className="basic-Details-title">Basic Details</span>
-                    </div>
-                    <div className="subTitle">
-                      <div className="ProductInformation">
-                        <span>Sales man</span>
-                        <span>{dataToDisplay.salesman}</span>
+                  ) : (
+                    <div>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <span className="headerTitle">
+                          Customization ID :{dataToDisplay.customizationcode}
+                        </span>
+                        <img
+                          onClick={onClose}
+                          style={{
+                            width: "16px",
+                            height: "18px",
+                            cursor: "pointer",
+                          }}
+                          src={close}
+                          alt=""
+                        />
                       </div>
-                      <div className="ProductInformation">
-                        <span>Phone Number</span>
-                        <span>{dataToDisplay.mobile_number}</span>
-                      </div>
-                      <div className="ProductInformation">
-                        <span>Outlet</span>
-                        <span>
-                          {findOutLetNameByID(Number(dataToDisplay.outlet))}
+                      <div className="lineCR"></div>
+                      <div style={{ marginBottom: "5px" }}>
+                        <span className="basic-Details-title">
+                          Basic Details
                         </span>
                       </div>
-                    </div>
-                    <div className="lineCR"></div>
-                    <div style={{ marginBottom: "5px" }}>
-                      <span className="basic-Details-title">
-                        Customer Details
-                      </span>
-                    </div>
-                    <div className="subTitle">
-                      <div className="ProductInformation">
-                        <span>Customer man</span>
-                        <span>{dataToDisplay.customer_name}</span>
+                      <div className="subTitle">
+                        <div className="ProductInformation">
+                          <span>Sales man</span>
+                          <span>{dataToDisplay.salesman}</span>
+                        </div>
+                        <div className="ProductInformation">
+                          <span>Phone Number</span>
+                          <span>{dataToDisplay.mobile_number}</span>
+                        </div>
+                        <div className="ProductInformation">
+                          <span>Outlet</span>
+                          <span>
+                            {findOutLetNameByID(Number(dataToDisplay.outlet))}
+                          </span>
+                        </div>
                       </div>
-                      <div className="ProductInformation">
-                        <span>Phone Number</span>
-                        <span>{dataToDisplay.customer_number}</span>
-                      </div>
-                      <div className="ProductInformation">
-                        <span>Email</span>
-                        <span>
-                          {dataToDisplay.customer_email === "undefined" ||
-                          "null"
-                            ? "N/A"
-                            : dataToDisplay.customer_email}
+                      <div className="lineCR"></div>
+                      <div style={{ marginBottom: "5px" }}>
+                        <span className="basic-Details-title">
+                          Customer Details
                         </span>
                       </div>
-                      <div className="ProductInformation">
-                        <span>Recived Advance</span>
-                        <span>{dataToDisplay.received_advance}</span>
-                      </div>
-                      {/* <div className="ProductInformation">
+                      <div className="subTitle">
+                        <div className="ProductInformation">
+                          <span>Customer man</span>
+                          <span>{dataToDisplay.customer_name}</span>
+                        </div>
+                        <div className="ProductInformation">
+                          <span>Phone Number</span>
+                          <span>{dataToDisplay.customer_number}</span>
+                        </div>
+                        <div className="ProductInformation">
+                          <span>Email</span>
+                          <span>
+                            {dataToDisplay.customer_email === "undefined" ||
+                            "null"
+                              ? "N/A"
+                              : dataToDisplay.customer_email}
+                          </span>
+                        </div>
+                        <div className="ProductInformation">
+                          <span>Recived Advance</span>
+                          <span>{dataToDisplay.received_advance}</span>
+                        </div>
+                        {/* <div className="ProductInformation">
                         <span>Outlet</span>
                         <span>
                           {findOutLetNameByID(Number(dataToDisplay.outlet))}
                         </span>
                       </div> */}
-                    </div>
-                    <div className="lineCR"></div>
-                    <div style={{ marginBottom: "5px" }}>
-                      <span className="basic-Details-title">
-                        Product Information
-                      </span>
-                    </div>
-                    <div className="subTitle">
-                      <div className="ProductInformation">
-                        <span>Product type</span>
-                        <span>
-                          {productCategoryByID(
-                            Number(dataToDisplay.product_type)
-                          )}
+                      </div>
+                      <div className="lineCR"></div>
+                      <div style={{ marginBottom: "5px" }}>
+                        <span className="basic-Details-title">
+                          Product Information
                         </span>
                       </div>
-                      <div className="ProductInformation">
-                        <span>Model Previously Made</span>
-                        <span>{dataToDisplay.previously_made}</span>
+                      <div className="subTitle">
+                        <div className="ProductInformation">
+                          <span>Product type</span>
+                          <span>
+                            {productCategoryByID(
+                              Number(dataToDisplay.product_type)
+                            )}
+                          </span>
+                        </div>
+                        <div className="ProductInformation">
+                          <span>Model Previously Made</span>
+                          <span>{dataToDisplay.previously_made}</span>
+                        </div>
+                        <div className="ProductInformation">
+                          <span>If previously made</span>
+                          <span>
+                            {dataToDisplay.previously_made &&
+                              dataToDisplay.previously_made
+                                .charAt(0)
+                                .toUpperCase() +
+                                dataToDisplay.previously_made.slice(1)}
+                          </span>
+                        </div>
+                        <div className="ProductInformation">
+                          <span>Metal Size</span>
+                          {/* <span>{dataToDisplay.size}</span> */}
+                          <span>
+                            {dataToDisplay.size === undefined ||
+                            dataToDisplay.size === null ||
+                            dataToDisplay.size === ""
+                              ? "N/A"
+                              : dataToDisplay.size}
+                          </span>
+                        </div>
                       </div>
-                      <div className="ProductInformation">
-                        <span>If previously made</span>
-                        <span>
-                          {dataToDisplay.previously_made &&
-                            dataToDisplay.previously_made
-                              .charAt(0)
-                              .toUpperCase() +
-                              dataToDisplay.previously_made.slice(1)}
+                      <div>
+                        <div style={{ margin: "5px 0px" }}>
+                          <span className="imgTitleCR">Images</span>
+                        </div>
+                        <div className="ringImages">
+                          <div
+                            className="imageContainer"
+                            style={{ position: "relative" }}
+                          >
+                            <img
+                              src={dataToDisplay.image}
+                              alt=""
+                              onClick={() => imagePreview(dataToDisplay.image)}
+                            />
+                            {previewImage && (
+                              <div className="content-modal2">
+                                <Image
+                                  preview={{
+                                    visible: previewOpen,
+                                    onVisibleChange: (visible) =>
+                                      setPreviewOpen(visible),
+                                  }}
+                                  src={previewImage}
+                                  style={{ display: "none" }}
+                                />
+                              </div>
+                            )}
+                          </div>
+                          <div className="imageContainer">
+                            <img
+                              src={dataToDisplay.image2}
+                              onClick={() => imagePreview(dataToDisplay.image2)}
+                              alt=""
+                            />
+                          </div>
+                          <div className="imageContainer">
+                            <img
+                              src={dataToDisplay.image3}
+                              onClick={() => imagePreview(dataToDisplay.image3)}
+                              alt=""
+                            />
+                          </div>
+                          <div className="imageContainer">
+                            <img
+                              src={dataToDisplay.image4}
+                              onClick={() => imagePreview(dataToDisplay.image4)}
+                              alt=""
+                            />
+                          </div>
+                          <div className="imageContainer">
+                            <img
+                              src={dataToDisplay.image5}
+                              onClick={() => imagePreview(dataToDisplay.image5)}
+                              alt=""
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="lineCR"></div>
+                      <div style={{ marginBottom: "5px" }}>
+                        <span className="basic-Details-title">
+                          Metal Details
                         </span>
                       </div>
-                      <div className="ProductInformation">
-                        <span>Metal Size</span>
-                        {/* <span>{dataToDisplay.size}</span> */}
-                        <span>
-                          {dataToDisplay.size === undefined ||
-                          dataToDisplay.size === null ||
-                          dataToDisplay.size === ""
-                            ? "N/A"
-                            : dataToDisplay.size}
-                        </span>
-                      </div>
-                    </div>
-                    <div>
-                      <div style={{ margin: "5px 0px" }}>
-                        <span className="imgTitleCR">Images</span>
-                      </div>
-                      <div className="ringImages">
-                        <div
-                          className="imageContainer"
-                          style={{ position: "relative" }}
-                        >
-                          <img
-                            src={dataToDisplay.image}
-                            alt=""
-                            onClick={() => imagePreview(dataToDisplay.image)}
-                          />
-                          {previewImage && (
-                            <div className="content-modal2">
-                              <Image
-                                preview={{
-                                  visible: previewOpen,
-                                  onVisibleChange: (visible) =>
-                                    setPreviewOpen(visible),
-                                }}
-                                src={previewImage}
-                                style={{ display: "none" }}
-                              />
-                            </div>
-                          )}
+                      <div className="subTitle-metal">
+                        <div className="ProductInformation">
+                          <span>Metal type</span>
+                          <span>
+                            {findMetalNameById(
+                              Number(dataToDisplay.metal_type)
+                            )}
+                          </span>
                         </div>
-                        <div className="imageContainer">
-                          <img
-                            src={dataToDisplay.image2}
-                            onClick={() => imagePreview(dataToDisplay.image2)}
-                            alt=""
-                          />
+                        <div className="ProductInformation">
+                          <span>Weight</span>
+                          {/* <span>{dataToDisplay.weight} GM</spa  n> */}
+                          <span>
+                            {dataToDisplay.weight === undefined ||
+                            dataToDisplay.weight === null
+                              ? "N/A"
+                              : `${dataToDisplay.weight} GM`}
+                          </span>
                         </div>
-                        <div className="imageContainer">
-                          <img
-                            src={dataToDisplay.image3}
-                            onClick={() => imagePreview(dataToDisplay.image3)}
-                            alt=""
-                          />
-                        </div>
-                        <div className="imageContainer">
-                          <img
-                            src={dataToDisplay.image4}
-                            onClick={() => imagePreview(dataToDisplay.image4)}
-                            alt=""
-                          />
-                        </div>
-                        <div className="imageContainer">
-                          <img
-                            src={dataToDisplay.image5}
-                            onClick={() => imagePreview(dataToDisplay.image5)}
-                            alt=""
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="lineCR"></div>
-                    <div style={{ marginBottom: "5px" }}>
-                      <span className="basic-Details-title">Metal Details</span>
-                    </div>
-                    <div className="subTitle-metal">
-                      <div className="ProductInformation">
-                        <span>Metal type</span>
-                        <span>
-                          {findMetalNameById(Number(dataToDisplay.metal_type))}
-                        </span>
-                      </div>
-                      <div className="ProductInformation">
-                        <span>Weight</span>
-                        {/* <span>{dataToDisplay.weight} GM</spa  n> */}
-                        <span>
-                          {dataToDisplay.weight === undefined ||
-                          dataToDisplay.weight === null
-                            ? "N/A"
-                            : `${dataToDisplay.weight} GM`}
-                        </span>
-                      </div>
-                      {/* <div className="ProductInformation">
+                        {/* <div className="ProductInformation">
                         <span>Size</span>
                         <span>{dataToDisplay.size}</span>
                       </div> */}
-                    </div>
-                    <div className="lineCR"></div>
-                    <div style={{ marginBottom: "5px" }}>
-                      <span className="basic-Details-title">
-                        Diamond Details
-                      </span>
-                    </div>
-                    <div className="DiamondType">
-                      <div className="ProductInformation">
-                        <span>Diamond Weight</span>
-                        <span>
-                          {dataToDisplay.diamond_weight === undefined ||
-                          dataToDisplay.diamond_weight === null
-                            ? "N/A"
-                            : `${dataToDisplay.diamond_weight} CT`}
+                      </div>
+                      <div className="lineCR"></div>
+                      <div style={{ marginBottom: "5px" }}>
+                        <span className="basic-Details-title">
+                          Diamond Details
                         </span>
                       </div>
-                      <div className="ProductInformation">
-                        <span>Number of Diamonds</span>
-                        {/* <span>{dataToDisplay.no_of_diamond}</span> */}
-                        <span>
-                          {dataToDisplay.no_of_diamond === undefined ||
-                          dataToDisplay.no_of_diamond === null
-                            ? "N/A"
-                            : `${dataToDisplay.no_of_diamond} `}
+                      <div className="DiamondType">
+                        <div className="ProductInformation">
+                          <span>Diamond Weight</span>
+                          <span>
+                            {dataToDisplay.diamond_weight === undefined ||
+                            dataToDisplay.diamond_weight === null
+                              ? "N/A"
+                              : `${dataToDisplay.diamond_weight} CT`}
+                          </span>
+                        </div>
+                        <div className="ProductInformation">
+                          <span>Number of Diamonds</span>
+                          {/* <span>{dataToDisplay.no_of_diamond}</span> */}
+                          <span>
+                            {dataToDisplay.no_of_diamond === undefined ||
+                            dataToDisplay.no_of_diamond === null
+                              ? "N/A"
+                              : `${dataToDisplay.no_of_diamond} `}
+                          </span>
+                        </div>
+                        <div className="ProductInformation">
+                          <span>Diamond Clarity</span>
+                          <span>{dataToDisplay.diamond_clarity}</span>
+                        </div>
+                        <div className="ProductInformation">
+                          <span>Diamond colour</span>
+                          <span>{dataToDisplay.diamond_colour}</span>
+                        </div>
+                      </div>
+                      <div className="lineCR"></div>
+                      <div style={{ marginBottom: "5px" }}>
+                        <span className="basic-Details-title">
+                          Other details
                         </span>
                       </div>
-                      <div className="ProductInformation">
-                        <span>Diamond Clarity</span>
-                        <span>{dataToDisplay.diamond_clarity}</span>
-                      </div>
-                      <div className="ProductInformation">
-                        <span>Diamond colour</span>
-                        <span>{dataToDisplay.diamond_colour}</span>
-                      </div>
-                    </div>
-                    <div className="lineCR"></div>
-                    <div style={{ marginBottom: "5px" }}>
-                      <span className="basic-Details-title">Other details</span>
-                    </div>
-                    <div className="subTitle-metal">
-                      <div className="ProductInformation">
-                        <span>Budget</span>
-                        <span>
-                          {dataToDisplay.budget}
-                          {/* {dataToDisplay.actual_price === 0
+                      <div className="subTitle-metal">
+                        <div className="ProductInformation">
+                          <span>Budget</span>
+                          <span>
+                            {dataToDisplay.budget}
+                            {/* {dataToDisplay.actual_price === 0
                             ? Math.floor(dataToDisplay.budget)
                             : Math.floor(dataToDisplay.actual_price)} */}
-                        </span>
-                      </div>
-                      <div className="ProductInformation">
-                        <span>Actual Price</span>
-                        <span> {Math.floor(dataToDisplay.actual_price)}</span>
-                      </div>
-                      <div className="ProductInformation">
-                        <span>SWA Product SKU</span>
-                        <span>{dataToDisplay.sku}</span>
-                      </div>
-                      <div className="ProductInformation">
-                        <span>Note</span>
-                        {/* <span style={{ wordBreak: "break-word" }}>
+                          </span>
+                        </div>
+                        <div className="ProductInformation">
+                          <span>Actual Price</span>
+                          <span> {Math.floor(dataToDisplay.actual_price)}</span>
+                        </div>
+                        <div className="ProductInformation">
+                          <span>SWA Product SKU</span>
+                          <span>
+                            {dataToDisplay.sku === undefined ||
+                            dataToDisplay.sku === null ||
+                            dataToDisplay.sku === ""
+                              ? "N/A"
+                              : `${dataToDisplay.sku}`}
+                          </span>
+                        </div>
+                        <div className="ProductInformation">
+                          <span>Note</span>
+                          {/* <span style={{ wordBreak: "break-word" }}>
                           {dataToDisplay.notes}
                           </span> */}
                           <span style={{ wordBreak: "break-word" }}>
@@ -477,60 +514,60 @@ const CustomiseRequest = ({
                               ? "N/A"
                               : `${dataToDisplay.notes}`}
                           </span>
-                     
+                        </div>
                       </div>
-                    </div>
-                    <div className="lineCR"></div>
+                      <div className="lineCR"></div>
 
-                    <div className="crButtonContainer">
-                      {CustomizationWareHouseData && (
-                        <>
+                      <div className="crButtonContainer">
+                        {CustomizationWareHouseData && (
                           <>
-                            {/* <button
+                            <>
+                              {/* <button
                                 onClick={() => handleConfirm()}
                                 className="CR_ButtonCommen confirmButtonCR"
                               >
                                 Confirm
                               </button> */}
-                            {dataToDisplay.status === "Rejected" ? (
-                              <span>Rejected</span>
+                              {dataToDisplay.status === "Rejected" ? (
+                                <span>Rejected</span>
+                              ) : (
+                                dataToDisplay.status === "Requested" &&
+                                dataToDisplay.status !== "Updated" && (
+                                  <button
+                                    onClick={() => handleReject()}
+                                    className="CR_ButtonCommen rejectButtonCR"
+                                  >
+                                    Reject
+                                  </button>
+                                )
+                              )}
+                            </>
+                          </>
+                        )}
+                        {console.log(
+                          "CustomizationWareHouseData.status",
+                          dataToDisplay.status
+                        )}
+
+                        {dataToDisplay.status !== "Rejected" && (
+                          <>
+                            {dataToDisplay.status === "Confirmed" ? (
+                              <span>Already Updated</span>
                             ) : (
-                              dataToDisplay.status === "Requested" &&
-                              dataToDisplay.status !== "Updated" && (
-                                <button
-                                  onClick={() => handleReject()}
-                                  className="CR_ButtonCommen rejectButtonCR"
-                                >
-                                  Reject
-                                </button>
-                              )
+                              <button
+                                onClick={() =>
+                                  handleEditWareHouseDetails(dataToDisplay)
+                                }
+                                className="CR_ButtonCommen editButtonCR"
+                              >
+                                edit <img src={editIcon} alt="" />
+                              </button>
                             )}
                           </>
-                        </>
-                      )}
-                      {console.log(
-                        "CustomizationWareHouseData.status",
-                        dataToDisplay.status
-                      )}
-
-                      {dataToDisplay.status !== "Rejected" && (
-                        <>
-                          {dataToDisplay.status === "Confirmed" ? (
-                            <span>Already Updated</span>
-                          ) : (
-                            <button
-                              onClick={() =>
-                                handleEditWareHouseDetails(dataToDisplay)
-                              }
-                              className="CR_ButtonCommen editButtonCR"
-                            >
-                              edit <img src={editIcon} alt="" />
-                            </button>
-                          )}
-                        </>
-                      )}
+                        )}
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               </Typography>
             </Box>

@@ -16,10 +16,19 @@ import {
 } from "../../Pages/Services/EndPoints";
 import { ALL_DESIGNS, VOTED_DESIGN_LIST } from "../../Pages/Services/EndPoints";
 
-export const voters_customization_list = async (setIsLoading, setData,SearchWithName,orderstatus) => {
+export const voters_customization_list = async (
+  setIsLoading,
+  setData,
+  SearchWithName,
+  orderstatus
+) => {
   try {
     setIsLoading(true);
-    const response = await apiService.get(`${VOTERS_CUSTOMIZATION_LIST}?customization_code=${SearchWithName && SearchWithName}&orderstatus=${orderstatus && orderstatus}`);
+    const response = await apiService.get(
+      `${VOTERS_CUSTOMIZATION_LIST}?customization_code=${
+        SearchWithName && SearchWithName
+      }&orderstatus=${orderstatus && orderstatus}`
+    );
     if (checkApiStatus(response)) {
       setData(response.data.results.data);
     }
@@ -57,17 +66,23 @@ export const create_customization = async (
   }
 };
 
-export const all_Designs_items = async (setIsLoading, setData,SearchWithName) => {
+export const all_Designs_items = async (
+  setIsLoading,
+  setData,
+  SearchWithName
+) => {
   try {
-    setIsLoading(true)
-    const response = await apiService.get(`${UNVOTED_VOTERS_LIST}&design_code=${SearchWithName}`);
+    setIsLoading(true);
+    const response = await apiService.get(
+      `${UNVOTED_VOTERS_LIST}&design_code=${SearchWithName}`
+    );
     if (checkApiStatus(response)) {
       setData(response.data.results.data);
     }
   } catch (error) {
     console.log(error);
-  }finally{
-    setIsLoading(false)
+  } finally {
+    setIsLoading(false);
   }
 };
 
@@ -117,22 +132,24 @@ export const customization_details = async (
   userId
 ) => {
   try {
+    setIsLoading(true);
     const response = await apiService.get(`${CUSTOMIZATION_DETAILS}${userId}/`);
     if (response?.data?.results?.status_code === 200) {
       setCustomization(response.data.results.data);
+      setIsLoading(false);
     }
   } catch (error) {
     console.log(error);
   }
 };
 
-export const like_design = async (setIsLoading, id, setData,setVotedList) => {
+export const like_design = async (setIsLoading, id, setData, setVotedList) => {
   try {
     const response = await apiService.post(`${LIKE_DESIGN}/${id}/like/`);
 
     if (checkApiStatus(response)) {
       all_Designs_items(setIsLoading, setData);
-      voted_design_list(setIsLoading, setVotedList)
+      voted_design_list(setIsLoading, setVotedList);
       // message.success("User created successfully!");
     } else {
       // message.error("Failed to create user. Please try again.");
@@ -296,7 +313,7 @@ export const confirVotersStatus = async (setIsLoading, userId, setData) => {
       body
     );
     if (checkApiStatus(response)) {
-      voters_customization_list(setIsLoading, setData,"");
+      voters_customization_list(setIsLoading, setData, "");
     }
   } catch (error) {
     console.log(error);

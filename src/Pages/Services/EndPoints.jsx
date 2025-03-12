@@ -225,3 +225,7 @@ export const RENDER_FILTER = "all/folderlist/"
 export const RENDER_FINISHED_FILTER = "list/finished/projects/"
 
 export const APPROVE_CAD_DESIGNS = "designer/action/render-img"
+
+export const CAD_UPLOADED_LIST = "/cadname/list/";
+export const CAD_UPLOADED_CATEGORIES_LIST = "/category/cad/upload/";
+export const CAD_UPLOADED_IMAGEFOLDERS_LIST = "/items/cad/upload/";

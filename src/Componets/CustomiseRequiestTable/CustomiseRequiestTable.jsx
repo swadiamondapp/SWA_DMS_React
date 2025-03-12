@@ -10,7 +10,10 @@ import {
   customizaztion_list_wareHouse,
   delete_customization_warehouse,
 } from "../../Pages/WareHousePageView/Api";
-import { delete_customization } from "../VOTORS PANEL/Api";
+import {
+  customization_details,
+  delete_customization,
+} from "../VOTORS PANEL/Api";
 import DeleteConfirmationModal from "../ConfirmationModal/DeleteConfirmationModal";
 import SuccessModal from "../SuccessModal/SuccessModal";
 import { CircularProgress } from "@mui/material";
@@ -20,6 +23,7 @@ import ScanTablePrint from "../ScanComponentWarehouse/ScanTablePrint/ScanTablePr
 import CustomizationListDataPrint from "./CustomizationListDataPrint";
 import { choose_outlet_drop_down } from "../ADMIN PANEL/Api_dropDown";
 import { product_category_basicDetails } from "../Assignment Panel/Api";
+import { useLocation } from "react-router-dom";
 
 const data = [
   {
@@ -68,9 +72,11 @@ const data = [
 
 const CustomizationTable = (props) => {
   const printRef = useRef();
+  const location = useLocation();
   const [openCRModal, setOpenCRModal] = useState(false);
   const [wareHouseuserId, setWareHouseUserId] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingDetail, setIsLoadingDetail] = useState(false);
   const [showEditDelete, setShowEditDelete] = useState(null);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
@@ -104,12 +110,21 @@ const CustomizationTable = (props) => {
   const handleEyeClick = (wareHouseId) => {
     setOpenCRModal(true);
     setWareHouseUserId(wareHouseId);
-    customization_details_view_warehouse(
-      setIsLoading,
-      setCustomizationWareHouseData,
-      wareHouseId
-    );
+    if (location.pathname === "/customRequestTable") {
+      customization_details(
+        setIsLoadingDetail,
+        setCustomizationWareHouseData,
+        wareHouseId
+      );
+    } else {
+      customization_details_view_warehouse(
+        setIsLoadingDetail,
+        setCustomizationWareHouseData,
+        wareHouseId
+      );
+    }
   };
+
   const handleDeleteCustomization = (userId) => {
     setUserId(userId);
     setDeleteConfirmationOpen(true);
@@ -213,7 +228,7 @@ const CustomizationTable = (props) => {
     setIsPrintLoad(false);
   };
 
-  console.log("isLoading>>>", isPrintLoad);
+  console.log("location>>>", location.pathname);
 
   return (
     <>
@@ -296,7 +311,7 @@ const CustomizationTable = (props) => {
                           trigger={() => (
                             <div className="scan_list">
                               {isPrintLoad && loadingItemId === item.id ? (
-                                <div className="" style={{width:"40px"}}>
+                                <div className="" style={{ width: "40px" }}>
                                   <CircularProgress
                                     size={15}
                                     sx={{
@@ -396,6 +411,7 @@ const CustomizationTable = (props) => {
             onClose={() => setOpenCRModal(false)}
             wareHouseuserId={wareHouseuserId}
             CustomizationWareHouseData={CustomizationWareHouseData}
+            isLoadingDetail={isLoadingDetail}
           />
           <DeleteConfirmationModal
             DeleteConfirmationOpen={DeleteConfirmationOpen}
