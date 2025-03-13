@@ -234,10 +234,9 @@ const CreateCustomisation = ({
         "string.max": `Mobile number must be exactly 10 digits`,
       }),
     customerEmail: Joi.string()
-      .email({ tlds: { allow: false } }) // Disallow specific TLDs (optional)
-      .required()
+      .email({ tlds: { allow: false } })
+      .allow("") 
       .messages({
-        "string.empty": "Email is required",
         "string.email": "Please provide a valid email address",
       }),
     receivedAdvance: Joi.string().required().messages({
@@ -291,9 +290,9 @@ const CreateCustomisation = ({
         "any.required": "cannot be empty",
         "any.empty": "cannot be empty",
       }),
-    weight: Joi.string().required().messages({
-      "string.empty": `cannot be  empty`,
-    }),
+    // weight: Joi.string().required().messages({
+    //   "string.empty": `cannot be  empty`,
+    // }),
     // size: Joi.string().required().messages({
     //   "string.empty": `cannot be  empty`,
     // }),
@@ -928,7 +927,7 @@ const CreateCustomisation = ({
                           ref={customerEmailRef}
                         >
                           Customer Email
-                          <span
+                          {/* <span
                             style={{
                               color: "red",
                               fontSize: "20px",
@@ -936,7 +935,7 @@ const CreateCustomisation = ({
                             }}
                           >
                             *
-                          </span>
+                          </span> */}
                         </label>
                         <input
                           type="text"

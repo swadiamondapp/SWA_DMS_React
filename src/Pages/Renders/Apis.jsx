@@ -8,12 +8,17 @@ import {
   LIST_CENTRAL_FOLDERS,
   APPROVE_CAD_DESIGNS,
   DOWNLOAD_BY_FILETYPE,
+  CAD_UPLOADED_LIST,
+  CAD_UPLOADED_CATEGORIES_LIST,
+  CAD_UPLOADED_IMAGEFOLDERS_LIST,
 } from "../Services/EndPoints";
 import { apiService, checkApiStatus } from "../Services/ApiInstants";
 
-export const cadDesignList = async (setData,SearchWithName) => {
+export const cadDesignList = async (setData, SearchWithName) => {
   try {
-    const response = await apiService.get(`${DESIGN_LIST_CAD}?name=${SearchWithName}`);
+    const response = await apiService.get(
+      `${DESIGN_LIST_CAD}?name=${SearchWithName}`
+    );
     if (checkApiStatus(response)) {
       setData(response?.data?.results?.data);
     }
@@ -22,17 +27,84 @@ export const cadDesignList = async (setData,SearchWithName) => {
   }
 };
 
-export const downloadCadByFileType = async (setIsLoading,setData,fileType,selectedCadFolder) => {
+export const cadUpLoadedList = async (
+  setData,
+  setIsLoading,
+  SearchWithName
+) => {
   try {
-    setIsLoading(true)
-    const response = await apiService.get(`${DESIGN_LIST_CAD}?filetype=${fileType}&folder_ids=${selectedCadFolder}`);
+    setIsLoading(true);
+    const response = await apiService.get(
+      `${CAD_UPLOADED_LIST}?searchby_name=${SearchWithName}`
+    );
+    if (checkApiStatus(response)) {
+      setData(response?.data?.results?.data);
+      setIsLoading(false);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const cadUpLoadedCategoriesList = async (
+  setData,
+  cadName,
+  setIsLoading,
+  SearchWithName
+) => {
+  try {
+    setIsLoading(true);
+    const response = await apiService.get(
+      `${CAD_UPLOADED_CATEGORIES_LIST}?cad_name=${cadName}&category=${SearchWithName}`
+    );
+    if (checkApiStatus(response)) {
+      setData(response?.data?.results?.data);
+      setIsLoading(false);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const cadUpLoadedImgeFoldersList = async (
+  setData,
+  selectedCadName,
+  category,
+  setIsLoading,
+  SearchWithName
+) => {
+  try {
+    setIsLoading(true);
+    const response = await apiService.get(
+      `${CAD_UPLOADED_IMAGEFOLDERS_LIST}?cad_name=${selectedCadName}&product_category=${category}&designcode=${SearchWithName}`
+    );
+    if (checkApiStatus(response)) {
+      setData(response?.data?.results?.data);
+      setIsLoading(false);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const downloadCadByFileType = async (
+  setIsLoading,
+  setData,
+  fileType,
+  selectedCadFolder
+) => {
+  try {
+    setIsLoading(true);
+    const response = await apiService.get(
+      `${DESIGN_LIST_CAD}?filetype=${fileType}&folder_ids=${selectedCadFolder}`
+    );
     if (checkApiStatus(response)) {
       setData(response?.data?.results?.data);
     }
   } catch (error) {
     console.log(error);
-  }finally {
-    setIsLoading(false)
+  } finally {
+    setIsLoading(false);
   }
 };
 
@@ -106,9 +178,14 @@ export const createFinsishedProjects = async (
   }
 };
 
-export const rendersAllFinishedProjectList = async (setData,SearchWithName) => {
+export const rendersAllFinishedProjectList = async (
+  setData,
+  SearchWithName
+) => {
   try {
-    const response = await apiService.get(`${RENDESR_ALL_FINISHED_PROJECTS}?designcode=${SearchWithName}`);
+    const response = await apiService.get(
+      `${RENDESR_ALL_FINISHED_PROJECTS}?designcode=${SearchWithName}`
+    );
     if (checkApiStatus(response)) {
       setData(response?.data?.results?.data);
     }
