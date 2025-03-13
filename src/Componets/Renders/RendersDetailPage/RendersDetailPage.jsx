@@ -9,6 +9,7 @@ import { useLocation, Link, useNavigate } from "react-router-dom";
 import ThreeDViewer from "../../ThreeDViewer/ThreeDViewer";
 import { GoDownload } from "react-icons/go";
 import { CircularProgress } from "@mui/material";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 const RendersDetailPage = ({ folderDetails, sidebarExpanded, isLoading }) => {
   const navigate = useNavigate();
@@ -91,8 +92,21 @@ const RendersDetailPage = ({ folderDetails, sidebarExpanded, isLoading }) => {
     });
   };
 
+  const handleBackClick = () => {
+    navigate(-1); 
+  }
+
   return (
     <>
+      <div className="RendersHome_butns" style={{marginLeft: sidebarExpanded ? "218px" : "120px" ,width:"auto", justifyContent: "start" ,   marginTop:"30px"}}>
+        <button 
+        onClick={handleBackClick}
+        style={{marginLeft:"10px"}}
+        >
+          {" "}
+          <IoMdArrowRoundBack style={{ fontSize: "20px" }} />
+        </button>
+      </div>
       {isLoading ? (
         <div
           style={{
