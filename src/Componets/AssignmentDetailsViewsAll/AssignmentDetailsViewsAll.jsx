@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import product from "../../assets/p1.png";
 // import "./assignmentviewsAll.css";
 import { LiaRupeeSignSolid } from "react-icons/lia";
@@ -44,13 +44,15 @@ import { apiService, checkApiStatus } from "../../Pages/Services/ApiInstants";
 import SuccessModal from "../SuccessModal/SuccessModal";
 import { MdOutlineEdit } from "react-icons/md";
 import { renderFolderDetails } from "../DESIGNER PANEL/Designer Detail View/Api";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
-const AssignmentDetailsViewsAll = ({ sidebarExpanded}) => {
+const AssignmentDetailsViewsAll = ({ sidebarExpanded }) => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { id } = useParams();
-  const { detailsViewFolderName, renderMessage, cardDatas, page ,fid  } =
+  const { detailsViewFolderName, renderMessage, cardDatas, page, fid } =
     location.state || {};
-    const [detailData, setDetailData] = useState([]);
+  const [detailData, setDetailData] = useState([]);
   const [folderDetails, setFolderDetails] = useState([]);
   const [folderDetailView, setFolderDetailsView] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -83,7 +85,7 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded}) => {
   // useEffect(() => {
   //   renderFolderDetails(setIsLoading, setDetailData, fid);
   // }, [])
-  
+
   // console.log(fid, "fid");
   // console.log(detailData[0]?.file2d_status,"detailData")
   // console.log(file2d_status,"file2d_status")
@@ -106,7 +108,6 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded}) => {
   console.log(detailData, "detailData");
   console.log(file2d_status, "file2d_status");
   console.log(file3d_status, "file3d_status");
-
 
   const handleopenModal = () => {
     setOpenmodal(!openModal);
@@ -133,10 +134,14 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded}) => {
     rendersDetailByCode(setIsLoading, setRendesrDetail, detailsViewFolderName);
   }, [id, detailsViewFolderName]);
 
-  const handleDownload = (imageUrl, fileName = "downloaded_file", detailsViewFolderName = "") => {
-    const sanitizedFolderName = detailsViewFolderName
+  const handleDownload = (
+    imageUrl,
+    fileName = "downloaded_file",
+    detailsViewFolderName = ""
+  ) => {
+    const sanitizedFolderName = detailsViewFolderName;
 
-    const fullFileName = `${sanitizedFolderName}_${fileName}`
+    const fullFileName = `${sanitizedFolderName}_${fileName}`;
 
     fetch(imageUrl, {
       method: "GET",
@@ -154,7 +159,6 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded}) => {
       })
       .catch((error) => console.error("Error downloading the file:", error));
   };
-
 
   useEffect(() => {
     if (folderDetailView) {
@@ -356,8 +360,11 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded}) => {
   const file3dStatus = cardDatas && cardDatas[0]?.file3d_status;
   const file2dStatus = cardDatas && cardDatas[0]?.file2d_status;
 
- 
-  console.log(file2dStatus,"file2dStatus")
+  const handleBackClick = () => {
+    navigate(-1);
+  }
+
+  console.log(file2dStatus, "file2dStatus");
 
   return (
     <div>
@@ -365,6 +372,22 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded}) => {
         className="Parent_AssignmentView"
         style={{ paddingLeft: sidebarExpanded ? "225px" : "130px" }}
       >
+        <div
+          className="RendersHome_butns"
+          style={{
+            // marginLeft: sidebarExpanded ? "218px" : "120px",
+            width: "auto",
+            justifyContent: "start",
+            marginTop: "10px",
+          }}
+        >
+          <button
+           onClick={handleBackClick}
+          >
+            {" "}
+            <IoMdArrowRoundBack style={{ fontSize: "20px" }} />
+          </button>
+        </div>
         <div className="AssignmentView">
           <div className="detail_left_part">
             <div className="Left_img_View">
@@ -421,7 +444,7 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded}) => {
                     <img
                       src={cardDatas[0]?.file_2d}
                       alt=""
-                    // onClick={() => handleForlderDetailsVeiw(item.id, item.designcode)}
+                      // onClick={() => handleForlderDetailsVeiw(item.id, item.designcode)}
                     />
                     <span>
                       POSTED ON: <b>{formatDate(cardDatas[0]?.created_at)}</b>
@@ -429,7 +452,11 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded}) => {
                     <button
                       className="Download_btn_hub"
                       onClick={() =>
-                        handleDownload(cardDatas[0]?.file_2d, "image_2d.jpg", detailsViewFolderName)
+                        handleDownload(
+                          cardDatas[0]?.file_2d,
+                          "image_2d.jpg",
+                          detailsViewFolderName
+                        )
                       }
                     >
                       DOWNLOAD
@@ -444,20 +471,21 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded}) => {
                             file2dStatus === "Approved"
                               ? "#23A064"
                               : file2dStatus === "Rejected"
-                                ? "red"
-                                : "#0464D5",
-                          border: `1px solid ${file2dStatus === "Approved"
+                              ? "red"
+                              : "#0464D5",
+                          border: `1px solid ${
+                            file2dStatus === "Approved"
                               ? "#23A064"
                               : file2dStatus === "Rejected"
-                                ? "#FA3838"
-                                : "#0464D5"
-                            }`,
+                              ? "#FA3838"
+                              : "#0464D5"
+                          }`,
                           background:
                             file2dStatus === "Approved"
                               ? "#23A0641A"
                               : file2dStatus === "Rejected"
-                                ? "#FA38381A"
-                                : "#0464D51A",
+                              ? "#FA38381A"
+                              : "#0464D51A",
                           width: "auto",
                           borderRadius: "32px",
                           fontWeight: "600",
@@ -490,20 +518,21 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded}) => {
                             file2d_status === "Approved"
                               ? "#23A064"
                               : file2d_status === "Rejected"
-                                ? "red"
-                                : "#0464D5",
-                          border: `1px solid ${file2d_status === "Approved"
+                              ? "red"
+                              : "#0464D5",
+                          border: `1px solid ${
+                            file2d_status === "Approved"
                               ? "#23A064"
                               : file2d_status === "Rejected"
-                                ? "#FA3838"
-                                : "#0464D5"
-                            }`,
+                              ? "#FA3838"
+                              : "#0464D5"
+                          }`,
                           background:
                             file2d_status === "Approved"
                               ? "#23A0641A"
                               : file2d_status === "Rejected"
-                                ? "#FA38381A"
-                                : "#0464D51A",
+                              ? "#FA38381A"
+                              : "#0464D51A",
                           borderRadius: "32px",
                           fontWeight: "600",
                           marginTop: "13px",
@@ -528,7 +557,11 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded}) => {
                     <button
                       className="Download_btn_hub"
                       onClick={() =>
-                        handleDownload(cardDatas[0]?.file_3d, "model_3d.3dm", detailsViewFolderName)
+                        handleDownload(
+                          cardDatas[0]?.file_3d,
+                          "model_3d.3dm",
+                          detailsViewFolderName
+                        )
                       }
                       style={{ background: "#126E72" }}
                     >
@@ -557,20 +590,21 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded}) => {
                             file3d_status === "Approved"
                               ? "#23A064"
                               : file3d_status === "Rejected"
-                                ? "red"
-                                : "#0464D5",
-                          border: `1px solid ${file3d_status === "Approved"
+                              ? "red"
+                              : "#0464D5",
+                          border: `1px solid ${
+                            file3d_status === "Approved"
                               ? "#23A064"
                               : file3d_status === "Rejected"
-                                ? "#FA3838"
-                                : "#0464D5"
-                            }`,
+                              ? "#FA3838"
+                              : "#0464D5"
+                          }`,
                           background:
                             file3d_status === "Approved"
                               ? "#23A0641A"
                               : file3d_status === "Rejected"
-                                ? "#FA38381A"
-                                : "#0464D51A",
+                              ? "#FA38381A"
+                              : "#0464D51A",
                           width: "auto",
                           borderRadius: "32px",
                           fontWeight: "600",
@@ -590,20 +624,21 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded}) => {
                             file3dStatus === "Approved"
                               ? "#23A064"
                               : file3dStatus === "Rejected"
-                                ? "red"
-                                : "#0464D5",
-                          border: `1px solid ${file3dStatus === "Approved"
+                              ? "red"
+                              : "#0464D5",
+                          border: `1px solid ${
+                            file3dStatus === "Approved"
                               ? "#23A064"
                               : file3dStatus === "Rejected"
-                                ? "#FA3838"
-                                : "#0464D5"
-                            }`,
+                              ? "#FA3838"
+                              : "#0464D5"
+                          }`,
                           background:
                             file3dStatus === "Approved"
                               ? "#23A0641A"
                               : file3dStatus === "Rejected"
-                                ? "#FA38381A"
-                                : "#0464D51A",
+                              ? "#FA38381A"
+                              : "#0464D51A",
                           width: "auto",
                           borderRadius: "32px",
                           fontWeight: "600",
@@ -636,8 +671,7 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded}) => {
               >
                 <h3>Basic details</h3>
 
-                { page !== "renders" &&
-                 page !== "CADdetail" && (
+                {page !== "renders" && page !== "CADdetail" && (
                   <button
                     className="btn_scan"
                     onClick={() => handleEditBasicDetails()}
@@ -649,7 +683,6 @@ const AssignmentDetailsViewsAll = ({ sidebarExpanded}) => {
                     <span>Edit Details</span>
                   </button>
                 )}
-                 
               </div>
 
               <div className="Assignment_Details">
@@ -934,20 +967,21 @@ console.log("Initial", status);0,
                             statusValue === "Approved"
                               ? "#23A064"
                               : statusValue === "Rejected"
-                                ? "red"
-                                : "#0464D5",
-                          border: `1px solid ${statusValue === "Approved"
+                              ? "red"
+                              : "#0464D5",
+                          border: `1px solid ${
+                            statusValue === "Approved"
                               ? "#23A064"
                               : statusValue === "Rejected"
-                                ? "#FA3838"
-                                : "#0464D5"
-                            }`,
+                              ? "#FA3838"
+                              : "#0464D5"
+                          }`,
                           background:
                             statusValue === "Approved"
                               ? "#23A0641A"
                               : statusValue === "Rejected"
-                                ? "#FA38381A"
-                                : "#0464D51A",
+                              ? "#FA38381A"
+                              : "#0464D51A",
                           width: "auto",
                           borderRadius: "32px",
                           fontWeight: "600",
@@ -979,20 +1013,21 @@ console.log("Initial", status);0,
                               statusValue === "Approved"
                                 ? "#23A064"
                                 : statusValue === "Rejected"
-                                  ? "red"
-                                  : "#0464D5",
-                            border: `1px solid ${statusValue === "Approved"
+                                ? "red"
+                                : "#0464D5",
+                            border: `1px solid ${
+                              statusValue === "Approved"
                                 ? "#23A064"
                                 : statusValue === "Rejected"
-                                  ? "#FA3838"
-                                  : "#0464D5"
-                              }`,
+                                ? "#FA3838"
+                                : "#0464D5"
+                            }`,
                             background:
                               statusValue === "Approved"
                                 ? "#23A0641A"
                                 : statusValue === "Rejected"
-                                  ? "#FA38381A"
-                                  : "#0464D51A",
+                                ? "#FA38381A"
+                                : "#0464D51A",
                             width: "auto",
                             borderRadius: "32px",
                             fontWeight: "600",
@@ -1048,9 +1083,9 @@ console.log("Initial", status);0,
           setSuccessModalOpen={setSuccessModalOpen}
           setIsLoading={setIsLoading}
           detailsViewFolderName={detailsViewFolderName}
-        // setCadRemark={setCadRemark}
-        // setRenderRemark={setRenderRemark}
-        // renderRemark={renderRemark}
+          // setCadRemark={setCadRemark}
+          // setRenderRemark={setRenderRemark}
+          // renderRemark={renderRemark}
         />
       )}
 
