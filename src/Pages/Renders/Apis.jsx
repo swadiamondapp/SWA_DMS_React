@@ -27,10 +27,16 @@ export const cadDesignList = async (setData, SearchWithName) => {
   }
 };
 
-export const cadUpLoadedList = async (setData, setIsLoading) => {
+export const cadUpLoadedList = async (
+  setData,
+  setIsLoading,
+  SearchWithName
+) => {
   try {
     setIsLoading(true);
-    const response = await apiService.get(CAD_UPLOADED_LIST);
+    const response = await apiService.get(
+      `${CAD_UPLOADED_LIST}?searchby_name=${SearchWithName}`
+    );
     if (checkApiStatus(response)) {
       setData(response?.data?.results?.data);
       setIsLoading(false);
@@ -43,12 +49,13 @@ export const cadUpLoadedList = async (setData, setIsLoading) => {
 export const cadUpLoadedCategoriesList = async (
   setData,
   cadName,
-  setIsLoading
+  setIsLoading,
+  SearchWithName
 ) => {
   try {
     setIsLoading(true);
     const response = await apiService.get(
-      `${CAD_UPLOADED_CATEGORIES_LIST}?cad_name=${cadName}`
+      `${CAD_UPLOADED_CATEGORIES_LIST}?cad_name=${cadName}&category=${SearchWithName}`
     );
     if (checkApiStatus(response)) {
       setData(response?.data?.results?.data);
@@ -63,12 +70,13 @@ export const cadUpLoadedImgeFoldersList = async (
   setData,
   selectedCadName,
   category,
-  setIsLoading
+  setIsLoading,
+  SearchWithName
 ) => {
   try {
     setIsLoading(true);
     const response = await apiService.get(
-      `${CAD_UPLOADED_IMAGEFOLDERS_LIST}?cad_name=${selectedCadName}&product_category=${category}`
+      `${CAD_UPLOADED_IMAGEFOLDERS_LIST}?cad_name=${selectedCadName}&product_category=${category}&designcode=${SearchWithName}`
     );
     if (checkApiStatus(response)) {
       setData(response?.data?.results?.data);

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import folderimg from "../../assets/folder.png";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { MdViewModule } from "react-icons/md";
 import sort from "../../assets/sort.png";
 import filter from "../../assets/filter.png";
@@ -26,6 +26,7 @@ const CADuploadedFiles = ({
   currentLevel,
   setCurrentLevel,
 }) => {
+  const navigate = useNavigate();
   const [view, setView] = useState(false);
   const [grid, setGrid] = useState(true);
   const [detail, setDetail] = useState(false);
@@ -40,12 +41,39 @@ const CADuploadedFiles = ({
   const [is3DSelected, setIs3DSelected] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
-
   const [designListData, setDesignListData] = useState([]);
+
+  const [cadNames, setCadNames] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [items, setItems] = useState([]);
+
+   const [searchParams] = useSearchParams(); 
+   const cadName = searchParams.get("cad_name"); 
+   const category = searchParams.get("category");
 
   // useEffect(() => {
   //   cadDesignList(setDesignListData,SearchWithName);
   // }, [SearchWithName]);
+
+  useEffect(() => {
+    if (!cadName && !category) {
+      cadUpLoadedList(setCadNames, setIsLoading, SearchWithName);
+    }
+  }, [SearchWithName, cadName, category]);
+
+  useEffect(() => {
+    if (cadName && !category) {
+      cadUpLoadedCategoriesList(setCategories, cadName, setIsLoading, SearchWithName);
+      setCurrentLevel("categories");
+    }
+  }, [cadName, category, SearchWithName]);
+
+  useEffect(() => {
+    if (cadName && category) {
+      cadUpLoadedImgeFoldersList(setItems, cadName, category, setIsLoading, SearchWithName);
+      setCurrentLevel("items");
+    }
+  }, [cadName, category, SearchWithName]);
 
   const toggleRadioButtons = () => {
     setShowRadioButtons(!showRadioButtons);
@@ -55,7 +83,6 @@ const CADuploadedFiles = ({
     }
   };
 
-  const navigate = useNavigate();
 
   const handleFolderClick = (item) => {
     navigate(`/rendersdetailing/${item.id}`, {
@@ -115,32 +142,6 @@ const CADuploadedFiles = ({
     setIsModalOpen(false);
   };
 
-  const [cadNames, setCadNames] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [items, setItems] = useState([]);
-
-  useEffect(() => {
-    cadUpLoadedList(setCadNames, setIsLoading);
-  }, []);
-
-  useEffect(() => {
-    if (selectedCadName !== "") {
-      cadUpLoadedCategoriesList(setCategories, selectedCadName, setIsLoading);
-      setCurrentLevel("categories");
-    }
-  }, [selectedCadName]);
-
-  useEffect(() => {
-    if (selectedCadName !== "" && selectedCategory !== "") {
-      cadUpLoadedImgeFoldersList(
-        setItems,
-        selectedCadName,
-        selectedCategory,
-        setIsLoading
-      );
-      setCurrentLevel("items");
-    }
-  }, [selectedCategory]);
 
   const handleCadNameClick = (cadName) => {
     setSelectedCadName(cadName);
@@ -321,21 +322,37 @@ const CADuploadedFiles = ({
 
               {currentLevel === "cad_names" && (
                 <>
-                  <div
-                    className="folderCard_parent"
-                    style={{ cursor: "pointer" }}
-                  >
-                    {cadNames.map((cad, index) => (
-                      <div className="folder__card">
-                        <img
-                          src={folderimg}
-                          alt=""
-                          onClick={() => handleCadNameClick(cad.cad_name)}
-                        />
-                        <p className="folder_name"> {cad.cad_name}</p>
-                      </div>
-                    ))}
-                  </div>
+                  {!isLoading && cadNames.length === 0 ? (
+                    <div
+                      style={{
+                        display: "flex",
+                        width: "100%",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        height: "50vh",
+                      }}
+                    >
+                      <h4>No data found</h4>
+                    </div>
+                  ) : (
+                    <div
+                      className="folderCard_parent"
+                      style={{ cursor: "pointer" }}
+                    >
+                      <>
+                        {cadNames.map((cad, index) => (
+                          <div className="folder__card">
+                            <img
+                              src={folderimg}
+                              alt=""
+                              onClick={() => handleCadNameClick(cad.cad_name)}
+                            />
+                            <p className="folder_name"> {cad.cad_name}</p>
+                          </div>
+                        ))}
+                      </>
+                    </div>
+                  )}
                 </>
               )}
 
@@ -449,7 +466,10 @@ const CADuploadedFiles = ({
                           alt=""
                           onClick={() => handleCadNameClick(cad.cad_name)}
                         />
-                        <p className="folder_name" style={{ fontSize: "9px" }}> {cad.cad_name}</p>
+                        <p className="folder_name" style={{ fontSize: "9px" }}>
+                          {" "}
+                          {cad.cad_name}
+                        </p>
                       </div>
                     ))}
                   </div>
@@ -473,7 +493,10 @@ const CADuploadedFiles = ({
                           alt=""
                           onClick={() => handleCategoryClick(category)}
                         />
-                        <p className="folder_name" style={{ fontSize: "9px" }}> {category}</p>
+                        <p className="folder_name" style={{ fontSize: "9px" }}>
+                          {" "}
+                          {category}
+                        </p>
                       </div>
                     </>
                   ))}
@@ -497,7 +520,10 @@ const CADuploadedFiles = ({
                         // onClick={() => handleCategoryClick(category)}
                         onClick={() => handleFolderClick(item)}
                       />
-                      <p className="folder_name" style={{ fontSize: "9px" }}> {item.name}</p>
+                      <p className="folder_name" style={{ fontSize: "9px" }}>
+                        {" "}
+                        {item.name}
+                      </p>
                       <div style={{ position: "absolute", top: 0, right: 0 }}>
                         {showRadioButtons && (
                           <input
@@ -556,7 +582,7 @@ const CADuploadedFiles = ({
             //     </div>
             //   ))}
             // </>
-             <>
+            <>
               {currentLevel === "cad_names" && (
                 <>
                   <div
@@ -566,15 +592,18 @@ const CADuploadedFiles = ({
                     {cadNames.map((cad, index) => (
                       <div
                         className="folder__card"
-                       style={{ display: "flex", width: "140px" }}
+                        style={{ display: "flex", width: "140px" }}
                       >
                         <img
                           src={folderimg}
-                         style={{ width: "40px" }}
+                          style={{ width: "40px" }}
                           alt=""
                           onClick={() => handleCadNameClick(cad.cad_name)}
                         />
-                        <p className="folder_name" style={{ fontSize: "11px" }}> {cad.cad_name}</p>
+                        <p className="folder_name" style={{ fontSize: "11px" }}>
+                          {" "}
+                          {cad.cad_name}
+                        </p>
                       </div>
                     ))}
                   </div>
@@ -590,15 +619,18 @@ const CADuploadedFiles = ({
                     <>
                       <div
                         className="folder__card"
-                       style={{ display: "flex", width: "140px" }}
+                        style={{ display: "flex", width: "140px" }}
                       >
                         <img
                           src={folderimg}
-                         style={{ width: "40px" }}
+                          style={{ width: "40px" }}
                           alt=""
                           onClick={() => handleCategoryClick(category)}
                         />
-                        <p className="folder_name" style={{ fontSize: "11px" }}> {category}</p>
+                        <p className="folder_name" style={{ fontSize: "11px" }}>
+                          {" "}
+                          {category}
+                        </p>
                       </div>
                     </>
                   ))}
@@ -613,16 +645,19 @@ const CADuploadedFiles = ({
                   {items.map((item) => (
                     <div
                       className="folder__card"
-                     style={{ display: "flex", width: "140px" }}
+                      style={{ display: "flex", width: "140px" }}
                     >
                       <img
                         src={folderimg}
-                       style={{ width: "40px" }}
+                        style={{ width: "40px" }}
                         alt=""
                         // onClick={() => handleCategoryClick(category)}
                         onClick={() => handleFolderClick(item)}
                       />
-                      <p className="folder_name" style={{ fontSize: "11px" }}> {item.name}</p>
+                      <p className="folder_name" style={{ fontSize: "11px" }}>
+                        {" "}
+                        {item.name}
+                      </p>
                       <div style={{ position: "absolute", top: 0, right: 0 }}>
                         {showRadioButtons && (
                           <input
