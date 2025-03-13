@@ -3,7 +3,7 @@ import "./Header.css";
 import searchimg from "../../assets/search.png";
 import profileimg from "../../assets/profile.png";
 import { IoChevronDown } from "react-icons/io5";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { MdOutlineLogout } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { removeLocalstorage } from "../../Pages/Utils/Common";
@@ -58,6 +58,10 @@ const Header = ({
   const { assignmentFolderName } = location.state || {};
   const { folderName } = location.state || {};
   const { detailsViewFolderName } = location.state || {};
+  const [searchParams] = useSearchParams(); // Hook to read URL parameters
+  const cadName = searchParams.get("cad_name"); // Get cad_name from URL
+  const category = searchParams.get("category");
+
   console.log("header===>FolderName", folderName);
 
   useEffect(() => {
@@ -118,7 +122,23 @@ const Header = ({
     }
     return "Search";
   };
+
+  const getHeaderName = () => {
+    if (location.pathname === "/caduploaded") {
+      if (category) {
+        return `Items of ${category}`;
+      } else if (cadName) {
+        return `Categories of ${cadName}`;
+      } else {
+        return "CAD Uploaded";
+      }
+    }
+    return ""; 
+  };
+
   const placeholderText = getPlaceholderText(location.pathname);
+
+  console.log(getHeaderName(),"getHeaderName>>")
   return (
     <div>
       <div
@@ -257,7 +277,8 @@ const Header = ({
                 {location.pathname === "/unassigneddesigner" && (
                   <h3>Assigned to</h3>
                 )}
-                {location.pathname === "/caduploaded" && <h3>CAD Uploaded</h3>}
+                <h3>{getHeaderName()}</h3>
+
                 {location.pathname === "/rendersuploaded" && (
                   <h3>Renders Uploaded</h3>
                 )}
