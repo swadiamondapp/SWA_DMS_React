@@ -8,8 +8,10 @@ import RendersProductPrint from "../RendersProductPrint/RendersProductPrint";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import ThreeDViewer from "../../ThreeDViewer/ThreeDViewer";
 import { GoDownload } from "react-icons/go";
+import { CircularProgress } from "@mui/material";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
-const RendersDetailPage = ({ folderDetails, sidebarExpanded }) => {
+const RendersDetailPage = ({ folderDetails, sidebarExpanded, isLoading }) => {
   const navigate = useNavigate();
   // console.log("folderDetailsoooo", folderDetails);
   const location = useLocation();
@@ -51,18 +53,17 @@ const RendersDetailPage = ({ folderDetails, sidebarExpanded }) => {
         const blobUrl = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = blobUrl;
-        
-        const extension = imageUrl.split('.').pop(); 
+
+        const extension = imageUrl.split(".").pop();
         link.download = `${fileName}_${code}.${extension}`;
-        
+
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        URL.revokeObjectURL(blobUrl); 
+        URL.revokeObjectURL(blobUrl);
       })
       .catch((error) => console.error("Error downloading the file:", error));
   };
-  
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -86,57 +87,99 @@ const RendersDetailPage = ({ folderDetails, sidebarExpanded }) => {
         renderMessage: true,
         cardDatas: folderDetails,
         page: page,
-        fid:fid
+        fid: fid,
       },
     });
   };
 
+  const handleBackClick = () => {
+    navigate(-1); 
+  }
+
   return (
     <>
-      {folderDetails?.map((item) => (
-        <div
-          className="RendersDetailPage"
-          key={item.id}
-          style={{ marginLeft: sidebarExpanded ? "218px" : "120px" }}
+      <div className="RendersHome_butns" style={{marginLeft: sidebarExpanded ? "218px" : "120px" ,width:"auto", justifyContent: "start" ,   marginTop:"30px"}}>
+        <button 
+        onClick={handleBackClick}
+        style={{marginLeft:"10px"}}
         >
-          <div className="Detail_Card">
-            <img
-              src={item.file_2d}
-              alt=""
-              onClick={() => handleForlderDetailsVeiw(item.id, item.designcode)}
-            />
-            <span>
-              POSTED ON: <b>{formatDate(item.created_at)}</b>
-            </span>
-            <button
-              className="Download_btn_hub"
-              onClick={() => handleDownload(item.file_2d, "image_2d", item.designcode)}
-            >
-              DOWNLOAD
-              <GoDownload />
-            </button>
-          </div>
-          <div className="Detail_Card">
-            <ThreeDViewer url={item.file_3d} />
-            <span>
-              POSTED ON: <b> {formatDate(item.created_at.split("T")[0])} </b>
-            </span>
-            <button
-              className="Download_btn_hub"
-              onClick={() => handleDownload(item.file_3d, "model_3d" , item.designcode)}
-            >
-              DOWNLOAD
-              <GoDownload />
-            </button>
-            <div style={{ display: "none" }}>
-              <RendersProductPrint
-                ref={printRef}
-                folderDetails={folderDetails}
-              />
-            </div>
-          </div>
+          {" "}
+          <IoMdArrowRoundBack style={{ fontSize: "20px" }} />
+        </button>
+      </div>
+      {isLoading ? (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "70vh",
+          }}
+        >
+          <CircularProgress
+            size={50}
+            sx={{
+              color: "#126e72",
+              padding: "8px 10px",
+              width: "35px",
+            }}
+          />
         </div>
-      ))}
+      ) : (
+        <>
+          {folderDetails?.map((item) => (
+            <div
+              className="RendersDetailPage"
+              key={item.id}
+              style={{ marginLeft: sidebarExpanded ? "218px" : "120px" }}
+            >
+              <div className="Detail_Card">
+                <img
+                  src={item.file_2d}
+                  alt=""
+                  onClick={() =>
+                    handleForlderDetailsVeiw(item.id, item.designcode)
+                  }
+                />
+                <span>
+                  POSTED ON: <b>{formatDate(item.created_at)}</b>
+                </span>
+                <button
+                  className="Download_btn_hub"
+                  onClick={() =>
+                    handleDownload(item.file_2d, "image_2d", item.designcode)
+                  }
+                >
+                  DOWNLOAD
+                  <GoDownload />
+                </button>
+              </div>
+              <div className="Detail_Card">
+                <ThreeDViewer url={item.file_3d} />
+                <span>
+                  POSTED ON:{" "}
+                  <b> {formatDate(item.created_at.split("T")[0])} </b>
+                </span>
+                <button
+                  className="Download_btn_hub"
+                  onClick={() =>
+                    handleDownload(item.file_3d, "model_3d", item.designcode)
+                  }
+                >
+                  DOWNLOAD
+                  <GoDownload />
+                </button>
+                <div style={{ display: "none" }}>
+                  <RendersProductPrint
+                    ref={printRef}
+                    folderDetails={folderDetails}
+                  />
+                </div>
+              </div>
+            </div>
+          ))}
+        </>
+      )}
     </>
   );
 };

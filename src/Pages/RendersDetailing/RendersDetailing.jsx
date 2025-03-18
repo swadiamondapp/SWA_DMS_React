@@ -26,6 +26,7 @@ const RendersDetailing = () => {
       <RendersDetailPage
         folderDetails={folderDetails}
         sidebarExpanded={sidebarExpanded}
+        isLoading={isLoading}
       />
     </div>
   );
