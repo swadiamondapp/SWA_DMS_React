@@ -47,9 +47,9 @@ const CADuploadedFiles = ({
   const [categories, setCategories] = useState([]);
   const [items, setItems] = useState([]);
 
-   const [searchParams] = useSearchParams(); 
-   const cadName = searchParams.get("cad_name"); 
-   const category = searchParams.get("category");
+  const [searchParams] = useSearchParams();
+  const cadName = searchParams.get("cad_name");
+  const category = searchParams.get("category");
 
   // useEffect(() => {
   //   cadDesignList(setDesignListData,SearchWithName);
@@ -63,14 +63,25 @@ const CADuploadedFiles = ({
 
   useEffect(() => {
     if (cadName && !category) {
-      cadUpLoadedCategoriesList(setCategories, cadName, setIsLoading, SearchWithName);
+      cadUpLoadedCategoriesList(
+        setCategories,
+        cadName,
+        setIsLoading,
+        SearchWithName
+      );
       setCurrentLevel("categories");
     }
   }, [cadName, category, SearchWithName]);
 
   useEffect(() => {
     if (cadName && category) {
-      cadUpLoadedImgeFoldersList(setItems, cadName, category, setIsLoading, SearchWithName);
+      cadUpLoadedImgeFoldersList(
+        setItems,
+        cadName,
+        category,
+        setIsLoading,
+        SearchWithName
+      );
       setCurrentLevel("items");
     }
   }, [cadName, category, SearchWithName]);
@@ -82,7 +93,6 @@ const CADuploadedFiles = ({
       setSelectedCadFolder([]);
     }
   };
-
 
   const handleFolderClick = (item) => {
     navigate(`/rendersdetailing/${item.id}`, {
@@ -141,7 +151,6 @@ const CADuploadedFiles = ({
     setFyleType("");
     setIsModalOpen(false);
   };
-
 
   const handleCadNameClick = (cadName) => {
     setSelectedCadName(cadName);
@@ -348,6 +357,17 @@ const CADuploadedFiles = ({
                               onClick={() => handleCadNameClick(cad.cad_name)}
                             />
                             <p className="folder_name"> {cad.cad_name}</p>
+                            <div className="folderInnerCount">
+                              <div
+                                style={{
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                }}
+                              >
+                                {cad.category_count_inside}
+                              </div>
+                            </div>
                           </div>
                         ))}
                       </>
@@ -367,9 +387,20 @@ const CADuploadedFiles = ({
                         <img
                           src={folderimg}
                           alt=""
-                          onClick={() => handleCategoryClick(category)}
+                          onClick={() => handleCategoryClick(category.category)}
                         />
-                        <p className="folder_name"> {category}</p>
+                        <p className="folder_name"> {category.category}</p>
+                        <div className="folderInnerCount">
+                              <div
+                                style={{
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                }}
+                              >
+                                {category.item_count}
+                              </div>
+                            </div>
                       </div>
                     </>
                   ))}
@@ -470,6 +501,28 @@ const CADuploadedFiles = ({
                           {" "}
                           {cad.cad_name}
                         </p>
+                        <div
+                          className="folderInnerCount"
+                          style={{
+                            right: "100px",
+                            top: "-10px",
+                            background: "#2466a4",
+                            width: "18px",
+                            height: "18px",
+                            padding: "2px",
+                          }}
+                        >
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              fontSize: "10px",
+                            }}
+                          >
+                            {cad.category_count_inside}
+                          </div>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -491,12 +544,34 @@ const CADuploadedFiles = ({
                           src={folderimg}
                           style={{ width: "26px" }}
                           alt=""
-                          onClick={() => handleCategoryClick(category)}
+                          onClick={() => handleCategoryClick(category.category)}
                         />
                         <p className="folder_name" style={{ fontSize: "9px" }}>
                           {" "}
-                          {category}
+                          {category.category}
                         </p>
+                        <div
+                          className="folderInnerCount"
+                          style={{
+                            right: "100px",
+                            top: "-10px",
+                            background: "#2466a4",
+                            width: "18px",
+                            height: "18px",
+                            padding: "2px",
+                          }}
+                        >
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              fontSize: "10px",
+                            }}
+                          >
+                            {category.item_count}
+                          </div>
+                        </div>
                       </div>
                     </>
                   ))}
@@ -604,6 +679,28 @@ const CADuploadedFiles = ({
                           {" "}
                           {cad.cad_name}
                         </p>
+                        <div
+                          className="folderInnerCount"
+                          style={{
+                            right: "130px",
+                            top: "-10px",
+                            background: "#2466a4",
+                            width: "18px",
+                            height: "18px",
+                            padding: "2px",
+                          }}
+                        >
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              fontSize: "10px",
+                            }}
+                          >
+                            {cad.category_count_inside}
+                          </div>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -625,12 +722,34 @@ const CADuploadedFiles = ({
                           src={folderimg}
                           style={{ width: "40px" }}
                           alt=""
-                          onClick={() => handleCategoryClick(category)}
+                          onClick={() => handleCategoryClick(category.category)}
                         />
                         <p className="folder_name" style={{ fontSize: "11px" }}>
                           {" "}
-                          {category}
+                          {category.category}
                         </p>
+                        <div
+                          className="folderInnerCount"
+                          style={{
+                            right: "130px",
+                            top: "-10px",
+                            background: "#2466a4",
+                            width: "18px",
+                            height: "18px",
+                            padding: "2px",
+                          }}
+                        >
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              fontSize: "10px",
+                            }}
+                          >
+                            {category.item_count}
+                          </div>
+                        </div>
                       </div>
                     </>
                   ))}

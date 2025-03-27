@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Stage, Layer, Rect, Arrow, Text, Image, Line } from "react-konva";
 import useImage from "use-image";
 import arrowbtn from "../../assets/arrowbtn.png";
@@ -24,7 +24,8 @@ const AnnotationCanvas = ({
   const [undoneShapes, setUndoneShapes] = useState([]);
   const [currentShape, setCurrentShape] = useState(null);
   const [action, setAction] = useState(null);
-  const [image, setImage] = useState(selectedDesign.image);
+  // const [image, setImage] = useState(selectedDesign.image);
+  const [image, setImage] = useState(null);
   const [text, setText] = useState("");
   const stageRef = useRef(null);
   const [loadedImage] = useImage(image, "Anonymous");
@@ -35,6 +36,27 @@ const AnnotationCanvas = ({
   const [updateImage, setUpadateImage] = useState({
     image: editedImage,
   });
+
+  useEffect(() => {
+    const loadImage = () => {
+      const img = new window.Image();
+      img.crossOrigin = "Anonymous";
+      const proxyUrl = 'https://api.allorigins.win/raw?url=';
+      const proxiedImageUrl =
+        proxyUrl + encodeURIComponent(selectedDesign.image);
+
+      img.src = proxiedImageUrl;
+
+      img.onload = () => {
+        setImage(img);
+      };
+      img.onerror = (e) => {
+        console.error("Image loading error", e);
+      };
+    };
+
+    loadImage();
+  }, [selectedDesign.image]);
 
   const handleMouseDown = (e) => {
     if (action === "arrow") {
@@ -146,38 +168,38 @@ const AnnotationCanvas = ({
 
   const handleUploadEditedImage = async () => {
     if (!stageRef.current) return;
-  
+
     const originalWidth = stageRef.current.width();
     const originalHeight = stageRef.current.height();
-    
-    const scaleFactor = 2; 
+
+    const scaleFactor = 2;
     stageRef.current.width(originalWidth * scaleFactor);
     stageRef.current.height(originalHeight * scaleFactor);
     stageRef.current.scale({ x: scaleFactor, y: scaleFactor });
-  
+
     // Redraw the stage at the higher resolution
     stageRef.current.draw();
-  
+
     // Get the data URL (higher resolution)
     const uri = stageRef.current.toDataURL();
-  
+
     // Reset the stage to original size
     stageRef.current.width(originalWidth);
     stageRef.current.height(originalHeight);
     stageRef.current.scale({ x: 1, y: 1 });
     stageRef.current.draw();
-  
+
     setEditedImage(uri);
-  
+
     if (!uri) {
       console.error("No edited image to upload.");
       return;
     }
-  
+
     try {
       const formData = new FormData();
       formData.append("image", uri);
-  
+
       setIsLoading(true);
       await editedImageUpload(
         setIsLoading,
@@ -195,7 +217,6 @@ const AnnotationCanvas = ({
       setIsLoading(false);
     }
   };
-  
 
   const getTextWidth = (text, fontSize) => {
     const canvas = document.createElement("canvas");
@@ -247,6 +268,7 @@ const AnnotationCanvas = ({
     });
   };
 
+  console.log(selectedDesign.image, "loadedImage>>>");
   return (
     <div
       style={{
@@ -256,6 +278,7 @@ const AnnotationCanvas = ({
         marginTop: "20px",
       }}
     >
+      {/* <img src={selectedDesign.image} x={0} y={0} width={470} height={400} /> */}
       <Stage
         width={470}
         height={400}
@@ -265,8 +288,12 @@ const AnnotationCanvas = ({
         ref={stageRef}
       >
         <Layer>
-          {loadedImage && (
-            <Image image={loadedImage} x={0} y={0} width={470} height={400} />
+          {image && (
+            <>
+              {image && (
+                <Image image={image} x={0} y={0} width={470} height={400} />
+              )}
+            </>
           )}
           {renderShapes()}
           {currentShape && currentShape.type === "arrow" && (

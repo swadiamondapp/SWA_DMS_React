@@ -2,10 +2,14 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import "../FinishedProject/FinishedProject.css";
 import folderimg from "../../assets/folder.png";
+import greenFolder from "../../assets/greenFolder.png";
 import DesignBtn from "../ADMIN PANEL/Design Pool/DesignBtn";
 import { LiaCloudUploadAltSolid } from "react-icons/lia";
 import UploadFile from "../UploadFile/UploadFile";
-import { createFinsishedProjects, finishedProjectList } from "../../Pages/Renders/Apis";
+import {
+  createFinsishedProjects,
+  finishedProjectList,
+} from "../../Pages/Renders/Apis";
 import SuccessModal from "../SuccessModal/SuccessModal";
 import { CircularProgress } from "@mui/material";
 import { MdViewModule } from "react-icons/md";
@@ -28,8 +32,8 @@ const FinishedProjects = (props) => {
   const [grid, setGrid] = useState(true);
   const [detail, setDetail] = useState(false);
   const [tiles, setTiles] = useState(false);
-  const [startTime, setStartTime] = useState('');
-  const [endTime, setEndTime] = useState('');
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
   const [dd, setDd] = useState();
   const [hide, sethide] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -37,7 +41,7 @@ const FinishedProjects = (props) => {
   const [designCode, setDesignCode] = useState("");
   const [Time, setTime] = useState(null);
 
-  console.log("startTime---",startTime)
+  console.log("startTime---", startTime);
 
   const handleView = () => {
     setView(!view);
@@ -128,9 +132,8 @@ const FinishedProjects = (props) => {
   };
 
   const fetchDesigns = useCallback(async () => {
-    await finishedProjectList(props?.setFinishedProjectData,setIsLoading);;
+    await finishedProjectList(props?.setFinishedProjectData, setIsLoading);
   }, []);
-
 
   // console.log("props?.finishedProjectData", props?.finishedProjectData);
   // console.log("loading", props?.isLoading);
@@ -253,35 +256,73 @@ const FinishedProjects = (props) => {
             />
           </div>
         )}
-           
-        { props?.isLoading === false && props?.finishedProjectData?.length === 0 && (
-        <div className="" style={{width:"100%",
-          height:"400px",display:"flex",alignItems:"center",justifyContent:"center"
-        }}>
-          <span>No Data found</span>
-          </div>
-        )}  
+
+        {props?.isLoading === false &&
+          props?.finishedProjectData?.length === 0 && (
+            <div
+              className=""
+              style={{
+                width: "100%",
+                height: "400px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <span>No Data found</span>
+            </div>
+          )}
 
         <div className="folderCard_parent RendersHome_folders_top">
-          {props?.finishedProjectData && props?.finishedProjectData?.map((item, index) => (
-            <>
-              {grid && (
-                <>
-                  <div
-                    style={{ cursor: "pointer" }}
-                    className="folder__card"
-                    onClick={() => handleFolderClick(item)}
-                  >
-                    <img src={folderimg} alt="" />
+          {props?.finishedProjectData &&
+            props?.finishedProjectData?.map((item, index) => (
+              <>
+                {grid && (
+                  <>
+                    <div
+                      style={{ cursor: "pointer" }}
+                      className="folder__card"
+                      onClick={() => handleFolderClick(item)}
+                    >
+                      <img
+                        src={
+                          item.wrk_status === "render_completed"
+                            ? greenFolder
+                            : folderimg
+                        }
+                        alt=""
+                      />
 
-                    <p className="text-truncate">
-                      {truncateText(item.name, 10)}
-                    </p>
-                    <span className="text-truncate_hover">{item.name}</span>
-                  </div>
-                </>
-              )}
-              {/* 
+                      <p className="text-truncate">
+                        {truncateText(item.name, 10)}
+                      </p>
+                      <span className="text-truncate_hover">{item.name}</span>
+                      <div
+                          className="folderInnerCount"
+                          // style={{
+                          //   right: "100px",
+                          //   top: "-10px",
+                          //   background: "#2466a4",
+                          //   width: "18px",
+                          //   height: "18px",
+                          //   padding: "2px",
+                          // }}
+                        >
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              fontSize: "10px",
+                            }}
+                          >
+                            {item.count_of_item}
+                          </div>
+                        </div>
+                    </div>
+                  </>
+                )}
+                {/* 
 <div className="folderCard_parent">
             <div
               className="folder__card"
@@ -294,45 +335,113 @@ const FinishedProjects = (props) => {
             </div>
           </div> */}
 
-              {tiles && (
-                <>
-                  <div
-                    className="folder__card"
-                    onClick={() => handleFolderClick(item)}
-                    style={{ display: "flex", width: "110px",cursor:"pointer" }}
-                  >
-                    <img src={folderimg} alt="" style={{ width: "26px" }} />
-
-                    <p className="text-truncate">
-                      {truncateText(item.name, 10)}
-                    </p>
-                    <span className="text-truncate_hover">{item.name}</span>
-                  </div>
-                </>
-              )}
-              {detail && (
-                <>
-                  <div
-                    className="folder__card"
-                    onClick={() => handleFolderClick(item)}
-                    style={{ display: "flex", width: "140px",cursor:"pointer" }}
-                  >
-                    <img src={folderimg} alt="" style={{ width: "40px" }} />
-
-                    <p className="text-truncate">
-                      {truncateText(item.name, 10)}
-                    </p>
-                    <span
-                      className="text-truncate_hover"
-                      style={{ fontSize: "11px" }}
+                {tiles && (
+                  <>
+                    <div
+                      className="folder__card"
+                      onClick={() => handleFolderClick(item)}
+                      style={{
+                        display: "flex",
+                        width: "110px",
+                        cursor: "pointer",
+                      }}
                     >
-                      {item.name}
-                    </span>
-                  </div>
-                </>
-              )}
-            </>
-          ))}
+                      <img
+                        src={
+                          item.wrk_status === "render_completed"
+                            ? greenFolder
+                            : folderimg
+                        }
+                        alt=""
+                        style={{ width: "26px" }}
+                      />
+
+                      <p className="text-truncate">
+                        {truncateText(item.name, 10)}
+                      </p>
+                      <span className="text-truncate_hover">{item.name}</span>
+                      <div
+                          className="folderInnerCount"
+                          style={{
+                            right: "100px",
+                            top: "-10px",
+                            background: "#2466a4",
+                            width: "18px",
+                            height: "18px",
+                            padding: "2px",
+                          }}
+                        >
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              fontSize: "10px",
+                            }}
+                          >
+                            {item.count_of_item}
+                          </div>
+                        </div>
+                    </div>
+                  </>
+                )}
+                {detail && (
+                  <>
+                    <div
+                      className="folder__card"
+                      onClick={() => handleFolderClick(item)}
+                      style={{
+                        display: "flex",
+                        width: "140px",
+                        cursor: "pointer",
+                      }}
+                    >
+                      <img
+                        src={
+                          item.wrk_status === "render_completed"
+                            ? greenFolder
+                            : folderimg
+                        }
+                        alt=""
+                        style={{ width: "40px" }}
+                      />
+
+                      <p className="text-truncate">
+                        {truncateText(item.name, 10)}
+                      </p>
+                      <span
+                        className="text-truncate_hover"
+                        style={{ fontSize: "11px" }}
+                      >
+                        {item.name}
+                      </span>
+                      <div
+                          className="folderInnerCount"
+                          style={{
+                            right: "130px",
+                            top: "-10px",
+                            background: "#2466a4",
+                            width: "18px",
+                            height: "18px",
+                            padding: "2px",
+                          }}
+                        >
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              fontSize: "10px",
+                            }}
+                          >
+                            {item.count_of_item}
+                          </div>
+                        </div>
+                    </div>
+                  </>
+                )}
+              </>
+            ))}
         </div>
       </div>
 
@@ -350,7 +459,7 @@ const FinishedProjects = (props) => {
         successMessage={"Files uploaded succesfully"}
       />
 
-{openFilterModal && (
+      {openFilterModal && (
         <DesignerFilterModal
           open={openFilterModal}
           onClose={() => setOpenFilterModal(false)}
@@ -372,7 +481,7 @@ const FinishedProjects = (props) => {
           Time={Time}
           setTime={setTime}
         />
-)}
+      )}
     </>
   );
 };

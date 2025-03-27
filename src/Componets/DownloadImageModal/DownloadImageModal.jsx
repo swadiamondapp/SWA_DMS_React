@@ -1,103 +1,70 @@
-import React, { useState,useEffect } from "react";
-import { Modal, Box, Button, FormControlLabel, Checkbox,CircularProgress } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Modal, Box, Button, FormControlLabel, Checkbox, CircularProgress } from "@mui/material";
+import JSZip from "jszip"; // Import JSZip
+import { saveAs } from "file-saver"; // Import file-saver
 import { downloadCadByFileType } from "../../Pages/Renders/Apis";
 
-const DownloadImageModal = ({ open, onClose,setFyleType,fileType,designListData,selectedCadFolder,is3DSelected,is2DSelected,setIs2DSelected,setIs3DSelected }) => {
-  // const [is2DSelected, setIs2DSelected] = useState(false);
-  // const [is3DSelected, setIs3DSelected] = useState(false);
-  const [downloadableImages,setDownloadableImages] = useState([])
-  const [isLoading,setIsLoading] = useState(false)
+const DownloadImageModal = ({ open, onClose, setFyleType, fileType, selectedCadFolder, is3DSelected, is2DSelected, setIs2DSelected, setIs3DSelected }) => {
+  const [downloadableImages, setDownloadableImages] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    downloadCadByFileType(setIsLoading, setDownloadableImages, fileType, selectedCadFolder);
+  }, [fileType]);
 
   const handleCheckboxChange = (type) => {
     if (type === "2D") {
-      const new2DState = !is2DSelected;
-      setIs2DSelected(new2DState);
-
-      // Check both selections
-      if (new2DState && is3DSelected) {
-        setFyleType("both");
-      } else if (new2DState) {
-        setFyleType("2d");
-      } else if (!new2DState && is3DSelected) {
-        setFyleType("3d");
-      } else {
-        setFyleType("");
-      }
+      setIs2DSelected(!is2DSelected);
+      setFyleType(!is2DSelected && is3DSelected ? "both" : !is2DSelected ? "" : "2d");
     } else if (type === "3D") {
-      const new3DState = !is3DSelected;
-      setIs3DSelected(new3DState);
-
-      // Check both selections
-      if (new3DState && is2DSelected) {
-        setFyleType("both");
-      } else if (new3DState) {
-        setFyleType("3d");
-      } else if (!new3DState && is2DSelected) {
-        setFyleType("2d");
-      } else {
-        setFyleType("");
-      }
+      setIs3DSelected(!is3DSelected);
+      setFyleType(!is3DSelected && is2DSelected ? "both" : !is3DSelected ? "" : "3d");
     }
   };
-useEffect(()=>{
-  downloadCadByFileType(setIsLoading,setDownloadableImages,fileType,selectedCadFolder)
-},[fileType])
-console.log(is2DSelected,is3DSelected,fileType,selectedCadFolder,"sdfsd===>")
-console.log(downloadableImages,"downloadableImages")
 
+  const handleDownloadAsZip = async () => {
+    if (!is2DSelected && !is3DSelected) {
+      console.error("No file type selected for download.");
+      return;
+    }
 
+    setIsLoading(true);
+    const zip = new JSZip();
+    let downloadPromises = [];
 
+    downloadableImages.forEach((cadItem) => {
+      const cadFolder = zip.folder(cadItem.name); // Create folder using cad_name
+      const files = cadItem.file || [];
 
-const handleDownloadMultiple = () => {
-  if (!is2DSelected && !is3DSelected) {
-    console.error("No file type selected for download.");
-    return;
-  }
+      files.forEach((url, index) => {
+        const is2DFile = /\.(jpg|jpeg|png)$/i.test(url);
+        const is3DFile = /\.3dm$/i.test(url);
 
-  const filteredImages = downloadableImages.flatMap(item => item.file);
-
-  // Separate 2D and 3D files based on file extensions
-  const twoDImages = filteredImages.filter(url => /\.(jpg|jpeg|png)$/i.test(url));
-  const threeDImages = filteredImages.filter(url => /\.3dm$/i.test(url));
-
-  let filesToDownload = [];
-
-  if (is2DSelected) {
-    filesToDownload = [...filesToDownload, ...twoDImages];
-  }
-
-  if (is3DSelected) {
-    filesToDownload = [...filesToDownload, ...threeDImages];
-  }
-
-  filesToDownload.forEach((fileUrl, index) => {
-    fetch(fileUrl, { method: "GET", mode: "cors" })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`Network response was not ok: ${response.statusText}`);
+        if ((is2DSelected && is2DFile) || (is3DSelected && is3DFile)) {
+          downloadPromises.push(
+            fetch(url)
+              .then((res) => res.blob())
+              .then((blob) => {
+                const fileType = blob.type.split("/")[1] || "unknown";
+                const fileExtension = is3DFile ? "3dm" : fileType === "jpeg" ? "jpg" : fileType;
+                const fileName = `${is2DFile ? "2D_Image" : "3D_Model"}_${index + 1}.${fileExtension}`;
+                cadFolder.file(fileName, blob);
+              })
+              .catch((error) => console.error("Error downloading file:", error))
+          );
         }
-        return response.blob();
-      })
-      .then(blob => {
-        const fileType = blob.type.split("/")[1] || "unknown";
-        const fileExtension = fileType === "jpeg" ? "jpg" : fileType;
-        const blobUrl = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = blobUrl;
-        const fileName = `design_${index + 1}.${fileExtension}`;
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(blobUrl);
-      })
-      .catch(error => console.error("Error downloading the file:", error));
-  });
-};
+      });
+    });
 
-const handleDownload = () => {
+    // Wait for all downloads to complete
+    await Promise.all(downloadPromises);
 
-};
+    // Generate ZIP file and trigger download
+    zip.generateAsync({ type: "blob" }).then((blob) => {
+      saveAs(blob, "CAD_Files.zip");
+      setIsLoading(false);
+    });
+  };
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -119,43 +86,14 @@ const handleDownload = () => {
         }}
       >
         <h3>Select Image Type</h3>
-        <div style={{display:'flex',justifyContent:'center',alignItems:'center',gap:'20px'}}>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "20px" }}>
+          <FormControlLabel control={<Checkbox checked={is2DSelected} onChange={() => handleCheckboxChange("2D")} />} label="2D Image" />
+          <FormControlLabel control={<Checkbox checked={is3DSelected} onChange={() => handleCheckboxChange("3D")} />} label="3D Image" />
+        </div>
 
-        <FormControlLabel
-          control={
-              <Checkbox
-              checked={is2DSelected}
-              onChange={() => handleCheckboxChange("2D")}
-              />
-            }
-            label="2D Image"
-            />
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={is3DSelected}
-              onChange={() => handleCheckboxChange("3D")}
-              />
-            }
-            label="3D Image"
-            />
-            </div>
-        
-
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleDownloadMultiple}
-          disabled={!is2DSelected && !is3DSelected} // Disable button if none is selected
-          sx={{ mt: 0 }}
-          >
-            {isLoading ? (
-    <CircularProgress size={24} color="inherit" />
-  ) : (
-    "Download"
-  )}
+        <Button variant="contained" color="primary" onClick={handleDownloadAsZip} disabled={!is2DSelected && !is3DSelected || isLoading}>
+          {isLoading ? <CircularProgress size={24} color="inherit" /> : "Download ZIP"}
         </Button>
-        
       </Box>
     </Modal>
   );
