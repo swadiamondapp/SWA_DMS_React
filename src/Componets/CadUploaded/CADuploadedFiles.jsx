@@ -11,7 +11,7 @@ import {
   cadUpLoadedImgeFoldersList,
   cadUpLoadedList,
 } from "../../Pages/Renders/Apis";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, Skeleton } from "@mui/material";
 import greenFolder from "../../assets/greenFolder.png";
 import DownloadImageModal from "../DownloadImageModal/DownloadImageModal";
 import { IoMdArrowRoundBack } from "react-icons/io";
@@ -413,14 +413,32 @@ const CADuploadedFiles = ({
                   style={{ cursor: "pointer" }}
                 >
                   {items.map((item) => (
-                    <div className="folder__card">
-                      <img
-                        style={{width:"118px",height:"87px"}}
-                        src={item?.file_2d ? item?.file_2d : folderimg}
-                        alt=""
-                        // onClick={() => handleCategoryClick(category)}
-                        onClick={() => handleFolderClick(item)}
-                      />
+                    <div
+                      className="folder__card"
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "7px",
+                      }}
+                    >
+                      {item?.file_2d ? (
+                        <img
+                          style={{
+                            width: "118px",
+                            height: "87px",
+                          }}
+                          src={item?.file_2d || folderimg}
+                          alt=""
+                          // onClick={() => handleCategoryClick(category)}
+                          onClick={() => handleFolderClick(item)}
+                        />
+                      ) : (
+                        <Skeleton
+                          variant="rectangular"
+                          width={118}
+                          height={87}
+                        />
+                      )}
                       <p className="folder_name"> {item.name}</p>
                       <div style={{ position: "absolute", top: 0, right: 0 }}>
                         {showRadioButtons && (
@@ -587,10 +605,10 @@ const CADuploadedFiles = ({
                   {items.map((item) => (
                     <div
                       className="folder__card"
-                      style={{ display: "flex", width: "110px",gap:"5px" }}
+                      style={{ display: "flex", width: "110px", gap: "5px" }}
                     >
                       <img
-                        style={{width:"26px"}}
+                        style={{ width: "26px" }}
                         src={item?.file_2d ? item?.file_2d : folderimg}
                         alt=""
                         // onClick={() => handleCategoryClick(category)}
@@ -765,10 +783,10 @@ const CADuploadedFiles = ({
                   {items.map((item) => (
                     <div
                       className="folder__card"
-                      style={{ display: "flex", width: "140px",gap:"5px" }}
+                      style={{ display: "flex", width: "140px", gap: "5px" }}
                     >
                       <img
-                        style={{width:"40px"}}
+                        style={{ width: "40px" }}
                         src={item?.file_2d ? item?.file_2d : folderimg}
                         alt=""
                         // onClick={() => handleCategoryClick(category)}
