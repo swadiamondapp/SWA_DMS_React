@@ -12,6 +12,7 @@ import undo from "../../assets/undo.png";
 import "./AnnotationCanvas.css";
 import { editedImageUpload } from "../ADMIN PANEL/Design Pool/Api";
 import { TfiSave } from "react-icons/tfi";
+import { CircularProgress } from "@mui/material";
 
 const AnnotationCanvas = ({
   selectedDesign,
@@ -36,26 +37,33 @@ const AnnotationCanvas = ({
   const [updateImage, setUpadateImage] = useState({
     image: editedImage,
   });
+  const [loader, setLoader] = useState(false);
 
   useEffect(() => {
     const loadImage = () => {
+      setLoader(true); // ✅ Show loader before fetching image
+
       const img = new window.Image();
       img.crossOrigin = "Anonymous";
-      const proxyUrl = 'https://api.allorigins.win/raw?url=';
+      const proxyUrl = "https://api.allorigins.win/raw?url=";
       const proxiedImageUrl =
         proxyUrl + encodeURIComponent(selectedDesign.image);
-
       img.src = proxiedImageUrl;
 
       img.onload = () => {
-        setImage(img);
+        setImage(img); // ✅ Set the image after loading
+        setLoader(false); // ✅ Hide loader only when the image is loaded
       };
+
       img.onerror = (e) => {
         console.error("Image loading error", e);
+        setLoader(false); // ✅ Hide loader on error
       };
     };
 
-    loadImage();
+    if (selectedDesign?.image) {
+      loadImage();
+    }
   }, [selectedDesign.image]);
 
   const handleMouseDown = (e) => {
@@ -278,125 +286,142 @@ const AnnotationCanvas = ({
         marginTop: "20px",
       }}
     >
-      {/* <img src={selectedDesign.image} x={0} y={0} width={470} height={400} /> */}
-      <Stage
-        width={470}
-        height={400}
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        ref={stageRef}
-      >
-        <Layer>
-          {image && (
-            <>
-              {image && (
-                <Image image={image} x={0} y={0} width={470} height={400} />
-              )}
-            </>
-          )}
-          {renderShapes()}
-          {currentShape && currentShape.type === "arrow" && (
-            <Arrow points={currentShape.points} stroke="black" />
-          )}
-          {currentShape && currentShape.type === "rect" && (
-            <Rect
-              x={currentShape.x}
-              y={currentShape.y}
-              width={currentShape.width}
-              height={currentShape.height}
-              stroke="black"
-            />
-          )}
-          {currentShape && currentShape.type === "text" && (
-            <Text
-              x={currentShape.x}
-              y={currentShape.y}
-              text={text}
-              fontSize={10}
-              fill="red"
-            />
-          )}
-          {drawingPath.length > 0 && (
-            <Line points={drawingPath.flat()} stroke="black" />
-          )}
-        </Layer>
-      </Stage>
-      <div
-        className="annotation_buttons"
-        style={{ position: "absolute", bottom: "0px", left: "4%" }}
-      >
-        <button onClick={() => setAction("arrow")}>
-          <img
-            style={{ width: "16px", height: "15px" }}
-            src={arrowbtn}
-            alt="arrow"
-          />
-        </button>
-        <button onClick={() => setAction("rect")}>
-          <img
-            style={{ width: "16px", height: "15px" }}
-            src={rectangle}
-            alt="rectangle"
-          />
-        </button>
-        <button onClick={() => setAction("text")}>
-          <img
-            style={{ width: "16px", height: "16px" }}
-            src={textAdd}
-            alt="text"
-          />
-        </button>
-        <button onClick={() => setAction("draw")}>
-          <img
-            style={{ width: "17px", height: "17px" }}
-            src={pencil2}
-            alt="draw"
-          />
-        </button>
-        <button onClick={handleUndo}>
-          <img
-            style={{ width: "16px", height: "15px" }}
-            src={undo}
-            alt="undo"
-          />
-        </button>
-        <button onClick={handleRedo}>
-          <img
-            style={{ width: "16px", height: "15px" }}
-            src={prev}
-            alt="prev"
-          />
-        </button>
-        <button onClick={handleDelete}>
-          <img
-            style={{ width: "16px", height: "15px" }}
-            src={dlt10}
-            alt="delete"
-          />
-        </button>
-        <button onClick={handleUploadEditedImage}>
-          <TfiSave style={{ fontSize: "15px", marginTop: "2px" }} />
-        </button>
-      </div>
-      {currentShape && currentShape.type === "text" && (
+      {loader ? (
         <div
+          className=""
           style={{
-            position: "absolute",
-            top: currentShape.y,
-            left: currentShape.x,
-            zIndex: 10,
+            display: "flex",
+            width: "470px",
+            height: "400px",
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
-          <input
-            type="text"
-            value={text}
-            onChange={handleTextChange}
-            onKeyDown={handleKeyPress}
-            placeholder="Type text here"
-            style={{ fontSize: "10px", padding: "5px", width: "120px" }}
+          <CircularProgress
+            size={20}
+            sx={{
+              color: "black",
+            }}
           />
         </div>
+      ) : (
+        <>
+          {/* <img src={selectedDesign.image} x={0} y={0} width={470} height={400} /> */}
+          <Stage
+            width={470}
+            height={400}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            ref={stageRef}
+          >
+            <Layer>
+              <Image image={image} x={0} y={0} width={470} height={400} />
+
+              {renderShapes()}
+              {currentShape && currentShape.type === "arrow" && (
+                <Arrow points={currentShape.points} stroke="black" />
+              )}
+              {currentShape && currentShape.type === "rect" && (
+                <Rect
+                  x={currentShape.x}
+                  y={currentShape.y}
+                  width={currentShape.width}
+                  height={currentShape.height}
+                  stroke="black"
+                />
+              )}
+              {currentShape && currentShape.type === "text" && (
+                <Text
+                  x={currentShape.x}
+                  y={currentShape.y}
+                  text={text}
+                  fontSize={10}
+                  fill="red"
+                />
+              )}
+              {drawingPath.length > 0 && (
+                <Line points={drawingPath.flat()} stroke="black" />
+              )}
+            </Layer>
+          </Stage>
+          <div
+            className="annotation_buttons"
+            style={{ position: "absolute", bottom: "0px", left: "4%" }}
+          >
+            <button onClick={() => setAction("arrow")}>
+              <img
+                style={{ width: "16px", height: "15px" }}
+                src={arrowbtn}
+                alt="arrow"
+              />
+            </button>
+            <button onClick={() => setAction("rect")}>
+              <img
+                style={{ width: "16px", height: "15px" }}
+                src={rectangle}
+                alt="rectangle"
+              />
+            </button>
+            <button onClick={() => setAction("text")}>
+              <img
+                style={{ width: "16px", height: "16px" }}
+                src={textAdd}
+                alt="text"
+              />
+            </button>
+            <button onClick={() => setAction("draw")}>
+              <img
+                style={{ width: "17px", height: "17px" }}
+                src={pencil2}
+                alt="draw"
+              />
+            </button>
+            <button onClick={handleUndo}>
+              <img
+                style={{ width: "16px", height: "15px" }}
+                src={undo}
+                alt="undo"
+              />
+            </button>
+            <button onClick={handleRedo}>
+              <img
+                style={{ width: "16px", height: "15px" }}
+                src={prev}
+                alt="prev"
+              />
+            </button>
+            <button onClick={handleDelete}>
+              <img
+                style={{ width: "16px", height: "15px" }}
+                src={dlt10}
+                alt="delete"
+              />
+            </button>
+            <button onClick={handleUploadEditedImage}>
+              <TfiSave style={{ fontSize: "15px", marginTop: "2px" }} />
+            </button>
+          </div>
+          {currentShape && currentShape.type === "text" && (
+            <div
+              style={{
+                position: "absolute",
+                top: currentShape.y,
+                left: currentShape.x,
+                zIndex: 10,
+              }}
+            >
+              <input
+                type="text"
+                value={text}
+                onChange={handleTextChange}
+                onKeyDown={handleKeyPress}
+                placeholder="Type text here"
+                style={{ fontSize: "10px", padding: "5px", width: "120px" }}
+              />
+            </div>
+          )}
+        </>
       )}
     </div>
   );
