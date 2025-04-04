@@ -213,7 +213,11 @@ const RendersUploadedFile = (props) => {
                     // onClick={() => handleFolderClick(item)}
                   >
                     <img
-                      src={folderimg}
+                      src={
+                        item.wrk_status === "render_completed"
+                          ? greenFolder
+                          : folderimg
+                      }
                       alt=""
                       onClick={() => handleFolderClick(item)}
                     />
@@ -222,6 +226,28 @@ const RendersUploadedFile = (props) => {
                       {truncateText(item.name, 10)}
                     </p>
                     <span className="text-truncate_hover">{item.name}</span>
+                    <div
+                          className="folderInnerCount"
+                          // style={{
+                          //   right: "100px",
+                          //   top: "-10px",
+                          //   background: "#2466a4",
+                          //   width: "18px",
+                          //   height: "18px",
+                          //   padding: "2px",
+                          // }}
+                        >
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              fontSize: "10px",
+                            }}
+                          >
+                            {item.count_of_item}
+                          </div>
+                        </div>
                   </div>
                 </>
               )}
@@ -249,12 +275,42 @@ const RendersUploadedFile = (props) => {
                       cursor: "pointer",
                     }}
                   >
-                    <img src={folderimg} alt="" style={{ width: "26px" }} />
+                    <img
+                      src={
+                        item.wrk_status === "render_completed"
+                          ? greenFolder
+                          : folderimg
+                      }
+                      alt=""
+                      style={{ width: "26px" }}
+                    />
 
                     <p className="text-truncate">
                       {truncateText(item.name, 10)}
                     </p>
                     <span className="text-truncate_hover">{item.name}</span>
+                    <div
+                          className="folderInnerCount"
+                          style={{
+                            right: "100px",
+                            top: "-10px",
+                            background: "#2466a4",
+                            width: "18px",
+                            height: "18px",
+                            padding: "2px",
+                          }}
+                        >
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              fontSize: "10px",
+                            }}
+                          >
+                            {item.count_of_item}
+                          </div>
+                        </div>
                   </div>
                 </>
               )}
@@ -269,7 +325,15 @@ const RendersUploadedFile = (props) => {
                       cursor: "pointer",
                     }}
                   >
-                    <img src={folderimg} alt="" style={{ width: "40px" }} />
+                    <img
+                      src={
+                        item.wrk_status === "render_completed"
+                          ? greenFolder
+                          : folderimg
+                      }
+                      alt=""
+                      style={{ width: "40px" }}
+                    />
 
                     <p className="text-truncate">
                       {truncateText(item.name, 10)}
@@ -280,6 +344,28 @@ const RendersUploadedFile = (props) => {
                     >
                       {item.name}
                     </span>
+                    <div
+                          className="folderInnerCount"
+                          style={{
+                            right: "130px",
+                            top: "-10px",
+                            background: "#2466a4",
+                            width: "18px",
+                            height: "18px",
+                            padding: "2px",
+                          }}
+                        >
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              fontSize: "10px",
+                            }}
+                          >
+                            {item.count_of_item}
+                          </div>
+                        </div>
                   </div>
                 </>
               )}

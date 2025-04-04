@@ -35,7 +35,9 @@ export const uplodedDesignPagination = async (
   setIsLoading(true);
   try {
     const response = await apiService.get(
-      `${LIST_UPLOAD_DESIGN}?page=${currentPage}&design_code=${SearchWithName}`
+      `${LIST_UPLOAD_DESIGN}?page=${currentPage}&design_code=${
+        SearchWithName ? SearchWithName : ""
+      }`
     );
     if (checkApiStatus(response)) {
       setData(response.data.results.data);
@@ -89,8 +91,8 @@ export const upload_multiple_designs_items = async (
       formData.append(`image${index + 1}`, file.originFileObj);
       console.log(file.originFileObj, "uploaedImageweew");
     });
-    formData.append('tag', formDataId.tag);
-    formData.append('product_type', formDataId.productCategory);
+    formData.append("tag", formDataId.tag);
+    formData.append("product_type", formDataId.productCategory);
     const body = formData;
     console.log(body, "body==>Upload");
     const response = await apiService.post(UPLOAD_MULTIPLE_IMAGES, body);
@@ -104,11 +106,11 @@ export const upload_multiple_designs_items = async (
         setSuccessModalOpen(false);
       }, 1600);
       handleclose();
-      setErrors({})
+      setErrors({});
       setFormData({
         productCategory: "",
         tag: [],
-      })
+      });
     }
     return res;
   } catch (error) {
@@ -170,7 +172,7 @@ export const designerFilterBasedDate = async (
   }
 };
 
-export const  designerFilter = async (
+export const designerFilter = async (
   setIsLoading,
   id,
   formData,
@@ -179,14 +181,13 @@ export const  designerFilter = async (
   endDate,
   setFilteredData
 ) => {
-  
   try {
     setIsLoading(true);
     let apiUrl = `${DESIGNER_CATEGORY_FILTER}${id}?category_ids=${
       formData.productCategory
     }&date_from=${startDate ? startDate : ""}&date_to=${
       endDate ? endDate : ""
-    }&tags=${ formData.tag ? formData.tag : "" }`;
+    }&tags=${formData.tag ? formData.tag : ""}`;
     const response = await apiService.get(apiUrl);
     if (response.data.results.status_code === 200) {
       setFolderDetails(response.data.results.data);
@@ -215,12 +216,12 @@ export const designerDashboradFilter = async (
       formData.productCategory
     }&date_from=${startDate ? startDate : ""}&date_to=${
       endDate ? endDate : ""
-    }&tags=${ formData.tag ? formData.tag : "" }`;
+    }&tags=${formData.tag ? formData.tag : ""}`;
     const response = await apiService.get(apiUrl);
     if (response.data.results.status_code === 200) {
       setFolderDetails(response.data.results.data);
-      setOpenFilterModal(false)
-      sethide(true)
+      setOpenFilterModal(false);
+      sethide(true);
     }
   } catch (error) {
     console.log(error);
@@ -229,28 +230,23 @@ export const designerDashboradFilter = async (
   }
 };
 
-
 export const designerAssignToFilter = async (
   setIsLoading,
   designCode,
   setFolderDetails,
   startDate,
-  endDate,
+  endDate
 ) => {
-  
   try {
     setIsLoading(true);
-    let apiUrl = `${DESIGNER_ASSIGNTO_FILTER
-    }?design_code=${
-      designCode
-    }&date_from=${startDate ? startDate : ""}&date_to=${
-      endDate ? endDate : ""
-    }`;
+    let apiUrl = `${DESIGNER_ASSIGNTO_FILTER}?design_code=${designCode}&date_from=${
+      startDate ? startDate : ""
+    }&date_to=${endDate ? endDate : ""}`;
     const response = await apiService.get(apiUrl);
     if (response.data.results.status_code === 200) {
       setFolderDetails(response.data.results.data);
-      setOpenFilterModal(false)
-      sethide(true)
+      setOpenFilterModal(false);
+      sethide(true);
     }
   } catch (error) {
     console.log(error);
@@ -267,21 +263,23 @@ export const renderFilter = async (
   endDate,
   startTime,
   endTime,
-  setOpenFilterModal
+  setOpenFilterModal,
+  status
 ) => {
   try {
     setIsLoading(true);
-    let apiUrl = `${RENDER_FILTER
-    }?design_code=${
-      designCode
-    }&date_from=${startDate ? startDate : ""}&date_to=${
-      endDate ? endDate : ""
-    }&time_from=${startTime ? startTime :""}&time_to=${endTime ? endTime : ""}`;
+    let apiUrl = `${RENDER_FILTER}?design_code=${designCode}&date_from=${
+      startDate ? startDate : ""
+    }&date_to=${endDate ? endDate : ""}&time_from=${
+      startTime ? startTime : ""
+    }&time_to=${endTime ? endTime : ""}&completion_status=${
+      status && status ? status : ""
+    }`;
     const response = await apiService.get(apiUrl);
     if (response.data.results.status_code === 200) {
       setFolderDetails(response.data.results.data);
-      setOpenFilterModal(false)
-      sethide(true)
+      setOpenFilterModal(false);
+      sethide(true);
     }
   } catch (error) {
     console.log(error);
@@ -302,16 +300,15 @@ export const renderFinishedFilter = async (
 ) => {
   try {
     setIsLoading(true);
-    let apiUrl = `${RENDER_FINISHED_FILTER
-    }?foldername=${
-      designCode
-    }&date_from=${startDate ? startDate : ""}&date_to=${
-      endDate ? endDate : ""
-    }&time_from=${startTime ? startTime :""}&time_to=${endTime ? endTime : ""}`;
+    let apiUrl = `${RENDER_FINISHED_FILTER}?foldername=${designCode}&date_from=${
+      startDate ? startDate : ""
+    }&date_to=${endDate ? endDate : ""}&time_from=${
+      startTime ? startTime : ""
+    }&time_to=${endTime ? endTime : ""}`;
     const response = await apiService.get(apiUrl);
     if (response.data.results.status_code === 200) {
       setFolderDetails(response.data.results.data);
-      setOpenFilterModal(false)
+      setOpenFilterModal(false);
       // sethide(true)
     }
   } catch (error) {

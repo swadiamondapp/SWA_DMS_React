@@ -42,6 +42,8 @@ const DesignerFilterModal = ({
   setDesignCode,
   Time,
   setTime,
+  setStatus,
+  status,
 }) => {
   const { id } = useParams();
   const [filterTag, setFilterTag] = useState("");
@@ -60,14 +62,13 @@ const DesignerFilterModal = ({
   // const [designCode, setDesignCode] = useState("");
   // const [Time, setTime] = useState(null);
 
-
   const [formData, setFormData] = useState({
     productCategory: "",
     tag: [],
   });
 
-  console.log(startTime, "startTime")
-  console.log(endTime, "endTime")
+  console.log(startTime, "startTime");
+  console.log(endTime, "endTime");
 
   useEffect(() => {
     tag_table_data(setTags, setIsLoading);
@@ -90,10 +91,10 @@ const DesignerFilterModal = ({
     setOpenFilterModal(false);
     setDd(null);
     sethide(false);
-    setEndTime("")
-    setStartTime("")
-    setTime("")
-    setDesignCode("")
+    setEndTime("");
+    setStartTime("");
+    setTime("");
+    setDesignCode("");
   };
 
   const handleChange = (values) => {
@@ -107,7 +108,6 @@ const DesignerFilterModal = ({
     }
   };
 
-
   const handleChangeTime = (values) => {
     if (values && values.length === 2) {
       const [start, end] = values;
@@ -119,8 +119,8 @@ const DesignerFilterModal = ({
       setEndTime(formattedEnd);
     } else {
       setTime(null);
-      setStartTime('');
-      setEndTime('');
+      setStartTime("");
+      setEndTime("");
     }
   };
 
@@ -184,8 +184,7 @@ const DesignerFilterModal = ({
         endDate
         // setFilteredData
       );
-    }
-    else if (location.pathname === "/renderCard") {
+    } else if (location.pathname === "/renderCard") {
       renderFilter(
         setIsLoading,
         designCode,
@@ -194,11 +193,11 @@ const DesignerFilterModal = ({
         endDate,
         startTime,
         endTime,
-        setOpenFilterModal
-        // setFilteredData
+        setOpenFilterModal,
+        // setFilteredData,
+        status
       );
-    }
-    else if (location.pathname === "/finishedProject") {
+    } else if (location.pathname === "/finishedProject") {
       renderFinishedFilter(
         setIsLoading,
         designCode,
@@ -212,7 +211,6 @@ const DesignerFilterModal = ({
       );
     }
   };
-
 
   return (
     <>
@@ -300,6 +298,42 @@ const DesignerFilterModal = ({
                   onChange={(e) => setDesignCode(e.target.value.toUpperCase())}
                 />
               </div>
+              {location.pathname ==="/renderCard" && (
+                  <div
+                    className="edit_fields"
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      marginTop: "20px",
+                    }}
+                  >
+                    <span className="label-text">Filter with Status</span>
+                    <Select
+                      showSearch
+                      // value={formData.selectedRole}
+                      placeholder="Select a value"
+                      optionFilterProp="children"
+                      onChange={(value) => setStatus(value)}
+                      onSearch={onSearch}
+                      filterOption={filterOption}
+                      style={{ width: "100%" }}
+                      options={[
+                        {
+                          value: "",
+                          label: "All",
+                        },
+                        {
+                          value: "Completed",
+                          label: "Completed",
+                        },
+                        {
+                          value: "Not Completed",
+                          label: "Not completed",
+                        },
+                      ]}
+                    />
+                  </div>
+                )}
               <div
                 className="edit_fields"
                 style={{
@@ -316,79 +350,77 @@ const DesignerFilterModal = ({
                 />
               </div>
             </>
-            ) : (
-              null
-            )
-          }
-
+          ) : null}
 
           {location.pathname !== "/renderCard" &&
-          location.pathname !== "/finishedProject" && (
-            <>
-              {page == "assignto" ? (
-                <div
-                  className="edit_fields"
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    marginTop: "20px",
-                  }}
-                >
-                  <span className="label-text">Design Code</span>
-                  <input
-                    type="text"
+            location.pathname !== "/finishedProject" && (
+              <>
+                {page == "assignto" ? (
+                  <div
+                    className="edit_fields"
                     style={{
-                      width: "100%",
-                      padding: "6px",
-                      borderRadius: "4px",
-                      border: "1px solid lightgray",
-                      fontSize: "14px",
-                      outline: "none",
+                      display: "flex",
+                      flexDirection: "column",
+                      marginTop: "20px",
                     }}
-                    value={designCode.toUpperCase()}
-                    onChange={(e) => setDesignCode(e.target.value.toUpperCase())}
-                  />
-                </div>
-              ) : (
-                <div>
-                  {" "}
-                  <div className="productCategory">
-                    <label
-                      htmlFor=""
-                      className="label-text"
-                      style={{ marginBottom: "10px" }}
-                    >
-                      Product Category
-                    </label>
-                    <Select
-                      showSearch
-                      placeholder="-Select-"
-                      optionFilterProp="children"
-                      value={formData.productCategory}
-                      onChange={(value) =>
-                        setFormData((prevState) => ({
-                          ...prevState,
-                          productCategory: [value],
-                        }))
-                      }
-                      onSearch={onSearch}
-                      filterOption={filterOption}
+                  >
+                    <span className="label-text">Design Code</span>
+                    <input
+                      type="text"
                       style={{
                         width: "100%",
-                        zIndex: "9999999",
-                        background: "#006E7F1A",
+                        padding: "6px",
+                        borderRadius: "4px",
+                        border: "1px solid lightgray",
+                        fontSize: "14px",
+                        outline: "none",
                       }}
-                      options={ProudctCategory.map((tag) => ({
-                        label: tag.name,
-                        value: tag.id,
-                      }))}
+                      value={designCode.toUpperCase()}
+                      onChange={(e) =>
+                        setDesignCode(e.target.value.toUpperCase())
+                      }
                     />
                   </div>
-                  <div className="tagsInputfeild">
-                    <label htmlFor="" className="label-text">
-                      Tags
-                    </label>
-                    {/* <TagsInput
+                ) : (
+                  <div>
+                    {" "}
+                    <div className="productCategory">
+                      <label
+                        htmlFor=""
+                        className="label-text"
+                        style={{ marginBottom: "10px" }}
+                      >
+                        Product Category
+                      </label>
+                      <Select
+                        showSearch
+                        placeholder="-Select-"
+                        optionFilterProp="children"
+                        value={formData.productCategory}
+                        onChange={(value) =>
+                          setFormData((prevState) => ({
+                            ...prevState,
+                            productCategory: [value],
+                          }))
+                        }
+                        onSearch={onSearch}
+                        filterOption={filterOption}
+                        style={{
+                          width: "100%",
+                          zIndex: "9999999",
+                          background: "#006E7F1A",
+                        }}
+                        options={ProudctCategory.map((tag) => ({
+                          label: tag.name,
+                          value: tag.id,
+                        }))}
+                      />
+                    </div>
+                    <div className="tagsInputfeild">
+                      <label htmlFor="" className="label-text">
+                        Tags
+                      </label>
+                      {/* <TagsInput
                           value={selectedFechedTags}
                           onChange={(value) => {
                             console.log("Tag changed to:", value); // Log the tag value to the console
@@ -402,32 +434,32 @@ const DesignerFilterModal = ({
                           classNames="inputTag"
                         /> */}
 
-                    <Select
-                      mode="multiple"
-                      style={{
-                        width: "100%",
-                        zIndex: "9999999",
-                        background: "#006E7F1A",
-                      }}
-                      placeholder="Select tags"
-                      onChange={(value) => {
-                        console.log("Tag changed to:", value);
-                        setFormData((prevState) => ({
-                          ...prevState,
-                          tag: value,
-                        }));
-                      }}
-                      options={selectedFechedTags.map((tag) => ({
-                        label: tag.name,
-                        value: tag.id,
-                      }))}
-                    />
-                  </div>
-                  <div className="tagsInputfeild">
-                    <label htmlFor="" className="label-text">
-                      Designer Wise
-                    </label>
-                    {/* <Select
+                      <Select
+                        mode="multiple"
+                        style={{
+                          width: "100%",
+                          zIndex: "9999999",
+                          background: "#006E7F1A",
+                        }}
+                        placeholder="Select tags"
+                        onChange={(value) => {
+                          console.log("Tag changed to:", value);
+                          setFormData((prevState) => ({
+                            ...prevState,
+                            tag: value,
+                          }));
+                        }}
+                        options={selectedFechedTags.map((tag) => ({
+                          label: tag.name,
+                          value: tag.id,
+                        }))}
+                      />
+                    </div>
+                    <div className="tagsInputfeild">
+                      <label htmlFor="" className="label-text">
+                        Designer Wise
+                      </label>
+                      {/* <Select
               showSearch
               placeholder="-Select-"
               optionFilterProp="children"
@@ -447,33 +479,33 @@ const DesignerFilterModal = ({
               }))}
             /> */}
 
-                    <Select
-                      showSearch
-                      placeholder="-Select-"
-                      optionFilterProp="children"
-                      value={filterDesigner}
-                      onChange={(value) => setFilterDesigner(value)}
-                      onSearch={onSearch}
-                      filterOption={filterOption}
-                      style={{
-                        width: "100%",
-                        height: "40px",
-                        zIndex: "9999999",
-                        background: "#006E7F1A",
-                      }}
-                      notFoundContent={!isLoading ? "Nithin" : null}
-                    >
-                      {designers.map((designer) => (
-                        <Option key={designer.name} value={designer.name}>
-                          {designer.name}
-                        </Option>
-                      ))}
-                    </Select>
+                      <Select
+                        showSearch
+                        placeholder="-Select-"
+                        optionFilterProp="children"
+                        value={filterDesigner}
+                        onChange={(value) => setFilterDesigner(value)}
+                        onSearch={onSearch}
+                        filterOption={filterOption}
+                        style={{
+                          width: "100%",
+                          height: "40px",
+                          zIndex: "9999999",
+                          background: "#006E7F1A",
+                        }}
+                        notFoundContent={!isLoading ? "Nithin" : null}
+                      >
+                        {designers.map((designer) => (
+                          <Option key={designer.name} value={designer.name}>
+                            {designer.name}
+                          </Option>
+                        ))}
+                      </Select>
+                    </div>
                   </div>
-                </div>
-              )}
-            </>
-          )}
+                )}
+              </>
+            )}
           <div
             style={{
               display: "grid",
