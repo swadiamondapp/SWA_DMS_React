@@ -30,6 +30,7 @@ const RendersHome = ({
   const [isLoading, setIsLoading] = useState(false);
   const [designCode, setDesignCode] = useState("");
   const [Time, setTime] = useState(null);
+  const [status, setStatus] = useState(null);
 
   const navigate = useNavigate();
 
@@ -115,7 +116,20 @@ const RendersHome = ({
           Filter
         </button>
       </div>
-      {isLoading && designListData.length !== 0 && (
+     
+      {!isLoading && designListData.length === 0 && (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <span>No Data Found</span>
+        </div>
+      )}
+
+{isLoading && designListData.length !== 0 ? (
         <div
           style={{
             display: "flex",
@@ -131,20 +145,8 @@ const RendersHome = ({
               width: "35px",
             }}
           />
-          <span>No Data Found</span>
         </div>
-      )}
-      {!isLoading && designListData.length === 0 && (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <span>No Data Found</span>
-        </div>
-      )}
+      ) : (
       <div
         className="RendersHome_folders"
         style={{ width: sidebarExpanded ? "100%" : "110%" }}
@@ -211,6 +213,7 @@ const RendersHome = ({
           </>
         )}
       </div>
+      )}
 
       {openFilterModal && (
         <DesignerFilterModal
@@ -233,6 +236,8 @@ const RendersHome = ({
           setDesignCode={setDesignCode}
           Time={Time}
           setTime={setTime}
+          setStatus={setStatus}
+          status={status}
         />
       )}
     </div>
