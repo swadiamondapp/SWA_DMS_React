@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import searchimg from "../../assets/search.png";
 import searchblue from "../../assets/bluesearch.png";
 import dlt from "../../assets/deleticon.png";
@@ -14,6 +14,7 @@ import {
 } from "../ScanComponentWarehouse/ApiScan/ApiScan";
 import DeleteConfirmationModal from "../ConfirmationModal/DeleteConfirmationModal";
 import SuccessModal from "../SuccessModal/SuccessModal";
+import ComingSoon from "../VOTORS PANEL/Votors Panel/ComingSoon";
 
 const ScanWarehouse = ({ sidebarExpanded }) => {
   const [open, setOpen] = useState(false);
@@ -126,12 +127,16 @@ const ScanWarehouse = ({ sidebarExpanded }) => {
 
   console.log("scanTableData", scanTableData);
   console.log("clickedProductIds", clickedProductIds);
+const [showModal, setShowModal] = useState(false);
 
+useEffect(() => {
+  setShowModal(true); // opens whenever component renders
+}, []);
   return (
-    <>
+    <div  className={`ParentVotors ${showModal ? "page_blurred" : ""}`}>
       <div
-        className=""
-        style={{ marginLeft: sidebarExpanded ? "225px" : "130px" ,marginTop:"30px",display:"flex",flexDirection:"column",gap:"20px"}}
+        className="scan_wrap"
+        style={{ marginLeft: sidebarExpanded ? "225px" : "130px"}}
       >
         <div className="scantable_main_search">
           <div className="Search_User">
@@ -302,7 +307,13 @@ const ScanWarehouse = ({ sidebarExpanded }) => {
           }}
         />
       )}
-    </>
+          <ComingSoon
+        open={showModal}
+        onClose={() => setShowModal(false)}
+        title="Photo Coming Soon 📸"
+        description="High-quality product photos will be available shortly."
+      />
+    </div>
   );
 };
 

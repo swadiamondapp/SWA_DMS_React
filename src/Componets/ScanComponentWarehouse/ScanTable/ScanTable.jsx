@@ -18,6 +18,7 @@ import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import { BsFillCaretDownFill } from "react-icons/bs";
 import { BiSolidUpArrow } from "react-icons/bi";
 import SuccessModal from "../../SuccessModal/SuccessModal";
+import ComingSoon from "../../VOTORS PANEL/Votors Panel/ComingSoon";
 
 const ScanTable = ({ sidebarExpanded }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -123,11 +124,16 @@ const ScanTable = ({ sidebarExpanded }) => {
 
   console.log("search id", searchListId);
   console.log("data", scanTableData);
+const [showModal, setShowModal] = useState(false);
 
+useEffect(() => {
+  setShowModal(true); // opens whenever component renders
+}, []);
   return (
+    <div  className={`ParentVotors ${showModal ? "page_blurred" : ""}`}>
     <div
-      className=""
-      style={{ marginLeft: sidebarExpanded ? "225px" : "130px",marginTop:"30px",display:"flex",flexDirection:"column",gap:"20px" }}
+      className="scan_wrap"
+      style={{ marginLeft: sidebarExpanded ? "225px" : "130px" }}
     >
       <div className="scantable_main_search">
         <div className="Search_User">
@@ -282,6 +288,13 @@ const ScanTable = ({ sidebarExpanded }) => {
         successModalOpen={successModalOpen}
         successMessage={successMessage}
       />
+         <ComingSoon
+        open={showModal}
+        onClose={() => setShowModal(false)}
+        title="Photo Coming Soon 📸"
+        description="High-quality product photos will be available shortly."
+      />
+    </div>
     </div>
   );
 };

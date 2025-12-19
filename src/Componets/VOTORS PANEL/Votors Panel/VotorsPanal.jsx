@@ -1,16 +1,18 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable react/jsx-key */
 import React, { useState, useEffect } from "react";
 import "./VotorsPanal.css";
-import ring from "../../../assets/ring.png";
+//import ring from "../../../assets/ring.png";
 // import { voters_customization_list } from "./Api";
 import { all_Designs_items, like_design, voted_design_list } from "../Api";
-import thumb from "../../../assets/thumb2.png";
+//import thumb from "../../../assets/thumb2.png";
 import { FaRegThumbsUp, FaThumbsUp } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import { Box, CircularProgress, Tab } from "@mui/material";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
-
+import  ComingSoon  from "./ComingSoon.jsx";
 const VotorsPanal = ({ sidebarExpanded,SearchWithName }) => {
   const navigate = useNavigate();
 
@@ -19,6 +21,13 @@ const VotorsPanal = ({ sidebarExpanded,SearchWithName }) => {
   const [votedList, setVotedList] = useState([]);
   const [animate, setAnimate] = useState({});
   const [value, setValue] = React.useState("1");
+const [showModal, setShowModal] = useState(false);
+
+useEffect(() => {
+  setShowModal(true); // opens whenever component renders
+}, []);
+
+
 
   const handleTrack = (item, designCode) => {
     navigate(`/statusPage/${item.id}`, {
@@ -45,33 +54,11 @@ const VotorsPanal = ({ sidebarExpanded,SearchWithName }) => {
     setValue(newValue);
   };
 
-  const card = [
-    {
-      product: "SWAD3456",
-      name: "Shivaprasad Yadav",
-      date: "12 june 2023",
-    },
-    {
-      product: "SWAD3456",
-      name: "Shivaprasad Yadav",
-      date: "12 june 2023",
-    },
-    {
-      product: "SWAD3456",
-      name: "Shivaprasad Yadav",
-      date: "12 june 2023",
-    },
-    {
-      product: "SWAD3456",
-      name: "Shivaprasad Yadav",
-      date: "12 june 2023",
-    },
-  ];
   return (
-    <div
-      className="ParentVotors"
-      style={{ paddingLeft: sidebarExpanded ? "225px" : "130px" }}
-    >
+  <div
+  className={`ParentVotors ${showModal ? "page_blurred" : ""}`}
+  style={{ paddingLeft: sidebarExpanded ? "225px" : "130px" }}
+>
       <div className="VotorsPanelsection">
         <div className="Parent_NewDesign">
           <Box sx={{ width: "100%", typography: "body1" }}>
@@ -138,9 +125,10 @@ const VotorsPanal = ({ sidebarExpanded,SearchWithName }) => {
                   <div className="Card_Design_Parent">
                     {Data.map((item) => (
                       <div className="New_Design_card">
-                        <div className="Card_img">
-                          <img src={item.image} alt="" />
-                        </div>
+                      <div className="Card_img">
+                        <img src={item.image} alt="" />
+                      </div>
+
                         <div className="Card_Details">
                           <h3>ID : {item.designcode}</h3>
                           <div
@@ -270,8 +258,40 @@ const VotorsPanal = ({ sidebarExpanded,SearchWithName }) => {
           </Box>
         </div>
       </div>
+    <ComingSoon
+  open={showModal}
+  onClose={() => setShowModal(false)}
+  title="Photo Coming Soon 📸"
+  description="High-quality product photos will be available shortly."
+/>
+
+
     </div>
   );
 };
 
 export default VotorsPanal;
+
+
+{ /* const card = [
+    {
+      product: "SWAD3456",
+      name: "Shivaprasad Yadav",
+      date: "12 june 2023",
+    },
+    {
+      product: "SWAD3456",
+      name: "Shivaprasad Yadav",
+      date: "12 june 2023",
+    },
+    {
+      product: "SWAD3456",
+      name: "Shivaprasad Yadav",
+      date: "12 june 2023",
+    },
+    {
+      product: "SWAD3456",
+      name: "Shivaprasad Yadav",
+      date: "12 june 2023",
+    },
+  ];*/}

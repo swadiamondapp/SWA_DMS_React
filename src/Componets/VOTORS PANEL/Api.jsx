@@ -105,26 +105,41 @@ export const delete_customization = async (
   setSuccessMessage,
   setSuccessModalOpen
 ) => {
+  setIsLoading(true); // start loader
+
   try {
-    setIsLoading(true);
     const response = await apiService.delete(
       `${DELETE_CUSTOMIZATION}${userId}/`
     );
-    if (response?.data?.results?.status_code === 200) {
-      setDeleteConfirmationOpen(false);
+
+    const result = response?.data?.results;
+
+    setDeleteConfirmationOpen(false);
+
+    if (result?.status_code === 200) {
       setSuccessMessage("Deleted Successfully");
-      setSuccessModalOpen(true);
-      voters_customization_list(setIsLoading, setData);
-      setIsLoading(false);
-      setTimeout(() => {
-        setSuccessModalOpen(false);
-        voters_customization_list(setIsLoading, setData);
-      }, 1600);
+    } else {
+      setSuccessMessage(result?.reason || "Something went wrong");
     }
+
+    setSuccessModalOpen(true);
+
+    // refresh list
+    await voters_customization_list(setIsLoading, setData);
+
+    setTimeout(() => {
+      setSuccessModalOpen(false);
+    }, 300);
+
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    setSuccessMessage("Delete failed. Please try again.");
+    setSuccessModalOpen(true);
+  } finally {
+    setIsLoading(false); // ✅ ALWAYS stop loader
   }
 };
+
 
 export const customization_details = async (
   setIsLoading,
@@ -302,14 +317,14 @@ export const create_stock_order_gallary = async (
   }
 };
 
-export const confirVotersStatus = async (setIsLoading, userId, setData) => {
+export const confirVotersStatus = async (setIsLoading, userId, setData , setStatus) => {
   try {
     const body = {
-      customer_response: "Confirmed",
+      status: setStatus,
     };
     console.log("Request body:", userId);
-    const response = await apiService.patch(
-      `${USER_RESPONSE_UPDATING}${userId}/update-response/`,
+    const response = await apiService.post(
+      `${USER_RESPONSE_UPDATING}${userId}/update-orderstatus/`,
       body
     );
     if (checkApiStatus(response)) {

@@ -1,3 +1,6 @@
+/* eslint-disable no-undef */
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import "./CustomiseRequiest.css";
 import Box from "@mui/material/Box";
@@ -51,13 +54,13 @@ const CustomiseRequest = ({
   const location = useLocation();
   const navigate = useNavigate();
   // const [customization, setCustomization] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  //const [isLoading, setIsLoading] = useState(false);
   // create modal
 
   // const [open, setOpen] = useState(false);
   const [AssinedButton, setAssignedButton] = useState("Assign");
   const [tagText, setTagText] = useState("");
-  const [customization, setCustomization] = useState([]);
+  //const [customization, setCustomization] = useState([]);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
   const [MetalTypeDropDown, setMetalTypeDropDown] = useState([]);
   const [outLetDropDown, setOutLetDropDown] = useState([]);
@@ -67,6 +70,14 @@ const CustomiseRequest = ({
   );
   const [isModalOpenCreateCutomize, setIsCreateCustomizeModalOpen] =
     useState(false);
+const [customization, setCustomization] = useState([]);
+const [isLoading, setIsLoading] = useState(false);
+
+useEffect(() => {
+  if (open && userId) {
+    customization_details(setIsLoading, setCustomization, userId);
+  }
+}, [open, userId]);
 
   const dataToDisplay = CustomizationWareHouseData || customization;
   const dataById = wareHouseuserId || userId;
@@ -212,7 +223,7 @@ const CustomiseRequest = ({
             <Box sx={style}>
               <Typography id="modal-modal-description" sx={{ mx: 1, pb: 1 }}>
                 <div>
-                  {isLoadingDetail ? (
+                  {isLoading ? (
                     <div
                       style={{
                         display: "flex",
@@ -292,7 +303,7 @@ const CustomiseRequest = ({
                           <span>Email</span>
                           <span>
                             {dataToDisplay.customer_email === "undefined" ||
-                            "null"
+                            dataToDisplay.customer_email === "null"
                               ? "N/A"
                               : dataToDisplay.customer_email}
                           </span>

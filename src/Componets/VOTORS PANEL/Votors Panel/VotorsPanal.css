@@ -37,6 +37,16 @@
   font-weight: 500;
   cursor: pointer;
 }
+.cancel_btn {
+  background-color: #F844441A;
+  border: 0.5px solid #ff4d4f96;
+  color: #F84444;
+  padding: 8px 15px;
+  font-family: "Inter";
+  border-radius: 32px;
+  font-weight: 500;
+  cursor: pointer;
+}
 .Requested_btn {
   color: rgb(255, 183, 0);
   border: 0.5px solid rgb(255, 183, 0);
@@ -73,6 +83,91 @@
   border-radius: 32px;
   cursor: pointer;
 }
+.order_btns {
+  display: flex;
+  gap: 8px;
+}  
+
+/* Blur effect */
+.page_blurred {
+  filter: blur(2px);
+  pointer-events: none;
+  -webkit-user-select: none;
+  user-select: none;
+box-shadow:0px 20px 80px 60px rgba(0, 0, 0, 0.08);
+;
+
+
+ }
+
+.coming_soon_img {
+  position: absolute;
+  z-index: 2;
+
+  width: 100%;              /* responsive */
+ 
+
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%); /* ✅ PERFECT CENTER */
+}
+
+
+.modal_overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: start;
+  justify-content: center;
+  z-index: 9999;
+  }
+
+.modal_content {
+  position: relative;                 /* ✅ needed for absolute child */
+  width: min(90vw, 610px);             /* ✅ responsive */
+  aspect-ratio: 7 / 8;                 /* keeps image proportion */
+  border-radius: 16px;
+
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;              /* ✅ fills container */
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.18);
+  animation: scaleFade 0.3s ease;
+}
+
+.modal_content::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: inherit;
+}
+@keyframes scaleFade {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.close_btn {
+  margin-top: 20px;
+  padding: 10px 24px;
+  background: #0464d5;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
 
 /* .wobble {
 	-webkit-animation: wobble-hor-top 0.8s both;

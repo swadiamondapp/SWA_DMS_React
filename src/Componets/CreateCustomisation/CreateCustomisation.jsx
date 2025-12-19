@@ -1,3 +1,6 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import React, { useState, useEffect, useRef } from "react";
 import "./CreateCustomisation.css";
 import Box from "@mui/material/Box";
@@ -70,10 +73,9 @@ const CreateCustomisation = ({
   open,
   onClose,
   dataToDisplaytomodal,
+  displayEditDetailsById,
   userId,
   wareHouseuserId,
-  setData,
-  setCustomization,
   name,
   customizationFunction,
 }) => {
@@ -125,6 +127,7 @@ const CreateCustomisation = ({
   const swaProductSKURef = useRef(null);
   const notesRef = useRef(null);
   const imageRef = useRef(null);
+  const dueDateRef = useRef(null);
   const [formData, setFormData] = useState({
     sallerName: "",
     mobileNumber: "",
@@ -146,7 +149,7 @@ const CreateCustomisation = ({
     Budget: "",
     swaProductSKU: "",
     notes: "",
-
+    due_date: "",
     customerName: "",
     customerMobile: "",
     receivedAdvance: "",
@@ -188,6 +191,7 @@ const CreateCustomisation = ({
         diamondColor: dataToDisplaytomodal.diamond_colour || "",
         Budget: dataToDisplaytomodal.budget || "",
         swaProductSKU: dataToDisplaytomodal.sku_of_swa_product || "",
+        due_date: dataToDisplaytomodal.due_date || "",
         notes: dataToDisplaytomodal.notes || "",
         image: dataToDisplaytomodal.image || "",
         image2: dataToDisplaytomodal.image2 || "",
@@ -290,18 +294,6 @@ const CreateCustomisation = ({
         "any.required": "cannot be empty",
         "any.empty": "cannot be empty",
       }),
-    // weight: Joi.string().required().messages({
-    //   "string.empty": `cannot be  empty`,
-    // }),
-    // size: Joi.string().required().messages({
-    //   "string.empty": `cannot be  empty`,
-    // }),
-    // diamondWeight: Joi.string().required().messages({
-    //   "string.empty": `cannot be  empty `,
-    // }),
-    // numberOfDiamonds: Joi.required().messages({
-    //   "string.empty": `cannot be  empty`,
-    // }),
     diamondClarity: Joi.string().required().messages({
       "string.empty": `cannot be  empty`,
     }),
@@ -311,66 +303,80 @@ const CreateCustomisation = ({
     Budget: Joi.string().required().messages({
       "string.empty": `cannot be  empty`,
     }),
-    // swaProductSKU: Joi.string().required().messages({
-    //   "string.empty": `cannot be  empty`,
-    // }),
-    // notes: Joi.string().required().messages({
-    //   "string.empty": `cannot be empty`,
-    // }),
-    // width: Joi.string().required().messages({
-    //   "string.empty": `cannot be  empty`,
-    // }),
-    // height: Joi.string().required().messages({
-    //   "string.empty": `cannot be  empty`,
-    // }),
-    // diamond_type: Joi.any()
-    //   .required()
-    //   .custom((value, helpers) => {
-    //     if (value === "" || value === null || value === undefined) {
-    //       return helpers.error("any.empty");
-    //     }
-    //     return value;
-    //   })
-    //   .messages({
-    //     "any.required": "cannot be empty",
-    //     "any.empty": "cannot be empty",
-    //   }),
-    // length_of_item: Joi.string().required().messages({
-    //   "string.empty": `cannot be  empty`,
-    // }),
+   due_date: Joi.string()
+  .required()
+  .custom((value, helpers) => {
+    const selectedDate = new Date(value);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (isNaN(selectedDate.getTime())) {
+      return helpers.error("date.base");
+    }
+
+    if (selectedDate < today) {
+      return helpers.error("date.min");
+    }
+
+    return value;
+  })
+  .messages({
+    "any.required": "Due date is required",
+    "string.empty": "Due date cannot be empty",
+    "date.base": "Invalid due date",
+    "date.min": "Due date cannot be in the past",
+  }),
+
   });
   console.log(ProudctCategory, "diamonType");
   console.log(errors, "errors");
 
-  const handleSubmitButton = (e) => {
-    e.preventDefault();
+  const handleSubmit = (e) => {
+  e.preventDefault(); // 🔥 critical
 
-    // Validate form data using Joi schema
-    const { error } = schema.validate(formData, {
-      abortEarly: false,
-      allowUnknown: true,
-    });
+  // Image validation
+  {/* const hasAtLeastOneImage = images.some((img) => img);
+ if (!hasAtLeastOneImage) {
+    setImageError("At least one image is required.");
+    return;
+  }*/}
+  setImageError("");
 
-    if (error) {
-      // Form is invalid, display validation errors
-      const validationErrors = error.details.reduce((errors, err) => {
-        errors[err.path[0]] = err.message;
-        return errors;
-      }, {});
-      setErrors(validationErrors);
-    } else {
-      // Clear validation errors when the form is valid
-      setErrors({});
-      // Proceed with form submission logic here
-      console.log("Form submitted:", formData);
-    }
-    // const firstErrorField = Object.keys(errors).find((key) => errors[key]);
+  // Joi validation
+  const { error } = schema.validate(formData, {
+    abortEarly: false,
+    allowUnknown: true,
+  });
 
-    // // Scroll to the first error field
-    // if (firstErrorField && inputRefs[firstErrorField] && inputRefs[firstErrorField].current) {
-    //   inputRefs[firstErrorField].current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    // }
-  };
+  if (error) {
+    const validationErrors = error.details.reduce((errors, err) => {
+      errors[err.path[0]] = err.message;
+      return errors;
+    }, {});
+    setErrors(validationErrors);
+    return;
+  }
+
+  setErrors({});
+
+  // 🚀 API CALL (single source of truth)
+  if (dataToDisplaytomodal) {
+    handleUpdateCustomization();
+  } else {
+    create_customizaion_warehouse(
+      setIsLoading,
+      formData,
+      onClose,
+      setSuccessMessage,
+      setSuccessModalOpen,
+      setErrorMessage,
+      images,
+      votersSetData,
+      setFormData,
+      setImages
+    );
+  }
+};
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -395,44 +401,44 @@ const CreateCustomisation = ({
   const filterOption = (input, option) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
 
-  const displayEditDetailsById = userId || wareHouseuserId;
+  //const displayEditDetailsById = userId || wareHouseuserId;
 
   // const handleUpdateCustomization = (id) => {
   //   handleSubmitButton();
   //   edit_customizaion_warehouse(setIsLoading, formData,id);
   // };
-  const handleUpdateCustomization = () => {
-    // Call schema validation first
-    const { error } = schema.validate(formData, {
+const handleUpdateCustomization = () => {
+  if (!displayEditDetailsById) return;
+
+  edit_customizaion_warehouse(
+    setIsLoading,
+    formData,
+    displayEditDetailsById,
+    onClose,
+    setSuccessMessage,
+    setSuccessModalOpen,
+    images,
+    setImages,
+    votersSetData,
+    customizationFunction
+  );
+};
+
+   // Call schema validation first
+  
+
+  {/*   const { error } = schema.validate(formData, {
       abortEarly: false,
       allowUnknown: true,
-    });
-
-    if (error) {
+    }); if (error) {
       // Form is invalid, display validation errors
       const validationErrors = error.details.reduce((errors, err) => {
         errors[err.path[0]] = err.message;
         return errors;
       }, {});
       setErrors(validationErrors);
-    } else {
+    } else {    setErrors({});*/}
       // Clear validation errors when the form is valid
-      setErrors({});
-      // Proceed with update logic here
-      edit_customizaion_warehouse(
-        setIsLoading,
-        formData,
-        displayEditDetailsById,
-        onClose,
-        setSuccessMessage,
-        setSuccessModalOpen,
-        images,
-        setImages,
-        votersSetData,
-        customizationFunction
-      );
-    }
-  };
   const handleImageUpload = (index, event) => {
     const newImages = [...images];
     newImages[index] = event.target.files[0];
@@ -467,14 +473,6 @@ const CreateCustomisation = ({
       setErrors({});
       // Proceed with form submission logic here
       console.log("Form submitted:", formData);
-
-      // const firstErrorField = Object.keys(errors).find((key) => errors[key]);
-
-      // // Scroll to the first error field
-      // if (firstErrorField && inputRefs[firstErrorField] && inputRefs[firstErrorField].current) {
-      //   inputRefs[firstErrorField].current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      // }
-
       // Then proceed with handleCreateSubmitCustomization logic
       create_customizaion_warehouse(
         setIsLoading,
@@ -656,6 +654,12 @@ const CreateCustomisation = ({
           block: "center",
         });
         break;
+        case "dueDate":
+          dueDateRef.current?.scrollIntoView({
+            behavior:"smooth",
+            block:"center",
+          });
+          break;
       case "notes":
         notesRef.current?.scrollIntoView({
           behavior: "smooth",
@@ -697,6 +701,7 @@ const CreateCustomisation = ({
       diamondColor: "",
       Budget: "",
       swaProductSKU: "",
+      due_date: "",
       notes: "",
     });
     setImages(Array(5).fill(""));
@@ -741,7 +746,7 @@ const CreateCustomisation = ({
 
               <Typography id="modal-modal-description" sx={{ mt: 10 }}>
                 <div>
-                  <form onSubmit={handleSubmitButton}>
+                <form onSubmit={handleSubmit}>
                     <div className="FormContainer">
                       <div className="parant_relative">
                         <label htmlFor="" className="label_text">
@@ -1136,106 +1141,7 @@ const CreateCustomisation = ({
                           </span>
                         )}
                       </div>
-                      {/* <div className="uploadImageContainer">
-                        {imageFiles.length > 0 ? (
-                          <>
-                            {imageFiles.map((item, index) => (
-                              <img
-                                key={index}
-                                src={URL.createObjectURL(item)}
-                                alt={`Uploaded ${index + 1}`}
-                                style={{
-                                  width: "50px",
-                                  height: "50px",
-                                  borderRadius: "4px",
-                                }}
-                              />
-                            ))}
-                          </>
-                        ) : (
-                          <div className="leftI">
-                            {dataToDisplaytomodal ? (
-                              <div style={{ display: "flex", gap: "10px" }}>
-                                <img
-                                  // key={index}
-                                  src={dataToDisplaytomodal.image}
-                                  // alt={`Uploaded ${index + 1}`}
-                                  style={{
-                                    width: "50px",
-                                    height: "50px",
-                                    borderRadius: "4px",
-                                  }}
-                                />
-                                <img
-                                  // key={index}
-                                  src={dataToDisplaytomodal.image2}
-                                  // alt={`Uploaded ${index + 1}`}
-                                  style={{
-                                    width: "50px",
-                                    height: "50px",
-                                    borderRadius: "4px",
-                                  }}
-                                />{" "}
-                                <img
-                                  // key={index}
-                                  src={dataToDisplaytomodal.image3}
-                                  style={{
-                                    width: "50px",
-                                    height: "50px",
-                                    borderRadius: "4px",
-                                  }}
-                                />
-                                 <img
-                                  // key={index}
-                                  src={dataToDisplaytomodal.image4}
-                                  style={{
-                                    width: "50px",
-                                    height: "50px",
-                                    borderRadius: "4px",
-                                  }}
-                                />
-                                  <img
-                                  // key={index}
-                                  src={dataToDisplaytomodal.image5}
-                                  style={{
-                                    width: "50px",
-                                    height: "50px",
-                                    borderRadius: "4px",
-                                  }}
-                                />
-                              </div>
-                            ) : (
-                              <>
-                                <span className="imgUpText">Image Upload</span>
-                                <span className="imgDText">
-                                  You can upload 3 files max
-                                </span>
-                              </>
-                            )}
-                          </div>
-                        )}
-                        <div className="rightw">
-                          <div
-                            id="fileUpload"
-                            className="uploadButton"
-                            onClick={() =>
-                              document.getElementById("fileUploadImage").click()
-                            }
-                            style={{display:imageFiles.length === 5 || dataToDisplaytomodal ? "none":"block"}}
-                          >
-                            {console.log(imageFiles, "images#")}
-                            <input
-                              type="file"
-                              id="fileUploadImage"
-                              style={{ display: "none" }}
-                              multiple
-                              accept="image/*"
-                              onChange={handleFileUpload}
-                            />
-                            Upload <BsCloudUpload />
-                          </div>
-                        </div>
-                      </div> */}
+                  
                       {name === "editModalOpen" ? (
                         <>
                           <div className="uploadImageContainer">
@@ -1455,101 +1361,7 @@ const CreateCustomisation = ({
                           <span className="error_select">{errors.size}</span>
                         )}
                       </div>
-                      {/* <div className="parant_relative">
-                        <label htmlFor="" className="label_text">
-                          width
-                        </label>
-                        <input
-                          type="number"
-                          className="input_feild"
-                          name="width"
-                          ref={widthRef}
-                          value={formData.width}
-                          onChange={handleInput}
-                          onFocus={(e) =>
-                            e.target.addEventListener(
-                              "wheel",
-                              function (e) {
-                                e.preventDefault();
-                              },
-                              { passive: false }
-                            )
-                          }
-                        />
-                        {errors.width && (
-                          <span className="error_select">{errors.width}</span>
-                        )}
-                      </div> */}
-                      {/* <div className="parant_relative">
-                        <label htmlFor="" className="label_text">
-                          length
-                        </label>
-                        <input
-                          type="number"
-                          className="input_feild"
-                          name="length_of_item"
-                          ref={lengthOfItemRef}
-                          value={formData.length_of_item}
-                          onChange={handleInput}
-                          onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
-                        />
-                        {errors.length_of_item && (
-                          <span className="error_select">
-                            {errors.length_of_item}
-                          </span>
-                        )}
-                      </div> */}
-                      {/* <div className="parant_relative">
-                        <label htmlFor="" className="label_text">
-                          height
-                        </label>
-                        <input
-                          type="number"
-                          className="input_feild"
-                          name="height"
-                          ref={heightRef}
-                          value={formData.height}
-                          onChange={handleInput}
-                          onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
-                        />
-                        {errors.height && (
-                          <span className="error_select">{errors.height}</span>
-                        )}
-                      </div> */}
-                      {/* <div className="parant_relative">
-                        <label
-                          htmlFor=""
-                          className="label_text"
-                          ref={diamondTypeRef}
-                        >
-                          Diamond Type
-                        </label>
-                        <Select
-                          showSearch
-                          placeholder="-Select-"
-                          optionFilterProp="children"
-                          onChange={(value) =>
-                            setFormData((prevState) => ({
-                              ...prevState,
-                              diamond_type: value,
-                            }))
-                          }
-                          onSearch={onSearch}
-                          filterOption={filterOption}
-                          style={{ width: "100%" }}
-                          // options={MetalTypeDropDown}
-                          options={diamonType.map((item) => ({
-                            value: item.id,
-                            label: item.name,
-                          }))}
-                          value={formData.diamond_type || undefined}
-                        />
-                        {errors.diamond_type && (
-                          <span className="error_select">
-                            {errors.diamond_type}
-                          </span>
-                        )}
-                      </div> */}
+                    
                       <div className="parant_relative">
                         <label htmlFor="" className="label_text">
                           Diamond weight ( ct )
@@ -1716,24 +1528,24 @@ const CreateCustomisation = ({
                           <span className="error_input">{errors.Budget}</span>
                         )}
                       </div>
-                      {/* <div className="parant_relative">
+                     <div className="parant_relative">
                         <label htmlFor="" className="label_text">
-                          Swa Product ( SKU)
+                          Due Date
                         </label>
                         <input
-                          type="text"
+                          type="date"
                           className="input_feild"
-                          name="swaProductSKU"
-                          ref={swaProductSKURef}
-                          value={formData.swaProductSKU}
+                          name="due_date"
+                          ref={dueDateRef}
+                          value={formData.due_date}
                           onChange={handleInput}
                         />
-                        {errors.swaProductSKU && (
+                        {errors.due_date && (
                           <span className="error_input">
-                            {errors.swaProductSKU}
+                            {errors.due_date}
                           </span>
                         )}
-                      </div> */}
+                      </div> 
                       <div className="parant_relative">
                         <label htmlFor="">Notes</label>
                         <textarea
@@ -1757,40 +1569,20 @@ const CreateCustomisation = ({
                       </span>
                     ):null} */}
                       </div>
-                      {dataToDisplaytomodal ? (
-                        <button
-                          onClick={() => handleUpdateCustomization()}
-                          className="submitButton"
-                          type="submit"
-                        >
-                          {isLoading ? (
-                            <CircularProgress
-                              size={15}
-                              sx={{ color: "#fff" }}
-                            />
-                          ) : (
-                            "Update"
-                          )}
-                        </button>
-                      ) : (
-                        <>
-                          <button
-                            onClick={() => handleCreateSubmitCustomization()}
+                    <button
                             type="submit"
                             className="submitButton"
                             disabled={isLoading}
                           >
                             {isLoading ? (
-                              <CircularProgress
-                                size={15}
-                                sx={{ color: "#fff" }}
-                              />
+                              <CircularProgress size={15} sx={{ color: "#fff" }} />
+                            ) : dataToDisplaytomodal ? (
+                              "Update"
                             ) : (
-                              " SUBMIT"
+                              "Submit"
                             )}
                           </button>
-                        </>
-                      )}
+
                     </div>
                   </form>
                 </div>
@@ -1810,3 +1602,199 @@ const CreateCustomisation = ({
 };
 
 export default CreateCustomisation;
+
+  {/* <div className="parant_relative">
+                        <label htmlFor="" className="label_text">
+                          width
+                        </label>
+                        <input
+                          type="number"
+                          className="input_feild"
+                          name="width"
+                          ref={widthRef}
+                          value={formData.width}
+                          onChange={handleInput}
+                          onFocus={(e) =>
+                            e.target.addEventListener(
+                              "wheel",
+                              function (e) {
+                                e.preventDefault();
+                              },
+                              { passive: false }
+                            )
+                          }
+                        />
+                        {errors.width && (
+                          <span className="error_select">{errors.width}</span>
+                        )}
+                      </div> */}
+                      {/* <div className="parant_relative">
+                        <label htmlFor="" className="label_text">
+                          length
+                        </label>
+                        <input
+                          type="number"
+                          className="input_feild"
+                          name="length_of_item"
+                          ref={lengthOfItemRef}
+                          value={formData.length_of_item}
+                          onChange={handleInput}
+                          onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
+                        />
+                        {errors.length_of_item && (
+                          <span className="error_select">
+                            {errors.length_of_item}
+                          </span>
+                        )}
+                      </div> */}
+                      {/* <div className="parant_relative">
+                        <label htmlFor="" className="label_text">
+                          height
+                        </label>
+                        <input
+                          type="number"
+                          className="input_feild"
+                          name="height"
+                          ref={heightRef}
+                          value={formData.height}
+                          onChange={handleInput}
+                          onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
+                        />
+                        {errors.height && (
+                          <span className="error_select">{errors.height}</span>
+                        )}
+                      </div> */}
+                      {/* <div className="parant_relative">
+                        <label
+                          htmlFor=""
+                          className="label_text"
+                          ref={diamondTypeRef}
+                        >
+                          Diamond Type
+                        </label>
+                        <Select
+                          showSearch
+                          placeholder="-Select-"
+                          optionFilterProp="children"
+                          onChange={(value) =>
+                            setFormData((prevState) => ({
+                              ...prevState,
+                              diamond_type: value,
+                            }))
+                          }
+                          onSearch={onSearch}
+                          filterOption={filterOption}
+                          style={{ width: "100%" }}
+                          // options={MetalTypeDropDown}
+                          options={diamonType.map((item) => ({
+                            value: item.id,
+                            label: item.name,
+                          }))}
+                          value={formData.diamond_type || undefined}
+                        />
+                        {errors.diamond_type && (
+                          <span className="error_select">
+                            {errors.diamond_type}
+                          </span>
+                        )}
+                      </div> */}
+                          {/* <div className="uploadImageContainer">
+                        {imageFiles.length > 0 ? (
+                          <>
+                            {imageFiles.map((item, index) => (
+                              <img
+                                key={index}
+                                src={URL.createObjectURL(item)}
+                                alt={`Uploaded ${index + 1}`}
+                                style={{
+                                  width: "50px",
+                                  height: "50px",
+                                  borderRadius: "4px",
+                                }}
+                              />
+                            ))}
+                          </>
+                        ) : (
+                          <div className="leftI">
+                            {dataToDisplaytomodal ? (
+                              <div style={{ display: "flex", gap: "10px" }}>
+                                <img
+                                  // key={index}
+                                  src={dataToDisplaytomodal.image}
+                                  // alt={`Uploaded ${index + 1}`}
+                                  style={{
+                                    width: "50px",
+                                    height: "50px",
+                                    borderRadius: "4px",
+                                  }}
+                                />
+                                <img
+                                  // key={index}
+                                  src={dataToDisplaytomodal.image2}
+                                  // alt={`Uploaded ${index + 1}`}
+                                  style={{
+                                    width: "50px",
+                                    height: "50px",
+                                    borderRadius: "4px",
+                                  }}
+                                />{" "}
+                                <img
+                                  // key={index}
+                                  src={dataToDisplaytomodal.image3}
+                                  style={{
+                                    width: "50px",
+                                    height: "50px",
+                                    borderRadius: "4px",
+                                  }}
+                                />
+                                 <img
+                                  // key={index}
+                                  src={dataToDisplaytomodal.image4}
+                                  style={{
+                                    width: "50px",
+                                    height: "50px",
+                                    borderRadius: "4px",
+                                  }}
+                                />
+                                  <img
+                                  // key={index}
+                                  src={dataToDisplaytomodal.image5}
+                                  style={{
+                                    width: "50px",
+                                    height: "50px",
+                                    borderRadius: "4px",
+                                  }}
+                                />
+                              </div>
+                            ) : (
+                              <>
+                                <span className="imgUpText">Image Upload</span>
+                                <span className="imgDText">
+                                  You can upload 3 files max
+                                </span>
+                              </>
+                            )}
+                          </div>
+                        )}
+                        <div className="rightw">
+                          <div
+                            id="fileUpload"
+                            className="uploadButton"
+                            onClick={() =>
+                              document.getElementById("fileUploadImage").click()
+                            }
+                            style={{display:imageFiles.length === 5 || dataToDisplaytomodal ? "none":"block"}}
+                          >
+                            {console.log(imageFiles, "images#")}
+                            <input
+                              type="file"
+                              id="fileUploadImage"
+                              style={{ display: "none" }}
+                              multiple
+                              accept="image/*"
+                              onChange={handleFileUpload}
+                            />
+                            Upload <BsCloudUpload />
+                          </div>
+                        </div>
+                      </div> */}

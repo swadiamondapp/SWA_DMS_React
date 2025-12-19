@@ -1,3 +1,6 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import React, { useEffect, useState, useRef } from "react";
 import "../../Componets/CustomiseRequiestTable/CustomiseRequiestTable.css";
 import PrintIcon from "../../assets/printIcon.png";
@@ -9,6 +12,7 @@ import {
   customizationApprove,
   customizaztion_list_wareHouse,
   delete_customization_warehouse,
+  get_customization_tracking,
 } from "../../Pages/WareHousePageView/Api";
 import {
   customization_details,
@@ -24,6 +28,34 @@ import CustomizationListDataPrint from "./CustomizationListDataPrint";
 import { choose_outlet_drop_down } from "../ADMIN PANEL/Api_dropDown";
 import { product_category_basicDetails } from "../Assignment Panel/Api";
 import { useLocation } from "react-router-dom";
+import TrackModal from "../VOTORS PANEL/Votor Customization/TrackModal";
+import { apiService } from "../../Pages/Services/ApiInstants";
+const STATUS_CONFIG = {
+  Received: {
+    color: "#FFBA18",
+    bg: "#FFBA181A",
+  },
+  Updated: {
+    color: "#0464D5",
+    bg: "#0464D51A",
+  },
+  Confirmed: {
+    color: "#19DE51",
+    bg: "#19DE511A",
+  },
+  "Work Started": {
+    color: "#0E04D5",
+    bg: "#0E04D51A",
+  },
+  "50% Completed": {
+    color: "#BCCB20",
+    bg: "#BCCB202B",
+  },
+  Rejected: {
+    color: "#FF1C1C",
+    bg: "#FF1C1C2B",
+  },
+};
 
 const data = [
   {
@@ -84,8 +116,11 @@ const CustomizationTable = (props) => {
   const [outLetDropDown, setOutLetDropDown] = useState([]);
   const [ProudctCategory, setListProductCategory] = useState([""]);
   const [userId, setUserId] = useState([]);
-
-  const [Data, setData] = useState([]);
+const [openStatusIndex, setOpenStatusIndex] = useState(null);
+const [trackOpen, setTrackOpen] = useState(false);
+const [trackLoading, setTrackLoading] = useState(false);
+const [trackData, setTrackData] = useState([]);
+  //const [Data, setData] = useState([]);
   const [approveId, setApproveId] = useState("");
   const [CustomizationWareHouseData, setCustomizationWareHouseData] = useState(
     []
@@ -229,6 +264,102 @@ const CustomizationTable = (props) => {
   };
 
   console.log("location>>>", location.pathname);
+  const updateWarehouseStatus = async (id, newStatus) => {
+  try {
+    await apiService.post(
+      `/warehouse/update-customization/${id}`,
+      { wh_status: newStatus }
+    );
+
+    // Update UI locally
+    setCustomizationListData((prev) =>
+      prev.map((item) =>
+        item.id === id
+          ? { ...item, status: newStatus }
+          : item
+      )
+    );
+
+    setOpenStatusIndex(null);
+  } catch (error) {
+    console.error("Status update failed", error);
+  }
+};
+
+const renderStatusDropdown = (status, index, itemId) => {
+  const config = STATUS_CONFIG[status];
+
+  if (!config) {
+    return (
+      <span style={{ fontSize: "12px", color: "#999" }}>
+        {status || "N/A"}
+      </span>
+    );
+  }
+
+  return (
+    <div style={{ position: "relative", display: "inline-block" }}>
+      <div
+        onClick={() =>
+          setOpenStatusIndex(openStatusIndex === index ? null : index)
+        }
+        style={{
+          background: config.bg,
+          color: config.color,
+          padding: "4px 10px",
+          borderRadius: "999px",
+          fontSize: "12px",
+          fontWeight: 500,
+          display: "flex",
+          alignItems: "center",
+          gap: "6px",
+          cursor: "pointer",
+          whiteSpace: "nowrap",
+        }}
+      >
+        {status}
+        <span style={{ fontSize: "10px" }}>▼</span>
+      </div>
+
+      {openStatusIndex === index && (
+        <div
+          style={{
+            position: "absolute",
+            top: "36px",
+            left: 0,
+            background: "#fff",
+            borderRadius: "10px",
+            boxShadow: "0 10px 25px rgba(0,0,0,0.12)",
+            padding: "6px",
+            minWidth: "160px",
+            zIndex: 100,
+          }}
+        >
+          {Object.keys(STATUS_CONFIG).map((key) => (
+            <div
+              key={key}
+              onClick={() =>
+                updateWarehouseStatus(itemId, key)
+              }
+              style={{
+                padding: "6px 10px",
+                fontSize: "12px",
+                borderRadius: "8px",
+                cursor: "pointer",
+                background:
+                  key === status ? "#F1F5F9" : "transparent",
+                fontWeight: key === status ? 600 : 400,
+              }}
+            >
+              {key}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
 
   return (
     <>
@@ -265,6 +396,9 @@ const CustomizationTable = (props) => {
                   <th>Outlet</th>
                   <th>Mobile number</th>
                   <th>Product type</th>
+                  <th>Actual MRP</th>
+                  <th>Status</th>
+                  <th>Track</th>
                   <th
                     style={{
                       borderBottom: "1px solid #ddd",
@@ -301,8 +435,32 @@ const CustomizationTable = (props) => {
                     <td>{findOutLetNameByID(Number(item.outlet))}</td>
                     <td>{item.mobile_number}</td>
                     <td> {productCategoryByID(Number(item.product_type))}</td>
+                    <td>
+                      <div className="actual_mrp">
+                      {item.actual_price || "N/A"}
+                      </div>
+                      </td>
+                    <td>
+                        {renderStatusDropdown(item.status, index, item.id)}
+                      </td>
 
-                    <td style={{ width: "23%" }}>
+
+                      <td>
+                        <button
+                                                className="track_btn"
+                                                onClick={() => {
+                                                  get_customization_tracking(
+                                                    setTrackLoading,
+                                                    setTrackData,
+                                                    item.id
+                                                  );
+                                                  setTrackOpen(true);
+                                                }}
+                                              >
+                                                Track
+                                              </button>
+                      </td>
+                    <td >
                       <button
                         className="PrintButton_CT"
                         // onClick={() => handlePrintClick(item)}
@@ -343,29 +501,7 @@ const CustomizationTable = (props) => {
                         />
                       </div>
 
-                      {item?.customer_response === "Confirmed" &&
-                      item?.status === "Confirmed" ? (
-                        <span
-                          disabled
-                          className="inactive_btn"
-                          style={{ fontWeight: "300", marginLeft: "20px" }}
-                        >
-                          Approved
-                        </span>
-                      ) : item?.customer_response === "Confirmed" ? (
-                        <button
-                          onClick={() => handleApprove(item.id)}
-                          className="active_btn"
-                          style={{
-                            backgroundColor: "#23a06496",
-                            color: "white",
-                            cursor: "pointer",
-                            marginLeft: "20px",
-                          }}
-                        >
-                          Approve
-                        </button>
-                      ) : null}
+                     
                     </td>
 
                     <td onClick={() => handleEyeClick(item.id)}>
@@ -436,6 +572,11 @@ const CustomizationTable = (props) => {
             handleClose={handleClose}
             successMessage={successMessage}
           />
+                <TrackModal
+                    open={trackOpen}
+                    onClose={() => setTrackOpen(false)}
+                    data={trackData}
+                  />
         </div>
       )}
     </>

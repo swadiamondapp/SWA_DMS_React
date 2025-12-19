@@ -230,6 +230,7 @@ input:checked + .slider:before {
 .Edit_btn_user {
   padding: 15px;
   text-align: center;
+  cursor: pointer;
 }
 .Delete_btn_user {
   padding: 15px;

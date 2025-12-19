@@ -1,18 +1,26 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import React, { useState, useEffect, useRef } from "react";
 import DesignBtn from "../../ADMIN PANEL/Design Pool/DesignBtn";
 import { IoEye } from "react-icons/io5";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import CustomiseRequest from "../../CustomiseRequest/CustomiseRequiest";
 import {
+  //edit_customization,
   voters_customization_list,
   delete_customization,
   confirVotersStatus,
+   customization_details
 } from "../Api";
+//import {edit_customizaion_warehouse} from "../../../Pages/WareHousePageView/Api";
 import DeleteConfirmationModal from "../../ConfirmationModal/DeleteConfirmationModal";
 import SuccessModal from "../../SuccessModal/SuccessModal";
 import CircularProgress from "@mui/material/CircularProgress";
 import { choose_outlet_drop_down } from "../../ADMIN PANEL/Api_dropDown";
 import { product_category_basicDetails } from "../../Assignment Panel/Api";
+import TrackModal from "./TrackModal";
+import { get_customization_tracking } from "../../../Pages/WareHousePageView/Api";
+import CreateCustomisation from "../../CreateCustomisation/CreateCustomisation";
 
 const VotorsCustomization = ({ sidebarExpanded, SearchWithName }) => {
   const [showEditDelete, setShowEditDelete] = useState(null);
@@ -31,7 +39,12 @@ const VotorsCustomization = ({ sidebarExpanded, SearchWithName }) => {
   const [refresh, setRefresh] = useState(false);
   const dropdownRef = useRef(null);
   const [status, setStatus] = useState("");
-
+const [trackOpen, setTrackOpen] = useState(false);
+const [trackData, setTrackData] = useState([]);
+ const [isModalOpenCreateCutomize, setIsCreateCustomizeModalOpen] =
+    useState(false);
+//const [trackId, setTrackId] = useState(null);
+const [trackLoading, setTrackLoading] = useState(false);
   useEffect(() => {
     voters_customization_list(setIsLoading, setData, SearchWithName, status);
   }, [SearchWithName, status]);
@@ -39,16 +52,21 @@ const VotorsCustomization = ({ sidebarExpanded, SearchWithName }) => {
   const handleDeleteCustomization = (cuzId) => {
     setDeleteId(cuzId);
     setDeleteConfirmationOpen(true);
-    // delete_customization(setIsLoading, setData, cuzId);
+     delete_customization(setIsLoading, setData, cuzId);
   };
-  const handleEditCustomization = () => {
-    // edit_customization(setIsLoading, formData, setCutomizationList, userId);
+  const handleEditCustomization = (id) => {
+    
+    customization_details(setIsLoading, setCustomization, id);
+    setIsCreateCustomizeModalOpen(true);
+
   };
+    //edit_customizaion_warehouse(setIsLoading, formData, setCutomizationList, userId);
   const handleEyeClick = (id) => {
-    setIsModalOpen(true);
+    
     setUserId(id);
-    console.log(id, "votesIsd");
-    // customization_details(setIsLoading, setCustomization, userId);
+   setIsModalOpen(true);
+   //  customization_details(setIsLoading, setCustomization, userId);
+    //  console.log(setCustomization, "check customization details");
   };
 
   const handleDeleteClose = () => {
@@ -84,9 +102,13 @@ const VotorsCustomization = ({ sidebarExpanded, SearchWithName }) => {
   console.log(Data, "votersCuz");
 
   const handleConfirmButton = (userId) => {
-    confirVotersStatus(setIsLoading, userId, setData);
+    setStatus("Confirmed");
+    confirVotersStatus(setIsLoading, userId, setData , setStatus);
   };
-
+const handleCancelOrder = (userId) => {
+    setStatus("Cancelled");
+    confirVotersStatus(setIsLoading, userId, setData , setStatus);
+  }
   useEffect(() => {
     choose_outlet_drop_down(setOutLetDropDown);
 
@@ -100,6 +122,10 @@ const VotorsCustomization = ({ sidebarExpanded, SearchWithName }) => {
     const item = ProudctCategory.find((entry) => entry.id === id);
     return item ? item.name : "Not Found";
   };
+  const showOrderActions = ["Cancelled", "Confirmed", "Updated"];
+
+
+
   return (
     <>
       <div className="votors_btns">
@@ -145,12 +171,16 @@ const VotorsCustomization = ({ sidebarExpanded, SearchWithName }) => {
                     <th style={{ borderRight: "0.5px solid #E7EDF4" }}>
                       Mobile number
                     </th>
+                     <th style={{ borderRight: "0.5px solid #E7EDF4" }}>
+                      Actual MRP
+                    </th>
                     <th style={{ borderRight: "0.5px solid #E7EDF4" }}>
                       Product type
                     </th>
-                    <th></th>
+                    <th>Order</th>
                     <th>Status</th>
-                    <th></th>
+                     <th>Track</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -164,13 +194,18 @@ const VotorsCustomization = ({ sidebarExpanded, SearchWithName }) => {
                           {item.mobile_number}
                         </div>
                       </td>
+                      <td>
+                        <div className="actual_mrp">
+                         {item.actual_price}
+                        </div>
+                      </td>
                       <td> {productCategoryByID(Number(item.product_type))}</td>
-                      {/* <td>
+                      {/* <td>  
                     <div className="active_sendmail">
                       <button className="sendmail_btn">Send Mail</button>
                     </div>
-                  </td> */}
-                      <td>
+                  </td>
+                    
                         {item.status === "Updated" && (
                           <button
                             className={
@@ -184,12 +219,32 @@ const VotorsCustomization = ({ sidebarExpanded, SearchWithName }) => {
                               ? "Confirmed"
                               : "Confirm"}
                           </button>
-                        )}
+                        )} */}
+                          <td>
+               {showOrderActions.includes(item.status) && (
+                <div className="order_btns">
+                  <button
+                    className="cancel_btn"
+                   onClick={() => handleCancelOrder(item.id)}
+                  >
+                    Cancel
+                  </button>
+
+                  <button
+                    className="updated_btn"
+                    onClick={() => handleConfirmButton(item.id)}
+                  >
+                    Confirm
+                  </button>
+                </div>
+              )}
+
                       </td>
-                      <td style={{ position: "relative" }}>
-                        <div className="status_votors">
+                      
                           {/* <button className="requested_btn">Requested</button> */}
-                          <button
+                        
+                      <td style={{ position: "relative" }}>
+                        <div className="status_votors">  <button
                             className={
                               item.status === "Updated"
                                 ? "requested_btn"
@@ -199,10 +254,27 @@ const VotorsCustomization = ({ sidebarExpanded, SearchWithName }) => {
                             }
                           >
                             {item.status}
-                          </button>
-                          {/* <button className="votersConfirm_btn">{item.status}</button> */}
+                          </button>                   
+                        </div>                     
+                      </td>
+                    <td>
+                     <button
+                          className="track_btn"
+                          onClick={() => {
+                            get_customization_tracking(
+                              setTrackLoading,
+                              setTrackData,
+                              item.id
+                            );
+                            setTrackOpen(true);
+                          }}
+                        >
+                          Track
+                        </button>
 
-                          <IoEye
+                      </td>
+
+                      <td>  <IoEye
                             style={{
                               color: "#A7BED7",
                               fontSize: "18px",
@@ -210,36 +282,39 @@ const VotorsCustomization = ({ sidebarExpanded, SearchWithName }) => {
                             }}
                             onClick={() => handleEyeClick(item.id)}
                           />
-                          <BsThreeDotsVertical
-                            className="Action_dots"
-                            onClick={() =>
-                              setShowEditDelete(
-                                showEditDelete === index ? null : index
-                              )
-                            }
-                          />
-                        </div>
+                         {item.status !== "Confirmed" && (
+                                      <>
+                                        <BsThreeDotsVertical
+                                          className="Action_dots"
+                                          onClick={() =>
+                                            setShowEditDelete(showEditDelete === index ? null : index)
+                                          }
+                                        />
 
-                        {showEditDelete === index && (
-                          <div
-                            ref={dropdownRef}
-                            className="Edit_delete_btn_user"
-                          >
-                            {/* <p
-                          className="Edit_btn_user"
-                          onClick={() => handleEditCustomization(item.id)}
-                        >
-                          Edit
-                        </p> */}
-                            <p
-                              className="Delete_btn_user"
-                              onClick={() => handleDeleteCustomization(item.id)}
-                            >
-                              Delete
-                            </p>
-                          </div>
-                        )}
-                      </td>
+                                        {showEditDelete === index && (
+                                          <div
+                                            ref={dropdownRef}
+                                            className="Edit_delete_btn_user"
+                                          >
+                                            <p
+                                              className="Edit_btn_user"
+                                              onClick={() => handleEditCustomization(item.id)}
+                                            >
+                                              Edit
+                                            </p>
+
+                                            <p
+                                              className="Delete_btn_user"
+                                              onClick={() => handleDeleteCustomization(item.id)}
+                                            >
+                                              Delete
+                                            </p>
+                                          </div>
+                                        )}
+                                      </>
+                                    )}
+
+                          </td>
                     </tr>
                   ))}
                 </tbody>
@@ -252,7 +327,7 @@ const VotorsCustomization = ({ sidebarExpanded, SearchWithName }) => {
           open={IsModalOpen}
           onClose={() => setIsModalOpen(false)}
           userId={userId}
-          setData={setData}
+          setData={setCustomization}
         />
         <DeleteConfirmationModal
           DeleteConfirmationOpen={DeleteConfirmationOpen}
@@ -277,6 +352,25 @@ const VotorsCustomization = ({ sidebarExpanded, SearchWithName }) => {
           handleClose={handleClose}
           successMessage={successMessage}
         />
+        <TrackModal
+          open={trackOpen}
+          onClose={() => setTrackOpen(false)}
+          data={trackData}
+        />
+  <CreateCustomisation
+        open={isModalOpenCreateCutomize}
+        onClose={() => setIsCreateCustomizeModalOpen(false)}
+        dataToDisplaytomodal={customization}
+        userId={userId}
+        displayEditDetailsById={customization?.id}
+        // wareHouseuserId={wareHouseuserId}
+        setData={setData}
+        setCustomization={setCustomization}
+        name="editModalOpen"
+        customizationFunction={() =>
+          customization_details(setIsLoading, setCustomization, userId)
+        }
+      />
       </div>
     </>
   );

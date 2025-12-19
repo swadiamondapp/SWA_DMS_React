@@ -1,15 +1,19 @@
-import React, { useState } from "react";
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
+/* eslint-disable react/jsx-key */
+import React, { useEffect, useState } from "react";
 import "../../Componets/ADMIN PANEL/Design Pool/DesignPool.css";
-import like from "../../assets/like.png";
-import ring from "../../assets/ring.png";
+//import like from "../../assets/like.png";
+//import ring from "../../assets/ring.png";
 import { useNavigate } from "react-router-dom";
 import { Box, CircularProgress, Tab } from "@mui/material";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
+import ComingSoon from "../VOTORS PANEL/Votors Panel/ComingSoon";
 // import DesignBtn from "../../ADMIN PANEL/Design Pool/DesignBtn";
 
-const WareHouse = (props) => {
+const WareHouse = ({sidebarExpanded,isLoading,DesignWareHouse,LastVotedDesign}) => {
   const navigate = useNavigate();
 
   const [showRadioButtons, setShowRadioButtons] = useState(false);
@@ -63,12 +67,16 @@ const WareHouse = (props) => {
     return `${day}/${month}/${year} ${hours}:${minutes} ${ampm}`;
   };
   
+const [showModal, setShowModal] = useState(false);
 
+useEffect(() => {
+  setShowModal(true); // opens whenever component renders
+}, []);
   return (
-    <div>
+  
       <div
-        className="Parent_DesignView"
-        style={{ paddingLeft: props.sidebarExpanded ? "225px" : "130px" }}
+         className={`ParentVotors ${showModal ? "page_blurred" : ""}`}
+        style={{ paddingLeft: sidebarExpanded ? "225px" : "130px" }}
       >
         {/* <div className="DesignPool_btns">
           <div className="Download_ParentD">
@@ -130,12 +138,12 @@ const WareHouse = (props) => {
               </TabList>
             </Box>
             <TabPanel value="1">
-              <div className="first_tab" style={{ paddingTop: "50px" }}>
+              <div className={`first_tab ${showModal ? "page_blurred" : ""}`} style={{ paddingTop: "50px" }}>
                 <h3 className="HeadNewdesign">
-                  Newly added (&nbsp;{props.DesignWareHouse?.length}&nbsp;)
+                  Newly added (&nbsp;{DesignWareHouse?.length}&nbsp;)
                 </h3>
 
-                {props.isLoading && (
+                {isLoading && (
                   <div
                     style={{
                       display: "flex",
@@ -156,8 +164,8 @@ const WareHouse = (props) => {
                   </div>
                 )}
 
-                {props.isLoading === false &&
-                  props?.DesignWareHouse?.length === 0 && (
+                {isLoading === false &&
+                  DesignWareHouse?.length === 0 && (
                     <div
                       style={{
                         display: "flex",
@@ -170,7 +178,7 @@ const WareHouse = (props) => {
                   )}
 
                 <div className="Card_Design_Parent">
-                  {props.DesignWareHouse.map((item) =>{
+                  {DesignWareHouse.map((item) =>{
                     console.log("itemssssss",item)
                     return (
                     <div className="New_Design_card">
@@ -248,10 +256,10 @@ const WareHouse = (props) => {
             <TabPanel value="2" className="folders_tabpanel">
               <div className="Parent_Folder_section">
                 <h3 className="HeadNewdesign">
-                  Last Voted (&nbsp;{props.LastVotedDesign?.length}&nbsp;)
+                  Last Voted (&nbsp;{LastVotedDesign?.length}&nbsp;)
                 </h3>
                 <div className="Card_Design_Parent">
-                  {props.LastVotedDesign.map((item) => (
+                  { LastVotedDesign.map((item) => (
                     <div className="New_Design_card">
                       <div className="Card_img">
                         <img src={item.image} alt="" />
@@ -275,8 +283,15 @@ const WareHouse = (props) => {
             </TabPanel>
           </TabContext>
         </Box>
+             <ComingSoon
+  open={showModal}
+  onClose={() => setShowModal(false)}
+  title="Photo Coming Soon 📸"
+  description="High-quality product photos will be available shortly."
+/>
       </div>
-    </div>
+ 
+  
   );
 };
 

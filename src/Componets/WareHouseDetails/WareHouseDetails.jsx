@@ -329,6 +329,20 @@ const WareHouseDetails = ({ sidebarExpanded }) => {
                     />
                   </p>
                 </div>
+                   <div className="A1_text" style={{ position: "relative" }}>
+                  <p>Due Date</p>
+                  <p style={{ display: "flex", alignItems: "center" }}>
+                   
+                    <input
+                      type="date"
+                      className="actualDetails_input"
+                      name="duedate"
+                      value={formData.duedate}
+                      onChange={handleInput}
+                      onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
+                    />
+                  </p>
+                </div>
                 <div className="A1_text" style={{ borderBottom: "0px" }}>
                   <p>Note</p>
                   <input
