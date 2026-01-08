@@ -50,6 +50,8 @@ const CustomiseRequest = ({
   CustomizationWareHouseData,
   setData,
   isLoadingDetail,
+  submitMode,
+  refreshList,
 }) => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -206,7 +208,8 @@ useEffect(() => {
 
   console.log("dataToDisplay---", dataToDisplay);
   console.log("isLoading---", isLoadingDetail);
-
+const usertype = localStorage.getItem("Usertype");
+const status = dataToDisplay.status?.trim();
   return (
     <div>
       <div className="content-modal">
@@ -265,7 +268,7 @@ useEffect(() => {
                       <div className="lineCR"></div>
                       <div style={{ marginBottom: "5px" }}>
                         <span className="basic-Details-title">
-                          Basic Details
+                          Basic Details nnn
                         </span>
                       </div>
                       <div className="subTitle">
@@ -499,10 +502,15 @@ useEffect(() => {
                             : Math.floor(dataToDisplay.actual_price)} */}
                           </span>
                         </div>
-                        <div className="ProductInformation">
-                          <span>Actual Price</span>
-                          <span> {Math.floor(dataToDisplay.actual_price)}</span>
-                        </div>
+                  <div className="ProductInformation">
+                  <span>Actual Price</span>
+                  <span className="actual_mrp">
+                    {dataToDisplay.actual_price > 0
+                      ? Math.floor(dataToDisplay.actual_price)
+                      : '-'}
+                  </span>
+                </div>
+
                         <div className="ProductInformation">
                           <span>SWA Product SKU</span>
                           <span>
@@ -529,54 +537,59 @@ useEffect(() => {
                       </div>
                       <div className="lineCR"></div>
 
-                      <div className="crButtonContainer">
-                        {CustomizationWareHouseData && (
-                          <>
-                            <>
-                              {/* <button
-                                onClick={() => handleConfirm()}
-                                className="CR_ButtonCommen confirmButtonCR"
-                              >
-                                Confirm
-                              </button> */}
-                              {dataToDisplay.status === "Rejected" ? (
-                                <span>Rejected</span>
-                              ) : (
-                                dataToDisplay.status === "Requested" &&
-                                dataToDisplay.status !== "Updated" && (
-                                  <button
-                                    onClick={() => handleReject()}
-                                    className="CR_ButtonCommen rejectButtonCR"
-                                  >
-                                    Reject
-                                  </button>
-                                )
-                              )}
-                            </>
-                          </>
-                        )}
-                        {console.log(
-                          "CustomizationWareHouseData.status",
-                          dataToDisplay.status
-                        )}
+                    
 
-                        {dataToDisplay.status !== "Rejected" && (
-                          <>
-                            {dataToDisplay.status === "Confirmed" ? (
-                              <span>Already Updated</span>
-                            ) : (
-                              <button
-                                onClick={() =>
-                                  handleEditWareHouseDetails(dataToDisplay)
-                                }
-                                className="CR_ButtonCommen editButtonCR"
-                              >
-                                edit <img src={editIcon} alt="" />
-                              </button>
-                            )}
-                          </>
-                        )}
-                      </div>
+
+<div className="crButtonContainer">
+  {/* ================= WAREHOUSE USER ================= */}
+  {usertype === "WAREHOUSE" ? (
+    <>
+      {status === "Confirmed" && <span>Already Updated</span>}
+
+      {status === "Rejected" && <span>Rejected</span>}
+
+      {status === "Requested" && CustomizationWareHouseData && (
+        <div className="cr-action-buttons">
+          <button
+            onClick={() => handleEditWareHouseDetails(dataToDisplay)}
+            className="CR_ButtonCommen editButtonCR"
+          >
+            Edit <img src={editIcon} alt="" />
+          </button>
+
+          <button
+            onClick={handleConfirm}
+            className="CR_ButtonCommen confirmButtonCR"
+          >
+            Confirm
+          </button>
+
+          <button
+            onClick={handleReject}
+            className="CR_ButtonCommen rejectButtonCR"
+          >
+            Reject
+          </button>
+        </div>
+      )}
+    </>
+  ) : (
+    /* ================= NON-WAREHOUSE USER ================= */
+    <>
+      {!["Confirmed", "Rejected"].includes(status) && (
+        <button
+          onClick={() => handleEditWareHouseDetails(dataToDisplay)}
+          className="CR_ButtonCommen editButtonCR"
+        >
+          Edit <img src={editIcon} alt="" />
+        </button>
+      )}
+
+      {status === "Confirmed" && <span>Already Updated</span>}
+    </>
+  )}
+</div>
+
                     </div>
                   )}
                 </div>
@@ -597,6 +610,8 @@ useEffect(() => {
         customizationFunction={() =>
           customization_details(setIsLoading, setCustomization, userId)
         }
+          submitMode={submitMode} 
+            refreshList={refreshList}
       />
       <SuccessModal
         successModalOpen={successModalOpen}

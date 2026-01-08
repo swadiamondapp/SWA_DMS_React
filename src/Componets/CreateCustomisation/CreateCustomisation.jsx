@@ -34,6 +34,9 @@ import {
   product_category_basicDetails,
   tag_List_basicDetails,
 } from "../Assignment Panel/Api";
+import axios from "axios";
+import { apiService } from "../../Pages/Services/ApiInstants";
+import { voters_customization_list } from "../VOTORS PANEL/Api";
 
 const style = {
   position: "absolute",
@@ -69,6 +72,7 @@ const style = {
 //   },
 // };
 const CreateCustomisation = ({
+  setData,
   votersSetData,
   open,
   onClose,
@@ -78,6 +82,8 @@ const CreateCustomisation = ({
   wareHouseuserId,
   name,
   customizationFunction,
+  refreshList,
+  submitMode, 
 }) => {
   // const [open, setOpen] = useState(false);
   const [tagText, setTagText] = useState("");
@@ -208,162 +214,199 @@ const CreateCustomisation = ({
   console.log(dataToDisplaytomodal?.image2, "dataToDisplaytomodal.image2 ");
   console.log(formData, "editCus");
 
-  const schema = Joi.object({
-    sallerName: Joi.string().required().messages({
-      "string.empty": `cannot be empty`,
-      "string.pattern.base": "cannot contain numbers.",
+{/* const schema = Joi.object({
+  sallerName: Joi.string().trim().required(),
+
+  mobileNumber: Joi.string()
+    .trim()
+    .pattern(/^\d{10}$/)
+    .required()
+    .messages({
+      "string.pattern.base": "Mobile number must be exactly 10 digits",
     }),
-    mobileNumber: Joi.string()
-      .pattern(/^\d{10}$/)
-      .min(10)
-      .max(10)
-      .required()
-      .messages({
-        "string.empty": `Mobile number required`,
-        "string.min": `Mobile number must be exactly 10 digits`,
-        "string.max": `Mobile number must be exactly 10 digits`,
-      }),
-    customerName: Joi.string().required().messages({
-      "string.empty": `cannot be empty`,
-      "string.pattern.base": "cannot contain numbers.",
+
+  customerName: Joi.string().trim().required(),
+
+  customerMobile: Joi.string()
+    .trim()
+    .pattern(/^\d{10}$/)
+    .required()
+    .messages({
+      "string.pattern.base": "Mobile number must be exactly 10 digits",
     }),
-    customerMobile: Joi.string()
-      .pattern(/^\d{10}$/)
-      .min(10)
-      .max(10)
-      .required()
-      .messages({
-        "string.empty": `Mobile number required`,
-        "string.min": `Mobile number must be exactly 10 digits`,
-        "string.max": `Mobile number must be exactly 10 digits`,
-      }),
-    customerEmail: Joi.string()
-      .email({ tlds: { allow: false } })
-      .allow("") 
-      .messages({
-        "string.email": "Please provide a valid email address",
-      }),
-    receivedAdvance: Joi.string().required().messages({
-      "string.empty": `cannot be empty`,
-      "string.pattern.base": "cannot contain numbers.",
+
+  customerEmail: Joi.string()
+    .email({ tlds: { allow: false } })
+    .allow("", null),
+
+chooseOutlet: Joi.object({
+  id: Joi.any().required(),
+}).required(),
+
+productType: Joi.object({
+  id: Joi.any().required(),
+}).required(),
+
+receivedAdvance: Joi.string().required(),
+
+
+  modelPrevioslyMade: Joi.string()
+    .valid("yes", "no")
+    .required(),
+
+  prevMadeSKU: Joi.when("modelPrevioslyMade", {
+    is: "yes",
+    then: Joi.string().trim().required(), 
+    otherwise: Joi.optional(),
+  }),
+
+  metalType: Joi.object({
+    id: Joi.any().required(),
+  })
+    .required(),
+
+  diamondClarity: Joi.string().required(),
+  diamondColor: Joi.string().required(),
+  Budget: Joi.string().required(),
+
+  due_date: Joi.date()
+    .min("now")
+    .required()
+    .messages({
+      "date.min": "Due date cannot be in the past",
     }),
-    chooseOutlet: Joi.any()
-      .required()
-      .custom((value, helpers) => {
-        if (value === "" || value === null || value === undefined) {
-          return helpers.error("any.empty");
-        }
-        return value;
-      })
-      .messages({
-        "any.required": "cannot be empty",
-        "any.empty": "cannot be empty",
-      }),
-    productType: Joi.any()
-      .required()
-      .custom((value, helpers) => {
-        if (value === "" || value === null || value === undefined) {
-          return helpers.error("any.empty");
-        }
-        return value;
-      })
-      .messages({
-        "any.required": "cannot be empty",
-        "any.empty": "cannot be empty",
-      }),
-    modelPrevioslyMade: Joi.string().required().messages({
-      "string.empty": `cannot be empty`,
-    }),
-    prevMadeSKU: Joi.when("modelPrevioslyMade", {
-      is: Joi.string().valid("yes"), // When modelPrevioslyMade is "yes"
-      then: Joi.string().required().messages({
-        "any.required": `Previous Made SKU is required when Model previously made is yes`,
-        "string.empty": `Previous Made SKU cannot be empty when Model previously made is yes`,
-      }),
-      // Otherwise, it's optional
-    }),
-    metalType: Joi.any()
-      .required()
-      .custom((value, helpers) => {
-        if (value === "" || value === null || value === undefined) {
-          return helpers.error("any.empty");
-        }
-        return value;
-      })
-      .messages({
-        "any.required": "cannot be empty",
-        "any.empty": "cannot be empty",
-      }),
-    diamondClarity: Joi.string().required().messages({
-      "string.empty": `cannot be  empty`,
-    }),
-    diamondColor: Joi.string().required().messages({
-      "string.empty": `cannot be  empty`,
-    }),
-    Budget: Joi.string().required().messages({
-      "string.empty": `cannot be  empty`,
-    }),
-   due_date: Joi.string()
+});*/}
+const requiredField = Joi.any()
   .required()
   .custom((value, helpers) => {
-    const selectedDate = new Date(value);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    if (isNaN(selectedDate.getTime())) {
-      return helpers.error("date.base");
+    if (
+      value === "" ||
+      value === null ||
+      value === undefined ||
+      (typeof value === "object" && Object.keys(value).length === 0)
+    ) {
+      return helpers.error("any.empty");
     }
-
-    if (selectedDate < today) {
-      return helpers.error("date.min");
-    }
-
     return value;
   })
   .messages({
-    "any.required": "Due date is required",
-    "string.empty": "Due date cannot be empty",
-    "date.base": "Invalid due date",
-    "date.min": "Due date cannot be in the past",
-  }),
-
+    "any.required": "This field is required",
+    "any.empty": "This field is required",
   });
+
+const schema = Joi.object({
+  sallerName: requiredField,
+  mobileNumber: requiredField,
+  customerName: requiredField,
+  customerMobile: requiredField,
+  receivedAdvance: requiredField,
+
+  chooseOutlet: requiredField,
+  productType: requiredField,
+  metalType: requiredField,
+
+  modelPrevioslyMade: requiredField,
+  diamondClarity: requiredField,
+  diamondColor: requiredField,
+  Budget: requiredField,
+   due_date: Joi.date()
+    .min("now")
+    .required()
+    .messages({
+      "date.min": "Due date cannot be in the past",
+    }),
+});
+
   console.log(ProudctCategory, "diamonType");
   console.log(errors, "errors");
 
-  const handleSubmit = (e) => {
-  e.preventDefault(); // 🔥 critical
+const updateOrderStatus = async () => {
+  try {
+    await apiService.patch(
+      `customization/${dataToDisplaytomodal.id}/update-orderstatus/`,
+      { status: "Requested" }
+    );
+ //voters_customization_list(setIsLoading,setData, "", "");
+    
+  } catch (err) {
+    console.error("Status update failed", err);
+  }
+};
 
-  // Image validation
-  {/* const hasAtLeastOneImage = images.some((img) => img);
- if (!hasAtLeastOneImage) {
-    setImageError("At least one image is required.");
-    return;
-  }*/}
-  setImageError("");
+const handleSubmitCustomization = (e) => {
+  e.preventDefault(); // 🔥 REQUIRED
 
-  // Joi validation
-  const { error } = schema.validate(formData, {
-    abortEarly: false,
-    allowUnknown: true,
-  });
+const normalizedFormData = {
+  ...formData,
 
-  if (error) {
-    const validationErrors = error.details.reduce((errors, err) => {
-      errors[err.path[0]] = err.message;
-      return errors;
-    }, {});
-    setErrors(validationErrors);
-    return;
+  chooseOutlet:
+    typeof formData.chooseOutlet === "object"
+      ? formData.chooseOutlet
+      : { id: formData.chooseOutlet },
+
+  productType:
+    typeof formData.productType === "object"
+      ? formData.productType
+      : { id: formData.productType },
+
+  metalType:
+    typeof formData.metalType === "object"
+      ? formData.metalType
+      : { id: formData.metalType },
+
+  modelPrevioslyMade:
+    typeof formData.modelPrevioslyMade === "string"
+      ? formData.modelPrevioslyMade.toLowerCase().trim()
+      : "",
+
+  receivedAdvance:
+    formData.receivedAdvance != null
+      ? String(formData.receivedAdvance)
+      : "",
+};
+
+
+
+  // 2️⃣ VALIDATE ONLY WHEN SENDING TO WAREHOUSE
+  if (submitMode === "SEND_TO_WH") {
+    const { error } = schema.validate(normalizedFormData, {
+      abortEarly: false,
+      allowUnknown: true, // ✅ IMPORTANT LINE
+    });
+
+    if (error) {
+      const validationErrors = {};
+      error.details.forEach((err) => {
+        validationErrors[err.path.join(".")] = err.message;
+      });
+      setErrors(validationErrors);
+      return; // ❌ STOP SUBMIT
+    }
   }
 
-  setErrors({});
-
-  // 🚀 API CALL (single source of truth)
+  // ✅ Continue with API calls
   if (dataToDisplaytomodal) {
-    handleUpdateCustomization();
+    edit_customizaion_warehouse(
+      setIsLoading,
+      formData, // 🚨 send ORIGINAL formData to API
+      dataToDisplaytomodal.id,
+      async () => {
+        if (submitMode === "SEND_TO_WH") {
+          await updateOrderStatus();
+        }
+        refreshList(); // Refresh list after edit
+        onClose();
+      },
+      setSuccessMessage,
+      setSuccessModalOpen,
+      images,
+      setImages,
+      votersSetData,
+      customizationFunction
+    );
   } else {
-    create_customizaion_warehouse(
+    // CREATE
+  create_customizaion_warehouse(
       setIsLoading,
       formData,
       onClose,
@@ -408,7 +451,7 @@ const CreateCustomisation = ({
   //   edit_customizaion_warehouse(setIsLoading, formData,id);
   // };
 const handleUpdateCustomization = () => {
-  if (!displayEditDetailsById) return;
+ // if (!displayEditDetailsById) return;
 
   edit_customizaion_warehouse(
     setIsLoading,
@@ -746,7 +789,7 @@ const handleUpdateCustomization = () => {
 
               <Typography id="modal-modal-description" sx={{ mt: 10 }}>
                 <div>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmitCustomization}>
                     <div className="FormContainer">
                       <div className="parant_relative">
                         <label htmlFor="" className="label_text">
@@ -1797,4 +1840,54 @@ export default CreateCustomisation;
                             Upload <BsCloudUpload />
                           </div>
                         </div>
-                      </div> */}
+                      </div> 
+                      
+                      
+                      
+  const handleSubmit = (e) => {
+  e.preventDefault(); // 🔥 critical
+
+  // Image validation
+  {/* const hasAtLeastOneImage = images.some((img) => img);
+ if (!hasAtLeastOneImage) {
+    setImageError("At least one image is required.");
+    return;
+  }*/}
+
+
+  // Joi validation
+  {/*const { error } = schema.validate(formData, {
+    abortEarly: false,
+    allowUnknown: true,
+  });
+
+  if (error) {
+    const validationErrors = error.details.reduce((errors, err) => {
+      errors[err.path[0]] = err.message;
+      return errors;
+    }, {});
+    setErrors(validationErrors);
+    return;
+  }
+
+  setErrors({});
+
+  // 🚀 API CALL (single source of truth)
+  if (dataToDisplaytomodal) {
+    handleUpdateCustomization();
+  } else {
+    create_customizaion_warehouse(
+      setIsLoading,
+      formData,
+      onClose,
+      setSuccessMessage,
+      setSuccessModalOpen,
+      setErrorMessage,
+      images,
+      votersSetData,
+      setFormData,
+      setImages
+    );
+  }
+};
+                      */}

@@ -30,6 +30,7 @@ import { product_category_basicDetails } from "../Assignment Panel/Api";
 import { useLocation } from "react-router-dom";
 import TrackModal from "../VOTORS PANEL/Votor Customization/TrackModal";
 import { apiService } from "../../Pages/Services/ApiInstants";
+import { Update } from "@mui/icons-material";
 const STATUS_CONFIG = {
   Received: {
     color: "#FFBA18",
@@ -39,7 +40,7 @@ const STATUS_CONFIG = {
     color: "#0464D5",
     bg: "#0464D51A",
   },
-  Confirmed: {
+  Approved: {
     color: "#19DE51",
     bg: "#19DE511A",
   },
@@ -56,6 +57,11 @@ const STATUS_CONFIG = {
     bg: "#FF1C1C2B",
   },
 };
+const STATUS_MAP = {
+  Pending: "Received",
+  "MRP Updated": "Updated",
+};
+
 
 const data = [
   {
@@ -132,14 +138,18 @@ const [trackData, setTrackData] = useState([]);
   const [loadingItemId, setLoadingItemId] = useState(null);
 
   const dropdownRefs = useRef([]);
+const fetchCustomizationList = () => {
+  customizaztion_list_wareHouse(
+    setIsLoading,
+    setCustomizationListData,
+    props.SearchWithName
+  );
+};
 
-  useEffect(() => {
-    customizaztion_list_wareHouse(
-      setIsLoading,
-      setCustomizationListData,
-      props.SearchWithName
-    );
-  }, [props.SearchWithName]);
+useEffect(() => {
+  fetchCustomizationList();
+}, [props.SearchWithName]);
+
 
   console.log(CustomizationListData, "CustomizationListData");
   const handleEyeClick = (wareHouseId) => {
@@ -266,10 +276,11 @@ const [trackData, setTrackData] = useState([]);
   console.log("location>>>", location.pathname);
   const updateWarehouseStatus = async (id, newStatus) => {
   try {
-    await apiService.post(
+    await apiService.patch(
       `/warehouse/update-customization/${id}`,
       { wh_status: newStatus }
     );
+     fetchCustomizationList();
 
     // Update UI locally
     setCustomizationListData((prev) =>
@@ -285,20 +296,41 @@ const [trackData, setTrackData] = useState([]);
     console.error("Status update failed", error);
   }
 };
+const statusDropdownRef = useRef(null);
+const WAREHOUSE_PROGRESS_STATUSES = [
+  "Work Started",
+  "50% Completed",
+  "Completed",
+];
 
-const renderStatusDropdown = (status, index, itemId) => {
-  const config = STATUS_CONFIG[status];
+const renderStatusDropdown = (status, index, itemId, item) => {
+  const mappedStatus = STATUS_MAP[status] || status;
+  const config = STATUS_CONFIG[mappedStatus];
 
-  if (!config) {
+  // ❌ If not Approved → show badge only
+  if (item.wh_status !== "Approved") {
     return (
-      <span style={{ fontSize: "12px", color: "#999" }}>
-        {status || "N/A"}
+      <span
+        style={{
+          background: config?.bg || "#eee",
+          color: config?.color || "#999",
+          padding: "4px 10px",
+          borderRadius: "999px",
+          fontSize: "12px",
+          fontWeight: 500,
+        }}
+      >
+        {mappedStatus || "N/A"}
       </span>
     );
   }
 
+  // ✅ Approved → show dropdown
   return (
-    <div style={{ position: "relative", display: "inline-block" }}>
+    <div
+      ref={openStatusIndex === index ? statusDropdownRef : null}
+      style={{ position: "relative", display: "inline-block" }}
+    >
       <div
         onClick={() =>
           setOpenStatusIndex(openStatusIndex === index ? null : index)
@@ -314,10 +346,9 @@ const renderStatusDropdown = (status, index, itemId) => {
           alignItems: "center",
           gap: "6px",
           cursor: "pointer",
-          whiteSpace: "nowrap",
         }}
       >
-        {status}
+        {mappedStatus}
         <span style={{ fontSize: "10px" }}>▼</span>
       </div>
 
@@ -335,20 +366,18 @@ const renderStatusDropdown = (status, index, itemId) => {
             zIndex: 100,
           }}
         >
-          {Object.keys(STATUS_CONFIG).map((key) => (
+          {WAREHOUSE_PROGRESS_STATUSES.map((key) => (
             <div
               key={key}
-              onClick={() =>
-                updateWarehouseStatus(itemId, key)
-              }
+              onClick={() => updateWarehouseStatus(itemId, key)}
               style={{
                 padding: "6px 10px",
                 fontSize: "12px",
                 borderRadius: "8px",
                 cursor: "pointer",
                 background:
-                  key === status ? "#F1F5F9" : "transparent",
-                fontWeight: key === status ? 600 : 400,
+                  key === mappedStatus ? "#F1F5F9" : "transparent",
+                fontWeight: key === mappedStatus ? 600 : 400,
               }}
             >
               {key}
@@ -359,6 +388,24 @@ const renderStatusDropdown = (status, index, itemId) => {
     </div>
   );
 };
+
+
+useEffect(() => {
+  const handleClickOutside = (event) => {
+    if (
+      statusDropdownRef.current &&
+      !statusDropdownRef.current.contains(event.target)
+    ) {
+      setOpenStatusIndex(null);
+    }
+  };
+
+  document.addEventListener("mousedown", handleClickOutside);
+
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
+}, []);
 
 
   return (
@@ -441,7 +488,7 @@ const renderStatusDropdown = (status, index, itemId) => {
                       </div>
                       </td>
                     <td>
-                        {renderStatusDropdown(item.status, index, item.id)}
+                        {renderStatusDropdown(item.wh_status, index, item.id, item)}
                       </td>
 
 

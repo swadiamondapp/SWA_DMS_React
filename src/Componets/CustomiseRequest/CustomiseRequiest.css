@@ -56,7 +56,7 @@
 }
 .ProductInformation span:nth-child(2) {
   font-family: "Gilroy medium";
-  font-weight: 400;
+  font-weight: 700;
   font-size: 10px;
   color: #2e364c;
   opacity: 70%;
@@ -132,3 +132,8 @@
   color: #455173;
 } 
 
+.cr-action-buttons {
+  display: flex;
+  gap: 10px;
+  align-content: flex-end;
+}

@@ -247,6 +247,7 @@ background: transparent !important;
   height: 14px;
   border-radius: 50%;
   margin-top: 4px;
+  background-color: #126E72;
 }
 .timeline_dot.completed {
   background: #0a7f6a;
@@ -275,6 +276,7 @@ background: transparent !important;
 .timeline_title {
   font-weight: 600;
   font-size: 14px;
+  color: #126E72;
 }
 
 .timeline_time,
@@ -292,3 +294,62 @@ background: transparent !important;
 .error {
   color: #dc2626;
 }
+.track_order_info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding: 10px;
+  background: #f8f9fb;
+  border-radius: 8px;
+}
+
+.info_item span {
+  font-size: 12px;
+  color: #666;
+}
+
+.info_item strong {
+  display: block;
+  font-size: 14px;
+  color: #111;
+}
+
+.timeline_item {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+
+
+.timeline_dot.completed {
+  background: #2ecc71;
+}
+
+.timeline_dot.pending {
+  background: #ccc;
+}
+
+.timeline_content {
+  display: flex;
+  flex-direction: column;
+}
+
+.timeline_title {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.timeline_meta {
+  font-size: 12px;
+  color: #666;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.pending_text {
+  color: #999;
+  font-style: italic;
+}
+

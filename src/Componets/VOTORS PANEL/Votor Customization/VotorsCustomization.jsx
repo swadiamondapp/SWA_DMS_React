@@ -45,9 +45,14 @@ const [trackData, setTrackData] = useState([]);
     useState(false);
 //const [trackId, setTrackId] = useState(null);
 const [trackLoading, setTrackLoading] = useState(false);
+const [refreshKey, setRefreshKey] = useState(0);
+
   useEffect(() => {
     voters_customization_list(setIsLoading, setData, SearchWithName, status);
-  }, [SearchWithName, status]);
+  }, [SearchWithName, status, refreshKey]);
+const refreshVotersList = () => {
+  setRefreshKey(prev => prev + 1);
+};
 
   const handleDeleteCustomization = (cuzId) => {
     setDeleteId(cuzId);
@@ -62,13 +67,14 @@ const [trackLoading, setTrackLoading] = useState(false);
   };
     //edit_customizaion_warehouse(setIsLoading, formData, setCutomizationList, userId);
   const handleEyeClick = (id) => {
-    
+    // setSubmitMode("DRAFT");
     setUserId(id);
    setIsModalOpen(true);
-   //  customization_details(setIsLoading, setCustomization, userId);
-    //  console.log(setCustomization, "check customization details");
+
   };
 
+   //  customization_details(setIsLoading, setCustomization, userId);
+    //  console.log(setCustomization, "check customization details");
   const handleDeleteClose = () => {
     setDeleteConfirmationOpen(false);
   };
@@ -103,11 +109,11 @@ const [trackLoading, setTrackLoading] = useState(false);
 
   const handleConfirmButton = (userId) => {
     setStatus("Confirmed");
-    confirVotersStatus(setIsLoading, userId, setData , setStatus);
+    confirVotersStatus(setIsLoading, userId, setStatus, setData );
   };
 const handleCancelOrder = (userId) => {
     setStatus("Cancelled");
-    confirVotersStatus(setIsLoading, userId, setData , setStatus);
+    confirVotersStatus(setIsLoading, userId, setStatus, setData);
   }
   useEffect(() => {
     choose_outlet_drop_down(setOutLetDropDown);
@@ -123,6 +129,13 @@ const handleCancelOrder = (userId) => {
     return item ? item.name : "Not Found";
   };
   const showOrderActions = ["Cancelled", "Confirmed", "Updated"];
+const [submitMode, setSubmitMode] = useState("DRAFT");
+
+const sendToWarehouse = (id) => {
+
+    setSubmitMode("SEND_TO_WH");   // 🔥 important
+    handleEyeClick(id);       // open edit modal
+};
 
 
 
@@ -200,63 +213,64 @@ const handleCancelOrder = (userId) => {
                         </div>
                       </td>
                       <td> {productCategoryByID(Number(item.product_type))}</td>
-                      {/* <td>  
-                    <div className="active_sendmail">
-                      <button className="sendmail_btn">Send Mail</button>
-                    </div>
-                  </td>
-                    
-                        {item.status === "Updated" && (
-                          <button
-                            className={
-                              item.customer_response === "Confirmed"
-                                ? "updated_btn"
-                                : "votersConfirm_btn"
-                            }
-                            onClick={() => handleConfirmButton(item.id)}
-                          >
-                            {item.customer_response === "Confirmed"
-                              ? "Confirmed"
-                              : "Confirm"}
-                          </button>
-                        )} */}
-                          <td>
-               {showOrderActions.includes(item.status) && (
-                <div className="order_btns">
-                  <button
-                    className="cancel_btn"
-                   onClick={() => handleCancelOrder(item.id)}
-                  >
-                    Cancel
-                  </button>
+              
+               
+      {/* Actions (Cancel / Confirm) */}
+      <td>
+        {item.wh_status === "MRP Updated" && (
+          <div className="order_btns">
+           <button
+            className="cancel_btn"
+            onClick={() => confirVotersStatus(setIsLoading, item.id, "Rejected", setData)}
+          >
+            Cancel
+          </button>
 
-                  <button
-                    className="updated_btn"
-                    onClick={() => handleConfirmButton(item.id)}
-                  >
-                    Confirm
-                  </button>
-                </div>
-              )}
+          <button
+          className="updated_btn"
+          onClick={() => confirVotersStatus(setIsLoading, item.id, "Confirmed", setData)}
+        >
+          Confirm
+        </button>
+          </div>
+        )}
+      </td>
 
-                      </td>
-                      
-                          {/* <button className="requested_btn">Requested</button> */}
-                        
-                      <td style={{ position: "relative" }}>
-                        <div className="status_votors">  <button
-                            className={
-                              item.status === "Updated"
-                                ? "requested_btn"
-                                : item.status === "Requested"
-                                ? "Requested_btn"
-                                : "updated_btn"
-                            }
-                          >
-                            {item.status}
-                          </button>                   
-                        </div>                     
-                      </td>
+      {/* Status column */}
+    {/* Status column */}
+<td style={{ position: "relative" }}>
+  <div className="status_votors">
+    <button
+      className={
+        item.wh_status === "MRP Updated"
+          ? "updated_btn_votors"
+          : item.status === "Drafted"
+          ? "send_wh_btn"
+          : item.status === "Requested"
+          ? "requested_btn_votors"
+          : item.status === "Confirmed"
+          ? "confirmed_btn_votors"
+          : item.status === "Canceled"
+          ? "canceled_btn_votors"
+          : ""
+      }
+      onClick={() => {
+        if (item.status === "Drafted") {
+          sendToWarehouse(item.id);
+        }
+      }}
+      disabled={item.status !== "Drafted"}
+    >
+      {item.wh_status === "MRP Updated"
+        ? "Updated"
+        : item.status === "Drafted"
+        ? "Send to WH"
+        : item.status}
+    </button>
+  </div>
+</td>
+
+
                     <td>
                      <button
                           className="track_btn"
@@ -328,6 +342,8 @@ const handleCancelOrder = (userId) => {
           onClose={() => setIsModalOpen(false)}
           userId={userId}
           setData={setCustomization}
+            submitMode={submitMode} 
+              refreshList={refreshVotersList}
         />
         <DeleteConfirmationModal
           DeleteConfirmationOpen={DeleteConfirmationOpen}
@@ -370,6 +386,7 @@ const handleCancelOrder = (userId) => {
         customizationFunction={() =>
           customization_details(setIsLoading, setCustomization, userId)
         }
+          submitMode={submitMode} 
       />
       </div>
     </>
@@ -377,3 +394,25 @@ const handleCancelOrder = (userId) => {
 };
 
 export default VotorsCustomization;
+
+
+        {/* <td>  
+                    <div className="active_sendmail">
+                      <button className="sendmail_btn">Send Mail</button>
+                    </div>
+                  </td>
+                    
+                        {item.status === "Updated" && (
+                          <button
+                            className={
+                              item.customer_response === "Confirmed"
+                                ? "updated_btn"
+                                : "votersConfirm_btn"
+                            }
+                            onClick={() => handleConfirmButton(item.id)}
+                          >
+                            {item.customer_response === "Confirmed"
+                              ? "Confirmed"
+                              : "Confirm"}
+                          </button>
+                        )} */}

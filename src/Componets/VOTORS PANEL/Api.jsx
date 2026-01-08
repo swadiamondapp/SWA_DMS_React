@@ -19,16 +19,21 @@ import { ALL_DESIGNS, VOTED_DESIGN_LIST } from "../../Pages/Services/EndPoints";
 export const voters_customization_list = async (
   setIsLoading,
   setData,
-  SearchWithName,
-  orderstatus
+  SearchWithName = "",
+  orderstatus = ""
 ) => {
   try {
     setIsLoading(true);
+
+    const params = new URLSearchParams({
+      customization_code: SearchWithName || "",
+      orderstatus: orderstatus || "",
+    });
+
     const response = await apiService.get(
-      `${VOTERS_CUSTOMIZATION_LIST}?customization_code=${
-        SearchWithName && SearchWithName
-      }&orderstatus=${orderstatus && orderstatus}`
+      `${VOTERS_CUSTOMIZATION_LIST}?${params.toString()}`
     );
+
     if (checkApiStatus(response)) {
       setData(response.data.results.data);
     }
@@ -38,6 +43,7 @@ export const voters_customization_list = async (
     setIsLoading(false);
   }
 };
+
 
 export const create_customization = async (
   setIsLoading,
@@ -317,20 +323,19 @@ export const create_stock_order_gallary = async (
   }
 };
 
-export const confirVotersStatus = async (setIsLoading, userId, setData , setStatus) => {
+export const confirVotersStatus = async (setIsLoading, userId, setStatus, setData) => {
   try {
-    const body = {
-      status: setStatus,
-    };
-    console.log("Request body:", userId);
-    const response = await apiService.post(
-      `${USER_RESPONSE_UPDATING}${userId}/update-orderstatus/`,
-      body
+    console.log("Request body:", { status: setStatus }); // check the payload
+   // console.log("Request body:", body); // check the payload
+   await apiService.patch(
+      `customization/${userId}/update-response/`,
+      { status: setStatus }
     );
-    if (checkApiStatus(response)) {
-      voters_customization_list(setIsLoading, setData, "");
-    }
+  
+      voters_customization_list(setIsLoading, setData, "", "");
+   
   } catch (error) {
     console.log(error);
   }
 };
+

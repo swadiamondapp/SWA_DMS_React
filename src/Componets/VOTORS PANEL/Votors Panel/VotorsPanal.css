@@ -168,6 +168,49 @@ box-shadow:0px 20px 80px 60px rgba(0, 0, 0, 0.08);
   cursor: pointer;
 }
 
+.status_votors button {
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 999px;
+  border: 1px solid;
+  cursor: default;
+  white-space: nowrap;
+}
+.send_wh_btn {
+  color: #f97316;            /* orange */
+  border-color: #f97316;
+  cursor: pointer;
+  background-color: #FC9B131A;
+
+}
+
+.send_wh_btn:hover {
+  background-color:white;
+}
+
+.requested_btn_votors {
+  color: #eab308;            /* yellow */
+  border-color: #eab308;
+  background-color: #fefce8;
+}
+.updated_btn_votors {
+  color: #2563eb;            /* blue */
+  border-color: #2563eb;
+  background-color: #eff6ff;
+}
+.confirmed_btn_votors {
+  color: #16a34a;            /* green */
+  border-color: #16a34a;
+  background-color: #ecfdf5;
+}
+.canceled_btn_votors {
+  color: #ef4444;            /* red */
+  border-color: #ef4444;
+  background-color: #fef2f2;
+}
+
+
 
 /* .wobble {
 	-webkit-animation: wobble-hor-top 0.8s both;
