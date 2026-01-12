@@ -15,6 +15,7 @@ import {
   VOTERS_CUSTOMIZATION_LIST,
 } from "../../Pages/Services/EndPoints";
 import { ALL_DESIGNS, VOTED_DESIGN_LIST } from "../../Pages/Services/EndPoints";
+import { message } from "antd";
 
 export const voters_customization_list = async (
   setIsLoading,
@@ -323,19 +324,48 @@ export const create_stock_order_gallary = async (
   }
 };
 
-export const confirVotersStatus = async (setIsLoading, userId, setStatus, setData) => {
+export const updateOrderStatus = (orderId, status) => {
+  return apiService.patch(
+    `customization/${orderId}/update-orderstatus/`,
+    {
+      status: status, // "Confirmed" or "Rejected"
+    }
+  );
+};
+export const confirVotersStatus = async (
+  setIsLoading,
+  orderId,
+  status,
+  setData
+) => {
   try {
-    console.log("Request body:", { status: setStatus }); // check the payload
-   // console.log("Request body:", body); // check the payload
-   await apiService.patch(
-      `customization/${userId}/update-response/`,
-      { status: setStatus }
-    );
-  
-      voters_customization_list(setIsLoading, setData, "", "");
-   
+    setIsLoading(true);
+
+    const response = await updateOrderStatus(orderId, status);
+
+    if (checkApiStatus(response)) {
+      message.success(response.data.results.message);
+
+      // Update UI immediately (recommended)
+      setData((prev) =>
+        prev.map((item) =>
+          item.id === orderId
+            ? {
+                ...item,
+                status: response.data.results.data.status,
+                wh_status: response.data.results.data.wh_status,
+              }
+            : item
+        )
+      );
+    } else {
+      message.error("Failed to update status");
+    }
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    message.error( error.data.results.message);
+  } finally {
+    setIsLoading(false);
   }
 };
 

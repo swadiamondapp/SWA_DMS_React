@@ -109,11 +109,11 @@ const refreshVotersList = () => {
 
   const handleConfirmButton = (userId) => {
     setStatus("Confirmed");
-    confirVotersStatus(setIsLoading, userId, setStatus, setData );
+    confirVotersStatus(setIsLoading, userId, setStatus );
   };
 const handleCancelOrder = (userId) => {
     setStatus("Cancelled");
-    confirVotersStatus(setIsLoading, userId, setStatus, setData);
+    confirVotersStatus(setIsLoading, userId, setStatus);
   }
   useEffect(() => {
     choose_outlet_drop_down(setOutLetDropDown);

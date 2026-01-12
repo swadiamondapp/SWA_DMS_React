@@ -302,13 +302,20 @@ const WAREHOUSE_PROGRESS_STATUSES = [
   "50% Completed",
   "Completed",
 ];
+const DROPDOWN_VISIBLE_STATUSES = [
+  "Approved",
+  "Work Started",
+  "50% Completed",
+];
 
 const renderStatusDropdown = (status, index, itemId, item) => {
   const mappedStatus = STATUS_MAP[status] || status;
   const config = STATUS_CONFIG[mappedStatus];
 
-  // ❌ If not Approved → show badge only
-  if (item.wh_status !== "Approved") {
+  const showDropdown = DROPDOWN_VISIBLE_STATUSES.includes(mappedStatus);
+
+  // ❌ No dropdown
+  if (!showDropdown) {
     return (
       <span
         style={{
@@ -325,7 +332,16 @@ const renderStatusDropdown = (status, index, itemId, item) => {
     );
   }
 
-  // ✅ Approved → show dropdown
+  // ✅ Allowed transitions
+  const getNextStatuses = (current) => {
+    if (current === "Approved") return ["Work Started"];
+    if (current === "Work Started") return ["50% Completed"];
+    if (current === "50% Completed") return ["Completed"];
+    return [];
+  };
+
+  const nextStatuses = getNextStatuses(mappedStatus);
+
   return (
     <div
       ref={openStatusIndex === index ? statusDropdownRef : null}
@@ -352,7 +368,7 @@ const renderStatusDropdown = (status, index, itemId, item) => {
         <span style={{ fontSize: "10px" }}>▼</span>
       </div>
 
-      {openStatusIndex === index && (
+      {openStatusIndex === index && nextStatuses.length > 0 && (
         <div
           style={{
             position: "absolute",
@@ -366,7 +382,7 @@ const renderStatusDropdown = (status, index, itemId, item) => {
             zIndex: 100,
           }}
         >
-          {WAREHOUSE_PROGRESS_STATUSES.map((key) => (
+          {nextStatuses.map((key) => (
             <div
               key={key}
               onClick={() => updateWarehouseStatus(itemId, key)}
@@ -375,9 +391,6 @@ const renderStatusDropdown = (status, index, itemId, item) => {
                 fontSize: "12px",
                 borderRadius: "8px",
                 cursor: "pointer",
-                background:
-                  key === mappedStatus ? "#F1F5F9" : "transparent",
-                fontWeight: key === mappedStatus ? 600 : 400,
               }}
             >
               {key}

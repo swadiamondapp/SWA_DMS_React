@@ -557,7 +557,7 @@ const status = dataToDisplay.status?.trim();
             Edit <img src={editIcon} alt="" />
           </button>
 
-          <button
+       <button
             onClick={handleConfirm}
             className="CR_ButtonCommen confirmButtonCR"
           >
