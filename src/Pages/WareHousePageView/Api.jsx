@@ -304,7 +304,7 @@ export const reject_customization = async (
 ) => {
   try {
     setIsLoading(true);
-    const response = await apiService.patch(`${REJECT_WAREHOUSE}/${dataById}/`);
+    const response = await apiService.patch(`${REJECT_WAREHOUSE}${dataById}/`);
     if (response.data.results.status_code === 200) {
       onClose();
       setSuccessMessage("Rejected successfully");

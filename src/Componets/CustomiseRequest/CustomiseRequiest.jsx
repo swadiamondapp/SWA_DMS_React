@@ -268,7 +268,7 @@ const status = dataToDisplay.status?.trim();
                       <div className="lineCR"></div>
                       <div style={{ marginBottom: "5px" }}>
                         <span className="basic-Details-title">
-                          Basic Details nnn
+                          Basic Details
                         </span>
                       </div>
                       <div className="subTitle">
@@ -510,7 +510,13 @@ const status = dataToDisplay.status?.trim();
                       : '-'}
                   </span>
                 </div>
-
+                    <div className="ProductInformation">
+                          <span>Due Date</span>
+                          <span>
+                            {dataToDisplay.due_date}
+                      
+                          </span>
+                        </div>
                         <div className="ProductInformation">
                           <span>SWA Product SKU</span>
                           <span>

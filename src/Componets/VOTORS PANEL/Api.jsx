@@ -315,7 +315,7 @@ export const create_stock_order_gallary = async (
       setSelectedValues({
         size: "",
         type: "",
-        colour: "",
+           colour: "",
         notes: "",
       });
     }
@@ -358,6 +358,7 @@ export const confirVotersStatus = async (
             : item
         )
       );
+       await voters_customization_list(setIsLoading, setData);
     } else {
       message.error("Failed to update status");
     }
