@@ -46,6 +46,9 @@ const [trackData, setTrackData] = useState([]);
 //const [trackId, setTrackId] = useState(null);
 const [trackLoading, setTrackLoading] = useState(false);
 const [refreshKey, setRefreshKey] = useState(0);
+const [cancelModalOpen, setCancelModalOpen] = useState(false);
+const [cancelRemark, setCancelRemark] = useState("");
+const [selectedItem, setSelectedItem] = useState(null);
 
   useEffect(() => {
     voters_customization_list(setIsLoading, setData, SearchWithName, status);
@@ -137,6 +140,105 @@ const sendToWarehouse = (id) => {
     handleEyeClick(id);       // open edit modal
 };
 
+const getStatusConfig = (item) => {
+  const isStatusRejected = item.status === "Rejected";
+  const isWhRejected = item.wh_status === "Rejected";
+
+  const isWorkStarted = item.wh_status === "Work Started";
+  const isHalfCompleted = item.wh_status === "50% Completed";
+  const isUpdated = item.wh_status === "MRP Updated";
+
+  // any rejection or warehouse progress locks everything
+  const isWarehouseLocked =
+    isStatusRejected || isWhRejected || isWorkStarted || isHalfCompleted;
+
+  let label = item.status;
+  let className = "";
+  let disabled = true;
+
+  // 🚨 TOP PRIORITY: Warehouse rejection
+  if (isWhRejected) {
+    label = "Rejected";
+    className = "rejected_btn_votors";
+    disabled = true;
+  }
+
+  // 🚨 SECOND PRIORITY: Voter rejection
+  else if (isStatusRejected) {
+    label = "Voter Cancelled";
+    className = "canceled_btn_votors";
+    disabled = true;
+  }
+
+  // warehouse progress
+  else if (isWorkStarted) {
+    label = "Work Started";
+    className = "confirmed_btn_votors";
+    disabled = true;
+  } else if (isHalfCompleted) {
+    label = "50% Completed";
+    className = "confirmed_btn_votors";
+    disabled = true;
+  }
+
+  // MRP Updated
+  else if (isUpdated) {
+    label = "Updated";
+    className = "updated_btn_votors";
+    disabled = true;
+  }
+
+  // fallback to order status
+  else if (item.status === "Drafted") {
+    label = "Send to WH";
+    className = "send_wh_btn";
+    disabled = false;
+  } else if (item.status === "Requested") {
+    label = "Requested";
+    className = "requested_btn_votors";
+  } else if (item.status === "Confirmed") {
+    label = "Confirmed";
+    className = "confirmed_btn_votors";
+  } else if (item.status === "Canceled") {
+    label = "Canceled";
+    className = "canceled_btn_votors";
+  }
+
+  // ✅ NEW: control edit/delete visibility
+const canEdit =
+  !isWarehouseLocked &&
+  item.status !== "Confirmed" &&
+  (
+    item.status !== "Requested" ||
+    item.wh_status === "MRP Updated"
+  );
+
+
+  return {
+    label,
+    className,
+    disabled,
+    isWarehouseLocked,
+    canEdit
+  };
+};
+const handleCancelConfirm = () => {
+  if (!cancelRemark.trim()) return;
+
+  confirVotersStatus(
+    setIsLoading,
+    selectedItem.id,
+    "Rejected",
+    setData,
+    {
+      voter_remark: cancelRemark
+    }
+  );
+
+  setCancelModalOpen(false);
+};
+
+
 
 
   return (
@@ -192,6 +294,7 @@ const sendToWarehouse = (id) => {
                     </th>
                     <th>Order</th>
                     <th>Status</th>
+       
                      <th>Track</th>
                     <th>Actions</th>
                   </tr>
@@ -217,14 +320,20 @@ const sendToWarehouse = (id) => {
                
       {/* Actions (Cancel / Confirm) */}
       <td>
-        {item.wh_status === "MRP Updated" && (
+       {item.wh_status === "MRP Updated" &&
+  !getStatusConfig(item).isWarehouseLocked && (
           <div className="order_btns">
-           <button
-            className="cancel_btn"
-            onClick={() => confirVotersStatus(setIsLoading, item.id, "Rejected", setData)}
-          >
-            Cancel
-          </button>
+        <button
+          className="cancel_btn"
+          onClick={() => {
+            setSelectedItem(item);
+            setCancelRemark("");
+            setCancelModalOpen(true);
+          }}
+        >
+          Cancel
+        </button>
+
 
           <button
           className="updated_btn"
@@ -237,39 +346,27 @@ const sendToWarehouse = (id) => {
       </td>
 
       {/* Status column */}
-    {/* Status column */}
-<td style={{ position: "relative" }}>
+ <td style={{ position: "relative" }}>
   <div className="status_votors">
-    <button
-      className={
-        item.wh_status === "MRP Updated"
-          ? "updated_btn_votors"
-          : item.status === "Drafted"
-          ? "send_wh_btn"
-          : item.status === "Requested"
-          ? "requested_btn_votors"
-          : item.status === "Confirmed"
-          ? "confirmed_btn_votors"
-          : item.status === "Canceled"
-          ? "canceled_btn_votors"
-          : ""
-      }
-      onClick={() => {
-        if (item.status === "Drafted") {
-          sendToWarehouse(item.id);
-        }
-      }}
-      disabled={item.status !== "Drafted"}
-    >
-      {item.wh_status === "MRP Updated"
-        ? "Updated"
-        : item.status === "Drafted"
-        ? "Send to WH"
-        : item.status}
-    </button>
+    {(() => {
+      const statusConfig = getStatusConfig(item);
+
+      return (
+        <button
+          className={statusConfig.className}
+          disabled={statusConfig.disabled}
+          onClick={() => {
+            if (!statusConfig.disabled && item.status === "Drafted") {
+              sendToWarehouse(item.id);
+            }
+          }}
+        >
+          {statusConfig.label}
+        </button>
+      );
+    })()}
   </div>
 </td>
-
 
                     <td>
                      <button
@@ -296,7 +393,8 @@ const sendToWarehouse = (id) => {
                             }}
                             onClick={() => handleEyeClick(item.id)}
                           />
-                         {item.status !== "Confirmed" && (
+                  {getStatusConfig(item).canEdit && (
+
                                       <>
                                         <BsThreeDotsVertical
                                           className="Action_dots"
@@ -388,6 +486,39 @@ const sendToWarehouse = (id) => {
         }
           submitMode={submitMode} 
       />
+      {cancelModalOpen && (
+  <div className="modal_overlay">
+    <div className="modal_content">
+      <h3>Cancel Customization</h3>
+
+      <textarea
+        placeholder="Enter remark"
+        value={cancelRemark}
+        onChange={(e) => setCancelRemark(e.target.value)}
+        rows={4}
+        className="remark_input"
+      />
+
+      <div className="modal_actions">
+        <button
+          className="cancel_btn"
+          onClick={() => setCancelModalOpen(false)}
+        >
+          Close
+        </button>
+
+        <button
+          className="confirm_btn"
+          disabled={!cancelRemark.trim()}
+          onClick={() => handleCancelConfirm()}
+        >
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
       </div>
     </>
   );

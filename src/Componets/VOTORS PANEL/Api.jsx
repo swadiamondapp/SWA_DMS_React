@@ -324,24 +324,27 @@ export const create_stock_order_gallary = async (
   }
 };
 
-export const updateOrderStatus = (orderId, status) => {
+export const updateOrderStatus = (orderId, payload) => {
   return apiService.patch(
     `customization/${orderId}/update-orderstatus/`,
-    {
-      status: status, // "Confirmed" or "Rejected"
-    }
+    payload
   );
 };
+
 export const confirVotersStatus = async (
   setIsLoading,
   orderId,
   status,
-  setData
+  setData,
+   extraPayload = {}
 ) => {
   try {
     setIsLoading(true);
-
-    const response = await updateOrderStatus(orderId, status);
+  const payload = {
+      status,
+      ...extraPayload
+    };
+    const response = await updateOrderStatus(orderId, payload);
 
     if (checkApiStatus(response)) {
       message.success(response.data.results.message);

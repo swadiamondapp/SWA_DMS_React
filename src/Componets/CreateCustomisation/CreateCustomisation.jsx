@@ -173,7 +173,7 @@ const CreateCustomisation = ({
     product_category_basicDetails(setListProductCategory);
   }, []);
 
-  console.log(outLetDropDown, "outLetDropDown");
+  //console.log(outLetDropDown, "outLetDropDown");
 
   useEffect(() => {
     if (dataToDisplaytomodal) {
@@ -211,8 +211,8 @@ const CreateCustomisation = ({
     }
   }, [dataToDisplaytomodal]);
 
-  console.log(dataToDisplaytomodal?.image2, "dataToDisplaytomodal.image2 ");
-  console.log(formData, "editCus");
+//  console.log(dataToDisplaytomodal?.image2, "dataToDisplaytomodal.image2 ");
+//  console.log(formData, "editCus");
 
 {/* const schema = Joi.object({
   sallerName: Joi.string().trim().required(),
@@ -317,8 +317,8 @@ const schema = Joi.object({
     }),
 });
 
-  console.log(ProudctCategory, "diamonType");
-  console.log(errors, "errors");
+ // console.log(ProudctCategory, "diamonType");
+ // console.log(errors, "errors");q4cx
 
 const updateOrderStatus = async () => {
   try {
@@ -336,40 +336,38 @@ const updateOrderStatus = async () => {
 const handleSubmitCustomization = (e) => {
   e.preventDefault(); // 🔥 REQUIRED
 
-const normalizedFormData = {
+
+const apiPayload = {
   ...formData,
 
-  chooseOutlet:
-    typeof formData.chooseOutlet === "object"
-      ? formData.chooseOutlet
-      : { id: formData.chooseOutlet },
+  product_type:
+    formData.productType && typeof formData.productType === "object"
+      ? formData.productType.id
+      : formData.productType
+        ? Number(formData.productType)
+        : null,
 
-  productType:
-    typeof formData.productType === "object"
-      ? formData.productType
-      : { id: formData.productType },
+  metal_type:  
+    formData.metalType && typeof formData.metalType === "object"
+      ? formData.metalType.id
+      : formData.metalType
+        ? Number(formData.metalType)
+        : null,
 
-  metalType:
-    typeof formData.metalType === "object"
-      ? formData.metalType
-      : { id: formData.metalType },
-
-  modelPrevioslyMade:
-    typeof formData.modelPrevioslyMade === "string"
-      ? formData.modelPrevioslyMade.toLowerCase().trim()
-      : "",
-
-  receivedAdvance:
-    formData.receivedAdvance != null
-      ? String(formData.receivedAdvance)
-      : "",
+  outlet:
+    formData.chooseOutlet && typeof formData.chooseOutlet === "object"
+      ? formData.chooseOutlet.id
+      : formData.chooseOutlet
+        ? Number(formData.chooseOutlet)
+        : null,
 };
+
 
 
 
   // 2️⃣ VALIDATE ONLY WHEN SENDING TO WAREHOUSE
   if (submitMode === "SEND_TO_WH") {
-    const { error } = schema.validate(normalizedFormData, {
+    const { error } = schema.validate(formData, {
       abortEarly: false,
       allowUnknown: true, // ✅ IMPORTANT LINE
     });
@@ -383,17 +381,17 @@ const normalizedFormData = {
       return; // ❌ STOP SUBMIT
     }
   }
-
+console.log(apiPayload, "formData==>");
   // ✅ Continue with API calls
   if (dataToDisplaytomodal) {
     edit_customizaion_warehouse(
       setIsLoading,
-      formData, // 🚨 send ORIGINAL formData to API
+      apiPayload, // 🚨 send ORIGINAL formData to API
       dataToDisplaytomodal.id,
       async () => {
         if (submitMode === "SEND_TO_WH") {
           await updateOrderStatus();
-        }
+         }
         refreshList(); // Refresh list after edit
         onClose();
       },
@@ -408,7 +406,7 @@ const normalizedFormData = {
     // CREATE
   create_customizaion_warehouse(
       setIsLoading,
-      formData,
+      apiPayload,
       onClose,
       setSuccessMessage,
       setSuccessModalOpen,
@@ -487,8 +485,14 @@ const handleUpdateCustomization = () => {
     newImages[index] = event.target.files[0];
     setImages(newImages);
   };
+  const handleRemoveImage = (index) => {
+  const newImages = [...images];
+  newImages[index] = null; // remove selected image
+  setImages(newImages);
+};
 
-  console.log(ErrorMessage, "asdfkd");
+
+ // console.log(ErrorMessage, "asdfkd");
   const handleCreateSubmitCustomization = () => {
     const hasAtLeastOneImage = images.some((img) => img); // Check if there's at least one image
 
@@ -542,7 +546,7 @@ const handleUpdateCustomization = () => {
     }
   };
 
-  console.log(images, "images==>new");
+//  console.log(images, "images==>new");
   const serverImage = [
     dataToDisplaytomodal?.image,
     dataToDisplaytomodal?.image2,
@@ -1207,23 +1211,30 @@ const handleUpdateCustomization = () => {
                                         position: "relative",
                                       }}
                                     >
-                                      {(images[index] ||
-                                        serverImage[index]) && (
-                                        <img
-                                          src={
-                                            images[index]
-                                              ? URL.createObjectURL(
-                                                  images[index]
-                                                )
-                                              : serverImage[index]
-                                          }
-                                          alt=""
-                                          style={{
-                                            height: "50px",
-                                            width: "50px",
-                                          }}
-                                        />
-                                      )}
+                                {(images[index] || serverImage[index]) && (
+  <>
+    <img
+      src={
+        images[index]
+          ? URL.createObjectURL(images[index])
+          : serverImage[index]
+      }
+      alt=""
+      style={{ height: "50px", width: "50px" }}
+    />
+
+    {/* ❌ Remove icon */}
+    {images[index] && (
+      <span
+        onClick={() => handleRemoveImage(index)}
+        className="removeImageBtn"
+      >
+        ✕
+      </span>
+    )}
+  </>
+)}
+
                                       <div
                                         style={{
                                           position: "absolute",
@@ -1278,16 +1289,24 @@ const handleUpdateCustomization = () => {
                                     className="dashedImage"
                                     style={{ width: "50px", height: "50px" }}
                                   >
-                                    {image && (
-                                      <img
-                                        src={URL.createObjectURL(image)}
-                                        alt=""
-                                        style={{
-                                          height: "50px",
-                                          width: "50px",
-                                        }}
-                                      />
-                                    )}
+                               {image && (
+  <>
+    <img
+      src={URL.createObjectURL(image)}
+      alt=""
+      style={{ height: "50px", width: "50px" }}
+    />
+
+    {/* ❌ Remove icon */}
+    <span
+      onClick={() => handleRemoveImage(index)}
+       className="removeImageBtn"
+    >
+      ✕
+    </span>
+  </>
+)}
+
                                     <div style={{ position: "absolute" }}>
                                       <label>
                                         <img src={plusICon} alt="" />

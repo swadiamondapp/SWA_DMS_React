@@ -177,12 +177,16 @@ box-shadow:0px 20px 80px 60px rgba(0, 0, 0, 0.08);
   cursor: default;
   white-space: nowrap;
 }
-.send_wh_btn {
+.send_wh_btn , .send_wh{
   color: #f97316;            /* orange */
   border-color: #f97316;
   cursor: pointer;
   background-color: #FC9B131A;
 
+}
+.send_wh{
+  border-radius: 32px;
+  padding: 8px 15px;
 }
 
 .send_wh_btn:hover {

@@ -141,10 +141,14 @@ const [trackData, setTrackData] = useState([]);
 const fetchCustomizationList = () => {
   customizaztion_list_wareHouse(
     setIsLoading,
-    setCustomizationListData,
+    (data) => {
+      const filteredData = data.filter(item => item.wh_status !== null);
+      setCustomizationListData(filteredData);
+    },
     props.SearchWithName
   );
 };
+
 
 useEffect(() => {
   fetchCustomizationList();
@@ -483,7 +487,7 @@ useEffect(() => {
                 </tr>
               </thead>
               <tbody>
-                {CustomizationListData.map((item, index) => (
+{CustomizationListData.map((item, index) => (
                   <tr
                     key={index}
                     style={{
@@ -494,7 +498,7 @@ useEffect(() => {
                     <td>{item.customizationcode}</td>
                     <td>{findOutLetNameByID(Number(item.outlet))}</td>
                     <td>{item.mobile_number}</td>
-                    <td> {productCategoryByID(Number(item.product_type))}</td>
+                    <td> {                productCategoryByID(Number(item.product_type))}</td>
                     <td>
                       <div className="actual_mrp">
                       {item.actual_price || "N/A"}
@@ -608,6 +612,7 @@ useEffect(() => {
             wareHouseuserId={wareHouseuserId}
             CustomizationWareHouseData={CustomizationWareHouseData}
             isLoadingDetail={isLoadingDetail}
+              onConfirmSuccess={fetchCustomizationList}
           />
           <DeleteConfirmationModal
             DeleteConfirmationOpen={DeleteConfirmationOpen}

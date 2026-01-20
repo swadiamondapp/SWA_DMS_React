@@ -298,35 +298,46 @@ if (images[4]) formDataToSend.append("image5", images[4]);
 export const reject_customization = async (
   setIsLoading,
   dataById,
+  reason,
   onClose,
   setSuccessModalOpen,
-  setSuccessMessage
+  setSuccessMessage,
+  onSuccess,
 ) => {
   try {
     setIsLoading(true);
-    const response = await apiService.patch(`${REJECT_WAREHOUSE}${dataById}/`);
+
+    const response = await apiService.patch(
+      `${REJECT_WAREHOUSE}${dataById}/`,
+      {
+        remarks: reason, // 👈 send reason
+      }
+    );
+
     if (response.data.results.status_code === 200) {
       onClose();
       setSuccessMessage("Rejected successfully");
       setSuccessModalOpen(true);
+onSuccess(); // 🔁 refresh table after reject
       setTimeout(() => {
         setSuccessModalOpen(false);
       }, 1500);
     }
   } catch (error) {
-    console.error("Error moving designs:", error);
+    console.error("Error rejecting customization:", error);
   } finally {
     setIsLoading(false);
-    // setSuccessMessage("null")
   }
 };
+ 
 
 export const confirm_customization = async (
   setIsLoading,
   dataById,
   onClose,
   setSuccessModalOpen,
-  setSuccessMessage
+  setSuccessMessage,
+  onSuccess,
 ) => {
   try {
     setIsLoading(true);
@@ -339,7 +350,7 @@ export const confirm_customization = async (
       onClose();
       setSuccessMessage("Confirmed successfully");
       setSuccessModalOpen(true);
-
+     onSuccess(); // 🔁 refresh table after confirm
       setTimeout(() => {
         setSuccessModalOpen(false);
       }, 1500);
@@ -447,11 +458,11 @@ export const create_customizaion_warehouse = async (
     body.append("customer_number", formData.customerMobile);
     body.append("received_advance", formData.receivedAdvance);
     body.append("customer_email", formData.customerEmail);
-    body.append("outlet", formData.chooseOutlet);
-    body.append("product_type", formData.productType);
+ //   body.append("outlet", formData.chooseOutlet);
+ //   body.append("product_type", formData.productType);
     body.append("previously_made", formData.modelPrevioslyMade);
     body.append("sku", formData.prevMadeSKU);
-    body.append("metal_type", formData.metalType);
+  //  body.append("metal_type", formData.metalType);
     body.append("weight", formData.weight);
     body.append("size", formData.size);
     body.append("width", formData.width);
@@ -467,6 +478,16 @@ export const create_customizaion_warehouse = async (
     body.append("notes", formData.notes);
     body.append("due_date",formData.due_date);
     body.append("is_draft","true");
+    // ✅ FK fields — append ONLY if value exists
+if (formData.chooseOutlet)
+  body.append("outlet", Number(formData.chooseOutlet));
+
+if (formData.productType)
+  body.append("product_type", Number(formData.productType));
+
+if (formData.metalType)
+  body.append("metal_type", Number(formData.metalType));
+
     // Append images to FormData
  if (images[0]) body.append("image", images[0]);
 if (images[1]) body.append("image2", images[1]);

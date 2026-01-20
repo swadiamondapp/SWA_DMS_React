@@ -277,7 +277,15 @@ background: transparent !important;
   font-weight: 600;
   font-size: 14px;
   color: #126E72;
+    font-weight: 600;
+  margin-bottom: 4px;
 }
+.reject_title {
+  font-weight: 600;
+  font-size: 14px;
+  color: #dc2626;
+    font-weight: 600;
+  margin-bottom: 4px;}
 
 .timeline_time,
 .timeline_due {
@@ -335,10 +343,7 @@ background: transparent !important;
   flex-direction: column;
 }
 
-.timeline_title {
-  font-weight: 600;
-  margin-bottom: 4px;
-}
+
 
 .timeline_meta {
   font-size: 12px;
@@ -353,3 +358,14 @@ background: transparent !important;
   font-style: italic;
 }
 
+.rejected_btn_votors {
+  background: #ffe5e5;
+  color: #d8000c;
+  cursor: not-allowed;
+}
+
+.progress_btn_votors {
+  background: #fff4d6;
+  color: #b7791f;
+  cursor: not-allowed;
+}
