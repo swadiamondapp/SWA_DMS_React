@@ -486,38 +486,41 @@ const handleCancelConfirm = () => {
         }
           submitMode={submitMode} 
       />
-      {cancelModalOpen && (
-  <div className="modal_overlay">
+     {cancelModalOpen && (
+  <div className="modal2">
     <div className="modal_content">
-      <h3>Cancel Customization</h3>
+      <div className="modal_inner">
+        <h3>Cancel Customization</h3>
 
-      <textarea
-        placeholder="Enter remark"
-        value={cancelRemark}
-        onChange={(e) => setCancelRemark(e.target.value)}
-        rows={4}
-        className="remark_input"
-      />
+        <textarea
+          placeholder="Enter remark"
+          value={cancelRemark}
+          onChange={(e) => setCancelRemark(e.target.value)}
+          rows={4}
+          className="remark_input"
+        />
 
-      <div className="modal_actions">
-        <button
-          className="cancel_btn"
-          onClick={() => setCancelModalOpen(false)}
-        >
-          Close
-        </button>
+        <div className="modal_actions">
+          <button
+            className="cancel_btn2"
+            onClick={() => setCancelModalOpen(false)}
+          >
+            Close
+          </button>
 
-        <button
-          className="confirm_btn"
-          disabled={!cancelRemark.trim()}
-          onClick={() => handleCancelConfirm()}
-        >
-          Submit
-        </button>
+          <button
+            className="confirm_btn"
+            disabled={!cancelRemark.trim()}
+            onClick={handleCancelConfirm}
+          >
+            Submit
+          </button>
+        </div>
       </div>
     </div>
   </div>
 )}
+
 
       </div>
     </>
