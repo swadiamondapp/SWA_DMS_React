@@ -477,13 +477,13 @@ useEffect(() => {
                       borderRight: "none",
                     }}
                   ></th>
-                  <th
+       {/*   <th
                     style={{
                       borderBottom: "1px solid #ddd",
                       borderRight: "none",
                       borderLeft: "none",
                     }}
-                  ></th>
+                  ></th>*/}
                 </tr>
               </thead>
               <tbody>
@@ -572,7 +572,7 @@ useEffect(() => {
                       <img src={EyeIcon} />
                     </td>
 
-                    <td
+                  {/*   <td
                       onClick={() =>
                         setShowEditDelete(
                           showEditDelete === index ? null : index
@@ -585,12 +585,12 @@ useEffect(() => {
                           ref={(el) => (dropdownRefs.current[index] = el)}
                           className="Edit_delete_btn_user_warehouse"
                         >
-                          {/* <p
+                          <p
                         className="Edit_btn_user"
                         onClick={() => handleEditCustomization(item.id)}
                       >
                         Edit
-                      </p> */}
+                      </p> 
                           <p
                             className="Delete_btn_user"
                             style={{ padding: "10px" }}
@@ -600,7 +600,7 @@ useEffect(() => {
                           </p>
                         </div>
                       )}
-                    </td>
+                    </td>*/}
                   </tr>
                 ))}
               </tbody>

@@ -415,12 +415,12 @@ const handleCancelConfirm = () => {
                                               Edit
                                             </p>
 
-                                            <p
+                                        { /*   <p
                                               className="Delete_btn_user"
                                               onClick={() => handleDeleteCustomization(item.id)}
                                             >
                                               Delete
-                                            </p>
+                                            </p>*/}
                                           </div>
                                         )}
                                       </>
@@ -488,7 +488,7 @@ const handleCancelConfirm = () => {
       />
      {cancelModalOpen && (
   <div className="modal2">
-    <div className="modal_content">
+    <div className="modal_content2">
       <div className="modal_inner">
         <h3>Cancel Customization</h3>
 

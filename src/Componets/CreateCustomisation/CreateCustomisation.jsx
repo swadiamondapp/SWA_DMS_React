@@ -393,8 +393,9 @@ console.log(apiPayload, "formData==>");
           await updateOrderStatus();
          }
         refreshList(); // Refresh list after edit
-        onClose();
+      
       },
+      onClose,
       setSuccessMessage,
       setSuccessModalOpen,
       images,
@@ -753,6 +754,25 @@ const handleUpdateCustomization = () => {
     });
     setImages(Array(5).fill(""));
   };
+  const getImageSrc = (file, serverUrl) => {
+  if (file instanceof File) {
+    return URL.createObjectURL(file);
+  }
+  if (typeof serverUrl === "string") {
+    return serverUrl;
+  }
+  return null;
+};
+
+useEffect(() => {
+  return () => {
+    images.forEach((img) => {
+      if (img instanceof File) {
+        URL.revokeObjectURL(img);
+      }
+    });
+  };
+}, [images]);
 
   return (
     <div>
@@ -1195,66 +1215,58 @@ const handleUpdateCustomization = () => {
                             <div className="rightw">
                               <div
                                 id="fileUpload"
-                                // className="uploadButton"
-                                // onClick={() =>
-                                //   document.getElementById("fileUploadImage").click()
-                                // }
-                              >
-                                <div className="dashed_imageContainer">
-                                  {images.map((image, index) => (
-                                    <div
-                                      key={index}
-                                      className="dashedImage"
-                                      style={{
-                                        width: "50px",
-                                        height: "50px",
-                                        position: "relative",
-                                      }}
-                                    >
-                                {(images[index] || serverImage[index]) && (
-  <>
-    <img
-      src={
-        images[index]
-          ? URL.createObjectURL(images[index])
-          : serverImage[index]
-      }
-      alt=""
-      style={{ height: "50px", width: "50px" }}
-    />
+                               >
+                               <div className="dashed_imageContainer">
+  {Array.from({
+    length: Math.max(images.length, serverImage.length),
+  }).map((_, index) => {
+    const src = getImageSrc(images[index], serverImage[index]);
 
-    {/* ❌ Remove icon */}
-    {images[index] && (
-      <span
-        onClick={() => handleRemoveImage(index)}
-        className="removeImageBtn"
+    return (
+      <div
+        key={index}
+        className="dashedImage"
+        style={{
+          width: "50px",
+          height: "50px",
+          position: "relative",
+        }}
       >
-        ✕
-      </span>
-    )}
-  </>
-)}
+        {src && (
+          <>
+            <img
+              src={src}
+              alt=""
+              style={{ height: "50px", width: "50px" }}
+            />
 
-                                      <div
-                                        style={{
-                                          position: "absolute",
-                                        }}
-                                      >
-                                        <label>
-                                          <img src={plusICon} alt="" />
-                                          <input
-                                            type="file"
-                                            accept="image/png, image/jpeg"
-                                            style={{ display: "none" }}
-                                            onChange={(e) =>
-                                              handleImageUpload(index, e)
-                                            }
-                                          />
-                                        </label>
-                                      </div>
-                                    </div>
-                                  ))}
-                                </div>
+            {images[index] instanceof File && (
+              <span
+                onClick={() => handleRemoveImage(index)}
+                className="removeImageBtn"
+              >
+                ✕
+              </span>
+            )}
+          </>
+        )}
+
+        <div style={{ position: "absolute" }}>
+          <label>
+            <img src={plusICon} alt="" />
+            <input
+              type="file"
+              accept="image/png, image/jpeg"
+              style={{ display: "none" }}
+              onChange={(e) => handleImageUpload(index, e)}
+            />
+          </label>
+        </div>
+      </div>
+    );
+  })}
+</div>
+
                               </div>
                             </div>
                           </div>
@@ -1289,23 +1301,22 @@ const handleUpdateCustomization = () => {
                                     className="dashedImage"
                                     style={{ width: "50px", height: "50px" }}
                                   >
-                               {image && (
-  <>
-    <img
-      src={URL.createObjectURL(image)}
-      alt=""
-      style={{ height: "50px", width: "50px" }}
-    />
+                              {image instanceof File && (
+                                  <>
+                                    <img
+                                      src={URL.createObjectURL(image)}
+                                      alt=""
+                                       style={{ height: "50px", width: "50px" }}
+                                    />
+                                    <span
+                                      onClick={() => handleRemoveImage(index)}
+                                      className="removeImageBtn"
+                                    >
+                                      ✕
+                                    </span>
+                                  </>
+                                )}
 
-    {/* ❌ Remove icon */}
-    <span
-      onClick={() => handleRemoveImage(index)}
-       className="removeImageBtn"
-    >
-      ✕
-    </span>
-  </>
-)}
 
                                     <div style={{ position: "absolute" }}>
                                       <label>

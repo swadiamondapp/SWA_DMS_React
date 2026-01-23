@@ -755,12 +755,12 @@ const canConfirmReject =
       Confirm
     </button>
 
-    <button
+ {/*   <button
       onClick={() => setRejectModalOpen(true)}
       className="CR_ButtonCommen rejectButtonCR"
     >
       Reject
-    </button>
+    </button>*/}
   </div>
 )}
 
