@@ -748,14 +748,14 @@ const canConfirmReject =
 
 {canConfirmReject && (
   <div className="cr-action-buttons">
-    <button
+   {/*   <button
       onClick={handleConfirm}
       className="CR_ButtonCommen confirmButtonCR"
     >
       Confirm
     </button>
 
- {/*   <button
+  <button
       onClick={() => setRejectModalOpen(true)}
       className="CR_ButtonCommen rejectButtonCR"
     >
