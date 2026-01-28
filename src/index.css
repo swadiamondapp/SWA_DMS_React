@@ -171,3 +171,201 @@ background: transparent !important;
 :where(.css-1c0na6j)[class^="ant-image"] [class^="ant-image"], :where(.css-1c0na6j)[class*=" ant-image"] [class^="ant-image"], :where(.css-1c0na6j)[class^="ant-image"] [class*=" ant-image"], :where(.css-1c0na6j)[class*=" ant-image"] [class*=" ant-image"] {
   z-index: 999999999 !important;
 }
+
+.actual_mrp{
+  background-color: #EAF736;
+  color: #26BE75;
+  text-align: center;
+  border-radius: 32px;
+  padding: 4px 12px;
+  font-weight: 700;
+}
+
+.track_btn{
+ color: #006E7F;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: underline;
+  border: none;
+  background-color: white;
+}
+.track_overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.track_modal {
+  background: white;
+  width: 420px;
+  max-height: 85vh;
+  border-radius: 12px;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.track_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.close_icon {
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.timeline {
+  position: relative;
+  margin-left: 12px;
+}
+
+.timeline_item {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.timeline_item::before {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 14px;
+  height: 100%;
+  width: 2px;
+  background: #d9e2ec;
+}
+
+.timeline_dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  margin-top: 4px;
+  background-color: #126E72;
+}
+.timeline_dot.completed {
+  background: #0a7f6a;
+}
+
+.timeline_dot.pending {
+  background: #ccc;
+}
+
+.timeline_dot.success {
+  background: #16a34a;
+}
+
+.timeline_dot.error {
+  background: #dc2626;
+}
+
+.timeline_dot.progress {
+  background: #0284c7;
+}
+
+.timeline_content {
+  flex: 1;
+}
+
+.timeline_title {
+  font-weight: 600;
+  font-size: 14px;
+  color: #126E72;
+    font-weight: 600;
+  margin-bottom: 4px;
+}
+.reject_title {
+  font-weight: 600;
+  font-size: 14px;
+  color: #dc2626;
+    font-weight: 600;
+  margin-bottom: 4px;}
+
+.timeline_time,
+.timeline_due {
+  display: block;
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 2px;
+}
+
+.success {
+  color: #16a34a;
+}
+
+.error {
+  color: #dc2626;
+}
+.track_order_info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding: 10px;
+  background: #f8f9fb;
+  border-radius: 8px;
+}
+
+.info_item span {
+  font-size: 12px;
+  color: #666;
+}
+
+.info_item strong {
+  display: block;
+  font-size: 14px;
+  color: #111;
+}
+
+.timeline_item {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+
+
+.timeline_dot.completed {
+  background: #2ecc71;
+}
+
+.timeline_dot.pending {
+  background: #ccc;
+}
+
+.timeline_content {
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+.timeline_meta {
+  font-size: 12px;
+  color: #666;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.pending_text {
+  color: #999;
+  font-style: italic;
+}
+
+.rejected_btn_votors {
+  background: #ffe5e5;
+  color: #d8000c;
+  cursor: not-allowed;
+}
+
+.progress_btn_votors {
+  background: #fff4d6;
+  color: #b7791f;
+  cursor: not-allowed;
+}

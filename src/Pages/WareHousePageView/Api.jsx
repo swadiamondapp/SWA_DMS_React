@@ -1,11 +1,12 @@
 import { apiService, checkApiStatus } from "../../Pages/Services/ApiInstants";
-import { setToLocalstorage } from "../../Pages/Utils/Common";
+//import { setToLocalstorage } from "../../Pages/Utils/Common";
 import {
   CONFIRM_WAREHOUSE,
   CREATE_CUSTOMIZATION,
   CUSTOMIZATION_LIST_BY_ID_WAREHOUSE,
   DELETE_CUSTOMIZATION,
-  EDIT_CUTOMIZATIONS_WAREHOUSE,
+  EDIT_CUTOMIZATION,
+ // EDIT_CUTOMIZATIONS_WAREHOUSE,
   EDIT_DETAIL_VIEW_WAREHOUSE,
   LIST_LAST_VOTED_DESIGN,
   LIST_WAREHOUSE_DESIGNS,
@@ -21,10 +22,10 @@ import {
   WORKDONE_TABLE_LIST,
   WORKDONE_TABLE_PRODUCT_DETAIL,
   WORKDONE_TABLE_PRODUCT_SEARCH,
-  WORKDONE_TABLE_PRODUCT_UPDATE,
+  //WORKDONE_TABLE_PRODUCT_UPDATE,
 } from "../../Pages/Services/EndPoints";
 import {
-  customization_details,
+ // customization_details,
   voters_customization_list,
 } from "../../Componets/VOTORS PANEL/Api";
 
@@ -49,6 +50,34 @@ export const list_warehouse_design = async (
     setIsLoading(false);
   }
 };
+export const get_customization_tracking = async (
+  setIsLoading,
+  setTrackData,
+  customizationId
+) => {
+  try {
+    setIsLoading(true);
+
+    const response = await apiService.get(
+      `customization/${customizationId}/tracking/`
+    );
+
+    if (checkApiStatus(response)) {
+      const apiData = response?.data?.results?.data || {};
+
+      setTrackData({
+        order_details: apiData.order_details || {},
+        tracking: Array.isArray(apiData.tracking)
+          ? apiData.tracking
+          : [],
+      });
+    }
+  } catch (error) {
+    console.error("Tracking API error:", error);
+  } finally {
+    setIsLoading(false);
+  }
+};
 
 export const list_voted_designs = async (setIsLoading, setLastVotedDesigns) => {
   try {
@@ -68,9 +97,20 @@ export const customizaztion_list_wareHouse = async (
 ) => {
   try {
     setIsLoading(true);
+
+    const params = new URLSearchParams({
+      orderstatus: "requested",
+    });
+
+    // add search only if present
+    if (SearchWithName) {
+      params.append("customization_code", SearchWithName);
+    }
+
     const response = await apiService.get(
-      `${VOTERS_CUSTOMIZATION_LIST}?customization_code=${SearchWithName}`
+      `${VOTERS_CUSTOMIZATION_LIST}?${params.toString()}`
     );
+
     if (checkApiStatus(response)) {
       setCustomizationListData(response.data.results.data);
     }
@@ -80,6 +120,7 @@ export const customizaztion_list_wareHouse = async (
     setIsLoading(false);
   }
 };
+
 
 export const customization_details_view_warehouse = async (
   setIsLoading,
@@ -211,31 +252,17 @@ export const edit_customizaion_warehouse = async (
     formDataToSend.append("budget", formData.Budget);
     formDataToSend.append("sku_of_swa_product", formData.swaProductSKU);
     formDataToSend.append("notes", formData.notes);
+    formDataToSend.append("due_date", formData.due_date);
 
     // Append image files if they exist
-    if (images.length > 0) {
-      console.log(`Appending image 1:`, images[0]);
-      formDataToSend.append("image", images[0]);
-    }
-    if (images.length > 1) {
-      console.log(`Appending image 2:`, images[1]);
-      formDataToSend.append("image2", images[1]);
-    }
-    if (images.length > 2) {
-      console.log(`Appending image 3:`, images[2]);
-      formDataToSend.append("image3", images[2]);
-    }
-    if (images.length > 3) {
-      console.log(`Appending image 4:`, images[3]);
-      formDataToSend.append("image4", images[3]);
-    }
-    if (images.length > 4) {
-      console.log(`Appending image 5:`, images[4]);
-      formDataToSend.append("image5", images[4]);
-    }
+if (images[0]) formDataToSend.append("image", images[0]);
+if (images[1]) formDataToSend.append("image2", images[1]);
+if (images[2]) formDataToSend.append("image3", images[2]);
+if (images[3]) formDataToSend.append("image4", images[3]);
+if (images[4]) formDataToSend.append("image5", images[4]);
 
     const response = await apiService.patch(
-      `${EDIT_CUTOMIZATIONS_WAREHOUSE}/${displayEditDetailsById}/`,
+      `${EDIT_CUTOMIZATION}${displayEditDetailsById}/`,
       formDataToSend,
       {
         headers: {
@@ -271,35 +298,46 @@ export const edit_customizaion_warehouse = async (
 export const reject_customization = async (
   setIsLoading,
   dataById,
+  reason,
   onClose,
   setSuccessModalOpen,
-  setSuccessMessage
+  setSuccessMessage,
+  onSuccess,
 ) => {
   try {
     setIsLoading(true);
-    const response = await apiService.patch(`${REJECT_WAREHOUSE}/${dataById}/`);
+
+    const response = await apiService.patch(
+      `${REJECT_WAREHOUSE}${dataById}/`,
+      {
+        remarks: reason, // 👈 send reason
+      }
+    );
+
     if (response.data.results.status_code === 200) {
       onClose();
       setSuccessMessage("Rejected successfully");
       setSuccessModalOpen(true);
+onSuccess(); // 🔁 refresh table after reject
       setTimeout(() => {
         setSuccessModalOpen(false);
       }, 1500);
     }
   } catch (error) {
-    console.error("Error moving designs:", error);
+    console.error("Error rejecting customization:", error);
   } finally {
     setIsLoading(false);
-    // setSuccessMessage("null")
   }
 };
+ 
 
 export const confirm_customization = async (
   setIsLoading,
   dataById,
   onClose,
   setSuccessModalOpen,
-  setSuccessMessage
+  setSuccessMessage,
+  onSuccess,
 ) => {
   try {
     setIsLoading(true);
@@ -307,20 +345,36 @@ export const confirm_customization = async (
     const response = await apiService.patch(
       `${CONFIRM_WAREHOUSE}/${dataById}/`
     );
-    if (response.data.results.status_code === 200) {
+
+    if (response?.data?.results?.status_code === 200) {
       onClose();
       setSuccessMessage("Confirmed successfully");
       setSuccessModalOpen(true);
+     onSuccess(); // 🔁 refresh table after confirm
       setTimeout(() => {
         setSuccessModalOpen(false);
       }, 1500);
     }
+
   } catch (error) {
-    console.error("Error moving designs:", error);
+    console.error("Error confirming customization:", error);
+
+    // ✅ READ API ERROR MESSAGE SAFELY
+    const errorMessage =
+      error?.response?.data?.results?.message ||
+      "Something went wrong. Please try again.";
+
+    setSuccessMessage(errorMessage);
+    setSuccessModalOpen(true);
+
+    setTimeout(() => {
+      setSuccessModalOpen(false);
+    }, 2500); // slightly longer for error
   } finally {
     setIsLoading(false);
   }
 };
+
 
 // export const create_customizaion_warehouse = async (
 //   setIsLoading,
@@ -404,11 +458,11 @@ export const create_customizaion_warehouse = async (
     body.append("customer_number", formData.customerMobile);
     body.append("received_advance", formData.receivedAdvance);
     body.append("customer_email", formData.customerEmail);
-    body.append("outlet", formData.chooseOutlet);
-    body.append("product_type", formData.productType);
+ //   body.append("outlet", formData.chooseOutlet);
+ //   body.append("product_type", formData.productType);
     body.append("previously_made", formData.modelPrevioslyMade);
     body.append("sku", formData.prevMadeSKU);
-    body.append("metal_type", formData.metalType);
+  //  body.append("metal_type", formData.metalType);
     body.append("weight", formData.weight);
     body.append("size", formData.size);
     body.append("width", formData.width);
@@ -422,13 +476,24 @@ export const create_customizaion_warehouse = async (
     body.append("budget", formData.Budget);
     body.append("sku_of_swa_product", formData.swaProductSKU);
     body.append("notes", formData.notes);
+    body.append("due_date",formData.due_date);
+    body.append("is_draft","true");
+    // ✅ FK fields — append ONLY if value exists
+if (formData.chooseOutlet)
+  body.append("outlet", Number(formData.chooseOutlet));
+
+if (formData.productType)
+  body.append("product_type", Number(formData.productType));
+
+if (formData.metalType)
+  body.append("metal_type", Number(formData.metalType));
 
     // Append images to FormData
-    if (images.length > 1) body.append("image", images[0]);
-    if (images.length > 1) body.append("image2", images[1]);
-    if (images.length > 2) body.append("image3", images[2]);
-    if (images.length > 3) body.append("image4", images[3]);
-    if (images.length > 4) body.append("image5", images[4]);
+ if (images[0]) body.append("image", images[0]);
+if (images[1]) body.append("image2", images[1]);
+if (images[2]) body.append("image3", images[2]);
+if (images[3]) body.append("image4", images[3]);
+if (images[4]) body.append("image5", images[4]);
 
     const response = await apiService.post(CREATE_CUSTOMIZATION, body, {
       headers: { "Content-Type": "multipart/form-data" },
@@ -466,6 +531,7 @@ export const create_customizaion_warehouse = async (
         Budget: "",
         swaProductSKU: "",
         notes: "",
+        due_date:"",
       });
       setImages(Array(5).fill(""));
     } else {
@@ -755,15 +821,16 @@ export const wareHouseEditBasicDetails = async (
 ) => {
   try {
     const body = {
-      metal_type: actualFormData.typeOfMetal,
-      weight: actualFormData.approxWeight,
-      width: actualFormData.width,
-      height: actualFormData.height,
-      length_of_item: actualFormData.length,
-      diamond_type: actualFormData.diamondType,
-      diamond_weight: actualFormData.approxDiamondWeight,
+    //  metal_type: actualFormData.typeOfMetal,
+    //  weight: actualFormData.approxWeight,
+    //  width: actualFormData.width,
+    //  height: actualFormData.height,
+     // length_of_item: actualFormData.length,
+     // diamond_type: actualFormData.diamondType,
+     // diamond_weight: actualFormData.approxDiamondWeight,
       actual_price: actualFormData.actualPrice,
-      notes: actualFormData.notes,
+    //  notes: actualFormData.notes,
+      due_date:actualFormData.due_date,
     };
     console.log(body, "formBody");
     const response = await apiService.patch(

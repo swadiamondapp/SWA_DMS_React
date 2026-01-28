@@ -67,6 +67,7 @@ const WareHouseDetails = ({ sidebarExpanded }) => {
         approxDiamondWeight: customizationwarehouseData.diamond_weight || "",
         approxWeight: customizationwarehouseData.weight || "",
         actualPrice: customizationwarehouseData.actual_price || "",
+        due_date: customizationwarehouseData.due_date || "",
       });
     }
   }, [customizationwarehouseData]);
@@ -154,7 +155,7 @@ const WareHouseDetails = ({ sidebarExpanded }) => {
               <h3>Basic details</h3>
               <div className="Assignment_Details">
                 <div className="A1_text">
-                  <p>SKU</p>
+                  <p>Product ID</p>
                   <p>{customizationwarehouseData.customizationcode}</p>
                 </div>
                 <div className="A1_text">
@@ -208,9 +209,129 @@ const WareHouseDetails = ({ sidebarExpanded }) => {
               <h3>Actual details</h3>
               <div className="Assignment_Details">
                 <div className="A1_text">
+  <p>Length</p>
+  <p>{formData.length || "-"}</p>
+</div>
+
+<div className="A1_text">
+  <p>Width</p>
+  <p>{formData.width || "-"}</p>
+</div>
+
+<div className="A1_text">
+  <p>Height</p>
+  <p>{formData.height || "-"}</p>
+</div>
+
+<div className="A1_text">
+  <p>Type of metal</p>
+  <p>
+    {
+      MetalTypeDropDown.find(m => m.id === formData.typeOfMetal)
+        ?.metal_name || "-"
+    }
+  </p>
+</div>
+
+<div className="A1_text">
+  <p>Diamond Type</p>
+  <p>
+    {
+      diamonType.find(d => d.id === formData.diamondType)
+        ?.name || "-"
+    }
+  </p>
+</div>
+
+<div className="A1_text">
+  <p>Approx diamond weight</p>
+  <p>{formData.approxDiamondWeight || "-"}</p>
+</div>
+
+<div className="A1_text">
+  <p>Approx weight</p>
+  <p>{formData.approxWeight || "-"}</p>
+</div>
+
+<div className="A1_text">
+  <p>Note</p>
+  <p>{formData.notes || "-"}</p>
+</div>
+                
+                <div className="A1_text" style={{ position: "relative" }}>
+                  <p>Actual Price</p>
+                  <p style={{ display: "flex", alignItems: "center" }}>
+                    {formData.actualPrice.length > 0 && (
+                      <LiaRupeeSignSolid />
+                    )}
+                    <input
+                      type="number"
+                      className="actualDetails_input"
+                      name="actualPrice"
+                      value={formData.actualPrice}
+                      onChange={handleInput}
+                      onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
+                    />
+                  </p>
+                </div>
+                   <div className="A1_text" style={{ position: "relative" }}>
+                  <p>Due Date</p>
+                  <p style={{ display: "flex", alignItems: "center" }}>
+                   
+                    <input
+                      type="date"
+                      className="actualDetails_input"
+                      name="due_date"
+                      value={formData.due_date}
+                      onChange={handleInput}
+                      onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
+                    />
+                  </p>
+                </div>
+              
+                {errors.actualPrice && (
+                  <span className="error_input_p_warehouse">
+                    {errors.actualPrice}
+                  </span>
+                )}
+                <div className="actualDetailsButtonContiner">
+                  <button onClick={handleUpdateWareHouseDetails}>
+                    Update
+                  </button>
+                  <ToastContainer
+                    position="bottom-left"
+                    autoClose={5000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="light"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <SuccessModal
+          successModalOpen={successModalOpen}
+          successMessage={successMessage}
+        />
+      </div>
+    </>
+  );
+};
+
+export default WareHouseDetails;
+
+
+
+{/*<div className="A1_text">
                   <p>SKU</p>
                   <p>{customizationsku}</p>
-                </div>
+                 </div>
                 <div className="A1_text">
                   <p>Length</p>
                   <div className="">
@@ -313,23 +434,7 @@ const WareHouseDetails = ({ sidebarExpanded }) => {
                     onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
                   />
                 </div>
-                <div className="A1_text" style={{ position: "relative" }}>
-                  <p>Actual Price</p>
-                  <p style={{ display: "flex", alignItems: "center" }}>
-                    {formData.actualPrice.length > 0 && (
-                      <LiaRupeeSignSolid />
-                    )}
-                    <input
-                      type="number"
-                      className="actualDetails_input"
-                      name="actualPrice"
-                      value={formData.actualPrice}
-                      onChange={handleInput}
-                      onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
-                    />
-                  </p>
-                </div>
-                <div className="A1_text" style={{ borderBottom: "0px" }}>
+                  <div className="A1_text" style={{ borderBottom: "0px" }}>
                   <p>Note</p>
                   <input
                     type="text"
@@ -338,40 +443,4 @@ const WareHouseDetails = ({ sidebarExpanded }) => {
                     value={formData.notes}
                     onChange={handleInput}
                   />
-                </div>
-                {errors.actualPrice && (
-                  <span className="error_input_p_warehouse">
-                    {errors.actualPrice}
-                  </span>
-                )}
-                <div className="actualDetailsButtonContiner">
-                  <button onClick={handleUpdateWareHouseDetails}>
-                    Update
-                  </button>
-                  <ToastContainer
-                    position="bottom-left"
-                    autoClose={5000}
-                    hideProgressBar={false}
-                    newestOnTop={false}
-                    closeOnClick
-                    rtl={false}
-                    pauseOnFocusLoss
-                    draggable
-                    pauseOnHover
-                    theme="light"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <SuccessModal
-          successModalOpen={successModalOpen}
-          successMessage={successMessage}
-        />
-      </div>
-    </>
-  );
-};
-
-export default WareHouseDetails;
+                </div>*/}

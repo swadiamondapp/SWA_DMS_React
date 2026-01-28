@@ -11,6 +11,7 @@ import {
   workDone_list_search,
 } from "../../../Pages/WareHousePageView/Api";
 import SuccessModal from "../../SuccessModal/SuccessModal";
+import ComingSoon from "../../VOTORS PANEL/Votors Panel/ComingSoon";
 
 const WorkDoneTable = ({ sidebarExpanded }) => {
   const [open, setOpen] = useState(false);
@@ -95,18 +96,18 @@ const WorkDoneTable = ({ sidebarExpanded }) => {
       handleSearch();
     }
   };
+const [showModal, setShowModal] = useState(false);
 
+useEffect(() => {
+  setShowModal(true); // opens whenever component renders
+}, []);
   console.log("eroor", error);
   return (
-    // <div className="" style={{width:"100%"}}>
+     <div className={`ParentVotors ${showModal ? "page_blurred" : ""}`} style={{width:"100%"}}>
     <div
-      className=""
+      className="scan_wrap"
       style={{
-        marginLeft: sidebarExpanded ? "225px" : "130px",
-        marginTop: "30px",
-        display: "flex",
-        flexDirection: "column",
-        gap: "20px",
+        marginLeft: sidebarExpanded ? "225px" : "130px"
       }}
     >
       <div className="Search_Admin scan_search">
@@ -240,7 +241,13 @@ const WorkDoneTable = ({ sidebarExpanded }) => {
         successMessage={successMessage}
       />
     </div>
-    // </div>
+       <ComingSoon
+      open={showModal}
+      onClose={() => setShowModal(false)}
+      title="Photo Coming Soon 📸"
+      description="High-quality product photos will be available shortly."
+    />
+    </div>
   );
 };
 

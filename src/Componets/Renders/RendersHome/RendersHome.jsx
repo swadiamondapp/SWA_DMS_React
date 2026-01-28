@@ -1,13 +1,14 @@
-import React, { useCallback, useEffect, useState } from "react";
+/* eslint-disable react/jsx-key */
+import  { useCallback, useEffect, useState } from "react";
 import "./RendersHome.css";
-import view from "../../../assets/view.png";
-import sort from "../../../assets/sort.png";
+//import view from "../../../assets/view.png";
+//import sort from "../../../assets/sort.png";
 import filter from "../../../assets/filter.png";
 import folderimg from "../../../assets/folder.png";
 import greenFolder from "../../../assets/greenFolder.png";
 
-import { Link, useNavigate } from "react-router-dom";
-import DesignBtn from "../../ADMIN PANEL/Design Pool/DesignBtn";
+import { useNavigate } from "react-router-dom";
+//import DesignBtn from "../../ADMIN PANEL/Design Pool/DesignBtn";
 import { CircularProgress } from "@mui/material";
 import { MdViewModule } from "react-icons/md";
 import DesignerFilterModal from "../../DesignerFilterModal/DesignerFilterModal";

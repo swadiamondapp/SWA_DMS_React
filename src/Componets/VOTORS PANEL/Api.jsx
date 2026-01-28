@@ -15,20 +15,26 @@ import {
   VOTERS_CUSTOMIZATION_LIST,
 } from "../../Pages/Services/EndPoints";
 import { ALL_DESIGNS, VOTED_DESIGN_LIST } from "../../Pages/Services/EndPoints";
+import { message } from "antd";
 
 export const voters_customization_list = async (
   setIsLoading,
   setData,
-  SearchWithName,
-  orderstatus
+  SearchWithName = "",
+  orderstatus = ""
 ) => {
   try {
     setIsLoading(true);
+
+    const params = new URLSearchParams({
+      customization_code: SearchWithName || "",
+      orderstatus: orderstatus || "",
+    });
+
     const response = await apiService.get(
-      `${VOTERS_CUSTOMIZATION_LIST}?customization_code=${
-        SearchWithName && SearchWithName
-      }&orderstatus=${orderstatus && orderstatus}`
+      `${VOTERS_CUSTOMIZATION_LIST}?${params.toString()}`
     );
+
     if (checkApiStatus(response)) {
       setData(response.data.results.data);
     }
@@ -38,6 +44,7 @@ export const voters_customization_list = async (
     setIsLoading(false);
   }
 };
+
 
 export const create_customization = async (
   setIsLoading,
@@ -105,26 +112,41 @@ export const delete_customization = async (
   setSuccessMessage,
   setSuccessModalOpen
 ) => {
+  setIsLoading(true); // start loader
+
   try {
-    setIsLoading(true);
     const response = await apiService.delete(
       `${DELETE_CUSTOMIZATION}${userId}/`
     );
-    if (response?.data?.results?.status_code === 200) {
-      setDeleteConfirmationOpen(false);
+
+    const result = response?.data?.results;
+
+    setDeleteConfirmationOpen(false);
+
+    if (result?.status_code === 200) {
       setSuccessMessage("Deleted Successfully");
-      setSuccessModalOpen(true);
-      voters_customization_list(setIsLoading, setData);
-      setIsLoading(false);
-      setTimeout(() => {
-        setSuccessModalOpen(false);
-        voters_customization_list(setIsLoading, setData);
-      }, 1600);
+    } else {
+      setSuccessMessage(result?.reason || "Something went wrong");
     }
+
+    setSuccessModalOpen(true);
+
+    // refresh list
+    await voters_customization_list(setIsLoading, setData);
+
+    setTimeout(() => {
+      setSuccessModalOpen(false);
+    }, 300);
+
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    setSuccessMessage("Delete failed. Please try again.");
+    setSuccessModalOpen(true);
+  } finally {
+    setIsLoading(false); // ✅ ALWAYS stop loader
   }
 };
+
 
 export const customization_details = async (
   setIsLoading,
@@ -293,7 +315,7 @@ export const create_stock_order_gallary = async (
       setSelectedValues({
         size: "",
         type: "",
-        colour: "",
+           colour: "",
         notes: "",
       });
     }
@@ -302,20 +324,52 @@ export const create_stock_order_gallary = async (
   }
 };
 
-export const confirVotersStatus = async (setIsLoading, userId, setData) => {
+export const updateOrderStatus = (orderId, payload) => {
+  return apiService.patch(
+    `customization/${orderId}/update-orderstatus/`,
+    payload
+  );
+};
+
+export const confirVotersStatus = async (
+  setIsLoading,
+  orderId,
+  status,
+  setData,
+   extraPayload = {}
+) => {
   try {
-    const body = {
-      customer_response: "Confirmed",
+    setIsLoading(true);
+  const payload = {
+      status,
+      ...extraPayload
     };
-    console.log("Request body:", userId);
-    const response = await apiService.patch(
-      `${USER_RESPONSE_UPDATING}${userId}/update-response/`,
-      body
-    );
+    const response = await updateOrderStatus(orderId, payload);
+
     if (checkApiStatus(response)) {
-      voters_customization_list(setIsLoading, setData, "");
+      message.success(response.data.results.message);
+
+      // Update UI immediately (recommended)
+      setData((prev) =>
+        prev.map((item) =>
+          item.id === orderId
+            ? {
+                ...item,
+                status: response.data.results.data.status,
+                wh_status: response.data.results.data.wh_status,
+              }
+            : item
+        )
+      );
+       await voters_customization_list(setIsLoading, setData);
+    } else {
+      message.error("Failed to update status");
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    message.error( error.data.results.message);
+  } finally {
+    setIsLoading(false);
   }
 };
+

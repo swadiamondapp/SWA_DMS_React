@@ -1,12 +1,15 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable react/jsx-key */
 import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
-import ring from "../../../assets/ring.png";
+//import ring from "../../../assets/ring.png";
 import ProductCustomisation from "../../ProductCustomisation/ProductCustomisation";
 import { customized_order_gallary, stock_order_gallary } from "../Api";
+import ComingSoon from "../Votors Panel/ComingSoon";
 
 const Gallery = ({sidebarExpanded}) => {
   const [value, setValue] = React.useState("1");
@@ -17,12 +20,16 @@ const Gallery = ({sidebarExpanded}) => {
   const [orderAssignMentCode, setOrderAssignMentCode] = useState([]);
   const [CustomizedCod, setCustomizedCode] = useState([]);
   const [CustomizedId, setCustomizedId] = useState([]);
+const [showModal, setShowModal] = useState(false);
 
+useEffect(() => {
+  setShowModal(true); // opens whenever component renders
+}, []);
   useEffect(() => {
     stock_order_gallary(setStockOrder);
     customized_order_gallary(setCustomizedOrder);
   }, []);
-  const card = [
+  {/*const card = [
     {
       product: "SWAD3456",
       name: "Shivaprasad Yadav",
@@ -43,7 +50,7 @@ const Gallery = ({sidebarExpanded}) => {
       name: "Shivaprasad Yadav",
       date: "12 june 2023",
     },
-  ];
+  ];*/}
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -63,7 +70,7 @@ const Gallery = ({sidebarExpanded}) => {
   console.log("currentTab", value);
   console.log(sidebarExpanded,"sidebarExpanded")
   return (
-    <div className="ParentVotors" style={{paddingLeft:sidebarExpanded? "225px":"130px"}}>
+    <div className={`ParentVotors ${showModal ? "page_blurred" : ""}`} style={{paddingLeft:sidebarExpanded? "225px":"130px"}}>
       <div className="gallery__tab">
         <Box sx={{ width: "100%", typography: "body1" }}>
           <TabContext value={value}>
@@ -164,6 +171,13 @@ const Gallery = ({sidebarExpanded}) => {
         CustomizedId={CustomizedId}
         CustomizedCod={CustomizedCod}
       />
+        <ComingSoon
+        open={showModal}
+        onClose={() => setShowModal(false)}
+        title="Photo Coming Soon 📸"
+        description="High-quality product photos will be available shortly."
+      />
+      
     </div>
   );
 };

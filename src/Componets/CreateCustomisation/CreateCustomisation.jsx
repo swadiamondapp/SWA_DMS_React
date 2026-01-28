@@ -1,3 +1,6 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import React, { useState, useEffect, useRef } from "react";
 import "./CreateCustomisation.css";
 import Box from "@mui/material/Box";
@@ -31,6 +34,9 @@ import {
   product_category_basicDetails,
   tag_List_basicDetails,
 } from "../Assignment Panel/Api";
+import axios from "axios";
+import { apiService } from "../../Pages/Services/ApiInstants";
+import { voters_customization_list } from "../VOTORS PANEL/Api";
 
 const style = {
   position: "absolute",
@@ -66,16 +72,18 @@ const style = {
 //   },
 // };
 const CreateCustomisation = ({
+  setData,
   votersSetData,
   open,
   onClose,
   dataToDisplaytomodal,
+  displayEditDetailsById,
   userId,
   wareHouseuserId,
-  setData,
-  setCustomization,
   name,
   customizationFunction,
+  refreshList,
+  submitMode, 
 }) => {
   // const [open, setOpen] = useState(false);
   const [tagText, setTagText] = useState("");
@@ -125,6 +133,7 @@ const CreateCustomisation = ({
   const swaProductSKURef = useRef(null);
   const notesRef = useRef(null);
   const imageRef = useRef(null);
+  const dueDateRef = useRef(null);
   const [formData, setFormData] = useState({
     sallerName: "",
     mobileNumber: "",
@@ -146,7 +155,7 @@ const CreateCustomisation = ({
     Budget: "",
     swaProductSKU: "",
     notes: "",
-
+    due_date: "",
     customerName: "",
     customerMobile: "",
     receivedAdvance: "",
@@ -164,7 +173,7 @@ const CreateCustomisation = ({
     product_category_basicDetails(setListProductCategory);
   }, []);
 
-  console.log(outLetDropDown, "outLetDropDown");
+  //console.log(outLetDropDown, "outLetDropDown");
 
   useEffect(() => {
     if (dataToDisplaytomodal) {
@@ -188,6 +197,7 @@ const CreateCustomisation = ({
         diamondColor: dataToDisplaytomodal.diamond_colour || "",
         Budget: dataToDisplaytomodal.budget || "",
         swaProductSKU: dataToDisplaytomodal.sku_of_swa_product || "",
+        due_date: dataToDisplaytomodal.due_date || "",
         notes: dataToDisplaytomodal.notes || "",
         image: dataToDisplaytomodal.image || "",
         image2: dataToDisplaytomodal.image2 || "",
@@ -201,176 +211,214 @@ const CreateCustomisation = ({
     }
   }, [dataToDisplaytomodal]);
 
-  console.log(dataToDisplaytomodal?.image2, "dataToDisplaytomodal.image2 ");
-  console.log(formData, "editCus");
+//  console.log(dataToDisplaytomodal?.image2, "dataToDisplaytomodal.image2 ");
+//  console.log(formData, "editCus");
 
-  const schema = Joi.object({
-    sallerName: Joi.string().required().messages({
-      "string.empty": `cannot be empty`,
-      "string.pattern.base": "cannot contain numbers.",
+{/* const schema = Joi.object({
+  sallerName: Joi.string().trim().required(),
+
+  mobileNumber: Joi.string()
+    .trim()
+    .pattern(/^\d{10}$/)
+    .required()
+    .messages({
+      "string.pattern.base": "Mobile number must be exactly 10 digits",
     }),
-    mobileNumber: Joi.string()
-      .pattern(/^\d{10}$/)
-      .min(10)
-      .max(10)
-      .required()
-      .messages({
-        "string.empty": `Mobile number required`,
-        "string.min": `Mobile number must be exactly 10 digits`,
-        "string.max": `Mobile number must be exactly 10 digits`,
-      }),
-    customerName: Joi.string().required().messages({
-      "string.empty": `cannot be empty`,
-      "string.pattern.base": "cannot contain numbers.",
+
+  customerName: Joi.string().trim().required(),
+
+  customerMobile: Joi.string()
+    .trim()
+    .pattern(/^\d{10}$/)
+    .required()
+    .messages({
+      "string.pattern.base": "Mobile number must be exactly 10 digits",
     }),
-    customerMobile: Joi.string()
-      .pattern(/^\d{10}$/)
-      .min(10)
-      .max(10)
-      .required()
-      .messages({
-        "string.empty": `Mobile number required`,
-        "string.min": `Mobile number must be exactly 10 digits`,
-        "string.max": `Mobile number must be exactly 10 digits`,
-      }),
-    customerEmail: Joi.string()
-      .email({ tlds: { allow: false } })
-      .allow("") 
-      .messages({
-        "string.email": "Please provide a valid email address",
-      }),
-    receivedAdvance: Joi.string().required().messages({
-      "string.empty": `cannot be empty`,
-      "string.pattern.base": "cannot contain numbers.",
+
+  customerEmail: Joi.string()
+    .email({ tlds: { allow: false } })
+    .allow("", null),
+
+chooseOutlet: Joi.object({
+  id: Joi.any().required(),
+}).required(),
+
+productType: Joi.object({
+  id: Joi.any().required(),
+}).required(),
+
+receivedAdvance: Joi.string().required(),
+
+
+  modelPrevioslyMade: Joi.string()
+    .valid("yes", "no")
+    .required(),
+
+  prevMadeSKU: Joi.when("modelPrevioslyMade", {
+    is: "yes",
+    then: Joi.string().trim().required(), 
+    otherwise: Joi.optional(),
+  }),
+
+  metalType: Joi.object({
+    id: Joi.any().required(),
+  })
+    .required(),
+
+  diamondClarity: Joi.string().required(),
+  diamondColor: Joi.string().required(),
+  Budget: Joi.string().required(),
+
+  due_date: Joi.date()
+    .min("now")
+    .required()
+    .messages({
+      "date.min": "Due date cannot be in the past",
     }),
-    chooseOutlet: Joi.any()
-      .required()
-      .custom((value, helpers) => {
-        if (value === "" || value === null || value === undefined) {
-          return helpers.error("any.empty");
-        }
-        return value;
-      })
-      .messages({
-        "any.required": "cannot be empty",
-        "any.empty": "cannot be empty",
-      }),
-    productType: Joi.any()
-      .required()
-      .custom((value, helpers) => {
-        if (value === "" || value === null || value === undefined) {
-          return helpers.error("any.empty");
-        }
-        return value;
-      })
-      .messages({
-        "any.required": "cannot be empty",
-        "any.empty": "cannot be empty",
-      }),
-    modelPrevioslyMade: Joi.string().required().messages({
-      "string.empty": `cannot be empty`,
-    }),
-    prevMadeSKU: Joi.when("modelPrevioslyMade", {
-      is: Joi.string().valid("yes"), // When modelPrevioslyMade is "yes"
-      then: Joi.string().required().messages({
-        "any.required": `Previous Made SKU is required when Model previously made is yes`,
-        "string.empty": `Previous Made SKU cannot be empty when Model previously made is yes`,
-      }),
-      // Otherwise, it's optional
-    }),
-    metalType: Joi.any()
-      .required()
-      .custom((value, helpers) => {
-        if (value === "" || value === null || value === undefined) {
-          return helpers.error("any.empty");
-        }
-        return value;
-      })
-      .messages({
-        "any.required": "cannot be empty",
-        "any.empty": "cannot be empty",
-      }),
-    // weight: Joi.string().required().messages({
-    //   "string.empty": `cannot be  empty`,
-    // }),
-    // size: Joi.string().required().messages({
-    //   "string.empty": `cannot be  empty`,
-    // }),
-    // diamondWeight: Joi.string().required().messages({
-    //   "string.empty": `cannot be  empty `,
-    // }),
-    // numberOfDiamonds: Joi.required().messages({
-    //   "string.empty": `cannot be  empty`,
-    // }),
-    diamondClarity: Joi.string().required().messages({
-      "string.empty": `cannot be  empty`,
-    }),
-    diamondColor: Joi.string().required().messages({
-      "string.empty": `cannot be  empty`,
-    }),
-    Budget: Joi.string().required().messages({
-      "string.empty": `cannot be  empty`,
-    }),
-    // swaProductSKU: Joi.string().required().messages({
-    //   "string.empty": `cannot be  empty`,
-    // }),
-    // notes: Joi.string().required().messages({
-    //   "string.empty": `cannot be empty`,
-    // }),
-    // width: Joi.string().required().messages({
-    //   "string.empty": `cannot be  empty`,
-    // }),
-    // height: Joi.string().required().messages({
-    //   "string.empty": `cannot be  empty`,
-    // }),
-    // diamond_type: Joi.any()
-    //   .required()
-    //   .custom((value, helpers) => {
-    //     if (value === "" || value === null || value === undefined) {
-    //       return helpers.error("any.empty");
-    //     }
-    //     return value;
-    //   })
-    //   .messages({
-    //     "any.required": "cannot be empty",
-    //     "any.empty": "cannot be empty",
-    //   }),
-    // length_of_item: Joi.string().required().messages({
-    //   "string.empty": `cannot be  empty`,
-    // }),
+});*/}
+const requiredField = Joi.any()
+  .required()
+  .custom((value, helpers) => {
+    if (
+      value === "" ||
+      value === null ||
+      value === undefined ||
+      (typeof value === "object" && Object.keys(value).length === 0)
+    ) {
+      return helpers.error("any.empty");
+    }
+    return value;
+  })
+  .messages({
+    "any.required": "This field is required",
+    "any.empty": "This field is required",
   });
-  console.log(ProudctCategory, "diamonType");
-  console.log(errors, "errors");
 
-  const handleSubmitButton = (e) => {
-    e.preventDefault();
+const schema = Joi.object({
+  sallerName: requiredField,
+  mobileNumber: requiredField,
+  customerName: requiredField,
+  customerMobile: requiredField,
+  receivedAdvance: requiredField,
 
-    // Validate form data using Joi schema
+  chooseOutlet: requiredField,
+  productType: requiredField,
+  metalType: requiredField,
+
+  modelPrevioslyMade: requiredField,
+  diamondClarity: requiredField,
+  diamondColor: requiredField,
+  Budget: requiredField,
+   due_date: Joi.date()
+    .min("now")
+    .required()
+    .messages({
+      "date.min": "Due date cannot be in the past",
+    }),
+});
+
+ // console.log(ProudctCategory, "diamonType");
+ // console.log(errors, "errors");q4cx
+
+const updateOrderStatus = async () => {
+  try {
+    await apiService.patch(
+      `customization/${dataToDisplaytomodal.id}/update-orderstatus/`,
+      { status: "Requested" }
+    );
+ //voters_customization_list(setIsLoading,setData, "", "");
+    
+  } catch (err) {
+    console.error("Status update failed", err);
+  }
+};
+
+const handleSubmitCustomization = (e) => {
+  e.preventDefault(); // 🔥 REQUIRED
+
+
+const apiPayload = {
+  ...formData,
+
+  product_type:
+    formData.productType && typeof formData.productType === "object"
+      ? formData.productType.id
+      : formData.productType
+        ? Number(formData.productType)
+        : null,
+
+  metal_type:  
+    formData.metalType && typeof formData.metalType === "object"
+      ? formData.metalType.id
+      : formData.metalType
+        ? Number(formData.metalType)
+        : null,
+
+  outlet:
+    formData.chooseOutlet && typeof formData.chooseOutlet === "object"
+      ? formData.chooseOutlet.id
+      : formData.chooseOutlet
+        ? Number(formData.chooseOutlet)
+        : null,
+};
+
+
+
+
+  // 2️⃣ VALIDATE ONLY WHEN SENDING TO WAREHOUSE
+  if (submitMode === "SEND_TO_WH") {
     const { error } = schema.validate(formData, {
       abortEarly: false,
-      allowUnknown: true,
+      allowUnknown: true, // ✅ IMPORTANT LINE
     });
 
     if (error) {
-      // Form is invalid, display validation errors
-      const validationErrors = error.details.reduce((errors, err) => {
-        errors[err.path[0]] = err.message;
-        return errors;
-      }, {});
+      const validationErrors = {};
+      error.details.forEach((err) => {
+        validationErrors[err.path.join(".")] = err.message;
+      });
       setErrors(validationErrors);
-    } else {
-      // Clear validation errors when the form is valid
-      setErrors({});
-      // Proceed with form submission logic here
-      console.log("Form submitted:", formData);
+      return; // ❌ STOP SUBMIT
     }
-    // const firstErrorField = Object.keys(errors).find((key) => errors[key]);
-
-    // // Scroll to the first error field
-    // if (firstErrorField && inputRefs[firstErrorField] && inputRefs[firstErrorField].current) {
-    //   inputRefs[firstErrorField].current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    // }
-  };
+  }
+console.log(apiPayload, "formData==>");
+  // ✅ Continue with API calls
+  if (dataToDisplaytomodal) {
+    edit_customizaion_warehouse(
+      setIsLoading,
+      apiPayload, // 🚨 send ORIGINAL formData to API
+      dataToDisplaytomodal.id,
+      async () => {
+        if (submitMode === "SEND_TO_WH") {
+          await updateOrderStatus();
+         }
+        refreshList(); // Refresh list after edit
+      
+      },
+      onClose,
+      setSuccessMessage,
+      setSuccessModalOpen,
+      images,
+      setImages,
+      votersSetData,
+      customizationFunction
+    );
+  } else {
+    // CREATE
+  create_customizaion_warehouse(
+      setIsLoading,
+      apiPayload,
+      onClose,
+      setSuccessMessage,
+      setSuccessModalOpen,
+      setErrorMessage,
+      images,
+      votersSetData,
+      setFormData,
+      setImages
+    );
+  }
+};
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -395,51 +443,57 @@ const CreateCustomisation = ({
   const filterOption = (input, option) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
 
-  const displayEditDetailsById = userId || wareHouseuserId;
+  //const displayEditDetailsById = userId || wareHouseuserId;
 
   // const handleUpdateCustomization = (id) => {
   //   handleSubmitButton();
   //   edit_customizaion_warehouse(setIsLoading, formData,id);
   // };
-  const handleUpdateCustomization = () => {
-    // Call schema validation first
-    const { error } = schema.validate(formData, {
+const handleUpdateCustomization = () => {
+ // if (!displayEditDetailsById) return;
+
+  edit_customizaion_warehouse(
+    setIsLoading,
+    formData,
+    displayEditDetailsById,
+    onClose,
+    setSuccessMessage,
+    setSuccessModalOpen,
+    images,
+    setImages,
+    votersSetData,
+    customizationFunction
+  );
+};
+
+   // Call schema validation first
+  
+
+  {/*   const { error } = schema.validate(formData, {
       abortEarly: false,
       allowUnknown: true,
-    });
-
-    if (error) {
+    }); if (error) {
       // Form is invalid, display validation errors
       const validationErrors = error.details.reduce((errors, err) => {
         errors[err.path[0]] = err.message;
         return errors;
       }, {});
       setErrors(validationErrors);
-    } else {
+    } else {    setErrors({});*/}
       // Clear validation errors when the form is valid
-      setErrors({});
-      // Proceed with update logic here
-      edit_customizaion_warehouse(
-        setIsLoading,
-        formData,
-        displayEditDetailsById,
-        onClose,
-        setSuccessMessage,
-        setSuccessModalOpen,
-        images,
-        setImages,
-        votersSetData,
-        customizationFunction
-      );
-    }
-  };
   const handleImageUpload = (index, event) => {
     const newImages = [...images];
     newImages[index] = event.target.files[0];
     setImages(newImages);
   };
+  const handleRemoveImage = (index) => {
+  const newImages = [...images];
+  newImages[index] = null; // remove selected image
+  setImages(newImages);
+};
 
-  console.log(ErrorMessage, "asdfkd");
+
+ // console.log(ErrorMessage, "asdfkd");
   const handleCreateSubmitCustomization = () => {
     const hasAtLeastOneImage = images.some((img) => img); // Check if there's at least one image
 
@@ -467,14 +521,6 @@ const CreateCustomisation = ({
       setErrors({});
       // Proceed with form submission logic here
       console.log("Form submitted:", formData);
-
-      // const firstErrorField = Object.keys(errors).find((key) => errors[key]);
-
-      // // Scroll to the first error field
-      // if (firstErrorField && inputRefs[firstErrorField] && inputRefs[firstErrorField].current) {
-      //   inputRefs[firstErrorField].current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      // }
-
       // Then proceed with handleCreateSubmitCustomization logic
       create_customizaion_warehouse(
         setIsLoading,
@@ -501,7 +547,7 @@ const CreateCustomisation = ({
     }
   };
 
-  console.log(images, "images==>new");
+//  console.log(images, "images==>new");
   const serverImage = [
     dataToDisplaytomodal?.image,
     dataToDisplaytomodal?.image2,
@@ -656,6 +702,12 @@ const CreateCustomisation = ({
           block: "center",
         });
         break;
+        case "dueDate":
+          dueDateRef.current?.scrollIntoView({
+            behavior:"smooth",
+            block:"center",
+          });
+          break;
       case "notes":
         notesRef.current?.scrollIntoView({
           behavior: "smooth",
@@ -697,10 +749,30 @@ const CreateCustomisation = ({
       diamondColor: "",
       Budget: "",
       swaProductSKU: "",
+      due_date: "",
       notes: "",
     });
     setImages(Array(5).fill(""));
   };
+  const getImageSrc = (file, serverUrl) => {
+  if (file instanceof File) {
+    return URL.createObjectURL(file);
+  }
+  if (typeof serverUrl === "string") {
+    return serverUrl;
+  }
+  return null;
+};
+
+useEffect(() => {
+  return () => {
+    images.forEach((img) => {
+      if (img instanceof File) {
+        URL.revokeObjectURL(img);
+      }
+    });
+  };
+}, [images]);
 
   return (
     <div>
@@ -741,7 +813,7 @@ const CreateCustomisation = ({
 
               <Typography id="modal-modal-description" sx={{ mt: 10 }}>
                 <div>
-                  <form onSubmit={handleSubmitButton}>
+                <form onSubmit={handleSubmitCustomization}>
                     <div className="FormContainer">
                       <div className="parant_relative">
                         <label htmlFor="" className="label_text">
@@ -1136,165 +1208,65 @@ const CreateCustomisation = ({
                           </span>
                         )}
                       </div>
-                      {/* <div className="uploadImageContainer">
-                        {imageFiles.length > 0 ? (
-                          <>
-                            {imageFiles.map((item, index) => (
-                              <img
-                                key={index}
-                                src={URL.createObjectURL(item)}
-                                alt={`Uploaded ${index + 1}`}
-                                style={{
-                                  width: "50px",
-                                  height: "50px",
-                                  borderRadius: "4px",
-                                }}
-                              />
-                            ))}
-                          </>
-                        ) : (
-                          <div className="leftI">
-                            {dataToDisplaytomodal ? (
-                              <div style={{ display: "flex", gap: "10px" }}>
-                                <img
-                                  // key={index}
-                                  src={dataToDisplaytomodal.image}
-                                  // alt={`Uploaded ${index + 1}`}
-                                  style={{
-                                    width: "50px",
-                                    height: "50px",
-                                    borderRadius: "4px",
-                                  }}
-                                />
-                                <img
-                                  // key={index}
-                                  src={dataToDisplaytomodal.image2}
-                                  // alt={`Uploaded ${index + 1}`}
-                                  style={{
-                                    width: "50px",
-                                    height: "50px",
-                                    borderRadius: "4px",
-                                  }}
-                                />{" "}
-                                <img
-                                  // key={index}
-                                  src={dataToDisplaytomodal.image3}
-                                  style={{
-                                    width: "50px",
-                                    height: "50px",
-                                    borderRadius: "4px",
-                                  }}
-                                />
-                                 <img
-                                  // key={index}
-                                  src={dataToDisplaytomodal.image4}
-                                  style={{
-                                    width: "50px",
-                                    height: "50px",
-                                    borderRadius: "4px",
-                                  }}
-                                />
-                                  <img
-                                  // key={index}
-                                  src={dataToDisplaytomodal.image5}
-                                  style={{
-                                    width: "50px",
-                                    height: "50px",
-                                    borderRadius: "4px",
-                                  }}
-                                />
-                              </div>
-                            ) : (
-                              <>
-                                <span className="imgUpText">Image Upload</span>
-                                <span className="imgDText">
-                                  You can upload 3 files max
-                                </span>
-                              </>
-                            )}
-                          </div>
-                        )}
-                        <div className="rightw">
-                          <div
-                            id="fileUpload"
-                            className="uploadButton"
-                            onClick={() =>
-                              document.getElementById("fileUploadImage").click()
-                            }
-                            style={{display:imageFiles.length === 5 || dataToDisplaytomodal ? "none":"block"}}
-                          >
-                            {console.log(imageFiles, "images#")}
-                            <input
-                              type="file"
-                              id="fileUploadImage"
-                              style={{ display: "none" }}
-                              multiple
-                              accept="image/*"
-                              onChange={handleFileUpload}
-                            />
-                            Upload <BsCloudUpload />
-                          </div>
-                        </div>
-                      </div> */}
+                  
                       {name === "editModalOpen" ? (
                         <>
                           <div className="uploadImageContainer">
                             <div className="rightw">
                               <div
                                 id="fileUpload"
-                                // className="uploadButton"
-                                // onClick={() =>
-                                //   document.getElementById("fileUploadImage").click()
-                                // }
-                              >
-                                <div className="dashed_imageContainer">
-                                  {images.map((image, index) => (
-                                    <div
-                                      key={index}
-                                      className="dashedImage"
-                                      style={{
-                                        width: "50px",
-                                        height: "50px",
-                                        position: "relative",
-                                      }}
-                                    >
-                                      {(images[index] ||
-                                        serverImage[index]) && (
-                                        <img
-                                          src={
-                                            images[index]
-                                              ? URL.createObjectURL(
-                                                  images[index]
-                                                )
-                                              : serverImage[index]
-                                          }
-                                          alt=""
-                                          style={{
-                                            height: "50px",
-                                            width: "50px",
-                                          }}
-                                        />
-                                      )}
-                                      <div
-                                        style={{
-                                          position: "absolute",
-                                        }}
-                                      >
-                                        <label>
-                                          <img src={plusICon} alt="" />
-                                          <input
-                                            type="file"
-                                            accept="image/png, image/jpeg"
-                                            style={{ display: "none" }}
-                                            onChange={(e) =>
-                                              handleImageUpload(index, e)
-                                            }
-                                          />
-                                        </label>
-                                      </div>
-                                    </div>
-                                  ))}
-                                </div>
+                               >
+                               <div className="dashed_imageContainer">
+  {Array.from({
+    length: Math.max(images.length, serverImage.length),
+  }).map((_, index) => {
+    const src = getImageSrc(images[index], serverImage[index]);
+
+    return (
+      <div
+        key={index}
+        className="dashedImage"
+        style={{
+          width: "50px",
+          height: "50px",
+          position: "relative",
+        }}
+      >
+        {src && (
+          <>
+            <img
+              src={src}
+              alt=""
+              style={{ height: "50px", width: "50px" }}
+            />
+
+            {images[index] instanceof File && (
+              <span
+                onClick={() => handleRemoveImage(index)}
+                className="removeImageBtn"
+              >
+                ✕
+              </span>
+            )}
+          </>
+        )}
+
+        <div style={{ position: "absolute" }}>
+          <label>
+            <img src={plusICon} alt="" />
+            <input
+              type="file"
+              accept="image/png, image/jpeg"
+              style={{ display: "none" }}
+              onChange={(e) => handleImageUpload(index, e)}
+            />
+          </label>
+        </div>
+      </div>
+    );
+  })}
+</div>
+
                               </div>
                             </div>
                           </div>
@@ -1329,16 +1301,23 @@ const CreateCustomisation = ({
                                     className="dashedImage"
                                     style={{ width: "50px", height: "50px" }}
                                   >
-                                    {image && (
-                                      <img
-                                        src={URL.createObjectURL(image)}
-                                        alt=""
-                                        style={{
-                                          height: "50px",
-                                          width: "50px",
-                                        }}
-                                      />
-                                    )}
+                              {image instanceof File && (
+                                  <>
+                                    <img
+                                      src={URL.createObjectURL(image)}
+                                      alt=""
+                                       style={{ height: "50px", width: "50px" }}
+                                    />
+                                    <span
+                                      onClick={() => handleRemoveImage(index)}
+                                      className="removeImageBtn"
+                                    >
+                                      ✕
+                                    </span>
+                                  </>
+                                )}
+
+
                                     <div style={{ position: "absolute" }}>
                                       <label>
                                         <img src={plusICon} alt="" />
@@ -1455,101 +1434,7 @@ const CreateCustomisation = ({
                           <span className="error_select">{errors.size}</span>
                         )}
                       </div>
-                      {/* <div className="parant_relative">
-                        <label htmlFor="" className="label_text">
-                          width
-                        </label>
-                        <input
-                          type="number"
-                          className="input_feild"
-                          name="width"
-                          ref={widthRef}
-                          value={formData.width}
-                          onChange={handleInput}
-                          onFocus={(e) =>
-                            e.target.addEventListener(
-                              "wheel",
-                              function (e) {
-                                e.preventDefault();
-                              },
-                              { passive: false }
-                            )
-                          }
-                        />
-                        {errors.width && (
-                          <span className="error_select">{errors.width}</span>
-                        )}
-                      </div> */}
-                      {/* <div className="parant_relative">
-                        <label htmlFor="" className="label_text">
-                          length
-                        </label>
-                        <input
-                          type="number"
-                          className="input_feild"
-                          name="length_of_item"
-                          ref={lengthOfItemRef}
-                          value={formData.length_of_item}
-                          onChange={handleInput}
-                          onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
-                        />
-                        {errors.length_of_item && (
-                          <span className="error_select">
-                            {errors.length_of_item}
-                          </span>
-                        )}
-                      </div> */}
-                      {/* <div className="parant_relative">
-                        <label htmlFor="" className="label_text">
-                          height
-                        </label>
-                        <input
-                          type="number"
-                          className="input_feild"
-                          name="height"
-                          ref={heightRef}
-                          value={formData.height}
-                          onChange={handleInput}
-                          onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
-                        />
-                        {errors.height && (
-                          <span className="error_select">{errors.height}</span>
-                        )}
-                      </div> */}
-                      {/* <div className="parant_relative">
-                        <label
-                          htmlFor=""
-                          className="label_text"
-                          ref={diamondTypeRef}
-                        >
-                          Diamond Type
-                        </label>
-                        <Select
-                          showSearch
-                          placeholder="-Select-"
-                          optionFilterProp="children"
-                          onChange={(value) =>
-                            setFormData((prevState) => ({
-                              ...prevState,
-                              diamond_type: value,
-                            }))
-                          }
-                          onSearch={onSearch}
-                          filterOption={filterOption}
-                          style={{ width: "100%" }}
-                          // options={MetalTypeDropDown}
-                          options={diamonType.map((item) => ({
-                            value: item.id,
-                            label: item.name,
-                          }))}
-                          value={formData.diamond_type || undefined}
-                        />
-                        {errors.diamond_type && (
-                          <span className="error_select">
-                            {errors.diamond_type}
-                          </span>
-                        )}
-                      </div> */}
+                    
                       <div className="parant_relative">
                         <label htmlFor="" className="label_text">
                           Diamond weight ( ct )
@@ -1716,24 +1601,24 @@ const CreateCustomisation = ({
                           <span className="error_input">{errors.Budget}</span>
                         )}
                       </div>
-                      {/* <div className="parant_relative">
+                     <div className="parant_relative">
                         <label htmlFor="" className="label_text">
-                          Swa Product ( SKU)
+                          Due Date
                         </label>
                         <input
-                          type="text"
+                          type="date"
                           className="input_feild"
-                          name="swaProductSKU"
-                          ref={swaProductSKURef}
-                          value={formData.swaProductSKU}
+                          name="due_date"
+                          ref={dueDateRef}
+                          value={formData.due_date}
                           onChange={handleInput}
                         />
-                        {errors.swaProductSKU && (
+                        {errors.due_date && (
                           <span className="error_input">
-                            {errors.swaProductSKU}
+                            {errors.due_date}
                           </span>
                         )}
-                      </div> */}
+                      </div> 
                       <div className="parant_relative">
                         <label htmlFor="">Notes</label>
                         <textarea
@@ -1757,40 +1642,20 @@ const CreateCustomisation = ({
                       </span>
                     ):null} */}
                       </div>
-                      {dataToDisplaytomodal ? (
-                        <button
-                          onClick={() => handleUpdateCustomization()}
-                          className="submitButton"
-                          type="submit"
-                        >
-                          {isLoading ? (
-                            <CircularProgress
-                              size={15}
-                              sx={{ color: "#fff" }}
-                            />
-                          ) : (
-                            "Update"
-                          )}
-                        </button>
-                      ) : (
-                        <>
-                          <button
-                            onClick={() => handleCreateSubmitCustomization()}
+                    <button
                             type="submit"
                             className="submitButton"
                             disabled={isLoading}
                           >
                             {isLoading ? (
-                              <CircularProgress
-                                size={15}
-                                sx={{ color: "#fff" }}
-                              />
+                              <CircularProgress size={15} sx={{ color: "#fff" }} />
+                            ) : dataToDisplaytomodal ? (
+                              "Update"
                             ) : (
-                              " SUBMIT"
+                              "Submit"
                             )}
                           </button>
-                        </>
-                      )}
+
                     </div>
                   </form>
                 </div>
@@ -1810,3 +1675,249 @@ const CreateCustomisation = ({
 };
 
 export default CreateCustomisation;
+
+  {/* <div className="parant_relative">
+                        <label htmlFor="" className="label_text">
+                          width
+                        </label>
+                        <input
+                          type="number"
+                          className="input_feild"
+                          name="width"
+                          ref={widthRef}
+                          value={formData.width}
+                          onChange={handleInput}
+                          onFocus={(e) =>
+                            e.target.addEventListener(
+                              "wheel",
+                              function (e) {
+                                e.preventDefault();
+                              },
+                              { passive: false }
+                            )
+                          }
+                        />
+                        {errors.width && (
+                          <span className="error_select">{errors.width}</span>
+                        )}
+                      </div> */}
+                      {/* <div className="parant_relative">
+                        <label htmlFor="" className="label_text">
+                          length
+                        </label>
+                        <input
+                          type="number"
+                          className="input_feild"
+                          name="length_of_item"
+                          ref={lengthOfItemRef}
+                          value={formData.length_of_item}
+                          onChange={handleInput}
+                          onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
+                        />
+                        {errors.length_of_item && (
+                          <span className="error_select">
+                            {errors.length_of_item}
+                          </span>
+                        )}
+                      </div> */}
+                      {/* <div className="parant_relative">
+                        <label htmlFor="" className="label_text">
+                          height
+                        </label>
+                        <input
+                          type="number"
+                          className="input_feild"
+                          name="height"
+                          ref={heightRef}
+                          value={formData.height}
+                          onChange={handleInput}
+                          onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
+                        />
+                        {errors.height && (
+                          <span className="error_select">{errors.height}</span>
+                        )}
+                      </div> */}
+                      {/* <div className="parant_relative">
+                        <label
+                          htmlFor=""
+                          className="label_text"
+                          ref={diamondTypeRef}
+                        >
+                          Diamond Type
+                        </label>
+                        <Select
+                          showSearch
+                          placeholder="-Select-"
+                          optionFilterProp="children"
+                          onChange={(value) =>
+                            setFormData((prevState) => ({
+                              ...prevState,
+                              diamond_type: value,
+                            }))
+                          }
+                          onSearch={onSearch}
+                          filterOption={filterOption}
+                          style={{ width: "100%" }}
+                          // options={MetalTypeDropDown}
+                          options={diamonType.map((item) => ({
+                            value: item.id,
+                            label: item.name,
+                          }))}
+                          value={formData.diamond_type || undefined}
+                        />
+                        {errors.diamond_type && (
+                          <span className="error_select">
+                            {errors.diamond_type}
+                          </span>
+                        )}
+                      </div> */}
+                          {/* <div className="uploadImageContainer">
+                        {imageFiles.length > 0 ? (
+                          <>
+                            {imageFiles.map((item, index) => (
+                              <img
+                                key={index}
+                                src={URL.createObjectURL(item)}
+                                alt={`Uploaded ${index + 1}`}
+                                style={{
+                                  width: "50px",
+                                  height: "50px",
+                                  borderRadius: "4px",
+                                }}
+                              />
+                            ))}
+                          </>
+                        ) : (
+                          <div className="leftI">
+                            {dataToDisplaytomodal ? (
+                              <div style={{ display: "flex", gap: "10px" }}>
+                                <img
+                                  // key={index}
+                                  src={dataToDisplaytomodal.image}
+                                  // alt={`Uploaded ${index + 1}`}
+                                  style={{
+                                    width: "50px",
+                                    height: "50px",
+                                    borderRadius: "4px",
+                                  }}
+                                />
+                                <img
+                                  // key={index}
+                                  src={dataToDisplaytomodal.image2}
+                                  // alt={`Uploaded ${index + 1}`}
+                                  style={{
+                                    width: "50px",
+                                    height: "50px",
+                                    borderRadius: "4px",
+                                  }}
+                                />{" "}
+                                <img
+                                  // key={index}
+                                  src={dataToDisplaytomodal.image3}
+                                  style={{
+                                    width: "50px",
+                                    height: "50px",
+                                    borderRadius: "4px",
+                                  }}
+                                />
+                                 <img
+                                  // key={index}
+                                  src={dataToDisplaytomodal.image4}
+                                  style={{
+                                    width: "50px",
+                                    height: "50px",
+                                    borderRadius: "4px",
+                                  }}
+                                />
+                                  <img
+                                  // key={index}
+                                  src={dataToDisplaytomodal.image5}
+                                  style={{
+                                    width: "50px",
+                                    height: "50px",
+                                    borderRadius: "4px",
+                                  }}
+                                />
+                              </div>
+                            ) : (
+                              <>
+                                <span className="imgUpText">Image Upload</span>
+                                <span className="imgDText">
+                                  You can upload 3 files max
+                                </span>
+                              </>
+                            )}
+                          </div>
+                        )}
+                        <div className="rightw">
+                          <div
+                            id="fileUpload"
+                            className="uploadButton"
+                            onClick={() =>
+                              document.getElementById("fileUploadImage").click()
+                            }
+                            style={{display:imageFiles.length === 5 || dataToDisplaytomodal ? "none":"block"}}
+                          >
+                            {console.log(imageFiles, "images#")}
+                            <input
+                              type="file"
+                              id="fileUploadImage"
+                              style={{ display: "none" }}
+                              multiple
+                              accept="image/*"
+                              onChange={handleFileUpload}
+                            />
+                            Upload <BsCloudUpload />
+                          </div>
+                        </div>
+                      </div> 
+                      
+                      
+                      
+  const handleSubmit = (e) => {
+  e.preventDefault(); // 🔥 critical
+
+  // Image validation
+  {/* const hasAtLeastOneImage = images.some((img) => img);
+ if (!hasAtLeastOneImage) {
+    setImageError("At least one image is required.");
+    return;
+  }*/}
+
+
+  // Joi validation
+  {/*const { error } = schema.validate(formData, {
+    abortEarly: false,
+    allowUnknown: true,
+  });
+
+  if (error) {
+    const validationErrors = error.details.reduce((errors, err) => {
+      errors[err.path[0]] = err.message;
+      return errors;
+    }, {});
+    setErrors(validationErrors);
+    return;
+  }
+
+  setErrors({});
+
+  // 🚀 API CALL (single source of truth)
+  if (dataToDisplaytomodal) {
+    handleUpdateCustomization();
+  } else {
+    create_customizaion_warehouse(
+      setIsLoading,
+      formData,
+      onClose,
+      setSuccessMessage,
+      setSuccessModalOpen,
+      setErrorMessage,
+      images,
+      votersSetData,
+      setFormData,
+      setImages
+    );
+  }
+};
+                      */}

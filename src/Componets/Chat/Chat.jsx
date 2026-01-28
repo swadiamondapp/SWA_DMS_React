@@ -1,9 +1,12 @@
-import React from "react";
+/* eslint-disable react/prop-types */
+/* eslint-disable react/jsx-key */
+import  { useEffect, useState } from "react";
 import "./Chat.css";
 import searchicon from "../../assets/searchicon.png";
 import chatuser from "../../assets/chatuser.png";
 import chatimg1 from "../../assets/c1.png";
-import chatimg2 from "../../assets/c2.png";
+//import chatimg2 from "../../assets/c2.png";
+import ComingSoon from "../VOTORS PANEL/Votors Panel/ComingSoon";
 
 const Chat = ({sidebarExpanded}) => {
   const users = [
@@ -24,8 +27,13 @@ const Chat = ({sidebarExpanded}) => {
       desc: "Votors",
     },
   ];
+  const [showModal, setShowModal] = useState(false);
+  
+  useEffect(() => {
+    setShowModal(true); // opens whenever component renders
+  }, []);
   return (
-    <div className="Parent_DesignView" style={{paddingLeft:sidebarExpanded? "225px":"130px"}}>
+    <div className={`Parent_DesignView  ${showModal ? "page_blurred" : ""}`} style={{paddingLeft:sidebarExpanded? "225px":"130px"}}>
       <div className="ParentChatSection">
         <div className="Left_Chat_Section">
           <div className="Chat__list">
@@ -94,6 +102,12 @@ const Chat = ({sidebarExpanded}) => {
           </div>
         </div>
       </div>
+        <ComingSoon
+        open={showModal}
+        onClose={() => setShowModal(false)}
+        title="Photo Coming Soon 📸"
+        description="High-quality product photos will be available shortly."
+      />
     </div>
   );
 };
