@@ -1,0 +1,29 @@
+name: Sync swadms-new--test to Account2
+
+on:
+  push:
+    branches:
+      - new-branch 
+ 
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Debug branch
+        run: |
+          git branch -a
+          git status
+
+      - name: Push to Account2 mirror
+        env:
+          MIRROR_TOKEN: ${{ secrets.MIRROR_TOKEN }}
+        run: |
+          echo "Token length: ${#MIRROR_TOKEN}"
+          git remote add mirror https://github.com/swadiamondapp/SWA_DMS_React.git
+          git push mirror new-branch --force
