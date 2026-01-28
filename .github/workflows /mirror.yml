@@ -3,7 +3,7 @@ name: Sync swadms-new--test to Account2
 on:
   push:
     branches:
-      - new-branch 
+      - main 
  
 jobs:
   sync:
@@ -26,4 +26,4 @@ jobs:
         run: |
           echo "Token length: ${#MIRROR_TOKEN}"
           git remote add mirror https://github.com/swadiamondapp/SWA_DMS_React.git
-          git push mirror new-branch --force
+          git push mirror main --force
