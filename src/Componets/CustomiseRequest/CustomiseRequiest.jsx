@@ -95,16 +95,16 @@ const REQUIRED_FIELDS = [
   { key: "customer_number", label: "Customer phone number" },
   { key: "product_type", label: "Product type" },
   { key: "metal_type", label: "Metal type" },
-  { key: "weight", label: "Weight" },
-  { key: "budget", label: "Budget" },
-  { key: "due_date", label: "Due date" },
+ // { key: "weight", label: "Weight" },
+ // { key: "budget", label: "Budget" },
+ // { key: "due_date", label: "Due date" },
 //  { key: "image", label: "At least one image" },
-  { key: "size", label: "Metal Size" },
-  { key: "diamond_weight", label: "Diamond Weight" },
-  { key: "no_of_diamond", label: "Number of Diamonds" },
-  { key: "diamond_clarity", label: "Diamond Clarity" },
-  { key: "diamond_colour", label: "Diamond colour" }, 
-  { key : "received_advance", label : "Recived Advance"},
+//  { key: "size", label: "Metal Size" },
+//  { key: "diamond_weight", label: "Diamond Weight" },
+//  { key: "no_of_diamond", label: "Number of Diamonds" },
+ // { key: "diamond_clarity", label: "Diamond Clarity" },
+//  { key: "diamond_colour", label: "Diamond colour" }, 
+//  { key : "received_advance", label : "Recived Advance"},
 //  { ke : "metal_type", label : "Metal Type"},
   //{ key: "weight", label: "Weight" },
 ];
@@ -400,7 +400,9 @@ const status = dataToDisplay.status?.trim();
 const wh_status = dataToDisplay.wh_status?.trim();
 const canEdit =
   CustomizationWareHouseData &&
-  (wh_status === "Received" || wh_status === "MRP Updated");
+  (wh_status === "Received" || wh_status === "MRP Updated") &&
+  status !== "Rejected";
+
 
 const canConfirmReject =
   CustomizationWareHouseData && wh_status === "MRP Updated";
@@ -735,7 +737,7 @@ const canConfirmReject =
     <>
       {status === "Confirmed" && <span>Already Updated</span>}
 
-      {status === "Rejected" && <span>Rejected</span>}
+      {status === "Rejected"  && <span className="reject_title">Customer Cancelled</span>}
 
  {canEdit && (
   <button

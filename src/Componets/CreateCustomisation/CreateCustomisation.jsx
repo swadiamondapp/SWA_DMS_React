@@ -276,6 +276,26 @@ receivedAdvance: Joi.string().required(),
       "date.min": "Due date cannot be in the past",
     }),
 });*/}
+const prevFormRef = useRef({});
+
+useEffect(() => {
+  const prevForm = prevFormRef.current;
+  let hasChanges = false;
+  const updatedErrors = { ...errors };
+
+  Object.keys(formData).forEach((key) => {
+    if (formData[key] !== prevForm[key] && updatedErrors[key]) {
+      updatedErrors[key] = "";
+      hasChanges = true;
+    }
+  });
+
+  if (hasChanges) {
+    setErrors(updatedErrors);
+  }
+
+  prevFormRef.current = formData;
+}, [formData]);
 const requiredField = Joi.any()
   .required()
   .custom((value, helpers) => {
@@ -299,24 +319,24 @@ const schema = Joi.object({
   mobileNumber: requiredField,
   customerName: requiredField,
   customerMobile: requiredField,
-  receivedAdvance: requiredField,
+ 
 
   chooseOutlet: requiredField,
   productType: requiredField,
   metalType: requiredField,
-
-  modelPrevioslyMade: requiredField,
-  diamondClarity: requiredField,
   diamondColor: requiredField,
+  modelPrevioslyMade: requiredField,
+
+});
+  /*diamondClarity: requiredField,
+ receivedAdvance: requiredField,
   Budget: requiredField,
    due_date: Joi.date()
     .min("now")
     .required()
     .messages({
       "date.min": "Due date cannot be in the past",
-    }),
-});
-
+    }),*/
  // console.log(ProudctCategory, "diamonType");
  // console.log(errors, "errors");q4cx
 
@@ -327,7 +347,7 @@ const updateOrderStatus = async () => {
       { status: "Requested" }
     );
  //voters_customization_list(setIsLoading,setData, "", "");
-    
+     
   } catch (err) {
     console.error("Status update failed", err);
   }
@@ -366,13 +386,13 @@ const apiPayload = {
 
 
   // 2️⃣ VALIDATE ONLY WHEN SENDING TO WAREHOUSE
-  if (submitMode === "SEND_TO_WH") {
+  if (submitMode === "SEND_TO_WH" || dataToDisplaytomodal) {
     const { error } = schema.validate(formData, {
       abortEarly: false,
       allowUnknown: true, // ✅ IMPORTANT LINE
     });
 
-    if (error) {
+    if (error) { 
       const validationErrors = {};
       error.details.forEach((err) => {
         validationErrors[err.path.join(".")] = err.message;
@@ -419,18 +439,44 @@ console.log(apiPayload, "formData==>");
     );
   }
 };
+const integerFields = [
+  "customerMobile",
+  "mobileNumber",
+  "numberOfDiamonds",
+  "receivedAdvance",
+];
 
-  const handleInput = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-    setErrors({});
-    if (ImageError) {
-      setImageError("");
-    }
-  };
+const decimalFields = [
+  "Budget",
+  "weight",
+  "diamondWeight",
+  "size",
+];
+
+const handleInput = (e) => {
+  const { name, value } = e.target;
+  let updatedValue = value;
+
+  // Integer only fields
+  if (integerFields.includes(name)) {
+    updatedValue = value.replace(/\D/g, "");
+  }
+
+  // Decimal fields (allow only 1 dot)
+  if (decimalFields.includes(name)) {
+    updatedValue = value
+      .replace(/[^0-9.]/g, "")          // allow digits & dot
+      .replace(/(\..*?)\..*/g, "$1");   // prevent multiple dots
+  }
+
+  setFormData((prev) => ({
+    ...prev,
+    [name]: updatedValue,
+  }));
+
+  setErrors({});
+};
+
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -860,7 +906,8 @@ useEffect(() => {
                           </span>
                         </label>
                         <input
-                          type="number"
+                           type="text"
+  inputMode="numeric"
                           className="input_feild"
                           name="mobileNumber"
                           value={formData.mobileNumber}
@@ -934,7 +981,8 @@ useEffect(() => {
                           </span>
                         </label>
                         <input
-                          type="number"
+                         type="text"
+  inputMode="numeric"
                           className="input_feild"
                           name="customerMobile"
                           value={formData.customerMobile}
@@ -960,23 +1008,16 @@ useEffect(() => {
                           ref={receivedAdvanceRef}
                         >
                           Recived Advance
-                          <span
-                            style={{
-                              color: "red",
-                              fontSize: "20px",
-                              textAlign: "center",
-                            }}
-                          >
-                            *
-                          </span>
+                         
                         </label>
-                        <input
-                          type="number"
+                      <input
+                          type="text"
                           className="input_feild"
                           name="receivedAdvance"
                           value={formData.receivedAdvance}
                           onChange={handleInput}
-                          onFocus={(e) =>
+                          inputMode="numeric"
+                             onFocus={(e) =>
                             e.target.addEventListener(
                               "wheel",
                               function (e) {
@@ -1270,15 +1311,7 @@ useEffect(() => {
                               </div>
                             </div>
                           </div>
-                          <span
-                            style={{
-                              color: "red",
-                              fontSize: "20px",
-                              textAlign: "center",
-                            }}
-                          >
-                            *
-                          </span>
+                        
                         </>
                       ) : (
                         <div
@@ -1389,7 +1422,8 @@ useEffect(() => {
                           Weight ( grams )
                         </label>
                         <input
-                          type="number"
+                          type="text"
+  inputMode="decimal"
                           className="input_feild"
                           name="weight"
                           ref={weightRef}
@@ -1414,7 +1448,8 @@ useEffect(() => {
                           Size
                         </label>
                         <input
-                          type="text"
+                           type="text"
+  inputMode="decimal"
                           className="input_feild"
                           name="size"
                           ref={sizeRef}
@@ -1440,7 +1475,8 @@ useEffect(() => {
                           Diamond weight ( ct )
                         </label>
                         <input
-                          type="number"
+                          type="text"
+  inputMode="decimal"
                           className="input_feild"
                           name="diamondWeight"
                           ref={diamondWeightRef}
@@ -1467,7 +1503,8 @@ useEffect(() => {
                           Number of Diamonds
                         </label>
                         <input
-                          type="number"
+                         type="text"
+  inputMode="numeric"
                           className="input_feild"
                           name="numberOfDiamonds"
                           ref={numberOfDiamondsRef}
@@ -1496,15 +1533,7 @@ useEffect(() => {
                           ref={diamondClarityRef}
                         >
                           Diamond Clarity
-                          <span
-                            style={{
-                              color: "red",
-                              fontSize: "20px",
-                              textAlign: "center",
-                            }}
-                          >
-                            *
-                          </span>
+                         
                         </label>
                         <Select
                           showSearch
@@ -1570,18 +1599,11 @@ useEffect(() => {
                       <div className="parant_relative">
                         <label htmlFor="" className="label_text">
                           Budget
-                          <span
-                            style={{
-                              color: "red",
-                              fontSize: "20px",
-                              textAlign: "center",
-                            }}
-                          >
-                            *
-                          </span>
+                      
                         </label>
                         <input
-                          type="number"
+                           type="text"
+  inputMode="decimal"
                           className="input_feild"
                           name="Budget"
                           ref={budgetRef}
@@ -1601,24 +1623,24 @@ useEffect(() => {
                           <span className="error_input">{errors.Budget}</span>
                         )}
                       </div>
-                     <div className="parant_relative">
-                        <label htmlFor="" className="label_text">
-                          Due Date
-                        </label>
-                        <input
-                          type="date"
-                          className="input_feild"
-                          name="due_date"
-                          ref={dueDateRef}
-                          value={formData.due_date}
-                          onChange={handleInput}
-                        />
-                        {errors.due_date && (
-                          <span className="error_input">
-                            {errors.due_date}
-                          </span>
-                        )}
-                      </div> 
+                    <div className="parant_relative">
+  <label className="label_text">Due Date</label>
+
+  <input
+    type="date"
+    className="input_feild"
+    name="due_date"
+    ref={dueDateRef}
+    value={formData.due_date}
+    min={new Date().toISOString().split("T")[0]} // 👈 key line
+    onChange={handleInput}
+  />
+
+  {errors.due_date && (
+    <span className="error_input">{errors.due_date}</span>
+  )}
+</div>
+
                       <div className="parant_relative">
                         <label htmlFor="">Notes</label>
                         <textarea
